@@ -10,8 +10,14 @@ docker build -t wan2.2:latest -f repositories/Wan-Video/Wan2.2/Dockerfile .
 
 ## Run
 
+All run commands use NVIDIA recommended flags for PyTorch containers:
+- `--ipc=host` - Use host's shared memory (required for PyTorch multiprocessing)
+- `--ulimit memlock=-1` - Unlimited locked memory
+- `--ulimit stack=67108864` - 64MB stack size
+
 ```bash
-docker run --rm --gpus all --ipc=host \
+docker run --rm --gpus all \
+  --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 \
   -v /shared/.cache/huggingface:/root/.cache/huggingface \
   -it wan2.2:latest bash
 ```

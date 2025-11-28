@@ -92,7 +92,6 @@ follow this workflow:
 
    General rules:
 
-   - **Platform:** all builds must be done with `--platform="linux/amd64"`.
    - **Reproducibility:**
      - Pin package versions when repo or notes recommend them.
      - Prefer `pip install -r requirements.txt` or `pip install .` as described upstream.
@@ -120,7 +119,6 @@ follow this workflow:
 
      ```bash
      docker build \
-       --platform="linux/amd64" \
        -t user-repo:latest \
        -f repositories/USER/REPO/Dockerfile \
        .
@@ -143,7 +141,6 @@ follow this workflow:
 
        ```bash
        docker run --rm \
-         --platform="linux/amd64" \
          user-repo:latest \
          <run-command>
        ```
@@ -153,7 +150,6 @@ follow this workflow:
        ```bash
        docker run --rm \
          --gpus all \
-         --platform="linux/amd64" \
          user-repo:latest \
          <run-command>
        ```
@@ -207,7 +203,6 @@ When a user asks for a Dockerfile / reproduction:
    - `repositories/USER/REPO/Dockerfile`
 
 4. **Run the full cycle**:
-   - Build image with `--platform="linux/amd64"`.
    - Run the test command in a container (with `--gpus all` if GPU).
    - Iterate until success.
 
@@ -228,11 +223,6 @@ When a user asks for a Dockerfile / reproduction:
   FROM nvcr.io/nvidia/pytorch:25.11-py3
   ```
 unless the user explicitly overrides this.
-	•	Platform:
-Always build with:
-
---platform="linux/amd64"
-
 
 	•	Working directory:
 Prefer:
