@@ -24,7 +24,7 @@ docker run --rm --gpus all \
 
 ## Usage
 
-Download model and create symlink:
+Inside the container, download model and create symlink:
 
 ```bash
 hf download ShilongLiu/GroundingDINO
