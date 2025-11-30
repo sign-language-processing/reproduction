@@ -28,6 +28,6 @@ RUN grep -v -E "(torch|torchvision|torchaudio|flash_attn|diffusers)" requirement
     rm requirements_temp.txt
 
 # Install compatible diffusers, peft, and huggingface_hub CLI
-RUN pip install --no-cache-dir diffusers==0.31.0 peft==0.14.0 "huggingface_hub[cli]"
+RUN pip install --no-cache-dir diffusers==0.31.0 peft==0.14.0 huggingface_hub
 
 CMD ["/bin/bash"]

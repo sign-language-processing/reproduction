@@ -29,7 +29,17 @@ WORKDIR /workspace/VACE
 # - decord: installed from source above
 # - onnxruntime-gpu: no arm64 wheels, use onnxruntime instead
 RUN grep -v -E "^(torch|torchvision|flash_attn|decord|onnxruntime-gpu)" requirements/framework.txt > requirements_filtered.txt && \
-    pip install --no-cache-dir -r requirements_filtered.txt onnxruntime && \
-    rm requirements_filtered.txt
+    pip install --no-cache-dir -r requirements_filtered.txt onnxruntime
+
+# Install Wan2.1 support
+RUN pip install wan@git+https://github.com/Wan-Video/Wan2.1
+
+# Install LTX-Video support (as per VACE warning message)
+RUN pip install ltx-video@git+https://github.com/Lightricks/LTX-Video@ltx-video-0.9.1 sentencepiece --no-deps
+
+# Install preprocessing tools, skipping problematic dependencies
+# - GroundingDino: does not play well with torch 2.10, requires install from source, if necessary
+RUN grep -v -E "GroundingDINO" requirements/annotator.txt > requirements_annotator_filtered.txt && \
+    pip install --no-cache-dir -r requirements_annotator_filtered.txt
 
 CMD ["python", "vace/vace_pipeline.py", "--help"]
