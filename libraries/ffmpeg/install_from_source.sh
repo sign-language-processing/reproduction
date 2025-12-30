@@ -23,13 +23,12 @@ cd /tmp/ffmpeg
 
 ./configure \
     --prefix=/usr \
-    --disable-everything \
-    --enable-demuxer=mov \
-    --enable-muxer=mp4 \
-    --enable-decoder=h264 \
-    --enable-encoder=libx264 \
-    --enable-pic \
-    --enable-shared
+    --enable-gpl \
+    --enable-libx264 \
+    --enable-shared \
+    --disable-doc \
+    --disable-debug \
+    --disable-ffplay
 
 make -j"$(nproc)"
 make install
