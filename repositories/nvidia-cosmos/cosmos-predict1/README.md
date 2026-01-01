@@ -56,7 +56,7 @@ docker run --name cosmos-train --rm --gpus all \
   torchrun --standalone --nnodes=1 --nproc_per_node=1 \
     -m cosmos_predict1.tokenizer.training.train \
     --config=cosmos_predict1/tokenizer/training/configs/config.py -- \
-    experiment=Cosmos_Tokenize1_CV8x8x8_64p_HDVILA
+    experiment=Cosmos_Tokenize1_DV8x16x16_64p_HDVILA
 ```
 
 Debugging:
