@@ -1,4 +1,4 @@
-# VFRTok - Variable Frame Rate Video Tokenizer
+# LTX-2 Video VAE Tokenizer
 FROM gogamza/unsloth-vllm-gb10:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -16,15 +16,12 @@ RUN bash /tmp/install_ffmpeg.sh
 COPY libraries/decord/install_from_source.sh /tmp/install_decord.sh
 RUN bash /tmp/install_decord.sh
 
-# Clone VFRTok repository
-RUN git clone https://github.com/KlingTeam/VFRTok.git /workspace/VFRTok
+WORKDIR /workspace
 
-WORKDIR /workspace/VFRTok
-
-# Install requirements without packages that conflict with base image
+# Install dependencies
 RUN pip install --no-cache-dir \
-    diffusers einops timm peft hjson ruamel.yaml \
-    scikit-image torchmetrics tensorboard tensorboardX pandas deepspeed redis \
-    mediapy simple-video-utils
+    mediapy \
+    simple-video-utils \
+    git+https://github.com/huggingface/diffusers.git
 
 CMD ["/bin/bash"]
