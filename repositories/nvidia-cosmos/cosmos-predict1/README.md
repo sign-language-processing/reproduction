@@ -5,7 +5,7 @@ GitHub: https://github.com/nvidia-cosmos/cosmos-predict1
 ## Build
 
 ```bash
-docker build -t cosmos-predict1:latest -f repositories/nvidia-cosmos/cosmos-predict1/Dockerfile .
+docker build -t cosmos-predict1:latest .
 ```
 
 ## Run
@@ -42,7 +42,7 @@ rm tmp.mp4
 # 1. Shares the cache with the host to avoid re-downloading models.
 # 2. Mounts the checkpoints directory to have access to pretrained models.
 # 3. Mounts the video dataset directory to replace hdvilas used in the config.
-docker build -t cosmos-predict1:latest -f repositories/nvidia-cosmos/cosmos-predict1/Dockerfile . && \
+docker build -t cosmos-predict1:latest repositories/nvidia-cosmos/cosmos-predict1 && \
 docker run --name cosmos-train --rm --gpus all \
   --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
   --memory=100g --memory-swap=100g \

@@ -11,3 +11,11 @@ RUN bash /tmp/install_ffmpeg.sh
 
 COPY libraries/decord/install_from_source.sh /tmp/install_decord.sh
 RUN bash /tmp/install_decord.sh
+
+WORKDIR /workspace
+
+ENV INSTALLED_STABLE_PACKAGES="torch|torchvision|torchaudio|apex|flash-attn|decord"
+
+RUN pip list --format=freeze \
+    | grep -E "^($INSTALLED_STABLE_PACKAGES)==" \
+    > /tmp/image-versions.txt

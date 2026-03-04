@@ -1,19 +1,15 @@
 FROM ghcr.io/sign-language-processing/reproduction:latest
 
-WORKDIR /workspace
-
 # Clone the VACE repository
 RUN git clone https://github.com/ali-vilab/VACE.git
 
 WORKDIR /workspace/VACE
 
-# Install requirements, skipping packages already in base image or unavailable
-# - torch, torchvision: use base image versions (PyTorch 2.10)
-# - flash_attn: pre-installed in base image
-# - decord: installed from source above
+# Install requirements, skipping packages already in base image
 # - onnxruntime-gpu: no arm64 wheels, use onnxruntime instead
-RUN grep -v -E "^(torch|torchvision|flash_attn|decord|onnxruntime-gpu)" requirements/framework.txt > requirements_filtered.txt && \
-    pip install --no-cache-dir -r requirements_filtered.txt onnxruntime
+RUN --mount=type=cache,target=/root/.cache/pip \
+    grep -v -E "^($INSTALLED_STABLE_PACKAGES|onnxruntime-gpu)" requirements/framework.txt > requirements_filtered.txt && \
+    pip install -r requirements_filtered.txt onnxruntime --upgrade-strategy only-if-needed
 
 # Install Wan2.1 support
 RUN pip install wan@git+https://github.com/Wan-Video/Wan2.1
