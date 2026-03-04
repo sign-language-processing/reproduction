@@ -1,20 +1,4 @@
-# Wan2.2 Video Generation Model
-FROM nvcr.io/nvidia/pytorch:25.11-py3
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install libgl1 for OpenCV
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install ffmpeg 4 from source (required for decord)
-COPY libraries/ffmpeg/install_from_source.sh /tmp/install_ffmpeg.sh
-RUN bash /tmp/install_ffmpeg.sh
-
-# Install decord from source
-COPY libraries/decord/install_from_source.sh /tmp/install_decord.sh
-RUN bash /tmp/install_decord.sh
+FROM ghcr.io/sign-language-processing/reproduction:latest
 
 # Clone the Wan2.2 repository
 RUN rm -rf /workspace/* && \
