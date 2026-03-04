@@ -1,0 +1,21 @@
+services:
+  vfrtok:
+    build:
+      context: ../../..
+      dockerfile: repositories/KlingTeam/VFRTok/Dockerfile
+    image: vfrtok:latest
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - HF_HUB_DISABLE_XET=1
+    volumes:
+      - /mnt/rylo-tnas/users/rotem/sign/video-tokenizer:/workspace/video-tokenizer
+      - ~/.cache:/root/.cache
+    working_dir: /workspace/VFRTok
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

@@ -1,0 +1,21 @@
+services:
+  ltx2:
+    build:
+      context: ../../..
+      dockerfile: repositories/Lightricks/LTX-2/Dockerfile
+    image: ltx2:latest
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - HF_HUB_DISABLE_XET=1
+    volumes:
+      - /mnt/rylo-tnas/users/rotem/sign/video-tokenizer:/workspace/video-tokenizer
+      - ~/.cache:/root/.cache
+    working_dir: /workspace/video-tokenizer
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
