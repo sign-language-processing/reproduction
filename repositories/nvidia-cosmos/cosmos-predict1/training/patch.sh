@@ -3,16 +3,20 @@ sed -i \
   's/super(WarmupLambdaLR, self).__init__(optimizer, lr_lambda, last_epoch, verbose)/super(WarmupLambdaLR, self).__init__(optimizer, lr_lambda, last_epoch)/' \
   cosmos_predict1/utils/scheduler.py
 
-# Changes to the DataLoader:
-# - Enable shuffling of data, which could be beneficial if the files are ordered
-# - Set num_workers to 1 for much lower memory usage compared to 8, and no memory explosion
+# Enable shuffling and read num_workers from NUM_WORKERS env var (default 1)
 sed -i \
   -e 's/shuffle=None/shuffle=True/' \
-  -e 's/num_workers=num_workers/num_workers=1/' \
+  -e 's/num_workers=num_workers/num_workers=int(os.environ.get("NUM_WORKERS", "1"))/' \
+  -e '1s/^/import os\n/' \
   cosmos_predict1/tokenizer/training/configs/base/data.py
 
 # change supported resolutions to lower values
 sed -i \
   -e 's/\["1080", "720", "480", "360", "256"\]/["256", "128", "64"]/' \
-  cosmos_predict1/tokenizer/training/configs/registry.py \
+  cosmos_predict1/tokenizer/training/configs/registry.py
+
+# Skip CPU affinity — nvmlDeviceGetCpuAffinity is unsupported on some cloud GPUs
+sed -i \
+  's/os.sched_setaffinity(0, device.get_cpu_affinity())/pass  # patched: skip CPU affinity/' \
+  cosmos_predict1/utils/distributed.py
 

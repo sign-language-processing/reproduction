@@ -14,7 +14,8 @@ RUN bash /tmp/install_decord.sh
 
 WORKDIR /workspace
 
-ENV INSTALLED_STABLE_PACKAGES="torch|torchvision|torchaudio|apex|flash-attn|decord"
+# pyyaml/PyYAML: installed by debian, pip cannot uninstall it
+ENV INSTALLED_STABLE_PACKAGES="torch|torchvision|torchaudio|apex|flash-attn|decord|pyyaml|PyYAML"
 
 RUN pip list --format=freeze \
     | grep -E "^($INSTALLED_STABLE_PACKAGES)==" \

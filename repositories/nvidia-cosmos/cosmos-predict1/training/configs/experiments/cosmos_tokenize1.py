@@ -13,17 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from hydra.core.config_store import ConfigStore
 
 from cosmos_predict1.tokenizer.training.configs.experiments.utils import create_debug_job_with_mock_data
 from cosmos_predict1.utils import log
 from cosmos_predict1.utils.lazy_config import LazyDict
 
-BATCH_SIZE = {
-    256: 8, # About 80GB RAM, crashes
-    128: 32, # Not tested, just an estimate
-    64: 128, # 256 fits, about 80GB RAM but crashes
+DEFAULT_BATCH_SIZE = {
+    256: 9,
+    128: 32,
+    64: 128,
 }
+
+def get_batch_size(resolution: int) -> int:
+    return int(os.environ.get("BATCH_SIZE", DEFAULT_BATCH_SIZE[resolution]))
 
 def experiment(resolution: int):
     dataset_setup = dict(
@@ -31,7 +36,7 @@ def experiment(resolution: int):
             crop_height=resolution, # TODO: make sure this is not padded later
             num_video_frames=49,
         ),
-        batch_size=BATCH_SIZE[resolution],
+        batch_size=get_batch_size(resolution),
     )
     return LazyDict(
         dict(
