@@ -59,7 +59,7 @@ GPU_BATCH_SIZE = {
     "A100-80GB": 9,   # 80 GB
     "H100": 9,        # 80 GB
     "H200": 17,       # 141 GB
-    "B200": 23,       # 192 GB
+    "B200": 21,       # 178 GB usable
 }
 
 GPU_TYPE = "B200"
