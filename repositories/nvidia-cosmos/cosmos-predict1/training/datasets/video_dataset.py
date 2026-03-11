@@ -60,7 +60,7 @@ class Dataset(Dataset):
         self.video_directory_or_pattern = video_pattern
         self.sequence_length = num_video_frames
 
-        self.video_paths = sorted(glob(str(video_pattern)))
+        self.video_paths = sorted(glob(str(video_pattern), recursive=True))
         print(f"{len(self.video_paths)} videos in total")
 
         self.wrong_number = 0

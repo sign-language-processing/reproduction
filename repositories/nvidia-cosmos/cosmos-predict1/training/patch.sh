@@ -15,6 +15,11 @@ sed -i \
   -e 's/\["1080", "720", "480", "360", "256"\]/["256", "128", "64"]/' \
   cosmos_predict1/tokenizer/training/configs/registry.py
 
+# Support recursive file discovery in video dataset
+sed -i \
+  's|datasets/hdvila/videos/\*.mp4|datasets/hdvila/videos/**/*.mp4|' \
+  training/datasets/dataset_provider.py
+
 # Skip CPU affinity — nvmlDeviceGetCpuAffinity is unsupported on some cloud GPUs
 sed -i \
   's/os.sched_setaffinity(0, device.get_cpu_affinity())/pass  # patched: skip CPU affinity/' \
