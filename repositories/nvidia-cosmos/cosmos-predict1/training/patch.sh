@@ -3,10 +3,12 @@ sed -i \
   's/super(WarmupLambdaLR, self).__init__(optimizer, lr_lambda, last_epoch, verbose)/super(WarmupLambdaLR, self).__init__(optimizer, lr_lambda, last_epoch)/' \
   cosmos_predict1/utils/scheduler.py
 
-# Enable shuffling and read num_workers from NUM_WORKERS env var (default 1)
+# Enable shuffling, optimize dataloader, and read num_workers from NUM_WORKERS env var (default 1)
 sed -i \
   -e 's/shuffle=None/shuffle=True/' \
   -e 's/num_workers=num_workers/num_workers=int(os.environ.get("NUM_WORKERS", "1"))/' \
+  -e 's/prefetch_factor=2/prefetch_factor=4 if is_train else 2/' \
+  -e 's/persistent_workers=False/persistent_workers=is_train/' \
   -e '1s/^/import os\n/' \
   cosmos_predict1/tokenizer/training/configs/base/data.py
 
