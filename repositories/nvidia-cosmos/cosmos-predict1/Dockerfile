@@ -15,6 +15,12 @@ RUN pip install huggingface-hub
 # Clean up files that we will mount
 RUN rm -rf /workspace/checkpoints
 
+# Install pose requirements - if using pose for training..
+RUN pip install pose_format && \
+    pip install mediapipe && \
+    pip install git+https://github.com/sign-language-processing/pose-evaluation.git && \
+    pip install git+https://github.com/sign-language-processing/pose-anonymization
+
 # Copy other training setup files
 COPY training /tmp/training
 RUN cp -a /tmp/training/. /workspace/cosmos_predict1/tokenizer/training/
