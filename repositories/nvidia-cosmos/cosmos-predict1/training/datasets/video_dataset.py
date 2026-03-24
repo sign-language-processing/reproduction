@@ -25,7 +25,6 @@ import os
 import time
 import traceback
 import warnings
-from concurrent.futures import ThreadPoolExecutor
 from glob import glob
 
 import numpy as np
@@ -96,94 +95,66 @@ class Dataset(Dataset):
             pass  # read-only volume or race condition — in-memory cache still works
 
     @staticmethod
-    def _size_prefilter(all_paths, valid_cache, bad_cache, min_bytes=50_000):
-        """Quick pre-filter using file size only (no decord open — very fast even at 1M+ files).
-
-        Filters out obviously corrupt files (empty, truncated, < 50KB).
-        Corrupt-but-valid-size files are caught at runtime by the bad_paths cache.
-        """
-        print(f"[rank 0] Size-filtering {len(all_paths)} videos (fast stat-only scan)...")
-        t0 = time.time()
-
-        def check(path):
-            try:
-                return path if os.path.getsize(path) >= min_bytes else None
-            except OSError:
-                return None
-
-        valid, bad = [], []
-        with ThreadPoolExecutor(max_workers=64) as exe:
-            for path, result in zip(all_paths, exe.map(check, all_paths)):
-                (valid if result is not None else bad).append(path)
-
-        elapsed = time.time() - t0
-        print(f"[rank 0] Size-filter done in {elapsed:.1f}s: {len(valid)} valid, {len(bad)} tiny/missing")
-
-        with open(valid_cache, 'w') as f:
-            f.write('\n'.join(valid))
-        if bad:
-            with open(bad_cache, 'a') as f:
-                f.write('\n'.join(bad) + '\n')
-
-        return valid
-
-    @staticmethod
     def _discover_videos(video_pattern):
         """Discover video files with DDP-safe coordination.
 
-        Rank 0 enumerates files and runs a one-time fast size-filter to drop obviously
-        corrupt files. Results cached to volume so subsequent runs load instantly.
-        Corrupt-but-valid-size files are handled at runtime by the bad_paths cache.
+        Rank 0 globs files, drops unreadable/empty files, and caches results.
+        Other ranks wait for a sentinel file signaling discovery is complete.
+        Corrupt files that pass discovery are caught at runtime by the bad_paths cache.
         """
         rank = int(os.environ.get("LOCAL_RANK", os.environ.get("RANK", "0")))
-        tmp_cache = "/tmp/_simple_video_paths.txt"
         base_dir = Dataset._base_dir(video_pattern)
         valid_cache = os.path.join(base_dir, "_valid_paths.txt")
-        bad_cache = os.path.join(base_dir, "_bad_paths_cache.txt")
+        ready_sentinel = "/tmp/_video_paths_ready"
+        paths_cache = "/tmp/_video_paths.txt"
 
         if rank == 0:
+            # Remove stale sentinel so other ranks don't read old data
+            for f in (ready_sentinel, paths_cache):
+                if os.path.exists(f):
+                    os.remove(f)
+
             if os.path.exists(valid_cache):
                 with open(valid_cache) as f:
                     paths = [line.strip() for line in f if line.strip()]
                 print(f"[rank 0] Loaded {len(paths)} pre-filtered paths from {valid_cache}")
             else:
-                # Enumerate all files
-                if os.path.isdir(base_dir):
-                    print(f"[rank 0] Enumerating {base_dir} ...")
-                    all_paths = []
-                    for d1 in sorted(os.listdir(base_dir)):
-                        d1_path = os.path.join(base_dir, d1)
-                        if not os.path.isdir(d1_path) or d1.startswith('_'):
-                            continue
-                        for d2 in sorted(os.listdir(d1_path)):
-                            d2_path = os.path.join(d1_path, d2)
-                            if not os.path.isdir(d2_path):
-                                continue
-                            for fname in os.listdir(d2_path):
-                                if fname.endswith('.mp4'):
-                                    all_paths.append(os.path.join(d2_path, fname))
-                    all_paths.sort()
-                else:
-                    print(f"[rank 0] Globbing {video_pattern} ...")
-                    all_paths = sorted(glob(video_pattern, recursive=True))
+                print(f"[rank 0] Globbing {video_pattern} ...")
+                all_paths = sorted(glob(video_pattern, recursive=True))
 
-                paths = Dataset._size_prefilter(all_paths, valid_cache, bad_cache)
+                # Drop empty/truncated/unreadable files (stat only, no decord)
+                paths = [p for p in all_paths if Dataset._is_readable(p)]
+                print(f"[rank 0] Prefilter: {len(paths)}/{len(all_paths)} files are non-empty and readable")
 
-            with open(tmp_cache, 'w') as f:
+                with open(valid_cache, 'w') as f:
+                    f.write('\n'.join(paths))
+
+            # Share paths + signal ready
+            with open(paths_cache, 'w') as f:
                 f.write('\n'.join(paths))
+            with open(ready_sentinel, 'w') as f:
+                f.write(str(len(paths)))
             print(f"[rank 0] {len(paths)} videos ready for training")
             return paths
         else:
-            for _ in range(900):  # wait up to 15 minutes
-                if os.path.exists(tmp_cache):
-                    time.sleep(2)
-                    with open(tmp_cache) as f:
+            # Wait for rank 0's sentinel
+            deadline = time.monotonic() + 300  # 5 minute timeout
+            while time.monotonic() < deadline:
+                if os.path.exists(ready_sentinel):
+                    with open(paths_cache) as f:
                         paths = [line.strip() for line in f if line.strip()]
-                    if paths:
-                        print(f"[rank {rank}] Loaded {len(paths)} videos from cache")
-                        return paths
+                    print(f"[rank {rank}] Loaded {len(paths)} videos from cache")
+                    return paths
                 time.sleep(1)
             raise RuntimeError(f"[rank {rank}] Timeout waiting for video file list from rank 0")
+
+    @staticmethod
+    def _is_readable(path):
+        """Check if a file exists and is non-empty."""
+        try:
+            return os.path.getsize(path) > 0
+        except OSError:
+            return False
 
     def __str__(self):
         return f"{len(self.video_paths)} samples from {self.video_directory_or_pattern}"
@@ -193,7 +164,7 @@ class Dataset(Dataset):
 
     def _get_frames(self, video_path):
         # Open video and get number of frames
-        vr = VideoReader(video_path, ctx=cpu(0), num_threads=0)
+        vr = VideoReader(video_path, ctx=cpu(0))
         n_frames = len(vr)
 
         # Sample a random start frame, ensure enough frames for sequence

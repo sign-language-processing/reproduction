@@ -16,10 +16,9 @@ RUN pip install huggingface-hub
 RUN rm -rf /workspace/checkpoints
 
 # Install pose requirements - if using pose for training..
-RUN pip install pose_format && \
-    pip install mediapipe && \
+RUN pip install "pose_format[mediapipe]" && \
     pip install git+https://github.com/sign-language-processing/pose-evaluation.git && \
-    pip install git+https://github.com/sign-language-processing/pose-anonymization
+    pip install pose-anonymization
 
 # Copy other training setup files
 COPY training /tmp/training
