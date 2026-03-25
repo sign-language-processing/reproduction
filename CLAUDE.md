@@ -70,8 +70,16 @@ follow this workflow:
    - If the repo **requires a GPU**, your Dockerfile **must start with**:
 
      ```dockerfile
-     FROM nvcr.io/nvidia/pytorch:25.11-py3
+     FROM ghcr.io/sign-language-processing/reproduction:latest
      ```
+
+     This base image (built from the root `Dockerfile`) already includes:
+     - NVIDIA PyTorch (from `nvcr.io/nvidia/pytorch`)
+     - FFmpeg 4.x (built from source)
+     - decord (built from source, CPU-only)
+     - `INSTALLED_STABLE_PACKAGES` env var for filtering pip installs
+
+     Pull it with: `docker pull ghcr.io/sign-language-processing/reproduction:latest`
 
    - If the repo is **CPU-only**, choose a reasonable small base image aligned with the repo’s Python:
      - e.g. `python:3.11-slim` or `python:3.10-slim`
@@ -216,13 +224,13 @@ When a user asks for a Dockerfile / reproduction:
 
 ## Conventions
 
-- **Base image for GPU repos:**  
+- **Base image for GPU repos:**
   Always:
 
   ```dockerfile
-  FROM nvcr.io/nvidia/pytorch:25.11-py3
+  FROM ghcr.io/sign-language-processing/reproduction:latest
   ```
-unless the user explicitly overrides this.
+  unless the user explicitly overrides this. This image is pre-built with PyTorch, ffmpeg, decord, and common system deps. Pull it from GHCR; the root `Dockerfile` defines how it is built.
 
 	•	Working directory:
 Prefer:
