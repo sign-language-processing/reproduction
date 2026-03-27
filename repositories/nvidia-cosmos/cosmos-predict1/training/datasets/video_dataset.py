@@ -81,15 +81,11 @@ class Dataset(Dataset):
         vr = VideoReader(video_path, ctx=cpu(0))
         n_frames = len(vr)
 
-        # Sample a random start frame
-        start_frame = np.random.randint(0, n_frames)
-        end_frame = start_frame + self.sequence_length
+        max_start = max(n_frames - self.sequence_length, 0)
+        start_frame = np.random.randint(0, max_start + 1)
+        end_frame = min(start_frame + self.sequence_length, n_frames)
+        frame_ids = list(range(start_frame, end_frame))
 
-        # Get available frames
-        available_frames = min(end_frame, n_frames) - start_frame
-        frame_ids = list(range(start_frame, start_frame + available_frames))
-
-        # Load frames
         vr.seek(0)
         frame_data = vr.get_batch(frame_ids).asnumpy()
         frames = frame_data.astype(np.uint8)
@@ -97,13 +93,22 @@ class Dataset(Dataset):
         frames = self.preprocess(frames)
         frames = torch.clamp(frames * 255.0, 0, 255).to(torch.uint8)
 
-        # Pad with zeros if needed
-        if len(frame_ids) < self.sequence_length:
-            # Get shape from first frame
-            _, c, h, w = frames.shape
-            padding_frames = self.sequence_length - len(frame_ids)
-            padding = torch.zeros(padding_frames, c, h, w, dtype=torch.uint8)
-            frames = torch.cat([frames, padding], dim=0)
+        # Pad short videos by bouncing (boomerang): forward, reverse, forward, ...
+        # Zero-padding is not viable — the tokenizer loss has no masking mechanism,
+        # so black frames would be treated as real content (OOD training signal).
+        # Repeating the last frame would create a static segment, introducing a
+        # temporal discontinuity that the flow and consistency losses would penalize.
+        # Boomerang preserves natural motion and smooth temporal transitions.
+        if frames.shape[0] < self.sequence_length:
+            forward = frames
+            backward = frames.flip(0)
+            chunks = [forward, backward]
+            total = forward.shape[0] + backward.shape[0]
+            while total < self.sequence_length:
+                chunk = chunks[len(chunks) % 2]
+                chunks.append(chunk)
+                total += chunk.shape[0]
+            frames = torch.cat(chunks, dim=0)[:self.sequence_length]
 
         return frames, start_frame
 
@@ -133,7 +138,7 @@ class Dataset(Dataset):
             warnings.warn("FULL TRACEBACK:")
             warnings.warn(traceback.format_exc())
             self.wrong_number += 1
-            print(self.wrong_number)
+            print("So far, bad videos:", self.wrong_number)
             return self[np.random.randint(len(self.video_paths))]
 
 

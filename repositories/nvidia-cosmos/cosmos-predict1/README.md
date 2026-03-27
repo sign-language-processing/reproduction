@@ -35,7 +35,7 @@ done
 rm -rf $BASE_DIR/videos
 mkdir -p $BASE_DIR/videos
 wget -O tmp.mp4 https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
-ffmpeg -i tmp.mp4 -vf "crop='min(iw,ih)':'min(iw,ih)',scale=64:64" -c:a copy "$BASE_DIR/videos/video.mp4"
+ffmpeg -i tmp.mp4 -vf "crop='min(iw,ih)':'min(iw,ih)',scale=256:256" -c:a copy "$BASE_DIR/videos/video.mp4"
 rm tmp.mp4
 
 # The docker instance:
