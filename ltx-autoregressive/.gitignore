@@ -1,0 +1,14 @@
+# Only a curated subset of this directory is tracked (the per-experiment
+# writeups under s*_hybrid_*/). Everything else here is local experiment
+# scratch space and is intentionally untracked.
+/*
+!/.gitignore
+!/s1_hybrid_256
+!/s1_hybrid_384
+!/s2_hybrid_256
+!/s2_hybrid_384
+
+# Within the tracked experiment folders, skip large binaries and the
+# per-clip video renders (val_comparison.mp4 is the canonical one).
+s*_hybrid_*/best.pt
+s*_hybrid_*/videos/
