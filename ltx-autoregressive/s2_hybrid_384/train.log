@@ -1,0 +1,1257 @@
+11:58:14 Loading VAE...
+11:58:18 VAE encoder LoRA: 8.65M trainable
+11:58:18 VAE decoder LoRA: 7.69M trainable / 414.9M total
+11:58:18 Loading tokenizer...
+11:58:18 Hybrid tokenizer, passthrough_prob=0.5
+11:58:18 Tokenizer: 20.64M trainable (unfrozen)
+11:58:18 torch.compile(encoder, decoder, dynamic=False, fullgraph=True)
+11:58:39 Setting up training dataset...
+11:58:39   Elan01.mp4: 23532 frames, ~480 non-overlapping clips
+11:58:41   Elan02.mp4: 25668 frames, ~523 non-overlapping clips
+11:58:42   Elan03.mp4: 30945 frames, ~631 non-overlapping clips
+11:58:42   Total: 3 videos
+11:58:42 Encoding val clip...
+12:00:40 Val: 1 clip, 513 frames, latent [1, 128, 65, 12, 12]
+12:00:40 LR schedule: warmup=100 only (constant 3e-05 after)
+12:00:40 Feature distillation: weight=0.001, 9/9 active blocks, layer_weights=['1.0', '0.9', '0.9', '0.8', '0.8', '0.7', '0.6', '0.6', '0.5']
+12:00:40 Training lr=3e-05, losses: MSE=3.0 LPIPS=3.0 KL=3e-06
+12:02:19 BASELINE step=0 psnr=29.91 lpips=0.0571
+12:05:11 step=10 mse=0.0078 lpips=0.0752 psnr=27.0 distill=11.3026 t=265s
+12:06:01 step=20 mse=0.0095 lpips=0.0880 psnr=26.2 distill=11.8625 t=315s
+12:06:52 step=30 mse=0.0075 lpips=0.0649 psnr=27.2 distill=8.7599 t=366s
+12:07:43 step=40 mse=0.0046 lpips=0.0527 psnr=29.3 distill=7.6312 t=417s
+12:08:33 step=50 mse=0.0075 lpips=0.0689 psnr=27.1 distill=8.8137 t=467s
+12:09:24 step=60 mse=0.0055 lpips=0.0420 psnr=28.5 distill=5.7863 t=518s
+12:10:14 step=70 mse=0.0079 lpips=0.0510 psnr=27.1 distill=5.0332 t=569s
+12:11:05 step=80 mse=0.0097 lpips=0.0778 psnr=26.1 distill=8.1896 t=619s
+12:11:55 step=90 mse=0.0046 lpips=0.0313 psnr=29.4 distill=3.6866 t=669s
+12:12:46 step=100 mse=0.0107 lpips=0.0592 psnr=25.6 distill=7.2390 t=720s
+12:13:04 VAL step=100 psnr=30.00 lpips=0.0339
+12:13:05   New best lpips=0.0339 psnr=30.00
+12:13:55 step=110 mse=0.0064 lpips=0.0408 psnr=27.9 distill=4.9133 t=789s
+12:14:46 step=120 mse=0.0073 lpips=0.0437 psnr=27.4 distill=4.7860 t=840s
+12:15:37 step=130 mse=0.0086 lpips=0.0571 psnr=26.6 distill=6.3154 t=891s
+12:16:27 step=140 mse=0.0047 lpips=0.0332 psnr=29.2 distill=3.9892 t=941s
+12:17:18 step=150 mse=0.0081 lpips=0.0444 psnr=26.9 distill=5.0530 t=992s
+12:18:09 step=160 mse=0.0053 lpips=0.0377 psnr=28.7 distill=4.2533 t=1043s
+12:18:59 step=170 mse=0.0089 lpips=0.0511 psnr=26.5 distill=5.3624 t=1093s
+12:19:50 step=180 mse=0.0102 lpips=0.0592 psnr=25.8 distill=6.8603 t=1144s
+12:20:41 step=190 mse=0.0071 lpips=0.0441 psnr=27.4 distill=4.9637 t=1196s
+12:21:32 step=200 mse=0.0065 lpips=0.0393 psnr=27.8 distill=4.9478 t=1246s
+12:21:49 VAL step=200 psnr=30.13 lpips=0.0308
+12:21:50   New best lpips=0.0308 psnr=30.13
+12:22:40 step=210 mse=0.0061 lpips=0.0354 psnr=28.2 distill=4.5460 t=1314s
+12:23:31 step=220 mse=0.0110 lpips=0.0593 psnr=25.5 distill=8.7435 t=1366s
+12:24:22 step=230 mse=0.0066 lpips=0.0453 psnr=27.7 distill=5.5797 t=1416s
+12:25:13 step=240 mse=0.0091 lpips=0.0540 psnr=26.4 distill=6.2922 t=1467s
+12:26:03 step=250 mse=0.0057 lpips=0.0360 psnr=28.4 distill=4.8186 t=1518s
+12:26:54 step=260 mse=0.0055 lpips=0.0364 psnr=28.6 distill=4.8198 t=1568s
+12:27:45 step=270 mse=0.0056 lpips=0.0334 psnr=28.5 distill=4.4017 t=1619s
+12:28:35 step=280 mse=0.0074 lpips=0.0508 psnr=27.2 distill=6.2302 t=1670s
+12:29:26 step=290 mse=0.0071 lpips=0.0383 psnr=27.4 distill=4.7758 t=1720s
+12:30:16 step=300 mse=0.0123 lpips=0.0855 psnr=25.1 distill=11.2270 t=1770s
+12:30:34 VAL step=300 psnr=30.20 lpips=0.0294
+12:30:34   New best lpips=0.0294 psnr=30.20
+12:31:25 step=310 mse=0.0069 lpips=0.0385 psnr=27.6 distill=5.1101 t=1839s
+12:32:16 step=320 mse=0.0063 lpips=0.0382 psnr=27.9 distill=4.8819 t=1890s
+12:33:06 step=330 mse=0.0079 lpips=0.0440 psnr=27.0 distill=5.8305 t=1940s
+12:33:57 step=340 mse=0.0074 lpips=0.0426 psnr=27.3 distill=5.2747 t=1991s
+12:34:47 step=350 mse=0.0072 lpips=0.0413 psnr=27.4 distill=5.2267 t=2041s
+12:35:38 step=360 mse=0.0062 lpips=0.0349 psnr=28.1 distill=4.8415 t=2092s
+12:36:28 step=370 mse=0.0074 lpips=0.0436 psnr=27.3 distill=5.5132 t=2143s
+12:37:19 step=380 mse=0.0088 lpips=0.0480 psnr=26.5 distill=6.0838 t=2193s
+12:38:09 step=390 mse=0.0074 lpips=0.0447 psnr=27.2 distill=5.6443 t=2243s
+12:39:00 step=400 mse=0.0086 lpips=0.0499 psnr=26.6 distill=6.0400 t=2294s
+12:39:17 VAL step=400 psnr=30.24 lpips=0.0286
+12:39:17   New best lpips=0.0286 psnr=30.24
+12:40:08 step=410 mse=0.0059 lpips=0.0308 psnr=28.2 distill=4.1371 t=2362s
+12:40:58 step=420 mse=0.0117 lpips=0.0652 psnr=25.3 distill=7.3227 t=2412s
+12:41:49 step=430 mse=0.0048 lpips=0.0263 psnr=29.0 distill=4.1594 t=2463s
+12:42:39 step=440 mse=0.0066 lpips=0.0370 psnr=27.7 distill=4.5011 t=2513s
+12:43:29 step=450 mse=0.0045 lpips=0.0331 psnr=29.4 distill=4.1671 t=2563s
+12:44:20 step=460 mse=0.0071 lpips=0.0434 psnr=27.4 distill=5.6264 t=2614s
+12:45:10 step=470 mse=0.0031 lpips=0.0208 psnr=31.0 distill=3.3707 t=2664s
+12:46:01 step=480 mse=0.0097 lpips=0.0542 psnr=26.1 distill=6.5369 t=2715s
+12:46:51 step=490 mse=0.0078 lpips=0.0459 psnr=27.0 distill=5.6525 t=2765s
+12:47:41 step=500 mse=0.0064 lpips=0.0379 psnr=27.9 distill=4.9433 t=2815s
+12:47:59 VAL step=500 psnr=30.28 lpips=0.0281
+12:47:59   New best lpips=0.0281 psnr=30.28
+12:48:50 step=510 mse=0.0065 lpips=0.0366 psnr=27.8 distill=4.3534 t=2884s
+12:49:40 step=520 mse=0.0071 lpips=0.0430 psnr=27.5 distill=5.4302 t=2935s
+12:50:31 step=530 mse=0.0050 lpips=0.0297 psnr=28.9 distill=4.1376 t=2985s
+12:51:21 step=540 mse=0.0060 lpips=0.0308 psnr=28.1 distill=4.2862 t=3035s
+12:52:12 step=550 mse=0.0084 lpips=0.0438 psnr=26.7 distill=5.6580 t=3086s
+12:53:02 step=560 mse=0.0021 lpips=0.0170 psnr=32.6 distill=2.9288 t=3136s
+12:53:52 step=570 mse=0.0081 lpips=0.0425 psnr=26.9 distill=5.1212 t=3186s
+12:54:43 step=580 mse=0.0051 lpips=0.0333 psnr=28.8 distill=4.3421 t=3237s
+12:55:33 step=590 mse=0.0062 lpips=0.0341 psnr=28.0 distill=4.2610 t=3287s
+12:56:24 step=600 mse=0.0048 lpips=0.0296 psnr=29.1 distill=3.9709 t=3338s
+12:56:41 VAL step=600 psnr=30.24 lpips=0.0278
+12:56:41   New best lpips=0.0278 psnr=30.24
+12:57:32 step=610 mse=0.0056 lpips=0.0340 psnr=28.4 distill=4.2886 t=3406s
+12:58:22 step=620 mse=0.0066 lpips=0.0392 psnr=27.7 distill=4.9472 t=3456s
+12:59:12 step=630 mse=0.0078 lpips=0.0448 psnr=27.0 distill=5.3604 t=3506s
+13:00:03 step=640 mse=0.0055 lpips=0.0319 psnr=28.6 distill=4.4277 t=3557s
+13:00:53 step=650 mse=0.0048 lpips=0.0283 psnr=29.2 distill=3.9610 t=3607s
+13:01:44 step=660 mse=0.0054 lpips=0.0343 psnr=28.6 distill=4.3334 t=3658s
+13:02:34 step=670 mse=0.0093 lpips=0.0537 psnr=26.3 distill=6.2576 t=3708s
+13:03:24 step=680 mse=0.0048 lpips=0.0329 psnr=29.1 distill=4.4795 t=3758s
+13:04:14 step=690 mse=0.0050 lpips=0.0307 psnr=28.9 distill=4.2264 t=3808s
+13:05:05 step=700 mse=0.0070 lpips=0.0465 psnr=27.5 distill=6.2549 t=3859s
+13:05:22 VAL step=700 psnr=30.26 lpips=0.0277
+13:05:23   New best lpips=0.0277 psnr=30.26
+13:06:13 step=710 mse=0.0061 lpips=0.0403 psnr=28.1 distill=4.8287 t=3927s
+13:07:03 step=720 mse=0.0065 lpips=0.0447 psnr=27.8 distill=5.4297 t=3977s
+13:07:53 step=730 mse=0.0064 lpips=0.0364 psnr=27.9 distill=5.0320 t=4028s
+13:08:44 step=740 mse=0.0036 lpips=0.0233 psnr=30.4 distill=3.4403 t=4078s
+13:09:34 step=750 mse=0.0066 lpips=0.0354 psnr=27.7 distill=4.3003 t=4128s
+13:10:24 step=760 mse=0.0059 lpips=0.0344 psnr=28.3 distill=4.4682 t=4179s
+13:11:14 step=770 mse=0.0062 lpips=0.0373 psnr=28.0 distill=4.5369 t=4228s
+13:12:05 step=780 mse=0.0050 lpips=0.0302 psnr=28.9 distill=3.8150 t=4279s
+13:12:55 step=790 mse=0.0064 lpips=0.0378 psnr=27.9 distill=4.7611 t=4329s
+13:13:46 step=800 mse=0.0050 lpips=0.0328 psnr=28.9 distill=4.1953 t=4380s
+13:14:03 VAL step=800 psnr=30.29 lpips=0.0274
+13:14:03   New best lpips=0.0274 psnr=30.29
+13:14:54 step=810 mse=0.0035 lpips=0.0218 psnr=30.5 distill=3.6185 t=4448s
+13:15:44 step=820 mse=0.0042 lpips=0.0255 psnr=29.7 distill=3.6999 t=4498s
+13:16:34 step=830 mse=0.0040 lpips=0.0234 psnr=30.0 distill=3.4947 t=4548s
+13:17:25 step=840 mse=0.0071 lpips=0.0439 psnr=27.4 distill=5.9342 t=4599s
+13:18:15 step=850 mse=0.0051 lpips=0.0331 psnr=28.9 distill=4.1306 t=4649s
+13:19:05 step=860 mse=0.0078 lpips=0.0395 psnr=27.0 distill=5.0231 t=4699s
+13:19:56 step=870 mse=0.0062 lpips=0.0372 psnr=28.1 distill=4.6642 t=4750s
+13:20:46 step=880 mse=0.0082 lpips=0.0394 psnr=26.8 distill=5.1629 t=4800s
+13:21:36 step=890 mse=0.0050 lpips=0.0319 psnr=29.0 distill=4.1672 t=4850s
+13:22:27 step=900 mse=0.0022 lpips=0.0158 psnr=32.5 distill=2.8432 t=4901s
+13:22:44 VAL step=900 psnr=30.28 lpips=0.0272
+13:22:44   New best lpips=0.0272 psnr=30.28
+13:23:35 step=910 mse=0.0039 lpips=0.0232 psnr=30.1 distill=3.4830 t=4969s
+13:24:25 step=920 mse=0.0049 lpips=0.0305 psnr=29.1 distill=3.8930 t=5019s
+13:25:15 step=930 mse=0.0064 lpips=0.0382 psnr=27.9 distill=4.9871 t=5069s
+13:26:06 step=940 mse=0.0051 lpips=0.0303 psnr=28.9 distill=4.0012 t=5121s
+13:26:57 step=950 mse=0.0097 lpips=0.0620 psnr=26.1 distill=10.2309 t=5171s
+13:27:47 step=960 mse=0.0036 lpips=0.0224 psnr=30.3 distill=3.4250 t=5221s
+13:28:37 step=970 mse=0.0055 lpips=0.0328 psnr=28.5 distill=4.0862 t=5272s
+13:29:28 step=980 mse=0.0059 lpips=0.0333 psnr=28.3 distill=4.1655 t=5322s
+13:30:18 step=990 mse=0.0076 lpips=0.0432 psnr=27.2 distill=5.2911 t=5372s
+13:31:09 step=1000 mse=0.0032 lpips=0.0224 psnr=30.9 distill=3.8364 t=5423s
+13:31:26 VAL step=1000 psnr=30.29 lpips=0.0270
+13:31:26   New best lpips=0.0270 psnr=30.29
+13:32:17 step=1010 mse=0.0038 lpips=0.0248 psnr=30.2 distill=3.6276 t=5491s
+13:33:07 step=1020 mse=0.0061 lpips=0.0357 psnr=28.1 distill=4.5917 t=5541s
+13:33:58 step=1030 mse=0.0055 lpips=0.0318 psnr=28.5 distill=3.9708 t=5592s
+13:34:48 step=1040 mse=0.0088 lpips=0.0405 psnr=26.6 distill=6.0063 t=5642s
+13:35:38 step=1050 mse=0.0087 lpips=0.0467 psnr=26.6 distill=6.1033 t=5692s
+13:36:29 step=1060 mse=0.0044 lpips=0.0258 psnr=29.5 distill=3.6131 t=5743s
+13:37:19 step=1070 mse=0.0060 lpips=0.0338 psnr=28.2 distill=4.4616 t=5793s
+13:38:09 step=1080 mse=0.0035 lpips=0.0194 psnr=30.5 distill=3.1577 t=5843s
+13:39:00 step=1090 mse=0.0073 lpips=0.0397 psnr=27.4 distill=5.6311 t=5894s
+13:39:50 step=1100 mse=0.0027 lpips=0.0181 psnr=31.8 distill=3.3942 t=5944s
+13:40:08 VAL step=1100 psnr=30.28 lpips=0.0269
+13:40:08   New best lpips=0.0269 psnr=30.28
+13:40:59 step=1110 mse=0.0090 lpips=0.0551 psnr=26.4 distill=6.3600 t=6013s
+13:41:49 step=1120 mse=0.0077 lpips=0.0425 psnr=27.1 distill=5.7575 t=6064s
+13:42:40 step=1130 mse=0.0051 lpips=0.0324 psnr=28.9 distill=4.1627 t=6114s
+13:43:30 step=1140 mse=0.0072 lpips=0.0363 psnr=27.4 distill=4.5964 t=6164s
+13:44:20 step=1150 mse=0.0045 lpips=0.0278 psnr=29.4 distill=4.0793 t=6215s
+13:45:11 step=1160 mse=0.0060 lpips=0.0326 psnr=28.2 distill=4.0763 t=6265s
+13:46:01 step=1170 mse=0.0061 lpips=0.0379 psnr=28.1 distill=4.5933 t=6315s
+13:46:51 step=1180 mse=0.0071 lpips=0.0425 psnr=27.4 distill=5.4982 t=6365s
+13:47:41 step=1190 mse=0.0046 lpips=0.0271 psnr=29.4 distill=4.0197 t=6415s
+13:48:31 step=1200 mse=0.0057 lpips=0.0315 psnr=28.3 distill=4.2049 t=6465s
+13:48:48 VAL step=1200 psnr=30.28 lpips=0.0268
+13:48:48   New best lpips=0.0268 psnr=30.28
+13:49:38 step=1210 mse=0.0058 lpips=0.0331 psnr=28.3 distill=4.1586 t=6533s
+13:50:28 step=1220 mse=0.0076 lpips=0.0478 psnr=27.2 distill=5.1745 t=6582s
+13:51:18 step=1230 mse=0.0056 lpips=0.0342 psnr=28.4 distill=4.7171 t=6632s
+13:52:08 step=1240 mse=0.0056 lpips=0.0360 psnr=28.5 distill=4.6266 t=6683s
+13:52:58 step=1250 mse=0.0069 lpips=0.0427 psnr=27.6 distill=5.7041 t=6732s
+13:53:48 step=1260 mse=0.0075 lpips=0.0393 psnr=27.2 distill=4.6122 t=6782s
+13:54:38 step=1270 mse=0.0073 lpips=0.0382 psnr=27.3 distill=4.3257 t=6833s
+13:55:28 step=1280 mse=0.0034 lpips=0.0217 psnr=30.6 distill=3.3313 t=6882s
+13:56:18 step=1290 mse=0.0064 lpips=0.0339 psnr=27.9 distill=4.3468 t=6932s
+13:57:08 step=1300 mse=0.0069 lpips=0.0392 psnr=27.6 distill=4.8549 t=6983s
+13:57:26 VAL step=1300 psnr=30.29 lpips=0.0267
+13:57:26   New best lpips=0.0267 psnr=30.29
+13:58:16 step=1310 mse=0.0064 lpips=0.0398 psnr=27.9 distill=4.5943 t=7050s
+13:59:06 step=1320 mse=0.0053 lpips=0.0299 psnr=28.7 distill=3.8434 t=7100s
+13:59:56 step=1330 mse=0.0068 lpips=0.0394 psnr=27.6 distill=4.8669 t=7151s
+14:00:46 step=1340 mse=0.0051 lpips=0.0317 psnr=28.9 distill=4.0239 t=7200s
+14:01:36 step=1350 mse=0.0063 lpips=0.0373 psnr=28.0 distill=4.4836 t=7250s
+14:02:26 step=1360 mse=0.0058 lpips=0.0299 psnr=28.3 distill=3.7866 t=7301s
+14:03:16 step=1370 mse=0.0042 lpips=0.0288 psnr=29.7 distill=3.7055 t=7350s
+14:04:06 step=1380 mse=0.0077 lpips=0.0387 psnr=27.1 distill=5.0664 t=7400s
+14:04:56 step=1390 mse=0.0061 lpips=0.0329 psnr=28.1 distill=4.3675 t=7451s
+14:05:46 step=1400 mse=0.0052 lpips=0.0305 psnr=28.8 distill=3.8205 t=7500s
+14:06:03 VAL step=1400 psnr=30.31 lpips=0.0264
+14:06:04   New best lpips=0.0264 psnr=30.31
+14:06:54 step=1410 mse=0.0078 lpips=0.0442 psnr=27.1 distill=5.3423 t=7568s
+14:07:44 step=1420 mse=0.0059 lpips=0.0313 psnr=28.2 distill=4.2555 t=7618s
+14:08:33 step=1430 mse=0.0048 lpips=0.0281 psnr=29.1 distill=3.8229 t=7668s
+14:09:23 step=1440 mse=0.0067 lpips=0.0378 psnr=27.7 distill=4.8814 t=7717s
+14:10:13 step=1450 mse=0.0059 lpips=0.0337 psnr=28.2 distill=4.2465 t=7768s
+14:11:03 step=1460 mse=0.0106 lpips=0.0504 psnr=25.6 distill=6.3209 t=7817s
+14:11:53 step=1470 mse=0.0065 lpips=0.0353 psnr=27.8 distill=4.4765 t=7867s
+14:12:43 step=1480 mse=0.0054 lpips=0.0302 psnr=28.7 distill=3.9505 t=7918s
+14:13:33 step=1490 mse=0.0055 lpips=0.0324 psnr=28.5 distill=4.1909 t=7967s
+14:14:23 step=1500 mse=0.0047 lpips=0.0277 psnr=29.2 distill=3.9111 t=8017s
+14:14:40 VAL step=1500 psnr=30.27 lpips=0.0265
+14:15:30 step=1510 mse=0.0058 lpips=0.0320 psnr=28.3 distill=4.0711 t=8085s
+14:16:20 step=1520 mse=0.0041 lpips=0.0247 psnr=29.8 distill=3.5305 t=8134s
+14:17:10 step=1530 mse=0.0061 lpips=0.0374 psnr=28.1 distill=5.1020 t=8184s
+14:18:00 step=1540 mse=0.0050 lpips=0.0263 psnr=28.9 distill=3.6337 t=8234s
+14:18:50 step=1550 mse=0.0069 lpips=0.0426 psnr=27.5 distill=5.7177 t=8284s
+14:19:40 step=1560 mse=0.0051 lpips=0.0313 psnr=28.9 distill=4.0768 t=8334s
+14:20:30 step=1570 mse=0.0093 lpips=0.0503 psnr=26.3 distill=6.0366 t=8384s
+14:21:20 step=1580 mse=0.0029 lpips=0.0176 psnr=31.3 distill=3.0712 t=8434s
+14:22:10 step=1590 mse=0.0063 lpips=0.0376 psnr=28.0 distill=4.8296 t=8484s
+14:23:00 step=1600 mse=0.0028 lpips=0.0170 psnr=31.5 distill=2.9117 t=8534s
+14:23:17 VAL step=1600 psnr=30.33 lpips=0.0263
+14:23:17   New best lpips=0.0263 psnr=30.33
+14:24:07 step=1610 mse=0.0075 lpips=0.0394 psnr=27.2 distill=5.2364 t=8601s
+14:24:57 step=1620 mse=0.0071 lpips=0.0397 psnr=27.5 distill=5.0512 t=8651s
+14:25:47 step=1630 mse=0.0051 lpips=0.0328 psnr=28.9 distill=4.3282 t=8701s
+14:26:36 step=1640 mse=0.0063 lpips=0.0359 psnr=28.0 distill=4.2712 t=8751s
+14:27:26 step=1650 mse=0.0048 lpips=0.0267 psnr=29.1 distill=3.8780 t=8800s
+14:28:16 step=1660 mse=0.0042 lpips=0.0254 psnr=29.7 distill=3.6667 t=8851s
+14:29:06 step=1670 mse=0.0067 lpips=0.0410 psnr=27.7 distill=5.5894 t=8900s
+14:29:56 step=1680 mse=0.0051 lpips=0.0284 psnr=28.9 distill=3.9854 t=8950s
+14:30:46 step=1690 mse=0.0071 lpips=0.0387 psnr=27.4 distill=4.7510 t=9001s
+14:31:36 step=1700 mse=0.0065 lpips=0.0341 psnr=27.8 distill=4.2574 t=9050s
+14:31:53 VAL step=1700 psnr=30.30 lpips=0.0262
+14:31:54   New best lpips=0.0262 psnr=30.30
+14:32:44 step=1710 mse=0.0049 lpips=0.0279 psnr=29.1 distill=4.0775 t=9118s
+14:33:34 step=1720 mse=0.0046 lpips=0.0270 psnr=29.3 distill=3.6408 t=9168s
+14:34:24 step=1730 mse=0.0082 lpips=0.0432 psnr=26.8 distill=4.9712 t=9218s
+14:35:14 step=1740 mse=0.0061 lpips=0.0308 psnr=28.2 distill=4.2272 t=9268s
+14:36:04 step=1750 mse=0.0074 lpips=0.0384 psnr=27.2 distill=5.2018 t=9318s
+14:36:54 step=1760 mse=0.0078 lpips=0.0427 psnr=27.0 distill=5.1166 t=9368s
+14:37:44 step=1770 mse=0.0072 lpips=0.0361 psnr=27.4 distill=4.8796 t=9418s
+14:38:34 step=1780 mse=0.0048 lpips=0.0285 psnr=29.2 distill=3.8342 t=9469s
+14:39:24 step=1790 mse=0.0018 lpips=0.0107 psnr=33.4 distill=2.4597 t=9518s
+14:40:14 step=1800 mse=0.0060 lpips=0.0335 psnr=28.2 distill=4.1715 t=9568s
+14:40:31 VAL step=1800 psnr=30.33 lpips=0.0261
+14:40:32   New best lpips=0.0261 psnr=30.33
+14:41:22 step=1810 mse=0.0068 lpips=0.0395 psnr=27.6 distill=5.1134 t=9636s
+14:42:12 step=1820 mse=0.0078 lpips=0.0472 psnr=27.1 distill=5.4635 t=9686s
+14:43:02 step=1830 mse=0.0050 lpips=0.0278 psnr=29.0 distill=3.6993 t=9736s
+14:43:52 step=1840 mse=0.0052 lpips=0.0310 psnr=28.7 distill=4.1016 t=9786s
+14:44:42 step=1850 mse=0.0078 lpips=0.0460 psnr=27.1 distill=5.1119 t=9836s
+14:45:32 step=1860 mse=0.0057 lpips=0.0349 psnr=28.3 distill=4.4860 t=9886s
+14:46:22 step=1870 mse=0.0073 lpips=0.0454 psnr=27.3 distill=5.6454 t=9937s
+14:47:12 step=1880 mse=0.0042 lpips=0.0271 psnr=29.7 distill=3.9576 t=9986s
+14:48:02 step=1890 mse=0.0058 lpips=0.0337 psnr=28.3 distill=4.2365 t=10036s
+14:48:52 step=1900 mse=0.0060 lpips=0.0343 psnr=28.2 distill=4.4374 t=10087s
+14:49:10 VAL step=1900 psnr=30.32 lpips=0.0263
+14:50:00 step=1910 mse=0.0053 lpips=0.0336 psnr=28.7 distill=4.4482 t=10154s
+14:50:50 step=1920 mse=0.0078 lpips=0.0403 psnr=27.0 distill=5.1739 t=10204s
+14:51:40 step=1930 mse=0.0084 lpips=0.0469 psnr=26.7 distill=5.7200 t=10254s
+14:52:30 step=1940 mse=0.0075 lpips=0.0411 psnr=27.2 distill=5.1713 t=10304s
+14:53:20 step=1950 mse=0.0047 lpips=0.0283 psnr=29.2 distill=4.0095 t=10354s
+14:54:10 step=1960 mse=0.0072 lpips=0.0389 psnr=27.4 distill=5.1543 t=10404s
+14:55:00 step=1970 mse=0.0088 lpips=0.0523 psnr=26.5 distill=6.4157 t=10454s
+14:55:50 step=1980 mse=0.0059 lpips=0.0317 psnr=28.3 distill=4.1847 t=10504s
+14:56:40 step=1990 mse=0.0050 lpips=0.0282 psnr=29.0 distill=3.9949 t=10555s
+14:57:30 step=2000 mse=0.0068 lpips=0.0368 psnr=27.6 distill=4.6216 t=10604s
+14:57:48 VAL step=2000 psnr=30.33 lpips=0.0260
+14:57:48   New best lpips=0.0260 psnr=30.33
+14:58:38 step=2010 mse=0.0054 lpips=0.0314 psnr=28.6 distill=4.0926 t=10672s
+14:59:28 step=2020 mse=0.0062 lpips=0.0339 psnr=28.0 distill=4.2927 t=10723s
+15:00:18 step=2030 mse=0.0010 lpips=0.0071 psnr=35.9 distill=2.1773 t=10773s
+15:01:08 step=2040 mse=0.0056 lpips=0.0350 psnr=28.4 distill=4.8124 t=10822s
+15:01:59 step=2050 mse=0.0078 lpips=0.0431 psnr=27.0 distill=5.2266 t=10873s
+15:02:49 step=2060 mse=0.0067 lpips=0.0368 psnr=27.7 distill=4.9679 t=10923s
+15:03:39 step=2070 mse=0.0050 lpips=0.0319 psnr=28.9 distill=4.2208 t=10973s
+15:04:29 step=2080 mse=0.0053 lpips=0.0271 psnr=28.7 distill=3.7525 t=11023s
+15:05:19 step=2090 mse=0.0075 lpips=0.0422 psnr=27.2 distill=5.2587 t=11073s
+15:06:09 step=2100 mse=0.0044 lpips=0.0261 psnr=29.5 distill=3.5999 t=11123s
+15:06:26 VAL step=2100 psnr=30.31 lpips=0.0259
+15:06:26   New best lpips=0.0259 psnr=30.31
+15:07:17 step=2110 mse=0.0049 lpips=0.0278 psnr=29.1 distill=3.7881 t=11191s
+15:08:07 step=2120 mse=0.0053 lpips=0.0293 psnr=28.7 distill=3.8622 t=11241s
+15:08:57 step=2130 mse=0.0077 lpips=0.0417 psnr=27.1 distill=4.9698 t=11291s
+15:09:47 step=2140 mse=0.0055 lpips=0.0348 psnr=28.6 distill=4.5055 t=11341s
+15:10:37 step=2150 mse=0.0047 lpips=0.0295 psnr=29.2 distill=4.0278 t=11391s
+15:11:27 step=2160 mse=0.0080 lpips=0.0461 psnr=26.9 distill=5.8829 t=11441s
+15:12:17 step=2170 mse=0.0041 lpips=0.0274 psnr=29.7 distill=3.8301 t=11491s
+15:13:07 step=2180 mse=0.0040 lpips=0.0227 psnr=29.9 distill=3.3377 t=11541s
+15:13:57 step=2190 mse=0.0083 lpips=0.0452 psnr=26.8 distill=5.1739 t=11591s
+15:14:47 step=2200 mse=0.0055 lpips=0.0295 psnr=28.5 distill=3.8031 t=11642s
+15:15:04 VAL step=2200 psnr=30.32 lpips=0.0259
+15:15:54 step=2210 mse=0.0056 lpips=0.0318 psnr=28.5 distill=4.0464 t=11708s
+15:16:44 step=2220 mse=0.0066 lpips=0.0365 psnr=27.8 distill=4.5490 t=11758s
+15:17:35 step=2230 mse=0.0074 lpips=0.0363 psnr=27.2 distill=4.6666 t=11809s
+15:18:25 step=2240 mse=0.0071 lpips=0.0382 psnr=27.4 distill=4.6121 t=11859s
+15:19:15 step=2250 mse=0.0063 lpips=0.0386 psnr=27.9 distill=4.8666 t=11909s
+15:20:05 step=2260 mse=0.0075 lpips=0.0408 psnr=27.2 distill=4.7005 t=11960s
+15:20:55 step=2270 mse=0.0054 lpips=0.0362 psnr=28.7 distill=4.4241 t=12009s
+15:21:45 step=2280 mse=0.0025 lpips=0.0156 psnr=31.9 distill=2.8006 t=12059s
+15:22:35 step=2290 mse=0.0014 lpips=0.0100 psnr=34.5 distill=2.2605 t=12110s
+15:23:25 step=2300 mse=0.0058 lpips=0.0346 psnr=28.3 distill=4.3611 t=12159s
+15:23:43 VAL step=2300 psnr=30.33 lpips=0.0259
+15:23:43   New best lpips=0.0259 psnr=30.33
+15:24:33 step=2310 mse=0.0064 lpips=0.0392 psnr=27.9 distill=4.7698 t=12227s
+15:25:23 step=2320 mse=0.0052 lpips=0.0289 psnr=28.7 distill=3.7847 t=12278s
+15:26:13 step=2330 mse=0.0063 lpips=0.0317 psnr=28.0 distill=4.1021 t=12327s
+15:27:03 step=2340 mse=0.0091 lpips=0.0547 psnr=26.4 distill=7.3150 t=12377s
+15:27:53 step=2350 mse=0.0082 lpips=0.0440 psnr=26.8 distill=5.1654 t=12428s
+15:28:43 step=2360 mse=0.0030 lpips=0.0176 psnr=31.2 distill=2.9772 t=12477s
+15:29:33 step=2370 mse=0.0049 lpips=0.0290 psnr=29.0 distill=3.8161 t=12527s
+15:30:23 step=2380 mse=0.0051 lpips=0.0294 psnr=28.9 distill=3.7225 t=12578s
+15:31:13 step=2390 mse=0.0061 lpips=0.0359 psnr=28.1 distill=4.5321 t=12627s
+15:32:03 step=2400 mse=0.0044 lpips=0.0294 psnr=29.5 distill=4.0618 t=12677s
+15:32:20 VAL step=2400 psnr=30.34 lpips=0.0258
+15:32:20   New best lpips=0.0258 psnr=30.34
+15:33:10 step=2410 mse=0.0065 lpips=0.0342 psnr=27.8 distill=4.1886 t=12745s
+15:34:00 step=2420 mse=0.0072 lpips=0.0380 psnr=27.4 distill=4.6841 t=12794s
+15:34:50 step=2430 mse=0.0039 lpips=0.0234 psnr=30.1 distill=3.3240 t=12844s
+15:35:40 step=2440 mse=0.0048 lpips=0.0298 psnr=29.1 distill=3.8873 t=12894s
+15:36:30 step=2450 mse=0.0056 lpips=0.0285 psnr=28.5 distill=4.1225 t=12944s
+15:37:20 step=2460 mse=0.0063 lpips=0.0387 psnr=28.0 distill=5.0853 t=12994s
+15:38:10 step=2470 mse=0.0053 lpips=0.0318 psnr=28.7 distill=4.0355 t=13044s
+15:39:00 step=2480 mse=0.0079 lpips=0.0413 psnr=26.9 distill=5.3393 t=13094s
+15:39:50 step=2490 mse=0.0010 lpips=0.0067 psnr=35.9 distill=2.2158 t=13144s
+15:40:40 step=2500 mse=0.0076 lpips=0.0403 psnr=27.1 distill=5.0528 t=13194s
+15:40:57 VAL step=2500 psnr=30.36 lpips=0.0256
+15:40:57   New best lpips=0.0256 psnr=30.36
+15:41:47 step=2510 mse=0.0061 lpips=0.0353 psnr=28.1 distill=4.6775 t=13261s
+15:42:37 step=2520 mse=0.0021 lpips=0.0143 psnr=32.7 distill=2.7987 t=13311s
+15:43:27 step=2530 mse=0.0047 lpips=0.0285 psnr=29.3 distill=4.0721 t=13361s
+15:44:16 step=2540 mse=0.0103 lpips=0.0484 psnr=25.8 distill=5.7590 t=13410s
+15:45:06 step=2550 mse=0.0014 lpips=0.0086 psnr=34.3 distill=2.1844 t=13460s
+15:45:56 step=2560 mse=0.0044 lpips=0.0259 psnr=29.5 distill=3.8338 t=13511s
+15:46:46 step=2570 mse=0.0072 lpips=0.0399 psnr=27.4 distill=4.7991 t=13560s
+15:47:36 step=2580 mse=0.0076 lpips=0.0401 psnr=27.2 distill=5.0002 t=13610s
+15:48:26 step=2590 mse=0.0039 lpips=0.0228 psnr=30.0 distill=3.3030 t=13660s
+15:49:16 step=2600 mse=0.0040 lpips=0.0238 psnr=29.9 distill=3.3943 t=13710s
+15:49:33 VAL step=2600 psnr=30.34 lpips=0.0255
+15:49:33   New best lpips=0.0255 psnr=30.34
+15:50:23 step=2610 mse=0.0062 lpips=0.0302 psnr=28.0 distill=3.7570 t=13777s
+15:51:13 step=2620 mse=0.0053 lpips=0.0298 psnr=28.8 distill=3.9245 t=13827s
+15:52:03 step=2630 mse=0.0041 lpips=0.0241 psnr=29.8 distill=3.4582 t=13877s
+15:52:52 step=2640 mse=0.0049 lpips=0.0289 psnr=29.0 distill=3.6969 t=13926s
+15:53:42 step=2650 mse=0.0067 lpips=0.0363 psnr=27.7 distill=4.3828 t=13977s
+15:54:32 step=2660 mse=0.0102 lpips=0.0703 psnr=25.9 distill=9.9440 t=14026s
+15:55:22 step=2670 mse=0.0053 lpips=0.0296 psnr=28.7 distill=4.2645 t=14076s
+15:56:12 step=2680 mse=0.0045 lpips=0.0293 psnr=29.4 distill=3.8912 t=14126s
+15:57:01 step=2690 mse=0.0068 lpips=0.0370 psnr=27.6 distill=4.7170 t=14175s
+15:57:51 step=2700 mse=0.0054 lpips=0.0313 psnr=28.6 distill=3.9733 t=14225s
+15:58:08 VAL step=2700 psnr=30.38 lpips=0.0258
+15:58:58 step=2710 mse=0.0100 lpips=0.0568 psnr=26.0 distill=7.1506 t=14293s
+15:59:48 step=2720 mse=0.0044 lpips=0.0292 psnr=29.5 distill=3.9375 t=14342s
+16:00:38 step=2730 mse=0.0078 lpips=0.0420 psnr=27.1 distill=5.3340 t=14392s
+16:01:28 step=2740 mse=0.0082 lpips=0.0485 psnr=26.8 distill=5.5955 t=14442s
+16:02:17 step=2750 mse=0.0071 lpips=0.0405 psnr=27.4 distill=4.6356 t=14492s
+16:03:07 step=2760 mse=0.0055 lpips=0.0335 psnr=28.6 distill=4.2931 t=14541s
+16:03:57 step=2770 mse=0.0057 lpips=0.0331 psnr=28.4 distill=4.3872 t=14591s
+16:04:47 step=2780 mse=0.0068 lpips=0.0400 psnr=27.6 distill=5.1647 t=14641s
+16:05:36 step=2790 mse=0.0012 lpips=0.0078 psnr=35.0 distill=2.2166 t=14691s
+16:06:26 step=2800 mse=0.0096 lpips=0.0588 psnr=26.2 distill=7.0422 t=14741s
+16:06:43 VAL step=2800 psnr=30.36 lpips=0.0254
+16:06:44   New best lpips=0.0254 psnr=30.36
+16:07:33 step=2810 mse=0.0057 lpips=0.0332 psnr=28.3 distill=4.4043 t=14808s
+16:08:23 step=2820 mse=0.0067 lpips=0.0396 psnr=27.7 distill=4.5644 t=14857s
+16:09:13 step=2830 mse=0.0066 lpips=0.0363 psnr=27.8 distill=4.3939 t=14908s
+16:10:03 step=2840 mse=0.0034 lpips=0.0192 psnr=30.6 distill=3.0724 t=14957s
+16:10:53 step=2850 mse=0.0080 lpips=0.0432 psnr=26.9 distill=5.1026 t=15007s
+16:11:42 step=2860 mse=0.0032 lpips=0.0195 psnr=31.0 distill=2.9504 t=15057s
+16:12:32 step=2870 mse=0.0055 lpips=0.0303 psnr=28.5 distill=4.0979 t=15106s
+16:13:22 step=2880 mse=0.0073 lpips=0.0392 psnr=27.3 distill=5.2817 t=15156s
+16:14:12 step=2890 mse=0.0069 lpips=0.0345 psnr=27.6 distill=4.2863 t=15206s
+16:15:01 step=2900 mse=0.0050 lpips=0.0270 psnr=28.9 distill=4.3527 t=15255s
+16:15:19 VAL step=2900 psnr=30.40 lpips=0.0252
+16:15:19   New best lpips=0.0252 psnr=30.40
+16:16:09 step=2910 mse=0.0021 lpips=0.0156 psnr=32.6 distill=2.9462 t=15323s
+16:16:59 step=2920 mse=0.0069 lpips=0.0354 psnr=27.6 distill=4.5275 t=15373s
+16:17:48 step=2930 mse=0.0058 lpips=0.0359 psnr=28.3 distill=4.9772 t=15422s
+16:18:38 step=2940 mse=0.0038 lpips=0.0227 psnr=30.2 distill=3.6109 t=15472s
+16:19:28 step=2950 mse=0.0044 lpips=0.0260 psnr=29.5 distill=3.5106 t=15522s
+16:20:18 step=2960 mse=0.0054 lpips=0.0322 psnr=28.5 distill=4.2289 t=15572s
+16:21:08 step=2970 mse=0.0073 lpips=0.0384 psnr=27.4 distill=4.6149 t=15622s
+16:21:58 step=2980 mse=0.0055 lpips=0.0347 psnr=28.5 distill=4.3188 t=15672s
+16:22:47 step=2990 mse=0.0050 lpips=0.0269 psnr=29.0 distill=3.6755 t=15722s
+16:23:37 step=3000 mse=0.0073 lpips=0.0366 psnr=27.3 distill=4.4961 t=15771s
+16:23:54 VAL step=3000 psnr=30.40 lpips=0.0251
+16:23:55   New best lpips=0.0251 psnr=30.40
+16:24:45 step=3010 mse=0.0034 lpips=0.0211 psnr=30.7 distill=3.3809 t=15839s
+16:25:35 step=3020 mse=0.0049 lpips=0.0349 psnr=29.1 distill=4.3704 t=15889s
+16:26:25 step=3030 mse=0.0055 lpips=0.0322 psnr=28.6 distill=4.1172 t=15939s
+16:27:15 step=3040 mse=0.0064 lpips=0.0334 psnr=27.9 distill=4.2174 t=15989s
+16:28:04 step=3050 mse=0.0061 lpips=0.0318 psnr=28.1 distill=3.9009 t=16039s
+16:28:54 step=3060 mse=0.0061 lpips=0.0363 psnr=28.1 distill=4.7547 t=16088s
+16:29:44 step=3070 mse=0.0053 lpips=0.0291 psnr=28.7 distill=3.9269 t=16139s
+16:30:34 step=3080 mse=0.0070 lpips=0.0351 psnr=27.5 distill=4.3487 t=16188s
+16:31:24 step=3090 mse=0.0049 lpips=0.0294 psnr=29.0 distill=3.8838 t=16238s
+16:32:14 step=3100 mse=0.0041 lpips=0.0240 psnr=29.8 distill=3.4171 t=16289s
+16:32:31 VAL step=3100 psnr=30.36 lpips=0.0251
+16:32:32   New best lpips=0.0251 psnr=30.36
+16:33:22 step=3110 mse=0.0054 lpips=0.0296 psnr=28.6 distill=4.3999 t=16356s
+16:34:11 step=3120 mse=0.0078 lpips=0.0503 psnr=27.1 distill=5.8727 t=16406s
+16:35:02 step=3130 mse=0.0071 lpips=0.0379 psnr=27.5 distill=4.9305 t=16456s
+16:35:51 step=3140 mse=0.0082 lpips=0.0422 psnr=26.8 distill=5.0869 t=16505s
+16:36:41 step=3150 mse=0.0045 lpips=0.0268 psnr=29.5 distill=3.7954 t=16555s
+16:37:31 step=3160 mse=0.0058 lpips=0.0331 psnr=28.3 distill=4.3983 t=16606s
+16:38:21 step=3170 mse=0.0056 lpips=0.0343 psnr=28.4 distill=4.3526 t=16655s
+16:39:11 step=3180 mse=0.0073 lpips=0.0364 psnr=27.3 distill=4.4140 t=16705s
+16:40:01 step=3190 mse=0.0043 lpips=0.0279 psnr=29.7 distill=3.6179 t=16756s
+16:40:51 step=3200 mse=0.0071 lpips=0.0394 psnr=27.4 distill=4.9159 t=16805s
+16:41:08 VAL step=3200 psnr=30.37 lpips=0.0252
+16:41:58 step=3210 mse=0.0074 lpips=0.0388 psnr=27.2 distill=4.8043 t=16872s
+16:42:49 step=3220 mse=0.0066 lpips=0.0364 psnr=27.7 distill=4.3157 t=16923s
+16:43:39 step=3230 mse=0.0062 lpips=0.0344 psnr=28.0 distill=4.2419 t=16973s
+16:44:28 step=3240 mse=0.0065 lpips=0.0349 psnr=27.8 distill=4.3164 t=17022s
+16:45:19 step=3250 mse=0.0056 lpips=0.0310 psnr=28.5 distill=3.9116 t=17073s
+16:46:09 step=3260 mse=0.0077 lpips=0.0455 psnr=27.0 distill=5.3905 t=17123s
+16:46:58 step=3270 mse=0.0050 lpips=0.0291 psnr=28.9 distill=3.8548 t=17173s
+16:47:49 step=3280 mse=0.0081 lpips=0.0432 psnr=26.8 distill=5.1112 t=17223s
+16:48:39 step=3290 mse=0.0067 lpips=0.0353 psnr=27.7 distill=4.5178 t=17273s
+16:49:29 step=3300 mse=0.0077 lpips=0.0480 psnr=27.1 distill=5.7464 t=17323s
+16:49:46 VAL step=3300 psnr=30.38 lpips=0.0252
+16:50:36 step=3310 mse=0.0058 lpips=0.0361 psnr=28.3 distill=4.5297 t=17390s
+16:51:26 step=3320 mse=0.0080 lpips=0.0503 psnr=26.9 distill=6.0635 t=17440s
+16:52:16 step=3330 mse=0.0058 lpips=0.0345 psnr=28.3 distill=4.5096 t=17490s
+16:53:06 step=3340 mse=0.0074 lpips=0.0412 psnr=27.3 distill=4.9205 t=17540s
+16:53:56 step=3350 mse=0.0014 lpips=0.0094 psnr=34.5 distill=2.2430 t=17590s
+16:54:46 step=3360 mse=0.0020 lpips=0.0149 psnr=32.9 distill=2.7293 t=17640s
+16:55:36 step=3370 mse=0.0055 lpips=0.0326 psnr=28.5 distill=4.3826 t=17690s
+16:56:26 step=3380 mse=0.0053 lpips=0.0294 psnr=28.7 distill=3.9986 t=17740s
+16:57:15 step=3390 mse=0.0085 lpips=0.0462 psnr=26.6 distill=5.3351 t=17789s
+16:58:05 step=3400 mse=0.0076 lpips=0.0435 psnr=27.2 distill=5.7992 t=17840s
+16:58:23 VAL step=3400 psnr=30.36 lpips=0.0250
+16:58:23   New best lpips=0.0250 psnr=30.36
+16:59:13 step=3410 mse=0.0048 lpips=0.0302 psnr=29.1 distill=3.9432 t=17907s
+17:00:03 step=3420 mse=0.0046 lpips=0.0272 psnr=29.4 distill=3.7644 t=17957s
+17:00:53 step=3430 mse=0.0051 lpips=0.0290 psnr=28.8 distill=3.6706 t=18007s
+17:01:43 step=3440 mse=0.0061 lpips=0.0333 psnr=28.1 distill=4.3875 t=18057s
+17:02:32 step=3450 mse=0.0064 lpips=0.0356 psnr=27.9 distill=4.4478 t=18107s
+17:03:22 step=3460 mse=0.0075 lpips=0.0436 psnr=27.2 distill=5.3162 t=18157s
+17:04:12 step=3470 mse=0.0065 lpips=0.0342 psnr=27.8 distill=3.9341 t=18206s
+17:05:02 step=3480 mse=0.0054 lpips=0.0317 psnr=28.6 distill=4.3373 t=18256s
+17:05:52 step=3490 mse=0.0059 lpips=0.0356 psnr=28.2 distill=4.1710 t=18306s
+17:06:42 step=3500 mse=0.0051 lpips=0.0306 psnr=28.8 distill=4.1099 t=18356s
+17:06:59 VAL step=3500 psnr=30.36 lpips=0.0250
+17:06:59   New best lpips=0.0250 psnr=30.36
+17:07:49 step=3510 mse=0.0055 lpips=0.0337 psnr=28.6 distill=4.2148 t=18423s
+17:08:39 step=3520 mse=0.0070 lpips=0.0398 psnr=27.5 distill=4.8306 t=18473s
+17:09:29 step=3530 mse=0.0046 lpips=0.0299 psnr=29.3 distill=4.0297 t=18523s
+17:10:18 step=3540 mse=0.0055 lpips=0.0315 psnr=28.5 distill=4.0742 t=18572s
+17:11:08 step=3550 mse=0.0047 lpips=0.0268 psnr=29.2 distill=3.6403 t=18623s
+17:11:58 step=3560 mse=0.0049 lpips=0.0300 psnr=29.0 distill=3.6914 t=18672s
+17:12:48 step=3570 mse=0.0121 lpips=0.0661 psnr=25.1 distill=7.3968 t=18722s
+17:13:38 step=3580 mse=0.0094 lpips=0.0483 psnr=26.3 distill=5.6973 t=18772s
+17:14:28 step=3590 mse=0.0064 lpips=0.0333 psnr=27.8 distill=4.2226 t=18822s
+17:15:17 step=3600 mse=0.0051 lpips=0.0294 psnr=28.9 distill=3.9837 t=18871s
+17:15:34 VAL step=3600 psnr=30.28 lpips=0.0251
+17:16:24 step=3610 mse=0.0034 lpips=0.0209 psnr=30.5 distill=3.1771 t=18939s
+17:17:14 step=3620 mse=0.0030 lpips=0.0203 psnr=31.1 distill=3.1972 t=18988s
+17:18:04 step=3630 mse=0.0052 lpips=0.0313 psnr=28.8 distill=4.0831 t=19038s
+17:18:54 step=3640 mse=0.0051 lpips=0.0289 psnr=28.9 distill=3.8573 t=19088s
+17:19:43 step=3650 mse=0.0072 lpips=0.0413 psnr=27.4 distill=4.9157 t=19138s
+17:20:33 step=3660 mse=0.0066 lpips=0.0361 psnr=27.7 distill=4.5080 t=19187s
+17:21:23 step=3670 mse=0.0062 lpips=0.0352 psnr=28.1 distill=4.6445 t=19237s
+17:22:13 step=3680 mse=0.0053 lpips=0.0301 psnr=28.7 distill=4.0368 t=19287s
+17:23:03 step=3690 mse=0.0066 lpips=0.0339 psnr=27.8 distill=4.0572 t=19337s
+17:23:53 step=3700 mse=0.0072 lpips=0.0374 psnr=27.4 distill=4.3353 t=19387s
+17:24:10 VAL step=3700 psnr=30.41 lpips=0.0249
+17:24:10   New best lpips=0.0249 psnr=30.41
+17:25:00 step=3710 mse=0.0068 lpips=0.0356 psnr=27.6 distill=4.4975 t=19454s
+17:25:50 step=3720 mse=0.0052 lpips=0.0279 psnr=28.8 distill=3.8252 t=19504s
+17:26:40 step=3730 mse=0.0016 lpips=0.0109 psnr=33.9 distill=2.4353 t=19554s
+17:27:30 step=3740 mse=0.0056 lpips=0.0308 psnr=28.5 distill=3.8125 t=19604s
+17:28:19 step=3750 mse=0.0074 lpips=0.0406 psnr=27.3 distill=5.5172 t=19653s
+17:29:10 step=3760 mse=0.0059 lpips=0.0339 psnr=28.2 distill=4.3178 t=19704s
+17:29:59 step=3770 mse=0.0055 lpips=0.0306 psnr=28.5 distill=3.9419 t=19753s
+17:30:49 step=3780 mse=0.0065 lpips=0.0327 psnr=27.9 distill=4.1762 t=19803s
+17:31:39 step=3790 mse=0.0063 lpips=0.0290 psnr=28.0 distill=3.8948 t=19854s
+17:32:29 step=3800 mse=0.0065 lpips=0.0345 psnr=27.8 distill=4.4111 t=19903s
+17:32:46 VAL step=3800 psnr=30.40 lpips=0.0250
+17:33:36 step=3810 mse=0.0056 lpips=0.0321 psnr=28.4 distill=4.4921 t=19970s
+17:34:26 step=3820 mse=0.0049 lpips=0.0276 psnr=29.1 distill=3.8968 t=20021s
+17:35:16 step=3830 mse=0.0080 lpips=0.0452 psnr=26.9 distill=5.0200 t=20070s
+17:36:06 step=3840 mse=0.0031 lpips=0.0202 psnr=31.0 distill=3.2018 t=20120s
+17:36:56 step=3850 mse=0.0062 lpips=0.0302 psnr=28.0 distill=3.6559 t=20171s
+17:37:46 step=3860 mse=0.0050 lpips=0.0263 psnr=28.9 distill=3.6505 t=20220s
+17:38:36 step=3870 mse=0.0052 lpips=0.0263 psnr=28.8 distill=3.7821 t=20270s
+17:39:26 step=3880 mse=0.0063 lpips=0.0389 psnr=28.0 distill=5.2854 t=20321s
+17:40:16 step=3890 mse=0.0080 lpips=0.0467 psnr=26.9 distill=5.6671 t=20370s
+17:41:06 step=3900 mse=0.0062 lpips=0.0344 psnr=28.0 distill=4.2732 t=20420s
+17:41:23 VAL step=3900 psnr=30.37 lpips=0.0248
+17:41:24   New best lpips=0.0248 psnr=30.37
+17:42:14 step=3910 mse=0.0068 lpips=0.0396 psnr=27.6 distill=4.6652 t=20488s
+17:43:04 step=3920 mse=0.0027 lpips=0.0178 psnr=31.6 distill=2.9444 t=20538s
+17:43:54 step=3930 mse=0.0032 lpips=0.0214 psnr=30.8 distill=3.1403 t=20588s
+17:44:44 step=3940 mse=0.0098 lpips=0.0546 psnr=26.1 distill=6.5653 t=20638s
+17:45:34 step=3950 mse=0.0039 lpips=0.0240 psnr=30.0 distill=3.4901 t=20688s
+17:46:24 step=3960 mse=0.0062 lpips=0.0325 psnr=28.1 distill=4.1468 t=20738s
+17:47:14 step=3970 mse=0.0045 lpips=0.0330 psnr=29.4 distill=4.3502 t=20788s
+17:48:04 step=3980 mse=0.0062 lpips=0.0387 psnr=28.1 distill=4.8607 t=20838s
+17:48:54 step=3990 mse=0.0046 lpips=0.0263 psnr=29.4 distill=3.7478 t=20888s
+17:49:44 step=4000 mse=0.0043 lpips=0.0256 psnr=29.6 distill=3.4877 t=20938s
+17:50:01 VAL step=4000 psnr=30.42 lpips=0.0247
+17:50:01   New best lpips=0.0247 psnr=30.42
+17:50:51 step=4010 mse=0.0053 lpips=0.0313 psnr=28.7 distill=4.0442 t=21005s
+17:51:41 step=4020 mse=0.0042 lpips=0.0250 psnr=29.7 distill=3.5692 t=21055s
+17:52:31 step=4030 mse=0.0039 lpips=0.0283 psnr=30.0 distill=3.5641 t=21106s
+17:53:21 step=4040 mse=0.0055 lpips=0.0296 psnr=28.5 distill=3.8462 t=21155s
+17:54:11 step=4050 mse=0.0062 lpips=0.0337 psnr=28.1 distill=4.0803 t=21205s
+17:55:01 step=4060 mse=0.0057 lpips=0.0308 psnr=28.4 distill=4.5404 t=21255s
+17:55:51 step=4070 mse=0.0024 lpips=0.0172 psnr=32.0 distill=2.7769 t=21305s
+17:56:41 step=4080 mse=0.0074 lpips=0.0406 psnr=27.3 distill=4.9109 t=21355s
+17:57:31 step=4090 mse=0.0017 lpips=0.0129 psnr=33.5 distill=2.8156 t=21405s
+17:58:21 step=4100 mse=0.0038 lpips=0.0261 psnr=30.1 distill=3.4422 t=21455s
+17:58:38 VAL step=4100 psnr=30.41 lpips=0.0246
+17:58:38   New best lpips=0.0246 psnr=30.41
+17:59:28 step=4110 mse=0.0069 lpips=0.0349 psnr=27.6 distill=4.1339 t=21522s
+18:00:18 step=4120 mse=0.0050 lpips=0.0277 psnr=29.0 distill=4.0805 t=21573s
+18:01:08 step=4130 mse=0.0039 lpips=0.0233 psnr=30.0 distill=3.3285 t=21622s
+18:01:58 step=4140 mse=0.0056 lpips=0.0319 psnr=28.5 distill=3.9213 t=21672s
+18:02:48 step=4150 mse=0.0043 lpips=0.0254 psnr=29.6 distill=3.3904 t=21722s
+18:03:38 step=4160 mse=0.0057 lpips=0.0329 psnr=28.4 distill=4.3709 t=21772s
+18:04:28 step=4170 mse=0.0051 lpips=0.0272 psnr=29.0 distill=3.8286 t=21822s
+18:05:18 step=4180 mse=0.0054 lpips=0.0317 psnr=28.6 distill=4.3567 t=21872s
+18:06:08 step=4190 mse=0.0067 lpips=0.0371 psnr=27.7 distill=4.4054 t=21922s
+18:06:57 step=4200 mse=0.0045 lpips=0.0270 psnr=29.4 distill=3.6688 t=21971s
+18:07:14 VAL step=4200 psnr=30.42 lpips=0.0246
+18:07:15   New best lpips=0.0246 psnr=30.42
+18:08:05 step=4210 mse=0.0043 lpips=0.0256 psnr=29.5 distill=3.6009 t=22039s
+18:08:55 step=4220 mse=0.0033 lpips=0.0201 psnr=30.7 distill=3.0587 t=22089s
+18:09:44 step=4230 mse=0.0027 lpips=0.0177 psnr=31.6 distill=2.8499 t=22138s
+18:10:34 step=4240 mse=0.0081 lpips=0.0422 psnr=26.9 distill=4.6690 t=22189s
+18:11:24 step=4250 mse=0.0052 lpips=0.0343 psnr=28.7 distill=4.6320 t=22238s
+18:12:14 step=4260 mse=0.0082 lpips=0.0430 psnr=26.8 distill=5.5079 t=22288s
+18:13:04 step=4270 mse=0.0048 lpips=0.0263 psnr=29.1 distill=3.5233 t=22338s
+18:13:54 step=4280 mse=0.0038 lpips=0.0229 psnr=30.2 distill=3.3026 t=22388s
+18:14:43 step=4290 mse=0.0026 lpips=0.0163 psnr=31.7 distill=2.8855 t=22437s
+18:15:33 step=4300 mse=0.0048 lpips=0.0297 psnr=29.1 distill=3.9006 t=22488s
+18:15:50 VAL step=4300 psnr=30.44 lpips=0.0246
+18:16:40 step=4310 mse=0.0082 lpips=0.0405 psnr=26.8 distill=4.7697 t=22554s
+18:17:30 step=4320 mse=0.0050 lpips=0.0275 psnr=28.9 distill=3.6585 t=22604s
+18:18:20 step=4330 mse=0.0074 lpips=0.0460 psnr=27.3 distill=5.4620 t=22654s
+18:19:10 step=4340 mse=0.0070 lpips=0.0368 psnr=27.5 distill=4.5295 t=22704s
+18:20:00 step=4350 mse=0.0062 lpips=0.0350 psnr=28.0 distill=4.5481 t=22754s
+18:20:50 step=4360 mse=0.0069 lpips=0.0438 psnr=27.6 distill=5.2119 t=22804s
+18:21:39 step=4370 mse=0.0067 lpips=0.0452 psnr=27.7 distill=6.3373 t=22853s
+18:22:29 step=4380 mse=0.0069 lpips=0.0325 psnr=27.6 distill=3.9460 t=22903s
+18:23:19 step=4390 mse=0.0043 lpips=0.0244 psnr=29.6 distill=3.4506 t=22953s
+18:24:09 step=4400 mse=0.0042 lpips=0.0276 psnr=29.7 distill=3.7168 t=23003s
+18:24:26 VAL step=4400 psnr=30.40 lpips=0.0246
+18:25:16 step=4410 mse=0.0038 lpips=0.0240 psnr=30.1 distill=3.2997 t=23070s
+18:26:05 step=4420 mse=0.0047 lpips=0.0299 psnr=29.2 distill=3.7107 t=23120s
+18:26:55 step=4430 mse=0.0040 lpips=0.0260 psnr=29.9 distill=3.4322 t=23169s
+18:27:45 step=4440 mse=0.0081 lpips=0.0465 psnr=26.8 distill=5.4183 t=23219s
+18:28:35 step=4450 mse=0.0064 lpips=0.0335 psnr=27.9 distill=3.9425 t=23269s
+18:29:25 step=4460 mse=0.0065 lpips=0.0377 psnr=27.8 distill=4.7609 t=23319s
+18:30:14 step=4470 mse=0.0050 lpips=0.0272 psnr=28.9 distill=3.9446 t=23368s
+18:31:04 step=4480 mse=0.0062 lpips=0.0375 psnr=28.0 distill=4.5752 t=23419s
+18:31:54 step=4490 mse=0.0040 lpips=0.0224 psnr=29.9 distill=3.1282 t=23468s
+18:32:44 step=4500 mse=0.0053 lpips=0.0302 psnr=28.7 distill=4.0207 t=23518s
+18:33:01 VAL step=4500 psnr=30.42 lpips=0.0247
+18:33:51 step=4510 mse=0.0010 lpips=0.0070 psnr=35.7 distill=2.0524 t=23585s
+18:34:41 step=4520 mse=0.0032 lpips=0.0201 psnr=30.9 distill=3.1211 t=23635s
+18:35:30 step=4530 mse=0.0067 lpips=0.0353 psnr=27.7 distill=4.1879 t=23684s
+18:36:20 step=4540 mse=0.0063 lpips=0.0320 psnr=27.9 distill=3.9656 t=23735s
+18:37:10 step=4550 mse=0.0068 lpips=0.0475 psnr=27.7 distill=6.2971 t=23784s
+18:38:00 step=4560 mse=0.0049 lpips=0.0273 psnr=29.1 distill=3.5289 t=23834s
+18:38:50 step=4570 mse=0.0039 lpips=0.0242 psnr=30.1 distill=3.3123 t=23884s
+18:39:40 step=4580 mse=0.0081 lpips=0.0441 psnr=26.9 distill=5.3180 t=23934s
+18:40:30 step=4590 mse=0.0044 lpips=0.0287 psnr=29.5 distill=3.9134 t=23984s
+18:41:20 step=4600 mse=0.0071 lpips=0.0469 psnr=27.4 distill=6.0084 t=24034s
+18:41:37 VAL step=4600 psnr=30.39 lpips=0.0245
+18:41:37   New best lpips=0.0245 psnr=30.39
+18:42:27 step=4610 mse=0.0100 lpips=0.0524 psnr=26.0 distill=6.7753 t=24101s
+18:43:17 step=4620 mse=0.0049 lpips=0.0258 psnr=29.1 distill=3.4715 t=24151s
+18:44:07 step=4630 mse=0.0052 lpips=0.0290 psnr=28.8 distill=3.8632 t=24201s
+18:44:57 step=4640 mse=0.0049 lpips=0.0275 psnr=29.1 distill=3.7170 t=24251s
+18:45:47 step=4650 mse=0.0109 lpips=0.0653 psnr=25.6 distill=7.7909 t=24301s
+18:46:37 step=4660 mse=0.0062 lpips=0.0313 psnr=28.0 distill=3.8081 t=24351s
+18:47:27 step=4670 mse=0.0051 lpips=0.0309 psnr=28.9 distill=3.8632 t=24401s
+18:48:17 step=4680 mse=0.0062 lpips=0.0333 psnr=28.0 distill=4.2914 t=24451s
+18:49:07 step=4690 mse=0.0038 lpips=0.0231 psnr=30.2 distill=3.4735 t=24501s
+18:49:57 step=4700 mse=0.0062 lpips=0.0372 psnr=28.1 distill=4.5330 t=24551s
+18:50:14 VAL step=4700 psnr=30.37 lpips=0.0248
+18:51:04 step=4710 mse=0.0050 lpips=0.0262 psnr=29.0 distill=3.6082 t=24618s
+18:51:54 step=4720 mse=0.0060 lpips=0.0330 psnr=28.2 distill=4.1776 t=24668s
+18:52:44 step=4730 mse=0.0035 lpips=0.0190 psnr=30.5 distill=3.0073 t=24718s
+18:53:34 step=4740 mse=0.0045 lpips=0.0232 psnr=29.4 distill=3.5793 t=24768s
+18:54:24 step=4750 mse=0.0043 lpips=0.0251 psnr=29.6 distill=3.4323 t=24818s
+18:55:14 step=4760 mse=0.0064 lpips=0.0348 psnr=27.9 distill=4.1958 t=24868s
+18:56:04 step=4770 mse=0.0092 lpips=0.0446 psnr=26.3 distill=6.5148 t=24918s
+18:56:54 step=4780 mse=0.0065 lpips=0.0358 psnr=27.8 distill=4.4546 t=24968s
+18:57:44 step=4790 mse=0.0067 lpips=0.0320 psnr=27.7 distill=3.9815 t=25018s
+18:58:34 step=4800 mse=0.0060 lpips=0.0336 psnr=28.2 distill=4.4287 t=25068s
+18:58:51 VAL step=4800 psnr=30.42 lpips=0.0244
+18:58:51   New best lpips=0.0244 psnr=30.42
+18:59:41 step=4810 mse=0.0064 lpips=0.0351 psnr=27.9 distill=4.5123 t=25136s
+19:00:31 step=4820 mse=0.0072 lpips=0.0366 psnr=27.4 distill=4.3222 t=25185s
+19:01:21 step=4830 mse=0.0069 lpips=0.0331 psnr=27.6 distill=4.5232 t=25235s
+19:02:11 step=4840 mse=0.0047 lpips=0.0269 psnr=29.2 distill=3.6871 t=25286s
+19:03:01 step=4850 mse=0.0105 lpips=0.0628 psnr=25.8 distill=7.3108 t=25335s
+19:03:51 step=4860 mse=0.0046 lpips=0.0270 psnr=29.3 distill=3.7677 t=25385s
+19:04:41 step=4870 mse=0.0038 lpips=0.0216 psnr=30.1 distill=3.2458 t=25435s
+19:05:31 step=4880 mse=0.0038 lpips=0.0233 psnr=30.1 distill=3.3964 t=25485s
+19:06:21 step=4890 mse=0.0053 lpips=0.0266 psnr=28.8 distill=3.5356 t=25535s
+19:07:11 step=4900 mse=0.0077 lpips=0.0406 psnr=27.1 distill=4.6959 t=25586s
+19:07:29 VAL step=4900 psnr=30.46 lpips=0.0243
+19:07:29   New best lpips=0.0243 psnr=30.46
+19:08:19 step=4910 mse=0.0044 lpips=0.0280 psnr=29.5 distill=3.7825 t=25653s
+19:09:09 step=4920 mse=0.0099 lpips=0.0572 psnr=26.0 distill=6.8209 t=25703s
+19:09:59 step=4930 mse=0.0068 lpips=0.0364 psnr=27.6 distill=4.8441 t=25753s
+19:10:49 step=4940 mse=0.0052 lpips=0.0305 psnr=28.8 distill=3.8873 t=25803s
+19:11:39 step=4950 mse=0.0063 lpips=0.0355 psnr=28.0 distill=4.2565 t=25853s
+19:12:29 step=4960 mse=0.0067 lpips=0.0376 psnr=27.7 distill=4.7402 t=25903s
+19:13:19 step=4970 mse=0.0060 lpips=0.0289 psnr=28.2 distill=3.7574 t=25953s
+19:14:09 step=4980 mse=0.0053 lpips=0.0319 psnr=28.7 distill=3.8153 t=26003s
+19:14:59 step=4990 mse=0.0042 lpips=0.0258 psnr=29.6 distill=3.4935 t=26053s
+19:15:49 step=5000 mse=0.0065 lpips=0.0325 psnr=27.8 distill=3.8307 t=26103s
+19:16:06 VAL step=5000 psnr=30.41 lpips=0.0242
+19:16:06   New best lpips=0.0242 psnr=30.41
+19:16:56 step=5010 mse=0.0054 lpips=0.0318 psnr=28.7 distill=4.2084 t=26170s
+19:17:46 step=5020 mse=0.0053 lpips=0.0298 psnr=28.7 distill=3.9254 t=26220s
+19:18:36 step=5030 mse=0.0059 lpips=0.0339 psnr=28.3 distill=4.1937 t=26270s
+19:19:26 step=5040 mse=0.0041 lpips=0.0247 psnr=29.8 distill=3.5780 t=26320s
+19:20:16 step=5050 mse=0.0064 lpips=0.0360 psnr=27.9 distill=4.3180 t=26370s
+19:21:05 step=5060 mse=0.0062 lpips=0.0335 psnr=28.0 distill=4.3308 t=26419s
+19:21:55 step=5070 mse=0.0060 lpips=0.0336 psnr=28.2 distill=4.1618 t=26469s
+19:22:45 step=5080 mse=0.0043 lpips=0.0265 psnr=29.6 distill=3.4285 t=26520s
+19:23:35 step=5090 mse=0.0095 lpips=0.0498 psnr=26.2 distill=6.3319 t=26569s
+19:24:25 step=5100 mse=0.0036 lpips=0.0208 psnr=30.4 distill=3.0753 t=26619s
+19:24:42 VAL step=5100 psnr=30.36 lpips=0.0243
+19:25:32 step=5110 mse=0.0048 lpips=0.0274 psnr=29.1 distill=3.6398 t=26686s
+19:26:21 step=5120 mse=0.0048 lpips=0.0261 psnr=29.2 distill=3.5477 t=26735s
+19:27:11 step=5130 mse=0.0050 lpips=0.0319 psnr=29.0 distill=3.9191 t=26785s
+19:28:01 step=5140 mse=0.0045 lpips=0.0267 psnr=29.4 distill=3.5431 t=26835s
+19:28:51 step=5150 mse=0.0065 lpips=0.0336 psnr=27.8 distill=4.2134 t=26885s
+19:29:40 step=5160 mse=0.0062 lpips=0.0315 psnr=28.0 distill=4.0201 t=26934s
+19:30:30 step=5170 mse=0.0051 lpips=0.0272 psnr=28.8 distill=3.5431 t=26985s
+19:31:20 step=5180 mse=0.0044 lpips=0.0263 psnr=29.5 distill=3.6951 t=27034s
+19:32:09 step=5190 mse=0.0068 lpips=0.0373 psnr=27.6 distill=4.1551 t=27084s
+19:32:59 step=5200 mse=0.0054 lpips=0.0289 psnr=28.6 distill=3.8279 t=27134s
+19:33:16 VAL step=5200 psnr=30.41 lpips=0.0243
+19:34:06 step=5210 mse=0.0075 lpips=0.0353 psnr=27.2 distill=4.4469 t=27200s
+19:34:56 step=5220 mse=0.0058 lpips=0.0304 psnr=28.3 distill=3.9723 t=27250s
+19:35:46 step=5230 mse=0.0080 lpips=0.0403 psnr=26.9 distill=4.6262 t=27300s
+19:36:35 step=5240 mse=0.0068 lpips=0.0310 psnr=27.6 distill=4.1024 t=27349s
+19:37:25 step=5250 mse=0.0053 lpips=0.0313 psnr=28.7 distill=4.0101 t=27399s
+19:38:15 step=5260 mse=0.0049 lpips=0.0284 psnr=29.0 distill=3.4872 t=27449s
+19:39:04 step=5270 mse=0.0055 lpips=0.0342 psnr=28.6 distill=4.1924 t=27498s
+19:39:54 step=5280 mse=0.0057 lpips=0.0340 psnr=28.4 distill=4.3799 t=27548s
+19:40:44 step=5290 mse=0.0048 lpips=0.0271 psnr=29.1 distill=3.6677 t=27598s
+19:41:33 step=5300 mse=0.0059 lpips=0.0334 psnr=28.3 distill=4.1217 t=27647s
+19:41:50 VAL step=5300 psnr=30.43 lpips=0.0244
+19:42:40 step=5310 mse=0.0054 lpips=0.0304 psnr=28.6 distill=3.9348 t=27714s
+19:43:30 step=5320 mse=0.0057 lpips=0.0313 psnr=28.4 distill=4.1766 t=27764s
+19:44:20 step=5330 mse=0.0054 lpips=0.0313 psnr=28.6 distill=3.9463 t=27814s
+19:45:09 step=5340 mse=0.0076 lpips=0.0450 psnr=27.1 distill=5.2865 t=27863s
+19:45:59 step=5350 mse=0.0073 lpips=0.0460 psnr=27.3 distill=5.7797 t=27914s
+19:46:49 step=5360 mse=0.0059 lpips=0.0320 psnr=28.2 distill=3.9415 t=27963s
+19:47:39 step=5370 mse=0.0047 lpips=0.0262 psnr=29.3 distill=3.6981 t=28013s
+19:48:29 step=5380 mse=0.0093 lpips=0.0511 psnr=26.2 distill=6.1997 t=28063s
+19:49:19 step=5390 mse=0.0047 lpips=0.0253 psnr=29.2 distill=3.5047 t=28113s
+19:50:08 step=5400 mse=0.0049 lpips=0.0269 psnr=29.1 distill=3.6110 t=28162s
+19:50:25 VAL step=5400 psnr=30.43 lpips=0.0245
+19:51:15 step=5410 mse=0.0048 lpips=0.0292 psnr=29.1 distill=4.0428 t=28230s
+19:52:05 step=5420 mse=0.0028 lpips=0.0164 psnr=31.4 distill=2.9228 t=28279s
+19:52:55 step=5430 mse=0.0054 lpips=0.0277 psnr=28.7 distill=3.7549 t=28329s
+19:53:45 step=5440 mse=0.0032 lpips=0.0206 psnr=30.9 distill=3.1984 t=28380s
+19:54:35 step=5450 mse=0.0042 lpips=0.0255 psnr=29.7 distill=3.4402 t=28429s
+19:55:25 step=5460 mse=0.0076 lpips=0.0371 psnr=27.1 distill=4.4921 t=28479s
+19:56:15 step=5470 mse=0.0074 lpips=0.0381 psnr=27.3 distill=4.4328 t=28529s
+19:57:05 step=5480 mse=0.0062 lpips=0.0333 psnr=28.0 distill=3.9454 t=28579s
+19:57:54 step=5490 mse=0.0054 lpips=0.0304 psnr=28.6 distill=4.1415 t=28628s
+19:58:44 step=5500 mse=0.0042 lpips=0.0237 psnr=29.7 distill=3.4845 t=28679s
+19:59:02 VAL step=5500 psnr=30.43 lpips=0.0244
+19:59:51 step=5510 mse=0.0041 lpips=0.0239 psnr=29.8 distill=3.3423 t=28745s
+20:00:41 step=5520 mse=0.0059 lpips=0.0349 psnr=28.2 distill=4.1874 t=28795s
+20:01:31 step=5530 mse=0.0036 lpips=0.0227 psnr=30.3 distill=3.1813 t=28846s
+20:02:21 step=5540 mse=0.0030 lpips=0.0191 psnr=31.1 distill=2.9754 t=28895s
+20:03:11 step=5550 mse=0.0040 lpips=0.0242 psnr=29.9 distill=3.4217 t=28945s
+20:04:01 step=5560 mse=0.0056 lpips=0.0294 psnr=28.5 distill=4.0606 t=28995s
+20:04:51 step=5570 mse=0.0065 lpips=0.0373 psnr=27.8 distill=4.4602 t=29045s
+20:05:41 step=5580 mse=0.0053 lpips=0.0318 psnr=28.7 distill=4.2535 t=29095s
+20:06:31 step=5590 mse=0.0122 lpips=0.0693 psnr=25.1 distill=8.1750 t=29145s
+20:07:20 step=5600 mse=0.0045 lpips=0.0256 psnr=29.4 distill=3.6482 t=29194s
+20:07:38 VAL step=5600 psnr=30.42 lpips=0.0243
+20:08:27 step=5610 mse=0.0059 lpips=0.0298 psnr=28.3 distill=3.8838 t=29261s
+20:09:17 step=5620 mse=0.0024 lpips=0.0165 psnr=32.2 distill=2.7528 t=29312s
+20:10:07 step=5630 mse=0.0050 lpips=0.0285 psnr=29.0 distill=3.5023 t=29361s
+20:10:57 step=5640 mse=0.0065 lpips=0.0349 psnr=27.8 distill=3.9726 t=29411s
+20:11:46 step=5650 mse=0.0079 lpips=0.0428 psnr=27.0 distill=5.0238 t=29461s
+20:12:36 step=5660 mse=0.0057 lpips=0.0292 psnr=28.4 distill=3.8435 t=29510s
+20:13:26 step=5670 mse=0.0014 lpips=0.0090 psnr=34.4 distill=2.2554 t=29560s
+20:14:16 step=5680 mse=0.0085 lpips=0.0465 psnr=26.7 distill=5.5749 t=29610s
+20:15:06 step=5690 mse=0.0054 lpips=0.0366 psnr=28.6 distill=4.3956 t=29660s
+20:15:55 step=5700 mse=0.0050 lpips=0.0272 psnr=29.0 distill=3.7632 t=29709s
+20:16:12 VAL step=5700 psnr=30.43 lpips=0.0245
+20:17:02 step=5710 mse=0.0097 lpips=0.0483 psnr=26.1 distill=6.1666 t=29777s
+20:17:52 step=5720 mse=0.0058 lpips=0.0305 psnr=28.3 distill=3.8880 t=29826s
+20:18:41 step=5730 mse=0.0054 lpips=0.0299 psnr=28.6 distill=4.1637 t=29875s
+20:19:31 step=5740 mse=0.0114 lpips=0.0680 psnr=25.4 distill=7.9027 t=29926s
+20:20:21 step=5750 mse=0.0057 lpips=0.0261 psnr=28.4 distill=3.8016 t=29975s
+20:21:11 step=5760 mse=0.0070 lpips=0.0363 psnr=27.5 distill=4.2405 t=30025s
+20:22:00 step=5770 mse=0.0047 lpips=0.0232 psnr=29.2 distill=3.1991 t=30075s
+20:22:50 step=5780 mse=0.0070 lpips=0.0391 psnr=27.5 distill=4.5818 t=30124s
+20:23:40 step=5790 mse=0.0056 lpips=0.0283 psnr=28.5 distill=3.6391 t=30174s
+20:24:30 step=5800 mse=0.0047 lpips=0.0285 psnr=29.2 distill=3.8414 t=30224s
+20:24:47 VAL step=5800 psnr=30.43 lpips=0.0242
+20:24:47   New best lpips=0.0242 psnr=30.43
+20:25:37 step=5810 mse=0.0056 lpips=0.0303 psnr=28.5 distill=3.8582 t=30291s
+20:26:26 step=5820 mse=0.0051 lpips=0.0192 psnr=29.1 distill=3.2624 t=30341s
+20:27:16 step=5830 mse=0.0043 lpips=0.0243 psnr=29.6 distill=3.5095 t=30391s
+20:28:06 step=5840 mse=0.0053 lpips=0.0318 psnr=28.7 distill=4.0037 t=30440s
+20:28:56 step=5850 mse=0.0039 lpips=0.0230 psnr=30.0 distill=3.2838 t=30490s
+20:29:46 step=5860 mse=0.0078 lpips=0.0542 psnr=27.0 distill=7.4861 t=30540s
+20:30:35 step=5870 mse=0.0043 lpips=0.0237 psnr=29.6 distill=3.4910 t=30589s
+20:31:25 step=5880 mse=0.0057 lpips=0.0291 psnr=28.4 distill=3.9229 t=30639s
+20:32:15 step=5890 mse=0.0030 lpips=0.0183 psnr=31.1 distill=3.0116 t=30689s
+20:33:04 step=5900 mse=0.0072 lpips=0.0402 psnr=27.4 distill=5.6046 t=30739s
+20:33:22 VAL step=5900 psnr=30.43 lpips=0.0242
+20:33:22   New best lpips=0.0242 psnr=30.43
+20:34:12 step=5910 mse=0.0013 lpips=0.0087 psnr=34.8 distill=2.2768 t=30806s
+20:35:02 step=5920 mse=0.0041 lpips=0.0228 psnr=29.8 distill=3.2480 t=30856s
+20:35:51 step=5930 mse=0.0066 lpips=0.0342 psnr=27.8 distill=4.2402 t=30905s
+20:36:41 step=5940 mse=0.0010 lpips=0.0063 psnr=36.0 distill=2.0628 t=30955s
+20:37:31 step=5950 mse=0.0039 lpips=0.0256 psnr=30.1 distill=3.5285 t=31005s
+20:38:20 step=5960 mse=0.0036 lpips=0.0207 psnr=30.3 distill=3.0367 t=31055s
+20:39:10 step=5970 mse=0.0066 lpips=0.0321 psnr=27.8 distill=4.0935 t=31104s
+20:40:00 step=5980 mse=0.0061 lpips=0.0325 psnr=28.1 distill=4.0087 t=31154s
+20:40:49 step=5990 mse=0.0013 lpips=0.0091 psnr=34.7 distill=2.2507 t=31203s
+20:41:39 step=6000 mse=0.0063 lpips=0.0373 psnr=28.0 distill=5.2156 t=31253s
+20:41:56 VAL step=6000 psnr=30.38 lpips=0.0242
+20:42:46 step=6010 mse=0.0092 lpips=0.0453 psnr=26.2 distill=5.2475 t=31320s
+20:43:36 step=6020 mse=0.0051 lpips=0.0299 psnr=28.8 distill=3.6319 t=31370s
+20:44:25 step=6030 mse=0.0038 lpips=0.0261 psnr=30.1 distill=3.3921 t=31419s
+20:45:15 step=6040 mse=0.0068 lpips=0.0316 psnr=27.7 distill=4.2316 t=31470s
+20:46:05 step=6050 mse=0.0050 lpips=0.0273 psnr=28.9 distill=3.4598 t=31519s
+20:46:55 step=6060 mse=0.0053 lpips=0.0244 psnr=28.7 distill=3.7787 t=31569s
+20:47:44 step=6070 mse=0.0056 lpips=0.0300 psnr=28.5 distill=3.8773 t=31619s
+20:48:34 step=6080 mse=0.0036 lpips=0.0209 psnr=30.4 distill=3.1749 t=31668s
+20:49:24 step=6090 mse=0.0046 lpips=0.0254 psnr=29.2 distill=3.4322 t=31718s
+20:50:14 step=6100 mse=0.0069 lpips=0.0361 psnr=27.6 distill=4.4391 t=31768s
+20:50:31 VAL step=6100 psnr=30.46 lpips=0.0241
+20:50:31   New best lpips=0.0241 psnr=30.46
+20:51:21 step=6110 mse=0.0061 lpips=0.0373 psnr=28.1 distill=4.9685 t=31835s
+20:52:10 step=6120 mse=0.0071 lpips=0.0383 psnr=27.4 distill=4.7085 t=31884s
+20:53:00 step=6130 mse=0.0039 lpips=0.0231 psnr=30.0 distill=3.2542 t=31935s
+20:53:50 step=6140 mse=0.0039 lpips=0.0224 psnr=30.0 distill=3.0731 t=31984s
+20:54:39 step=6150 mse=0.0018 lpips=0.0120 psnr=33.3 distill=2.3797 t=32034s
+20:55:29 step=6160 mse=0.0063 lpips=0.0386 psnr=28.0 distill=5.2307 t=32084s
+20:56:19 step=6170 mse=0.0055 lpips=0.0308 psnr=28.6 distill=3.9101 t=32133s
+20:57:08 step=6180 mse=0.0054 lpips=0.0366 psnr=28.7 distill=4.7281 t=32182s
+20:57:58 step=6190 mse=0.0082 lpips=0.0481 psnr=26.8 distill=6.1711 t=32233s
+20:58:48 step=6200 mse=0.0067 lpips=0.0375 psnr=27.7 distill=4.4707 t=32282s
+20:59:05 VAL step=6200 psnr=30.36 lpips=0.0241
+20:59:55 step=6210 mse=0.0046 lpips=0.0275 psnr=29.3 distill=3.7334 t=32349s
+21:00:44 step=6220 mse=0.0068 lpips=0.0352 psnr=27.7 distill=4.5877 t=32399s
+21:01:34 step=6230 mse=0.0051 lpips=0.0292 psnr=28.9 distill=3.9460 t=32448s
+21:02:24 step=6240 mse=0.0068 lpips=0.0364 psnr=27.6 distill=4.1794 t=32498s
+21:03:14 step=6250 mse=0.0064 lpips=0.0320 psnr=27.9 distill=4.2312 t=32548s
+21:04:03 step=6260 mse=0.0096 lpips=0.0510 psnr=26.2 distill=6.0587 t=32597s
+21:04:53 step=6270 mse=0.0061 lpips=0.0332 psnr=28.1 distill=3.9992 t=32647s
+21:05:43 step=6280 mse=0.0054 lpips=0.0288 psnr=28.6 distill=3.7345 t=32697s
+21:06:33 step=6290 mse=0.0029 lpips=0.0181 psnr=31.3 distill=3.0409 t=32747s
+21:07:22 step=6300 mse=0.0064 lpips=0.0328 psnr=27.9 distill=3.9323 t=32796s
+21:07:39 VAL step=6300 psnr=30.44 lpips=0.0240
+21:07:40   New best lpips=0.0240 psnr=30.44
+21:08:29 step=6310 mse=0.0045 lpips=0.0243 psnr=29.4 distill=3.3124 t=32864s
+21:09:19 step=6320 mse=0.0049 lpips=0.0262 psnr=29.0 distill=3.5241 t=32913s
+21:10:09 step=6330 mse=0.0059 lpips=0.0283 psnr=28.2 distill=3.7630 t=32963s
+21:10:59 step=6340 mse=0.0070 lpips=0.0371 psnr=27.5 distill=4.4080 t=33013s
+21:11:48 step=6350 mse=0.0033 lpips=0.0230 psnr=30.7 distill=3.1977 t=33062s
+21:12:38 step=6360 mse=0.0054 lpips=0.0292 psnr=28.7 distill=3.6862 t=33112s
+21:13:27 step=6370 mse=0.0043 lpips=0.0232 psnr=29.6 distill=3.3247 t=33162s
+21:14:17 step=6380 mse=0.0062 lpips=0.0325 psnr=28.1 distill=4.1445 t=33211s
+21:15:07 step=6390 mse=0.0036 lpips=0.0233 psnr=30.4 distill=3.4515 t=33261s
+21:15:57 step=6400 mse=0.0052 lpips=0.0277 psnr=28.8 distill=3.7496 t=33311s
+21:16:14 VAL step=6400 psnr=30.40 lpips=0.0241
+21:17:03 step=6410 mse=0.0061 lpips=0.0340 psnr=28.1 distill=3.8761 t=33377s
+21:17:53 step=6420 mse=0.0051 lpips=0.0285 psnr=28.9 distill=3.6322 t=33427s
+21:18:43 step=6430 mse=0.0046 lpips=0.0237 psnr=29.3 distill=3.4101 t=33477s
+21:19:32 step=6440 mse=0.0065 lpips=0.0388 psnr=27.8 distill=4.5503 t=33526s
+21:20:22 step=6450 mse=0.0046 lpips=0.0276 psnr=29.4 distill=3.6295 t=33576s
+21:21:12 step=6460 mse=0.0039 lpips=0.0239 psnr=30.0 distill=3.2898 t=33626s
+21:22:01 step=6470 mse=0.0069 lpips=0.0379 psnr=27.6 distill=4.5681 t=33675s
+21:22:51 step=6480 mse=0.0052 lpips=0.0245 psnr=28.8 distill=3.3577 t=33725s
+21:23:41 step=6490 mse=0.0060 lpips=0.0318 psnr=28.2 distill=3.7253 t=33775s
+21:24:30 step=6500 mse=0.0025 lpips=0.0161 psnr=32.0 distill=2.9208 t=33824s
+21:24:48 VAL step=6500 psnr=30.39 lpips=0.0240
+21:25:37 step=6510 mse=0.0050 lpips=0.0264 psnr=28.9 distill=4.0057 t=33891s
+21:26:27 step=6520 mse=0.0038 lpips=0.0235 psnr=30.2 distill=3.4197 t=33941s
+21:27:17 step=6530 mse=0.0041 lpips=0.0235 psnr=29.8 distill=3.4264 t=33991s
+21:28:06 step=6540 mse=0.0035 lpips=0.0234 psnr=30.5 distill=3.2674 t=34040s
+21:28:56 step=6550 mse=0.0055 lpips=0.0359 psnr=28.5 distill=5.0932 t=34091s
+21:29:46 step=6560 mse=0.0073 lpips=0.0395 psnr=27.3 distill=4.9597 t=34140s
+21:30:35 step=6570 mse=0.0039 lpips=0.0240 psnr=30.0 distill=3.2608 t=34189s
+21:31:25 step=6580 mse=0.0079 lpips=0.0438 psnr=27.0 distill=4.8433 t=34239s
+21:32:15 step=6590 mse=0.0037 lpips=0.0220 psnr=30.2 distill=3.3317 t=34289s
+21:33:04 step=6600 mse=0.0052 lpips=0.0262 psnr=28.8 distill=3.3452 t=34338s
+21:33:21 VAL step=6600 psnr=30.34 lpips=0.0241
+21:34:11 step=6610 mse=0.0035 lpips=0.0213 psnr=30.5 distill=2.9034 t=34406s
+21:35:01 step=6620 mse=0.0077 lpips=0.0413 psnr=27.1 distill=4.7605 t=34455s
+21:35:50 step=6630 mse=0.0048 lpips=0.0280 psnr=29.2 distill=3.5256 t=34504s
+21:36:40 step=6640 mse=0.0058 lpips=0.0302 psnr=28.3 distill=3.6926 t=34555s
+21:37:30 step=6650 mse=0.0055 lpips=0.0324 psnr=28.6 distill=4.0823 t=34604s
+21:38:19 step=6660 mse=0.0059 lpips=0.0265 psnr=28.2 distill=3.4491 t=34653s
+21:39:09 step=6670 mse=0.0065 lpips=0.0319 psnr=27.8 distill=3.9271 t=34704s
+21:39:59 step=6680 mse=0.0041 lpips=0.0244 psnr=29.8 distill=3.4340 t=34753s
+21:40:49 step=6690 mse=0.0041 lpips=0.0235 psnr=29.8 distill=3.3018 t=34803s
+21:41:39 step=6700 mse=0.0056 lpips=0.0295 psnr=28.5 distill=3.8757 t=34853s
+21:41:56 VAL step=6700 psnr=30.43 lpips=0.0240
+21:42:45 step=6710 mse=0.0042 lpips=0.0210 psnr=29.7 distill=3.2227 t=34919s
+21:43:35 step=6720 mse=0.0064 lpips=0.0347 psnr=27.9 distill=4.2028 t=34969s
+21:44:25 step=6730 mse=0.0059 lpips=0.0338 psnr=28.2 distill=4.5417 t=35019s
+21:45:14 step=6740 mse=0.0030 lpips=0.0194 psnr=31.1 distill=3.1723 t=35068s
+21:46:04 step=6750 mse=0.0067 lpips=0.0322 psnr=27.7 distill=4.2383 t=35118s
+21:46:54 step=6760 mse=0.0044 lpips=0.0264 psnr=29.5 distill=3.4857 t=35168s
+21:47:43 step=6770 mse=0.0035 lpips=0.0182 psnr=30.5 distill=3.0593 t=35217s
+21:48:33 step=6780 mse=0.0074 lpips=0.0371 psnr=27.2 distill=4.6552 t=35267s
+21:49:23 step=6790 mse=0.0054 lpips=0.0309 psnr=28.7 distill=3.8011 t=35317s
+21:50:12 step=6800 mse=0.0051 lpips=0.0297 psnr=28.9 distill=3.8470 t=35366s
+21:50:30 VAL step=6800 psnr=30.44 lpips=0.0240
+21:50:30   New best lpips=0.0240 psnr=30.44
+21:51:20 step=6810 mse=0.0044 lpips=0.0270 psnr=29.5 distill=4.0244 t=35434s
+21:52:10 step=6820 mse=0.0055 lpips=0.0318 psnr=28.5 distill=3.8125 t=35484s
+21:52:59 step=6830 mse=0.0048 lpips=0.0285 psnr=29.2 distill=4.0781 t=35533s
+21:53:49 step=6840 mse=0.0063 lpips=0.0313 psnr=28.0 distill=3.8022 t=35583s
+21:54:39 step=6850 mse=0.0042 lpips=0.0176 psnr=29.9 distill=3.4026 t=35633s
+21:55:28 step=6860 mse=0.0020 lpips=0.0137 psnr=32.9 distill=2.6096 t=35682s
+21:56:18 step=6870 mse=0.0055 lpips=0.0292 psnr=28.5 distill=4.0121 t=35732s
+21:57:08 step=6880 mse=0.0031 lpips=0.0188 psnr=31.0 distill=2.9295 t=35782s
+21:57:57 step=6890 mse=0.0037 lpips=0.0219 psnr=30.3 distill=3.0790 t=35831s
+21:58:47 step=6900 mse=0.0065 lpips=0.0332 psnr=27.8 distill=4.1054 t=35881s
+21:59:04 VAL step=6900 psnr=30.44 lpips=0.0238
+21:59:04   New best lpips=0.0238 psnr=30.44
+21:59:54 step=6910 mse=0.0022 lpips=0.0151 psnr=32.6 distill=2.6815 t=35949s
+22:00:44 step=6920 mse=0.0039 lpips=0.0248 psnr=30.1 distill=3.5186 t=35998s
+22:01:34 step=6930 mse=0.0088 lpips=0.0481 psnr=26.5 distill=5.4915 t=36048s
+22:02:23 step=6940 mse=0.0064 lpips=0.0395 psnr=27.9 distill=4.4193 t=36098s
+22:03:13 step=6950 mse=0.0064 lpips=0.0353 psnr=27.9 distill=4.0689 t=36147s
+22:04:03 step=6960 mse=0.0048 lpips=0.0258 psnr=29.1 distill=3.5154 t=36197s
+22:04:52 step=6970 mse=0.0067 lpips=0.0373 psnr=27.7 distill=4.5916 t=36247s
+22:05:42 step=6980 mse=0.0064 lpips=0.0326 psnr=27.9 distill=4.0404 t=36296s
+22:06:32 step=6990 mse=0.0038 lpips=0.0236 psnr=30.1 distill=3.4335 t=36346s
+22:07:22 step=7000 mse=0.0062 lpips=0.0310 psnr=28.0 distill=4.2064 t=36396s
+22:07:39 VAL step=7000 psnr=30.44 lpips=0.0239
+22:08:29 step=7010 mse=0.0054 lpips=0.0280 psnr=28.6 distill=3.7453 t=36463s
+22:09:18 step=7020 mse=0.0053 lpips=0.0298 psnr=28.8 distill=3.8706 t=36512s
+22:10:08 step=7030 mse=0.0042 lpips=0.0264 psnr=29.6 distill=3.6577 t=36563s
+22:10:58 step=7040 mse=0.0067 lpips=0.0346 psnr=27.7 distill=4.2508 t=36612s
+22:11:48 step=7050 mse=0.0068 lpips=0.0366 psnr=27.6 distill=4.4321 t=36662s
+22:12:38 step=7060 mse=0.0018 lpips=0.0120 psnr=33.4 distill=2.3917 t=36712s
+22:13:27 step=7070 mse=0.0068 lpips=0.0377 psnr=27.6 distill=4.3987 t=36761s
+22:14:17 step=7080 mse=0.0061 lpips=0.0333 psnr=28.1 distill=4.0886 t=36811s
+22:15:07 step=7090 mse=0.0068 lpips=0.0336 psnr=27.7 distill=4.9976 t=36861s
+22:15:57 step=7100 mse=0.0049 lpips=0.0269 psnr=29.0 distill=3.4565 t=36911s
+22:16:14 VAL step=7100 psnr=30.41 lpips=0.0240
+22:17:04 step=7110 mse=0.0069 lpips=0.0387 psnr=27.6 distill=4.4312 t=36978s
+22:17:54 step=7120 mse=0.0017 lpips=0.0109 psnr=33.7 distill=2.3639 t=37028s
+22:18:43 step=7130 mse=0.0068 lpips=0.0393 psnr=27.6 distill=4.6415 t=37078s
+22:19:33 step=7140 mse=0.0067 lpips=0.0352 psnr=27.7 distill=4.2602 t=37127s
+22:20:23 step=7150 mse=0.0066 lpips=0.0361 psnr=27.7 distill=4.3825 t=37178s
+22:21:13 step=7160 mse=0.0066 lpips=0.0364 psnr=27.8 distill=4.4722 t=37227s
+22:22:03 step=7170 mse=0.0051 lpips=0.0265 psnr=28.9 distill=3.5384 t=37277s
+22:22:53 step=7180 mse=0.0044 lpips=0.0226 psnr=29.5 distill=3.5488 t=37328s
+22:23:43 step=7190 mse=0.0063 lpips=0.0337 psnr=28.0 distill=3.9775 t=37377s
+22:24:33 step=7200 mse=0.0059 lpips=0.0313 psnr=28.2 distill=3.8961 t=37427s
+22:24:50 VAL step=7200 psnr=30.43 lpips=0.0238
+22:24:51   New best lpips=0.0238 psnr=30.43
+22:25:41 step=7210 mse=0.0040 lpips=0.0234 psnr=30.0 distill=3.2821 t=37495s
+22:26:31 step=7220 mse=0.0043 lpips=0.0253 psnr=29.6 distill=3.4168 t=37545s
+22:27:20 step=7230 mse=0.0048 lpips=0.0224 psnr=29.2 distill=3.5280 t=37594s
+22:28:10 step=7240 mse=0.0044 lpips=0.0255 psnr=29.4 distill=3.4666 t=37645s
+22:29:00 step=7250 mse=0.0072 lpips=0.0433 psnr=27.4 distill=5.4224 t=37694s
+22:29:50 step=7260 mse=0.0038 lpips=0.0230 psnr=30.2 distill=3.1652 t=37744s
+22:30:40 step=7270 mse=0.0058 lpips=0.0267 psnr=28.3 distill=3.6859 t=37795s
+22:31:30 step=7280 mse=0.0098 lpips=0.0562 psnr=26.0 distill=6.7507 t=37844s
+22:32:20 step=7290 mse=0.0059 lpips=0.0356 psnr=28.3 distill=4.5193 t=37894s
+22:33:10 step=7300 mse=0.0066 lpips=0.0366 psnr=27.8 distill=4.5254 t=37945s
+22:33:27 VAL step=7300 psnr=30.51 lpips=0.0239
+22:34:17 step=7310 mse=0.0042 lpips=0.0234 psnr=29.7 distill=3.4182 t=38011s
+22:35:07 step=7320 mse=0.0044 lpips=0.0229 psnr=29.5 distill=3.5518 t=38061s
+22:35:57 step=7330 mse=0.0040 lpips=0.0228 psnr=29.9 distill=3.2739 t=38112s
+22:36:47 step=7340 mse=0.0070 lpips=0.0365 psnr=27.5 distill=4.5877 t=38161s
+22:37:37 step=7350 mse=0.0038 lpips=0.0219 psnr=30.1 distill=3.2728 t=38211s
+22:38:27 step=7360 mse=0.0061 lpips=0.0302 psnr=28.1 distill=3.9329 t=38262s
+22:39:17 step=7370 mse=0.0050 lpips=0.0274 psnr=28.9 distill=3.7097 t=38311s
+22:40:07 step=7380 mse=0.0059 lpips=0.0337 psnr=28.2 distill=4.1613 t=38361s
+22:40:57 step=7390 mse=0.0059 lpips=0.0322 psnr=28.3 distill=4.0159 t=38412s
+22:41:47 step=7400 mse=0.0053 lpips=0.0283 psnr=28.7 distill=3.5462 t=38461s
+22:42:04 VAL step=7400 psnr=30.47 lpips=0.0239
+22:42:54 step=7410 mse=0.0054 lpips=0.0312 psnr=28.6 distill=4.0915 t=38528s
+22:43:45 step=7420 mse=0.0080 lpips=0.0392 psnr=26.9 distill=4.5506 t=38579s
+22:44:34 step=7430 mse=0.0054 lpips=0.0304 psnr=28.6 distill=3.8266 t=38628s
+22:45:24 step=7440 mse=0.0065 lpips=0.0357 psnr=27.8 distill=4.5389 t=38678s
+22:46:15 step=7450 mse=0.0077 lpips=0.0360 psnr=27.1 distill=4.3919 t=38729s
+22:47:05 step=7460 mse=0.0042 lpips=0.0266 psnr=29.7 distill=3.6021 t=38779s
+22:47:55 step=7470 mse=0.0079 lpips=0.0385 psnr=27.0 distill=4.4264 t=38829s
+22:48:45 step=7480 mse=0.0067 lpips=0.0361 psnr=27.7 distill=4.2999 t=38879s
+22:49:35 step=7490 mse=0.0050 lpips=0.0300 psnr=28.9 distill=4.0461 t=38929s
+22:50:25 step=7500 mse=0.0096 lpips=0.0427 psnr=26.2 distill=5.3707 t=38979s
+22:50:42 VAL step=7500 psnr=30.45 lpips=0.0237
+22:50:42   New best lpips=0.0237 psnr=30.45
+22:51:33 step=7510 mse=0.0049 lpips=0.0270 psnr=29.1 distill=3.4443 t=39047s
+22:52:23 step=7520 mse=0.0073 lpips=0.0344 psnr=27.3 distill=4.1412 t=39097s
+22:53:13 step=7530 mse=0.0065 lpips=0.0330 psnr=27.8 distill=4.0595 t=39147s
+22:54:03 step=7540 mse=0.0050 lpips=0.0257 psnr=28.9 distill=3.5552 t=39197s
+22:54:53 step=7550 mse=0.0030 lpips=0.0195 psnr=31.2 distill=2.8511 t=39247s
+22:55:43 step=7560 mse=0.0061 lpips=0.0323 psnr=28.1 distill=3.9885 t=39297s
+22:56:33 step=7570 mse=0.0063 lpips=0.0320 psnr=27.9 distill=3.9661 t=39347s
+22:57:23 step=7580 mse=0.0084 lpips=0.0481 psnr=26.7 distill=5.5292 t=39397s
+22:58:13 step=7590 mse=0.0062 lpips=0.0374 psnr=28.0 distill=4.5471 t=39447s
+22:59:03 step=7600 mse=0.0042 lpips=0.0221 psnr=29.7 distill=3.2792 t=39498s
+22:59:21 VAL step=7600 psnr=30.44 lpips=0.0237
+23:00:11 step=7610 mse=0.0059 lpips=0.0310 psnr=28.2 distill=3.8261 t=39565s
+23:01:00 step=7620 mse=0.0068 lpips=0.0341 psnr=27.6 distill=4.4990 t=39615s
+23:01:51 step=7630 mse=0.0045 lpips=0.0225 psnr=29.4 distill=3.3412 t=39665s
+23:02:41 step=7640 mse=0.0063 lpips=0.0375 psnr=28.0 distill=4.4148 t=39715s
+23:03:31 step=7650 mse=0.0044 lpips=0.0261 psnr=29.5 distill=3.4158 t=39765s
+23:04:21 step=7660 mse=0.0047 lpips=0.0252 psnr=29.2 distill=3.5312 t=39815s
+23:05:11 step=7670 mse=0.0080 lpips=0.0444 psnr=26.9 distill=5.3362 t=39865s
+23:06:01 step=7680 mse=0.0033 lpips=0.0262 psnr=30.9 distill=3.3102 t=39915s
+23:06:51 step=7690 mse=0.0066 lpips=0.0367 psnr=27.8 distill=5.0548 t=39966s
+23:07:41 step=7700 mse=0.0049 lpips=0.0250 psnr=29.0 distill=3.4744 t=40015s
+23:07:59 VAL step=7700 psnr=30.43 lpips=0.0238
+23:08:49 step=7710 mse=0.0047 lpips=0.0248 psnr=29.2 distill=3.3443 t=40083s
+23:09:39 step=7720 mse=0.0088 lpips=0.0414 psnr=26.5 distill=5.0374 t=40133s
+23:10:29 step=7730 mse=0.0041 lpips=0.0233 psnr=29.8 distill=3.1790 t=40183s
+23:11:19 step=7740 mse=0.0060 lpips=0.0361 psnr=28.2 distill=4.3730 t=40233s
+23:12:09 step=7750 mse=0.0053 lpips=0.0300 psnr=28.7 distill=3.7371 t=40284s
+23:12:59 step=7760 mse=0.0051 lpips=0.0265 psnr=28.9 distill=3.5861 t=40333s
+23:13:49 step=7770 mse=0.0062 lpips=0.0339 psnr=28.1 distill=4.1648 t=40383s
+23:14:40 step=7780 mse=0.0077 lpips=0.0462 psnr=27.1 distill=5.6987 t=40434s
+23:15:30 step=7790 mse=0.0064 lpips=0.0383 psnr=27.9 distill=4.6556 t=40484s
+23:16:20 step=7800 mse=0.0050 lpips=0.0257 psnr=28.9 distill=3.4417 t=40534s
+23:16:37 VAL step=7800 psnr=30.49 lpips=0.0235
+23:16:37   New best lpips=0.0235 psnr=30.49
+23:17:28 step=7810 mse=0.0040 lpips=0.0195 psnr=29.9 distill=2.9914 t=40602s
+23:18:18 step=7820 mse=0.0051 lpips=0.0321 psnr=28.9 distill=4.1971 t=40652s
+23:19:08 step=7830 mse=0.0038 lpips=0.0246 psnr=30.2 distill=3.6634 t=40702s
+23:19:58 step=7840 mse=0.0050 lpips=0.0293 psnr=28.9 distill=3.5372 t=40752s
+23:20:48 step=7850 mse=0.0049 lpips=0.0286 psnr=29.0 distill=3.7912 t=40802s
+23:21:38 step=7860 mse=0.0034 lpips=0.0201 psnr=30.6 distill=3.0114 t=40852s
+23:22:28 step=7870 mse=0.0058 lpips=0.0304 psnr=28.3 distill=3.7106 t=40903s
+23:23:18 step=7880 mse=0.0050 lpips=0.0273 psnr=29.0 distill=3.5079 t=40952s
+23:24:08 step=7890 mse=0.0043 lpips=0.0238 psnr=29.5 distill=3.6597 t=41002s
+23:24:59 step=7900 mse=0.0041 lpips=0.0233 psnr=29.8 distill=3.4497 t=41053s
+23:25:16 VAL step=7900 psnr=30.38 lpips=0.0237
+23:26:06 step=7910 mse=0.0043 lpips=0.0255 psnr=29.5 distill=3.4746 t=41120s
+23:26:56 step=7920 mse=0.0032 lpips=0.0184 psnr=30.9 distill=2.8265 t=41170s
+23:27:46 step=7930 mse=0.0044 lpips=0.0230 psnr=29.5 distill=3.5553 t=41221s
+23:28:36 step=7940 mse=0.0035 lpips=0.0202 psnr=30.5 distill=3.0357 t=41270s
+23:29:27 step=7950 mse=0.0039 lpips=0.0261 psnr=30.0 distill=3.6264 t=41321s
+23:30:17 step=7960 mse=0.0037 lpips=0.0205 psnr=30.2 distill=3.1395 t=41371s
+23:31:07 step=7970 mse=0.0059 lpips=0.0318 psnr=28.2 distill=3.9871 t=41421s
+23:31:57 step=7980 mse=0.0042 lpips=0.0277 psnr=29.7 distill=3.8994 t=41471s
+23:32:47 step=7990 mse=0.0051 lpips=0.0268 psnr=28.8 distill=3.6149 t=41521s
+23:33:37 step=8000 mse=0.0067 lpips=0.0347 psnr=27.7 distill=4.1548 t=41571s
+23:33:54 VAL step=8000 psnr=30.49 lpips=0.0236
+23:34:44 step=8010 mse=0.0054 lpips=0.0345 psnr=28.6 distill=4.8082 t=41638s
+23:35:35 step=8020 mse=0.0039 lpips=0.0218 psnr=30.0 distill=3.2456 t=41689s
+23:36:25 step=8030 mse=0.0077 lpips=0.0438 psnr=27.1 distill=5.3393 t=41739s
+23:37:15 step=8040 mse=0.0015 lpips=0.0099 psnr=34.2 distill=2.2670 t=41789s
+23:38:05 step=8050 mse=0.0068 lpips=0.0360 psnr=27.6 distill=4.1224 t=41839s
+23:38:55 step=8060 mse=0.0059 lpips=0.0306 psnr=28.2 distill=4.0050 t=41889s
+23:39:45 step=8070 mse=0.0046 lpips=0.0263 psnr=29.4 distill=3.5396 t=41939s
+23:40:35 step=8080 mse=0.0066 lpips=0.0356 psnr=27.8 distill=4.4010 t=41990s
+23:41:25 step=8090 mse=0.0066 lpips=0.0354 psnr=27.8 distill=4.2567 t=42039s
+23:42:15 step=8100 mse=0.0053 lpips=0.0288 psnr=28.8 distill=3.5679 t=42089s
+23:42:32 VAL step=8100 psnr=30.35 lpips=0.0236
+23:43:23 step=8110 mse=0.0033 lpips=0.0196 psnr=30.7 distill=2.9543 t=42157s
+23:44:12 step=8120 mse=0.0059 lpips=0.0323 psnr=28.2 distill=4.3698 t=42206s
+23:45:02 step=8130 mse=0.0053 lpips=0.0285 psnr=28.7 distill=3.8590 t=42256s
+23:45:53 step=8140 mse=0.0046 lpips=0.0248 psnr=29.3 distill=3.3888 t=42307s
+23:46:43 step=8150 mse=0.0038 lpips=0.0219 psnr=30.2 distill=3.1644 t=42357s
+23:47:32 step=8160 mse=0.0055 lpips=0.0329 psnr=28.5 distill=3.8889 t=42406s
+23:48:23 step=8170 mse=0.0054 lpips=0.0302 psnr=28.6 distill=3.9593 t=42457s
+23:49:12 step=8180 mse=0.0063 lpips=0.0352 psnr=28.0 distill=4.0036 t=42507s
+23:50:02 step=8190 mse=0.0040 lpips=0.0261 psnr=29.9 distill=3.6612 t=42556s
+23:50:52 step=8200 mse=0.0048 lpips=0.0271 psnr=29.2 distill=3.5309 t=42607s
+23:51:09 VAL step=8200 psnr=30.47 lpips=0.0235
+23:51:59 step=8210 mse=0.0032 lpips=0.0199 psnr=30.8 distill=3.3734 t=42673s
+23:52:49 step=8220 mse=0.0063 lpips=0.0334 psnr=28.0 distill=4.1295 t=42723s
+23:53:39 step=8230 mse=0.0055 lpips=0.0286 psnr=28.5 distill=3.9131 t=42774s
+23:54:29 step=8240 mse=0.0037 lpips=0.0235 psnr=30.3 distill=3.3861 t=42823s
+23:55:19 step=8250 mse=0.0050 lpips=0.0271 psnr=29.0 distill=3.5658 t=42873s
+23:56:09 step=8260 mse=0.0062 lpips=0.0340 psnr=28.0 distill=4.0879 t=42923s
+23:56:59 step=8270 mse=0.0062 lpips=0.0344 psnr=28.0 distill=3.8816 t=42973s
+23:57:48 step=8280 mse=0.0015 lpips=0.0104 psnr=34.1 distill=2.5328 t=43022s
+23:58:38 step=8290 mse=0.0064 lpips=0.0303 psnr=28.0 distill=4.0587 t=43073s
+23:59:28 step=8300 mse=0.0014 lpips=0.0085 psnr=34.5 distill=2.1483 t=43122s
+23:59:45 VAL step=8300 psnr=30.45 lpips=0.0234
+23:59:46   New best lpips=0.0234 psnr=30.45
+00:00:36 step=8310 mse=0.0042 lpips=0.0231 psnr=29.8 distill=3.3219 t=43190s
+00:01:26 step=8320 mse=0.0062 lpips=0.0299 psnr=28.0 distill=3.9699 t=43240s
+00:02:15 step=8330 mse=0.0061 lpips=0.0325 psnr=28.1 distill=4.0092 t=43289s
+00:03:05 step=8340 mse=0.0075 lpips=0.0427 psnr=27.2 distill=4.7730 t=43339s
+00:03:55 step=8350 mse=0.0022 lpips=0.0157 psnr=32.5 distill=2.6360 t=43390s
+00:04:45 step=8360 mse=0.0066 lpips=0.0347 psnr=27.8 distill=4.2581 t=43439s
+00:05:35 step=8370 mse=0.0056 lpips=0.0282 psnr=28.5 distill=3.7583 t=43489s
+00:06:25 step=8380 mse=0.0034 lpips=0.0208 psnr=30.6 distill=3.0793 t=43539s
+00:07:15 step=8390 mse=0.0056 lpips=0.0310 psnr=28.5 distill=4.1864 t=43589s
+00:08:05 step=8400 mse=0.0080 lpips=0.0410 psnr=27.0 distill=4.9500 t=43639s
+00:08:22 VAL step=8400 psnr=30.40 lpips=0.0235
+00:09:12 step=8410 mse=0.0064 lpips=0.0315 psnr=27.9 distill=3.9439 t=43706s
+00:10:02 step=8420 mse=0.0075 lpips=0.0357 psnr=27.2 distill=4.2506 t=43756s
+00:10:52 step=8430 mse=0.0036 lpips=0.0261 psnr=30.4 distill=3.9417 t=43806s
+00:11:42 step=8440 mse=0.0059 lpips=0.0349 psnr=28.2 distill=4.6295 t=43856s
+00:12:32 step=8450 mse=0.0092 lpips=0.0532 psnr=26.3 distill=6.4868 t=43906s
+00:13:22 step=8460 mse=0.0061 lpips=0.0351 psnr=28.1 distill=4.1924 t=43956s
+00:14:12 step=8470 mse=0.0027 lpips=0.0162 psnr=31.6 distill=3.0362 t=44007s
+00:15:02 step=8480 mse=0.0084 lpips=0.0396 psnr=26.7 distill=4.7482 t=44056s
+00:15:52 step=8490 mse=0.0051 lpips=0.0283 psnr=28.9 distill=3.6769 t=44106s
+00:16:42 step=8500 mse=0.0020 lpips=0.0139 psnr=32.9 distill=2.5686 t=44157s
+00:16:59 VAL step=8500 psnr=30.44 lpips=0.0235
+00:17:49 step=8510 mse=0.0053 lpips=0.0265 psnr=28.7 distill=3.4447 t=44223s
+00:18:39 step=8520 mse=0.0048 lpips=0.0281 psnr=29.1 distill=3.9094 t=44273s
+00:19:29 step=8530 mse=0.0061 lpips=0.0344 psnr=28.1 distill=4.1227 t=44324s
+00:20:19 step=8540 mse=0.0041 lpips=0.0233 psnr=29.9 distill=3.2835 t=44373s
+00:21:09 step=8550 mse=0.0043 lpips=0.0222 psnr=29.5 distill=3.3428 t=44423s
+00:21:59 step=8560 mse=0.0076 lpips=0.0438 psnr=27.2 distill=5.1800 t=44474s
+00:22:49 step=8570 mse=0.0043 lpips=0.0251 psnr=29.6 distill=3.4307 t=44523s
+00:23:39 step=8580 mse=0.0061 lpips=0.0321 psnr=28.2 distill=4.4952 t=44573s
+00:24:29 step=8590 mse=0.0024 lpips=0.0159 psnr=32.0 distill=2.7636 t=44624s
+00:25:19 step=8600 mse=0.0074 lpips=0.0366 psnr=27.3 distill=4.4654 t=44673s
+00:25:37 VAL step=8600 psnr=30.43 lpips=0.0235
+00:26:27 step=8610 mse=0.0056 lpips=0.0290 psnr=28.5 distill=3.7714 t=44741s
+00:27:17 step=8620 mse=0.0041 lpips=0.0259 psnr=29.8 distill=3.4681 t=44791s
+00:28:07 step=8630 mse=0.0061 lpips=0.0305 psnr=28.1 distill=3.8484 t=44841s
+00:28:57 step=8640 mse=0.0065 lpips=0.0326 psnr=27.9 distill=4.1846 t=44891s
+00:29:47 step=8650 mse=0.0011 lpips=0.0074 psnr=35.4 distill=1.9315 t=44941s
+00:30:37 step=8660 mse=0.0015 lpips=0.0107 psnr=34.3 distill=2.5241 t=44991s
+00:31:27 step=8670 mse=0.0060 lpips=0.0313 psnr=28.1 distill=3.9561 t=45041s
+00:32:17 step=8680 mse=0.0047 lpips=0.0260 psnr=29.2 distill=3.3570 t=45091s
+00:33:07 step=8690 mse=0.0038 lpips=0.0236 psnr=30.1 distill=3.1795 t=45141s
+00:33:57 step=8700 mse=0.0078 lpips=0.0392 psnr=27.0 distill=4.5567 t=45191s
+00:34:14 VAL step=8700 psnr=30.48 lpips=0.0235
+00:35:05 step=8710 mse=0.0050 lpips=0.0259 psnr=28.9 distill=3.4909 t=45259s
+00:35:54 step=8720 mse=0.0041 lpips=0.0237 psnr=29.8 distill=3.3027 t=45309s
+00:36:45 step=8730 mse=0.0045 lpips=0.0269 psnr=29.5 distill=3.7692 t=45359s
+00:37:35 step=8740 mse=0.0050 lpips=0.0290 psnr=28.9 distill=3.8280 t=45409s
+00:38:25 step=8750 mse=0.0072 lpips=0.0332 psnr=27.4 distill=4.2722 t=45459s
+00:39:14 step=8760 mse=0.0035 lpips=0.0224 psnr=30.5 distill=3.3078 t=45509s
+00:40:05 step=8770 mse=0.0026 lpips=0.0149 psnr=31.8 distill=2.8323 t=45559s
+00:40:55 step=8780 mse=0.0066 lpips=0.0318 psnr=27.7 distill=3.9691 t=45609s
+00:41:45 step=8790 mse=0.0070 lpips=0.0372 psnr=27.5 distill=4.3738 t=45659s
+00:42:35 step=8800 mse=0.0032 lpips=0.0195 psnr=30.9 distill=2.8815 t=45709s
+00:42:52 VAL step=8800 psnr=30.51 lpips=0.0234
+00:43:42 step=8810 mse=0.0050 lpips=0.0261 psnr=29.0 distill=3.5855 t=45776s
+00:44:32 step=8820 mse=0.0020 lpips=0.0136 psnr=32.9 distill=2.5623 t=45826s
+00:45:22 step=8830 mse=0.0040 lpips=0.0231 psnr=30.0 distill=3.2046 t=45876s
+00:46:12 step=8840 mse=0.0054 lpips=0.0342 psnr=28.6 distill=4.4605 t=45926s
+00:47:02 step=8850 mse=0.0044 lpips=0.0271 psnr=29.5 distill=3.4692 t=45976s
+00:47:52 step=8860 mse=0.0080 lpips=0.0403 psnr=26.9 distill=4.4680 t=46027s
+00:48:42 step=8870 mse=0.0049 lpips=0.0256 psnr=29.1 distill=3.2251 t=46076s
+00:49:32 step=8880 mse=0.0065 lpips=0.0296 psnr=27.8 distill=3.7655 t=46126s
+00:50:23 step=8890 mse=0.0068 lpips=0.0391 psnr=27.6 distill=4.5858 t=46177s
+00:51:12 step=8900 mse=0.0020 lpips=0.0138 psnr=32.9 distill=2.5940 t=46226s
+00:51:30 VAL step=8900 psnr=30.44 lpips=0.0234
+00:51:30   New best lpips=0.0234 psnr=30.44
+00:52:20 step=8910 mse=0.0020 lpips=0.0129 psnr=32.8 distill=2.5109 t=46294s
+00:53:10 step=8920 mse=0.0059 lpips=0.0295 psnr=28.2 distill=3.7573 t=46345s
+00:54:00 step=8930 mse=0.0056 lpips=0.0280 psnr=28.4 distill=3.7519 t=46394s
+00:54:50 step=8940 mse=0.0055 lpips=0.0322 psnr=28.5 distill=3.9129 t=46444s
+00:55:40 step=8950 mse=0.0043 lpips=0.0264 psnr=29.6 distill=3.3632 t=46495s
+00:56:30 step=8960 mse=0.0047 lpips=0.0276 psnr=29.3 distill=3.4656 t=46545s
+00:57:21 step=8970 mse=0.0032 lpips=0.0175 psnr=30.9 distill=3.0096 t=46595s
+00:58:11 step=8980 mse=0.0043 lpips=0.0272 psnr=29.6 distill=3.8235 t=46645s
+00:59:01 step=8990 mse=0.0046 lpips=0.0253 psnr=29.4 distill=3.4866 t=46695s
+00:59:51 step=9000 mse=0.0069 lpips=0.0313 psnr=27.6 distill=3.7733 t=46745s
+01:00:08 VAL step=9000 psnr=30.45 lpips=0.0234
+01:00:59 step=9010 mse=0.0033 lpips=0.0196 psnr=30.6 distill=3.0002 t=46813s
+01:01:49 step=9020 mse=0.0049 lpips=0.0291 psnr=29.0 distill=3.7480 t=46863s
+01:02:39 step=9030 mse=0.0044 lpips=0.0258 psnr=29.6 distill=3.5550 t=46913s
+01:03:29 step=9040 mse=0.0064 lpips=0.0330 psnr=27.9 distill=4.0738 t=46963s
+01:04:19 step=9050 mse=0.0042 lpips=0.0234 psnr=29.7 distill=3.1798 t=47013s
+01:05:09 step=9060 mse=0.0043 lpips=0.0234 psnr=29.6 distill=3.3451 t=47063s
+01:05:59 step=9070 mse=0.0058 lpips=0.0326 psnr=28.3 distill=3.8240 t=47113s
+01:06:49 step=9080 mse=0.0044 lpips=0.0263 psnr=29.5 distill=3.5041 t=47163s
+01:07:39 step=9090 mse=0.0066 lpips=0.0349 psnr=27.7 distill=4.2595 t=47213s
+01:08:29 step=9100 mse=0.0078 lpips=0.0437 psnr=27.0 distill=5.0032 t=47264s
+01:08:47 VAL step=9100 psnr=30.45 lpips=0.0233
+01:08:47   New best lpips=0.0233 psnr=30.45
+01:09:37 step=9110 mse=0.0047 lpips=0.0292 psnr=29.2 distill=4.0987 t=47331s
+01:10:27 step=9120 mse=0.0037 lpips=0.0213 psnr=30.2 distill=3.0226 t=47381s
+01:11:17 step=9130 mse=0.0057 lpips=0.0320 psnr=28.4 distill=4.1682 t=47431s
+01:12:07 step=9140 mse=0.0030 lpips=0.0185 psnr=31.2 distill=2.9242 t=47481s
+01:12:57 step=9150 mse=0.0050 lpips=0.0266 psnr=29.0 distill=3.5215 t=47531s
+01:13:47 step=9160 mse=0.0065 lpips=0.0321 psnr=27.8 distill=4.2643 t=47582s
+01:14:37 step=9170 mse=0.0078 lpips=0.0388 psnr=27.0 distill=5.4345 t=47631s
+01:15:27 step=9180 mse=0.0042 lpips=0.0229 psnr=29.8 distill=3.3603 t=47681s
+01:16:18 step=9190 mse=0.0010 lpips=0.0067 psnr=35.8 distill=2.1115 t=47732s
+01:17:08 step=9200 mse=0.0075 lpips=0.0409 psnr=27.2 distill=4.6134 t=47782s
+01:17:25 VAL step=9200 psnr=30.50 lpips=0.0233
+01:17:25   New best lpips=0.0233 psnr=30.50
+01:18:15 step=9210 mse=0.0042 lpips=0.0248 psnr=29.7 distill=3.3121 t=47849s
+01:19:06 step=9220 mse=0.0055 lpips=0.0312 psnr=28.5 distill=3.9399 t=47900s
+01:19:56 step=9230 mse=0.0039 lpips=0.0225 psnr=30.0 distill=3.1300 t=47950s
+01:20:46 step=9240 mse=0.0057 lpips=0.0295 psnr=28.4 distill=3.5140 t=48000s
+01:21:36 step=9250 mse=0.0049 lpips=0.0257 psnr=29.0 distill=3.4827 t=48050s
+01:22:26 step=9260 mse=0.0076 lpips=0.0417 psnr=27.2 distill=4.9261 t=48100s
+01:23:16 step=9270 mse=0.0047 lpips=0.0253 psnr=29.2 distill=3.6568 t=48150s
+01:24:06 step=9280 mse=0.0064 lpips=0.0395 psnr=27.9 distill=5.0903 t=48201s
+01:24:56 step=9290 mse=0.0079 lpips=0.0427 psnr=27.0 distill=4.8304 t=48250s
+01:25:46 step=9300 mse=0.0057 lpips=0.0359 psnr=28.4 distill=4.6829 t=48300s
+01:26:04 VAL step=9300 psnr=30.52 lpips=0.0233
+01:26:54 step=9310 mse=0.0059 lpips=0.0296 psnr=28.3 distill=3.6857 t=48368s
+01:27:44 step=9320 mse=0.0045 lpips=0.0248 psnr=29.4 distill=3.4349 t=48418s
+01:28:34 step=9330 mse=0.0075 lpips=0.0442 psnr=27.2 distill=5.1435 t=48468s
+01:29:24 step=9340 mse=0.0024 lpips=0.0145 psnr=32.2 distill=2.9011 t=48519s
+01:30:14 step=9350 mse=0.0044 lpips=0.0249 psnr=29.5 distill=3.5562 t=48568s
+01:31:04 step=9360 mse=0.0042 lpips=0.0312 psnr=29.7 distill=4.2597 t=48618s
+01:31:54 step=9370 mse=0.0099 lpips=0.0526 psnr=26.0 distill=6.3718 t=48669s
+01:32:45 step=9380 mse=0.0048 lpips=0.0298 psnr=29.2 distill=3.9060 t=48719s
+01:33:35 step=9390 mse=0.0050 lpips=0.0296 psnr=28.9 distill=3.7258 t=48769s
+01:34:25 step=9400 mse=0.0063 lpips=0.0317 psnr=28.0 distill=3.8365 t=48819s
+01:34:42 VAL step=9400 psnr=30.38 lpips=0.0234
+01:35:32 step=9410 mse=0.0065 lpips=0.0339 psnr=27.8 distill=3.8553 t=48886s
+01:36:22 step=9420 mse=0.0063 lpips=0.0346 psnr=28.0 distill=4.1969 t=48936s
+01:37:12 step=9430 mse=0.0067 lpips=0.0354 psnr=27.7 distill=4.4593 t=48987s
+01:38:02 step=9440 mse=0.0052 lpips=0.0275 psnr=28.8 distill=3.8507 t=49036s
+01:38:53 step=9450 mse=0.0055 lpips=0.0312 psnr=28.5 distill=4.1049 t=49087s
+01:39:43 step=9460 mse=0.0059 lpips=0.0376 psnr=28.3 distill=4.8748 t=49137s
+01:40:33 step=9470 mse=0.0035 lpips=0.0208 psnr=30.5 distill=3.1235 t=49187s
+01:41:23 step=9480 mse=0.0038 lpips=0.0215 psnr=30.2 distill=3.1256 t=49237s
+01:42:14 step=9490 mse=0.0048 lpips=0.0260 psnr=29.1 distill=3.3211 t=49288s
+01:43:04 step=9500 mse=0.0050 lpips=0.0274 psnr=28.9 distill=3.6109 t=49338s
+01:43:21 VAL step=9500 psnr=30.50 lpips=0.0232
+01:43:21   New best lpips=0.0232 psnr=30.50
+01:44:11 step=9510 mse=0.0030 lpips=0.0176 psnr=31.2 distill=2.7799 t=49405s
+01:45:02 step=9520 mse=0.0054 lpips=0.0291 psnr=28.6 distill=3.5674 t=49456s
+01:45:52 step=9530 mse=0.0060 lpips=0.0291 psnr=28.2 distill=3.6794 t=49506s
+01:46:42 step=9540 mse=0.0044 lpips=0.0255 psnr=29.5 distill=3.7587 t=49556s
+01:47:32 step=9550 mse=0.0055 lpips=0.0266 psnr=28.5 distill=3.3361 t=49606s
+01:48:22 step=9560 mse=0.0076 lpips=0.0465 psnr=27.1 distill=5.5323 t=49656s
+01:49:12 step=9570 mse=0.0061 lpips=0.0316 psnr=28.1 distill=4.0941 t=49706s
+01:50:02 step=9580 mse=0.0054 lpips=0.0339 psnr=28.6 distill=4.3751 t=49757s
+01:50:52 step=9590 mse=0.0048 lpips=0.0260 psnr=29.1 distill=3.6724 t=49806s
+01:51:42 step=9600 mse=0.0077 lpips=0.0362 psnr=27.1 distill=4.5230 t=49856s
+01:52:00 VAL step=9600 psnr=30.48 lpips=0.0233
+01:52:50 step=9610 mse=0.0063 lpips=0.0325 psnr=28.0 distill=4.1089 t=49924s
+01:53:40 step=9620 mse=0.0054 lpips=0.0315 psnr=28.7 distill=4.0859 t=49974s
+01:54:30 step=9630 mse=0.0028 lpips=0.0179 psnr=31.5 distill=2.8636 t=50024s
+01:55:20 step=9640 mse=0.0027 lpips=0.0183 psnr=31.5 distill=3.4840 t=50074s
+01:56:10 step=9650 mse=0.0023 lpips=0.0158 psnr=32.2 distill=2.9694 t=50124s
+01:57:00 step=9660 mse=0.0053 lpips=0.0276 psnr=28.7 distill=3.7739 t=50174s
+01:57:50 step=9670 mse=0.0061 lpips=0.0339 psnr=28.1 distill=4.2470 t=50225s
+01:58:40 step=9680 mse=0.0051 lpips=0.0289 psnr=28.9 distill=3.5372 t=50274s
+01:59:31 step=9690 mse=0.0066 lpips=0.0380 psnr=27.8 distill=4.5488 t=50325s
+02:00:21 step=9700 mse=0.0056 lpips=0.0298 psnr=28.5 distill=3.9366 t=50375s
+02:00:38 VAL step=9700 psnr=30.54 lpips=0.0232
+02:00:38   New best lpips=0.0232 psnr=30.54
+02:01:28 step=9710 mse=0.0053 lpips=0.0279 psnr=28.7 distill=3.6593 t=50442s
+02:02:18 step=9720 mse=0.0062 lpips=0.0305 psnr=28.0 distill=4.0345 t=50492s
+02:03:09 step=9730 mse=0.0012 lpips=0.0071 psnr=35.1 distill=2.1785 t=50543s
+02:03:59 step=9740 mse=0.0010 lpips=0.0070 psnr=35.7 distill=2.0422 t=50593s
+02:04:49 step=9750 mse=0.0039 lpips=0.0228 psnr=30.0 distill=3.3963 t=50643s
+02:05:39 step=9760 mse=0.0056 lpips=0.0340 psnr=28.4 distill=4.0134 t=50693s
+02:06:29 step=9770 mse=0.0057 lpips=0.0388 psnr=28.4 distill=5.2099 t=50743s
+02:07:19 step=9780 mse=0.0043 lpips=0.0247 psnr=29.6 distill=3.4066 t=50793s
+02:08:09 step=9790 mse=0.0049 lpips=0.0268 psnr=29.0 distill=3.4088 t=50844s
+02:08:59 step=9800 mse=0.0040 lpips=0.0230 psnr=29.9 distill=3.1982 t=50893s
+02:09:17 VAL step=9800 psnr=30.53 lpips=0.0231
+02:09:17   New best lpips=0.0231 psnr=30.53
+02:10:07 step=9810 mse=0.0035 lpips=0.0193 psnr=30.4 distill=3.1723 t=50961s
+02:10:57 step=9820 mse=0.0045 lpips=0.0235 psnr=29.4 distill=3.2642 t=51012s
+02:11:47 step=9830 mse=0.0058 lpips=0.0319 psnr=28.3 distill=3.9907 t=51061s
+02:12:37 step=9840 mse=0.0065 lpips=0.0397 psnr=27.8 distill=4.8853 t=51111s
+02:13:27 step=9850 mse=0.0045 lpips=0.0239 psnr=29.5 distill=3.3241 t=51162s
+02:14:17 step=9860 mse=0.0027 lpips=0.0151 psnr=31.8 distill=2.8284 t=51211s
+02:15:07 step=9870 mse=0.0063 lpips=0.0318 psnr=28.0 distill=4.2713 t=51261s
+02:15:58 step=9880 mse=0.0040 lpips=0.0204 psnr=30.0 distill=3.0879 t=51312s
+02:16:48 step=9890 mse=0.0061 lpips=0.0307 psnr=28.1 distill=3.9644 t=51362s
+02:17:38 step=9900 mse=0.0062 lpips=0.0315 psnr=28.1 distill=4.1135 t=51412s
+02:17:55 VAL step=9900 psnr=30.53 lpips=0.0233
+02:18:45 step=9910 mse=0.0059 lpips=0.0302 psnr=28.2 distill=3.9452 t=51480s
+02:19:36 step=9920 mse=0.0036 lpips=0.0222 psnr=30.4 distill=3.2712 t=51530s
+02:20:26 step=9930 mse=0.0052 lpips=0.0302 psnr=28.8 distill=3.9040 t=51580s
+02:21:16 step=9940 mse=0.0049 lpips=0.0295 psnr=29.0 distill=3.7861 t=51630s
+02:22:06 step=9950 mse=0.0084 lpips=0.0397 psnr=26.7 distill=4.6631 t=51680s
+02:22:56 step=9960 mse=0.0046 lpips=0.0288 psnr=29.4 distill=3.6563 t=51730s
+02:23:46 step=9970 mse=0.0064 lpips=0.0334 psnr=27.9 distill=4.1198 t=51780s
+02:24:36 step=9980 mse=0.0060 lpips=0.0298 psnr=28.2 distill=4.1004 t=51830s
+02:25:26 step=9990 mse=0.0057 lpips=0.0307 psnr=28.4 distill=3.7352 t=51880s
+02:26:16 step=10000 mse=0.0044 lpips=0.0245 psnr=29.5 distill=3.1784 t=51931s
+02:26:34 VAL step=10000 psnr=30.54 lpips=0.0231
+02:27:24 step=10010 mse=0.0081 lpips=0.0432 psnr=26.9 distill=5.0599 t=51998s
+02:28:14 step=10020 mse=0.0080 lpips=0.0408 psnr=26.9 distill=5.3584 t=52048s
+02:29:04 step=10030 mse=0.0061 lpips=0.0324 psnr=28.1 distill=4.0501 t=52098s
+02:29:54 step=10040 mse=0.0052 lpips=0.0322 psnr=28.8 distill=4.2029 t=52148s
+02:30:44 step=10050 mse=0.0054 lpips=0.0304 psnr=28.6 distill=3.9942 t=52198s
+02:31:34 step=10060 mse=0.0063 lpips=0.0321 psnr=27.9 distill=4.0017 t=52249s
+02:32:24 step=10070 mse=0.0051 lpips=0.0251 psnr=28.9 distill=3.3071 t=52298s
+02:33:15 step=10080 mse=0.0047 lpips=0.0287 psnr=29.2 distill=3.7115 t=52349s
+02:34:05 step=10090 mse=0.0056 lpips=0.0304 psnr=28.5 distill=3.7875 t=52399s
+02:34:55 step=10100 mse=0.0042 lpips=0.0246 psnr=29.7 distill=3.5099 t=52449s
+02:35:12 VAL step=10100 psnr=30.46 lpips=0.0233
+02:36:02 step=10110 mse=0.0083 lpips=0.0446 psnr=26.8 distill=5.2816 t=52516s
+02:36:52 step=10120 mse=0.0047 lpips=0.0282 psnr=29.2 distill=3.7596 t=52567s
+02:37:42 step=10130 mse=0.0040 lpips=0.0239 psnr=29.9 distill=3.4039 t=52616s
+02:38:33 step=10140 mse=0.0062 lpips=0.0323 psnr=28.0 distill=4.1414 t=52667s
+02:39:23 step=10150 mse=0.0043 lpips=0.0252 psnr=29.7 distill=3.4211 t=52717s
+02:40:13 step=10160 mse=0.0042 lpips=0.0236 psnr=29.7 distill=3.3369 t=52767s
+02:41:03 step=10170 mse=0.0032 lpips=0.0177 psnr=30.9 distill=2.8768 t=52817s
+02:41:53 step=10180 mse=0.0066 lpips=0.0332 psnr=27.7 distill=3.8237 t=52868s
+02:42:43 step=10190 mse=0.0033 lpips=0.0214 psnr=30.8 distill=3.1499 t=52917s
+02:43:33 step=10200 mse=0.0060 lpips=0.0392 psnr=28.2 distill=4.7916 t=52967s
+02:43:51 VAL step=10200 psnr=30.55 lpips=0.0230
+02:43:51   New best lpips=0.0230 psnr=30.55
+02:44:42 step=10210 mse=0.0044 lpips=0.0261 psnr=29.5 distill=3.8030 t=53036s
+02:45:32 step=10220 mse=0.0045 lpips=0.0250 psnr=29.4 distill=3.2764 t=53086s
+02:46:22 step=10230 mse=0.0052 lpips=0.0271 psnr=28.8 distill=3.4312 t=53136s
+02:47:12 step=10240 mse=0.0061 lpips=0.0345 psnr=28.1 distill=4.5638 t=53186s
+02:48:02 step=10250 mse=0.0078 lpips=0.0382 psnr=27.0 distill=5.1316 t=53236s
+02:48:52 step=10260 mse=0.0019 lpips=0.0136 psnr=33.0 distill=2.6528 t=53286s
+02:49:42 step=10270 mse=0.0044 lpips=0.0236 psnr=29.5 distill=3.3119 t=53336s
+02:50:32 step=10280 mse=0.0042 lpips=0.0246 psnr=29.7 distill=3.4482 t=53386s
+02:51:22 step=10290 mse=0.0051 lpips=0.0261 psnr=28.9 distill=3.4646 t=53436s
+02:52:12 step=10300 mse=0.0061 lpips=0.0360 psnr=28.1 distill=4.4298 t=53487s
+02:52:30 VAL step=10300 psnr=30.50 lpips=0.0230
+02:53:20 step=10310 mse=0.0063 lpips=0.0352 psnr=28.0 distill=5.2115 t=53554s
+02:54:10 step=10320 mse=0.0040 lpips=0.0211 psnr=29.9 distill=3.0320 t=53604s
+02:55:00 step=10330 mse=0.0027 lpips=0.0152 psnr=31.6 distill=2.7166 t=53655s
+02:55:50 step=10340 mse=0.0058 lpips=0.0376 psnr=28.3 distill=4.4724 t=53704s
+02:56:40 step=10350 mse=0.0045 lpips=0.0268 psnr=29.4 distill=3.8350 t=53755s
+02:57:31 step=10360 mse=0.0045 lpips=0.0263 psnr=29.4 distill=3.4685 t=53805s
+02:58:21 step=10370 mse=0.0053 lpips=0.0296 psnr=28.7 distill=3.6556 t=53855s
+02:59:11 step=10380 mse=0.0081 lpips=0.0439 psnr=26.9 distill=5.2880 t=53905s
+03:00:01 step=10390 mse=0.0062 lpips=0.0424 psnr=28.0 distill=5.3568 t=53956s
+03:00:51 step=10400 mse=0.0063 lpips=0.0304 psnr=27.9 distill=3.7300 t=54005s
+03:01:09 VAL step=10400 psnr=30.51 lpips=0.0231
+03:01:59 step=10410 mse=0.0061 lpips=0.0335 psnr=28.1 distill=3.9890 t=54073s
+03:02:49 step=10420 mse=0.0052 lpips=0.0367 psnr=28.8 distill=5.0910 t=54123s
+03:03:39 step=10430 mse=0.0063 lpips=0.0352 psnr=28.0 distill=3.9901 t=54173s
+03:04:29 step=10440 mse=0.0044 lpips=0.0247 psnr=29.5 distill=3.4992 t=54223s
+03:05:19 step=10450 mse=0.0061 lpips=0.0319 psnr=28.1 distill=3.7315 t=54274s
+03:06:09 step=10460 mse=0.0050 lpips=0.0282 psnr=28.9 distill=3.7592 t=54323s
+03:06:59 step=10470 mse=0.0061 lpips=0.0335 psnr=28.1 distill=3.8628 t=54373s
+03:07:50 step=10480 mse=0.0052 lpips=0.0300 psnr=28.8 distill=4.0216 t=54424s
+03:08:40 step=10490 mse=0.0057 lpips=0.0340 psnr=28.4 distill=4.3361 t=54474s
+03:09:30 step=10500 mse=0.0068 lpips=0.0311 psnr=27.6 distill=3.9172 t=54524s
+03:09:47 VAL step=10500 psnr=30.52 lpips=0.0231
+03:10:37 step=10510 mse=0.0038 lpips=0.0226 psnr=30.1 distill=3.2662 t=54592s
+03:11:27 step=10520 mse=0.0035 lpips=0.0231 psnr=30.5 distill=3.1878 t=54641s
+03:12:17 step=10530 mse=0.0056 lpips=0.0318 psnr=28.5 distill=3.9538 t=54691s
+03:13:08 step=10540 mse=0.0057 lpips=0.0272 psnr=28.4 distill=3.4825 t=54742s
+03:13:58 step=10550 mse=0.0042 lpips=0.0230 psnr=29.6 distill=3.4249 t=54792s
+03:14:48 step=10560 mse=0.0042 lpips=0.0224 psnr=29.7 distill=3.1779 t=54842s
+03:15:38 step=10570 mse=0.0052 lpips=0.0276 psnr=28.8 distill=3.7415 t=54892s
+03:16:28 step=10580 mse=0.0024 lpips=0.0147 psnr=32.2 distill=2.4602 t=54942s
+03:17:18 step=10590 mse=0.0095 lpips=0.0531 psnr=26.2 distill=6.1070 t=54992s
+03:18:09 step=10600 mse=0.0078 lpips=0.0373 psnr=27.0 distill=4.2675 t=55043s
+03:18:26 VAL step=10600 psnr=30.52 lpips=0.0229
+03:18:26   New best lpips=0.0229 psnr=30.52
+03:19:16 step=10610 mse=0.0049 lpips=0.0298 psnr=29.0 distill=3.9316 t=55110s
+03:20:06 step=10620 mse=0.0036 lpips=0.0197 psnr=30.3 distill=3.1066 t=55160s
+03:20:57 step=10630 mse=0.0026 lpips=0.0152 psnr=31.8 distill=2.6310 t=55211s
+03:21:47 step=10640 mse=0.0040 lpips=0.0229 psnr=30.0 distill=3.3334 t=55261s
+03:22:37 step=10650 mse=0.0051 lpips=0.0265 psnr=28.8 distill=3.5097 t=55311s
+03:23:27 step=10660 mse=0.0048 lpips=0.0299 psnr=29.1 distill=3.9134 t=55361s
+03:24:17 step=10670 mse=0.0036 lpips=0.0234 psnr=30.4 distill=3.3754 t=55411s
+03:25:07 step=10680 mse=0.0067 lpips=0.0377 psnr=27.7 distill=4.5461 t=55461s
+03:25:57 step=10690 mse=0.0066 lpips=0.0387 psnr=27.7 distill=4.5473 t=55512s
+03:26:47 step=10700 mse=0.0066 lpips=0.0340 psnr=27.7 distill=4.2023 t=55561s
+03:27:05 VAL step=10700 psnr=30.45 lpips=0.0233
+03:27:55 step=10710 mse=0.0064 lpips=0.0345 psnr=27.9 distill=4.4680 t=55629s
+03:28:45 step=10720 mse=0.0059 lpips=0.0343 psnr=28.2 distill=4.9302 t=55679s
+03:29:35 step=10730 mse=0.0050 lpips=0.0298 psnr=29.0 distill=3.9951 t=55729s
+03:30:25 step=10740 mse=0.0054 lpips=0.0295 psnr=28.7 distill=3.6080 t=55779s
+03:31:16 step=10750 mse=0.0047 lpips=0.0284 psnr=29.2 distill=3.5573 t=55830s
+03:32:06 step=10760 mse=0.0044 lpips=0.0249 psnr=29.4 distill=3.3533 t=55880s
