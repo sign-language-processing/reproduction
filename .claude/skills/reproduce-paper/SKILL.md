@@ -13,6 +13,7 @@ Read `CLAUDE.md` at the repo root first — it holds the prime directive, the pa
 - Pick the directory: `repositories/USER/REPO/` if the paper published code, `repositories/papers/{semantic_scholar_id}/` if it didn't.
 - Record in its `README.md`: citation, upstream URL, **pinned commit**, dataset, target metrics, and the single command that should produce them.
 - Note the hardware you'll run on — it decides the NGC tag.
+- `modal volume ls` before touching the dataset: it is probably already there as `dataset-<slug>`. Mount it read-only, don't re-download.
 
 ## 1. Choose the preference level
 

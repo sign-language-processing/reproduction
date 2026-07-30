@@ -98,6 +98,17 @@ CPU-only repos: use a small `python:3.X-slim` matching the version the paper pin
 
 `libraries/*.md` documents known issues per dependency (flash-attn, decord, ffmpeg, …): required apt packages, install order, pip flags like `--no-build-isolation`, env vars. **Read the relevant ones before writing the Dockerfile.** When you learn something new the hard way, write it back there — that's how the next reproduction gets cheaper.
 
+### Data
+
+**All datasets live in Modal volumes, one volume per dataset, named `dataset-<slug>`** — e.g. RWTH-PHOENIX-Weather 2014T is `dataset-rwth-phoenix-2014t`.
+
+```bash
+modal volume ls                              # check before downloading anything
+modal volume ls dataset-rwth-phoenix-2014t
+```
+
+A dataset is uploaded once and mounted read-only by every reproduction that needs it. Never re-download a dataset that already has a volume, and never bake one into an image. If the volume doesn't exist yet, create it and commit the script that populates it (`scripts/data.sh`) where redistribution is permitted; otherwise document in `report.md` how the copy was obtained. Team S coordinates acquisition and permissions — never work around a license restriction.
+
 ### Compute
 
 Local and institutional first (S3IT at UZH, lab clusters). Container definitions should be SLURM-compatible via Apptainer/Singularity.
