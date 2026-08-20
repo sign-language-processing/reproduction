@@ -80,9 +80,15 @@ def _modal_identity() -> dict:
     }
 
 
-def _load_scores(model_dir: Path) -> dict:
+def _load_scores(model_dir: Path, result_stem: str = "best.IT_*") -> dict:
     output = subprocess.check_output(
-        [TRAIN_PYTHON, "/repro/scripts/extract_scores.py", str(model_dir)],
+        [
+            TRAIN_PYTHON,
+            "/repro/scripts/extract_scores.py",
+            str(model_dir),
+            "--result-stem",
+            result_stem,
+        ],
         text=True,
         env=_training_env(),
     )
@@ -243,6 +249,21 @@ def train() -> dict:
 
 @APP.function(
     image=IMAGE,
+    volumes={
+        "/cache/huggingface": HF_CACHE,
+        "/outputs": RESULTS.read_only(),
+    },
+    env=ENVIRONMENT,
+    timeout=600,
+)
+def collect_results() -> dict:
+    result = _load_scores(Path("/outputs/neccam-slt/full-seed-42"))
+    print(json.dumps(result, sort_keys=True))
+    return result
+
+
+@APP.function(
+    image=IMAGE,
     gpu="A100",
     volumes={
         "/datasets": DATASETS.read_only(),
@@ -272,4 +293,4 @@ def evaluate() -> dict:
         model_dir / "modal-eval.log",
     )
     RESULTS.commit()
-    return _load_scores(model_dir)
+    return _load_scores(model_dir, result_stem="re-eval")

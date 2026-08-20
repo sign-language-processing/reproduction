@@ -30,6 +30,8 @@ cp "${paper_dir}/model-card.md" "${publish_root}/upload/README.md"
 cp "${paper_dir}/metrics.json" "${publish_root}/upload/metrics.json"
 cp "${publish_root}/full-seed-42/modal-result.json" \
   "${publish_root}/upload/modal-result.json"
+(cd "${publish_root}/upload" && shasum -a 256 \
+  model.ckpt config.yaml metrics.json modal-result.json > SHA256SUMS)
 
 hf repos create repro-sign/neccam-slt --exist-ok --public
 hf upload repro-sign/neccam-slt "${publish_root}/upload" . \

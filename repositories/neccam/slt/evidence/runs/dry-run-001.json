@@ -2,7 +2,7 @@
   "schema_version": 1,
   "run_id": "dry-run-001",
   "kind": "dry_run",
-  "hypothesis": "The pinned feature archives, protocol-only compatibility derivatives, A100-compatible dependency pins, and unchanged upstream model path can complete real training, checkpoint reload, and evaluation.",
+  "hypothesis": "The pinned feature archives, protocol-only compatibility derivatives, A100-compatible dependency pins, and integer beam-division compatibility patch can complete real training, checkpoint reload, and the translation beam-search path that failed in the full attempt.",
   "target_ids": [
     "table-4-joint-dev-wer",
     "table-4-joint-dev-bleu4",
@@ -11,22 +11,22 @@
   ],
   "command": "repositories/neccam/slt/scripts/dry_run.sh",
   "working_directory": ".",
-  "started_at_utc": "2026-08-20T09:28:29.417204Z",
-  "finished_at_utc": "2026-08-20T09:29:32.078609Z",
+  "started_at_utc": "2026-08-20T10:28:39.652344Z",
+  "finished_at_utc": "2026-08-20T10:29:18.842248Z",
   "exit_code": 0,
   "terminal_state": "succeeded",
   "source": {
-    "repository_commit": "a163d8ec6b1d7207194b575508f696ddfda473ad",
-    "dirty_diff_sha256": "e514da1978e1d44201f6c5e47463a10d1638d91f4081bce10bbd0626ebd6febf",
+    "repository_commit": "7d3fc032e401d7c543dade45e1f236d678122b18",
+    "dirty_diff_sha256": null,
     "upstream_revision": "90588825f6229474bc19ac7a6b30ea3116635ba3",
     "patch_sha256": [
-      "ca27dbc6aa81deb6495fd311f66ffb6ba770eb7e4d5f9722f0e78ea0fd57378a"
+      "2f56606c5c8c5788e288a89f5ef3e5d7e8cc4c19f57387af570aaa2719e2204c"
     ]
   },
   "environment": {
-    "image": "Modal im-wXRCIDgguIJAaqKhjFLbCP (Docker image im-F8FlWvseUmE4niwr6kkEO6)",
-    "image_digest": "modal-image-id:im-wXRCIDgguIJAaqKhjFLbCP",
-    "dependency_manifest": "Dockerfile"
+    "image": "Modal im-MmlcOnE9uxKbTIvDRme4n2 (Docker image im-2gEMhouo0B1YSbNUQbsAHK)",
+    "image_digest": "modal-image-id:im-MmlcOnE9uxKbTIvDRme4n2",
+    "dependency_manifest": "evidence/environment/pip-freeze.txt"
   },
   "data": [
     {
@@ -40,7 +40,7 @@
     }
   ],
   "configuration": {
-    "config_artifact": "configs/dry.yaml (SHA-256 e67fddd5668718ac1f5e057e802de30dc24d86e4e9fb365dd1c5eefe536d8e74)",
+    "config_artifact": "configs/dry.yaml (SHA-256 a53f6fb49de83ea6a943b145c863ebd0e875a7c2359ba590b93ddcf989861de9)",
     "seed": 42,
     "precision": "fp32",
     "effective_batch_size": 8,
@@ -51,14 +51,14 @@
     "platform": "modal",
     "modal_profile": "repro-sign",
     "modal_environment": "main",
-    "modal_app_id": "ap-b7dPxITH2mpdvg2yrdzK3U",
-    "modal_function_call_id": "fc-01M0F7ZZKGRJXECQB5MNKD231G",
-    "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
+    "modal_app_id": "ap-tiICw61YXIQNrukApq8OYV",
+    "modal_function_call_id": "fc-01M0FBE9Q025M69M128EA7YRKF",
+    "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-tiICw61YXIQNrukApq8OYV",
     "hardware": "NVIDIA A100-SXM4-40GB; driver 580.95.05; CUDA runtime 11.0",
     "gpu_count": 1,
     "peak_gpu_memory_gb": null,
-    "wall_time_hours": 0.017406,
-    "gpu_hours": 0.017406,
+    "wall_time_hours": 0.010886,
+    "gpu_hours": 0.010886,
     "estimated_cost": null,
     "actual_cost": null,
     "shared_cache": {
@@ -76,8 +76,8 @@
     }
   },
   "evidence": {
-    "stdout": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
-    "stderr": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
+    "stdout": "https://modal.com/apps/repro-sign/main/ap-tiICw61YXIQNrukApq8OYV",
+    "stderr": "https://modal.com/apps/repro-sign/main/ap-tiICw61YXIQNrukApq8OYV",
     "raw_metrics": [
       "Modal Volume neccam-slt-results:neccam-slt/dry-run.json",
       "Modal Volume neccam-slt-results:neccam-slt/dry-seed-42/best.IT_00000002.dev_results.pkl",
@@ -87,7 +87,7 @@
       "Modal Volume neccam-slt-results:neccam-slt/dry-seed-42/2.ckpt"
     ]
   },
-  "observation": "Loaded 32/8/8 real examples, ran four CUDA optimizer steps and two validations, saved and reloaded step-2 checkpoint, and produced dev WER 96.7213, dev BLEU-4 0.0, test WER 94.0299, and test BLEU-4 0.0 on the tiny subsets in 62.66 seconds.",
+  "observation": "Loaded 32/8/8 real examples, ran four CUDA optimizer steps and two validations, saved and reloaded step-2 checkpoint, and successfully exercised translation beam size 2 with alpha 0. It produced dev WER 96.7213, dev BLEU-4 0.0, test WER 94.0299, and test BLEU-4 0.0 on the tiny subsets in 39.19 seconds.",
   "hypothesis_supported": true,
-  "next_action": "Keep the compatibility changes and run the full seed-42 configuration."
+  "next_action": "Keep the one-line compatibility patch and evaluate the preserved full seed-42 checkpoint."
 }

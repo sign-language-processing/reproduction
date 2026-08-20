@@ -1,0 +1,18 @@
+From: REPRO-SIGN reproduction
+Subject: Preserve integer beam indices with PyTorch 1.7
+
+PyTorch 1.7 applies true division to integer tensors, so Tensor.div returns a
+Float tensor here. index_select requires Long indices and the published code
+therefore fails as soon as translation beam size exceeds one. Floor division
+preserves the PyTorch 1.4 behavior for these non-negative flattened IDs.
+
+diff --git a/signjoey/search.py b/signjoey/search.py
+--- a/signjoey/search.py
++++ b/signjoey/search.py
+@@ -354,5 +354,5 @@ def beam_search(
+         # reconstruct beam origin and true word ids from flattened order
+-        topk_beam_index = topk_ids.div(decoder.output_size)
++        topk_beam_index = topk_ids // decoder.output_size
+         topk_ids = topk_ids.fmod(decoder.output_size)
+ 
+         # map beam_index to batch_index in the flat representation
