@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Select and normalize one final/confirmed REPRO-SIGN candidate record."""
+"""Import one final/confirmed candidate into a paper reproduction record."""
 
 from __future__ import annotations
 
@@ -91,17 +91,16 @@ def select_record(records: Any, paper_id: str) -> dict[str, Any]:
     return record
 
 
-def build_output(
+def build_assignment(
     source: Path, source_bytes: bytes, record: dict[str, Any]
 ) -> dict[str, Any]:
     return {
-        "schema_version": 1,
+        "kind": "queue_record",
         "source": {
             "path": str(source.resolve()),
             "sha256": hashlib.sha256(source_bytes).hexdigest(),
         },
         "normalized": {
-            "paper_id": record["paper_id"],
             "title": record.get("title"),
             "year": record.get("year"),
             "venue": record.get("venue"),
@@ -126,7 +125,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, help="JSON candidate export")
     parser.add_argument("paper_id", help="exact paper_id to select")
-    parser.add_argument("output", type=Path, help="candidate.json destination")
+    parser.add_argument("output", type=Path, help="reproduction.json destination")
     return parser.parse_args()
 
 
@@ -136,15 +135,21 @@ def main() -> int:
         source_bytes = args.source.read_bytes()
         records = json.loads(source_bytes)
         record = select_record(records, args.paper_id)
-        output = build_output(args.source, source_bytes, record)
+        assignment = build_assignment(args.source, source_bytes, record)
 
         if args.output.exists():
-            existing = json.loads(args.output.read_text(encoding="utf-8"))
-            existing_id = existing.get("normalized", {}).get("paper_id")
+            output = json.loads(args.output.read_text(encoding="utf-8"))
+            existing_id = output.get("paper_id")
             if existing_id not in (None, args.paper_id):
                 fail(
-                    f"refusing to replace candidate.json for different paper {existing_id!r}"
+                    "refusing to update reproduction.json for different paper "
+                    f"{existing_id!r}"
                 )
+        else:
+            output = {"schema_version": 1, "paper_id": args.paper_id}
+        output["schema_version"] = 1
+        output["paper_id"] = args.paper_id
+        output["assignment"] = assignment
 
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(
@@ -154,7 +159,7 @@ def main() -> int:
         print(f"candidate ingestion failed: {exc}", file=sys.stderr)
         return 2
 
-    print(f"wrote final/confirmed candidate {args.paper_id} to {args.output}")
+    print(f"imported final/confirmed candidate {args.paper_id} into {args.output}")
     return 0
 
 

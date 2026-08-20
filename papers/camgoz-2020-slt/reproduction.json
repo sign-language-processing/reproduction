@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "paper_id": "camgoz-2020-slt",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "sha256": "c09da8fe2b2bc546655c632ee852f699dedbe340a9c74ad4488c169745a73d85"
+    },
+    "request": "Complete the neccam/slt reproduction using Modal repro-sign, run training and evaluation to completion, publish permitted weights to Hugging Face repro-sign, and update the pull request."
+  },
+  "paper": {
+    "title": "Sign Language Transformers: Joint End-to-End Sign Language Recognition and Translation",
+    "citation": "Camgoz, Koller, Hadfield, and Bowden. 2020. Sign Language Transformers: Joint End-to-End Sign Language Recognition and Translation. CVPR.",
+    "url": "https://openaccess.thecvf.com/content_CVPR_2020/papers/Camgoz_Sign_Language_Transformers_Joint_End-to-End_Sign_Language_Recognition_and_Translation_CVPR_2020_paper.pdf",
+    "pdf_sha256": "ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1",
+    "accessed_at": "2026-08-20"
+  },
+  "sources": [
+    {
+      "source_id": "published-code",
+      "kind": "code",
+      "url": "https://github.com/neccam/slt",
+      "revision_or_sha256": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+      "role": "Authors' model, config, training, search, evaluation, and metrics"
+    }
+  ],
+  "status": {
+    "pipeline": "complete",
+    "numerical_agreement": "not_fully_reproduced",
+    "preference_level": 1
+  },
+  "datasets": [
+    {
+      "dataset_id": "phoenix14t-pami0-author",
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "authors' restored pami0 1024-D pretrained CNN frame features",
+      "sources": [
+        {
+          "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+          "accessed_at": "2026-08-20"
+        },
+        {
+          "url": "https://github.com/neccam/nslt/issues/38#issuecomment-4330442225",
+          "accessed_at": "2026-08-20"
+        }
+      ],
+      "license_or_permission": "CC BY-NC-SA 4.0; non-commercial research processing on project cloud",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 7095,
+          "files": [
+            {
+              "path": "phoenix14t.pami0.train",
+              "source_id": "1dMeGabpIu_iuXgKNgCN0Zu3rN2I95EfJ",
+              "size_bytes": 1935289362,
+              "sha256": "196842893dd43c98a5574132dceccf50f3e8f95af853042377cf05519757a773"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 519,
+          "files": [
+            {
+              "path": "phoenix14t.pami0.dev",
+              "source_id": "1ypsh2sXw74B3WkFuMQbvA4FfGaGaUawQ",
+              "size_bytes": 130831227,
+              "sha256": "5be78d8488eaa4400e3bfcac1cf9096f7932595e4b5116eab53c19024693c6e6"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 642,
+          "files": [
+            {
+              "path": "phoenix14t.pami0.test",
+              "source_id": "1fjWlXzQLsfdNVPD6B3U0r6v88JLnT4eP",
+              "size_bytes": 151327204,
+              "sha256": "068c85c2f675e21ce0e6e4e9d419bc63fac7f43678783a7e5eb452ecb38c566a"
+            }
+          ]
+        }
+      ],
+      "video_decoding": "Not used; the published pipeline consumes precomputed features.",
+      "deviations": []
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "wer-upstream-9058882",
+      "name": "Word Error Rate",
+      "direction": "lower_is_better",
+      "implementation": "neccam/slt signjoey.metrics.wer_list",
+      "version": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+      "aggregation": "Corpus errors divided by total reference tokens",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "bleu4-upstream-9058882",
+      "name": "BLEU-4",
+      "direction": "higher_is_better",
+      "implementation": "neccam/slt bundled raw_corpus_bleu based on sacrebleu 1.4.4",
+      "version": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+      "aggregation": "Untokenized corpus BLEU",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table-4-joint",
+      "system": "Sign2(Gloss+Text), lambda_R=1.0, lambda_T=1.0",
+      "dataset_id": "phoenix14t-pami0-author",
+      "required_seeds": [42],
+      "checkpoint_rule": "Highest development BLEU under plateau scheduling; recognition and translation decoding parameters selected on development and applied to test",
+      "paper_evidence": "Paper PDF SHA-256 ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1, Table 4"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table-4-joint-dev-wer",
+      "paper_location": "Table 4, page 7, lambda_R=1.0 and lambda_T=1.0 row, DEV WER",
+      "experiment_id": "table-4-joint",
+      "split": "dev",
+      "metric_id": "wer-upstream-9058882",
+      "original_value": 35.13,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 53.669602348545496,
+        "difference": 18.539602348545493,
+        "run_ids": ["full-seed-42"],
+        "artifact_ids": ["dev-native-results"],
+        "notes": "Recognition beam 10 selected on development."
+      }
+    },
+    {
+      "target_id": "table-4-joint-dev-bleu4",
+      "paper_location": "Table 4, page 7, lambda_R=1.0 and lambda_T=1.0 row, DEV BLEU-4",
+      "experiment_id": "table-4-joint",
+      "split": "dev",
+      "metric_id": "bleu4-upstream-9058882",
+      "original_value": 21.73,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 19.14596546598054,
+        "difference": -2.584034534019459,
+        "run_ids": ["full-seed-42"],
+        "artifact_ids": ["dev-native-results"],
+        "notes": "Translation beam 2 and alpha 2 selected on development."
+      }
+    },
+    {
+      "target_id": "table-4-joint-test-wer",
+      "paper_location": "Table 4, page 7, lambda_R=1.0 and lambda_T=1.0 row, TEST WER",
+      "experiment_id": "table-4-joint",
+      "split": "test",
+      "metric_id": "wer-upstream-9058882",
+      "original_value": 33.75,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 54.00328715660954,
+        "difference": 20.253287156609538,
+        "run_ids": ["full-seed-42"],
+        "artifact_ids": ["test-native-results"],
+        "notes": "Development-selected recognition beam 10 applied to test."
+      }
+    },
+    {
+      "target_id": "table-4-joint-test-bleu4",
+      "paper_location": "Table 4, page 7, lambda_R=1.0 and lambda_T=1.0 row, TEST BLEU-4",
+      "experiment_id": "table-4-joint",
+      "split": "test",
+      "metric_id": "bleu4-upstream-9058882",
+      "original_value": 21.22,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 18.488908461016344,
+        "difference": -2.731091538983655,
+        "run_ids": ["full-seed-42"],
+        "artifact_ids": ["test-native-results"],
+        "notes": "Development-selected translation beam 2 and alpha 2 applied to test."
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "full-seed-42",
+      "kind": "full_reproduction",
+      "hypothesis": "The authors' restored pami0 features, pinned code, published config, and legacy PyTorch 1.4 environment will reproduce the complete pipeline without a source patch.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run repositories/neccam/slt/modal_app.py::train",
+      "started_at_utc": "2026-08-20T14:35:51.340041Z",
+      "finished_at_utc": "2026-08-20T16:08:46.103599Z",
+      "duration_seconds": 5574.7635532819995,
+      "exit_code": 0,
+      "terminal_state": "succeeded",
+      "source": {
+        "repository_commit": "bd919a6fa24771ad311e6d30771459d8daa23c85",
+        "dirty_diff_sha256": "9489a7deb6d4340d3d4887c2fa07d069ee42262492717cda7d53c1746e8265a5",
+        "upstream_revision": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+        "patch_sha256": []
+      },
+      "environment": {
+        "image": "Dockerfile",
+        "base_image_digest": "sha256:5d81539e4f3fab923fac7599baaf44ac055a0e69a47d49aed7c9da1e499c9cba",
+        "dependency_manifest": "Dockerfile",
+        "software": {
+          "python": "3.7",
+          "pytorch": "1.4.0",
+          "torchtext": "0.5.0",
+          "precision": "fp32"
+        }
+      },
+      "configuration": {
+        "artifact_id": "upstream-config",
+        "seed": 42,
+        "precision": "fp32",
+        "effective_batch_size": 32
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-7aW0BiKItDEIHlMKv525Y7",
+        "modal_function_call_id": "fc-01M0FSJMYJPDHG8GP8MM794CN3",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7aW0BiKItDEIHlMKv525Y7",
+        "hardware": "NVIDIA Tesla T4 15360 MiB, driver 580.95.05",
+        "gpu_count": 1,
+        "wall_time_hours": 1.548545431467222,
+        "gpu_hours": 1.548545431467222,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "upstream-config",
+        "selected-checkpoint",
+        "dev-native-results",
+        "test-native-results",
+        "train-log"
+      ],
+      "observation": "The upstream entry point stopped normally at step 4400, selected checkpoint step 2600, completed development selection and fixed-parameter test evaluation, and produced every target.",
+      "hypothesis_supported": true,
+      "next_action": "Keep the upstream recipe and report numerical agreement separately."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "upstream-config",
+      "kind": "configuration",
+      "uri": "https://huggingface.co/repro-sign/neccam-slt/resolve/157663da7cd6390cb8c999e848e55645ec4336ea/config.yaml",
+      "sha256": "89242e5195403c5721cf2430236d70817a5de17c8d648bbc9d5e3a214fd07183",
+      "size_bytes": 2473
+    },
+    {
+      "artifact_id": "selected-checkpoint",
+      "kind": "checkpoint",
+      "uri": "https://huggingface.co/repro-sign/neccam-slt/resolve/157663da7cd6390cb8c999e848e55645ec4336ea/model.ckpt",
+      "sha256": "e5c34ece5e41039bc0997281352eb4c8a0d10da53ba7da23af40c7a67d3fa8b8",
+      "size_bytes": 333937813,
+      "license": "CC BY-NC-SA 4.0"
+    },
+    {
+      "artifact_id": "dev-native-results",
+      "kind": "raw_metrics",
+      "uri": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/best.IT_00002600.dev_results.pkl",
+      "sha256": "6320b79130764fed78272ef15c8008ab34b4d0368bbb7e9e1c7ef209f327536e",
+      "size_bytes": 14011496
+    },
+    {
+      "artifact_id": "test-native-results",
+      "kind": "raw_metrics",
+      "uri": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/best.IT_00002600.test_results.pkl",
+      "sha256": "374fc270716f5ba7b84314dd3032a4cbbd5b2f3b2050d5dd6c6ab881a02a003f",
+      "size_bytes": 224931
+    },
+    {
+      "artifact_id": "train-log",
+      "kind": "log",
+      "uri": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/train.log",
+      "sha256": "8d547aec66854de9069add86347a58b7790c3c610eb8debd3bb51963061381e6",
+      "size_bytes": 301505
+    }
+  ],
+  "guesses": [
+    "The assignment was resolved to the supplied joint lambda_R=1, lambda_T=1 configuration and matching Table 4 row.",
+    "The paper does not identify the Table 4 seed; the published configuration pins seed 42, so this reproduction uses one seed-42 run."
+  ],
+  "deviations": [
+    "The Dockerfile omits two conda self-management pins, replaces three unavailable dependency patch releases, and pins typing-extensions for the Python 3.7 child; model code and configuration values were not changed.",
+    "The supplied config searches translation alphas -1 through 5 and uses learning_rate_min=1e-7, while the paper states alphas 0 through 2 and learning_rate_min=1e-6. The published config was treated as the executable recipe."
+  ],
+  "dead_ends": [
+    "A third-party feature mirror produced about 11 BLEU but had different archive sizes and vocabulary. The path and all bespoke compatibility tooling were discarded after the authors' restored files were found."
+  ]
+}

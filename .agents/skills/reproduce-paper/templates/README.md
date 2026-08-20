@@ -1,4 +1,4 @@
-# Reproduction report: <paper short name>
+# <paper short name> reproduction
 
 **Paper ID:** `<paper_id>`
 
@@ -14,7 +14,7 @@
 
 ## Scope and target contract
 
-Exact assignment text and how it was resolved into `targets.json`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution.
+Exact assignment text and how it was resolved into `reproduction.json.targets`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution. Keep this README as the complete human-readable report; do not create a second report or model-card file.
 
 ## Source provenance
 
@@ -89,7 +89,3 @@ Record how queue comments, copied-score, ethics, and human-evaluation flags were
 ## Author and team contact
 
 State none, or who was contacted, when, why, the response, and what it changed. Distinguish Team S data-access coordination from post-attempt author help.
-
-## Terminal account
-
-Explain why the selected reproducibility status follows from target coverage and blockers. List every target as produced or not produced and point to its evidence. Leave scientific success/failure judgment to the human reviewer.

@@ -2,7 +2,7 @@
 
 ## Evidence bundle
 
-Every attempt that changes the reproduction's state or informs a decision needs a small run manifest based on `templates/run.json`. Use one file per meaningful run under `evidence/runs/`; use stable unique names such as `dry-run-001.json`, `full-seed-42.json`, and `eval-seed-42.json`.
+Every meaningful retained attempt that changes the reproduction's state or informs a terminal decision needs a small entry in `reproduction.json.runs`. Use stable unique IDs such as `compatibility-check-001`, `full-seed-42`, and `eval-seed-42`. A disposable preflight superseded by a successful full run does not need a permanent entry. Keep bounded small evidence in the entry and put large logs/results on permitted external storage with immutable URIs and hashes.
 
 Capture:
 
@@ -16,14 +16,14 @@ Capture:
 - Modal profile `repro-sign`, environment, app and function-call/run IDs, and links when applicable;
 - shared cache mount `huggingface-cache`, its mount path, and Hugging Face cache environment when the run uses Modal;
 - bounded stdout/stderr and immutable references/hashes for large logs or outputs;
-- target IDs exercised and raw metric artifacts produced;
+- target results linked to the run and raw metric artifacts produced;
 - observed result and whether the hypothesis was supported.
 
 Never place credentials, private URLs with embedded tokens, dataset samples, or restricted content in evidence.
 
 ## Attempt ledger
 
-Put human-readable attempt summaries in `report.md` and link their manifests. Before changing anything, write the current hypothesis and cheapest discriminating test. After the test, record actual behavior. Keep or revert the change; do not stack untested fixes.
+Put human-readable attempt summaries in `README.md` and link their run IDs. Before changing anything, write the current hypothesis and cheapest discriminating test. After the test, record actual behavior. Keep or revert the change; do not stack untested fixes.
 
 ### Retry classes
 
@@ -43,17 +43,17 @@ A retry ceiling is a maximum, not a target. Stop early when a retry cannot test 
 
 ## Terminal target states
 
-Each target ends as:
+Each target embeds one terminal `result`:
 
 - `produced`: the requested pipeline emitted a traceable value; or
 - `not_produced`: no value was emitted, with a specific blocker and evidence.
 
-Do not use numerical closeness to assign these states. Store the original, reproduced value, delta, scale/unit, and evidence pointer in `metrics.json` when produced.
+Do not use numerical closeness to assign these states. Store the reproduced value, mechanically computed delta, run IDs, and artifact IDs beside the target contract without repeating the target in another file.
 
 Choose the overall reproducibility status from target coverage and the actual blocker:
 
-- all targets produced → `reproduced`;
-- only some produced → `partially_reproduced`;
+- all targets produced → `complete`;
+- only some produced → `partial`;
 - none produced because exact data is unavailable/impermissible → `blocked_on_data`;
 - none produced after reviewed out-of-budget requirements → `blocked_on_compute`;
 - none produced because no executable path survives documented attempts → `blocked_on_code`;
@@ -65,13 +65,12 @@ If multiple blockers exist, report all and choose the earliest blocker that inde
 
 Before handoff:
 
-- every `target_id` in `targets.json` appears exactly once in `metrics.json`;
-- no target remains `pending`;
-- every score points to an existing run manifest and raw metric artifact or immutable external reference;
+- every target ID is unique and has one terminal result;
+- every result points to an existing run and raw artifact by internal ID;
 - paper/candidate IDs agree across JSON files;
-- `metrics.json` and `report.md` use the same overall status and preference level;
+- `reproduction.json` and `README.md` use the same overall status and preference level;
 - commands, hashes, pins, data identity, guesses, deviations, patches, dead ends, contacts, runtime, and compute identifiers are complete;
 - templates contain no examples, alternatives, or placeholder markers;
-- a fresh dry execution from the documented entry point reaches metric parsing.
+- the retained full run reaches metric parsing, or a representative preflight does when the full run is gated.
 
 Run the validator, fix all errors, and inspect the final diff. The validator checks structure and cross-file invariants; it does not replace scientific review.
