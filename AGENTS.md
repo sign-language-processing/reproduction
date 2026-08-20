@@ -118,6 +118,8 @@ Choose CUDA and framework versions for the hardware that will actually run the j
 
 Whenever a reproduction decodes video files, use `simple-video-utils` and consult `libraries/simple-video-utils.md` when it exists. Do not add video decoding when the published pipeline consumes precomputed features.
 
+Treat published code, configs, and entry points as the reproduction recipe. Do not copy or reimplement them locally; keep only the smallest path/data/output adaptation that the pinned upstream artifact cannot express.
+
 Before a full run:
 
 1. Complete a real dry run that loads data and weights, executes several training steps, saves/reloads a checkpoint when applicable, and evaluates a tiny subset.

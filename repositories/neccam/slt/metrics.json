@@ -9,59 +9,47 @@
       {
         "url": "https://github.com/neccam/slt",
         "revision_or_sha256": "90588825f6229474bc19ac7a6b30ea3116635ba3",
-        "role": "Published training, development selection, and test implementation"
-      },
-      {
-        "url": "https://huggingface.co/datasets/lavinal712/slt",
-        "revision_or_sha256": "d5c32f2cd1cf27a26083671532a32e75c98dbae3",
-        "role": "Pinned public mirror of the authors' unavailable pami0 feature archives"
+        "role": "Authors' training, development selection, test evaluation, and metrics"
       }
     ]
   },
   "reproducibility_status": "reproduced",
+  "numerical_agreement": "not_fully_reproduced",
   "preference_level": 2,
   "datasets": [
     {
       "name": "RWTH-PHOENIX-Weather 2014T",
-      "version_or_subset": "PHOENIX14T train/dev/test with pami0 1024-D pretrained CNN frame features",
+      "version_or_subset": "authors' restored pami0 1024-D pretrained CNN frame features",
       "splits": ["train", "dev", "test"],
       "source_urls": [
         "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
-        "https://huggingface.co/datasets/lavinal712/slt/tree/d5c32f2cd1cf27a26083671532a32e75c98dbae3"
+        "https://github.com/neccam/nslt/issues/38#issuecomment-4330442225"
       ],
-      "license_or_permission": "CC BY-NC-SA 4.0; non-commercial research and project-cloud processing",
+      "license_or_permission": "CC BY-NC-SA 4.0; non-commercial research processing on project cloud",
       "cloud_processing_allowed": true,
       "modal_volume": "datasets",
-      "modal_path": "rwth-phoenix-2014-t/features/",
+      "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/",
       "manifest_or_checksum": "evidence/data/features.json",
-      "deviation": "The authors' feature URLs no longer resolve. A pinned public mirror was used, and its protocol-5 declaration was changed to protocol 4 while preserving all subsequent decompressed bytes. Cryptographic equivalence to the unavailable author-hosted files cannot be established."
+      "deviation": null
     }
   ],
-  "runs": [
-    "evidence/runs/dry-run-001.json",
-    "evidence/runs/full-train-seed-42.json",
-    "evidence/runs/full-eval-seed-42.json"
-  ],
+  "runs": ["evidence/runs/full-seed-42.json"],
   "model_artifact": {
     "repository": "https://huggingface.co/repro-sign/neccam-slt",
-    "revision": "6ae275aec44b59d129f22fab36a7120f05f94eb3",
+    "revision": "157663da7cd6390cb8c999e848e55645ec4336ea",
     "checkpoint": "model.ckpt",
-    "checkpoint_sha256": "72f6cac1723463f9c7781051ab9bcd77c34ed3675637389bf09f0f6a4bc7d576",
-    "checkpoint_size_bytes": 334956987,
+    "checkpoint_sha256": "e5c34ece5e41039bc0997281352eb4c8a0d10da53ba7da23af40c7a67d3fa8b8",
+    "checkpoint_size_bytes": 333937813,
     "license": "CC BY-NC-SA 4.0"
   },
   "author_contact": [],
   "guesses": [
-    "The direct request to reproduce repositories/neccam/slt was resolved to the repository's supplied default joint lambda_R=1, lambda_T=1 configuration and its matching Table 4 row.",
-    "The paper does not identify the seed or score aggregation behind Table 4; the published configuration pins seed 42, so one seed-42 run was used."
+    "The assignment was resolved to the repository's supplied joint lambda_R=1, lambda_T=1 configuration and matching Table 4 row.",
+    "The paper does not identify the Table 4 seed; the published configuration pins seed 42, so this reproduction uses one seed-42 run."
   ],
   "deviations": [
-    "The unavailable author-hosted pami0 archives were replaced by a checksum-pinned public mirror whose identity with the originals cannot be proven.",
-    "The mirror's pickle protocol declaration was changed from 5 to 4 for Python 3.7; every later decompressed byte is identical.",
-    "PyTorch/torchvision/torchtext 1.4.0/0.5.0/0.5.0 were replaced by 1.7.1+cu110/0.8.2+cu110/0.8.1 so the A100 could execute; one integer-division compatibility patch restores the old beam-index dtype.",
-    "The supplied config searches recognition and translation beams 1 through 10 and translation alphas -1 through 5, while the paper states beams 0 through 10 and alphas 0 through 2.",
-    "The supplied config uses learning_rate_min=1e-7, while the paper states 1e-6.",
-    "The paper does not report A100 hardware or the exact CUDA stack used here."
+    "The Dockerfile omits two conda self-management pins, replaces three unavailable dependency patch releases, and pins typing-extensions for the Python 3.7 child; model code and configuration values were not changed.",
+    "The supplied config searches translation alphas -1 through 5 and uses learning_rate_min=1e-7, while the paper text states alphas 0 through 2 and learning_rate_min=1e-6. The repository config was treated as the executable recipe."
   ],
   "scores": [
     {
@@ -74,11 +62,11 @@
       "metric_implementation": "neccam/slt signjoey.metrics.wer_list at 90588825f6229474bc19ac7a6b30ea3116635ba3",
       "unit_or_scale": "percent",
       "original": 35.13,
-      "reproduced": 80.54443554843876,
-      "difference": 45.41443554843875,
+      "reproduced": 53.669602348545496,
+      "difference": 18.539602348545493,
       "copied_baseline": false,
-      "run_ids": ["full-train-seed-42", "full-eval-seed-42"],
-      "raw_metric_artifacts": ["evidence/logs/full-result.json"],
+      "run_ids": ["full-seed-42"],
+      "raw_metric_artifacts": ["evidence/logs/result.json"],
       "terminal_reason": null,
       "notes": "Recognition beam 10 selected on development."
     },
@@ -92,13 +80,13 @@
       "metric_implementation": "neccam/slt bundled raw_corpus_bleu based on sacrebleu 1.4.4 at 90588825f6229474bc19ac7a6b30ea3116635ba3",
       "unit_or_scale": "percent",
       "original": 21.73,
-      "reproduced": 11.356607119357463,
-      "difference": -10.373392880642538,
+      "reproduced": 19.14596546598054,
+      "difference": -2.584034534019459,
       "copied_baseline": false,
-      "run_ids": ["full-train-seed-42", "full-eval-seed-42"],
-      "raw_metric_artifacts": ["evidence/logs/full-result.json"],
+      "run_ids": ["full-seed-42"],
+      "raw_metric_artifacts": ["evidence/logs/result.json"],
       "terminal_reason": null,
-      "notes": "Translation beam 4 and alpha -1 selected on development."
+      "notes": "Translation beam 2 and alpha 2 selected on development."
     },
     {
       "target_id": "table-4-joint-test-wer",
@@ -110,11 +98,11 @@
       "metric_implementation": "neccam/slt signjoey.metrics.wer_list at 90588825f6229474bc19ac7a6b30ea3116635ba3",
       "unit_or_scale": "percent",
       "original": 33.75,
-      "reproduced": 77.74125381544964,
-      "difference": 43.99125381544964,
+      "reproduced": 54.00328715660954,
+      "difference": 20.253287156609538,
       "copied_baseline": false,
-      "run_ids": ["full-train-seed-42", "full-eval-seed-42"],
-      "raw_metric_artifacts": ["evidence/logs/full-result.json"],
+      "run_ids": ["full-seed-42"],
+      "raw_metric_artifacts": ["evidence/logs/result.json"],
       "terminal_reason": null,
       "notes": "Development-selected recognition beam 10 applied to test."
     },
@@ -128,13 +116,13 @@
       "metric_implementation": "neccam/slt bundled raw_corpus_bleu based on sacrebleu 1.4.4 at 90588825f6229474bc19ac7a6b30ea3116635ba3",
       "unit_or_scale": "percent",
       "original": 21.22,
-      "reproduced": 11.115836000121636,
-      "difference": -10.104163999878363,
+      "reproduced": 18.488908461016344,
+      "difference": -2.731091538983655,
       "copied_baseline": false,
-      "run_ids": ["full-train-seed-42", "full-eval-seed-42"],
-      "raw_metric_artifacts": ["evidence/logs/full-result.json"],
+      "run_ids": ["full-seed-42"],
+      "raw_metric_artifacts": ["evidence/logs/result.json"],
       "terminal_reason": null,
-      "notes": "Development-selected translation beam 4 and alpha -1 applied to test."
+      "notes": "Development-selected translation beam 2 and alpha 2 applied to test."
     }
   ]
 }

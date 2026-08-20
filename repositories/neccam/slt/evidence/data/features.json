@@ -3,52 +3,39 @@
   "dataset": "RWTH-PHOENIX-Weather 2014T",
   "subset": "pami0 pretrained 1024-D CNN frame features",
   "modal_volume": "datasets",
-  "modal_path": "rwth-phoenix-2014-t/features/",
+  "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/",
   "license": "CC BY-NC-SA 4.0",
-  "license_url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
-  "cloud_processing_basis": "Non-commercial research use under the dataset license.",
-  "source": {
-    "repository": "lavinal712/slt",
-    "type": "Hugging Face dataset",
-    "revision": "d5c32f2cd1cf27a26083671532a32e75c98dbae3",
+  "sources": {
+    "author_restored_files": "https://github.com/neccam/nslt/issues/38#issuecomment-4330442225",
+    "google_drive_ids": {
+      "train": "1dMeGabpIu_iuXgKNgCN0Zu3rN2I95EfJ",
+      "dev": "1ypsh2sXw74B3WkFuMQbvA4FfGaGaUawQ",
+      "test": "1fjWlXzQLsfdNVPD6B3U0r6v88JLnT4eP"
+    },
     "accessed_at": "2026-08-20"
   },
   "files": [
     {
       "split": "train",
-      "records": 7096,
-      "source_name": "phoenix14t.pami0.train",
-      "source_size": 1449330684,
-      "source_sha256": "5418d19653644e7bb7a7579c6a5164b169eb5155101b621f5d23d9f543ddd0fb",
-      "runtime_name": "phoenix14t.pami0.train.protocol4",
-      "runtime_size": 1449330661,
-      "runtime_sha256": "c45c4cbce46c74586a316876ba2d73eaa0fc19a9e0a0ec08d943f2fa6bb6afbb"
+      "records": 7095,
+      "name": "phoenix14t.pami0.train",
+      "size": 1935289362,
+      "sha256": "196842893dd43c98a5574132dceccf50f3e8f95af853042377cf05519757a773"
     },
     {
       "split": "dev",
       "records": 519,
-      "source_name": "phoenix14t.pami0.dev",
-      "source_size": 97747545,
-      "source_sha256": "7daa7074035c5617e71aab039ff9d2b7fc8a854efab3b060415baa63bbaa5774",
-      "runtime_name": "phoenix14t.pami0.dev.protocol4",
-      "runtime_size": 97747524,
-      "runtime_sha256": "48731f8fec864df137962bfa9987504a88ed766001a7676afccf39366b6eaa3e"
+      "name": "phoenix14t.pami0.dev",
+      "size": 130831227,
+      "sha256": "5be78d8488eaa4400e3bfcac1cf9096f7932595e4b5116eab53c19024693c6e6"
     },
     {
       "split": "test",
       "records": 642,
-      "source_name": "phoenix14t.pami0.test",
-      "source_size": 113400935,
-      "source_sha256": "db3349323834e2eca80f36d81a2ed0459a53a7b59e4ea298f41fc6c91d72504a",
-      "runtime_name": "phoenix14t.pami0.test.protocol4",
-      "runtime_size": 113400913,
-      "runtime_sha256": "8c0b6d40d66564df4c0fa2f888888c89bfd76b2fb85f6a03cce86a61c5d16401"
+      "name": "phoenix14t.pami0.test",
+      "size": 151327204,
+      "sha256": "068c85c2f675e21ce0e6e4e9d419bc63fac7f43678783a7e5eb452ecb38c566a"
     }
   ],
-  "compatibility_conversion": {
-    "reason": "The mirror declares pickle protocol 5 but the published Python 3.7 runtime supports at most protocol 4.",
-    "operation": "Change the decompressed pickle header from 0x8005 to 0x8004 and preserve every subsequent payload byte.",
-    "validation": "Opcode inspection found no protocol-5-only opcodes; all three derivatives loaded successfully in Python 3.7 and exposed 1024-D features with the expected split counts."
-  },
-  "video_decoding": "None. The published experiment consumes these precomputed features."
+  "video_decoding": "No video is decoded; the upstream recipe consumes the authors' precomputed features."
 }

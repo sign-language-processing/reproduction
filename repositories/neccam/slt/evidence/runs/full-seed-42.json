@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "run_id": "full-seed-42",
+  "kind": "full_reproduction",
+  "hypothesis": "The authors' restored pami0 features, pinned code, published config, and legacy PyTorch 1.4 environment will reproduce the complete training and evaluation pipeline without a source patch.",
+  "target_ids": [
+    "table-4-joint-dev-wer",
+    "table-4-joint-dev-bleu4",
+    "table-4-joint-test-wer",
+    "table-4-joint-test-bleu4"
+  ],
+  "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run repositories/neccam/slt/modal_app.py::train",
+  "working_directory": "repository root",
+  "started_at_utc": "2026-08-20T14:35:51.340041Z",
+  "finished_at_utc": "2026-08-20T16:08:46.103599Z",
+  "exit_code": 0,
+  "terminal_state": "succeeded",
+  "source": {
+    "repository_commit": "bd919a6fa24771ad311e6d30771459d8daa23c85",
+    "dirty_diff_sha256": "9489a7deb6d4340d3d4887c2fa07d069ee42262492717cda7d53c1746e8265a5",
+    "upstream_revision": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+    "patch_sha256": []
+  },
+  "environment": {
+    "image": "repositories/neccam/slt/Dockerfile",
+    "image_digest": "sha256:5d81539e4f3fab923fac7599baaf44ac055a0e69a47d49aed7c9da1e499c9cba",
+    "dependency_manifest": "repositories/neccam/slt/Dockerfile",
+    "python": "3.7",
+    "pytorch": "1.4.0",
+    "torchtext": "0.5.0",
+    "precision": "fp32"
+  },
+  "data": [
+    {
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "author-restored pami0 1024-D features",
+      "split": "train",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/phoenix14t.pami0.train",
+      "manifest_or_checksum": "evidence/data/features.json",
+      "sample_count": 7095
+    },
+    {
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "author-restored pami0 1024-D features",
+      "split": "dev",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/phoenix14t.pami0.dev",
+      "manifest_or_checksum": "evidence/data/features.json",
+      "sample_count": 519
+    },
+    {
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "author-restored pami0 1024-D features",
+      "split": "test",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/author/PHOENIX2014T/phoenix14t.pami0.test",
+      "manifest_or_checksum": "evidence/data/features.json",
+      "sample_count": 642
+    }
+  ],
+  "configuration": {
+    "config_artifact": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/config.yaml#sha256=89242e5195403c5721cf2430236d70817a5de17c8d648bbc9d5e3a214fd07183",
+    "seed": 42,
+    "precision": "fp32",
+    "effective_batch_size": 32,
+    "checkpoint_input": null,
+    "checkpoint_output": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/2600.ckpt#sha256=e5c34ece5e41039bc0997281352eb4c8a0d10da53ba7da23af40c7a67d3fa8b8"
+  },
+  "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_environment": "main",
+    "modal_app_id": "ap-7aW0BiKItDEIHlMKv525Y7",
+    "modal_function_call_id": "fc-01M0FSJMYJPDHG8GP8MM794CN3",
+    "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7aW0BiKItDEIHlMKv525Y7",
+    "hardware": "NVIDIA Tesla T4 15360 MiB, driver 580.95.05",
+    "gpu_count": 1,
+    "peak_gpu_memory_gb": null,
+    "wall_time_hours": 1.548545431467222,
+    "gpu_hours": 1.548545431467222,
+    "estimated_cost": null,
+    "actual_cost": null,
+    "shared_cache": {
+      "modal_volume": "huggingface-cache",
+      "mount_path": "/cache/huggingface",
+      "environment": {
+        "HF_HOME": "/cache/huggingface",
+        "HF_HUB_CACHE": "/cache/huggingface/hub"
+      }
+    },
+    "retry_ceiling": {
+      "maximum_additional_attempts": 0,
+      "maximum_additional_gpu_hours": 0.0,
+      "maximum_additional_cost": null
+    }
+  },
+  "evidence": {
+    "stdout": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/train.log",
+    "stderr": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/train.log",
+    "raw_metrics": ["evidence/logs/result.json"],
+    "other_outputs": [
+      "modal://neccam-slt-results/neccam-slt/pami0-seed-42/config.yaml",
+      "modal://neccam-slt-results/neccam-slt/pami0-seed-42/modal-run.json"
+    ]
+  },
+  "observation": "The upstream entry point trained to its normal plateau stop at step 4400, selected checkpoint step 2600, completed the full development search and fixed-parameter test evaluation, and produced all four targets. BLEU-4 reached 19.145965 on dev and 18.488908 on test, below the paper's 21.73 and 21.22.",
+  "hypothesis_supported": true,
+  "next_action": "Keep the minimal upstream recipe and report pipeline completion separately from numerical agreement."
+}

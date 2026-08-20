@@ -78,6 +78,8 @@ Record preference level 1, 2, or 3 and the evidence supporting it.
 
 Consult relevant `libraries/*.md` before editing the environment. Preserve upstream behavior; do not clean up published code or optimize it for convenience. For each change, state a hypothesis, run the smallest real test, evaluate output, and keep or revert it.
 
+Invoke the pinned upstream config and entry point directly. Do not carry a copied config, wrapper stack, or local reimplementation when deterministic path substitutions at runtime are sufficient.
+
 ### 6. Make repeatable entry points
 
 Provide idempotent setup/data/train/eval commands and a container definition. Separate immutable setup from data and run-time configuration. Pin dependencies or preserve a resolved lock/freeze. Parameterize only values that actually vary.
