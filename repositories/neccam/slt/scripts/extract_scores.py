@@ -2,9 +2,25 @@
 """Extract JSON metrics from upstream result pickles in the author environment."""
 
 import argparse
+import io
 import json
 import pickle
 from pathlib import Path
+
+import torch
+
+
+def load_pickle(path: Path):
+    """Load upstream result pickles without requiring their original CUDA device."""
+    original_loader = torch.storage._load_from_bytes
+    torch.storage._load_from_bytes = lambda data: torch.load(
+        io.BytesIO(data), map_location="cpu"
+    )
+    try:
+        with path.open("rb") as handle:
+            return pickle.load(handle)
+    finally:
+        torch.storage._load_from_bytes = original_loader
 
 
 def main() -> None:
@@ -21,10 +37,8 @@ def main() -> None:
     )
     if not test_result_files or not dev_result_files:
         raise FileNotFoundError(f"no test result pickle under {args.model_dir}")
-    with test_result_files[-1].open("rb") as handle:
-        test_result = pickle.load(handle)
-    with dev_result_files[-1].open("rb") as handle:
-        dev_result = pickle.load(handle)
+    test_result = load_pickle(test_result_files[-1])
+    dev_result = load_pickle(dev_result_files[-1])
 
     best_recognition_beam, best_dev_recognition = min(
         dev_result["recognition_results"].items(),

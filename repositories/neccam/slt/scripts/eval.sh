@@ -6,3 +6,6 @@ repo_root="$(git -C "${paper_dir}" rev-parse --show-toplevel)"
 
 "${repo_root}/.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh" \
   run "${paper_dir}/modal_app.py::evaluate"
+
+"${repo_root}/.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh" \
+  run "${paper_dir}/modal_app.py::collect_results"

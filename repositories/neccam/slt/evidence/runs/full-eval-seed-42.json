@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "run_id": "full-eval-seed-42",
+  "kind": "full_run_evaluation",
+  "hypothesis": "Floor division preserves the published PyTorch 1.4 integer beam-origin semantics and allows the persisted step-6200 checkpoint to complete the upstream development search and test evaluation under PyTorch 1.7.",
+  "target_ids": [
+    "table-4-joint-dev-wer",
+    "table-4-joint-dev-bleu4",
+    "table-4-joint-test-wer",
+    "table-4-joint-test-bleu4"
+  ],
+  "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d repositories/neccam/slt/modal_app.py::evaluate",
+  "working_directory": ".",
+  "started_at_utc": "2026-08-20T10:29:40Z",
+  "finished_at_utc": "2026-08-20T10:58:50Z",
+  "exit_code": 0,
+  "terminal_state": "succeeded_after_one_automatic_preemption_retry",
+  "source": {
+    "repository_commit": "85ee18d0bf1972de6dba6e8bf66fae301183743b",
+    "dirty_diff_sha256": null,
+    "upstream_revision": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+    "patch_sha256": [
+      "2f56606c5c8c5788e288a89f5ef3e5d7e8cc4c19f57387af570aaa2719e2204c"
+    ]
+  },
+  "environment": {
+    "image": "Modal im-MmlcOnE9uxKbTIvDRme4n2 (Docker image im-2gEMhouo0B1YSbNUQbsAHK)",
+    "image_digest": "modal-image-id:im-MmlcOnE9uxKbTIvDRme4n2",
+    "dependency_manifest": "evidence/environment/pip-freeze.txt"
+  },
+  "data": [
+    {
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "pami0 1024-D CNN features, protocol-4 payload-preserving derivatives",
+      "split": "dev/test",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/",
+      "manifest_or_checksum": "evidence/data/features.json",
+      "sample_count": 1161
+    }
+  ],
+  "configuration": {
+    "config_artifact": "configs/sign.yaml (SHA-256 4c3781a1cd1de7236adae132aa19b43d003ed942bf5293226f14cad79b467023)",
+    "seed": 42,
+    "precision": "fp32",
+    "effective_batch_size": 32,
+    "checkpoint_input": "Modal Volume neccam-slt-results:neccam-slt/full-seed-42/6200.ckpt (SHA-256 72f6cac1723463f9c7781051ab9bcd77c34ed3675637389bf09f0f6a4bc7d576)",
+    "checkpoint_output": null
+  },
+  "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_environment": "main",
+    "modal_app_id": "ap-NoGVX71SmRgWKGQFE4NftC",
+    "modal_function_call_id": "fc-01M0FBGCGHMFBCJC484HM9XRG0",
+    "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NoGVX71SmRgWKGQFE4NftC",
+    "hardware": "NVIDIA A100-SXM4-40GB, then NVIDIA A100 80GB PCIe after automatic preemption; driver 580.95.05; CUDA runtime 11.0",
+    "gpu_count": 1,
+    "peak_gpu_memory_gb": 2.77,
+    "wall_time_hours": 0.4861,
+    "gpu_hours": 0.4861,
+    "estimated_cost": null,
+    "actual_cost": null,
+    "shared_cache": {
+      "modal_volume": "huggingface-cache",
+      "mount_path": "/cache/huggingface",
+      "environment": {
+        "HF_HOME": "/cache/huggingface",
+        "HF_HUB_CACHE": "/cache/huggingface/hub"
+      }
+    },
+    "retry_ceiling": {
+      "maximum_additional_attempts": 3,
+      "maximum_additional_gpu_hours": 2.0,
+      "maximum_additional_cost": null
+    }
+  },
+  "evidence": {
+    "stdout": "https://modal.com/apps/repro-sign/main/ap-NoGVX71SmRgWKGQFE4NftC",
+    "stderr": "https://modal.com/apps/repro-sign/main/ap-NoGVX71SmRgWKGQFE4NftC",
+    "raw_metrics": [
+      "evidence/logs/full-result.json",
+      "Modal Volume neccam-slt-results:neccam-slt/full-seed-42/re-eval.dev_results.pkl",
+      "Modal Volume neccam-slt-results:neccam-slt/full-seed-42/re-eval.test_results.pkl"
+    ],
+    "other_outputs": [
+      "Modal Volume neccam-slt-results:neccam-slt/full-seed-42/modal-eval.log",
+      "Modal result collector ap-FnyTI6to9CsPRlQZ4vwSP2 / fc-01M0FD7GE8BCRZ4B58P48DVRW2"
+    ]
+  },
+  "observation": "The exact upstream grid selected recognition beam 10 and translation beam 4 with alpha -1 on development, then evaluated test. Dev WER/BLEU-4 were 80.5444355484/11.3566071194 and test WER/BLEU-4 were 77.7412538154/11.1158360001. Modal automatically restarted one early preemption; the restarted attempt completed without numerical drift or another retry.",
+  "hypothesis_supported": true,
+  "next_action": "Keep the patch and terminal metrics; publish the selected checkpoint and report the numerical differences without tuning."
+}

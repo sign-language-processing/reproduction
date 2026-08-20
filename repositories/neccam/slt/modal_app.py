@@ -251,13 +251,21 @@ def train() -> dict:
     image=IMAGE,
     volumes={
         "/cache/huggingface": HF_CACHE,
-        "/outputs": RESULTS.read_only(),
+        "/outputs": RESULTS,
     },
     env=ENVIRONMENT,
     timeout=600,
 )
 def collect_results() -> dict:
-    result = _load_scores(Path("/outputs/neccam-slt/full-seed-42"))
+    model_dir = Path("/outputs/neccam-slt/full-seed-42")
+    result = {
+        "collected_at": _utc_now(),
+        **_load_scores(model_dir, result_stem="re-eval"),
+    }
+    (model_dir / "modal-result.json").write_text(
+        json.dumps(result, indent=2) + "\n", encoding="utf-8"
+    )
+    RESULTS.commit()
     print(json.dumps(result, sort_keys=True))
     return result
 
