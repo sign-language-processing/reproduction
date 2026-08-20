@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "run_id": "dry-run-001",
+  "kind": "dry_run",
+  "hypothesis": "The pinned feature archives, protocol-only compatibility derivatives, A100-compatible dependency pins, and unchanged upstream model path can complete real training, checkpoint reload, and evaluation.",
+  "target_ids": [
+    "table-4-joint-dev-wer",
+    "table-4-joint-dev-bleu4",
+    "table-4-joint-test-wer",
+    "table-4-joint-test-bleu4"
+  ],
+  "command": "repositories/neccam/slt/scripts/dry_run.sh",
+  "working_directory": ".",
+  "started_at_utc": "2026-08-20T09:28:29.417204Z",
+  "finished_at_utc": "2026-08-20T09:29:32.078609Z",
+  "exit_code": 0,
+  "terminal_state": "succeeded",
+  "source": {
+    "repository_commit": "a163d8ec6b1d7207194b575508f696ddfda473ad",
+    "dirty_diff_sha256": "e514da1978e1d44201f6c5e47463a10d1638d91f4081bce10bbd0626ebd6febf",
+    "upstream_revision": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+    "patch_sha256": [
+      "ca27dbc6aa81deb6495fd311f66ffb6ba770eb7e4d5f9722f0e78ea0fd57378a"
+    ]
+  },
+  "environment": {
+    "image": "Modal im-wXRCIDgguIJAaqKhjFLbCP (Docker image im-F8FlWvseUmE4niwr6kkEO6)",
+    "image_digest": "modal-image-id:im-wXRCIDgguIJAaqKhjFLbCP",
+    "dependency_manifest": "Dockerfile"
+  },
+  "data": [
+    {
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "pami0 1024-D CNN features, protocol-4 payload-preserving derivatives",
+      "split": "train/dev/test",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/features/",
+      "manifest_or_checksum": "train c45c4cbce46c74586a316876ba2d73eaa0fc19a9e0a0ec08d943f2fa6bb6afbb; dev 48731f8fec864df137962bfa9987504a88ed766001a7676afccf39366b6eaa3e; test 8c0b6d40d66564df4c0fa2f888888c89bfd76b2fb85f6a03cce86a61c5d16401",
+      "sample_count": 48
+    }
+  ],
+  "configuration": {
+    "config_artifact": "configs/dry.yaml (SHA-256 e67fddd5668718ac1f5e057e802de30dc24d86e4e9fb365dd1c5eefe536d8e74)",
+    "seed": 42,
+    "precision": "fp32",
+    "effective_batch_size": 8,
+    "checkpoint_input": null,
+    "checkpoint_output": "/outputs/neccam-slt/dry-seed-42/2.ckpt"
+  },
+  "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_environment": "main",
+    "modal_app_id": "ap-b7dPxITH2mpdvg2yrdzK3U",
+    "modal_function_call_id": "fc-01M0F7ZZKGRJXECQB5MNKD231G",
+    "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
+    "hardware": "NVIDIA A100-SXM4-40GB; driver 580.95.05; CUDA runtime 11.0",
+    "gpu_count": 1,
+    "peak_gpu_memory_gb": null,
+    "wall_time_hours": 0.017406,
+    "gpu_hours": 0.017406,
+    "estimated_cost": null,
+    "actual_cost": null,
+    "shared_cache": {
+      "modal_volume": "huggingface-cache",
+      "mount_path": "/cache/huggingface",
+      "environment": {
+        "HF_HOME": "/cache/huggingface",
+        "HF_HUB_CACHE": "/cache/huggingface/hub"
+      }
+    },
+    "retry_ceiling": {
+      "maximum_additional_attempts": 1,
+      "maximum_additional_gpu_hours": 0.05,
+      "maximum_additional_cost": null
+    }
+  },
+  "evidence": {
+    "stdout": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
+    "stderr": "https://modal.com/apps/repro-sign/main/ap-b7dPxITH2mpdvg2yrdzK3U",
+    "raw_metrics": [
+      "Modal Volume neccam-slt-results:neccam-slt/dry-run.json",
+      "Modal Volume neccam-slt-results:neccam-slt/dry-seed-42/best.IT_00000002.dev_results.pkl",
+      "Modal Volume neccam-slt-results:neccam-slt/dry-seed-42/best.IT_00000002.test_results.pkl"
+    ],
+    "other_outputs": [
+      "Modal Volume neccam-slt-results:neccam-slt/dry-seed-42/2.ckpt"
+    ]
+  },
+  "observation": "Loaded 32/8/8 real examples, ran four CUDA optimizer steps and two validations, saved and reloaded step-2 checkpoint, and produced dev WER 96.7213, dev BLEU-4 0.0, test WER 94.0299, and test BLEU-4 0.0 on the tiny subsets in 62.66 seconds.",
+  "hypothesis_supported": true,
+  "next_action": "Keep the compatibility changes and run the full seed-42 configuration."
+}

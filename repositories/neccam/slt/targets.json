@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "paper_id": "camgoz-2020-slt",
+  "assignment_scope": "Reproduce the published metrics corresponding to the repository's supplied default joint-recognition-and-translation configuration.",
+  "resolution_status": "resolved",
+  "unresolved_alternatives": [],
+  "targets": [
+    {
+      "target_id": "table-4-joint-dev-wer",
+      "paper_location": "Table 4, page 7 (CVPR page 10029), lambda_R=1.0 and lambda_T=1.0 row, DEV WER",
+      "system": "Sign2(Gloss+Text), lambda_R=1.0, lambda_T=1.0",
+      "dataset": {
+        "name": "RWTH-PHOENIX-Weather 2014T",
+        "version_or_subset": "PHOENIX14T with pami0 pretrained CNN features",
+        "split": "dev"
+      },
+      "metric": {
+        "name": "Word Error Rate",
+        "direction": "lower_is_better",
+        "implementation": "neccam/slt signjoey.metrics.wer_list",
+        "version": "upstream commit 90588825f6229474bc19ac7a6b30ea3116635ba3",
+        "aggregation": "Corpus errors divided by total reference tokens",
+        "unit_or_scale": "percent"
+      },
+      "original_value": 35.13,
+      "copied_baseline": false,
+      "copied_from": null,
+      "required_seeds": [42],
+      "checkpoint_rule": "Highest development BLEU under plateau scheduling; recognition beam selected on development",
+      "paper_evidence": "Paper PDF SHA-256 ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1, Table 4",
+      "status": "pending",
+      "terminal_reason": null,
+      "run_ids": [],
+      "raw_metric_artifacts": []
+    },
+    {
+      "target_id": "table-4-joint-dev-bleu4",
+      "paper_location": "Table 4, page 7 (CVPR page 10029), lambda_R=1.0 and lambda_T=1.0 row, DEV BLEU-4",
+      "system": "Sign2(Gloss+Text), lambda_R=1.0, lambda_T=1.0",
+      "dataset": {
+        "name": "RWTH-PHOENIX-Weather 2014T",
+        "version_or_subset": "PHOENIX14T with pami0 pretrained CNN features",
+        "split": "dev"
+      },
+      "metric": {
+        "name": "BLEU-4",
+        "direction": "higher_is_better",
+        "implementation": "neccam/slt bundled raw_corpus_bleu based on sacrebleu 1.4.4",
+        "version": "upstream commit 90588825f6229474bc19ac7a6b30ea3116635ba3",
+        "aggregation": "Untokenized corpus BLEU",
+        "unit_or_scale": "percent"
+      },
+      "original_value": 21.73,
+      "copied_baseline": false,
+      "copied_from": null,
+      "required_seeds": [42],
+      "checkpoint_rule": "Highest development BLEU under plateau scheduling; translation beam and alpha selected on development",
+      "paper_evidence": "Paper PDF SHA-256 ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1, Table 4",
+      "status": "pending",
+      "terminal_reason": null,
+      "run_ids": [],
+      "raw_metric_artifacts": []
+    },
+    {
+      "target_id": "table-4-joint-test-wer",
+      "paper_location": "Table 4, page 7 (CVPR page 10029), lambda_R=1.0 and lambda_T=1.0 row, TEST WER",
+      "system": "Sign2(Gloss+Text), lambda_R=1.0, lambda_T=1.0",
+      "dataset": {
+        "name": "RWTH-PHOENIX-Weather 2014T",
+        "version_or_subset": "PHOENIX14T with pami0 pretrained CNN features",
+        "split": "test"
+      },
+      "metric": {
+        "name": "Word Error Rate",
+        "direction": "lower_is_better",
+        "implementation": "neccam/slt signjoey.metrics.wer_list",
+        "version": "upstream commit 90588825f6229474bc19ac7a6b30ea3116635ba3",
+        "aggregation": "Corpus errors divided by total reference tokens",
+        "unit_or_scale": "percent"
+      },
+      "original_value": 33.75,
+      "copied_baseline": false,
+      "copied_from": null,
+      "required_seeds": [42],
+      "checkpoint_rule": "Highest development BLEU; recognition beam selected on development and applied to test",
+      "paper_evidence": "Paper PDF SHA-256 ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1, Table 4",
+      "status": "pending",
+      "terminal_reason": null,
+      "run_ids": [],
+      "raw_metric_artifacts": []
+    },
+    {
+      "target_id": "table-4-joint-test-bleu4",
+      "paper_location": "Table 4, page 7 (CVPR page 10029), lambda_R=1.0 and lambda_T=1.0 row, TEST BLEU-4",
+      "system": "Sign2(Gloss+Text), lambda_R=1.0, lambda_T=1.0",
+      "dataset": {
+        "name": "RWTH-PHOENIX-Weather 2014T",
+        "version_or_subset": "PHOENIX14T with pami0 pretrained CNN features",
+        "split": "test"
+      },
+      "metric": {
+        "name": "BLEU-4",
+        "direction": "higher_is_better",
+        "implementation": "neccam/slt bundled raw_corpus_bleu based on sacrebleu 1.4.4",
+        "version": "upstream commit 90588825f6229474bc19ac7a6b30ea3116635ba3",
+        "aggregation": "Untokenized corpus BLEU",
+        "unit_or_scale": "percent"
+      },
+      "original_value": 21.22,
+      "copied_baseline": false,
+      "copied_from": null,
+      "required_seeds": [42],
+      "checkpoint_rule": "Highest development BLEU; translation beam and alpha selected on development and applied to test",
+      "paper_evidence": "Paper PDF SHA-256 ae08194f6e7e00f604bd3e623aa4866f7c1a71d6c4690ab8ae3f9f60857225a1, Table 4",
+      "status": "pending",
+      "terminal_reason": null,
+      "run_ids": [],
+      "raw_metric_artifacts": []
+    }
+  ]
+}

@@ -84,6 +84,8 @@ Provide idempotent setup/data/train/eval commands and a container definition. Se
 
 Use the root GPU base image unless the evidence requires otherwise. Keep datasets and outputs mounted, never baked into the image. Capture the built image digest and source/patch hashes.
 
+Use `simple-video-utils` for every path that decodes video files, consulting `libraries/simple-video-utils.md` when present. If the published pipeline consumes precomputed features, preserve that path instead of introducing video decoding.
+
 Every Modal reproduction function mounts shared Volume `huggingface-cache` at `/cache/huggingface` and sets `HF_HOME` and `HF_HUB_CACHE` to use it. Keep datasets and experiment outputs out of this cache, and pin all Hugging Face revisions because cached presence is not provenance.
 
 ### 7. Prove a real dry run

@@ -116,6 +116,8 @@ The image supplies NVIDIA NGC PyTorch, FFmpeg 4.x, decord, and `INSTALLED_STABLE
 
 Choose CUDA and framework versions for the hardware that will actually run the job. Blackwell GPUs require recent kernels; A100/H100 jobs may use older versions when needed. Try the repository base image first and prefer a small compatibility patch over downgrading CUDA.
 
+Whenever a reproduction decodes video files, use `simple-video-utils` and consult `libraries/simple-video-utils.md` when it exists. Do not add video decoding when the published pipeline consumes precomputed features.
+
 Before a full run:
 
 1. Complete a real dry run that loads data and weights, executes several training steps, saves/reloads a checkpoint when applicable, and evaluates a tiny subset.
