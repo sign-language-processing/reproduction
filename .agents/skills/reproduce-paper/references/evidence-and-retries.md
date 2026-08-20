@@ -16,7 +16,7 @@ Capture:
 - Modal profile `repro-sign`, environment, app and function-call/run IDs, and links when applicable;
 - shared cache mount `huggingface-cache`, its mount path, and Hugging Face cache environment when the run uses Modal;
 - bounded stdout/stderr and immutable references/hashes for large logs or outputs;
-- target IDs exercised and raw metric artifacts produced;
+- target results linked to the run and raw metric artifacts produced;
 - observed result and whether the hypothesis was supported.
 
 Never place credentials, private URLs with embedded tokens, dataset samples, or restricted content in evidence.

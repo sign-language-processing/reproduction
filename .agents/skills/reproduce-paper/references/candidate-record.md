@@ -89,7 +89,7 @@ Each target needs:
 - reproduction plan: training/evaluation/checkpoint/seed requirements;
 - terminal status: `produced` or `not_produced`, plus evidence or reason.
 
-Set `target_resolution.status` to `resolved` only when all target identities are concrete. If alternatives remain, use `human_gate`, record each alternative as an object with `alternative_id`, `description`, `paper_evidence`, and `decision_needed`, and append one open target gate to `reproduction.json.gates`. A gate has `gate_id`, `type`, `status`, `reason`, `evidence`, and `required_action`; it is state inside `reproduction.json`, not another file. Do not choose the alternative that is easiest to reproduce.
+Concrete targets need no separate resolution object. If alternatives remain, append one open target gate to `reproduction.json.gates`; put each alternative there as an object with `alternative_id`, `description`, `paper_evidence`, and `decision_needed`. A gate also has `gate_id`, `type`, `status`, `reason`, `evidence`, and `required_action`. Do not choose the alternative that is easiest to reproduce.
 
 Before experiments, a target may omit `result`. At handoff, every target must embed exactly one terminal result with run and raw-artifact references.
 

@@ -96,10 +96,6 @@ This was a direct assignment rather than a queue candidate. It introduced no par
 
 No new author or Team S/R contact was required. The public author response supplied the previously missing feature files, and the run stayed within the declared single-GPU compute gate.
 
-## Terminal account
-
-Every target is `produced` and traceable to `full-seed-42`, making the pipeline status `complete`. Numerical agreement is explicitly `not_fully_reproduced`: dev/test BLEU-4 are 19.15/18.49 rather than 21.73/21.22, and WER also remains higher. The minimal recipe, official-data provenance, selected checkpoint, native metrics, and immutable hashes are complete.
-
 ## Use and limitations
 
 The published checkpoint is an independent reproduction, not an author checkpoint. Use it only with the pinned `neccam/slt` implementation and included upstream config. It expects precomputed pami0 features, is licensed conservatively under CC BY-NC-SA 4.0, and is not production-ready or evidence that the paper's numerical claim succeeds or fails.

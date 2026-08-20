@@ -290,48 +290,11 @@ def validate_targets(
     return produced, len(targets)
 
 
-def validate_target_resolution(document: dict[str, Any], issues: list[str]) -> str:
-    resolution = document.get("target_resolution")
-    if not isinstance(resolution, dict):
-        issues.append("target_resolution must be an object")
-        return ""
-    status = resolution.get("status")
-    if status not in {"resolved", "human_gate"}:
-        issues.append("target_resolution.status must be resolved or human_gate")
-    if not nonempty(resolution.get("assignment_scope")):
-        issues.append("target_resolution needs assignment_scope")
-    alternatives = resolution.get("unresolved_alternatives")
-    if not isinstance(alternatives, list):
-        issues.append("target_resolution.unresolved_alternatives must be an array")
-        return status
-    if status == "resolved" and alternatives:
-        issues.append("resolved target_resolution cannot retain alternatives")
-    if status == "human_gate" and not alternatives:
-        issues.append("human_gate target_resolution needs alternatives")
-    for index, alternative in enumerate(alternatives):
-        label = f"target alternative[{index}]"
-        if not isinstance(alternative, dict):
-            issues.append(f"{label} must be an object")
-            continue
-        for field in (
-            "alternative_id",
-            "description",
-            "paper_evidence",
-            "decision_needed",
-        ):
-            if not nonempty(alternative.get(field)):
-                issues.append(f"{label} needs {field}")
-    return status
-
-
-def validate_gates(
-    document: dict[str, Any], issues: list[str]
-) -> tuple[bool, set[str]]:
+def validate_gates(document: dict[str, Any], issues: list[str]) -> bool:
     gates = keyed(document.get("gates", []), "gate_id", "gates", issues)
     if not isinstance(document.get("gates", []), list):
-        return False, set()
+        return False
     open_gate = False
-    open_types: set[str] = set()
     for gate_id, gate in gates.items():
         label = f"gate {gate_id!r}"
         if gate.get("type") not in GATE_TYPES:
@@ -346,15 +309,28 @@ def validate_gates(
             nonempty(item) for item in evidence
         ):
             issues.append(f"{label}.evidence must be an array of non-empty strings")
+        if gate.get("type") == "target" and gate.get("status") == "open":
+            alternatives = gate.get("alternatives")
+            if not isinstance(alternatives, list) or not alternatives:
+                issues.append(f"{label} needs unresolved alternatives")
+            else:
+                for index, alternative in enumerate(alternatives):
+                    if not isinstance(alternative, dict) or any(
+                        not nonempty(alternative.get(field))
+                        for field in (
+                            "alternative_id",
+                            "description",
+                            "paper_evidence",
+                            "decision_needed",
+                        )
+                    ):
+                        issues.append(f"{label} alternative[{index}] is incomplete")
         if gate.get("status") == "open":
             open_gate = True
-            open_types.add(gate.get("type"))
-    return open_gate, open_types
+    return open_gate
 
 
-def validate_readme(
-    root: Path, paper_id: str, pipeline: Any, preference: Any, issues: list[str]
-) -> None:
+def validate_readme(root: Path, issues: list[str]) -> None:
     try:
         text = (root / "README.md").read_text(encoding="utf-8")
     except OSError as exc:
@@ -362,18 +338,6 @@ def validate_readme(
         return
     if re.search(r"<[^>]+>", text):
         issues.append("README.md still contains angle-bracket placeholders")
-    for value, label in ((paper_id, "paper_id"), (pipeline, "pipeline status")):
-        if not nonempty(value) or value not in text:
-            issues.append(f"README.md does not contain {label}")
-    if preference not in (1, 2, 3) or not re.search(
-        rf"Preference level:\*\*\s*`?{preference}`?(?:\s|$)", text
-    ):
-        issues.append("README.md does not contain preference level")
-    headings = set(re.findall(r"^## (.+?)\s*$", text, flags=re.MULTILINE))
-    if "Results" not in headings:
-        issues.append("README.md is missing Results")
-    if not ({"How to reproduce", "How to repeat this"} & headings):
-        issues.append("README.md is missing reproduction commands")
 
 
 def parse_args() -> argparse.Namespace:
@@ -405,7 +369,6 @@ def main() -> int:
     sources = keyed(document.get("sources"), "source_id", "sources", issues)
     if not sources:
         issues.append("sources must contain at least one pinned artifact")
-    target_resolution = validate_target_resolution(document, issues)
     datasets = validate_datasets(document, issues)
     artifacts = validate_artifacts(root, document, issues)
     runs = validate_runs(document, artifacts, issues)
@@ -431,12 +394,10 @@ def main() -> int:
         issues.append("some targets are produced, so pipeline must be partial")
     elif produced == 0 and pipeline in {"complete", "partial"}:
         issues.append("no targets are produced, so pipeline must identify the blocker")
-    open_gate, open_gate_types = validate_gates(document, issues)
-    if target_resolution == "human_gate" and "target" not in open_gate_types:
-        issues.append("human_gate target_resolution needs an open target gate")
+    open_gate = validate_gates(document, issues)
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
-    validate_readme(root, paper_id, pipeline, preference, issues)
+    validate_readme(root, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:

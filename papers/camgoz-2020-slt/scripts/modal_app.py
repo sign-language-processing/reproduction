@@ -2,7 +2,6 @@
 
 import datetime as dt
 import hashlib
-import json
 import os
 import subprocess
 import threading
@@ -121,7 +120,7 @@ def train() -> dict:
         committer.join()
         RESULTS.commit()
 
-    result = {
+    return {
         "function_call_id": modal.current_function_call_id(),
         "started_at": started_at.isoformat(),
         "finished_at": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -139,8 +138,3 @@ def train() -> dict:
         ).strip(),
         "model_dir": str(MODEL_DIR),
     }
-    (MODEL_DIR / "modal-run.json").write_text(
-        json.dumps(result, indent=2) + "\n", encoding="utf-8"
-    )
-    RESULTS.commit()
-    return result

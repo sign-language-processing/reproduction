@@ -89,7 +89,3 @@ Record how queue comments, copied-score, ethics, and human-evaluation flags were
 ## Author and team contact
 
 State none, or who was contacted, when, why, the response, and what it changed. Distinguish Team S data-access coordination from post-attempt author help.
-
-## Terminal account
-
-Explain why the selected reproducibility status follows from target coverage and blockers. List every target as produced or not produced and point to its evidence. Leave scientific success/failure judgment to the human reviewer.

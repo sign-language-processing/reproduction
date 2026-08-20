@@ -47,7 +47,7 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 - Turn `what_to_reproduce` into one `reproduction.json.targets` object per requested number.
 - For each row, verify the table/figure/section, exact system, dataset version/split, metric definition/version/direction, published value, aggregation, seed policy, checkpoint selection, and whether the paper copied the score.
 - Read captions, notes, appendix, and cited metric papers. Opaque metric IDs do not identify metric semantics.
-- If wording is vague, resolve it from the paper before asking. When multiple materially different targets remain plausible, record each alternative and its evidence in `reproduction.json`, append a target gate, and ask the smallest deciding question.
+- If wording is vague, resolve it from the paper before asking. When multiple materially different targets remain plausible, put the alternatives and their evidence directly in one open target gate in `reproduction.json.gates`, then ask the smallest deciding question.
 
 No costly build or run begins while the target ledger is empty or silently ambiguous.
 

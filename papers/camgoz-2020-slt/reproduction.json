@@ -29,11 +29,6 @@
     "numerical_agreement": "not_fully_reproduced",
     "preference_level": 1
   },
-  "target_resolution": {
-    "status": "resolved",
-    "assignment_scope": "Reproduce the published metrics corresponding to the repository's supplied joint recognition and translation configuration.",
-    "unresolved_alternatives": []
-  },
   "datasets": [
     {
       "dataset_id": "phoenix14t-pami0-author",
@@ -200,12 +195,6 @@
       "run_id": "full-seed-42",
       "kind": "full_reproduction",
       "hypothesis": "The authors' restored pami0 features, pinned code, published config, and legacy PyTorch 1.4 environment will reproduce the complete pipeline without a source patch.",
-      "target_ids": [
-        "table-4-joint-dev-wer",
-        "table-4-joint-dev-bleu4",
-        "table-4-joint-test-wer",
-        "table-4-joint-test-bleu4"
-      ],
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run repositories/neccam/slt/modal_app.py::train",
       "started_at_utc": "2026-08-20T14:35:51.340041Z",
       "finished_at_utc": "2026-08-20T16:08:46.103599Z",
@@ -260,8 +249,7 @@
         "selected-checkpoint",
         "dev-native-results",
         "test-native-results",
-        "train-log",
-        "modal-run"
+        "train-log"
       ],
       "observation": "The upstream entry point stopped normally at step 4400, selected checkpoint step 2600, completed development selection and fixed-parameter test evaluation, and produced every target.",
       "hypothesis_supported": true,
@@ -304,13 +292,6 @@
       "uri": "modal://neccam-slt-results/neccam-slt/pami0-seed-42/train.log",
       "sha256": "8d547aec66854de9069add86347a58b7790c3c610eb8debd3bb51963061381e6",
       "size_bytes": 301505
-    },
-    {
-      "artifact_id": "modal-run",
-      "kind": "run_manifest",
-      "uri": "https://huggingface.co/repro-sign/neccam-slt/resolve/157663da7cd6390cb8c999e848e55645ec4336ea/modal-run.json",
-      "sha256": "b12442ded67921ffd6aba0070139506cebc75fdeafd3ba8aa1bc67f09ea1def6",
-      "size_bytes": 385
     }
   ],
   "guesses": [
