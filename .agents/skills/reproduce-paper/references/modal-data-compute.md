@@ -88,15 +88,15 @@ Do not create per-dataset Volumes. For the requested dataset path, verify:
 - preprocessing provenance is known;
 - it can be mounted read-only by training/evaluation.
 
-Do not equate the shared Volume's existence with dataset availability. Record the checked path and validation in `candidate.json`, `README.md`, and the run manifest.
+Do not equate the shared Volume's existence with dataset availability. Record the checked path and validation in `reproduction.json.datasets`, `README.md`, and the run entry.
 
 If the requested dataset path is absent:
 
 1. Confirm authoritative source, version, license/terms, cloud-processing rights, and whether redistribution is permitted.
-2. Prefer a committed, idempotent `scripts/data.sh` that downloads/verifies into `/datasets/<slug>` on the shared Volume.
+2. Prefer a committed, idempotent `data.sh` (or `scripts/data.sh` when a real script suite exists) that downloads/verifies into `/datasets/<slug>` on the shared Volume.
 3. Store source URLs, access dates, checksums, expected counts, and transformations.
 4. Keep download credentials outside code and logs.
-5. If a click-through, account approval, private transfer, author request, or legal/identity judgment is needed, stop at the data gate and create `evidence/gates/<gate-id>.json` with the exact missing action and evidence. Route dataset acquisition/identity work to Team S.
+5. If a click-through, account approval, private transfer, author request, or legal/identity judgment is needed, stop at the data gate and append a gate with the exact missing action and evidence to `reproduction.json.gates`. Route dataset acquisition/identity work to Team S.
 
 An ethics flag alone is not a stop condition. Open an ethics/privacy gate when the planned work adds participants or human raters, or when existing data is identifiable/sensitive and its consent, terms, access, cloud processing, storage, or reporting basis is not clear.
 
@@ -111,13 +111,13 @@ HF_HOME=/cache/huggingface
 HF_HUB_CACHE=/cache/huggingface/hub
 ```
 
-Use the shared cache for Hugging Face Hub downloads, model weights, tokenizers, and reusable Hub assets. Pin repository revisions in code/config and record them in the run manifest; a cache hit does not establish identity or provenance.
+Use the shared cache for Hugging Face Hub downloads, model weights, tokenizers, and reusable Hub assets. Pin repository revisions in code/config and record them in the run entry; a cache hit does not establish identity or provenance.
 
 Do not use this Volume as the authoritative home for datasets, checkpoints, predictions, metrics, logs, or secrets. Material needed for the exact dataset goes under `/datasets/<slug>` subject to the data gate. Outputs go to paper-specific storage.
 
 ## Compute plan
 
-Use a real dry run to measure peak GPU memory, examples/steps per second, checkpoint size, evaluation throughput, and fixed startup overhead. Estimate:
+Use a representative real-data preflight to measure peak GPU memory, examples/steps per second, checkpoint size, evaluation throughput, and fixed startup overhead. Estimate:
 
 - total optimizer/evaluation steps;
 - wall time and GPU-hours for every required seed;
@@ -125,7 +125,7 @@ Use a real dry run to measure peak GPU memory, examples/steps per second, checkp
 - persistent volume and artifact storage;
 - likely cost and the cost of permitted retries.
 
-Inspect current workspace billing through the wrapper when needed and available. Record the estimate, assumptions, allowed GPU/concurrency, retry count, checkpoint cadence, and stop ceiling in the full-run manifest before launch.
+Inspect current workspace billing through the wrapper when needed and available. Record the estimate, assumptions, allowed GPU/concurrency, retry count, checkpoint cadence, and stop ceiling in the full-run entry before launch.
 
 Proceed without asking only inside the root compute gate. If the estimate is near a boundary, use the conservative side. Never reduce required seeds, data, steps, precision, model size, or evaluation scope solely to fit the gate; request a protocol decision.
 

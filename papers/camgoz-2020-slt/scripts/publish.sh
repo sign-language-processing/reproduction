@@ -29,11 +29,11 @@ fi
 mkdir -p "${publish_root}/upload"
 cp "${publish_root}/model.ckpt" "${publish_root}/upload/model.ckpt"
 cp "${publish_root}/config.yaml" "${publish_root}/upload/config.yaml"
-cp "${paper_dir}/model-card.md" "${publish_root}/upload/README.md"
-cp "${paper_dir}/metrics.json" "${publish_root}/upload/metrics.json"
+cp "${paper_dir}/README.md" "${publish_root}/upload/README.md"
+cp "${paper_dir}/reproduction.json" "${publish_root}/upload/reproduction.json"
 cp "${publish_root}/modal-run.json" "${publish_root}/upload/modal-run.json"
 (cd "${publish_root}/upload" && shasum -a 256 \
-  model.ckpt config.yaml metrics.json modal-run.json > SHA256SUMS)
+  model.ckpt config.yaml reproduction.json modal-run.json > SHA256SUMS)
 
 hf repos create repro-sign/neccam-slt --exist-ok --public
 hf upload repro-sign/neccam-slt "${publish_root}/upload" . \

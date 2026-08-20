@@ -1,6 +1,6 @@
 ---
 name: reproduce-paper
-description: "Reproduce an assigned REPRO-SIGN paper end-to-end from a final/confirmed candidate record or paper URL: resolve target numbers, find and pin artifacts, gate data and compute, containerize and minimally patch, run and monitor dry/full experiments, evaluate every target, and produce traceable metrics and a report. Use for paper/repository reproduction work, not for general paper summaries or unrelated model implementation."
+description: "Reproduce an assigned REPRO-SIGN paper end-to-end from a final/confirmed candidate record or paper URL: resolve target numbers, find and pin artifacts, gate data and compute, containerize and minimally patch, run and monitor experiments, evaluate every target, and produce traceable metrics and a report. Use for paper/repository reproduction work, not for general paper summaries or unrelated model implementation."
 ---
 
 # Reproduce a paper
@@ -15,10 +15,10 @@ If the assignment includes a queue export, read [references/candidate-record.md]
 
 ```bash
 python3 .agents/skills/reproduce-paper/scripts/ingest_candidate.py \
-  /path/to/candidates.json PAPER_ID repositories/<assignment>/candidate.json
+  /path/to/candidates.json PAPER_ID papers/PAPER_ID/reproduction.json
 ```
 
-The script rejects missing, duplicate, non-final, non-confirmed, or inconsistent IDs and preserves source provenance. If the assignment is only a paper URL or citation, create equivalent `candidate.json` provenance without inventing queue review fields.
+The script rejects missing, duplicate, non-final, non-confirmed, or inconsistent IDs and initializes/updates `reproduction.json.assignment` with source provenance. If the assignment is only a paper URL or citation, create an equivalent direct-assignment object without inventing queue review fields.
 
 ## Modal is fail-closed
 
@@ -38,16 +38,16 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 
 - Find or create the per-paper directory using the root layout rules.
 - Preserve unrelated work; use one branch per paper when starting a new attempt.
-- Import `candidate.json`, copy the templates for `targets.json`, `metrics.json`, `report.md`, and run manifests, and record current repository revision/state. Copy `templates/gate.json` whenever a human or Team S gate is opened.
+- Create `papers/<paper_id>/` from `templates/reproduction.json` and `templates/README.md`; import the assignment into `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
 - Read queue comments, dataset expansions, copied-score, human-evaluation, ethics, and compute fields as warnings to investigate—not facts to repeat.
 
 ### 2. Resolve the target contract
 
 - Acquire the paper and preserve its canonical URL, access date, and file hash.
-- Turn `what_to_reproduce` into one `targets.json` row per requested number.
+- Turn `what_to_reproduce` into one `reproduction.json.targets` object per requested number.
 - For each row, verify the table/figure/section, exact system, dataset version/split, metric definition/version/direction, published value, aggregation, seed policy, checkpoint selection, and whether the paper copied the score.
 - Read captions, notes, appendix, and cited metric papers. Opaque metric IDs do not identify metric semantics.
-- If wording is vague, resolve it from the paper before asking. When multiple materially different targets remain plausible, record each alternative and its evidence in `targets.json`, open a target gate, and ask the smallest deciding question.
+- If wording is vague, resolve it from the paper before asking. When multiple materially different targets remain plausible, record each alternative and its evidence in `reproduction.json`, append a target gate, and ask the smallest deciding question.
 
 No costly build or run begins while the target ledger is empty or silently ambiguous.
 
@@ -64,9 +64,9 @@ No costly build or run begins while the target ledger is empty or silently ambig
 - Reconcile each candidate dataset record with what the experiment actually uses; similarly named or public datasets may differ.
 - Verify version, subset, split files, license/permission, cloud-processing allowance, access method, expected counts, and stable hashes before full training.
 - In the shared v2 Volume `datasets`, confirm the exact requested `<slug>/` directory, version/split manifest, and expected contents before downloading or training. Do not create per-dataset Volumes.
-- Run `scripts/check_modal_dataset.sh <slug> [manifest-relative-path]`; it also preflights `huggingface-cache`, and a missing cache or missing/empty dataset path fails the gate.
-- Mount `datasets` read-only at `/datasets` for experiments. If acquisition and project-cloud storage are permitted, make `scripts/data.sh` idempotently populate `/datasets/<slug>` with provenance; writable access is limited to that population step.
-- Never copy restricted data into Git, images, logs, or Hugging Face. Use the data human gate when access or terms need a decision; route dataset acquisition/identity questions to Team S with a completed gate artifact.
+- Run `.agents/skills/reproduce-paper/scripts/check_modal_dataset.sh <slug> [manifest-relative-path]`; it also preflights `huggingface-cache`, and a missing cache or missing/empty dataset path fails the gate.
+- Mount `datasets` read-only at `/datasets` for experiments. If acquisition and project-cloud storage are permitted, make root `data.sh` idempotently populate `/datasets/<slug>` with provenance; use `scripts/data.sh` only when multiple helpers already justify a scripts directory. Writable access is limited to that population step.
+- Never copy restricted data into Git, images, logs, or Hugging Face. Use the data human gate when access or terms need a decision; route dataset acquisition/identity questions to Team S with a completed gate entry.
 
 ### 5. Select the least-invasive implementation
 
@@ -82,7 +82,7 @@ Invoke the pinned upstream config and entry point directly. Do not carry a copie
 
 ### 6. Make repeatable entry points
 
-Provide idempotent setup/data/train/eval commands and a container definition. Separate immutable setup from data and run-time configuration. Pin dependencies or preserve a resolved lock/freeze. Parameterize only values that actually vary.
+Provide the fewest idempotent commands that cover setup/data/train/eval and a container definition. Keep a lone helper, patch, or small raw artifact at the paper root; use `scripts/`, `patches/`, or `artifacts/` only for multiple related files. Never add separate generated manifests, datasets, checkpoints, or large logs. Separate immutable setup from data and run-time configuration. Pin dependencies or preserve a resolved lock/freeze. Parameterize only values that actually vary.
 
 Use the root GPU base image unless the evidence requires otherwise. Keep datasets and outputs mounted, never baked into the image. Capture the built image digest and source/patch hashes.
 
@@ -90,7 +90,7 @@ Use `simple-video-utils` for every path that decodes video files, consulting `li
 
 Every Modal reproduction function mounts shared Volume `huggingface-cache` at `/cache/huggingface` and sets `HF_HOME` and `HF_HUB_CACHE` to use it. Keep datasets and experiment outputs out of this cache, and pin all Hugging Face revisions because cached presence is not provenance.
 
-### 7. Prove a real dry run
+### 7. Prove the real path cheaply
 
 Exercise the full path at the cheapest representative scale:
 
@@ -101,11 +101,11 @@ Exercise the full path at the cheapest representative scale:
 - run the real evaluation code on a small subset;
 - emit a plausible parsed metric and a terminal exit status.
 
-`--help`, imports alone, synthetic data that bypasses loaders, or a build-only success do not count. Record the run with `templates/run.json` and preserve bounded stdout/stderr.
+`--help`, imports alone, synthetic data that bypasses loaders, or a build-only success do not count. This preflight is disposable after a successful full run unless it explains a retained patch, retry, deviation, or terminal decision. Record only meaningful retained attempts in `reproduction.json.runs`; preserve large logs externally only when they remain evidence.
 
 ### 8. Estimate and launch the full run
 
-Use measured dry-run memory and throughput to estimate duration, GPU-hours, storage, and cost. Verify seeds/config, checkpoint/resume, output paths, retry ceiling, and all data gates. Apply the compute gate in `AGENTS.md`.
+Use measured preflight memory and throughput to estimate duration, GPU-hours, storage, and cost. Verify seeds/config, checkpoint/resume, output paths, retry ceiling, and all data gates. Apply the compute gate in `AGENTS.md`.
 
 When within the gate, launch autonomously. Before launch, confirm both `datasets` and `huggingface-cache` exist and that the requested dataset path passes `check_modal_dataset.sh`. Name/tag Modal resources with the paper ID where supported, use only the wrapper, and record app/function-call IDs and links. Monitor to terminal state; submission is not completion. On failure, read [references/evidence-and-retries.md](references/evidence-and-retries.md), diagnose before retrying, and resume rather than restart whenever verified checkpoints permit.
 
@@ -115,21 +115,21 @@ When within the gate, launch autonomously. Before launch, confirm both `datasets
 - Preserve raw predictions or sufficient intermediate artifacts when licensing permits.
 - Check sample counts, ignored labels/tokens, decoding parameters, aggregation, randomness, and data leakage.
 - Run every paper-required seed; report best/mean/std only as specified. Do not cherry-pick.
-- Map every produced value to a `target_id`, run manifest, and raw metric artifact. Compute differences mechanically; never tune until the published value appears.
+- Map every produced value to a `target_id`, run entry, and raw metric artifact. Compute differences mechanically; never tune until the published value appears.
 
 ### 10. Close every target
 
-Read [references/evidence-and-retries.md](references/evidence-and-retries.md) for the evidence bundle and terminal failure rules. For every `targets.json` row, mark `produced` or `not_produced` with a reason and evidence. Set the same allowed status in `metrics.json` and `report.md`.
+Read [references/evidence-and-retries.md](references/evidence-and-retries.md) for the evidence bundle and terminal failure rules. For every target, embed exactly one result marked `produced` or `not_produced`, with a reason and internal run/artifact references. Set the same overall status in `reproduction.json.status.pipeline` and `README.md`.
 
-Fill every template field; remove examples and placeholders. Include all guesses, deviations, dead ends, copied baselines, contacts, source/data provenance, exact commands, environment, hardware, run IDs, runtime/GPU-hours/cost, raw and parsed metrics, and artifact hashes/links.
+Remove examples and placeholders. Include every applicable guess, deviation, dead end, copied baseline, contact, source/data provenance item, exact command, environment, hardware, run ID, runtime/GPU-hours/cost, raw metric reference, and artifact hash/link. Omit inapplicable null boilerplate. Normalize genuine shared entities by ID, but do not add abstractions with one consumer or small parsed-result files when exact target values and native artifact hashes already live in `reproduction.json`.
 
 Run:
 
 ```bash
-python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py repositories/<assignment>
+python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<paper_id>
 ```
 
-Fix every validation error, rerun a fresh dry path from the documented commands, and present the complete attempt for human scientific review. A numerical mismatch is a result, not permission to alter the protocol.
+Fix every validation error, verify the documented commands against the retained full-run evidence, and present the complete attempt for human scientific review. A numerical mismatch is a result, not permission to alter the protocol.
 
 ## Ask only at a defined gate
 

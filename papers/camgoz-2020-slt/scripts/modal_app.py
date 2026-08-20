@@ -12,7 +12,7 @@ from pathlib import Path
 import modal
 
 
-PAPER_DIR = Path(__file__).resolve().parent
+PAPER_DIR = Path(__file__).resolve().parent.parent
 PYTHON = "/root/miniconda3/bin/python"
 MODEL_DIR = Path("/outputs/neccam-slt/pami0-seed-42")
 DATA_DIR = Path("/datasets/rwth-phoenix-2014-t/features/author")

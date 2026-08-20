@@ -1,4 +1,4 @@
-# Reproduction report: <paper short name>
+# <paper short name> reproduction
 
 **Paper ID:** `<paper_id>`
 
@@ -14,7 +14,7 @@
 
 ## Scope and target contract
 
-Exact assignment text and how it was resolved into `targets.json`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution.
+Exact assignment text and how it was resolved into `reproduction.json.targets`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution. Keep this README as the complete human-readable report; do not create a second report or model-card file.
 
 ## Source provenance
 

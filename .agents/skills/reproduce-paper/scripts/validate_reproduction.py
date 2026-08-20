@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a completed REPRO-SIGN reproduction's structural invariants."""
+"""Validate one normalized REPRO-SIGN paper reproduction."""
 
 from __future__ import annotations
 
@@ -13,15 +13,21 @@ from pathlib import Path
 from typing import Any
 
 
-ALLOWED_STATUSES = {
-    "reproduced",
-    "partially_reproduced",
+PIPELINE_STATUSES = {
+    "complete",
+    "partial",
     "blocked_on_data",
     "blocked_on_compute",
     "blocked_on_code",
     "insufficient_information",
 }
-ALLOWED_GATE_TYPES = {
+NUMERICAL_AGREEMENTS = {
+    "fully_reproduced",
+    "not_fully_reproduced",
+    "not_assessed",
+}
+TARGET_STATUSES = {"produced", "not_produced"}
+GATE_TYPES = {
     "modal_auth",
     "data",
     "target",
@@ -32,448 +38,342 @@ ALLOWED_GATE_TYPES = {
     "destructive",
     "authority",
 }
-TERMINAL_TARGET_STATUSES = {"produced", "not_produced"}
-EXTERNAL_REFERENCE_PREFIXES = ("https://", "http://", "hf://", "s3://", "modal://")
-REQUIRED_REPORT_HEADINGS = {
-    "Scope and target contract",
-    "Source provenance",
-    "Results",
-    "How to repeat this",
-    "Data provenance and permissions",
-    "Environment and patches",
-    "Execution evidence",
-    "Guesses and deviations",
-    "Attempts, failures, and dead ends",
-    "Candidate flags, ethics, and human evaluation",
-    "Author and team contact",
-    "Terminal account",
-}
+EXTERNAL_PREFIXES = ("https://", "http://", "hf://", "modal://", "s3://")
+SHA256 = re.compile(r"[0-9a-f]{64}")
 
 
-def load_json(path: Path, issues: list[str]) -> Any:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        issues.append(f"missing {path.name}")
-    except (OSError, json.JSONDecodeError) as exc:
-        issues.append(f"cannot read {path.name}: {exc}")
-    return None
-
-
-def nonempty_string(value: Any) -> bool:
+def nonempty(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def check_reference(root: Path, reference: Any, label: str, issues: list[str]) -> None:
-    if not nonempty_string(reference):
-        issues.append(f"{label} must be a non-empty path or immutable URL")
-        return
-    if reference.startswith(EXTERNAL_REFERENCE_PREFIXES):
-        return
-    if not (root / reference).exists():
-        issues.append(f"{label} does not exist: {reference}")
+def check_sha(value: Any, label: str, issues: list[str]) -> None:
+    if not isinstance(value, str) or not SHA256.fullmatch(value):
+        issues.append(f"{label} must be a lowercase SHA-256")
 
 
-def get_candidate_id(candidate: Any, issues: list[str]) -> str | None:
-    if not isinstance(candidate, dict):
-        issues.append("candidate.json must be an object")
-        return None
-    if candidate.get("schema_version") != 1:
-        issues.append("candidate.json schema_version must be 1")
+def check_reference(root: Path, value: Any, label: str, issues: list[str]) -> None:
+    if not nonempty(value):
+        issues.append(f"{label} must be a non-empty path or immutable URI")
+    elif not value.startswith(EXTERNAL_PREFIXES) and not (root / value).exists():
+        issues.append(f"{label} does not exist: {value}")
 
-    normalized = candidate.get("normalized")
-    candidate_id = (
-        normalized.get("paper_id")
-        if isinstance(normalized, dict)
-        else candidate.get("paper_id")
-    )
-    if not nonempty_string(candidate_id):
-        issues.append("candidate.json must contain normalized.paper_id or paper_id")
-        return None
 
-    record = candidate.get("record")
-    if record is not None:
-        if not isinstance(record, dict):
-            issues.append("candidate.json record must be an object")
+def keyed(
+    values: Any, key: str, label: str, issues: list[str]
+) -> dict[str, dict[str, Any]]:
+    if not isinstance(values, list):
+        issues.append(f"{label} must be an array")
+        return {}
+    result: dict[str, dict[str, Any]] = {}
+    for index, value in enumerate(values):
+        if not isinstance(value, dict) or not nonempty(value.get(key)):
+            issues.append(f"{label}[{index}] must be an object with {key}")
+            continue
+        identity = value[key]
+        if identity in result:
+            issues.append(f"duplicate {key} {identity!r}")
         else:
-            if record.get("paper_id") != candidate_id or record.get("id") not in (
-                None,
-                candidate_id,
-            ):
-                issues.append("candidate record IDs do not match")
-            if (
-                record.get("confirmation") != "confirmed"
-                or record.get("status") != "final"
-            ):
-                issues.append("candidate record is not final/confirmed")
+            result[identity] = value
+    return result
 
-    source = candidate.get("source")
-    if not isinstance(source, dict) or not re.fullmatch(
-        r"[0-9a-f]{64}", str(source.get("sha256", ""))
-    ):
-        issues.append("candidate source must contain a lowercase SHA-256")
-    elif nonempty_string(source.get("path")):
-        source_path = Path(source["path"])
-        if source_path.exists():
-            actual = hashlib.sha256(source_path.read_bytes()).hexdigest()
-            if actual != source["sha256"]:
-                issues.append("candidate source SHA-256 no longer matches source.path")
-    return candidate_id
+
+def validate_assignment(document: dict[str, Any], issues: list[str]) -> None:
+    assignment = document.get("assignment")
+    if not isinstance(assignment, dict):
+        issues.append("assignment must be an object")
+        return
+    kind = assignment.get("kind")
+    if kind not in {"queue_record", "direct_user_request"}:
+        issues.append("assignment.kind must be queue_record or direct_user_request")
+    source = assignment.get("source")
+    if not isinstance(source, dict):
+        issues.append("assignment.source must be an object")
+    else:
+        check_sha(source.get("sha256"), "assignment.source.sha256", issues)
+        path = source.get("path")
+        if nonempty(path) and Path(path).exists():
+            actual = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+            if actual != source.get("sha256"):
+                issues.append("assignment source file no longer matches its SHA-256")
+    if kind == "queue_record":
+        record = assignment.get("record")
+        if not isinstance(record, dict):
+            issues.append("queue assignment must preserve record")
+        elif (
+            record.get("paper_id") != document.get("paper_id")
+            or record.get("id") not in (None, document.get("paper_id"))
+            or record.get("confirmation") != "confirmed"
+            or record.get("status") != "final"
+        ):
+            issues.append("queue record is not final/confirmed or has inconsistent IDs")
+
+
+def validate_datasets(document: dict[str, Any], issues: list[str]) -> dict[str, Any]:
+    datasets = keyed(document.get("datasets"), "dataset_id", "datasets", issues)
+    for dataset_id, dataset in datasets.items():
+        label = f"dataset {dataset_id!r}"
+        if not nonempty(dataset.get("name")) or not nonempty(
+            dataset.get("version_or_subset")
+        ):
+            issues.append(f"{label} needs name and version_or_subset")
+        if not nonempty(dataset.get("license_or_permission")):
+            issues.append(f"{label} needs license_or_permission")
+        if not isinstance(dataset.get("cloud_processing_allowed"), bool):
+            issues.append(f"{label} needs boolean cloud_processing_allowed")
+        if dataset.get("modal_volume") != "datasets":
+            issues.append(f"{label} must use Modal Volume 'datasets'")
+        modal_path = dataset.get("modal_path")
+        if (
+            not nonempty(modal_path)
+            or modal_path.startswith("/")
+            or ".." in str(modal_path).split("/")
+        ):
+            issues.append(f"{label} needs a safe relative modal_path")
+        splits = dataset.get("splits")
+        if not isinstance(splits, list) or not splits:
+            issues.append(f"{label} needs splits")
+            continue
+        for index, split in enumerate(splits):
+            split_label = f"{label} split[{index}]"
+            if not isinstance(split, dict) or not nonempty(split.get("name")):
+                issues.append(f"{split_label} needs name")
+                continue
+            if not isinstance(split.get("sample_count"), int):
+                issues.append(f"{split_label} needs integer sample_count")
+            files = split.get("files")
+            if not isinstance(files, list) or not files:
+                issues.append(f"{split_label} needs files")
+                continue
+            for file_index, file in enumerate(files):
+                if not isinstance(file, dict) or not nonempty(file.get("path")):
+                    issues.append(f"{split_label} file[{file_index}] needs path")
+                    continue
+                check_sha(
+                    file.get("sha256"),
+                    f"{split_label} file[{file_index}].sha256",
+                    issues,
+                )
+    return datasets
+
+
+def validate_artifacts(
+    root: Path, document: dict[str, Any], issues: list[str]
+) -> dict[str, Any]:
+    artifacts = keyed(document.get("artifacts"), "artifact_id", "artifacts", issues)
+    for artifact_id, artifact in artifacts.items():
+        label = f"artifact {artifact_id!r}"
+        if not nonempty(artifact.get("kind")):
+            issues.append(f"{label} needs kind")
+        check_reference(root, artifact.get("uri"), f"{label}.uri", issues)
+        check_sha(artifact.get("sha256"), f"{label}.sha256", issues)
+        if "size_bytes" in artifact and not isinstance(artifact["size_bytes"], int):
+            issues.append(f"{label}.size_bytes must be an integer")
+    return artifacts
+
+
+def validate_runs(
+    document: dict[str, Any], artifacts: dict[str, Any], issues: list[str]
+) -> dict[str, Any]:
+    runs = keyed(document.get("runs"), "run_id", "runs", issues)
+    for run_id, run in runs.items():
+        label = f"run {run_id!r}"
+        if not nonempty(run.get("command")):
+            issues.append(f"{label} needs an exact command")
+        if not isinstance(run.get("exit_code"), int):
+            issues.append(f"{label} exit_code must be an integer")
+        for artifact_id in run.get("artifact_ids", []):
+            if artifact_id not in artifacts:
+                issues.append(f"{label} references unknown artifact {artifact_id!r}")
+        compute = run.get("compute")
+        if isinstance(compute, dict) and compute.get("platform") == "modal":
+            if compute.get("modal_profile") != "repro-sign":
+                issues.append(f"Modal {label} must use profile 'repro-sign'")
+            cache = compute.get("shared_cache")
+            if not isinstance(cache, dict):
+                issues.append(f"Modal {label} needs shared_cache")
+            else:
+                if cache.get("modal_volume") != "huggingface-cache":
+                    issues.append(f"Modal {label} must use 'huggingface-cache'")
+                if cache.get("mount_path") != "/cache/huggingface":
+                    issues.append(
+                        f"Modal {label} cache mount must be /cache/huggingface"
+                    )
+                environment = cache.get("environment", {})
+                expected = {
+                    "HF_HOME": "/cache/huggingface",
+                    "HF_HUB_CACHE": "/cache/huggingface/hub",
+                }
+                if not isinstance(environment, dict) or any(
+                    environment.get(key) != value for key, value in expected.items()
+                ):
+                    issues.append(f"Modal {label} has invalid cache environment")
+    return runs
 
 
 def validate_targets(
-    targets_doc: Any, candidate_id: str | None, issues: list[str]
-) -> dict[str, dict[str, Any]]:
-    if not isinstance(targets_doc, dict):
-        issues.append("targets.json must be an object")
-        return {}
-    if targets_doc.get("schema_version") != 1:
-        issues.append("targets.json schema_version must be 1")
-    if candidate_id and targets_doc.get("paper_id") != candidate_id:
-        issues.append("targets.json paper_id does not match candidate.json")
-    resolution_status = targets_doc.get("resolution_status")
-    if resolution_status not in {"resolved", "human_gate"}:
-        issues.append(
-            "targets.json resolution_status must be 'resolved' or 'human_gate'"
-        )
-    alternatives = targets_doc.get("unresolved_alternatives")
+    document: dict[str, Any],
+    datasets: dict[str, Any],
+    runs: dict[str, Any],
+    artifacts: dict[str, Any],
+    issues: list[str],
+) -> tuple[int, int]:
+    metrics = keyed(
+        document.get("metric_definitions"),
+        "metric_id",
+        "metric_definitions",
+        issues,
+    )
+    for metric_id, metric in metrics.items():
+        for field in (
+            "name",
+            "direction",
+            "implementation",
+            "version",
+            "aggregation",
+            "unit_or_scale",
+        ):
+            if not nonempty(metric.get(field)):
+                issues.append(f"metric {metric_id!r} needs {field}")
+    experiments = keyed(
+        document.get("experiments"), "experiment_id", "experiments", issues
+    )
+    for experiment_id, experiment in experiments.items():
+        for field in ("system", "checkpoint_rule", "paper_evidence"):
+            if not nonempty(experiment.get(field)):
+                issues.append(f"experiment {experiment_id!r} needs {field}")
+        if experiment.get("dataset_id") not in datasets:
+            issues.append(f"experiment {experiment_id!r} references unknown dataset")
+    targets = keyed(document.get("targets"), "target_id", "targets", issues)
+    produced = 0
+    for target_id, target in targets.items():
+        label = f"target {target_id!r}"
+        for field in ("paper_location", "split"):
+            if not nonempty(target.get(field)):
+                issues.append(f"{label} needs {field}")
+        if target.get("experiment_id") not in experiments:
+            issues.append(f"{label} references unknown experiment_id")
+        if target.get("metric_id") not in metrics:
+            issues.append(f"{label} references unknown metric_id")
+        original = target.get("original_value")
+        if not isinstance(original, (int, float)):
+            issues.append(f"{label} original_value must be numeric")
+        result = target.get("result")
+        if not isinstance(result, dict) or result.get("status") not in TARGET_STATUSES:
+            issues.append(f"{label} needs a terminal result")
+            continue
+        if result["status"] == "produced":
+            produced += 1
+            reproduced = result.get("reproduced_value")
+            difference = result.get("difference")
+            if not isinstance(reproduced, (int, float)) or not isinstance(
+                difference, (int, float)
+            ):
+                issues.append(f"produced {label} needs numeric value and difference")
+            elif isinstance(original, (int, float)) and not math.isclose(
+                reproduced - original, difference, rel_tol=1e-9, abs_tol=1e-9
+            ):
+                issues.append(f"{label} difference is not reproduced - original")
+            if not result.get("run_ids"):
+                issues.append(f"produced {label} needs run_ids")
+            for run_id in result.get("run_ids", []):
+                if run_id not in runs:
+                    issues.append(f"{label} references unknown run {run_id!r}")
+            if not result.get("artifact_ids"):
+                issues.append(f"produced {label} needs artifact_ids")
+            for artifact_id in result.get("artifact_ids", []):
+                if artifact_id not in artifacts:
+                    issues.append(
+                        f"{label} references unknown artifact {artifact_id!r}"
+                    )
+        elif not nonempty(result.get("terminal_reason")):
+            issues.append(f"not-produced {label} needs terminal_reason")
+    return produced, len(targets)
+
+
+def validate_target_resolution(document: dict[str, Any], issues: list[str]) -> str:
+    resolution = document.get("target_resolution")
+    if not isinstance(resolution, dict):
+        issues.append("target_resolution must be an object")
+        return ""
+    status = resolution.get("status")
+    if status not in {"resolved", "human_gate"}:
+        issues.append("target_resolution.status must be resolved or human_gate")
+    if not nonempty(resolution.get("assignment_scope")):
+        issues.append("target_resolution needs assignment_scope")
+    alternatives = resolution.get("unresolved_alternatives")
     if not isinstance(alternatives, list):
-        issues.append("targets.json unresolved_alternatives must be an array")
-    elif resolution_status == "human_gate" and not alternatives:
-        issues.append("human-gated target resolution needs unresolved_alternatives")
-
-    items = targets_doc.get("targets")
-    if not isinstance(items, list) or not items:
-        issues.append("targets.json must contain at least one target")
-        return {}
-
-    targets: dict[str, dict[str, Any]] = {}
-    for index, item in enumerate(items):
-        label = f"targets[{index}]"
-        if not isinstance(item, dict):
+        issues.append("target_resolution.unresolved_alternatives must be an array")
+        return status
+    if status == "resolved" and alternatives:
+        issues.append("resolved target_resolution cannot retain alternatives")
+    if status == "human_gate" and not alternatives:
+        issues.append("human_gate target_resolution needs alternatives")
+    for index, alternative in enumerate(alternatives):
+        label = f"target alternative[{index}]"
+        if not isinstance(alternative, dict):
             issues.append(f"{label} must be an object")
             continue
-        target_id = item.get("target_id")
-        if not nonempty_string(target_id):
-            issues.append(f"{label}.target_id must be non-empty")
-            continue
-        if target_id in targets:
-            issues.append(f"duplicate target_id {target_id!r}")
-            continue
-        targets[target_id] = item
-
-        for field in ("paper_location", "system", "paper_evidence"):
-            if not nonempty_string(item.get(field)):
-                issues.append(f"target {target_id!r} is missing {field}")
-        if not isinstance(item.get("dataset"), dict) or not nonempty_string(
-            item["dataset"].get("name")
+        for field in (
+            "alternative_id",
+            "description",
+            "paper_evidence",
+            "decision_needed",
         ):
-            issues.append(f"target {target_id!r} is missing dataset identity")
-        if not isinstance(item.get("metric"), dict) or not nonempty_string(
-            item["metric"].get("name")
-        ):
-            issues.append(f"target {target_id!r} is missing metric identity")
-        if not isinstance(item.get("original_value"), (int, float)):
-            issues.append(f"target {target_id!r} original_value must be numeric")
-        if item.get("status") not in TERMINAL_TARGET_STATUSES:
-            issues.append(
-                f"target {target_id!r} has non-terminal status {item.get('status')!r}"
-            )
-        if item.get("status") == "not_produced" and not nonempty_string(
-            item.get("terminal_reason")
-        ):
-            issues.append(f"target {target_id!r} needs a terminal_reason")
-    return targets
+            if not nonempty(alternative.get(field)):
+                issues.append(f"{label} needs {field}")
+    return status
 
 
 def validate_gates(
-    root: Path, candidate_id: str | None, issues: list[str]
-) -> list[dict[str, Any]]:
-    gates: list[dict[str, Any]] = []
-    gate_directory = root / "evidence" / "gates"
-    if not gate_directory.exists():
-        return gates
-    for path in sorted(gate_directory.glob("*.json")):
-        gate = load_json(path, issues)
-        if not isinstance(gate, dict):
-            continue
-        gates.append(gate)
-        label = f"gate {path.name!r}"
-        if gate.get("schema_version") != 1:
-            issues.append(f"{label} schema_version must be 1")
-        if candidate_id and gate.get("paper_id") != candidate_id:
-            issues.append(f"{label} paper_id does not match candidate.json")
-        if not nonempty_string(gate.get("gate_id")):
-            issues.append(f"{label} needs gate_id")
-        if gate.get("type") not in ALLOWED_GATE_TYPES:
-            issues.append(f"{label} has invalid type {gate.get('type')!r}")
+    document: dict[str, Any], issues: list[str]
+) -> tuple[bool, set[str]]:
+    gates = keyed(document.get("gates", []), "gate_id", "gates", issues)
+    if not isinstance(document.get("gates", []), list):
+        return False, set()
+    open_gate = False
+    open_types: set[str] = set()
+    for gate_id, gate in gates.items():
+        label = f"gate {gate_id!r}"
+        if gate.get("type") not in GATE_TYPES:
+            issues.append(f"{label} has invalid type")
         if gate.get("status") not in {"open", "resolved"}:
-            issues.append(f"{label} status must be 'open' or 'resolved'")
-        for field in (
-            "question",
-            "why_agent_cannot_resolve",
-            "requested_from",
-            "requested_action",
-        ):
-            if not nonempty_string(gate.get(field)):
+            issues.append(f"{label} has invalid status")
+        for field in ("reason", "required_action"):
+            if not nonempty(gate.get(field)):
                 issues.append(f"{label} needs {field}")
-        if not isinstance(gate.get("evidence"), list) or not gate["evidence"]:
-            issues.append(f"{label} needs evidence")
-        if gate.get("status") == "resolved":
-            for field in ("resolution", "resolved_at_utc", "resolved_by"):
-                if not nonempty_string(gate.get(field)):
-                    issues.append(f"resolved {label} needs {field}")
-    return gates
+        evidence = gate.get("evidence")
+        if not isinstance(evidence, list) or not all(
+            nonempty(item) for item in evidence
+        ):
+            issues.append(f"{label}.evidence must be an array of non-empty strings")
+        if gate.get("status") == "open":
+            open_gate = True
+            open_types.add(gate.get("type"))
+    return open_gate, open_types
 
 
-def load_run_manifests(
-    root: Path, run_paths: Any, issues: list[str]
-) -> dict[str, dict[str, Any]]:
-    if not isinstance(run_paths, list):
-        issues.append("metrics.json runs must be an array")
-        return {}
-    manifests: dict[str, dict[str, Any]] = {}
-    for index, relative in enumerate(run_paths):
-        if not nonempty_string(relative):
-            issues.append(f"metrics runs[{index}] must be a path")
-            continue
-        path = root / relative
-        manifest = load_json(path, issues)
-        if not isinstance(manifest, dict):
-            continue
-        run_id = manifest.get("run_id")
-        if not nonempty_string(run_id):
-            issues.append(f"{relative} has no run_id")
-            continue
-        if run_id in manifests:
-            issues.append(f"duplicate run_id {run_id!r}")
-            continue
-        manifests[run_id] = manifest
-        if manifest.get("schema_version") != 1:
-            issues.append(f"run {run_id!r} schema_version must be 1")
-        if not nonempty_string(manifest.get("command")):
-            issues.append(f"run {run_id!r} has no exact command")
-        if not isinstance(manifest.get("exit_code"), int):
-            issues.append(f"run {run_id!r} exit_code must be an integer")
-        compute = manifest.get("compute", {})
-        if isinstance(compute, dict) and compute.get("platform") == "modal":
-            if compute.get("modal_profile") != "repro-sign":
-                issues.append(f"Modal run {run_id!r} did not use profile 'repro-sign'")
-            shared_cache = compute.get("shared_cache")
-            if not isinstance(shared_cache, dict):
-                issues.append(f"Modal run {run_id!r} must record shared_cache")
-            else:
-                if shared_cache.get("modal_volume") != "huggingface-cache":
-                    issues.append(
-                        f"Modal run {run_id!r} must use Volume 'huggingface-cache'"
-                    )
-                if shared_cache.get("mount_path") != "/cache/huggingface":
-                    issues.append(
-                        f"Modal run {run_id!r} must mount the shared cache at '/cache/huggingface'"
-                    )
-                cache_environment = shared_cache.get("environment")
-                if not isinstance(cache_environment, dict):
-                    issues.append(
-                        f"Modal run {run_id!r} must record Hugging Face cache environment"
-                    )
-                else:
-                    expected_environment = {
-                        "HF_HOME": "/cache/huggingface",
-                        "HF_HUB_CACHE": "/cache/huggingface/hub",
-                    }
-                    for name, expected in expected_environment.items():
-                        if cache_environment.get(name) != expected:
-                            issues.append(
-                                f"Modal run {run_id!r} must set {name}={expected}"
-                            )
-        data = manifest.get("data", [])
-        if not isinstance(data, list):
-            issues.append(f"run {run_id!r} data must be an array")
-        else:
-            for data_index, dataset in enumerate(data):
-                if not isinstance(dataset, dict):
-                    issues.append(
-                        f"run {run_id!r} data[{data_index}] must be an object"
-                    )
-                    continue
-                if dataset.get("modal_volume") != "datasets":
-                    issues.append(
-                        f"run {run_id!r} data[{data_index}] must use Modal Volume 'datasets'"
-                    )
-                modal_path = dataset.get("modal_path")
-                if not nonempty_string(modal_path):
-                    issues.append(f"run {run_id!r} data[{data_index}] needs modal_path")
-                elif modal_path.startswith("/") or ".." in modal_path.split("/"):
-                    issues.append(
-                        f"run {run_id!r} data[{data_index}] modal_path must be safe and relative"
-                    )
-    return manifests
-
-
-def validate_metrics(
-    root: Path,
-    metrics: Any,
-    candidate_id: str | None,
-    targets: dict[str, dict[str, Any]],
-    issues: list[str],
-) -> tuple[str | None, int | None]:
-    if not isinstance(metrics, dict):
-        issues.append("metrics.json must be an object")
-        return None, None
-    if metrics.get("schema_version") != 1:
-        issues.append("metrics.json schema_version must be 1")
-    paper = metrics.get("paper")
-    if not isinstance(paper, dict) or (
-        candidate_id and paper.get("paper_id") != candidate_id
-    ):
-        issues.append("metrics.json paper.paper_id does not match candidate.json")
-
-    overall_status = metrics.get("reproducibility_status")
-    if overall_status not in ALLOWED_STATUSES:
-        issues.append(f"invalid reproducibility_status {overall_status!r}")
-    preference_level = metrics.get("preference_level")
-    if preference_level not in (1, 2, 3):
-        issues.append("metrics.json preference_level must be 1, 2, or 3")
-
-    datasets = metrics.get("datasets")
-    if not isinstance(datasets, list):
-        issues.append("metrics.json datasets must be an array")
-    else:
-        for index, dataset in enumerate(datasets):
-            if not isinstance(dataset, dict):
-                issues.append(f"metrics datasets[{index}] must be an object")
-                continue
-            if dataset.get("modal_volume") != "datasets":
-                issues.append(
-                    f"metrics datasets[{index}] must use Modal Volume 'datasets'"
-                )
-            modal_path = dataset.get("modal_path")
-            if not nonempty_string(modal_path):
-                issues.append(f"metrics datasets[{index}] needs modal_path")
-            elif modal_path.startswith("/") or ".." in modal_path.split("/"):
-                issues.append(
-                    f"metrics datasets[{index}] modal_path must be safe and relative"
-                )
-
-    manifests = load_run_manifests(root, metrics.get("runs"), issues)
-    scores = metrics.get("scores")
-    if not isinstance(scores, list):
-        issues.append("metrics.json scores must be an array")
-        return overall_status, preference_level
-
-    by_target: dict[str, dict[str, Any]] = {}
-    for index, score in enumerate(scores):
-        if not isinstance(score, dict):
-            issues.append(f"scores[{index}] must be an object")
-            continue
-        target_id = score.get("target_id")
-        if not nonempty_string(target_id):
-            issues.append(f"scores[{index}].target_id must be non-empty")
-            continue
-        if target_id in by_target:
-            issues.append(f"duplicate score for target {target_id!r}")
-            continue
-        by_target[target_id] = score
-
-    if set(by_target) != set(targets):
-        issues.append(
-            "metrics.json must contain exactly one score for every targets.json target_id"
-        )
-
-    for target_id, target in targets.items():
-        score = by_target.get(target_id)
-        if not score:
-            continue
-        if score.get("status") != target.get("status"):
-            issues.append(
-                f"target {target_id!r} status differs between targets.json and metrics.json"
-            )
-        if score.get("status") == "produced":
-            if not isinstance(score.get("reproduced"), (int, float)):
-                issues.append(
-                    f"produced target {target_id!r} needs a numeric reproduced value"
-                )
-            run_ids = score.get("run_ids")
-            if not isinstance(run_ids, list) or not run_ids:
-                issues.append(
-                    f"produced target {target_id!r} needs at least one run_id"
-                )
-            else:
-                for run_id in run_ids:
-                    if run_id not in manifests:
-                        issues.append(
-                            f"target {target_id!r} references unknown run_id {run_id!r}"
-                        )
-            artifacts = score.get("raw_metric_artifacts")
-            if not isinstance(artifacts, list) or not artifacts:
-                issues.append(
-                    f"produced target {target_id!r} needs raw_metric_artifacts"
-                )
-            else:
-                for artifact in artifacts:
-                    check_reference(
-                        root,
-                        artifact,
-                        f"target {target_id!r} raw metric artifact",
-                        issues,
-                    )
-            original = score.get("original")
-            reproduced = score.get("reproduced")
-            difference = score.get("difference")
-            if all(
-                isinstance(value, (int, float))
-                for value in (original, reproduced, difference)
-            ):
-                if not math.isclose(
-                    reproduced - original, difference, rel_tol=1e-9, abs_tol=1e-9
-                ):
-                    issues.append(
-                        f"target {target_id!r} difference is not reproduced - original"
-                    )
-        elif not nonempty_string(score.get("terminal_reason")):
-            issues.append(
-                f"not-produced target {target_id!r} needs a terminal_reason in metrics.json"
-            )
-
-    produced_count = sum(
-        target.get("status") == "produced" for target in targets.values()
-    )
-    if targets and produced_count == len(targets) and overall_status != "reproduced":
-        issues.append("all targets are produced, so status must be 'reproduced'")
-    if 0 < produced_count < len(targets) and overall_status != "partially_reproduced":
-        issues.append(
-            "some targets are produced, so status must be 'partially_reproduced'"
-        )
-    if produced_count == 0 and overall_status in {"reproduced", "partially_reproduced"}:
-        issues.append("no targets are produced, so status must identify the blocker")
-    return overall_status, preference_level
-
-
-def validate_report(
-    path: Path, status: str | None, preference: int | None, issues: list[str]
+def validate_readme(
+    root: Path, paper_id: str, pipeline: Any, preference: Any, issues: list[str]
 ) -> None:
     try:
-        text = path.read_text(encoding="utf-8")
-    except FileNotFoundError:
-        issues.append("missing report.md")
-        return
+        text = (root / "README.md").read_text(encoding="utf-8")
     except OSError as exc:
-        issues.append(f"cannot read report.md: {exc}")
+        issues.append(f"cannot read README.md: {exc}")
         return
-
     if re.search(r"<[^>]+>", text):
-        issues.append("report.md still contains angle-bracket placeholders")
-    headings = set(re.findall(r"^## (.+?)\s*$", text, flags=re.MULTILINE))
-    for heading in sorted(REQUIRED_REPORT_HEADINGS - headings):
-        issues.append(f"report.md is missing heading: {heading}")
-    if status and status not in text:
-        issues.append(
-            "report.md does not contain the metrics.json reproducibility status"
-        )
-    if preference is not None and not re.search(
+        issues.append("README.md still contains angle-bracket placeholders")
+    for value, label in ((paper_id, "paper_id"), (pipeline, "pipeline status")):
+        if not nonempty(value) or value not in text:
+            issues.append(f"README.md does not contain {label}")
+    if preference not in (1, 2, 3) or not re.search(
         rf"Preference level:\*\*\s*`?{preference}`?(?:\s|$)", text
     ):
-        issues.append("report.md does not contain the metrics.json preference level")
+        issues.append("README.md does not contain preference level")
+    headings = set(re.findall(r"^## (.+?)\s*$", text, flags=re.MULTILINE))
+    if "Results" not in headings:
+        issues.append("README.md is missing Results")
+    if not ({"How to reproduce", "How to repeat this"} & headings):
+        issues.append("README.md is missing reproduction commands")
 
 
 def parse_args() -> argparse.Namespace:
@@ -485,39 +385,63 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     root = parse_args().paper_directory.resolve()
     issues: list[str] = []
-    if not root.is_dir():
-        print(f"validation failed: not a directory: {root}", file=sys.stderr)
+    try:
+        document = json.loads((root / "reproduction.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(
+            f"validation failed: cannot read reproduction.json: {exc}", file=sys.stderr
+        )
         return 2
-
-    candidate = load_json(root / "candidate.json", issues)
-    targets_doc = load_json(root / "targets.json", issues)
-    metrics = load_json(root / "metrics.json", issues)
-
-    candidate_id = get_candidate_id(candidate, issues)
-    targets = validate_targets(targets_doc, candidate_id, issues)
-    gates = validate_gates(root, candidate_id, issues)
-    if (
-        isinstance(targets_doc, dict)
-        and targets_doc.get("resolution_status") == "human_gate"
-    ):
-        if not any(
-            gate.get("type") == "target" and gate.get("status") == "open"
-            for gate in gates
-        ):
-            issues.append(
-                "human-gated target resolution needs an open target gate artifact"
-            )
-    status, preference = validate_metrics(root, metrics, candidate_id, targets, issues)
-    if status == "reproduced" and any(gate.get("status") == "open" for gate in gates):
-        issues.append("a reproduced attempt cannot retain open gate artifacts")
-    validate_report(root / "report.md", status, preference, issues)
-
+    if not isinstance(document, dict) or document.get("schema_version") != 1:
+        issues.append("reproduction.json must be a schema_version 1 object")
+        document = document if isinstance(document, dict) else {}
+    paper_id = document.get("paper_id")
+    if not nonempty(paper_id):
+        issues.append("reproduction.json needs paper_id")
+        paper_id = ""
+    validate_assignment(document, issues)
+    if not isinstance(document.get("paper"), dict):
+        issues.append("paper must be an object")
+    sources = keyed(document.get("sources"), "source_id", "sources", issues)
+    if not sources:
+        issues.append("sources must contain at least one pinned artifact")
+    target_resolution = validate_target_resolution(document, issues)
+    datasets = validate_datasets(document, issues)
+    artifacts = validate_artifacts(root, document, issues)
+    runs = validate_runs(document, artifacts, issues)
+    produced, target_count = validate_targets(
+        document, datasets, runs, artifacts, issues
+    )
+    status = document.get("status")
+    if not isinstance(status, dict):
+        issues.append("status must be an object")
+        status = {}
+    pipeline = status.get("pipeline")
+    if pipeline not in PIPELINE_STATUSES:
+        issues.append(f"invalid pipeline status {pipeline!r}")
+    numerical_agreement = status.get("numerical_agreement")
+    if numerical_agreement not in NUMERICAL_AGREEMENTS:
+        issues.append(f"invalid numerical_agreement {numerical_agreement!r}")
+    preference = status.get("preference_level")
+    if preference not in (1, 2, 3):
+        issues.append("preference_level must be 1, 2, or 3")
+    if target_count and produced == target_count and pipeline != "complete":
+        issues.append("all targets are produced, so pipeline must be complete")
+    elif 0 < produced < target_count and pipeline != "partial":
+        issues.append("some targets are produced, so pipeline must be partial")
+    elif produced == 0 and pipeline in {"complete", "partial"}:
+        issues.append("no targets are produced, so pipeline must identify the blocker")
+    open_gate, open_gate_types = validate_gates(document, issues)
+    if target_resolution == "human_gate" and "target" not in open_gate_types:
+        issues.append("human_gate target_resolution needs an open target gate")
+    if open_gate and pipeline == "complete":
+        issues.append("a complete pipeline cannot retain an open gate")
+    validate_readme(root, paper_id, pipeline, preference, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:
             print(f"- {issue}", file=sys.stderr)
         return 1
-
     print(f"validated reproduction: {root}")
     return 0
 

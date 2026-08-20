@@ -18,25 +18,28 @@ The ingestion script enforces these invariants and writes:
 ```json
 {
   "schema_version": 1,
-  "source": {
-    "path": "/path/to/export.json",
-    "sha256": "..."
-  },
-  "normalized": {
-    "paper_id": "...",
-    "title": "...",
-    "pdf_url": "...",
-    "code_repos": [],
-    "what_to_reproduce": "...",
-    "metric_ids": [],
-    "metric_records": [],
-    "datasets": []
-  },
-  "record": {}
+  "paper_id": "...",
+  "assignment": {
+    "kind": "queue_record",
+    "source": {
+      "path": "/path/to/export.json",
+      "sha256": "..."
+    },
+    "normalized": {
+      "title": "...",
+      "pdf_url": "...",
+      "code_repos": [],
+      "what_to_reproduce": "...",
+      "metric_ids": [],
+      "metric_records": [],
+      "datasets": []
+    },
+    "record": {}
+  }
 }
 ```
 
-`record` is the exact selected JSON object. `normalized` makes heterogeneous fields convenient but does not override the raw record.
+`assignment.record` is the exact selected JSON object. `assignment.normalized` makes heterogeneous fields convenient but does not override the raw record. The ingestion script preserves any other completed `reproduction.json` sections.
 
 ## Interpret fields conservatively
 
@@ -52,11 +55,9 @@ The ingestion script enforces these invariants and writes:
 
 ## Choose the directory
 
-- Canonical GitHub source: `repositories/GITHUB_USER/GITHUB_REPO/`.
-- No GitHub source, including non-Git archives or OSF-only artifacts: `repositories/papers/{paper_id}/`.
-- Multiple code artifacts: choose the artifact that implements the requested experiment, record all candidates, and pin/checksum each artifact actually used.
+Always use `papers/{paper_id}/`. A source repository is evidence, not the study unit: one paper may use several repositories, and one repository may support several papers. Record all candidate artifacts in `reproduction.json.sources`, then pin/checksum each selected artifact.
 
-Do not create parallel directories for the same candidate. If an attempt already exists, verify its `candidate.json` ID and resume it.
+Do not create parallel directories for the same candidate. If an attempt already exists, verify its `reproduction.json.paper_id` and resume it.
 
 ## Source-search completion checklist
 
@@ -72,13 +73,13 @@ Before declaring that no usable code exists or selecting preference level 3, che
 
 Record queries/locations searched and access dates. Do not contact authors merely to complete this checklist; author contact remains a gated post-independent-attempt action.
 
-## Build `targets.json`
+## Build the target contract
 
-Copy `templates/targets.json`, then replace the example with one entry per published number requested by the assignment.
+Start from `templates/reproduction.json`, then replace the target example with one object per published number requested by the assignment.
 
 Each target needs:
 
-- a stable `target_id` used unchanged in `metrics.json`;
+- a stable `target_id` used by run and artifact references;
 - paper location and evidence such as page/table/figure/row/column;
 - system or ablation name;
 - exact dataset, version/subset, and split;
@@ -88,12 +89,12 @@ Each target needs:
 - reproduction plan: training/evaluation/checkpoint/seed requirements;
 - terminal status: `produced` or `not_produced`, plus evidence or reason.
 
-At the document level, set `resolution_status` to `resolved` only when all target identities are concrete. If alternatives remain, use `human_gate`, fill `unresolved_alternatives`, and create `evidence/gates/<gate-id>.json` from the gate template. Do not choose the alternative that is easiest to reproduce.
+Set `target_resolution.status` to `resolved` only when all target identities are concrete. If alternatives remain, use `human_gate`, record each alternative as an object with `alternative_id`, `description`, `paper_evidence`, and `decision_needed`, and append one open target gate to `reproduction.json.gates`. A gate has `gate_id`, `type`, `status`, `reason`, `evidence`, and `required_action`; it is state inside `reproduction.json`, not another file. Do not choose the alternative that is easiest to reproduce.
 
-Before experiments, `status` may be `pending`. No target may remain pending at handoff.
+Before experiments, a target may omit `result`. At handoff, every target must embed exactly one terminal result with run and raw-artifact references.
 
 When `what_to_reproduce` names a whole table, include the rows/numbers needed to support the table's claimed comparison, not an arbitrary convenient row. When it mentions prose, locate and cite the exact sentences and metric definitions. When the target remains genuinely ambiguous after reading the paper and supplements, record the alternatives and ask at the target gate.
 
 ## Direct paper assignments
 
-If no queue export exists, do not fabricate `confirmation`, reviewer, dataset-availability, or ethics-review values. Create a minimal `candidate.json` that records the user assignment, citation/PDF source, access date, and hashes; mark queue-only fields as absent. The target and evidence requirements remain unchanged.
+If no queue export exists, do not fabricate `confirmation`, reviewer, dataset-availability, or ethics-review values. Create a minimal `reproduction.json.assignment` that records the direct user request and source hash; mark queue-only fields as absent. The target and evidence requirements remain unchanged.
