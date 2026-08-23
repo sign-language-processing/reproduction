@@ -1,0 +1,66 @@
+From 265eec07c74686fadfbf5d4a3cd72fb31d8a951d Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Fri, 21 Aug 2026 10:11:43 +0200
+Subject: [PATCH 4/4] Preserve training and evaluation state across resume
+
+Modal functions are limited to 24 hours while this upstream recipe exceeds that boundary. Save epoch_step beside every checkpoint, avoid the fresh-model evaluation when loading a checkpoint, and align the next internal and BLEU evaluations to their uninterrupted-run boundaries. This prevents repeated/skipped examples and shifted or off-cadence checkpoint selection after a controlled resume.
+---
+ nslt/train.py | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/nslt/train.py b/nslt/train.py
+index 4cbda68..c2569ed 100755
+--- a/nslt/train.py
++++ b/nslt/train.py
+@@ -263,14 +263,14 @@ def train(hparams, scope=None, target_session="", single_cell_fn=None):
+     summary_writer = tf.summary.FileWriter(os.path.join(out_dir, summary_name), train_model.graph)
+ 
+     # First evaluation
+-    if hparams.eval_on_fly:
++    if hparams.eval_on_fly and global_step == 0:
+         run_full_eval(model_dir, infer_model, infer_sess, eval_model, eval_sess, hparams, summary_writer, sample_src_data, sample_tgt_data)
+ 
+     last_stats_step = global_step
+ 
+     if hparams.eval_on_fly:
+-        last_eval_step = global_step
+-        last_external_eval_step = global_step
++        last_eval_step = global_step - (global_step % steps_per_eval)
++        last_external_eval_step = global_step - (global_step % steps_per_external_eval)
+     else:
+         last_snapshot_step = global_step
+ 
+@@ -340,6 +340,7 @@ def train(hparams, scope=None, target_session="", single_cell_fn=None):
+ 
+             # Save checkpoint
+             loaded_train_model.saver.save(train_sess, os.path.join(out_dir, "translate.ckpt"), global_step=global_step)
++            utils.save_hparams(out_dir, hparams)
+ 
+ 
+         if hparams.eval_on_fly and (global_step - last_eval_step >= steps_per_eval):
+@@ -350,6 +351,7 @@ def train(hparams, scope=None, target_session="", single_cell_fn=None):
+ 
+             # Save checkpoint
+             loaded_train_model.saver.save(train_sess, os.path.join(out_dir, "translate.ckpt"), global_step=global_step)
++            utils.save_hparams(out_dir, hparams)
+ 
+             # Evaluate on dev/test
+             run_sample_decode(infer_model, infer_sess, model_dir, hparams, summary_writer, sample_src_data, sample_tgt_data)
+@@ -360,11 +362,13 @@ def train(hparams, scope=None, target_session="", single_cell_fn=None):
+ 
+             # Save checkpoint
+             loaded_train_model.saver.save(train_sess, os.path.join(out_dir, "translate.ckpt"), global_step=global_step)
++            utils.save_hparams(out_dir, hparams)
+             run_sample_decode(infer_model, infer_sess, model_dir, hparams, summary_writer, sample_src_data, sample_tgt_data)
+             dev_scores, test_scores, _ = run_external_eval(infer_model, infer_sess, model_dir, hparams, summary_writer)
+ 
+     # Done training
+     loaded_train_model.saver.save(train_sess, os.path.join(out_dir, "translate.ckpt"), global_step=global_step)
++    utils.save_hparams(out_dir, hparams)
+ 
+     if hparams.eval_on_fly:
+         result_summary, _, dev_scores, test_scores, dev_ppl, test_ppl = run_full_eval(model_dir, infer_model, infer_sess, eval_model, eval_sess, hparams, summary_writer, sample_src_data, sample_tgt_data)
+-- 
+2.55.0
+
+

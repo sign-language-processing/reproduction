@@ -1,0 +1,156 @@
+From 21885310570299acda9be9e146399779896e7142 Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Fri, 21 Aug 2026 09:21:03 +0200
+Subject: [PATCH 1/4] Support TensorFlow 1.15 and Python 3
+
+The A100-compatible TensorFlow 1 image no longer exposes contrib.data and
+uses Python 3 file semantics; NumPy also requires an explicit pickle opt-in.
+
+---
+ nslt/alexnet.py              |  2 +-
+ nslt/inference.py            |  2 +-
+ nslt/train.py                |  8 ++++----
+ nslt/utils/iterator_utils.py | 14 +++++++-------
+ nslt/utils/misc_utils.py     |  6 +++---
+ 5 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/nslt/alexnet.py b/nslt/alexnet.py
+index 75437d0..fd65122 100755
+--- a/nslt/alexnet.py
++++ b/nslt/alexnet.py
+@@ -92,7 +92,7 @@ class AlexNet(object):
+         'biases') we need a special load function
+         """
+         # Load the weights into memory
+-        weights_dict = np.load(self.weights_path, encoding='bytes').item()
++        weights_dict = np.load(self.weights_path, encoding='bytes', allow_pickle=True).item()
+ 
+         # Loop over all layer names stored in the weights dict
+         for op_name in weights_dict:
+diff --git a/nslt/inference.py b/nslt/inference.py
+index ee7412b..f9b75d6 100755
+--- a/nslt/inference.py
++++ b/nslt/inference.py
+@@ -54,7 +54,7 @@ def create_infer_model(model_creator, hparams, scope=None, single_cell_fn=None):
+ 
+         src_placeholder = tf.placeholder(shape=[None], dtype=tf.string)
+ 
+-        src_dataset = tf.contrib.data.Dataset.from_tensor_slices(src_placeholder)
++        src_dataset = tf.data.Dataset.from_tensor_slices(src_placeholder)
+         iterator = iterator_utils.get_infer_iterator(src_dataset, source_reverse=hparams.source_reverse, src_max_len=hparams.src_max_len_infer)
+ 
+         model = model_creator(hparams, iterator=iterator, mode=tf.contrib.learn.ModeKeys.INFER, target_vocab_table=tgt_vocab_table, reverse_target_vocab_table=reverse_tgt_vocab_table, scope=scope, single_cell_fn=single_cell_fn)
+diff --git a/nslt/train.py b/nslt/train.py
+index 51ae43f..a6d7ecc 100755
+--- a/nslt/train.py
++++ b/nslt/train.py
+@@ -56,8 +56,8 @@ def create_train_model(model_creator, hparams, scope=None, single_cell_fn=None):
+ 
+         tgt_vocab_table = vocab_utils.create_tgt_vocab_table(tgt_vocab_file)
+ 
+-        src_dataset = tf.contrib.data.TextLineDataset(src_file)
+-        tgt_dataset = tf.contrib.data.TextLineDataset(tgt_file)
++        src_dataset = tf.data.TextLineDataset(src_file)
++        tgt_dataset = tf.data.TextLineDataset(tgt_file)
+         skip_count_placeholder = tf.placeholder(shape=(), dtype=tf.int64)
+ 
+         iterator = iterator_utils.get_iterator(src_dataset,
+@@ -101,8 +101,8 @@ def create_eval_model(model_creator, hparams, scope=None, single_cell_fn=None):
+ 
+         src_file_placeholder = tf.placeholder(shape=(), dtype=tf.string)
+         tgt_file_placeholder = tf.placeholder(shape=(), dtype=tf.string)
+-        src_dataset = tf.contrib.data.TextLineDataset(src_file_placeholder)
+-        tgt_dataset = tf.contrib.data.TextLineDataset(tgt_file_placeholder)
++        src_dataset = tf.data.TextLineDataset(src_file_placeholder)
++        tgt_dataset = tf.data.TextLineDataset(tgt_file_placeholder)
+         iterator = iterator_utils.get_iterator(src_dataset,
+                                                tgt_dataset,
+                                                tgt_vocab_table,
+diff --git a/nslt/utils/iterator_utils.py b/nslt/utils/iterator_utils.py
+index 9561335..87b9c96 100755
+--- a/nslt/utils/iterator_utils.py
++++ b/nslt/utils/iterator_utils.py
+@@ -108,7 +108,7 @@ def get_iterator(src_dataset,
+     tgt_eos_id = tf.cast(tgt_vocab_table.lookup(tf.constant(eos)), tf.int32)
+ 
+     # Concat Datasets
+-    src_tgt_dataset = tf.contrib.data.Dataset.zip((src_dataset, tgt_dataset))
++    src_tgt_dataset = tf.data.Dataset.zip((src_dataset, tgt_dataset))
+ 
+     # Skip Data
+     if skip_count is not None:
+@@ -120,12 +120,12 @@ def get_iterator(src_dataset,
+     # Get number of frames from videos
+     src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt:
+                                           (src, tgt, tf.py_func(get_number_of_frames, [src], tf.int32)),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Split Translation into Tokens
+     src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt, src_len:
+                                           (src, tf.string_split([tgt]).values, src_len),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Sequence Length Checks
+     src_tgt_dataset = src_tgt_dataset.filter(lambda src, tgt, src_len: tf.logical_and(src_len > 0, tf.size(tgt) > 0))
+@@ -134,7 +134,7 @@ def get_iterator(src_dataset,
+     # Convert Tokens to IDs
+     src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt, src_len:
+                                           (src, tf.cast(tgt_vocab_table.lookup(tgt), tf.int32), src_len),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Create Input and Output for Target
+     src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt, src_len:
+@@ -142,12 +142,12 @@ def get_iterator(src_dataset,
+                                            tf.concat(([tgt_sos_id], tgt), 0),
+                                            tf.concat((tgt, [tgt_eos_id]), 0),
+                                            src_len),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Get Target Sequence Length
+     src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt_in, tgt_out, src_len:
+                                           (src, tgt_in, tgt_out, src_len, tf.size(tgt_in)),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Pad Target Sequence With 0s
+     # src_tgt_dataset = src_tgt_dataset.map(lambda src, tgt_in, tgt_out, src_len, tgt_len:
+@@ -165,7 +165,7 @@ def get_iterator(src_dataset,
+                                            tf.expand_dims(tgt_out, 0),
+                                            tf.reshape(src_len, [1]),
+                                            tf.reshape(tgt_len, [1])),
+-                                          num_threads=num_threads, output_buffer_size=output_buffer_size)
++                                          num_parallel_calls=num_threads)
+ 
+     # Create Initializer
+     batched_iter = src_tgt_dataset.make_initializable_iterator()
+diff --git a/nslt/utils/misc_utils.py b/nslt/utils/misc_utils.py
+index 5d211b8..00dcad6 100755
+--- a/nslt/utils/misc_utils.py
++++ b/nslt/utils/misc_utils.py
+@@ -28,7 +28,7 @@ import tensorflow as tf
+ 
+ 
+ def check_tensorflow_version():
+-    if tf.__version__ < "1.2.1":
++    if tuple(map(int, tf.__version__.split(".")[:3])) < (1, 2, 1):
+         raise EnvironmentError("Tensorflow version must >= 1.2.1")
+ 
+ 
+@@ -54,9 +54,9 @@ def print_out(s, f=None, new_line=True):
+         s = s.decode("utf-8")
+ 
+     if f:
+-        f.write(s.encode("utf-8"))
++        f.write(s)
+         if new_line:
+-            f.write(b"\n")
++            f.write("\n")
+ 
+     # stdout
+     print(s, end="", file=sys.stdout)
+-- 
+2.55.0
