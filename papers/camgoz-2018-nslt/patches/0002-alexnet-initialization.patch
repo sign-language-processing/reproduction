@@ -1,0 +1,30 @@
+From 106d029a6d7f5516aac8153f18435aa07f1305f9 Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Fri, 21 Aug 2026 09:21:11 +0200
+Subject: [PATCH 2/4] Load ImageNet weights after fresh variable init
+
+The published order loads AlexNet and immediately overwrites it with the
+fresh-model global initializer, contrary to the paper's ImageNet protocol.
+
+---
+ nslt/train.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/nslt/train.py b/nslt/train.py
+index a6d7ecc..4cbda68 100755
+--- a/nslt/train.py
++++ b/nslt/train.py
+@@ -254,8 +254,10 @@ def train(hparams, scope=None, target_session="", single_cell_fn=None):
+         infer_sess = tf.Session(target=target_session, config=config_proto, graph=infer_model.graph)
+ 
+     with train_model.graph.as_default():
+-        model_helper.initialize_cnn(train_model.model, train_sess)
++        fresh_model = tf.train.latest_checkpoint(model_dir) is None
+         loaded_train_model, global_step = model_helper.create_or_load_model(train_model.model, model_dir, train_sess, "train")
++        if fresh_model:
++            model_helper.initialize_cnn(train_model.model, train_sess)
+ 
+     # Summary writer
+     summary_writer = tf.summary.FileWriter(os.path.join(out_dir, summary_name), train_model.graph)
+-- 
+2.55.0

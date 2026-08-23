@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "paper_id": "camgoz-2018-nslt",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "sha256": "2d792efafdf27efc9190406bb2490acc7a56a54856e109e2dc18bb86f63ac2a8"
+    },
+    "request": "now following a similar structure, let's do camgoz/nslt as well in a new PR"
+  },
+  "paper": {
+    "title": "Neural Sign Language Translation",
+    "citation": "Camgoz, Koller, Hadfield, and Bowden. 2018. Neural Sign Language Translation. CVPR, 7784-7793. DOI: 10.1109/CVPR.2018.00812.",
+    "url": "https://openaccess.thecvf.com/content_cvpr_2018/papers/Camgoz_Neural_Sign_Language_CVPR_2018_paper.pdf",
+    "pdf_sha256": "642e088ee56eeaa6aa641bc53438f695a6b5f4942bd0b6bd87e9ae53db41205b",
+    "accessed_at": "2026-08-20"
+  },
+  "sources": [
+    {
+      "source_id": "published-code",
+      "kind": "code",
+      "url": "https://github.com/neccam/nslt",
+      "revision_or_sha256": "06951580b58f04b9cd64efcf61aeca36011031d3",
+      "role": "Authors' model, train/evaluation entry point, README recipe, and BLEU implementation"
+    },
+    {
+      "source_id": "alexnet-initialization",
+      "kind": "weights",
+      "url": "https://www.cs.toronto.edu/~guerzhoy/tf_alexnet/bvlc_alexnet.npy",
+      "revision_or_sha256": "1294ef51496c52f2e4879ee3b5e1da22c35d61f3240937491b4469403d5428cc",
+      "role": "Paper-required ImageNet AlexNet initialization"
+    }
+  ],
+  "status": {
+    "pipeline": "complete",
+    "numerical_agreement": "fully_reproduced",
+    "preference_level": 2
+  },
+  "datasets": [
+    {
+      "dataset_id": "phoenix-2014t-v3-videos",
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "v3 original MP4 videos, direct frame-level S2T path",
+      "sources": [
+        {
+          "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+          "accessed_at": "2026-08-20"
+        }
+      ],
+      "license_or_permission": "The version-specific dataset page links CC BY-NC-SA 3.0; non-commercial project-cloud research processing. The generic RWTH database page currently names 4.0, so this record conservatively uses 3.0.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/videos",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 7096,
+          "files": [
+            {
+              "path": "videos/train (sorted filename:size manifest)",
+              "sha256": "9d4bcd579409139d0392a053789fb9572446a6ca1b886148f05abc269d9a0c95"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 519,
+          "files": [
+            {
+              "path": "videos/dev (sorted filename:size manifest)",
+              "sha256": "6590341554887fbee0605fe5671adce1fd5e0e0c1f78158566f2129fcb96a5c9"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 642,
+          "files": [
+            {
+              "path": "videos/test (sorted filename:size manifest)",
+              "sha256": "5596226bb5475accbfa3efef48cf03f21242abf94a4f15e74b478bc9fff11b4c"
+            }
+          ]
+        }
+      ],
+      "deviation": "The upstream manifests point to MATLAB-resized 227x227 frame files. With the user's protocol approval, the retained simple-video-utils patch decodes the supplied MP4s at runtime and uses OpenCV cubic resize. RGB-to-BGR conversion matches the upstream OpenCV mean-subtraction convention, but this is not pixel-identical to the unpublished MATLAB resize plus image-file round trip."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "bleu4-upstream-0695158",
+      "name": "BLEU-4",
+      "direction": "higher_is_better",
+      "implementation": "neccam/nslt bundled evaluation_utils.py and bleu.py",
+      "version": "06951580b58f04b9cd64efcf61aeca36011031d3; evaluation_utils.py SHA-256 b22b84f80903776092af2c690046ace88fe4aadec8ee82dd4cd92e1504cf6622; bleu.py SHA-256 66f4b9fa1d9a4d3fc6f7aca863eb04c3957d3a13ce8b18174b522994ed025ad2",
+      "aggregation": "Unsmoothened, case-sensitive, whitespace-tokenized corpus BLEU; the code prints orders 1-4 and returns order 4.",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table-5-s2t-luong",
+      "system": "S2T with Luong attention, AlexNet fc7 features jointly trained from video frames, four 1000-unit residual GRU layers",
+      "dataset_id": "phoenix-2014t-v3-videos",
+      "required_seeds": [285],
+      "checkpoint_rule": "Authors' code saves the checkpoint with highest development BLEU-4 during training, then evaluates that saved best_bleu checkpoint on development and test after 150,000 steps.",
+      "paper_evidence": "Table 5 S2T attention-mechanism experiments, Luong row. The upstream README command is the matching executable recipe; Table 6's Bahdanau system is not this target."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table-5-luong-dev-bleu4",
+      "paper_location": "Table 5, S2T Attention Mechanism Experiments, Luong row, DEV BLEU-4",
+      "experiment_id": "table-5-s2t-luong",
+      "split": "dev",
+      "metric_id": "bleu4-upstream-0695158",
+      "original_value": 10.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 10.26098962656134,
+        "difference": 0.26098962656134,
+        "run_ids": ["full-luong-resumed"],
+        "artifact_ids": ["dev-predictions"],
+        "notes": "Selected checkpoint 118000, evaluated by the upstream terminal best-model loop."
+      }
+    },
+    {
+      "target_id": "table-5-luong-test-bleu4",
+      "paper_location": "Table 5, S2T Attention Mechanism Experiments, Luong row, TEST BLEU-4",
+      "experiment_id": "table-5-s2t-luong",
+      "split": "test",
+      "metric_id": "bleu4-upstream-0695158",
+      "original_value": 9.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 9.603571536009477,
+        "difference": 0.603571536009477,
+        "run_ids": ["full-luong-resumed"],
+        "artifact_ids": ["test-predictions"],
+        "notes": "The fixed development-selected checkpoint 118000 was evaluated on test by the upstream terminal best-model loop."
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "full-luong-first-segment",
+      "kind": "full_reproduction_segment",
+      "hypothesis": "The pinned author recipe and minimal compatibility/correctness patches can train directly from the validated PHOENIX MP4 data while preserving the declared protocol.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/camgoz-2018-nslt/scripts/modal_app.py::launch_train",
+      "started_at_utc": "2026-08-21T08:17:00Z",
+      "finished_at_utc": "2026-08-22T08:17:23Z",
+      "duration_seconds": 86400,
+      "exit_code": 124,
+      "terminal_state": "modal_timeout_after_verified_checkpoint",
+      "source": {
+        "upstream_revision": "06951580b58f04b9cd64efcf61aeca36011031d3",
+        "patch_sha256": [
+          "722475c1595eb29ff4ca5aa5bc2d702190b9b37fa962fd86ea35780c0dd8f73f",
+          "0f2524e0d0b3085b6efdf24a4c29785ecdc7061ab1adacba0a006c33e4afe7e",
+          "8728f089e1ce9c48c19cf98603f96a78339be6678906b0e016252aaf064431b5",
+          "654d38ae13fffbcc654b9b3476c8a28cd3003df38352a0e0049ffe3b27ec38e5"
+        ]
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-YIhshIz2SxWpZ8ga3jTb6i",
+        "modal_function_call_id": "fc-01M0HPA3R2PPWY4P6TCAT22V4W",
+        "hardware": "NVIDIA A100-SXM4-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "observation": "Modal's 24-hour function limit ended this segment at the next safe boundary. Checkpoint 91000 and matching hparams were verified before resuming; this is a controlled segmentation, not a restart."
+    },
+    {
+      "run_id": "full-luong-resumed",
+      "kind": "full_reproduction_terminal_segment",
+      "hypothesis": "Resuming upstream checkpoint 91000 with the paired hparams and persisted epoch step will preserve the author recipe's data order and reach terminal selected-checkpoint evaluation.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/camgoz-2018-nslt/scripts/modal_app.py::launch_train",
+      "started_at_utc": "2026-08-22T11:19:47Z",
+      "finished_at_utc": "2026-08-23T03:41:10Z",
+      "duration_seconds": 58205,
+      "exit_code": 0,
+      "terminal_state": "succeeded",
+      "source": {
+        "upstream_revision": "06951580b58f04b9cd64efcf61aeca36011031d3",
+        "patch_sha256": [
+          "722475c1595eb29ff4ca5aa5bc2d702190b9b37fa962fd86ea35780c0dd8f73f",
+          "0f2524e0d0b3085b6efdf24a4c29785ecdc7061ab1adacba0a006c33e4afe7e",
+          "8728f089e1ce9c48c19cf98603f96a78339be6678906b0e016252aaf064431b5",
+          "654d38ae13fffbcc654b9b3476c8a28cd3003df38352a0e0049ffe3b27ec38e5"
+        ]
+      },
+      "environment": {
+        "base_image": "nvcr.io/nvidia/tensorflow:20.12-tf1-py3@sha256:312147204a65c65ba25a75944333105493772121c11c33e769919ea10e9a256f",
+        "software": {
+          "python": "3.8",
+          "tensorflow": "1.15.4",
+          "cuda_runtime": "11.0"
+        }
+      },
+      "configuration": {
+        "seed": 285,
+        "attention": "luong",
+        "num_layers": 4,
+        "num_units": 1000,
+        "batch_size": 1,
+        "learning_rate": 0.00001,
+        "dropout": 0.2,
+        "source_reverse": true,
+        "residual": true,
+        "unit_type": "gru",
+        "beam_width": 3,
+        "num_train_steps": 150000,
+        "selected_checkpoint_step": 118000
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-ndaVyaD00TOsiDttMuXGvX",
+        "modal_function_call_id": "fc-01M0MK4YAXGDH7KJZXQ3ZKJWNP",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ndaVyaD00TOsiDttMuXGvX",
+        "hardware": "NVIDIA A100-SXM4-40GB",
+        "gpu_count": 1,
+        "wall_time_hours": 16.168055555555554,
+        "gpu_hours": 16.168055555555554,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": ["hparams", "dev-predictions", "test-predictions", "selected-checkpoint-data", "selected-checkpoint-index", "selected-checkpoint-meta"],
+      "observation": "Restored at step 91000 after skipping 6132 already-seen examples, trained to step 150000, then the upstream terminal best-model loop loaded checkpoint 118000 and produced all requested target scores.",
+      "hypothesis_supported": true,
+      "next_action": "Publish the permitted selected checkpoint and exact evidence, then present the completed attempt for scientific review."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "dockerfile",
+      "kind": "container_definition",
+      "uri": "Dockerfile",
+      "sha256": "3f1623fff031a2c66ac8aa4b51ba0af8097ba4e5dff9d56778d0f6387ee1e0ea",
+      "size_bytes": 1857
+    },
+    {
+      "artifact_id": "modal-app",
+      "kind": "entrypoint",
+      "uri": "scripts/modal_app.py",
+      "sha256": "b5d13d0f5149cf38d7ced0ee983a0cf968f91b4485491375b3363dc4829fe517",
+      "size_bytes": 5644
+    },
+    {
+      "artifact_id": "hparams",
+      "kind": "configuration",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/hparams",
+      "sha256": "8a9ba623b2a52795f484382297de0a7dddce91c64e3342023420f7541decf21a",
+      "size_bytes": 1529
+    },
+    {
+      "artifact_id": "dev-predictions",
+      "kind": "raw_metrics",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/output_dev",
+      "sha256": "13d013c9f90f7a0f7f9f09a093feefd1ebe71f198ffa45b77c7fd8510ebe553b",
+      "size_bytes": 40706
+    },
+    {
+      "artifact_id": "test-predictions",
+      "kind": "raw_metrics",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/output_test",
+      "sha256": "dc117fb6215d81eff443ae886fcdbaf8d4c2d6e1380d70d6a8f013e463d8c1ea",
+      "size_bytes": 47668
+    },
+    {
+      "artifact_id": "selected-checkpoint-data",
+      "kind": "checkpoint",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/translate.ckpt-118000.data-00000-of-00001",
+      "sha256": "bbace325a51197db547c18493870c5c5a87b289939b7505bd7ce73ed79831a05",
+      "size_bytes": 503848900,
+      "license": "CC BY-NC-SA 3.0"
+    },
+    {
+      "artifact_id": "selected-checkpoint-index",
+      "kind": "checkpoint_index",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/translate.ckpt-118000.index",
+      "sha256": "954f3b9a649c63c84ece446e57271b980090e6c9c04ad0da4506e34d2f3207f8",
+      "size_bytes": 2421
+    },
+    {
+      "artifact_id": "selected-checkpoint-meta",
+      "kind": "checkpoint_meta",
+      "uri": "https://huggingface.co/repro-sign/camgoz-nslt/resolve/7851726a660a9441fa8e1817a8818695dee1df8b/translate.ckpt-118000.meta",
+      "sha256": "0a4e42bc4b0a1092e50264caeb77bea8b4a2d166e0f8fb46213f074b1d2da1d4",
+      "size_bytes": 671389
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "modal-auth",
+      "type": "modal_auth",
+      "status": "resolved",
+      "reason": "Every Modal operation used the repro-sign wrapper and verified profile.",
+      "required_action": "Use only repro-sign for this reproduction.",
+      "evidence": ["Modal apps ap-YIhshIz2SxWpZ8ga3jTb6i and ap-ndaVyaD00TOsiDttMuXGvX ran under repro-sign."]
+    },
+    {
+      "gate_id": "data",
+      "type": "data",
+      "status": "resolved",
+      "reason": "The exact shared RWTH-PHOENIX-2014T video directory, split counts, and stable manifests were verified before training.",
+      "required_action": "Keep datasets read-only and do not publish raw data.",
+      "evidence": ["Validated 7096/519/642 train/dev/test videos under datasets/rwth-phoenix-2014-t/videos."]
+    },
+    {
+      "gate_id": "protocol",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "The user approved the direct-MP4 simple-video-utils path when upstream pre-resized frame directories were unavailable.",
+      "required_action": "Record the non-pixel-equivalent preprocessing deviation.",
+      "evidence": ["0003-simple-video-utils.patch and the direct user request to use simple-video-utils for video decoding."]
+    },
+    {
+      "gate_id": "compute",
+      "type": "compute",
+      "status": "resolved",
+      "reason": "Single-A100 execution remained within the declared 80 GPU-hour ceiling and used checkpoint resume instead of restart.",
+      "required_action": "Record both segments and terminal evidence.",
+      "evidence": ["First segment timed out after a verified checkpoint; resumed terminal segment took 16.17 A100-hours."]
+    }
+  ],
+  "guesses": [
+    "The paper does not state a seed; the authors' executable default uses seed 285, although its dropout operators are not globally seeded.",
+    "The paper describes convergence around 30 epochs and half-epoch evaluation; the pinned README/defaults instead define the concrete 150000-step, development-BLEU-selected executable recipe."
+  ],
+  "deviations": [
+    "Direct MP4 decoding and OpenCV resize replaces unavailable upstream MATLAB-resized image files; this was an explicitly approved behavior-changing preprocessing deviation.",
+    "The initial 24-hour Modal segment ended at checkpoint 91000 and resumed with paired hparams/epoch state; no training restart occurred."
+  ],
+  "dead_ends": [
+    "The canonical BestModel Dropbox URL returned HTTP 409 on 2026-08-20, so no author checkpoint was used."
+  ],
+  "author_contact": "No new author contact was made.",
+  "ethics": "No new participants or human evaluation were introduced. Existing licensed benchmark videos remained on the project dataset Volume and are not committed or uploaded."
+}

@@ -1,0 +1,66 @@
+From a378de63e72a7656320ba4c87db0d159bb2a838b Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Fri, 21 Aug 2026 09:43:32 +0200
+Subject: [PATCH 3/4] Decode mounted MP4s with simple-video-utils
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The shared dataset contains videos rather than an extracted JPEG tree. Decode them directly while retaining NSLT’s frame order, BGR mean, size, and reversal.
+---
+ nslt/utils/iterator_utils.py | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/nslt/utils/iterator_utils.py b/nslt/utils/iterator_utils.py
+index 87b9c96..0b17944 100755
+--- a/nslt/utils/iterator_utils.py
++++ b/nslt/utils/iterator_utils.py
+@@ -18,12 +18,12 @@ from __future__ import print_function
+ 
+ import collections
+ 
+-from os import listdir
+-from os.path import isfile, join
+ import numpy as np
+ import cv2
+ 
+ import tensorflow as tf
++from simple_video_utils.frames import read_frames_exact
++from simple_video_utils.metadata import video_metadata
+ 
+ __all__ = ["BatchedInput", "get_iterator", "get_infer_iterator"]
+ 
+@@ -67,18 +67,23 @@ def get_infer_iterator(src_dataset,
+ 
+ 
+ def get_number_of_frames(src):
+-    return np.int32(len([f for f in listdir(src) if isfile(join(src, f))]))
++    src = src.decode("utf-8") if not isinstance(src, str) else src
++    metadata = video_metadata(src)
++    if metadata.nb_frames is not None:
++        return np.int32(metadata.nb_frames)
++    return np.int32(sum(1 for _ in read_frames_exact(src)))
+ 
+ def read_video(src, source_reverse):
+-    images = sorted([f for f in listdir(src) if isfile(join(src, f))])
+-    video = np.zeros((len(images), 227, 227, 3)).astype(np.float32)
+-
++    src = src.decode("utf-8") if not isinstance(src, str) else src
+     # Cihan_CR: Harcoded Path, Need to Change This
+     mean_image = np.load('../Mean/FulFrame_Mean_Image_227x227.npy').astype(np.float32)[..., ::-1]
+-
+-    # for each image
+-    for i in range(0, len(images)):
+-        video[i, :, :, :] = cv2.imread(src + images[i]).astype(np.float32) - mean_image
++    video = np.stack([
++        cv2.resize(frame, (227, 227), interpolation=cv2.INTER_CUBIC)[..., ::-1].astype(np.float32) - mean_image
++        for frame in read_frames_exact(src)
++    ])
++    expected_frames = video_metadata(src).nb_frames
++    if expected_frames is not None and len(video) != expected_frames:
++        raise ValueError("decoded frame count does not match video metadata")
+ 
+     if source_reverse:
+         video = np.flip(video, axis=0)
+-- 
+2.55.0
