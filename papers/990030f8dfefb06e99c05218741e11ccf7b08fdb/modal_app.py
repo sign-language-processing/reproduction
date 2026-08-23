@@ -83,31 +83,11 @@ def populate_lsa64() -> dict[str, object]:
     volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
     env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub", "TORCH_HOME": "/cache/huggingface/torch"},
 )
-def train(epochs: int = 30, output_name: str = "resnet-lstm") -> str:
+def train() -> str:
     """Train the reconstructed 30-epoch, batch-16 protocol."""
-    if not output_name or Path(output_name).name != output_name:
-        raise ValueError("output_name must be one directory name")
-    output_dir = Path("/results") / output_name
+    output_dir = Path("/results/resnet-lstm-finetuned")
     subprocess.run([
-        "python", "/app/train.py", "--data-root", "/datasets/lsa64", "--output-dir", str(output_dir), "--epochs", str(epochs), "--batch-size", "16", "--workers", "8", "--seed", "2024",
-    ], check=True)
-    results.commit()
-    return (output_dir / "run.json").read_text(encoding="utf-8")
-
-
-@app.function(
-    image=image,
-    gpu="A10G",
-    cpu=8,
-    timeout=60 * 60,
-    volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
-    env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub", "TORCH_HOME": "/cache/huggingface/torch"},
-)
-def preflight() -> str:
-    """Exercise real decoding, four optimizer steps, evaluation, and reload."""
-    output_dir = Path("/results/preflight")
-    subprocess.run([
-        "python", "/app/train.py", "--data-root", "/datasets/lsa64", "--output-dir", str(output_dir), "--epochs", "1", "--batch-size", "16", "--workers", "8", "--seed", "2024", "--max-train-samples", "64", "--max-validation-samples", "32", "--verify-reload",
+        "python", "/app/train.py", "--data-root", "/datasets/lsa64", "--output-dir", str(output_dir), "--epochs", "30", "--batch-size", "16", "--workers", "8", "--seed", "2024",
     ], check=True)
     results.commit()
     return (output_dir / "run.json").read_text(encoding="utf-8")

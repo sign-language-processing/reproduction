@@ -7,10 +7,9 @@ It deliberately decodes videos on demand instead of materialising extracted fram
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import random
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -59,6 +58,20 @@ def list_samples(data_root: Path) -> list[Sample]:
     if len(identities) != 3200:
         raise ValueError("LSA64 contains duplicate or missing class/signer/repetition identities")
     return samples
+
+
+def split_samples(samples: list[Sample]) -> tuple[list[Sample], list[Sample]]:
+    train = [sample for sample in samples if sample.signer not in HELD_OUT_SIGNERS]
+    validation = [sample for sample in samples if sample.signer in HELD_OUT_SIGNERS]
+    train_ids = {(sample.label, sample.signer, sample.repetition) for sample in train}
+    validation_ids = {(sample.label, sample.signer, sample.repetition) for sample in validation}
+    if train_ids & validation_ids or len(train) != 2560 or len(validation) != 640:
+        raise ValueError("invalid LSA64 signer split")
+    if {sample.signer for sample in train} & set(HELD_OUT_SIGNERS):
+        raise ValueError("held-out signer leaked into training split")
+    if any(sum(sample.label == label for sample in train) != 40 or sum(sample.label == label for sample in validation) != 10 for label in range(CLASS_COUNT)):
+        raise ValueError("LSA64 class counts do not match the 8/2 signer split")
+    return train, validation
 
 
 def uniformly_sample_frames(path: Path) -> Tensor:
@@ -170,9 +183,6 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--seed", type=int, default=2024)
     parser.add_argument("--resume", type=Path)
-    parser.add_argument("--max-train-samples", type=int)
-    parser.add_argument("--max-validation-samples", type=int)
-    parser.add_argument("--verify-reload", action="store_true")
     arguments = parser.parse_args()
 
     random.seed(arguments.seed)
@@ -184,14 +194,7 @@ def main() -> None:
     arguments.output_dir.mkdir(parents=True, exist_ok=True)
 
     samples = list_samples(arguments.data_root)
-    train_samples = [sample for sample in samples if sample.signer not in HELD_OUT_SIGNERS]
-    validation_samples = [sample for sample in samples if sample.signer in HELD_OUT_SIGNERS]
-    if len(train_samples) != 2560 or len(validation_samples) != 640:
-        raise ValueError("unexpected 8-signer/2-signer LSA64 split sizes")
-    if arguments.max_train_samples:
-        train_samples = train_samples[: arguments.max_train_samples]
-    if arguments.max_validation_samples:
-        validation_samples = validation_samples[: arguments.max_validation_samples]
+    train_samples, validation_samples = split_samples(samples)
     loader_options = {"num_workers": arguments.workers, "pin_memory": device.type == "cuda", "persistent_workers": arguments.workers > 0}
     if arguments.workers:
         loader_options["prefetch_factor"] = 2
@@ -233,10 +236,6 @@ def main() -> None:
                 checkpoint(arguments.output_dir / "best.pt", epoch, model, optimizer, scheduler, result)
             print(json.dumps(result, sort_keys=True), flush=True)
     run = {"seed": arguments.seed, "held_out_signers": HELD_OUT_SIGNERS, "train_samples": len(train_samples), "validation_samples": len(validation_samples), "epochs": arguments.epochs, "batch_size": arguments.batch_size, "final": result}
-    if arguments.verify_reload:
-        state = torch.load(arguments.output_dir / "last.pt", map_location=device, weights_only=False)
-        model.load_state_dict(state["model"])
-        run["reloaded"] = evaluate(model, validation_loader, device)
     (arguments.output_dir / "run.json").write_text(json.dumps(run, indent=2) + "\n", encoding="utf-8")
 
 

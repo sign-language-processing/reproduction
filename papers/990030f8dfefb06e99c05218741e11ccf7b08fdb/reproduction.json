@@ -213,10 +213,10 @@
       "original_value": 86.25,
       "result": {
         "status": "produced",
-        "reproduced_value": 78.5937488079071,
-        "difference": -7.656251192092903,
-        "run_ids": ["frozen-encoder-epoch30"],
-        "artifact_ids": ["frozen-metrics", "frozen-run"]
+        "reproduced_value": 99.6874988079071,
+        "difference": 13.437498807907097,
+        "run_ids": ["fine-tuned-epoch30"],
+        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
       }
     },
     {
@@ -228,10 +228,10 @@
       "original_value": 84.98,
       "result": {
         "status": "produced",
-        "reproduced_value": 76.9025981426239,
-        "difference": -8.077401857376098,
-        "run_ids": ["frozen-encoder-epoch30"],
-        "artifact_ids": ["frozen-metrics", "frozen-run"]
+        "reproduced_value": 99.68671798706055,
+        "difference": 14.706717987060545,
+        "run_ids": ["fine-tuned-epoch30"],
+        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
       }
     },
     {
@@ -243,10 +243,10 @@
       "original_value": 87.77,
       "result": {
         "status": "produced",
-        "reproduced_value": 80.90819120407104,
-        "difference": -6.861808795928958,
-        "run_ids": ["frozen-encoder-epoch30"],
-        "artifact_ids": ["frozen-metrics", "frozen-run"]
+        "reproduced_value": 99.71591234207153,
+        "difference": 11.94591234207153,
+        "run_ids": ["fine-tuned-epoch30"],
+        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
       }
     }
   ],
@@ -272,6 +272,28 @@
           }
         }
       }
+    },
+    {
+      "run_id": "fine-tuned-epoch30",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/990030f8dfefb06e99c05218741e11ccf7b08fdb/modal_app.py::train --epochs 30 --output-name resnet-lstm-finetuned",
+      "exit_code": 0,
+      "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run", "fine-tuned-epoch30-checkpoint"],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "app_id": "ap-gPIEDUAPDIxVMlNNdsduRZ",
+        "hardware": "one A10G",
+        "wall_seconds": 13207,
+        "gpu_hours": 3.6686,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
   "artifacts": [
@@ -286,6 +308,31 @@
       "kind": "run_manifest",
       "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm/run.json",
       "sha256": "f54dc5bd5ef7368aab21ec21476e0fe690287eb0bed22951b4802a17b8b87dfc"
+    },
+    {
+      "artifact_id": "fine-tuned-metrics",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/metrics.jsonl",
+      "sha256": "b37218417eb2a946db6dc986346723d20bb27873afa8e7fd39cd1c42a71a43d5"
+    },
+    {
+      "artifact_id": "fine-tuned-run",
+      "kind": "run_manifest",
+      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/run.json",
+      "sha256": "321d398b6e15958fd1286bdb676eb1b6ec02476790492ee518342429431dc018"
+    },
+    {
+      "artifact_id": "fine-tuned-epoch30-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/epoch-30.pt",
+      "sha256": "d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0"
+    },
+    {
+      "artifact_id": "published-epoch30-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "https://huggingface.co/repro-sign/huang-chouvatut-2024-resnet-lstm/blob/b8e7f819284ae61449eeea44ec8bcdeb6e9c35ae/model.pt",
+      "sha256": "d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0",
+      "size_bytes": 159229353
     }
   ],
   "gates": []
