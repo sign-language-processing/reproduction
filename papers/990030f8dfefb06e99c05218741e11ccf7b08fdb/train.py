@@ -1,0 +1,244 @@
+"""Train and evaluate the paper's ResNet-18 + LSTM classifier on LSA64.
+
+This is a clean-room implementation: the paper has no released executable code.
+It deliberately decodes videos on demand instead of materialising extracted frames.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import random
+from dataclasses import asdict, dataclass
+from pathlib import Path
+
+import numpy as np
+import torch
+from simple_video_utils.frames import read_frames_exact
+from simple_video_utils.metadata import open_video, video_metadata_from_container
+from torch import Tensor, nn
+from torch.nn import functional as F
+from torch.utils.data import DataLoader, Dataset
+from torchvision.models import ResNet18_Weights, resnet18
+
+
+IMAGE_SIZE = 128
+RESIZE_SHORT_SIDE = 144
+FRAME_COUNT = 16
+CLASS_COUNT = 64
+HELD_OUT_SIGNERS = (5, 10)
+IMAGENET_MEAN = (0.485, 0.456, 0.406)
+IMAGENET_STD = (0.229, 0.224, 0.225)
+
+
+@dataclass(frozen=True)
+class Sample:
+    path: Path
+    label: int
+    signer: int
+    repetition: int
+
+
+def parse_sample(path: Path) -> Sample:
+    """Parse the official LSA64 `class_signer_repetition.mp4` convention."""
+    try:
+        class_id, signer, repetition = (int(part) for part in path.stem.split("_"))
+    except ValueError as error:
+        raise ValueError(f"unexpected LSA64 filename: {path.name}") from error
+    if not 1 <= class_id <= CLASS_COUNT or not 1 <= signer <= 10 or not 1 <= repetition <= 5:
+        raise ValueError(f"out-of-range LSA64 filename: {path.name}")
+    return Sample(path=path, label=class_id - 1, signer=signer, repetition=repetition)
+
+
+def list_samples(data_root: Path) -> list[Sample]:
+    samples = [parse_sample(path) for path in sorted(data_root.rglob("*.mp4"))]
+    if len(samples) != 3200:
+        raise ValueError(f"expected 3200 LSA64 videos under {data_root}, found {len(samples)}")
+    identities = {(sample.label, sample.signer, sample.repetition) for sample in samples}
+    if len(identities) != 3200:
+        raise ValueError("LSA64 contains duplicate or missing class/signer/repetition identities")
+    return samples
+
+
+def uniformly_sample_frames(path: Path) -> Tensor:
+    """Decode once and retain exactly 16 uniformly spaced RGB frames."""
+    # DataLoader supplies process-level parallelism; nested codec threads would
+    # oversubscribe the assigned CPUs and can deadlock after a worker fork.
+    with open_video(str(path), thread_type="NONE") as video:
+        metadata = video_metadata_from_container(video)
+        if not metadata.nb_frames or metadata.nb_frames < 1:
+            raise ValueError(f"video has no decodable frames: {path}")
+        indices = np.rint(np.linspace(0, metadata.nb_frames - 1, FRAME_COUNT)).astype(int)
+        wanted = set(indices.tolist())
+        retained: dict[int, np.ndarray] = {}
+        for frame, index in read_frames_exact(video, return_indices=True):
+            if index in wanted:
+                retained[index] = frame
+        if any(index not in retained for index in indices):
+            raise ValueError(f"failed to decode all requested frames from {path}")
+    return torch.from_numpy(np.stack([retained[index] for index in indices])).permute(0, 3, 1, 2)
+
+
+def preprocess(video: Tensor, training: bool) -> Tensor:
+    """Apply one temporally consistent crop and ImageNet normalization."""
+    video = video.float().div_(255)
+    _, _, height, width = video.shape
+    if height <= width:
+        resized_height, resized_width = RESIZE_SHORT_SIDE, round(width * RESIZE_SHORT_SIDE / height)
+    else:
+        resized_height, resized_width = round(height * RESIZE_SHORT_SIDE / width), RESIZE_SHORT_SIDE
+    video = F.interpolate(video, size=(resized_height, resized_width), mode="bilinear", align_corners=False, antialias=True)
+    max_top, max_left = resized_height - IMAGE_SIZE, resized_width - IMAGE_SIZE
+    if training:
+        top = int(torch.randint(max_top + 1, ()).item())
+        left = int(torch.randint(max_left + 1, ()).item())
+    else:
+        top, left = max_top // 2, max_left // 2
+    video = video[:, :, top : top + IMAGE_SIZE, left : left + IMAGE_SIZE]
+    mean = video.new_tensor(IMAGENET_MEAN).view(1, 3, 1, 1)
+    std = video.new_tensor(IMAGENET_STD).view(1, 3, 1, 1)
+    return (video - mean) / std
+
+
+class LSA64Videos(Dataset[tuple[Tensor, int]]):
+    def __init__(self, samples: list[Sample], training: bool) -> None:
+        self.samples = samples
+        self.training = training
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, index: int) -> tuple[Tensor, int]:
+        sample = self.samples[index]
+        return preprocess(uniformly_sample_frames(sample.path), self.training), sample.label
+
+
+class ResNet18LSTM(nn.Module):
+    """ImageNet-initialized ResNet-18 frame encoder followed by an LSTM classifier."""
+    def __init__(self) -> None:
+        super().__init__()
+        backbone = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
+        self.encoder = nn.Sequential(*list(backbone.children())[:-1])
+        self.lstm = nn.LSTM(input_size=512, hidden_size=512, batch_first=True)
+        self.classifier = nn.Linear(512, CLASS_COUNT)
+
+    def forward(self, video: Tensor) -> Tensor:
+        batch, steps, channels, height, width = video.shape
+        features = self.encoder(video.reshape(batch * steps, channels, height, width)).flatten(1)
+        sequence, _ = self.lstm(features.reshape(batch, steps, -1))
+        return self.classifier(sequence[:, -1])
+
+
+def metrics(predictions: list[int], labels: list[int]) -> dict[str, float]:
+    prediction_tensor = torch.tensor(predictions)
+    label_tensor = torch.tensor(labels)
+    confusion = torch.bincount(CLASS_COUNT * label_tensor + prediction_tensor, minlength=CLASS_COUNT**2).reshape(CLASS_COUNT, CLASS_COUNT).float()
+    true_positive = confusion.diag()
+    precision = true_positive / confusion.sum(0).clamp_min(1)
+    recall = true_positive / confusion.sum(1).clamp_min(1)
+    f1 = 2 * precision * recall / (precision + recall).clamp_min(torch.finfo(torch.float32).eps)
+    return {
+        "accuracy": float((prediction_tensor == label_tensor).float().mean().item() * 100),
+        "macro_f1": float(f1.mean().item() * 100),
+        "macro_precision": float(precision.mean().item() * 100),
+        "macro_recall": float(recall.mean().item() * 100),
+    }
+
+
+@torch.inference_mode()
+def evaluate(model: nn.Module, loader: DataLoader[tuple[Tensor, Tensor]], device: torch.device) -> dict[str, float]:
+    model.eval()
+    predictions: list[int] = []
+    labels: list[int] = []
+    for video, target in loader:
+        predictions.extend(model(video.to(device, non_blocking=True)).argmax(1).cpu().tolist())
+        labels.extend(target.tolist())
+    return metrics(predictions, labels)
+
+
+def checkpoint(path: Path, epoch: int, model: nn.Module, optimizer: torch.optim.Optimizer, scheduler: torch.optim.lr_scheduler.ReduceLROnPlateau, result: dict[str, float]) -> None:
+    torch.save({"epoch": epoch, "model": model.state_dict(), "optimizer": optimizer.state_dict(), "scheduler": scheduler.state_dict(), "metrics": result}, path)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-root", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--epochs", type=int, default=50)
+    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--seed", type=int, default=2024)
+    parser.add_argument("--resume", type=Path)
+    parser.add_argument("--max-train-samples", type=int)
+    parser.add_argument("--max-validation-samples", type=int)
+    parser.add_argument("--verify-reload", action="store_true")
+    arguments = parser.parse_args()
+
+    random.seed(arguments.seed)
+    np.random.seed(arguments.seed)
+    torch.manual_seed(arguments.seed)
+    torch.cuda.manual_seed_all(arguments.seed)
+    torch.backends.cudnn.benchmark = True
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    arguments.output_dir.mkdir(parents=True, exist_ok=True)
+
+    samples = list_samples(arguments.data_root)
+    train_samples = [sample for sample in samples if sample.signer not in HELD_OUT_SIGNERS]
+    validation_samples = [sample for sample in samples if sample.signer in HELD_OUT_SIGNERS]
+    if len(train_samples) != 2560 or len(validation_samples) != 640:
+        raise ValueError("unexpected 8-signer/2-signer LSA64 split sizes")
+    if arguments.max_train_samples:
+        train_samples = train_samples[: arguments.max_train_samples]
+    if arguments.max_validation_samples:
+        validation_samples = validation_samples[: arguments.max_validation_samples]
+    loader_options = {"num_workers": arguments.workers, "pin_memory": device.type == "cuda", "persistent_workers": arguments.workers > 0}
+    if arguments.workers:
+        loader_options["prefetch_factor"] = 2
+    train_loader = DataLoader(LSA64Videos(train_samples, training=True), batch_size=arguments.batch_size, shuffle=True, **loader_options)
+    validation_loader = DataLoader(LSA64Videos(validation_samples, training=False), batch_size=arguments.batch_size, shuffle=False, **loader_options)
+
+    model = ResNet18LSTM().to(device)
+    optimizer = torch.optim.Adam((parameter for parameter in model.parameters() if parameter.requires_grad), lr=1e-4, weight_decay=5e-4)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", threshold=1e-4, patience=5, factor=0.1)
+    criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
+    first_epoch, best_accuracy = 1, float("-inf")
+    if arguments.resume:
+        state = torch.load(arguments.resume, map_location=device, weights_only=False)
+        model.load_state_dict(state["model"])
+        optimizer.load_state_dict(state["optimizer"])
+        scheduler.load_state_dict(state["scheduler"])
+        first_epoch, best_accuracy = int(state["epoch"]) + 1, float(state["metrics"]["accuracy"])
+
+    metrics_path = arguments.output_dir / "metrics.jsonl"
+    with metrics_path.open("a", encoding="utf-8") as metrics_file:
+        for epoch in range(first_epoch, arguments.epochs + 1):
+            model.train()
+            losses: list[float] = []
+            for video, target in train_loader:
+                optimizer.zero_grad(set_to_none=True)
+                loss = criterion(model(video.to(device, non_blocking=True)), target.to(device, non_blocking=True))
+                loss.backward()
+                optimizer.step()
+                losses.append(float(loss.item()))
+            result = {"epoch": epoch, "train_loss": float(np.mean(losses)), "learning_rate": optimizer.param_groups[0]["lr"], **evaluate(model, validation_loader, device)}
+            scheduler.step(result["accuracy"])
+            metrics_file.write(json.dumps(result, sort_keys=True) + "\n")
+            metrics_file.flush()
+            checkpoint(arguments.output_dir / "last.pt", epoch, model, optimizer, scheduler, result)
+            if epoch == 30:
+                checkpoint(arguments.output_dir / "epoch-30.pt", epoch, model, optimizer, scheduler, result)
+            if result["accuracy"] > best_accuracy:
+                best_accuracy = result["accuracy"]
+                checkpoint(arguments.output_dir / "best.pt", epoch, model, optimizer, scheduler, result)
+            print(json.dumps(result, sort_keys=True), flush=True)
+    run = {"seed": arguments.seed, "held_out_signers": HELD_OUT_SIGNERS, "train_samples": len(train_samples), "validation_samples": len(validation_samples), "epochs": arguments.epochs, "batch_size": arguments.batch_size, "final": result}
+    if arguments.verify_reload:
+        state = torch.load(arguments.output_dir / "last.pt", map_location=device, weights_only=False)
+        model.load_state_dict(state["model"])
+        run["reloaded"] = evaluate(model, validation_loader, device)
+    (arguments.output_dir / "run.json").write_text(json.dumps(run, indent=2) + "\n", encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()
