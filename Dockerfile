@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --no-cache-dir simple-video-utils==0.7.4
+
 COPY libraries/ffmpeg/install_from_source.sh /tmp/install_ffmpeg.sh
 RUN bash /tmp/install_ffmpeg.sh
 
@@ -15,7 +17,7 @@ RUN bash /tmp/install_decord.sh
 WORKDIR /workspace
 
 # pyyaml/PyYAML: installed by debian, pip cannot uninstall it
-ENV INSTALLED_STABLE_PACKAGES="torch|torchvision|torchaudio|apex|flash-attn|decord|pyyaml|PyYAML"
+ENV INSTALLED_STABLE_PACKAGES="torch|torchvision|torchaudio|apex|flash-attn|decord|simple-video-utils|pyyaml|PyYAML"
 
 RUN pip list --format=freeze \
     | grep -E "^($INSTALLED_STABLE_PACKAGES)==" \

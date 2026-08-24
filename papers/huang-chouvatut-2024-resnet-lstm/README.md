@@ -48,12 +48,12 @@ After the split and license gates are resolved, authenticate to Modal workspace 
 ```bash
 ./setup.sh
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
-  papers/990030f8dfefb06e99c05218741e11ccf7b08fdb/modal_app.py::populate_lsa64
+  papers/huang-chouvatut-2024-resnet-lstm/modal_app.py::populate_lsa64
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach \
-  papers/990030f8dfefb06e99c05218741e11ccf7b08fdb/modal_app.py::train
+  papers/huang-chouvatut-2024-resnet-lstm/modal_app.py::train
 ```
 
-The data command verifies/populates `datasets/lsa64`. Training uses the shared `huggingface-cache` and writes only to the paper-specific Modal results Volume. It runs a fixed 30-epoch, batch-16 recipe; the final held-out evaluation is performed once, at epoch 30, with no best-checkpoint selection.
+The data command verifies/populates `datasets/lsa64`. Training builds from the root study image, which supplies `simple-video-utils==0.7.4`, uses the shared `huggingface-cache`, and writes only to the paper-specific Modal results Volume. It runs a fixed 30-epoch, batch-16 recipe; the final held-out evaluation is performed once, at epoch 30, with no best-checkpoint selection.
 
 ## Provenance
 

@@ -52,13 +52,13 @@ Do not start a costly build or training run until every requested target is eith
 
 ## Per-paper layout
 
-The paper is the unit of study. Use `papers/{paper_id}/` regardless of where its code lives; record every source repository/archive inside `reproduction.json`. This avoids coupling one paper to one repository or duplicating a paper that uses several artifacts.
+The paper is the unit of study. Use a stable, descriptive paper slug such as `papers/{first-author}-{year}-{short-title}/` regardless of where its code lives; record the immutable `paper_id` inside `reproduction.json`. This avoids opaque paths, coupling one paper to one repository, or duplicating a paper that uses several artifacts.
 
 ```text
-papers/<paper_id>/
+papers/<paper-slug>/
 ├── README.md                # complete report, repeat commands, and model card
 ├── reproduction.json        # single machine-readable source of truth
-├── Dockerfile               # or an Apptainer definition when required
+├── Dockerfile               # optional when the documented shared base image suffices
 ├── scripts/                 # create only for multiple related entry points
 │   ├── modal_app.py
 │   └── publish.sh

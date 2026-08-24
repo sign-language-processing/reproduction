@@ -55,7 +55,7 @@ The ingestion script enforces these invariants and writes:
 
 ## Choose the directory
 
-Always use `papers/{paper_id}/`. A source repository is evidence, not the study unit: one paper may use several repositories, and one repository may support several papers. Record all candidate artifacts in `reproduction.json.sources`, then pin/checksum each selected artifact.
+Always use a stable descriptive directory such as `papers/{first-author}-{year}-{short-title}/`, and preserve the immutable `paper_id` in `reproduction.json`. A source repository is evidence, not the study unit: one paper may use several repositories, and one repository may support several papers. Record all candidate artifacts in `reproduction.json.sources`, then pin/checksum each selected artifact.
 
 Do not create parallel directories for the same candidate. If an attempt already exists, verify its `reproduction.json.paper_id` and resume it.
 

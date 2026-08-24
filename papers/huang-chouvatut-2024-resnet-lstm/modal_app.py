@@ -12,11 +12,13 @@ import modal
 
 
 ROOT = Path(__file__).resolve().parent
+REPOSITORY_ROOT = ROOT.parents[1]
 DATASET_SLUG = "lsa64"
 DATASET_URL = "https://drive.google.com/file/d/1C7k_m2m4n5VzI4lljMoezc-uowDEgIUh/view?usp=sharing"
 RESULTS_VOLUME = "huang-chouvatut-2024-results"
 app = modal.App("huang-chouvatut-2024-resnet-lstm")
-base_image = modal.Image.from_dockerfile(ROOT / "Dockerfile", context_dir=ROOT)
+# The study-wide image supplies simple-video-utils; this paper only adds its code.
+base_image = modal.Image.from_dockerfile(REPOSITORY_ROOT / "Dockerfile", context_dir=REPOSITORY_ROOT)
 image = base_image.add_local_file(ROOT / "train.py", "/app/train.py")
 data_image = base_image.pip_install("gdown==5.2.0")
 datasets = modal.Volume.from_name("datasets", create_if_missing=False)
