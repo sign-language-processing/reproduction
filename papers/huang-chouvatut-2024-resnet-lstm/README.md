@@ -37,13 +37,13 @@ These choices are not presented as paper facts:
 
 - The paper does not publish signer IDs or split files. `(5, 10)` is only an inferred 8/2 convention, not an author split. It is further problematic because LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction.
 - The paper does not specify frame-selection positions, resize policy, normalization constants, the modified fully-connected/LSTM width or LSTM depth, seed, or the scheduler monitor. The code uses uniform 16-frame sampling, resize-short-side 144 then one 128 crop, ImageNet normalization, a trainable 512-unit frame projection followed by one 512-unit LSTM, seed 2024, and training loss for the scheduler. Training loss prevents the held-out clips from controlling optimization.
-- The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. No dataset or predictions are committed or distributed. An earlier invalid checkpoint was uploaded before this review; it is not reproduction evidence and must be privatized or removed pending permission to publish learned weights.
+- The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset, predictions, or new weights are committed or distributed. An earlier invalid checkpoint was uploaded before this review; it is not reproduction evidence and must be privatized or removed pending permission to publish learned weights.
 
 The unresolved signer identities and license/publishing question are open gates, so no numerical result is claimed here. Earlier fine-tuned and purportedly frozen results are excluded: the retained code did not enforce the paper's encoder freeze, and the fine-tuned run also drove its LR schedule from the reported holdout.
 
 ## How to run the conditional reconstruction
 
-After the split and license gates are resolved, authenticate to Modal workspace `repro-sign` and run:
+The user authorized this private project-cloud run. The split remains a conditional reconstruction, and the separate trained-weight publication gate remains open. Authenticate to Modal workspace `repro-sign` and run:
 
 ```bash
 ./setup.sh
