@@ -38,7 +38,7 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 
 - Find or create the per-paper directory using the root layout rules.
 - Preserve unrelated work; use one branch per paper when starting a new attempt.
-- Create `papers/<paper_id>/` from `templates/reproduction.json` and `templates/README.md`; import the assignment into `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
+- Create a stable descriptive `papers/<paper-slug>/` directory from `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
 - Read queue comments, dataset expansions, copied-score, human-evaluation, ethics, and compute fields as warnings to investigate—not facts to repeat.
 
 ### 2. Resolve the target contract
@@ -126,7 +126,7 @@ Remove examples and placeholders. Include every applicable guess, deviation, dea
 Run:
 
 ```bash
-python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<paper_id>
+python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<paper-slug>
 ```
 
 Fix every validation error, verify the documented commands against the retained full-run evidence, and present the complete attempt for human scientific review. A numerical mismatch is a result, not permission to alter the protocol.
