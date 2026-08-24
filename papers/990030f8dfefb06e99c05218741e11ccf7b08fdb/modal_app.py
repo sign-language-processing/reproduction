@@ -84,8 +84,14 @@ def populate_lsa64() -> dict[str, object]:
     env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub", "TORCH_HOME": "/cache/huggingface/torch"},
 )
 def train() -> str:
-    """Train the reconstructed 30-epoch, batch-16 protocol."""
-    output_dir = Path("/results/resnet-lstm-finetuned")
+    """Run the Table 3 epoch-30/batch-16 reconstruction once."""
+    output_dir = Path("/results/resnet18-lstm-inferred-split")
+    if (output_dir / "run.json").exists():
+        return (output_dir / "run.json").read_text(encoding="utf-8")
+    if output_dir.exists():
+        raise FileExistsError(f"incomplete output directory: {output_dir}")
+    # Paper Table 3 reports the 30-epoch, batch-16 row. The remaining
+    # command-line values are documented reconstruction decisions in README.
     subprocess.run([
         "python", "/app/train.py", "--data-root", "/datasets/lsa64", "--output-dir", str(output_dir), "--epochs", "30", "--batch-size", "16", "--workers", "8", "--seed", "2024",
     ], check=True)

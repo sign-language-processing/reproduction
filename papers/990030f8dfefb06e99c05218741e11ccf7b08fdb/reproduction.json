@@ -131,14 +131,14 @@
     {
       "source_id": "official-lsa64",
       "kind": "dataset",
-      "url": "https://facundoq.github.io/datasets/lsa64/",
+      "url": "https://midusi.github.io/lsa64/",
       "revision_or_sha256": "218197acaa188583c1f06d149750af6af0d6b2bd44a627550d55773f5eefb20e",
       "role": "Original LSA64 RGB video release"
     }
   ],
   "status": {
-    "pipeline": "complete",
-    "numerical_agreement": "not_fully_reproduced",
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
     "preference_level": 3
   },
   "datasets": [
@@ -146,8 +146,8 @@
       "dataset_id": "lsa64-original",
       "name": "LSA64",
       "version_or_subset": "Official original RGB MP4 release; 64 classes, 10 signers, 5 repetitions",
-      "license_or_permission": "CC BY-NC-SA 4.0; academic, educational, and personal use; non-commercial project-cloud research",
-      "cloud_processing_allowed": true,
+      "license_or_permission": "Official LSA64 page: CC BY-NC-ND 4.0, strict academic use, no derivative works; project-cloud processing and model publication require resolution",
+      "cloud_processing_allowed": false,
       "modal_volume": "datasets",
       "modal_path": "lsa64",
       "splits": [
@@ -196,11 +196,11 @@
   "experiments": [
     {
       "experiment_id": "resnet18-lstm-epoch30-b16",
-      "system": "ImageNet-initialized ResNet-18 frame encoder, one-layer 512-unit LSTM, 64-way classifier",
+      "system": "Conditional clean-room reconstruction: frozen ImageNet ResNet-18 hidden encoder, trainable 512-unit frame projection, one-layer 512-unit LSTM, 64-way classifier",
       "dataset_id": "lsa64-original",
       "required_seeds": [2024],
-      "checkpoint_rule": "Report epoch 30, matching the paper's Table 3 row; no score selection",
-      "paper_evidence": "Paper Tables 2-4; PDF SHA-256 01306636261ad2be13436204deab1b0bf04c7a732a654d2f03587c5f97edb4bb"
+      "checkpoint_rule": "Report fixed epoch 30, matching Table 3; no held-out-score checkpoint selection",
+      "paper_evidence": "Paper §§3.2, 3.5, 4.1, 4.2, and 4.4; Table 3; PDF SHA-256 01306636261ad2be13436204deab1b0bf04c7a732a654d2f03587c5f97edb4bb"
     }
   ],
   "targets": [
@@ -209,14 +209,11 @@
       "paper_location": "Table 4, ResNet LSTM (ours) row; Table 3 epoch 30/batch 16 row",
       "experiment_id": "resnet18-lstm-epoch30-b16",
       "metric_id": "accuracy-torch",
-      "split": "Held-out signers 5 and 10 (640 clips)",
+      "split": "Paper-specified 8/2 learner split (2,560/640 clips); signer identities are unresolved",
       "original_value": 86.25,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.6874988079071,
-        "difference": 13.437498807907097,
-        "run_ids": ["fine-tuned-epoch30"],
-        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
+        "status": "not_produced",
+        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
       }
     },
     {
@@ -224,14 +221,11 @@
       "paper_location": "Table 3, epoch 30/batch 16 row",
       "experiment_id": "resnet18-lstm-epoch30-b16",
       "metric_id": "macro-f1-torch",
-      "split": "Held-out signers 5 and 10 (640 clips)",
+      "split": "Paper-specified 8/2 learner split (2,560/640 clips); signer identities are unresolved",
       "original_value": 84.98,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.68671798706055,
-        "difference": 14.706717987060545,
-        "run_ids": ["fine-tuned-epoch30"],
-        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
+        "status": "not_produced",
+        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
       }
     },
     {
@@ -239,101 +233,52 @@
       "paper_location": "Table 3, epoch 30/batch 16 row",
       "experiment_id": "resnet18-lstm-epoch30-b16",
       "metric_id": "macro-precision-torch",
-      "split": "Held-out signers 5 and 10 (640 clips)",
+      "split": "Paper-specified 8/2 learner split (2,560/640 clips); signer identities are unresolved",
       "original_value": 87.77,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.71591234207153,
-        "difference": 11.94591234207153,
-        "run_ids": ["fine-tuned-epoch30"],
-        "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run"]
+        "status": "not_produced",
+        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
       }
     }
   ],
-  "runs": [
+  "runs": [],
+  "artifacts": [],
+  "gates": [
     {
-      "run_id": "frozen-encoder-epoch30",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/990030f8dfefb06e99c05218741e11ccf7b08fdb/modal_app.py::train",
-      "exit_code": 0,
-      "artifact_ids": ["frozen-metrics", "frozen-run"],
-      "compute": {
-        "platform": "modal",
-        "modal_profile": "repro-sign",
-        "app_id": "ap-XVuPZKxfyaUIEzW8fpVm02",
-        "hardware": "one A10G",
-        "wall_seconds": 13270,
-        "gpu_hours": 3.6861,
-        "shared_cache": {
-          "modal_volume": "huggingface-cache",
-          "mount_path": "/cache/huggingface",
-          "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub"
-          }
+      "gate_id": "paper-signer-split",
+      "type": "target",
+      "status": "open",
+      "reason": "The paper gives an 8/2 learner split and exact 2,560/640 counts but does not identify the two held-out learners or publish split files.",
+      "evidence": [
+        "Paper §4.2: 8 learners train and 2 learners test.",
+        "Paper §4.5: 40/10 clips per class, 2,560/640 total.",
+        "Official LSA64 page: subject 10 was replaced in the second recording session."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "author-specified-split",
+          "description": "Use signer IDs or split files supplied by the paper authors or an official supplement.",
+          "paper_evidence": "The paper's stated 8/2 learner protocol.",
+          "decision_needed": "Obtain authoritative split identity before claiming reproduction."
+        },
+        {
+          "alternative_id": "conditional-community-split",
+          "description": "Run a clearly labelled sensitivity reconstruction on inferred held-out signers 5 and 10.",
+          "paper_evidence": "This preserves the paper's 8/2 counts but not its unpublished signer identities.",
+          "decision_needed": "Approve reporting the result only as a conditional reconstruction, not a faithful reproduction."
         }
-      }
+      ],
+      "required_action": "Resolve the author split or explicitly authorize the conditional split label."
     },
     {
-      "run_id": "fine-tuned-epoch30",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/990030f8dfefb06e99c05218741e11ccf7b08fdb/modal_app.py::train --epochs 30 --output-name resnet-lstm-finetuned",
-      "exit_code": 0,
-      "artifact_ids": ["fine-tuned-metrics", "fine-tuned-run", "fine-tuned-epoch30-checkpoint"],
-      "compute": {
-        "platform": "modal",
-        "modal_profile": "repro-sign",
-        "app_id": "ap-gPIEDUAPDIxVMlNNdsduRZ",
-        "hardware": "one A10G",
-        "wall_seconds": 13207,
-        "gpu_hours": 3.6686,
-        "shared_cache": {
-          "modal_volume": "huggingface-cache",
-          "mount_path": "/cache/huggingface",
-          "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub"
-          }
-        }
-      }
+      "gate_id": "lsa64-license-and-publication",
+      "type": "data",
+      "status": "open",
+      "reason": "The official LSA64 page currently states CC BY-NC-ND 4.0, strict academic use, and no derivative works; it does not establish permission to publish trained weights.",
+      "evidence": [
+        "https://midusi.github.io/lsa64/ (license section, accessed 2026-08-24)"
+      ],
+      "required_action": "Establish project-cloud processing and trained-model publication permission before another run or any checkpoint upload."
     }
-  ],
-  "artifacts": [
-    {
-      "artifact_id": "frozen-metrics",
-      "kind": "raw_metric_output",
-      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm/metrics.jsonl",
-      "sha256": "51e3e4205c7f377e6821bcb6c32c4928f4c79af3e6b1df8a301ead1dab0f9076"
-    },
-    {
-      "artifact_id": "frozen-run",
-      "kind": "run_manifest",
-      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm/run.json",
-      "sha256": "f54dc5bd5ef7368aab21ec21476e0fe690287eb0bed22951b4802a17b8b87dfc"
-    },
-    {
-      "artifact_id": "fine-tuned-metrics",
-      "kind": "raw_metric_output",
-      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/metrics.jsonl",
-      "sha256": "b37218417eb2a946db6dc986346723d20bb27873afa8e7fd39cd1c42a71a43d5"
-    },
-    {
-      "artifact_id": "fine-tuned-run",
-      "kind": "run_manifest",
-      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/run.json",
-      "sha256": "321d398b6e15958fd1286bdb676eb1b6ec02476790492ee518342429431dc018"
-    },
-    {
-      "artifact_id": "fine-tuned-epoch30-checkpoint",
-      "kind": "model_checkpoint",
-      "uri": "modal://volume/huang-chouvatut-2024-results/resnet-lstm-finetuned/epoch-30.pt",
-      "sha256": "d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0"
-    },
-    {
-      "artifact_id": "published-epoch30-checkpoint",
-      "kind": "model_checkpoint",
-      "uri": "https://huggingface.co/repro-sign/huang-chouvatut-2024-resnet-lstm/blob/b8e7f819284ae61449eeea44ec8bcdeb6e9c35ae/model.pt",
-      "sha256": "d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0",
-      "size_bytes": 159229353
-    }
-  ],
-  "gates": []
+  ]
 }

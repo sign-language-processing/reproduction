@@ -22,11 +22,17 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision.models import ResNet18_Weights, resnet18
 
 
+# Paper §4.1 and §4.4: each input clip contains 16 RGB frames at 128×128.
 IMAGE_SIZE = 128
-RESIZE_SHORT_SIDE = 144
 FRAME_COUNT = 16
+# Decision (documented in README): §4.1 requires a random crop but not its
+# resize policy. Resize the short side to 144 before a 128×128 crop.
+RESIZE_SHORT_SIDE = 144
 CLASS_COUNT = 64
+# Decision (documented in README): the paper specifies 8/2 signers but not IDs.
 HELD_OUT_SIGNERS = (5, 10)
+# Decision (documented in README): use ImageNet normalization because the paper
+# says ImageNet pre-training but omits the preprocessing constants.
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
 
@@ -61,6 +67,8 @@ def list_samples(data_root: Path) -> list[Sample]:
 
 
 def split_samples(samples: list[Sample]) -> tuple[list[Sample], list[Sample]]:
+    # Paper §§4.2 and 4.5 specify only an 8/2 learner split and 2,560/640
+    # clips; HELD_OUT_SIGNERS is therefore a documented reconstruction choice.
     train = [sample for sample in samples if sample.signer not in HELD_OUT_SIGNERS]
     validation = [sample for sample in samples if sample.signer in HELD_OUT_SIGNERS]
     train_ids = {(sample.label, sample.signer, sample.repetition) for sample in train}
@@ -75,7 +83,7 @@ def split_samples(samples: list[Sample]) -> tuple[list[Sample], list[Sample]]:
 
 
 def uniformly_sample_frames(path: Path) -> Tensor:
-    """Decode once and retain exactly 16 uniformly spaced RGB frames."""
+    """Decode exactly 16 frames; uniform positions are a documented inference."""
     # DataLoader supplies process-level parallelism; nested codec threads would
     # oversubscribe the assigned CPUs and can deadlock after a worker fork.
     with open_video(str(path), thread_type="NONE") as video:
@@ -104,6 +112,7 @@ def preprocess(video: Tensor, training: bool) -> Tensor:
     video = F.interpolate(video, size=(resized_height, resized_width), mode="bilinear", align_corners=False, antialias=True)
     max_top, max_left = resized_height - IMAGE_SIZE, resized_width - IMAGE_SIZE
     if training:
+        # Paper §§4.1 and 4.4 require random crops; see README for this crop policy.
         top = int(torch.randint(max_top + 1, ()).item())
         left = int(torch.randint(max_left + 1, ()).item())
     else:
@@ -131,14 +140,23 @@ class ResNet18LSTM(nn.Module):
     """ImageNet-initialized ResNet-18 frame encoder followed by an LSTM classifier."""
     def __init__(self) -> None:
         super().__init__()
+        # Paper §3.5 identifies ResNet-18 and ImageNet pre-training.
         backbone = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
         self.encoder = nn.Sequential(*list(backbone.children())[:-1])
+        # Paper §4.4 says to retain/freeze the pretrained hidden-layer parameters.
+        for parameter in self.encoder.parameters():
+            parameter.requires_grad = False
+        # Paper §4.4 says the modified fully connected layer feeds the LSTM.
+        # Decision (documented in README): its width is unreported; use 512.
+        self.frame_projection = nn.Linear(backbone.fc.in_features, 512)
+        # Decision (documented in README): the paper does not state LSTM depth;
+        # use one 512-unit layer matching the modified projection width.
         self.lstm = nn.LSTM(input_size=512, hidden_size=512, batch_first=True)
         self.classifier = nn.Linear(512, CLASS_COUNT)
 
     def forward(self, video: Tensor) -> Tensor:
         batch, steps, channels, height, width = video.shape
-        features = self.encoder(video.reshape(batch * steps, channels, height, width)).flatten(1)
+        features = self.frame_projection(self.encoder(video.reshape(batch * steps, channels, height, width)).flatten(1))
         sequence, _ = self.lstm(features.reshape(batch, steps, -1))
         return self.classifier(sequence[:, -1])
 
@@ -170,8 +188,8 @@ def evaluate(model: nn.Module, loader: DataLoader[tuple[Tensor, Tensor]], device
     return metrics(predictions, labels)
 
 
-def checkpoint(path: Path, epoch: int, model: nn.Module, optimizer: torch.optim.Optimizer, scheduler: torch.optim.lr_scheduler.ReduceLROnPlateau, result: dict[str, float]) -> None:
-    torch.save({"epoch": epoch, "model": model.state_dict(), "optimizer": optimizer.state_dict(), "scheduler": scheduler.state_dict(), "metrics": result}, path)
+def checkpoint(path: Path, epoch: int, model: nn.Module, optimizer: torch.optim.Optimizer, scheduler: torch.optim.lr_scheduler.ReduceLROnPlateau, progress: dict[str, float]) -> None:
+    torch.save({"epoch": epoch, "model": model.state_dict(), "optimizer": optimizer.state_dict(), "scheduler": scheduler.state_dict(), "progress": progress}, path)
 
 
 def main() -> None:
@@ -189,7 +207,9 @@ def main() -> None:
     np.random.seed(arguments.seed)
     torch.manual_seed(arguments.seed)
     torch.cuda.manual_seed_all(arguments.seed)
-    torch.backends.cudnn.benchmark = True
+    # Decision (documented in README): prefer repeatability over cuDNN autotuning.
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     arguments.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -202,21 +222,29 @@ def main() -> None:
     validation_loader = DataLoader(LSA64Videos(validation_samples, training=False), batch_size=arguments.batch_size, shuffle=False, **loader_options)
 
     model = ResNet18LSTM().to(device)
+    # Paper §4.4: Adam, learning rate 1e-4, weight decay 5e-4, label smoothing.
     optimizer = torch.optim.Adam((parameter for parameter in model.parameters() if parameter.requires_grad), lr=1e-4, weight_decay=5e-4)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="max", threshold=1e-4, patience=5, factor=0.1)
+    # Paper §4.4 specifies ReduceLROnPlateau, threshold 1e-4, patience 5, and
+    # factor 0.1. It does not name its monitor; train loss avoids adapting to
+    # the final held-out set.
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", threshold=1e-4, patience=5, factor=0.1)
     criterion = nn.CrossEntropyLoss(label_smoothing=0.1)
-    first_epoch, best_accuracy = 1, float("-inf")
+    first_epoch = 1
     if arguments.resume:
         state = torch.load(arguments.resume, map_location=device, weights_only=False)
         model.load_state_dict(state["model"])
         optimizer.load_state_dict(state["optimizer"])
         scheduler.load_state_dict(state["scheduler"])
-        first_epoch, best_accuracy = int(state["epoch"]) + 1, float(state["metrics"]["accuracy"])
+        first_epoch = int(state["epoch"]) + 1
+    if first_epoch > arguments.epochs:
+        raise ValueError("resume checkpoint already meets the requested epoch count")
 
     metrics_path = arguments.output_dir / "metrics.jsonl"
-    with metrics_path.open("a", encoding="utf-8") as metrics_file:
+    with metrics_path.open("a" if arguments.resume else "x", encoding="utf-8") as metrics_file:
         for epoch in range(first_epoch, arguments.epochs + 1):
             model.train()
+            # Freezing includes BatchNorm running statistics, not only gradients.
+            model.encoder.eval()
             losses: list[float] = []
             for video, target in train_loader:
                 optimizer.zero_grad(set_to_none=True)
@@ -224,18 +252,17 @@ def main() -> None:
                 loss.backward()
                 optimizer.step()
                 losses.append(float(loss.item()))
-            result = {"epoch": epoch, "train_loss": float(np.mean(losses)), "learning_rate": optimizer.param_groups[0]["lr"], **evaluate(model, validation_loader, device)}
-            scheduler.step(result["accuracy"])
-            metrics_file.write(json.dumps(result, sort_keys=True) + "\n")
-            metrics_file.flush()
-            checkpoint(arguments.output_dir / "last.pt", epoch, model, optimizer, scheduler, result)
-            if epoch == 30:
-                checkpoint(arguments.output_dir / "epoch-30.pt", epoch, model, optimizer, scheduler, result)
-            if result["accuracy"] > best_accuracy:
-                best_accuracy = result["accuracy"]
-                checkpoint(arguments.output_dir / "best.pt", epoch, model, optimizer, scheduler, result)
-            print(json.dumps(result, sort_keys=True), flush=True)
-    run = {"seed": arguments.seed, "held_out_signers": HELD_OUT_SIGNERS, "train_samples": len(train_samples), "validation_samples": len(validation_samples), "epochs": arguments.epochs, "batch_size": arguments.batch_size, "final": result}
+            progress = {"epoch": epoch, "train_loss": float(np.mean(losses)), "learning_rate": optimizer.param_groups[0]["lr"]}
+            scheduler.step(progress["train_loss"])
+            checkpoint(arguments.output_dir / "last.pt", epoch, model, optimizer, scheduler, progress)
+            print(json.dumps(progress, sort_keys=True), flush=True)
+        # Paper Table 3 reports fixed epochs; evaluate the declared final epoch,
+        # rather than selecting a checkpoint or tuning on the held-out clips.
+        result = {**progress, **evaluate(model, validation_loader, device)}
+        metrics_file.write(json.dumps(result, sort_keys=True) + "\n")
+        metrics_file.flush()
+    checkpoint(arguments.output_dir / f"epoch-{arguments.epochs}.pt", arguments.epochs, model, optimizer, scheduler, result)
+    run = {"seed": arguments.seed, "held_out_signers": HELD_OUT_SIGNERS, "train_samples": len(train_samples), "validation_samples": len(validation_samples), "epochs": arguments.epochs, "batch_size": arguments.batch_size, "encoder": "ImageNet ResNet-18 frozen per paper §4.4", "scheduler_monitor": "training loss (paper does not specify monitor)", "final": result}
     (arguments.output_dir / "run.json").write_text(json.dumps(run, indent=2) + "\n", encoding="utf-8")
 
 
