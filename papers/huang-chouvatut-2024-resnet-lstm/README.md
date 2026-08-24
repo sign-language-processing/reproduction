@@ -49,6 +49,10 @@ The corrected frozen-backbone recipe completed successfully on Modal `repro-sign
 
 Raw metrics: `metrics.jsonl` SHA-256 `d776f1db74429596f77c676fd5d4740643ad19e021ab115e4f1a81a0692dc169`; run manifest SHA-256 `81bde9d05e7c8616a11b3a605f17073ba31b9b9c7098e0b23a1fd1376a3c8b0b`. The epoch-30 checkpoint remains only in the private results Volume and is not published.
 
+## Excluded fine-tuning observation
+
+An earlier 30-epoch run on the same inferred split reached 99.6875% held-out accuracy when it **unfroze the ImageNet ResNet-18 encoder**. It is retained here solely as a diagnostic observation: it is not a paper-faithful setting, not a reproduced target result, and not evidence for numerical agreement. It conflicts with §4.4's instruction to retain the pretrained hidden-layer parameters; that earlier run also used the held-out score to control its learning-rate schedule. The frozen result above is therefore the only retained conditional reconstruction.
+
 ## How to run the conditional reconstruction
 
 The user authorized this private project-cloud run. The split remains a conditional reconstruction, and the separate trained-weight publication gate remains open. Authenticate to Modal workspace `repro-sign` and run:
