@@ -15,8 +15,8 @@ from pathlib import Path
 
 root = Path(sys.argv[1])
 manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
-selected = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ") + ["SPACE", "DELETE"]
-if manifest.get("training_classes") != selected or manifest.get("excluded_classes") != ["NOTHING"]:
+selected = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ") + ["space", "del"]
+if manifest.get("training_classes") != selected or manifest.get("excluded_classes") != ["nothing"]:
     raise SystemExit("existing ASL manifest does not match the documented 28-class training choice")
 if manifest.get("stored_training_image_count") != 87000 or manifest.get("selected_training_image_count") != 84000:
     raise SystemExit("existing ASL manifest has unexpected training-image counts")
@@ -48,7 +48,7 @@ root = Path(sys.argv[1])
 url = sys.argv[2]
 expected_bytes = int(sys.argv[3])
 archive = root / "source.zip"
-all_classes = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ") + ["SPACE", "DELETE", "NOTHING"]
+all_classes = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ") + ["space", "del", "nothing"]
 selected_classes = all_classes[:-1]
 
 urllib.request.urlretrieve(url, archive)
@@ -100,7 +100,7 @@ manifest = {
     "training_root": str(training_root.relative_to(root)),
     "stored_classes": all_classes,
     "training_classes": selected_classes,
-    "excluded_classes": ["NOTHING"],
+    "excluded_classes": ["nothing"],
     "stored_images_per_class": counts,
     "stored_training_image_count": sum(counts.values()),
     "selected_training_image_count": sum(counts[name] for name in selected_classes),
