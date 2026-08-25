@@ -15,15 +15,25 @@ The confirmed assignment says “TABLE III.” Table III is a comparison table w
 | ASL Alphabet | Proposed method / Random Forest | 98.68% | Not produced |
 | ISL-HS | Proposed method / Random Forest | 98.76% | Not produced |
 
-The target paper does not state the Table III split, whether the number is a 10-fold mean or a hold-out result, seed, feature-reduction rule, or metric implementation. It reports 10-fold *learning curves*, but does not tie that procedure to the table. Its detailed tables round Random Forest accuracy to `0.987` on both datasets, which cannot uniquely yield Table III's 98.68% and 98.76%. A run with an invented protocol would therefore be a conditional experiment, not a faithful Table III reproduction.
+The target paper does not state the Table III split, whether the number is a 10-fold mean or a hold-out result, seed, feature-reduction rule, frame-to-video aggregation, or metric implementation. It reports 10-fold *learning curves*, but does not tie that procedure to the table. Its detailed tables round Random Forest accuracy to `0.987` on both datasets, which cannot uniquely yield Table III's 98.68% and 98.76%. A run with an invented protocol would therefore be a conditional experiment, not a faithful Table III reproduction.
 
 The complete Table III ledger, including the copied baselines and their terminal `not_produced` status, is in [`reproduction.json`](reproduction.json).
 
-## What is known
+## Re-read protocol
 
-- The proposed pipeline uses OpenCV and MediaPipe Hands to obtain 21 hand landmarks, then derives slope/angle and inter-finger-line features, reduces correlated dimensions, and classifies with Random Forest. The related same-author [CMC paper](https://www.techscience.com/cmc/v72n3/47480/html) describes this method and a 100-tree forest, but reports different scores. It is a method lead, not substitute target evidence.
-- The paper describes ISL-HS as 26 letters with 18 roughly three-second videos per class and says it uses the first 60 frames of each video.
-- It describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The inclusion decision is not published.
+The author-uploaded [full text](https://www.researchgate.net/publication/361570854_Intelligent_Signs_Language_Understanding_with_Autonomous_Landmarks_for_E-learning_Context) specifies the following.
+
+- OpenCV passes each image/frame to MediaPipe’s palm detector and joint locator, producing 21 indexed **x/y** hand landmarks (Section II.A).
+- For every ordered pair of distinct landmarks, it computes `s = (y_j - y_i) / (x_j - x_i)` and `atan(s)`: 21 × 20 = 420 angle features (Section II.B, Algorithm 1). These are ordered pairs; reducing them to 210 unordered pairs would change the stated algorithm.
+- It saves the five finger slopes from landmark pairs `(0,4)`, `(5,8)`, `(9,12)`, `(13,16)`, and `(17,20)`, then computes the ordered pairwise line value `abs((s_j - s_i) / (1 + s_i*s_j))`: 5 × 4 = 20 more features (Section II.B, Algorithm 1). The raw vector is therefore 440 features per processed frame.
+- It says only that “more than half” of the features are removed by correlation/dimensionality reduction. It does not identify a reduction algorithm, threshold, retained IDs/count, or whether fitting occurs inside each split.
+- Its Random Forest statement establishes only the default 100 trees; no seed, sklearn version, other forest settings, or tuning protocol is reported (Section II.C).
+- ISL-HS has 26 classes × 18 videos; only the first 60 frames of each video are used to limit landmark-orientation variation (Section III.B). The paper does not say whether frame features are classified individually, pooled per video, or split by video/person.
+- Ten-fold learning curves are plotted for Random Forest, but the paper does not say that Tables I–III are 10-fold means or define folds, grouping, shuffling, or a seed (Section III.C).
+
+`pose-format==0.14.1` can run a MediaPipe **Holistic** extractor, but it does not provide a pure 21-point MediaPipe Hands extractor. Using it to detect the paper’s landmarks would silently replace the stated estimator. The reconstruction will therefore use MediaPipe Hands directly and may use pose-format only to inspect or serialize already-extracted landmarks, where that adds evidence without changing coordinates.
+
+The paper describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The inclusion decision is not published.
 
 ## Data gates
 

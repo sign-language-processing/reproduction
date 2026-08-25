@@ -159,6 +159,13 @@
       "role": "Canonical Table III target and methodology."
     },
     {
+      "source_id": "author-full-text",
+      "kind": "paper_copy",
+      "url": "https://www.researchgate.net/publication/361570854_Intelligent_Signs_Language_Understanding_with_Autonomous_Landmarks_for_E-learning_Context",
+      "revision_or_sha256": "Author-uploaded full text accessed 2026-08-25; PDF download endpoint does not permit a stable local file hash.",
+      "role": "Method Sections II-III, Algorithm 1, and Tables I-III."
+    },
+    {
       "source_id": "isl-hs-source",
       "kind": "dataset",
       "url": "https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645",
@@ -280,12 +287,12 @@
       "gate_id": "table-iii-evaluation-protocol",
       "type": "target",
       "status": "open",
-      "reason": "The paper does not state Table III's split, cross-validation aggregation, seed, feature-reduction rule, or exact metric implementation. Its Tables I/II round RF accuracy to 0.987 for both datasets while Table III reports 98.68 and 98.76.",
-      "evidence": ["Conference paper Table III and Sections III-IV", "Same-author related paper describes 10-fold learning curves but does not resolve this Table III aggregation."],
+      "reason": "The paper specifies a 440-feature per-frame extractor and 100-tree Random Forest, but not Table III's split, cross-validation aggregation, seed, feature-reduction rule, frame-to-video aggregation, or exact metric implementation. Its Tables I/II round RF accuracy to 0.987 for both datasets while Table III reports 98.68 and 98.76.",
+      "evidence": ["Author-uploaded conference full text: Sections II-III, Algorithm 1, and Tables I-III.", "The paper describes 10-fold learning curves but does not connect them to Table III aggregation."],
       "required_action": "Recover the original evaluation protocol or explicitly authorize a separately labeled conditional reconstruction.",
       "alternatives": [
         {"alternative_id":"author-protocol","description":"Use author-provided split, aggregation, feature selection, and seed.","paper_evidence":"No such details are published in the accessible record.","decision_needed":"Obtain or approve use of authoritative original protocol evidence."},
-        {"alternative_id":"conditional-ten-fold","description":"Run a documented 10-fold conditional reconstruction after data permission is established.","paper_evidence":"The paper discusses 10-fold learning curves but does not connect them to Table III.","decision_needed":"Approve conditional results as non-target evidence rather than a faithful Table III reproduction."}
+        {"alternative_id":"conditional-ten-fold","description":"Run a documented, video-grouped 10-fold conditional reconstruction after all data gates are resolved.","paper_evidence":"The paper discusses 10-fold learning curves but does not connect them to Table III; random frame splitting would leak frames from the same video.","decision_needed":"Approve conditional results as non-target evidence rather than a faithful Table III reproduction."}
       ]
     },
     {
