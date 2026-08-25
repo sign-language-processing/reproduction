@@ -20,6 +20,7 @@ asl_image = base_image.add_local_file(ROOT / "asl_data.sh", "/app/asl_data.sh")
 evaluation_image = (
     base_image.pip_install("mediapipe==0.10.18", "scikit-learn==1.6.1")
     .add_local_file(ROOT / "evaluate.py", "/app/evaluate.py")
+    .add_local_file(ROOT / "evaluate_asl.py", "/app/evaluate_asl.py")
 )
 datasets = modal.Volume.from_name("datasets", create_if_missing=False)
 cache = modal.Volume.from_name("huggingface-cache", create_if_missing=False)
@@ -51,11 +52,9 @@ def populate_isl_hs() -> dict[str, object]:
 )
 def populate_asl_alphabet() -> dict[str, object]:
     """Populate the user-selected A-Z, SPACE, DELETE ASL subset once."""
-    completed = subprocess.run(
-        ["bash", "/app/asl_data.sh"], check=True, capture_output=True, text=True
-    )
+    subprocess.run(["bash", "/app/asl_data.sh"], check=True)
     datasets.commit()
-    return json.loads(completed.stdout)
+    return json.loads(Path("/datasets/asl-alphabet/manifest.json").read_text(encoding="utf-8"))
 
 
 @app.function(
@@ -88,5 +87,39 @@ def evaluate_isl_hs() -> dict[str, object]:
     if output.exists():
         raise FileExistsError("full evaluation output exists; retain it as evidence rather than overwrite it")
     subprocess.run(["python", "/app/evaluate.py", "--data-root", "/datasets/isl-hs", "--output-dir", str(output)], check=True)
+    results.commit()
+    return json.loads((output / "run.json").read_text(encoding="utf-8"))
+
+
+@app.function(
+    image=evaluation_image,
+    cpu=8,
+    timeout=2 * 60 * 60,
+    volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
+    env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"},
+)
+def preflight_asl_alphabet() -> dict[str, object]:
+    """Exercise image loading, landmarks, reduction, and classifier fitting."""
+    output = Path("/results/asl-alphabet-preflight")
+    if output.exists():
+        raise FileExistsError("ASL preflight output exists; retain it as evidence rather than overwrite it")
+    subprocess.run(["python", "/app/evaluate_asl.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output), "--images-per-class", "10", "--folds", "2"], check=True)
+    results.commit()
+    return json.loads((output / "run.json").read_text(encoding="utf-8"))
+
+
+@app.function(
+    image=evaluation_image,
+    cpu=8,
+    timeout=8 * 60 * 60,
+    volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
+    env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"},
+)
+def evaluate_asl_alphabet() -> dict[str, object]:
+    """Run the documented 28-class conditional ASL evaluation once."""
+    output = Path("/results/asl-alphabet-conditional")
+    if output.exists():
+        raise FileExistsError("ASL output exists; retain it as evidence rather than overwrite it")
+    subprocess.run(["python", "/app/evaluate_asl.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output)], check=True)
     results.commit()
     return json.loads((output / "run.json").read_text(encoding="utf-8"))
