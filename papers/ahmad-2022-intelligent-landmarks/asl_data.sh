@@ -66,12 +66,25 @@ with zipfile.ZipFile(archive) as zipped:
             raise ValueError(f"unsafe archive entry: {member.filename}")
     zipped.extractall(root / "source")
 
+# Kaggle's bundle may contain its train/test archives as nested ZIPs. Unpack
+# those too, after the same path-safety check, so the complete release is
+# retained as files rather than an opaque inner archive.
+for nested in sorted((root / "source").rglob("*.zip")):
+    with zipfile.ZipFile(nested) as zipped:
+        for member in zipped.infolist():
+            path = PurePosixPath(member.filename)
+            if path.is_absolute() or ".." in path.parts:
+                raise ValueError(f"unsafe nested archive entry: {member.filename}")
+        zipped.extractall(nested.parent)
+    nested.unlink()
+
 candidate_roots = [
     path for path in (root / "source").rglob("*")
     if path.is_dir() and {child.name for child in path.iterdir() if child.is_dir()} == set(all_classes)
 ]
 if len(candidate_roots) != 1:
-    raise ValueError(f"could not identify exactly one 29-class training directory: {candidate_roots}")
+    directories = sorted(str(path.relative_to(root)) for path in (root / "source").rglob("*") if path.is_dir())
+    raise ValueError(f"could not identify exactly one 29-class training directory: {candidate_roots}; directories={directories[:100]}")
 training_root = candidate_roots[0]
 counts = {name: sum(1 for path in (training_root / name).rglob("*") if path.is_file()) for name in all_classes}
 if any(count != 3000 for count in counts.values()):
