@@ -52,7 +52,11 @@ def populate_isl_hs() -> dict[str, object]:
 )
 def populate_asl_alphabet() -> dict[str, object]:
     """Populate the user-selected A-Z, SPACE, DELETE ASL subset once."""
-    subprocess.run(["bash", "/app/asl_data.sh"], check=True)
+    completed = subprocess.run(
+        ["bash", "/app/asl_data.sh"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+    )
+    if completed.returncode:
+        raise RuntimeError(completed.stdout)
     datasets.commit()
     return json.loads(Path("/datasets/asl-alphabet/manifest.json").read_text(encoding="utf-8"))
 
