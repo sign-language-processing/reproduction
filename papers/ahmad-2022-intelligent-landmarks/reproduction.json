@@ -213,24 +213,24 @@
       "dataset_id": "isl-hs",
       "name": "ISL-HS",
       "version_or_subset": "marlondcu/ISL commit d1d50bb65540b904e3e0a6ffe0997872c4e9e645; 26 letters, 468 videos",
-      "license_or_permission": "No license is published in the source repository; Team S must establish permission for project-cloud processing before acquisition.",
-      "cloud_processing_allowed": false,
+      "license_or_permission": "The source repository publishes no license. The user explicitly authorized use of this source for the study on 2026-08-25, including this project-cloud population.",
+      "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "modal_path": "isl-hs",
       "splits": [
         {
-          "name": "paper-described corpus (not acquired)",
+          "name": "pinned 468-video source release",
           "sample_count": 468,
           "files": [
             {
-              "path": "README.md",
-              "sha256": "1b8a1d76bf42d95e50a56cef95ace1a2bfecc754beed8a9c674e0fce924150b8",
-              "role": "Pinned source README, not a dataset manifest."
+              "path": "manifest.json",
+              "sha256": "d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5",
+              "role": "Population manifest for six validated source archives and all 468 extracted videos."
             }
           ]
         }
       ],
-      "paper_preprocessing": "Use the first 60 frames of each roughly three-second video; no files have been decoded or acquired."
+      "paper_preprocessing": "Use the first 60 frames of each roughly three-second video; no files have been decoded yet."
     }
   ],
   "metric_definitions": [
@@ -271,7 +271,7 @@
     {"target_id":"isl-pca-knn-horf","paper_location":"Table III","system":"PCA+kNN HORF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":86.85,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
     {"target_id":"isl-pca-knn-irf","paper_location":"Table III","system":"PCA+k-NN IRF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":94.6,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
     {"target_id":"isl-nonblur-pca","paper_location":"Table III","system":"Non-blur PCA [86]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":95.0,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"isl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":98.76,"copied_baseline":false,"result":{"status":"not_produced","terminal_reason":"ISL-HS project-cloud permission and the exact evaluation protocol are unresolved; data has not been acquired."}}
+    {"target_id":"isl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":98.76,"copied_baseline":false,"result":{"status":"not_produced","terminal_reason":"The exact Table III evaluation protocol remains unresolved; no evaluation has been run."}}
   ],
   "runs": [],
   "artifacts": [],
@@ -291,10 +291,10 @@
     {
       "gate_id": "isl-hs-cloud-permission",
       "type": "data",
-      "status": "open",
-      "reason": "The exact public ISL-HS repository contains no license and no documented project-cloud processing permission.",
-      "evidence": ["https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645", "Dataset inventory found no isl-hs directory in the repro-sign datasets Volume."],
-      "required_action": "Team S must establish permission before any download, storage, decoding, or Modal processing."
+      "status": "resolved",
+      "reason": "The exact public ISL-HS repository contains no license, but the user explicitly authorized its study use and project-cloud population on 2026-08-25.",
+      "evidence": ["https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645", "User authorization in this task on 2026-08-25.", "modal://volume/datasets/isl-hs/manifest.json SHA-256 d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5"],
+      "required_action": "None for this user-authorized study use; do not redistribute the source data or derived artifacts without separate permission."
     },
     {
       "gate_id": "asl-class-and-cloud-terms",

@@ -27,14 +27,14 @@ The complete Table III ledger, including the copied baselines and their terminal
 
 ## Data gates
 
-Neither required data tree exists in Modal `repro-sign` Volume `datasets`; `huggingface-cache` and `datasets` themselves were verified to exist.
+The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-sign`. ISL-HS is populated below; ASL Alphabet is still absent.
 
 | Dataset | Authoritative source | Permission status | Required action |
 | --- | --- | --- | --- |
 | ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; account terms and project-cloud processing have not been verified | Resolve its 28/29 class choice and terms before population at `datasets/asl-alphabet` |
-| ISL-HS | [marlondcu/ISL at `d1d50bb`](https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645) | No repository license or cloud-processing permission is published | Team S must establish permission before download, storage, decoding, or processing at `datasets/isl-hs` |
+| ISL-HS | [marlondcu/ISL at `d1d50bb`](https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645) | The repository has no published license; the user explicitly authorized this study's project-cloud use on 2026-08-25 | Populated and validated at `datasets/isl-hs`; do not redistribute data or derivatives without separate permission |
 
-No data, frames, predictions, or trained weights have been acquired, produced, or published.
+The committed `datasets/isl-hs/manifest.json` records six source archives, all 468 extracted `.mov` files, and the pinned source revision. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`; its deterministic relative-video-path hash is `00db8120a603ae8d1a2896aff7ed9f1e68e77662066f5f42ac3b9c0ea71b9d76`. ISL-HS has not been decoded, evaluated, or published. No ASL data, predictions, or trained weights have been acquired, produced, or published.
 
 ## Source search
 
@@ -44,6 +44,13 @@ The paper contains no code release. Exact-title/method searches across GitHub, Z
 
 ## Next faithful step
 
-Once the two open data permissions and the Table III protocol gate are resolved, the minimal implementation is a CPU-only, pinned MediaPipe/OpenCV/scikit-learn pipeline: verify dataset manifests, extract the stated landmarks/features, run a real-data preflight, then evaluate only the authorized protocol. ISL video decoding, if authorized, will use `simple-video-utils`; no video decoding is currently performed.
+The ISL-HS data gate is resolved. The remaining Table III protocol and ASL class/terms gates must be resolved before a target-result run. Then the minimal implementation is a CPU-only, pinned MediaPipe/OpenCV/scikit-learn pipeline: verify dataset manifests, extract the stated landmarks/features, run a real-data preflight, then evaluate only the authorized protocol. ISL video decoding will use `simple-video-utils`; no video decoding is currently performed.
+
+To populate the authorized ISL-HS source idempotently:
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::populate_isl_hs
+```
 
 Every Modal operation will continue to use the `repro-sign` wrapper and mount the shared `huggingface-cache` volume. There are no runs, patches, artifacts, author contacts, human participants, or model publications yet.
