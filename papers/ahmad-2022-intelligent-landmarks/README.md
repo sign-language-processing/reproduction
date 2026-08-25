@@ -47,9 +47,28 @@ The user authorized a documented attempt to obtain the expected result despite t
 | Zero division | Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0 | The equations give no zero-division policy. |
 | Feature reduction | Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only | The paper only says more than half the 440 features are correlation/dimensionally reduced. This avoids test-fold leakage. |
 | Random Forest | 100 trees, seed 2026, eight CPU workers, all other `scikit-learn==1.6.1` defaults | Only the 100-tree default is stated. |
-| Evaluation | Run both unshuffled 10-fold frame-stratified CV and unshuffled 10-fold video-grouped CV; report both | Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III. |
+| Evaluation | Run shuffled 10-fold frame-stratified CV (seed 2026) and unshuffled 10-fold video-grouped CV; report both | Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III. |
 
 The real-data preflight uses two videos/class and two folds to exercise decoding, detection, the exact 440-feature extractor, fold-local reduction, fitting, and both evaluators. The full conditional run uses all 18 videos/class and ten folds.
+
+### Retained preflight evidence
+
+The corrected preflight decoded the first 60 frames from 52 videos (two per
+class) and MediaPipe detected a hand in all 3,120 frames. Its seeded,
+frame-stratified two-fold result was **99.97% ± 0.05%**; strict video-grouped
+two-fold CV was **87.12% ± 4.17%**. This sharp gap is evidence that random
+frame splitting lets closely related frames from the same video enter both
+train and test. It is not evidence that the paper used either protocol.
+
+The immutable output is
+`modal://volume/8526aecd-landmark-results/preflight-frame-shuffled/run.json`
+(SHA-256 `8641f9b7f4ca297b924897fc0a704732b696550c0834372fec60061856efb9d2`),
+from Modal app `ap-Vw43983kOrGHMepFeFRB4c`, function call
+`fc-01M0VSBGR8E7CVJ6NCC137N3W1`. An earlier unshuffled preflight is retained as
+diagnostic evidence rather than a result: the video-contiguous source order
+made its nominal frame and grouped folds identical. The smallest correction was
+to shuffle only the frame-level splitter with the recorded seed; the grouped
+split is unchanged.
 
 ## Data gates
 

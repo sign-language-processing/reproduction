@@ -50,7 +50,7 @@ def populate_isl_hs() -> dict[str, object]:
 )
 def preflight() -> dict[str, object]:
     """Exercise real decoding, landmark extraction, reduction, and both CV paths."""
-    output = Path("/results/preflight")
+    output = Path("/results/preflight-frame-shuffled")
     if output.exists():
         raise FileExistsError("preflight output exists; retain it as evidence rather than overwrite it")
     subprocess.run(["python", "/app/evaluate.py", "--data-root", "/datasets/isl-hs", "--output-dir", str(output), "--videos-per-class", "2", "--folds", "2"], check=True)

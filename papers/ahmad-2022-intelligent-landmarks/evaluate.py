@@ -150,7 +150,10 @@ def correlation_columns(train: np.ndarray) -> np.ndarray:
 
 def evaluate_protocol(features: np.ndarray, labels: np.ndarray, groups: np.ndarray, protocol: str, folds: int) -> dict[str, object]:
     if protocol == "frame_stratified":
-        splitter = StratifiedKFold(n_splits=folds, shuffle=False)
+        # Decision: shuffle individual frames.  Without this, the source's
+        # video-contiguous ordering can accidentally make this split grouped,
+        # defeating the intended leakage-sensitive comparison.
+        splitter = StratifiedKFold(n_splits=folds, shuffle=True, random_state=SEED)
         splits = splitter.split(features, labels)
     elif protocol == "video_grouped":
         splitter = StratifiedGroupKFold(n_splits=folds, shuffle=False)
