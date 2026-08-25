@@ -35,6 +35,22 @@ The author-uploaded [full text](https://www.researchgate.net/publication/3615708
 
 The paper describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The inclusion decision is not published.
 
+## Conditional ISL-HS run decisions
+
+The user authorized a documented attempt to obtain the expected result despite the unpublished Table III evaluation details. The following are reconstruction decisions, not claims about the authors’ setup:
+
+| Missing detail | Conditional decision | Why |
+| --- | --- | --- |
+| Landmark implementation | `mediapipe==0.10.18`, direct `Hands`; sequential tracking within each video; one hand; model complexity 1; both confidence thresholds 0.5 | Preserves the stated 21-point Hands path. The paper gives no version or configuration. |
+| Video decoding | `simple-video-utils==0.7.4`, RGB display-oriented frames | Study-wide decoder policy replaces the paper’s unspecified OpenCV decoding details. |
+| Landmark coordinates | Multiply MediaPipe's normalized `x/y` by the decoded frame width/height | The paper describes pixel coordinates. |
+| Zero division | Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0 | The equations give no zero-division policy. |
+| Feature reduction | Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only | The paper only says more than half the 440 features are correlation/dimensionally reduced. This avoids test-fold leakage. |
+| Random Forest | 100 trees, seed 2026, eight CPU workers, all other `scikit-learn==1.6.1` defaults | Only the 100-tree default is stated. |
+| Evaluation | Run both unshuffled 10-fold frame-stratified CV and unshuffled 10-fold video-grouped CV; report both | Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III. |
+
+The real-data preflight uses two videos/class and two folds to exercise decoding, detection, the exact 440-feature extractor, fold-local reduction, fitting, and both evaluators. The full conditional run uses all 18 videos/class and ten folds.
+
 ## Data gates
 
 The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-sign`. ISL-HS is populated below; ASL Alphabet is still absent.
@@ -61,6 +77,15 @@ To populate the authorized ISL-HS source idempotently:
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
   papers/ahmad-2022-intelligent-landmarks/modal_app.py::populate_isl_hs
+```
+
+Then run the preflight and the full conditional evaluation through the same `repro-sign` wrapper:
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::preflight
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::evaluate_isl_hs
 ```
 
 Every Modal operation will continue to use the `repro-sign` wrapper and mount the shared `huggingface-cache` volume. There are no runs, patches, artifacts, author contacts, human participants, or model publications yet.
