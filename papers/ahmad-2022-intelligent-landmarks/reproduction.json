@@ -188,8 +188,8 @@
     }
   ],
   "status": {
-    "pipeline": "insufficient_information",
-    "numerical_agreement": "not_assessed",
+    "pipeline": "partial",
+    "numerical_agreement": "not_fully_reproduced",
     "preference_level": 3
   },
   "datasets": [
@@ -278,7 +278,7 @@
     {"target_id":"isl-pca-knn-horf","paper_location":"Table III","system":"PCA+kNN HORF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":86.85,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
     {"target_id":"isl-pca-knn-irf","paper_location":"Table III","system":"PCA+k-NN IRF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":94.6,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
     {"target_id":"isl-nonblur-pca","paper_location":"Table III","system":"Non-blur PCA [86]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":95.0,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"isl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":98.76,"copied_baseline":false,"result":{"status":"not_produced","terminal_reason":"The exact Table III evaluation protocol remains unresolved; no evaluation has been run."}}
+    {"target_id":"isl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":98.76,"copied_baseline":false,"result":{"status":"produced","reproduced_value":97.95804720803116,"difference":-0.8019527919688414,"protocol":"Conditional 10-fold video-grouped, frame-level accuracy; this conservative non-leaking interpretation was selected before the run. The companion shuffled frame-level result is 99.86818667616673%, but is not comparable because video siblings cross folds.","run_ids":["isl-hs-conditional"],"artifact_ids":["isl-hs-conditional-run-json"]}}
   ],
   "runs": [
     {
@@ -316,9 +316,35 @@
       "result_artifact": "modal://volume/8526aecd-landmark-results/preflight-frame-shuffled/run.json",
       "result_sha256": "8641f9b7f4ca297b924897fc0a704732b696550c0834372fec60061856efb9d2",
       "outcome": "All 3,120 sampled frames were detected. Frame-stratified accuracy was 99.96794871794872% and video-grouped accuracy was 87.11538461538461%; the contrast confirms that the two conditional protocols are materially different."
+    },
+    {
+      "run_id": "isl-hs-conditional",
+      "kind": "conditional_full_evaluation",
+      "status": "completed",
+      "exit_code": 0,
+      "started_at": "2026-08-25T08:24:55+02:00",
+      "ended_at": "2026-08-25T08:42:22+02:00",
+      "modal": {
+        "profile": "repro-sign",
+        "app_id": "ap-lJNFft0jeNJaEp5qGW3E0g",
+        "function_call_id": "fc-01M0VSFT8XTC04A012ABDWXW5A",
+        "container_id": "ta-01M0VSFVK3SJKJG7W76R8QJWWR"
+      },
+      "command": "python /app/evaluate.py --data-root /datasets/isl-hs --output-dir /results/isl-hs-conditional --videos-per-class 18 --folds 10",
+      "artifact_ids": [
+        "isl-hs-conditional-run-json"
+      ],
+      "outcome": "Decoded all 468 videos and processed 28,071 of 28,080 requested frames. Shuffled frame-stratified 10-fold accuracy was 99.86818667616673% (SD 0.07134933564089702); video-grouped 10-fold accuracy was 97.95804720803116% (SD 0.9443523979078399)."
     }
   ],
-  "artifacts": [],
+  "artifacts": [
+    {
+      "artifact_id": "isl-hs-conditional-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/8526aecd-landmark-results/isl-hs-conditional/run.json",
+      "sha256": "c917c6577b862bbd6228c7d44e7a80b417034bfc676123192d338ac0ff9f86ff"
+    }
+  ],
   "gates": [
     {
       "gate_id": "table-iii-evaluation-protocol",

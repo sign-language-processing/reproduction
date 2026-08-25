@@ -3,8 +3,8 @@
 **Paper ID:** `8526aecd1407305d815883725a864405e31a54c1`  
 **Citation:** Muhammad Jamil Hussain and Ahmad Shaoor. *2022 19th International Bhurban Conference on Applied Sciences and Technology (IBCAST)*, pp. 219-224. DOI: [10.1109/IBCAST54850.2022.9990143](https://doi.org/10.1109/IBCAST54850.2022.9990143).  
 **Preference level:** `3` — no author implementation was found after a documented source search.  
-**Pipeline status:** `insufficient_information`  
-**Numerical agreement:** `not_assessed`
+**Pipeline status:** `partial`
+**Numerical agreement:** `not_fully_reproduced`
 
 ## Scope and target contract
 
@@ -70,6 +70,28 @@ made its nominal frame and grouped folds identical. The smallest correction was
 to shuffle only the frame-level splitter with the recorded seed; the grouped
 split is unchanged.
 
+## Conditional ISL-HS result
+
+The full 468-video run decoded 28,080 requested frames and detected landmarks
+in 28,071 (99.968%). Its output is
+`modal://volume/8526aecd-landmark-results/isl-hs-conditional/run.json`
+(SHA-256 `c917c6577b862bbd6228c7d44e7a80b417034bfc676123192d338ac0ff9f86ff`),
+from Modal app `ap-lJNFft0jeNJaEp5qGW3E0g`, function call
+`fc-01M0VSFT8XTC04A012ABDWXW5A`. It completed in about 17 minutes of eight-CPU
+Modal time and retained its raw JSON only on the results Volume.
+
+| Evaluation interpretation | Accuracy (mean ± fold SD) | Relation to Table III (98.76%) |
+| --- | ---: | --- |
+| Shuffled frame-stratified 10-fold CV | 99.8682% ± 0.0713% | Not a valid direct comparison: frames from a video can appear in train and test. |
+| Video-grouped 10-fold CV | 97.9580% ± 0.9444% | Conservative conditional result; −0.8020 percentage points from Table III. |
+
+No split or fold was selected to obtain the paper number. One grouped fold is
+98.7589%, nearly Table III's 98.76%, but the published aggregation rule is
+unknown and the run reports the mean of all ten folds instead. The target paper
+does not establish whether it used a random frame split, a grouped split, a
+hold-out, a video-level aggregation, or another feature-reduction method; this
+run therefore does **not** claim to reproduce the Table III score.
+
 ## Data gates
 
 The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-sign`. ISL-HS is populated below; ASL Alphabet is still absent.
@@ -87,9 +109,14 @@ The canonical [IEEE record](https://ieeexplore.ieee.org/document/9990143/) and t
 
 The paper contains no code release. Exact-title/method searches across GitHub, Zenodo, OSF, Hugging Face, and author accounts found no author code, archive, model, or supplement. The two author accounts inspected contained no relevant repository. The related CMC article above is openly available but is a distinct work with different reported results.
 
-## Next faithful step
+## Remaining faithful work
 
-The ISL-HS data gate is resolved. The remaining Table III protocol and ASL class/terms gates must be resolved before a target-result run. Then the minimal implementation is a CPU-only, pinned MediaPipe/OpenCV/scikit-learn pipeline: verify dataset manifests, extract the stated landmarks/features, run a real-data preflight, then evaluate only the authorized protocol. ISL video decoding will use `simple-video-utils`; no video decoding is currently performed.
+The ISL-HS conditional pipeline is complete, but the Table III protocol gate
+remains open. The ASL target remains unproduced until its 28-versus-29-class
+choice and cloud-access terms are resolved. An author-provided split,
+aggregation rule, reduction configuration, or seed could turn the ISL attempt
+into a stricter reproduction; absent that, the two conditional interpretations
+above are the complete evidence.
 
 To populate the authorized ISL-HS source idempotently:
 
@@ -107,4 +134,6 @@ Then run the preflight and the full conditional evaluation through the same `rep
   papers/ahmad-2022-intelligent-landmarks/modal_app.py::evaluate_isl_hs
 ```
 
-Every Modal operation will continue to use the `repro-sign` wrapper and mount the shared `huggingface-cache` volume. There are no runs, patches, artifacts, author contacts, human participants, or model publications yet.
+Every Modal operation uses the `repro-sign` wrapper and mounts the shared
+`huggingface-cache` volume. There are no model publications, author contacts,
+or human participants.
