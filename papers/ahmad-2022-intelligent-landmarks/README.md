@@ -33,7 +33,7 @@ The author-uploaded [full text](https://www.researchgate.net/publication/3615708
 
 `pose-format==0.14.1` can run a MediaPipe **Holistic** extractor, but it does not provide a pure 21-point MediaPipe Hands extractor. Using it to detect the paper’s landmarks would silently replace the stated estimator. The reconstruction will therefore use MediaPipe Hands directly and may use pose-format only to inspect or serialize already-extracted landmarks, where that adds evidence without changing coordinates.
 
-The paper describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The inclusion decision is not published.
+The paper describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The entire source release, including NOTHING and its test files, is retained on Modal. The user resolved the *training* ambiguity on 2026-08-25: train/evaluate with A-Z, SPACE, and DELETE (28 classes / 84,000 training images), excluding NOTHING. This is a documented reconstruction choice, not a claim that the paper identifies NOTHING as the omitted class.
 
 ## Conditional ISL-HS run decisions
 
@@ -98,7 +98,7 @@ The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-si
 
 | Dataset | Authoritative source | Permission status | Required action |
 | --- | --- | --- | --- |
-| ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; account terms and project-cloud processing have not been verified | Resolve its 28/29 class choice and terms before population at `datasets/asl-alphabet` |
+| ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; the user authorized this study’s use on 2026-08-25 | Store the entire release in `datasets/asl-alphabet`; train/evaluate with A-Z, SPACE, DELETE only |
 | ISL-HS | [marlondcu/ISL at `d1d50bb`](https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645) | The repository has no published license; the user explicitly authorized this study's project-cloud use on 2026-08-25 | Populated and validated at `datasets/isl-hs`; do not redistribute data or derivatives without separate permission |
 
 The committed `datasets/isl-hs/manifest.json` records six source archives, all 468 extracted `.mov` files, and the pinned source revision. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`; its deterministic relative-video-path hash is `00db8120a603ae8d1a2896aff7ed9f1e68e77662066f5f42ac3b9c0ea71b9d76`. ISL-HS has not been decoded, evaluated, or published. No ASL data, predictions, or trained weights have been acquired, produced, or published.

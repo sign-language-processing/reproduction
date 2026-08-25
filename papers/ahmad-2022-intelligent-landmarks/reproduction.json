@@ -196,25 +196,25 @@
     {
       "dataset_id": "asl-alphabet",
       "name": "ASL Alphabet",
-      "version_or_subset": "Kaggle grassknoted/asl-alphabet, v1 metadata dated 2018-04-22",
-      "license_or_permission": "Kaggle metadata declares GPL-2.0; account terms and project-cloud processing still require confirmation before acquisition.",
-      "cloud_processing_allowed": false,
+      "version_or_subset": "Kaggle grassknoted/asl-alphabet, v1 full release stored; user-selected 28-class training subset A-Z, SPACE, DELETE",
+      "license_or_permission": "Kaggle metadata declares GPL-2.0. The user explicitly authorized this study's use and project-cloud population on 2026-08-25.",
+      "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "modal_path": "asl-alphabet",
       "splits": [
         {
-          "name": "paper-described corpus (not acquired)",
-          "sample_count": 87000,
+          "name": "full source release (to be populated); evaluation selects 28 of the 29 training classes",
+          "sample_count": 87029,
           "files": [
             {
               "path": "source-metadata.json",
               "sha256": "3990dae92a59eba8c1ebb12d8ed1062a27d628ed5a780d55b8fa2aeace486001",
-              "role": "Kaggle API source metadata snapshot, not a dataset manifest."
+              "role": "Kaggle API source metadata snapshot, not the post-population dataset manifest."
             }
           ]
         }
       ],
-      "known_mismatch": "The source has 29 classes (A-Z, SPACE, DELETE, NOTHING) and 87,000 images; the paper calls it 28 gestures while also claiming 87,000 images."
+      "known_mismatch": "The source has 29 training classes (A-Z, SPACE, DELETE, NOTHING) and 87,000 images plus 29 test images; the paper calls it 28 gestures while also claiming 87,000 images. User decision on 2026-08-25: store the full release but exclude NOTHING from training/evaluation, yielding A-Z plus SPACE and DELETE (84,000 images)."
     },
     {
       "dataset_id": "isl-hs",
@@ -369,10 +369,10 @@
     {
       "gate_id": "asl-class-and-cloud-terms",
       "type": "protocol",
-      "status": "open",
-      "reason": "The paper says 28 gestures while its cited 87,000-image source has 29 classes; Kaggle account terms/project-cloud access have not been verified.",
-      "evidence": ["https://www.kaggle.com/datasets/grassknoted/asl-alphabet", "87,000 equals 29 classes times 3,000 images, not 28 times 3,000."],
-      "required_action": "Resolve class inclusion and confirm acquisition/cloud-processing terms before a conditional ASL run."
+      "status": "resolved",
+      "reason": "The paper says 28 gestures while its cited source has 29 classes. The user authorized study/cloud use and selected A-Z, SPACE, and DELETE, excluding NOTHING, on 2026-08-25.",
+      "evidence": ["https://www.kaggle.com/datasets/grassknoted/asl-alphabet", "87,000 equals 29 classes times 3,000 images, not 28 times 3,000.", "User authorization and 28-class decision in this task on 2026-08-25."],
+      "required_action": "Populate and validate the selected 84,000-image subset; report it as a documented reconstruction choice."
     }
   ]
 }

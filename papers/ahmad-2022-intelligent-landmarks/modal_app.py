@@ -16,6 +16,7 @@ base_image = modal.Image.from_dockerfile(
     REPOSITORY_ROOT / "Dockerfile", context_dir=REPOSITORY_ROOT
 )
 image = base_image.add_local_file(ROOT / "data.sh", "/app/data.sh")
+asl_image = base_image.add_local_file(ROOT / "asl_data.sh", "/app/asl_data.sh")
 evaluation_image = (
     base_image.pip_install("mediapipe==0.10.18", "scikit-learn==1.6.1")
     .add_local_file(ROOT / "evaluate.py", "/app/evaluate.py")
@@ -36,6 +37,22 @@ def populate_isl_hs() -> dict[str, object]:
     """Populate and commit the user-authorized, pinned ISL-HS source once."""
     completed = subprocess.run(
         ["bash", "/app/data.sh"], check=True, capture_output=True, text=True
+    )
+    datasets.commit()
+    return json.loads(completed.stdout)
+
+
+@app.function(
+    image=asl_image,
+    cpu=2,
+    timeout=2 * 60 * 60,
+    volumes={"/datasets": datasets, "/cache/huggingface": cache},
+    env={"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"},
+)
+def populate_asl_alphabet() -> dict[str, object]:
+    """Populate the user-selected A-Z, SPACE, DELETE ASL subset once."""
+    completed = subprocess.run(
+        ["bash", "/app/asl_data.sh"], check=True, capture_output=True, text=True
     )
     datasets.commit()
     return json.loads(completed.stdout)
