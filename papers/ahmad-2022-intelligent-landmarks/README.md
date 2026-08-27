@@ -12,7 +12,7 @@ The confirmed assignment says “TABLE III.” Table III is a comparison table w
 
 | Dataset | Table III system | Paper accuracy | Status |
 | --- | --- | ---: | --- |
-| ASL Alphabet | Proposed method / Random Forest | 98.68% | Not produced |
+| ASL Alphabet | Proposed method / Random Forest | 98.68% | 99.17% ± 0.10% (conditional) |
 | ISL-HS | Proposed method / Random Forest | 98.76% | Not produced |
 
 The target paper does not state the Table III split, whether the number is a 10-fold mean or a hold-out result, seed, feature-reduction rule, frame-to-video aggregation, or metric implementation. It reports 10-fold *learning curves*, but does not tie that procedure to the table. Its detailed tables round Random Forest accuracy to `0.987` on both datasets, which cannot uniquely yield Table III's 98.68% and 98.76%. A run with an invented protocol would therefore be a conditional experiment, not a faithful Table III reproduction.
@@ -70,7 +70,20 @@ made its nominal frame and grouped folds identical. The smallest correction was
 to shuffle only the frame-level splitter with the recorded seed; the grouped
 split is unchanged.
 
-## Conditional ISL-HS result
+## Conditional results
+
+### ASL Alphabet
+
+The full 28-class run used A-Z, `space`, and `del`, retaining but excluding
+`nothing`. Of 84,000 images, MediaPipe detected 63,673 hands (75.80%).
+Shuffled 10-fold image-level CV yielded **99.1692% ± 0.0961%**, +0.4892 points
+from Table III's 98.68%. This is conditional because the paper does not state
+its split, missing-detection handling, or exact 28-class definition.
+
+Raw output: `modal://volume/8526aecd-landmark-results/asl-alphabet-conditional/run.json`
+(SHA-256 `f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6`).
+
+### ISL-HS
 
 The full 468-video run decoded 28,080 requested frames and detected landmarks
 in 28,071 (99.968%). Its output is
@@ -94,14 +107,14 @@ run therefore does **not** claim to reproduce the Table III score.
 
 ## Data gates
 
-The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-sign`. ISL-HS is populated below; ASL Alphabet is still absent.
+The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-sign`. Both datasets are populated.
 
 | Dataset | Authoritative source | Permission status | Required action |
 | --- | --- | --- | --- |
 | ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; the user authorized this study’s use on 2026-08-25 | Store the entire release in `datasets/asl-alphabet`; train/evaluate with A-Z, SPACE, DELETE only |
 | ISL-HS | [marlondcu/ISL at `d1d50bb`](https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645) | The repository has no published license; the user explicitly authorized this study's project-cloud use on 2026-08-25 | Populated and validated at `datasets/isl-hs`; do not redistribute data or derivatives without separate permission |
 
-The committed `datasets/isl-hs/manifest.json` records six source archives, all 468 extracted `.mov` files, and the pinned source revision. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`; its deterministic relative-video-path hash is `00db8120a603ae8d1a2896aff7ed9f1e68e77662066f5f42ac3b9c0ea71b9d76`. ISL-HS has not been decoded, evaluated, or published. No ASL data, predictions, or trained weights have been acquired, produced, or published.
+The committed `datasets/isl-hs/manifest.json` records six source archives and 468 videos. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`. The ASL manifest SHA-256 is `012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d`.
 
 ## Source search
 
@@ -109,14 +122,11 @@ The canonical [IEEE record](https://ieeexplore.ieee.org/document/9990143/) and t
 
 The paper contains no code release. Exact-title/method searches across GitHub, Zenodo, OSF, Hugging Face, and author accounts found no author code, archive, model, or supplement. The two author accounts inspected contained no relevant repository. The related CMC article above is openly available but is a distinct work with different reported results.
 
-## Remaining faithful work
+## Remaining faithful limitation
 
-The ISL-HS conditional pipeline is complete, but the Table III protocol gate
-remains open. The ASL target remains unproduced until its 28-versus-29-class
-choice and cloud-access terms are resolved. An author-provided split,
-aggregation rule, reduction configuration, or seed could turn the ISL attempt
-into a stricter reproduction; absent that, the two conditional interpretations
-above are the complete evidence.
+Both paper-owned targets have conditional terminal results, but the Table III
+protocol gate remains open. An author-provided split, aggregation rule,
+reduction configuration, or seed could turn these into stricter reproductions.
 
 To populate the authorized ISL-HS source idempotently:
 
