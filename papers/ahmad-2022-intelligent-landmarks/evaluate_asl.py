@@ -102,7 +102,7 @@ def main() -> None:
         "feature_reduction": {"method": "train-fold-only greedy absolute Pearson-correlation filter", "threshold": CORRELATION_THRESHOLD, "zero_division": "vertical slopes retain atan(inf); indeterminate/non-finite values become 0"},
         "random_forest": {"n_estimators": 100, "random_state": SEED, "n_jobs": 8, "other_parameters": "scikit-learn defaults"},
         "sklearn_version": sklearn.__version__,
-        "evaluation": {"protocol": "conditional shuffled 10-fold stratified image CV", "accuracy_percent_mean": float(np.mean(accuracies)), "accuracy_percent_std": float(np.std(accuracies, ddof=1)), "folds": folds},
+        "evaluation": {"protocol": f"conditional shuffled {arguments.folds}-fold stratified image CV", "accuracy_percent_mean": float(np.mean(accuracies)), "accuracy_percent_std": float(np.std(accuracies, ddof=1)), "folds": folds},
     }
     arguments.output_dir.mkdir(parents=True, exist_ok=False)
     (arguments.output_dir / "run.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

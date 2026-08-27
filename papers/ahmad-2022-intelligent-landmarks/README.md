@@ -81,7 +81,13 @@ from Table III's 98.68%. This is conditional because the paper does not state
 its split, missing-detection handling, or exact 28-class definition.
 
 Raw output: `modal://volume/8526aecd-landmark-results/asl-alphabet-conditional/run.json`
-(SHA-256 `f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6`).
+(SHA-256 `f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6`),
+from Modal app `ap-5urNHhjWI9XM0mCt1BRPq5`. A two-fold, ten-images-per-class
+real-data preflight detected 238 of 280 images and scored 94.5378% ± 1.7826%;
+the full result above—not this deliberately small preflight—is the reported
+conditional result. Its raw output is
+`modal://volume/8526aecd-landmark-results/asl-alphabet-preflight/run.json`
+(SHA-256 `784e58a9fb41dfc8b60c1fc5e4a6a89eaf045b10382b40ea2c05f9b67a4e4a5f`).
 
 ### ISL-HS
 
@@ -111,10 +117,10 @@ The required `datasets` and `huggingface-cache` Volumes exist in Modal `repro-si
 
 | Dataset | Authoritative source | Permission status | Required action |
 | --- | --- | --- | --- |
-| ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; the user authorized this study’s use on 2026-08-25 | Store the entire release in `datasets/asl-alphabet`; train/evaluate with A-Z, SPACE, DELETE only |
+| ASL Alphabet | [Kaggle grassknoted/asl-alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet), v1 | Kaggle metadata declares GPL-2.0; the user authorized this study’s use on 2026-08-25 | Stored and validated at `datasets/asl-alphabet`; train/evaluate with A-Z, SPACE, DELETE only |
 | ISL-HS | [marlondcu/ISL at `d1d50bb`](https://github.com/marlondcu/ISL/tree/d1d50bb65540b904e3e0a6ffe0997872c4e9e645) | The repository has no published license; the user explicitly authorized this study's project-cloud use on 2026-08-25 | Populated and validated at `datasets/isl-hs`; do not redistribute data or derivatives without separate permission |
 
-The committed `datasets/isl-hs/manifest.json` records six source archives and 468 videos. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`. The ASL manifest SHA-256 is `012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d`.
+The committed `datasets/isl-hs/manifest.json` records six source archives and 468 videos. Its SHA-256 is `d8a278a87aa05898159e848d5f6c206364d0af74af84d3ea88e7d5c34f58e9b5`. The ASL v1 archive is 1,100,887,034 bytes (SHA-256 `7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4`); its post-population manifest SHA-256 is `012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d`.
 
 ## Source search
 
@@ -128,20 +134,28 @@ Both paper-owned targets have conditional terminal results, but the Table III
 protocol gate remains open. An author-provided split, aggregation rule,
 reduction configuration, or seed could turn these into stricter reproductions.
 
-To populate the authorized ISL-HS source idempotently:
+To populate the authorized datasets idempotently:
 
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
   papers/ahmad-2022-intelligent-landmarks/modal_app.py::populate_isl_hs
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::populate_asl_alphabet
 ```
 
-Then run the preflight and the full conditional evaluation through the same `repro-sign` wrapper:
+Then run the real-data preflights or the full conditional evaluations through the
+same `repro-sign` wrapper. The functions fail rather than overwrite retained
+evidence, so a fresh output Volume is required for an independent rerun.
 
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
   papers/ahmad-2022-intelligent-landmarks/modal_app.py::preflight
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
   papers/ahmad-2022-intelligent-landmarks/modal_app.py::evaluate_isl_hs
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::preflight_asl_alphabet
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/ahmad-2022-intelligent-landmarks/modal_app.py::evaluate_asl_alphabet
 ```
 
 Every Modal operation uses the `repro-sign` wrapper and mounts the shared

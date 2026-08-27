@@ -1,4 +1,4 @@
-"""Approved ISL-HS dataset population for the landmark reproduction."""
+"""Data population and conditional evaluation for the landmark reproduction."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import modal
 
 ROOT = Path(__file__).resolve().parent
 REPOSITORY_ROOT = ROOT.parent.parent
-app = modal.App("8526aecd1407305d-isl-hs-data")
+app = modal.App("8526aecd1407305d-landmark-reproduction")
 base_image = modal.Image.from_dockerfile(
     REPOSITORY_ROOT / "Dockerfile", context_dir=REPOSITORY_ROOT
 )

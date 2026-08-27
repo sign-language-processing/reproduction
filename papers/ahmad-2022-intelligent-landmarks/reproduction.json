@@ -176,7 +176,7 @@
       "source_id": "asl-alphabet-source",
       "kind": "dataset",
       "url": "https://www.kaggle.com/datasets/grassknoted/asl-alphabet",
-      "revision_or_sha256": "Kaggle metadata snapshot SHA-256 3990dae92a59eba8c1ebb12d8ed1062a27d628ed5a780d55b8fa2aeace486001",
+      "revision_or_sha256": "Kaggle v1 archive SHA-256 7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4 (1,100,887,034 bytes); metadata snapshot SHA-256 3990dae92a59eba8c1ebb12d8ed1062a27d628ed5a780d55b8fa2aeace486001",
       "role": "Paper-cited ASL Alphabet v1 source."
     },
     {
@@ -203,13 +203,13 @@
       "modal_path": "asl-alphabet",
       "splits": [
         {
-          "name": "full source release (to be populated); evaluation selects 28 of the 29 training classes",
+          "name": "full stored v1 source release; evaluation selects 28 of the 29 training classes",
           "sample_count": 87029,
           "files": [
             {
-              "path": "source-metadata.json",
-              "sha256": "3990dae92a59eba8c1ebb12d8ed1062a27d628ed5a780d55b8fa2aeace486001",
-              "role": "Kaggle API source metadata snapshot, not the post-population dataset manifest."
+              "path": "manifest.json",
+              "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d",
+              "role": "Post-population manifest for the complete v1 release: 87,000 training images and 29 test images; evaluation excludes the stored NOTHING class."
             }
           ]
         }
@@ -336,7 +336,8 @@
       ],
       "outcome": "Decoded all 468 videos and processed 28,071 of 28,080 requested frames. Shuffled frame-stratified 10-fold accuracy was 99.86818667616673% (SD 0.07134933564089702); video-grouped 10-fold accuracy was 97.95804720803116% (SD 0.9443523979078399)."
     },
-    {"run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","status":"completed","exit_code":0,"modal":{"profile":"repro-sign","app_id":"ap-5urNHhjWI9XM0mCt1BRPq5"},"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","artifact_ids":["asl-alphabet-conditional-run-json"],"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
+    {"run_id":"asl-alphabet-preflight","kind":"representative_preflight","status":"completed","exit_code":0,"modal":{"profile":"repro-sign"},"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-preflight --images-per-class 10 --folds 2","result_artifact":"modal://volume/8526aecd-landmark-results/asl-alphabet-preflight/run.json","result_sha256":"784e58a9fb41dfc8b60c1fc5e4a6a89eaf045b10382b40ea2c05f9b67a4e4a5f","artifact_ids":["asl-alphabet-preflight-run-json"],"outcome":"238 of 280 selected images were detected; two-fold conditional accuracy was 94.53781512605042% with SD 1.7826221374450815%."},
+    {"run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","status":"completed","exit_code":0,"modal":{"profile":"repro-sign","app_id":"ap-5urNHhjWI9XM0mCt1BRPq5"},"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","result_artifact":"modal://volume/8526aecd-landmark-results/asl-alphabet-conditional/run.json","result_sha256":"f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6","artifact_ids":["asl-alphabet-conditional-run-json"],"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
   ],
   "artifacts": [
     {
@@ -345,6 +346,7 @@
       "uri": "modal://volume/8526aecd-landmark-results/isl-hs-conditional/run.json",
       "sha256": "c917c6577b862bbd6228c7d44e7a80b417034bfc676123192d338ac0ff9f86ff"
     },
+    {"artifact_id":"asl-alphabet-preflight-run-json","kind":"raw_metric_output","uri":"modal://volume/8526aecd-landmark-results/asl-alphabet-preflight/run.json","sha256":"784e58a9fb41dfc8b60c1fc5e4a6a89eaf045b10382b40ea2c05f9b67a4e4a5f"},
     {"artifact_id":"asl-alphabet-conditional-run-json","kind":"raw_metric_output","uri":"modal://volume/8526aecd-landmark-results/asl-alphabet-conditional/run.json","sha256":"f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6"}
   ],
   "gates": [
@@ -374,7 +376,7 @@
       "status": "resolved",
       "reason": "The paper says 28 gestures while its cited source has 29 classes. The user authorized study/cloud use and selected A-Z, SPACE, and DELETE, excluding NOTHING, on 2026-08-25.",
       "evidence": ["https://www.kaggle.com/datasets/grassknoted/asl-alphabet", "87,000 equals 29 classes times 3,000 images, not 28 times 3,000.", "User authorization and 28-class decision in this task on 2026-08-25."],
-      "required_action": "Populate and validate the selected 84,000-image subset; report it as a documented reconstruction choice."
+      "required_action": "None for the user-selected 28-class conditional attempt; retain the full release, keep NOTHING excluded from evaluation, and report the decision as a reconstruction choice."
     }
   ]
 }
