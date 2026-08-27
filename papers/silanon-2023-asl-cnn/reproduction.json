@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "paper_id": "03785db2dc052c9c21dfefc690b03b8ad0703d9d",
+  "assignment": {
+    "kind": "direct_user_assignment_with_user_provided_final_review_summary",
+    "source": {
+      "path": "/Users/amitmoryossef/Downloads/03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf",
+      "sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d"
+    },
+    "user_provided_review_summary": {
+      "confirmation": "confirmed",
+      "status": "final",
+      "what_to_reproduce": "Table III",
+      "dataset": "ASL Alphabet",
+      "metric": "Accuracy",
+      "code_repositories": "none confirmed",
+      "compute_requirements": "not specified"
+    }
+  },
+  "paper": {
+    "title": "A Novel Classification Layer Technique for ASL Analysis Using CNN",
+    "citation": "P. Silanon and S. Lertchuwongsa, International Joint Conference on Computer Science and Software Engineering, 2023, DOI 10.1109/JCSSE58229.2023.10202089",
+    "url": "https://doi.org/10.1109/JCSSE58229.2023.10202089",
+    "pdf_sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d",
+    "accessed_at": "2026-08-27"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://doi.org/10.1109/JCSSE58229.2023.10202089",
+      "revision_or_sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d",
+      "role": "User-provided target paper and experimental protocol"
+    },
+    {
+      "source_id": "author-code-search",
+      "kind": "source-search",
+      "url": "https://github.com/search?q=%22A+Novel+Classification+Layer+Technique+for+ASL+Analysis+Using+CNN%22&type=repositories",
+      "revision_or_sha256": "accessed-2026-08-27",
+      "role": "No published executable artifact found; user-provided final review also confirms none"
+    }
+  ],
+  "status": {
+    "pipeline": "partial",
+    "numerical_agreement": "not_assessed",
+    "preference_level": 3
+  },
+  "datasets": [
+    {
+      "dataset_id": "asl-alphabet-v1",
+      "name": "ASL Alphabet",
+      "source_url": "https://www.kaggle.com/datasets/grassknoted/asl-alphabet",
+      "version": "1",
+      "license": "GPL-2.0 as declared by source metadata",
+      "cloud_processing_basis": "project's existing authorized acquisition",
+      "modal_volume": "datasets",
+      "modal_path": "asl-alphabet",
+      "manifest_sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d",
+      "archive_sha256": "7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4",
+      "counts": {"classes": 29, "images": 87000, "images_per_class": 3000, "training": 69600, "validation": 17400, "augmented_validation": 174000},
+      "classes": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE", "DELETE", "NOTHING"]
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "classification accuracy",
+      "implementation": "correct argmax predictions / all evaluated augmented samples * 100",
+      "aggregation": "Table III validation uses 10 offline augmentations per image"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table-iii",
+      "paper_location": "Table III; Sections III.A--III.C; Table I; Figure 4",
+      "selection": "maximum validation accuracy; paired training accuracy at that checkpoint",
+      "split": "random 80:20 image split, seed not reported",
+      "training": "10 epochs visible in Figures 5 and 6; online augmentation",
+      "validation": "offline tenfold augmentation"
+    }
+  ],
+  "targets": [
+    {"target_id": "slr-train", "experiment_id": "table-iii", "system": "SLR", "split": "checkpoint training", "metric_id": "accuracy", "published_value": 98.41, "result": {"state": "not_produced", "reason": "full run pending"}},
+    {"target_id": "slr-validation", "experiment_id": "table-iii", "system": "SLR", "split": "augmented validation", "metric_id": "accuracy", "published_value": 83.5, "result": {"state": "not_produced", "reason": "full run pending"}},
+    {"target_id": "ocnn-train", "experiment_id": "table-iii", "system": "OCNN", "split": "checkpoint training", "metric_id": "accuracy", "published_value": 96.85, "result": {"state": "not_produced", "reason": "full run pending"}},
+    {"target_id": "ocnn-validation", "experiment_id": "table-iii", "system": "OCNN", "split": "augmented validation", "metric_id": "accuracy", "published_value": 84.68, "result": {"state": "not_produced", "reason": "full run pending"}},
+    {"target_id": "slr-svm-train", "experiment_id": "table-iii", "system": "SLR-SVM", "split": "checkpoint training", "metric_id": "accuracy", "published_value": 99.45, "result": {"state": "not_produced", "reason": "SVM feature layer and hyperparameters are not specified"}},
+    {"target_id": "slr-svm-validation", "experiment_id": "table-iii", "system": "SLR-SVM", "split": "augmented validation", "metric_id": "accuracy", "published_value": 85.41, "result": {"state": "not_produced", "reason": "SVM feature layer and hyperparameters are not specified"}},
+    {"target_id": "ocnn-svm-train", "experiment_id": "table-iii", "system": "OCNN-SVM", "split": "checkpoint training", "metric_id": "accuracy", "published_value": 99.01, "result": {"state": "not_produced", "reason": "SVM feature layer and hyperparameters are not specified"}},
+    {"target_id": "ocnn-svm-validation", "experiment_id": "table-iii", "system": "OCNN-SVM", "split": "augmented validation", "metric_id": "accuracy", "published_value": 85.74, "result": {"state": "not_produced", "reason": "SVM feature layer and hyperparameters are not specified"}},
+    {"target_id": "e-ocnn-slr-validation", "experiment_id": "table-iii", "system": "E-OCNN-SLR", "split": "augmented validation", "metric_id": "accuracy", "published_value": 87.01, "result": {"state": "not_produced", "reason": "full run pending"}}
+  ],
+  "runs": [
+    {"run_id": "preflight-pillow", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-tOF4t8PHgEABQJ6kJrh6GP"}, "state": "failed", "reason": "Pillow absent from base image"},
+    {"run_id": "preflight-scipy", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-bVda6OAr7tS5O2p1CHbB0n"}, "state": "failed", "reason": "SciPy absent from base image"},
+    {"run_id": "preflight-complete", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-O2GZJS0UD3qCggsag1Nku3", "gpu": "L4"}, "state": "completed", "configuration": {"samples_per_class": 10, "validation_augmentations": 2}, "results": {"slr_validation_accuracy": 7.758620689655173, "ocnn_validation_accuracy": 7.758620689655173, "ensemble_validation_accuracy": 8.620689655172415}},
+    {"run_id": "preflight-workers", "kind": "real-data preflight throughput measurement", "modal": {"profile": "repro-sign", "app_id": "ap-vrW6ASmr0dT7FhNnTWwn3k", "gpu": "L4"}, "state": "running", "configuration": {"samples_per_class": 10, "validation_augmentations": 2, "workers": 8}}
+  ],
+  "artifacts": []
+}
