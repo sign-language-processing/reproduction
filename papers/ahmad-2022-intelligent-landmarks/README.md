@@ -13,7 +13,7 @@ The confirmed assignment says “TABLE III.” Table III is a comparison table w
 | Dataset | Table III system | Paper accuracy | Status |
 | --- | --- | ---: | --- |
 | ASL Alphabet | Proposed method / Random Forest | 98.68% | 99.17% ± 0.10% (conditional) |
-| ISL-HS | Proposed method / Random Forest | 98.76% | Not produced |
+| ISL-HS | Proposed method / Random Forest | 98.76% | 97.96% ± 0.94% (conditional, video-grouped CV) |
 
 The target paper does not state the Table III split, whether the number is a 10-fold mean or a hold-out result, seed, feature-reduction rule, frame-to-video aggregation, or metric implementation. It reports 10-fold *learning curves*, but does not tie that procedure to the table. Its detailed tables round Random Forest accuracy to `0.987` on both datasets, which cannot uniquely yield Table III's 98.68% and 98.76%. A run with an invented protocol would therefore be a conditional experiment, not a faithful Table III reproduction.
 
