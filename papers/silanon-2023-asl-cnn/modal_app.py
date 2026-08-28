@@ -10,7 +10,7 @@ import modal
 
 ROOT = Path(__file__).resolve().parent
 app = modal.App("03785db2-asl-cnn-reproduction")
-image = modal.Image.from_registry("tensorflow/tensorflow:2.15.0-gpu").pip_install("pillow==10.2.0", "scipy==1.11.4").add_local_file(ROOT / "train.py", "/app/train.py")
+image = modal.Image.from_registry("tensorflow/tensorflow:2.15.0-gpu").pip_install("pillow==10.2.0", "scipy==1.11.4", "scikit-learn==1.4.2").add_local_file(ROOT / "train.py", "/app/train.py").add_local_file(ROOT / "svm.py", "/app/svm.py")
 datasets = modal.Volume.from_name("datasets", create_if_missing=False)
 cache = modal.Volume.from_name("huggingface-cache", create_if_missing=False)
 results = modal.Volume.from_name("03785db2-asl-cnn-results", create_if_missing=True)
@@ -37,5 +37,41 @@ def train() -> dict:
     import subprocess
 
     subprocess.run(["python", "/app/train.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output)], check=True)
+    results.commit()
+    return json.loads((output / "run.json").read_text())
+
+
+@app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
+def svm_preflight() -> dict:
+    output = Path("/results/svm-preflight")
+    if output.exists():
+        raise FileExistsError("SVM preflight output exists; retain it rather than overwrite evidence")
+    import subprocess
+
+    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "30"], check=True)
+    results.commit()
+    return json.loads((output / "run.json").read_text())
+
+
+@app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
+def svm_scale() -> dict:
+    output = Path("/results/svm-scale-100")
+    if output.exists():
+        raise FileExistsError("SVM scale output exists; retain it rather than overwrite evidence")
+    import subprocess
+
+    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "100"], check=True)
+    results.commit()
+    return json.loads((output / "run.json").read_text())
+
+
+@app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
+def svm_full() -> dict:
+    output = Path("/results/svm-full")
+    if output.exists():
+        raise FileExistsError("full SVM output exists; retain it rather than overwrite evidence")
+    import subprocess
+
+    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "3000", "--validation-augmentations", "10"], check=True)
     results.commit()
     return json.loads((output / "run.json").read_text())

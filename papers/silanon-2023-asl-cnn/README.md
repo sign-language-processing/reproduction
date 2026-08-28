@@ -8,7 +8,7 @@
 
 **Preference level:** 3 — a conditional reimplementation is necessary because the paper provides no executable artifact.
 
-**Status:** `partial` — the CNN and ensemble targets completed; the four RBF-SVM targets remain unproduced because the paper does not specify a reproducible SVM protocol.
+**Status:** `partial` — the CNN and ensemble targets completed; a fully documented conditional RBF-SVM attempt is in progress.
 
 **Attempt date:** 2026-08-27
 
@@ -16,7 +16,7 @@
 
 The requested target is every reported number in Table III: training and augmented-validation accuracy for SLR and OCNN; the two corresponding RBF-SVM variants; and augmented-validation accuracy for the averaged E-OCNN-SLR ensemble. The dataset is the 29-class ASL Alphabet release. The paper uses a random 80:20 image split (69,600/17,400), online augmentation for CNN training, and a fixed 10-fold offline augmentation of validation (174,000 images). It reports no test split, seed, or uncertainty interval.
 
-The implementation below has only the two CNNs and their probability-average ensemble. The SVM variants are deliberately not fabricated: their feature layer, `C`, `gamma`, scaling, and exact offline augmentation instances are not reported. Those missing choices are recorded below before any conditional SVM reconstruction is attempted.
+The implementation includes the two CNNs, their probability-average ensemble, and a conditional RBF-SVM attempt. The SVM feature layer, `C`, `gamma`, scaling, and exact offline augmentation instances are not reported, so the selected values are recorded below rather than attributed to the authors.
 
 ## Source provenance
 
@@ -30,7 +30,7 @@ No author repository, release, configuration, or weights were found. A GitHub se
 
 ## Results
 
-The retained full run used the stated 80:20 image split, 10 training epochs, Table I augmentation ranges, and the stated 10× augmented validation cardinality. It produced the CNN and ensemble values below. They are valid results of this explicitly conditional reconstruction, but not a numerical match: the exact author split, saved offline validation images, convolution padding, and optimizer are unavailable. The RBF-SVM rows remain unproduced rather than being filled with arbitrary hyperparameters.
+The retained full run used the stated 80:20 image split, 10 training epochs, Table I augmentation ranges, and the stated 10× augmented validation cardinality. It produced the CNN and ensemble values below. They are valid results of this explicitly conditional reconstruction, but not a numerical match: the exact author split, saved offline validation images, convolution padding, and optimizer are unavailable. The RBF-SVM rows are a conditional attempt with separately recorded, unreported choices.
 
 | Target ID | System | Split | Original | Reproduced | Evidence |
 | --- | --- | --- | ---: | ---: | --- |
@@ -38,10 +38,10 @@ The retained full run used the stated 80:20 image split, 10 training epochs, Tab
 | slr-validation | SLRNet-8 | 10× augmented validation | 83.50% | 98.00% | `full-threads/run.json` |
 | ocnn-train | OCNN | checkpoint training | 96.85% | 95.74% | `full-threads/run.json` |
 | ocnn-validation | OCNN | 10× augmented validation | 84.68% | 96.11% | `full-threads/run.json` |
-| slr-svm-train | SLRNet-8 + RBF SVM | checkpoint training | 99.45% | Not produced | Unspecified SVM protocol |
-| slr-svm-validation | SLRNet-8 + RBF SVM | 10× augmented validation | 85.41% | Not produced | Unspecified SVM protocol |
-| ocnn-svm-train | OCNN + RBF SVM | checkpoint training | 99.01% | Not produced | Unspecified SVM protocol |
-| ocnn-svm-validation | OCNN + RBF SVM | 10× augmented validation | 85.74% | Not produced | Unspecified SVM protocol |
+| slr-svm-train | SLRNet-8 + RBF SVM | checkpoint training | 99.45% | Pending | Conditional full run active |
+| slr-svm-validation | SLRNet-8 + RBF SVM | 10× augmented validation | 85.41% | Pending | Conditional full run active |
+| ocnn-svm-train | OCNN + RBF SVM | checkpoint training | 99.01% | Pending | Conditional full run active |
+| ocnn-svm-validation | OCNN + RBF SVM | 10× augmented validation | 85.74% | Pending | Conditional full run active |
 | e-ocnn-slr-validation | E-OCNN-SLR | 10× augmented validation | 87.01% | 98.67% | `full-threads/run.json` |
 
 ## How to repeat
@@ -80,7 +80,7 @@ There are no patches because no published code exists. `train.py` is the only im
 | Optimizer / learning rate | Not specified | Adam, `1e-3` | Conventional minimal Keras default-like choice, recorded rather than inferred as author setting |
 | CNN checkpoint rule | Table III pairs training accuracy with maximum validation accuracy | Select maximum augmented-validation accuracy | Matches the table’s stated comparison framing |
 | Augmentation samples | Ranges/factor stated, sampled transforms not | Deterministic ImageDataGenerator transforms | Exactly implements stated ranges and tenfold cardinality |
-| RBF-SVM details | Only “RBF kernel” and 696,000 augmented training images | Not run yet | Feature layer and hyperparameters are material, unreported protocol choices |
+| RBF-SVM details | Only “RBF kernel” and 696,000 augmented training images | SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma="scale")` | Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned |
 
 ## Execution evidence and attempts
 
@@ -93,5 +93,7 @@ There are no patches because no published code exists. `train.py` is the only im
 | `ap-aYHbFDLXKnLWTWk9OxndM1` | Measured the actual input bottleneck over 928 real JPEGs: 59.03 s serial versus 1.15 s with eight threads. |
 | `ap-pgI9ZErpb0k0ZP6X5Pt74K` | Real-data threaded-loader preflight completed: both models trained, saved/reloaded checkpoints, and evaluated. Tiny-subset ensemble accuracy was 9.4828%; it proves the path only. |
 | `ap-DuMtpPTQjVjbfF5EGtZlaA` | Terminal full real-data run on L4. SLR selected epoch 7 (97.20% training / 98.00% validation); OCNN selected epoch 10 (95.74% / 96.11%); probability-average ensemble was 98.67%. Raw JSON SHA-256 `d44eb667395866fc68727926d17b443a655f72c6beb7c8a10c3055e32d2746ff`. |
+| `ap-N9rmp6VzHpboWeAXWZ9lii` / `ap-Ni5UKRAcpc6u845IhXbJFs` | Conditional exact-RBF SVC preflight and scale measurement. At 23,200 augmented training examples, fitting took 4.19 s (OCNN) and 4.78 s (SLR); feature extraction, not SVC fitting, dominates. |
+| `ap-ZEdZmXIbJTSGEGTN76O1Z7` | Full conditional RBF-SVM attempt: 696,000 augmented training and 174,000 augmented validation examples. Pending. |
 
 All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
