@@ -8,7 +8,7 @@
 
 **Preference level:** 3 — a conditional reimplementation is necessary because the paper provides no executable artifact.
 
-**Status:** `partial` — real-data preflight completed; the full Table III run is pending.
+**Status:** `partial` — the CNN and ensemble targets completed; the four RBF-SVM targets remain unproduced because the paper does not specify a reproducible SVM protocol.
 
 **Attempt date:** 2026-08-27
 
@@ -30,19 +30,19 @@ No author repository, release, configuration, or weights were found. A GitHub se
 
 ## Results
 
-The retained preflight uses only ten images per class and two validation augmentations, so it proves the real data/training/checkpoint/evaluation path but is not comparable to Table III. Full results will replace the `Not produced` cells after the fixed 80:20 / 10-fold-validation run reaches terminal state.
+The retained full run used the stated 80:20 image split, 10 training epochs, Table I augmentation ranges, and the stated 10× augmented validation cardinality. It produced the CNN and ensemble values below. They are valid results of this explicitly conditional reconstruction, but not a numerical match: the exact author split, saved offline validation images, convolution padding, and optimizer are unavailable. The RBF-SVM rows remain unproduced rather than being filled with arbitrary hyperparameters.
 
 | Target ID | System | Split | Original | Reproduced | Evidence |
 | --- | --- | --- | ---: | ---: | --- |
-| slr-train | SLRNet-8 | checkpoint training | 98.41% | Not produced | Full run pending |
-| slr-validation | SLRNet-8 | 10× augmented validation | 83.50% | Not produced | Full run pending |
-| ocnn-train | OCNN | checkpoint training | 96.85% | Not produced | Full run pending |
-| ocnn-validation | OCNN | 10× augmented validation | 84.68% | Not produced | Full run pending |
+| slr-train | SLRNet-8 | checkpoint training | 98.41% | 97.20% | `full-threads/run.json` |
+| slr-validation | SLRNet-8 | 10× augmented validation | 83.50% | 98.00% | `full-threads/run.json` |
+| ocnn-train | OCNN | checkpoint training | 96.85% | 95.74% | `full-threads/run.json` |
+| ocnn-validation | OCNN | 10× augmented validation | 84.68% | 96.11% | `full-threads/run.json` |
 | slr-svm-train | SLRNet-8 + RBF SVM | checkpoint training | 99.45% | Not produced | Unspecified SVM protocol |
 | slr-svm-validation | SLRNet-8 + RBF SVM | 10× augmented validation | 85.41% | Not produced | Unspecified SVM protocol |
 | ocnn-svm-train | OCNN + RBF SVM | checkpoint training | 99.01% | Not produced | Unspecified SVM protocol |
 | ocnn-svm-validation | OCNN + RBF SVM | 10× augmented validation | 85.74% | Not produced | Unspecified SVM protocol |
-| e-ocnn-slr-validation | E-OCNN-SLR | 10× augmented validation | 87.01% | Not produced | Full run pending |
+| e-ocnn-slr-validation | E-OCNN-SLR | 10× augmented validation | 87.01% | 98.67% | `full-threads/run.json` |
 
 ## How to repeat
 
@@ -92,6 +92,6 @@ There are no patches because no published code exists. `train.py` is the only im
 | `ap-oaR3Dx9lXq7L0TbgTNE1It` | The first full run was stopped during epoch 1: VolumeFS image reads were serial, the GPU was idle, and the projected run exceeded its 12-hour ceiling. Partial output is retained, but is not evaluated or reported. |
 | `ap-aYHbFDLXKnLWTWk9OxndM1` | Measured the actual input bottleneck over 928 real JPEGs: 59.03 s serial versus 1.15 s with eight threads. |
 | `ap-pgI9ZErpb0k0ZP6X5Pt74K` | Real-data threaded-loader preflight completed: both models trained, saved/reloaded checkpoints, and evaluated. Tiny-subset ensemble accuracy was 9.4828%; it proves the path only. |
-| `ap-DuMtpPTQjVjbfF5EGtZlaA` | Full real-data run with the retained thread-only I/O change. |
+| `ap-DuMtpPTQjVjbfF5EGtZlaA` | Terminal full real-data run on L4. SLR selected epoch 7 (97.20% training / 98.00% validation); OCNN selected epoch 10 (95.74% / 96.11%); probability-average ensemble was 98.67%. Raw JSON SHA-256 `d44eb667395866fc68727926d17b443a655f72c6beb7c8a10c3055e32d2746ff`. |
 
 All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
