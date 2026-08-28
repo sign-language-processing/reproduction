@@ -38,7 +38,7 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 
 - Find or create the per-paper directory using the root layout rules.
 - Preserve unrelated work; use one branch per paper when starting a new attempt.
-- Create a stable descriptive `papers/<paper-slug>/` directory from `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
+- Create a stable descriptive `papers/<paper-slug>/` directory from the schema-version-2 `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
 - Read queue comments, dataset expansions, copied-score, human-evaluation, ethics, and compute fields as warnings to investigate—not facts to repeat.
 
 ### 2. Resolve the target contract
@@ -92,6 +92,8 @@ Every Modal reproduction function mounts shared Volume `huggingface-cache` at `/
 
 ### 7. Prove the real path cheaply
 
+Before recording the first retained run, read [references/stopping-criteria.md](references/stopping-criteria.md). Declare its attempt identity, wall-time ceiling, and applicable GPU-hour and cost ceilings before launch; use the controlled terminal state, reason code, and failure class after it ends.
+
 Exercise the full path at the cheapest representative scale:
 
 - load the exact data format and preprocessing;
@@ -105,7 +107,7 @@ Exercise the full path at the cheapest representative scale:
 
 ### 8. Estimate and launch the full run
 
-Use measured preflight memory and throughput to estimate duration, GPU-hours, storage, and cost. Verify seeds/config, checkpoint/resume, output paths, retry ceiling, and all data gates. Apply the compute gate in `AGENTS.md`.
+Use measured preflight memory and throughput to estimate duration, GPU-hours, storage, and cost. Verify seeds/config, checkpoint/resume, output paths, the structured attempt/stop policy, and all data gates. Apply the compute gate in `AGENTS.md`.
 
 When within the gate, launch autonomously. Before launch, confirm both `datasets` and `huggingface-cache` exist and that the requested dataset path passes `check_modal_dataset.sh`. Name/tag Modal resources with the paper ID where supported, use only the wrapper, and record app/function-call IDs and links. Monitor to terminal state; submission is not completion. On failure, read [references/evidence-and-retries.md](references/evidence-and-retries.md), diagnose before retrying, and resume rather than restart whenever verified checkpoints permit.
 
@@ -119,7 +121,7 @@ When within the gate, launch autonomously. Before launch, confirm both `datasets
 
 ### 10. Close every target
 
-Read [references/evidence-and-retries.md](references/evidence-and-retries.md) for the evidence bundle and terminal failure rules. For every target, embed exactly one result marked `produced` or `not_produced`, with a reason and internal run/artifact references. Set the same overall status in `reproduction.json.status.pipeline` and `README.md`.
+Read [references/evidence-and-retries.md](references/evidence-and-retries.md) for the evidence bundle and [references/stopping-criteria.md](references/stopping-criteria.md) for the terminal contract. For every target, embed exactly one result marked `produced` or `not_produced`; use a predefined reason code, specific detail, and internal evidence references when no value was produced. When no target was produced, record the selected structured `status.blocker`. Set the same overall status in `reproduction.json.status.pipeline` and `README.md`.
 
 Remove examples and placeholders. Include every applicable guess, deviation, dead end, copied baseline, contact, source/data provenance item, exact command, environment, hardware, run ID, runtime/GPU-hours/cost, raw metric reference, and artifact hash/link. Omit inapplicable null boilerplate. Normalize genuine shared entities by ID, but do not add abstractions with one consumer or small parsed-result files when exact target values and native artifact hashes already live in `reproduction.json`.
 

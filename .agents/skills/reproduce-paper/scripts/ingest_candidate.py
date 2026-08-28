@@ -145,9 +145,10 @@ def main() -> int:
                     "refusing to update reproduction.json for different paper "
                     f"{existing_id!r}"
                 )
+            if output.get("schema_version") not in (1, 2):
+                fail("existing reproduction.json has an unsupported schema_version")
         else:
-            output = {"schema_version": 1, "paper_id": args.paper_id}
-        output["schema_version"] = 1
+            output = {"schema_version": 2, "paper_id": args.paper_id}
         output["paper_id"] = args.paper_id
         output["assignment"] = assignment
 

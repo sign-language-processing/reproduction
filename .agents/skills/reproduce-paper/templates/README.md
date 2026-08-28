@@ -28,11 +28,13 @@ List all sources considered, including searches performed when the candidate sai
 
 ## Results
 
-| Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Evidence |
+| Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
 |  |  |  |  |  |  |  |  |  |
 
 Account for every target, including numbers not produced. State which original scores were copied from earlier work and whether this attempt reproduced those baselines.
+
+When no target was produced, state the selected `status.blocker` reason code and why it is the earliest blocker that independently prevents the requested pipeline. Report other blockers separately rather than hiding them behind the selected one.
 
 Pipeline completeness and numerical agreement are separate: report the observed differences without declaring scientific success or failure.
 
@@ -64,11 +66,11 @@ If no patches were needed, say so.
 
 ## Execution evidence
 
-| Run ID | Kind | Targets | Platform/workspace | Hardware | Seed/config | Start/end | Exit/terminal state | Wall/GPU hours | Cost | Logs/artifacts |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |  |  |  |  |
+| Run ID | Attempt / max | Kind / targets | Platform / hardware | Seed/config | Start/end | Exit / terminal state / reason | Failure class | Stop ceilings | Logs/artifacts |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |  |  |
 
-For Modal runs, record profile `repro-sign`, environment, app/function-call IDs, and dashboard links. Link raw metric outputs for every score.
+For Modal runs, record profile `repro-sign`, environment, app/function-call IDs, and dashboard links. State the predefined terminal reason code and its specific detail, not an improvised synonym. Link raw metric outputs for every score.
 
 ## Guesses and deviations
 

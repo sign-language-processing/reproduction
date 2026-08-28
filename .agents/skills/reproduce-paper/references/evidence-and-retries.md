@@ -27,26 +27,36 @@ Put human-readable attempt summaries in `README.md` and link their run IDs. Befo
 
 ### Retry classes
 
-| Class | Response |
+Use the canonical `failure_class` values from
+[stopping-criteria.md](stopping-criteria.md); do not replace them with ad hoc
+synonyms.
+
+| `failure_class` | Response |
 | --- | --- |
-| Auth/workspace | No retry or fallback. Ask the user to run `modal setup` and select `repro-sign`. |
-| License/access | No workaround. Use the data gate. |
-| Budget/protocol | Do not shrink the experiment silently. Use the compute/protocol gate. |
-| Transient network/infrastructure | Retry at most three times with bounded backoff; count cost and record each attempt. |
-| Deterministic build/code | One scoped fix per hypothesis; rerun the smallest failing path. |
-| OOM/resource | Measure cause; preserve effective optimization semantics or request a protocol decision. |
-| Numerical instability | Reproduce declared seeds/precision first; inspect loss, gradients, inputs, and implementation. Do not tune toward the paper. |
-| Metric mismatch | Audit split, preprocessing, checkpoint, decoding, aggregation, metric implementation/version, and copied-score provenance. |
-| Interrupted full run | Resume only from a checkpoint already proven reloadable; otherwise diagnose before paying for restart. |
+| `auth_workspace` | No retry or fallback. Ask the user to run `modal setup` and select `repro-sign`. |
+| `license_access` | No workaround. Use the data gate. |
+| `budget_protocol` | Do not shrink the experiment silently. Use the compute/protocol gate. |
+| `transient_infrastructure` | Retry at most three times with bounded backoff; count cost and record each attempt. |
+| `deterministic_code` | One scoped fix per hypothesis; rerun the smallest failing path. |
+| `oom_resource` | Measure cause; preserve effective optimization semantics or request a protocol decision. |
+| `numerical_instability` | Reproduce declared seeds/precision first; inspect loss, gradients, inputs, and implementation. Do not tune toward the paper. |
+| `interrupted_full_run` | Resume only from a checkpoint already proven reloadable; otherwise diagnose before paying for restart. |
+| `invalid_run` | Preserve the evidence, stop the invalid path, and form a new hypothesis before another attempt. |
 
 A retry ceiling is a maximum, not a target. Stop early when a retry cannot test a new hypothesis.
 
+A metric mismatch is a produced result, not a run failure class. Audit the
+split, preprocessing, checkpoint, decoding, aggregation, metric
+implementation/version, and copied-score provenance without changing the
+terminal run classification or tuning toward the paper.
+
 ## Terminal target states
 
-Each target embeds one terminal `result`:
+Each target embeds one terminal `result` using the schema in
+[stopping-criteria.md](stopping-criteria.md):
 
 - `produced`: the requested pipeline emitted a traceable value; or
-- `not_produced`: no value was emitted, with a specific blocker and evidence.
+- `not_produced`: no value was emitted, with a controlled reason code, specific detail, and evidence.
 
 Do not use numerical closeness to assign these states. Store the reproduced value, mechanically computed delta, run IDs, and artifact IDs beside the target contract without repeating the target in another file.
 
