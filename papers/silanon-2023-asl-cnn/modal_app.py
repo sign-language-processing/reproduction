@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import modal
@@ -19,7 +21,7 @@ ENV = {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"
 
 @app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
 def preflight() -> dict:
-    output = Path("/results/preflight-workers")
+    output = Path("/results/preflight-threads")
     if output.exists():
         raise FileExistsError("preflight output exists; retain it rather than overwrite evidence")
     import subprocess
@@ -29,9 +31,37 @@ def preflight() -> dict:
     return json.loads((output / "run.json").read_text())
 
 
+@app.function(image=image, cpu=8, timeout=60 * 60, volumes={"/datasets": datasets, "/results": results}, env=ENV)
+def benchmark_io() -> dict:
+    """Measure the actual Volume image-read bottleneck before changing the loader."""
+    from PIL import Image
+
+    root = Path("/datasets/asl-alphabet/source/asl_alphabet_train/asl_alphabet_train")
+    paths = [path for label in sorted(root.iterdir()) for path in sorted(label.iterdir())[:32]]
+
+    def read_and_resize(path: Path) -> None:
+        with Image.open(path) as image:
+            image.convert("RGB").resize((64, 64)).load()
+
+    timings = {}
+    for workers in (1, 8):
+        started = time.monotonic()
+        if workers == 1:
+            for path in paths:
+                read_and_resize(path)
+        else:
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                list(pool.map(read_and_resize, paths))
+        timings[str(workers)] = time.monotonic() - started
+    output = {"samples": len(paths), "seconds": timings}
+    (Path("/results") / "io-benchmark.json").write_text(json.dumps(output, indent=2) + "\n")
+    results.commit()
+    return output
+
+
 @app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
 def train() -> dict:
-    output = Path("/results/full")
+    output = Path("/results/full-threads")
     if output.exists():
         raise FileExistsError("full output exists; retain it rather than overwrite evidence")
     import subprocess

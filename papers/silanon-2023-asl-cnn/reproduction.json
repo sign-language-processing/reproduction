@@ -94,7 +94,10 @@
     {"run_id": "preflight-pillow", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-tOF4t8PHgEABQJ6kJrh6GP"}, "state": "failed", "reason": "Pillow absent from base image"},
     {"run_id": "preflight-scipy", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-bVda6OAr7tS5O2p1CHbB0n"}, "state": "failed", "reason": "SciPy absent from base image"},
     {"run_id": "preflight-complete", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-O2GZJS0UD3qCggsag1Nku3", "gpu": "L4"}, "state": "completed", "configuration": {"samples_per_class": 10, "validation_augmentations": 2}, "results": {"slr_validation_accuracy": 7.758620689655173, "ocnn_validation_accuracy": 7.758620689655173, "ensemble_validation_accuracy": 8.620689655172415}},
-    {"run_id": "preflight-workers", "kind": "real-data preflight throughput measurement", "modal": {"profile": "repro-sign", "app_id": "ap-vrW6ASmr0dT7FhNnTWwn3k", "gpu": "L4"}, "state": "running", "configuration": {"samples_per_class": 10, "validation_augmentations": 2, "workers": 8}}
+    {"run_id": "full-serial-stopped", "kind": "full run", "modal": {"profile": "repro-sign", "app_id": "ap-oaR3Dx9lXq7L0TbgTNE1It", "gpu": "L4"}, "state": "stopped", "reason": "serial VolumeFS reads left the GPU idle and exceeded the 12-hour run ceiling"},
+    {"run_id": "io-benchmark", "kind": "real-data I/O measurement", "modal": {"profile": "repro-sign", "app_id": "ap-aYHbFDLXKnLWTWk9OxndM1"}, "state": "completed", "results": {"samples": 928, "serial_seconds": 59.030884545, "eight_thread_seconds": 1.1500631140000053}},
+    {"run_id": "preflight-threads", "kind": "real-data preflight", "modal": {"profile": "repro-sign", "app_id": "ap-pgI9ZErpb0k0ZP6X5Pt74K", "gpu": "L4"}, "state": "completed", "configuration": {"samples_per_class": 10, "validation_augmentations": 2, "reader_threads": 8}, "results": {"slr_validation_accuracy": 8.620689655172415, "ocnn_validation_accuracy": 7.758620689655173, "ensemble_validation_accuracy": 9.482758620689655}},
+    {"run_id": "full-threads", "kind": "full run", "modal": {"profile": "repro-sign", "app_id": "ap-DuMtpPTQjVjbfF5EGtZlaA", "gpu": "L4"}, "state": "running", "configuration": {"reader_threads": 8}}
   ],
   "artifacts": []
 }

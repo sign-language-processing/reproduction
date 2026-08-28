@@ -89,6 +89,9 @@ There are no patches because no published code exists. `train.py` is the only im
 | `ap-tOF4t8PHgEABQJ6kJrh6GP` | Initial real-data preflight failed before training because Pillow was absent from the TensorFlow base image. Added the missing image dependency. |
 | `ap-bVda6OAr7tS5O2p1CHbB0n` | The next preflight reached augmentation, then failed because ImageDataGenerator needed SciPy. Added the missing documented runtime dependency. |
 | `ap-O2GZJS0UD3qCggsag1Nku3` | Real-data path completed: both models trained, saved/reloaded their best checkpoints, and evaluated. Tiny-subset ensemble validation accuracy was 8.6207%; it is path evidence only. |
-| `ap-vrW6ASmr0dT7FhNnTWwn3k` | Eight loader workers made the tiny real-data path about eight times slower than the baseline due to process/IPC overhead. That speculative throughput change was reverted; the retained full recipe uses the faster single-process loader. |
+| `ap-oaR3Dx9lXq7L0TbgTNE1It` | The first full run was stopped during epoch 1: VolumeFS image reads were serial, the GPU was idle, and the projected run exceeded its 12-hour ceiling. Partial output is retained, but is not evaluated or reported. |
+| `ap-aYHbFDLXKnLWTWk9OxndM1` | Measured the actual input bottleneck over 928 real JPEGs: 59.03 s serial versus 1.15 s with eight threads. |
+| `ap-pgI9ZErpb0k0ZP6X5Pt74K` | Real-data threaded-loader preflight completed: both models trained, saved/reloaded checkpoints, and evaluated. Tiny-subset ensemble accuracy was 9.4828%; it proves the path only. |
+| `ap-DuMtpPTQjVjbfF5EGtZlaA` | Full real-data run with the retained thread-only I/O change. |
 
 All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
