@@ -17,7 +17,6 @@ The ingestion script enforces these invariants and writes:
 
 ```json
 {
-  "schema_version": 2,
   "paper_id": "...",
   "assignment": {
     "kind": "queue_record",

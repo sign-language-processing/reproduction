@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "paper_id": "camgoz-2020-slt",
   "assignment": {
     "kind": "direct_user_request",
@@ -27,7 +26,8 @@
   "status": {
     "pipeline": "complete",
     "numerical_agreement": "not_fully_reproduced",
-    "preference_level": 1
+    "preference_level": 1,
+    "blocker": null
   },
   "datasets": [
     {
@@ -200,7 +200,36 @@
       "finished_at_utc": "2026-08-20T16:08:46.103599Z",
       "duration_seconds": 5574.7635532819995,
       "exit_code": 0,
-      "terminal_state": "succeeded",
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc15f",
+        "unknown_fields": [
+          "attempt.max_attempts",
+          "stop_policy.declared_at_utc",
+          "stop_policy.max_gpu_hours",
+          "stop_policy.max_cost_chf"
+        ],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {
+        "group_id": "full-seed-42",
+        "number": 1,
+        "max_attempts": null
+      },
+      "stop_policy": {
+        "declared_at_utc": null,
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The upstream entry point completed training, development selection, and fixed-parameter test evaluation.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
       "source": {
         "repository_commit": "bd919a6fa24771ad311e6d30771459d8daa23c85",
         "dirty_diff_sha256": "9489a7deb6d4340d3d4887c2fa07d069ee42262492717cda7d53c1746e8265a5",

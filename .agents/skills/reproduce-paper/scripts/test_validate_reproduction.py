@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """End-to-end tests for the reproduction record validator."""
 
 from __future__ import annotations
@@ -11,15 +10,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-
 VALIDATOR = Path(__file__).with_name("validate_reproduction.py")
 INGESTER = Path(__file__).with_name("ingest_candidate.py")
+REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 SHA = "0" * 64
+HISTORICAL_PAPER_ID = "camgoz-2020-slt"
+HISTORICAL_SHA = "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc15f"
 
 
 def valid_document() -> dict:
     return {
-        "schema_version": 2,
         "paper_id": "test-paper",
         "assignment": {
             "kind": "direct_user_request",
@@ -94,7 +94,13 @@ def valid_document() -> dict:
                 "command": "python evaluate.py",
                 "exit_code": 0,
                 "started_at_utc": "2026-08-28T10:00:00Z",
+                "finished_at_utc": "2026-08-28T10:01:00Z",
                 "artifact_ids": ["metrics"],
+                "recording": {
+                    "mode": "contemporaneous",
+                    "source_record_sha256": None,
+                    "unknown_fields": [],
+                },
                 "attempt": {
                     "group_id": "evaluation",
                     "number": 1,
@@ -154,7 +160,7 @@ class ValidatorTest(unittest.TestCase):
                 text=True,
             )
 
-    def test_valid_v2_record(self) -> None:
+    def test_valid_record(self) -> None:
         result = self.validate(valid_document())
         self.assertEqual(result.returncode, 0, result.stderr)
 
@@ -236,7 +242,7 @@ class ValidatorTest(unittest.TestCase):
         result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_v2_run_requires_declared_stop_policy(self) -> None:
+    def test_run_requires_stop_policy(self) -> None:
         document = valid_document()
         del document["runs"][0]["stop_policy"]
         result = self.validate(document)
@@ -267,7 +273,7 @@ class ValidatorTest(unittest.TestCase):
         }
         result = self.validate(document)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("needs GPU-hour and cost ceilings", result.stderr)
+        self.assertIn("needs max_gpu_hours", result.stderr)
 
     def test_not_produced_requires_coded_reason_and_evidence(self) -> None:
         document = valid_document()
@@ -430,21 +436,104 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("gate 'data'.evidence", result.stderr)
 
-    def test_schema_version_boolean_is_rejected(self) -> None:
+    def test_retrospective_unknown_fields_are_valid(self) -> None:
         document = valid_document()
-        document["schema_version"] = True
-        result = self.validate(document)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("supported schema_version", result.stderr)
-
-    def test_schema_version_one_remains_compatible(self) -> None:
-        document = valid_document()
-        document["schema_version"] = 1
+        document["paper_id"] = HISTORICAL_PAPER_ID
+        run = document["runs"][0]
+        run["started_at_utc"] = None
+        run["finished_at_utc"] = None
+        run["attempt"]["max_attempts"] = None
+        run["recording"] = {
+            "mode": "retrospective",
+            "source_record_sha256": HISTORICAL_SHA,
+            "unknown_fields": [
+                "started_at_utc",
+                "finished_at_utc",
+                "attempt.max_attempts",
+                "stop_policy.declared_at_utc",
+                "stop_policy.max_wall_time_seconds",
+            ],
+            "detail": "Backfilled from an already-committed report.",
+        }
+        run["stop_policy"] = {
+            "declared_at_utc": None,
+            "max_wall_time_seconds": None,
+            "max_gpu_hours": None,
+            "max_cost_chf": None,
+        }
         result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("legacy schema-version-1", result.stdout)
 
-    def test_candidate_ingestion_starts_new_records_at_v2(self) -> None:
+    def test_retrospective_record_requires_an_explanation(self) -> None:
+        document = valid_document()
+        document["paper_id"] = HISTORICAL_PAPER_ID
+        recording = document["runs"][0]["recording"]
+        recording["mode"] = "retrospective"
+        recording["source_record_sha256"] = HISTORICAL_SHA
+        recording["detail"] = None
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("recording needs detail", result.stderr)
+
+    def test_unregistered_record_cannot_claim_retrospective_mode(self) -> None:
+        document = valid_document()
+        recording = document["runs"][0]["recording"]
+        recording.update(
+            {
+                "mode": "retrospective",
+                "source_record_sha256": SHA,
+                "detail": "This source is not in the migration registry.",
+            }
+        )
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("is not registered as a historical migration", result.stderr)
+
+    def test_contemporaneous_record_cannot_hide_unknowns(self) -> None:
+        document = valid_document()
+        run = document["runs"][0]
+        run["started_at_utc"] = None
+        run["recording"]["unknown_fields"] = ["started_at_utc"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("cannot contain unknown fields", result.stderr)
+
+    def test_unknown_field_must_be_allowed_and_null(self) -> None:
+        document = valid_document()
+        document["paper_id"] = HISTORICAL_PAPER_ID
+        run = document["runs"][0]
+        run["recording"] = {
+            "mode": "retrospective",
+            "source_record_sha256": HISTORICAL_SHA,
+            "unknown_fields": ["terminal.state", "started_at_utc"],
+            "detail": "Historical backfill.",
+        }
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("is not allowed", result.stderr)
+        self.assertIn("must exist and be null", result.stderr)
+
+    def test_schema_version_is_rejected(self) -> None:
+        document = valid_document()
+        document["schema_version"] = "retired"
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("schema_version is no longer supported", result.stderr)
+
+    def test_all_committed_paper_records_use_current_contract(self) -> None:
+        paper_directories = sorted((REPOSITORY_ROOT / "papers").glob("*"))
+        self.assertTrue(paper_directories)
+        for paper_directory in paper_directories:
+            with self.subTest(paper=paper_directory.name):
+                result = subprocess.run(
+                    ["python3", str(VALIDATOR), str(paper_directory)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_candidate_ingestion_creates_current_record_shape(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = root / "candidates.json"
@@ -468,9 +557,11 @@ class ValidatorTest(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(output.read_text())["schema_version"], 2)
+            written = json.loads(output.read_text())
+            self.assertEqual(written["paper_id"], "paper-1")
+            self.assertEqual(written["assignment"]["kind"], "queue_record")
 
-    def test_candidate_ingestion_does_not_rewrite_legacy_version(self) -> None:
+    def test_candidate_ingestion_preserves_existing_sections(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = root / "candidates.json"
@@ -488,7 +579,7 @@ class ValidatorTest(unittest.TestCase):
                 encoding="utf-8",
             )
             output.write_text(
-                json.dumps({"schema_version": 1, "paper_id": "paper-1"}),
+                json.dumps({"paper_id": "paper-1", "paper": {"title": "Preserved"}}),
                 encoding="utf-8",
             )
             result = subprocess.run(
@@ -498,7 +589,39 @@ class ValidatorTest(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(output.read_text())["schema_version"], 1)
+            self.assertEqual(
+                json.loads(output.read_text())["paper"]["title"], "Preserved"
+            )
+
+    def test_candidate_ingestion_rejects_retired_version_field(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "candidates.json"
+            output = root / "reproduction.json"
+            source.write_text(
+                json.dumps(
+                    [
+                        {
+                            "paper_id": "paper-1",
+                            "confirmation": "confirmed",
+                            "status": "final",
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            output.write_text(
+                json.dumps({"schema_version": "retired", "paper_id": "paper-1"}),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                ["python3", str(INGESTER), str(source), "paper-1", str(output)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("retired version field", result.stderr)
 
 
 if __name__ == "__main__":

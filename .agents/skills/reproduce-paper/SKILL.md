@@ -38,7 +38,7 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 
 - Find or create the per-paper directory using the root layout rules.
 - Preserve unrelated work; use one branch per paper when starting a new attempt.
-- Create a stable descriptive `papers/<paper-slug>/` directory from the schema-version-2 `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
+- Create a stable descriptive `papers/<paper-slug>/` directory from `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. The record uses the single current contract without a version selector. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
 - Read queue comments, dataset expansions, copied-score, human-evaluation, ethics, and compute fields as warnings to investigate—not facts to repeat.
 
 ### 2. Resolve the target contract

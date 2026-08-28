@@ -145,10 +145,13 @@ def main() -> int:
                     "refusing to update reproduction.json for different paper "
                     f"{existing_id!r}"
                 )
-            if output.get("schema_version") not in (1, 2):
-                fail("existing reproduction.json has an unsupported schema_version")
+            if "schema_version" in output:
+                fail(
+                    "existing reproduction.json uses the retired version field; "
+                    "migrate it to the single current contract first"
+                )
         else:
-            output = {"schema_version": 2, "paper_id": args.paper_id}
+            output = {"paper_id": args.paper_id}
         output["paper_id"] = args.paper_id
         output["assignment"] = assignment
 

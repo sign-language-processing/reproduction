@@ -1,14 +1,14 @@
 # Stopping criteria and terminal records
 
 Read this before recording the first retained run and again before closing a
-target. Schema version 2 replaces ad hoc status/reason strings with the
-controlled values below. Existing schema-version-1 records remain valid, but
-new reproductions use version 2.
+target. All reports use the same controlled fields and values below. When a
+historical fact was not recorded, represent it explicitly as unknown; never
+invent a value.
 
 ## Retained run contract
 
-Every retained run has one attempt identity, a stop policy declared before the
-run, and one terminal classification:
+Every retained run has one attempt identity, one stop-policy record, and one
+terminal classification:
 
 ```json
 {
@@ -16,6 +16,12 @@ run, and one terminal classification:
   "command": "exact command",
   "exit_code": 0,
   "started_at_utc": "2026-08-28T10:00:00Z",
+  "finished_at_utc": "2026-08-28T10:30:00Z",
+  "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+  },
   "attempt": {
     "group_id": "full-seed-42",
     "number": 1,
@@ -38,21 +44,72 @@ run, and one terminal classification:
 }
 ```
 
-`max_wall_time_seconds` is always a positive number. `max_gpu_hours` and
-`max_cost_chf` are positive numbers when they apply and `null` otherwise. The
-ceiling is a maximum, not a retry target. Stop earlier when another attempt
-cannot test a new hypothesis.
+All fields shown in `recording`, `attempt`, `stop_policy`, and `terminal` are
+required; use explicit `null` only where this contract permits it.
 
-The declaration timestamp must be UTC and no later than `started_at_utc`.
+For new work, use `recording.mode: contemporaneous` with an empty
+`unknown_fields` array and a null `source_record_sha256`. The start, finish, and
+declaration are UTC timestamps, the declaration precedes the start, and
+`max_wall_time_seconds` is positive. `max_gpu_hours` and `max_cost_chf` are
+positive when they apply and `null` otherwise.
+
+For a historical run whose original stop policy was not recorded, keep the same
+shape and use explicit unknowns:
+
+```json
+{
+  "started_at_utc": null,
+  "finished_at_utc": null,
+  "recording": {
+    "mode": "retrospective",
+    "source_record_sha256": "<SHA-256 of the record before migration>",
+    "unknown_fields": [
+      "started_at_utc",
+      "finished_at_utc",
+      "attempt.max_attempts",
+      "stop_policy.declared_at_utc",
+      "stop_policy.max_wall_time_seconds"
+    ],
+    "detail": "Backfilled from an already-committed report."
+  },
+  "attempt": {
+    "group_id": "historical-run",
+    "number": 1,
+    "max_attempts": null
+  },
+  "stop_policy": {
+    "declared_at_utc": null,
+    "max_wall_time_seconds": null,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+  }
+}
+```
+
+`retrospective` exists only to migrate already-committed evidence. Preserve any
+historical value that evidence supports. Every unknown field must be selected
+from the validator's narrow allowlist, present as `null`, and named in
+`unknown_fields`; the source hash and explanation make the backfill auditable.
+Terminal state, reason, failure class, and retry decision can never be unknown.
+The validator accepts retrospective mode only for paper IDs and pre-migration
+record hashes in its reviewed migration registry; an arbitrary hash cannot opt a
+new run out of contemporaneous requirements. Never select retrospective mode
+for a newly launched run. A ceiling is a maximum, not a retry target. Stop
+earlier when another attempt cannot test a new hypothesis.
+
 Attempt numbers are unique and contiguous from 1 within a `group_id`, and may
-not exceed `max_attempts`. All attempts in one group use the same maximum.
+not exceed a known `max_attempts`. All attempts in one group use the same known
+maximum. A retrospective record may use null only when the historical ceiling
+was not recorded.
 Authentication, license/access, and budget/protocol failures have
 `max_attempts: 1` and reference the matching gate. A transient infrastructure
 failure permits the initial attempt plus at most three retries, so
 `max_attempts` may not exceed 4.
 
-For schema-version-2 Modal runs, record `compute.gpu_count`. A GPU run has
-non-null GPU-hour and cost ceilings; a CPU or non-compute run may use `null`.
+For Modal runs, record `compute.gpu_count`. A contemporaneous GPU run has
+non-null GPU-hour and cost ceilings. A retrospective GPU run may use null only
+when each missing ceiling is explicitly listed as unknown. A CPU or non-compute
+run may use `null` for ceilings that do not apply.
 
 ### Terminal states and reason codes
 
@@ -153,5 +210,5 @@ explicit and traceable:
 The blocker reason must map to the pipeline status, and each referenced target
 must carry the same reason code. If multiple blockers exist, report all of them
 in target results and gates, then choose the earliest one that independently
-prevents the requested pipeline. `complete` and `partial` records do not use a
-top-level blocker.
+prevents the requested pipeline. `complete` and `partial` records set
+`status.blocker` to `null`.

@@ -149,11 +149,13 @@ Classify failures before retrying:
 - Metric mismatch: inspect data splits, preprocessing, checkpoint selection, inference settings, and metric version; never tune until the number matches.
 - Failed full run: resume from a verified checkpoint when possible. Do not pay for a full restart without a new diagnosis and remaining retry budget.
 
-For schema-version-2 records, every retained run must use the controlled attempt,
-stop-policy, terminal-state, reason-code, and failure-class fields defined in
+`reproduction.json` has one current contract and no version selector. Every
+retained run must use the controlled recording provenance, attempt, stop-policy,
+terminal classification, reason-code, and failure-class fields defined in
 `.agents/skills/reproduce-paper/references/stopping-criteria.md`. Declare ceilings
 before launch. Do not invent synonymous status or reason strings; put nuance in
-the detail field.
+the detail field. Retrospective unknowns exist only for migrating already-
+committed evidence and may never hide a terminal classification.
 
 Monitor remote jobs to a terminal state, collect logs and outputs, and evaluate all targets. Do not treat job submission as completion.
 
@@ -184,10 +186,10 @@ Record one status consistently in `reproduction.json.status.pipeline` and `READM
 - `blocked_on_code` — no executable pipeline remains after substantial, documented attempts;
 - `insufficient_information` — critical experimental details cannot be responsibly resolved.
 
-When no target is produced, schema version 2 also requires a structured
-`status.blocker` whose controlled reason code maps to the pipeline status and
-whose target IDs carry the same terminal reason. `complete` and `partial` do not
-use a top-level blocker.
+When no target is produced, record a structured `status.blocker` whose
+controlled reason code maps to the pipeline status and whose target IDs carry
+the same terminal reason. `complete` and `partial` set `status.blocker` to
+`null`.
 
 Pipeline completeness and numerical agreement are separate. Record `numerical_agreement` as `fully_reproduced`, `not_fully_reproduced`, or `not_assessed`. A complete run may disagree with the paper and still be a fully documented reproduction attempt. Record raw differences; a human reviewer decides the scientific conclusion.
 

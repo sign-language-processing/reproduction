@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "paper_id": "990030f8dfefb06e99c05218741e11ccf7b08fdb",
   "assignment": {
     "kind": "queue_record",
@@ -139,7 +138,16 @@
   "status": {
     "pipeline": "insufficient_information",
     "numerical_agreement": "not_assessed",
-    "preference_level": 3
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "target_ambiguous",
+      "detail": "The unpublished 8/2 signer split independently prevents all requested targets.",
+      "target_ids": [
+        "table4-resnet-lstm-accuracy",
+        "table3-resnet-lstm-macro-f1",
+        "table3-resnet-lstm-macro-precision"
+      ]
+    }
   },
   "datasets": [
     {
@@ -213,7 +221,14 @@
       "original_value": 86.25,
       "result": {
         "status": "not_produced",
-        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        "reason": {
+          "code": "target_ambiguous",
+          "detail": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": ["paper-signer-split"],
+        "evidence": ["Paper §4.2 gives only the 8/2 learner counts; the retained conditional run used inferred held-out signers."]
       }
     },
     {
@@ -225,7 +240,14 @@
       "original_value": 84.98,
       "result": {
         "status": "not_produced",
-        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        "reason": {
+          "code": "target_ambiguous",
+          "detail": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": ["paper-signer-split"],
+        "evidence": ["Paper §4.2 gives only the 8/2 learner counts; the retained conditional run used inferred held-out signers."]
       }
     },
     {
@@ -237,7 +259,14 @@
       "original_value": 87.77,
       "result": {
         "status": "not_produced",
-        "terminal_reason": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        "reason": {
+          "code": "target_ambiguous",
+          "detail": "The paper does not identify the 8/2 signer split, and previous runs did not freeze the encoder or keep the reported holdout out of scheduler decisions."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": ["paper-signer-split"],
+        "evidence": ["Paper §4.2 gives only the 8/2 learner counts; the retained conditional run used inferred held-out signers."]
       }
     }
   ],
@@ -260,17 +289,52 @@
       "run_id": "frozen-inferred-split-epoch30",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/huang-chouvatut-2024-resnet-lstm/modal_app.py::train",
       "exit_code": 0,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "8313e5a5d4c6471b5d50f8d7d040105d002dffe564881fb938a246cf7f918383",
+        "unknown_fields": [
+          "started_at_utc",
+          "finished_at_utc",
+          "attempt.max_attempts",
+          "stop_policy.declared_at_utc",
+          "stop_policy.max_gpu_hours",
+          "stop_policy.max_cost_chf"
+        ],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced; log timestamps are not exact process boundaries."
+      },
+      "attempt": {
+        "group_id": "frozen-inferred-split-epoch30",
+        "number": 1,
+        "max_attempts": null
+      },
+      "stop_policy": {
+        "declared_at_utc": null,
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The conditional inferred-split run completed through epoch 30 and emitted metrics and checkpoint evidence.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
       "artifact_ids": ["frozen-inferred-metrics", "frozen-inferred-run", "frozen-inferred-epoch30-checkpoint"],
       "source_revision": "1dc15d0",
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "app_id": "ap-JrUpXgewdIOzCRYscgQhQQ",
-        "function_id": "fu-TdNHy61gQRvyOcwmnOAA1s",
-        "function_call_id": "fc-01M0SQ06EG6Q7XKQWTZYBC8NR0",
+        "modal_app_id": "ap-JrUpXgewdIOzCRYscgQhQQ",
+        "modal_function_id": "fu-TdNHy61gQRvyOcwmnOAA1s",
+        "modal_function_call_id": "fc-01M0SQ06EG6Q7XKQWTZYBC8NR0",
         "container_id": "ta-01M0SQ076YFW7VXP9X20ZFQD7R",
         "image_id": "im-vUZ1RrW9pqzSSv0od9rReU",
         "hardware": "one A10G",
+        "gpu_count": 1,
         "start_evidence": "2026-08-24 13:09:45+02:00 epoch-1 log",
         "end_evidence": "2026-08-24 16:13:56+02:00 epoch-30 log; terminal success",
         "shared_cache": {

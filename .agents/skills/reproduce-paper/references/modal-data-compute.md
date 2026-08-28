@@ -125,7 +125,7 @@ Use a representative real-data preflight to measure peak GPU memory, examples/st
 - persistent volume and artifact storage;
 - likely cost and the cost of permitted retries.
 
-Inspect current workspace billing through the wrapper when needed and available. Record the estimate, assumptions, allowed GPU/concurrency, checkpoint cadence, and the schema-version-2 attempt and stop policy from [stopping-criteria.md](stopping-criteria.md) in the full-run entry before launch.
+Inspect current workspace billing through the wrapper when needed and available. Record the estimate, assumptions, allowed GPU/concurrency, checkpoint cadence, and the attempt and stop policy from [stopping-criteria.md](stopping-criteria.md) in the full-run entry before launch.
 
 Proceed without asking only inside the root compute gate. If the estimate is near a boundary, use the conservative side. Never reduce required seeds, data, steps, precision, model size, or evaluation scope solely to fit the gate; request a protocol decision.
 

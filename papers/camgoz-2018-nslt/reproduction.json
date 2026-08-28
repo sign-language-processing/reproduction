@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "paper_id": "camgoz-2018-nslt",
   "assignment": {
     "kind": "direct_user_request",
@@ -34,7 +33,8 @@
   "status": {
     "pipeline": "complete",
     "numerical_agreement": "fully_reproduced",
-    "preference_level": 2
+    "preference_level": 2,
+    "blocker": null
   },
   "datasets": [
     {
@@ -153,7 +153,37 @@
       "finished_at_utc": "2026-08-22T08:17:23Z",
       "duration_seconds": 86400,
       "exit_code": 124,
-      "terminal_state": "modal_timeout_after_verified_checkpoint",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "ef710734dc1a00069f62974491f6d9cbfd8e6787051e915e7ac84f7ebc1f1f13",
+        "unknown_fields": [
+          "attempt.max_attempts",
+          "stop_policy.declared_at_utc",
+          "stop_policy.max_cost_chf"
+        ],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {
+        "group_id": "full-luong",
+        "number": 1,
+        "max_attempts": null
+      },
+      "stop_policy": {
+        "declared_at_utc": null,
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 80,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "wall_time_ceiling_reached",
+        "detail": "The declared 24-hour Modal function ceiling stopped the first segment after a verified checkpoint was saved.",
+        "failure_class": "interrupted_full_run",
+        "retry_decision": "resume",
+        "next_run_id": "full-luong-resumed",
+        "gate_ids": []
+      },
       "source": {
         "upstream_revision": "06951580b58f04b9cd64efcf61aeca36011031d3",
         "patch_sha256": [
@@ -190,7 +220,35 @@
       "finished_at_utc": "2026-08-23T03:41:10Z",
       "duration_seconds": 58205,
       "exit_code": 0,
-      "terminal_state": "succeeded",
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "ef710734dc1a00069f62974491f6d9cbfd8e6787051e915e7ac84f7ebc1f1f13",
+        "unknown_fields": [
+          "attempt.max_attempts",
+          "stop_policy.declared_at_utc",
+          "stop_policy.max_cost_chf"
+        ],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {
+        "group_id": "full-luong",
+        "number": 2,
+        "max_attempts": null
+      },
+      "stop_policy": {
+        "declared_at_utc": null,
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 80,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The resumed segment reached terminal selected-checkpoint evaluation and produced every requested score.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
       "source": {
         "upstream_revision": "06951580b58f04b9cd64efcf61aeca36011031d3",
         "patch_sha256": [

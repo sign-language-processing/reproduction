@@ -2,8 +2,11 @@
 
 **Paper ID:** `990030f8dfefb06e99c05218741e11ccf7b08fdb`
 **Citation:** Huang, J.; Chouvatut, V. *Journal of Imaging* 10(6), 149 (2024). https://doi.org/10.3390/jimaging10060149
-**Preference level:** `3` — clean-room implementation; no author code was found.
-**Pipeline status:** `insufficient_information`
+**Preference level:** 3
+
+Clean-room implementation; no author code was found.
+
+**Status:** `insufficient_information`
 **Numerical agreement:** `not_assessed`
 
 ## Target
@@ -44,6 +47,11 @@ These choices are not presented as paper facts:
 The unresolved signer identities and license/publishing question are open gates, so no target-level numerical result is claimed here. Earlier fine-tuned and purportedly frozen results are excluded: the retained code did not enforce the paper's encoder freeze, and the fine-tuned run also drove its LR schedule from the reported holdout.
 
 ## Conditional full run
+
+The structured run policy was backfilled from the pre-migration report (whose
+SHA-256 is retained in `reproduction.json`). The committed 24-hour launcher
+ceiling is preserved; exact process boundaries, declaration time, retry maximum,
+GPU-hour ceiling, and cost ceiling remain explicit unknowns.
 
 The corrected frozen-backbone recipe completed successfully on Modal `repro-sign`: one A10G, seed 2024, fixed 30 epochs and batch size 16. It froze ResNet-18 parameters and BatchNorm state, kept the modified 512-unit frame projection/LSTM/classifier trainable, scheduled only from training loss, and evaluated the inferred 640-clip holdout once at epoch 30. The terminal evidence is app `ap-JrUpXgewdIOzCRYscgQhQQ`, function call `fc-01M0SQ06EG6Q7XKQWTZYBC8NR0`, and container `ta-01M0SQ076YFW7VXP9X20ZFQD7R`.
 

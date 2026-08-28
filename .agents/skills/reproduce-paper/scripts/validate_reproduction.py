@@ -13,7 +13,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 PIPELINE_STATUSES = {
     "complete",
     "partial",
@@ -22,7 +21,6 @@ PIPELINE_STATUSES = {
     "blocked_on_code",
     "insufficient_information",
 }
-SUPPORTED_SCHEMA_VERSIONS = {1, 2}
 NUMERICAL_AGREEMENTS = {
     "fully_reproduced",
     "not_fully_reproduced",
@@ -82,6 +80,29 @@ GATE_TYPES = {
 }
 EXTERNAL_PREFIXES = ("https://", "http://", "hf://", "modal://", "s3://")
 SHA256 = re.compile(r"[0-9a-f]{64}")
+RETROSPECTIVE_UNKNOWN_FIELDS = {
+    "started_at_utc",
+    "finished_at_utc",
+    "attempt.max_attempts",
+    "stop_policy.declared_at_utc",
+    "stop_policy.max_wall_time_seconds",
+    "stop_policy.max_gpu_hours",
+    "stop_policy.max_cost_chf",
+}
+HISTORICAL_RECORD_HASHES = {
+    "8526aecd1407305d815883725a864405e31a54c1": (
+        "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6"
+    ),
+    "camgoz-2018-nslt": (
+        "ef710734dc1a00069f62974491f6d9cbfd8e6787051e915e7ac84f7ebc1f1f13"
+    ),
+    "camgoz-2020-slt": (
+        "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc15f"
+    ),
+    "990030f8dfefb06e99c05218741e11ccf7b08fdb": (
+        "8313e5a5d4c6471b5d50f8d7d040105d002dffe564881fb938a246cf7f918383"
+    ),
+}
 
 
 def nonempty(value: Any) -> bool:
@@ -279,11 +300,14 @@ def validate_runs(
     document: dict[str, Any],
     artifacts: dict[str, Any],
     gates: dict[str, Any],
-    schema_version: int,
     issues: list[str],
 ) -> dict[str, Any]:
     runs = keyed(document.get("runs"), "run_id", "runs", issues)
     attempt_groups: dict[str, dict[str, Any]] = {}
+    paper_id = document.get("paper_id")
+    registered_source_hash = (
+        HISTORICAL_RECORD_HASHES.get(paper_id) if isinstance(paper_id, str) else None
+    )
     for run_id, run in runs.items():
         label = f"run {run_id!r}"
         if not nonempty(run.get("command")):
@@ -293,37 +317,51 @@ def validate_runs(
         ):
             issues.append(f"{label} exit_code must be an integer")
         checked_references(
-            run.get("artifact_ids", []),
+            run.get("artifact_ids"),
             artifacts,
             f"{label}.artifact_ids",
             "artifact",
             issues,
         )
-        if schema_version == 2:
-            validate_run_stopping(run_id, run, runs, gates, attempt_groups, issues)
+        mode, unknown_fields = validate_run_recording(
+            run_id,
+            run,
+            registered_source_hash,
+            issues,
+        )
+        validate_run_stopping(
+            run_id,
+            run,
+            runs,
+            gates,
+            attempt_groups,
+            mode,
+            unknown_fields,
+            issues,
+        )
         compute = run.get("compute")
         if isinstance(compute, dict) and compute.get("platform") == "modal":
             if compute.get("modal_profile") != "repro-sign":
                 issues.append(f"Modal {label} must use profile 'repro-sign'")
-            if schema_version == 2:
-                gpu_count = compute.get("gpu_count")
-                if (
-                    isinstance(gpu_count, bool)
-                    or not isinstance(gpu_count, int)
-                    or gpu_count < 0
-                ):
-                    issues.append(
-                        f"schema-v2 Modal {label} needs nonnegative gpu_count"
-                    )
-                elif gpu_count > 0:
-                    stop_policy = run.get("stop_policy")
-                    if not isinstance(stop_policy, dict) or any(
-                        stop_policy.get(field) is None
-                        for field in ("max_gpu_hours", "max_cost_chf")
-                    ):
-                        issues.append(
-                            f"GPU Modal {label} needs GPU-hour and cost ceilings"
-                        )
+            gpu_count = compute.get("gpu_count")
+            if (
+                isinstance(gpu_count, bool)
+                or not isinstance(gpu_count, int)
+                or gpu_count < 0
+            ):
+                issues.append(f"Modal {label} needs nonnegative gpu_count")
+            elif gpu_count > 0:
+                stop_policy = run.get("stop_policy")
+                if isinstance(stop_policy, dict):
+                    for field in ("max_gpu_hours", "max_cost_chf"):
+                        path = f"stop_policy.{field}"
+                        if stop_policy.get(field) is None and not (
+                            mode == "retrospective" and path in unknown_fields
+                        ):
+                            issues.append(
+                                f"GPU Modal {label} needs {field} or an explicit "
+                                "retrospective unknown"
+                            )
             cache = compute.get("shared_cache")
             if not isinstance(cache, dict):
                 issues.append(f"Modal {label} needs shared_cache")
@@ -343,31 +381,104 @@ def validate_runs(
                     environment.get(key) != value for key, value in expected.items()
                 ):
                     issues.append(f"Modal {label} has invalid cache environment")
-    if schema_version == 2:
-        for group_id, group in attempt_groups.items():
-            numbers = group["numbers"]
-            expected = set(range(1, max(numbers) + 1))
-            if numbers != expected:
-                issues.append(
-                    f"attempt group {group_id!r} must be contiguous from attempt 1"
+    for group_id, group in attempt_groups.items():
+        numbers = group["numbers"]
+        expected = set(range(1, max(numbers) + 1))
+        if numbers != expected:
+            issues.append(
+                f"attempt group {group_id!r} must be contiguous from attempt 1"
+            )
+            continue
+        for number in range(2, max(numbers) + 1):
+            previous_run_id = group["run_by_number"][number - 1]
+            current_run_id = group["run_by_number"][number]
+            previous_terminal = runs[previous_run_id].get("terminal", {})
+            if (
+                not isinstance(previous_terminal, dict)
+                or not valid_choice(
+                    previous_terminal.get("retry_decision"), {"retry", "resume"}
                 )
-                continue
-            for number in range(2, max(numbers) + 1):
-                previous_run_id = group["run_by_number"][number - 1]
-                current_run_id = group["run_by_number"][number]
-                previous_terminal = runs[previous_run_id].get("terminal", {})
-                if (
-                    not isinstance(previous_terminal, dict)
-                    or not valid_choice(
-                        previous_terminal.get("retry_decision"), {"retry", "resume"}
-                    )
-                    or previous_terminal.get("next_run_id") != current_run_id
-                ):
-                    issues.append(
-                        f"attempt {number} in group {group_id!r} is not linked "
-                        "from its preceding attempt"
-                    )
+                or previous_terminal.get("next_run_id") != current_run_id
+            ):
+                issues.append(
+                    f"attempt {number} in group {group_id!r} is not linked "
+                    "from its preceding attempt"
+                )
     return runs
+
+
+def nested_value(document: dict[str, Any], path: str) -> tuple[bool, Any]:
+    value: Any = document
+    for part in path.split("."):
+        if not isinstance(value, dict) or part not in value:
+            return False, None
+        value = value[part]
+    return True, value
+
+
+def validate_run_recording(
+    run_id: str,
+    run: dict[str, Any],
+    registered_source_hash: str | None,
+    issues: list[str],
+) -> tuple[str | None, set[str]]:
+    label = f"run {run_id!r}"
+    recording = run.get("recording")
+    if not isinstance(recording, dict):
+        issues.append(f"{label} needs recording provenance")
+        return None, set()
+    for field in ("mode", "source_record_sha256", "unknown_fields"):
+        if field not in recording:
+            issues.append(f"{label}.recording needs {field}")
+    mode = recording.get("mode")
+    if not valid_choice(mode, {"contemporaneous", "retrospective"}):
+        issues.append(f"{label}.recording.mode is invalid")
+        mode = None
+    values = recording.get("unknown_fields")
+    unknown_fields: set[str] = set()
+    if not isinstance(values, list):
+        issues.append(f"{label}.recording.unknown_fields must be an array")
+    else:
+        for index, value in enumerate(values):
+            if not nonempty(value) or value not in RETROSPECTIVE_UNKNOWN_FIELDS:
+                issues.append(
+                    f"{label}.recording.unknown_fields[{index}] is not allowed"
+                )
+            elif value in unknown_fields:
+                issues.append(f"{label}.recording.unknown_fields repeats {value!r}")
+            else:
+                unknown_fields.add(value)
+                exists, field_value = nested_value(run, value)
+                if not exists or field_value is not None:
+                    issues.append(
+                        f"{label}.recording unknown field {value!r} must exist "
+                        "and be null"
+                    )
+    if mode == "contemporaneous":
+        if unknown_fields:
+            issues.append(f"contemporaneous {label} cannot contain unknown fields")
+        if recording.get("source_record_sha256") is not None:
+            issues.append(
+                f"contemporaneous {label} must have null source_record_sha256"
+            )
+    elif mode == "retrospective":
+        source_hash = recording.get("source_record_sha256")
+        check_sha(
+            source_hash,
+            f"{label}.recording.source_record_sha256",
+            issues,
+        )
+        if registered_source_hash is None:
+            issues.append(
+                f"retrospective {label} is not registered as a historical migration"
+            )
+        elif source_hash != registered_source_hash:
+            issues.append(
+                f"retrospective {label} does not match its registered source record"
+            )
+        if not nonempty(recording.get("detail")):
+            issues.append(f"retrospective {label}.recording needs detail")
+    return mode, unknown_fields
 
 
 def validate_run_stopping(
@@ -376,6 +487,8 @@ def validate_run_stopping(
     runs: dict[str, Any],
     gates: dict[str, Any],
     attempt_groups: dict[str, dict[str, Any]],
+    recording_mode: str | None,
+    unknown_fields: set[str],
     issues: list[str],
 ) -> None:
     label = f"run {run_id!r}"
@@ -384,7 +497,7 @@ def validate_run_stopping(
     maximum: int | None = None
     group_id: str | None = None
     if not isinstance(attempt, dict):
-        issues.append(f"schema-v2 {label} needs attempt")
+        issues.append(f"{label} needs attempt")
     else:
         group_id = attempt.get("group_id")
         number = attempt.get("number")
@@ -395,54 +508,106 @@ def validate_run_stopping(
         if isinstance(number, bool) or not isinstance(number, int) or number < 1:
             issues.append(f"{label}.attempt.number must be a positive integer")
             number = None
-        if isinstance(maximum, bool) or not isinstance(maximum, int) or maximum < 1:
-            issues.append(f"{label}.attempt.max_attempts must be a positive integer")
+        if maximum is None and (
+            recording_mode == "retrospective"
+            and "attempt.max_attempts" in unknown_fields
+        ):
+            pass
+        elif isinstance(maximum, bool) or not isinstance(maximum, int) or maximum < 1:
+            issues.append(
+                f"{label}.attempt.max_attempts must be a positive integer or an "
+                "explicit retrospective unknown"
+            )
             maximum = None
         if number is not None and maximum is not None and number > maximum:
             issues.append(f"{label}.attempt.number exceeds max_attempts")
-        if group_id is not None and number is not None and maximum is not None:
+        if group_id is not None and number is not None:
             group = attempt_groups.setdefault(
                 group_id,
                 {"max_attempts": maximum, "numbers": set(), "run_by_number": {}},
             )
-            if group["max_attempts"] != maximum:
+            if (
+                group["max_attempts"] is not None
+                and maximum is not None
+                and group["max_attempts"] != maximum
+            ):
                 issues.append(
                     f"attempt group {group_id!r} has inconsistent max_attempts"
                 )
+            elif group["max_attempts"] is None and maximum is not None:
+                group["max_attempts"] = maximum
             if number in group["numbers"]:
                 issues.append(f"attempt group {group_id!r} repeats attempt {number}")
             group["numbers"].add(number)
             group["run_by_number"][number] = run_id
 
     stop_policy = run.get("stop_policy")
-    started_at = parse_utc_timestamp(
-        run.get("started_at_utc"), f"{label}.started_at_utc", issues
-    )
     if not isinstance(stop_policy, dict):
-        issues.append(f"schema-v2 {label} needs stop_policy")
+        issues.append(f"{label} needs stop_policy")
     else:
-        declared_at = parse_utc_timestamp(
-            stop_policy.get("declared_at_utc"),
-            f"{label}.stop_policy.declared_at_utc",
-            issues,
-        )
+        for field in (
+            "declared_at_utc",
+            "max_wall_time_seconds",
+            "max_gpu_hours",
+            "max_cost_chf",
+        ):
+            if field not in stop_policy:
+                issues.append(f"{label}.stop_policy needs {field}")
+        timestamps: dict[str, datetime | None] = {}
+        for value, path in (
+            (run.get("started_at_utc"), "started_at_utc"),
+            (run.get("finished_at_utc"), "finished_at_utc"),
+            (stop_policy.get("declared_at_utc"), "stop_policy.declared_at_utc"),
+        ):
+            if value is None and (
+                recording_mode == "retrospective" and path in unknown_fields
+            ):
+                timestamps[path] = None
+            else:
+                timestamps[path] = parse_utc_timestamp(value, f"{label}.{path}", issues)
+        started_at = timestamps["started_at_utc"]
+        finished_at = timestamps["finished_at_utc"]
+        declared_at = timestamps["stop_policy.declared_at_utc"]
         if (
             declared_at is not None
             and started_at is not None
             and declared_at > started_at
         ):
             issues.append(f"{label}.stop_policy was declared after the run started")
-        if not finite_number(stop_policy.get("max_wall_time_seconds"), positive=True):
-            issues.append(f"{label}.stop_policy.max_wall_time_seconds must be positive")
-        for field in ("max_gpu_hours", "max_cost_chf"):
+        if (
+            started_at is not None
+            and finished_at is not None
+            and finished_at < started_at
+        ):
+            issues.append(f"{label}.finished_at_utc precedes started_at_utc")
+        for field in ("max_wall_time_seconds", "max_gpu_hours", "max_cost_chf"):
             value = stop_policy.get(field)
-            if value is not None and not finite_number(value, positive=True):
-                issues.append(f"{label}.stop_policy.{field} must be positive or null")
+            path = f"stop_policy.{field}"
+            if value is None:
+                if field == "max_wall_time_seconds" and not (
+                    recording_mode == "retrospective" and path in unknown_fields
+                ):
+                    issues.append(
+                        f"{label}.{path} must be positive or an explicit "
+                        "retrospective unknown"
+                    )
+            elif not finite_number(value, positive=True):
+                issues.append(f"{label}.{path} must be positive or null")
 
     terminal = run.get("terminal")
     if not isinstance(terminal, dict):
-        issues.append(f"schema-v2 {label} needs terminal")
+        issues.append(f"{label} needs terminal")
         return
+    for field in (
+        "state",
+        "reason_code",
+        "detail",
+        "failure_class",
+        "retry_decision",
+        "gate_ids",
+    ):
+        if field not in terminal:
+            issues.append(f"{label}.terminal needs {field}")
     state = terminal.get("state")
     reason_code = terminal.get("reason_code")
     failure_class = terminal.get("failure_class")
@@ -522,6 +687,7 @@ def validate_run_stopping(
     ):
         issues.append(f"{label} retry_ceiling_reached requires the final attempt")
     reached_limits = {
+        "wall_time_ceiling_reached": "max_wall_time_seconds",
         "gpu_hour_ceiling_reached": "max_gpu_hours",
         "cost_ceiling_reached": "max_cost_chf",
     }
@@ -535,7 +701,6 @@ def validate_run_stopping(
             reason_code,
             {
                 "retry_ceiling_reached",
-                "wall_time_ceiling_reached",
                 "gpu_hour_ceiling_reached",
                 "cost_ceiling_reached",
                 "no_new_hypothesis",
@@ -544,6 +709,11 @@ def validate_run_stopping(
         and retry_decision != "stop"
     ):
         issues.append(f"{label} terminal ceiling/no-hypothesis reason must stop")
+    if reason_code == "wall_time_ceiling_reached" and retry_decision not in {
+        "stop",
+        "resume",
+    }:
+        issues.append(f"{label} wall-time ceiling must stop or resume")
     no_retry_gate_types = {
         "auth_workspace": {"modal_auth"},
         "license_access": {"data"},
@@ -561,9 +731,12 @@ def validate_run_stopping(
             gates[gate_id].get("type") in required_types for gate_id in gate_ids
         ):
             issues.append(f"{label} failure class needs a matching gate reference")
-    if failure_class == "transient_infrastructure":
-        if maximum is not None and maximum > 4:
-            issues.append(f"{label} transient failures allow at most 3 retries")
+    if (
+        failure_class == "transient_infrastructure"
+        and maximum is not None
+        and maximum > 4
+    ):
+        issues.append(f"{label} transient failures allow at most 3 retries")
     if retry_decision == "resume" and failure_class != "interrupted_full_run":
         issues.append(f"{label} resume requires failure_class interrupted_full_run")
 
@@ -574,7 +747,6 @@ def validate_targets(
     runs: dict[str, Any],
     artifacts: dict[str, Any],
     gates: dict[str, Any],
-    schema_version: int,
     issues: list[str],
 ) -> tuple[int, int, dict[str, dict[str, Any]]]:
     metrics = keyed(
@@ -649,26 +821,20 @@ def validate_targets(
                 issues,
                 required=True,
             )
-            if schema_version == 2:
-                if result.get("reason") is not None:
-                    issues.append(f"produced {label} must not have a terminal reason")
-                cited_run_artifacts = {
-                    artifact_id
-                    for run_id in run_ids
-                    for artifact_id in (
-                        runs[run_id].get("artifact_ids", [])
-                        if isinstance(runs[run_id].get("artifact_ids", []), list)
-                        else []
-                    )
-                    if nonempty(artifact_id)
-                }
-                if not set(artifact_ids).issubset(cited_run_artifacts):
-                    issues.append(
-                        f"produced {label} artifacts must belong to a cited run"
-                    )
-        elif schema_version == 1:
-            if not nonempty(result.get("terminal_reason")):
-                issues.append(f"not-produced {label} needs terminal_reason")
+            if result.get("reason") is not None:
+                issues.append(f"produced {label} must not have a terminal reason")
+            cited_run_artifacts = {
+                artifact_id
+                for run_id in run_ids
+                for artifact_id in (
+                    runs[run_id].get("artifact_ids", [])
+                    if isinstance(runs[run_id].get("artifact_ids", []), list)
+                    else []
+                )
+                if nonempty(artifact_id)
+            }
+            if not set(artifact_ids).issubset(cited_run_artifacts):
+                issues.append(f"produced {label} artifacts must belong to a cited run")
         else:
             validate_not_produced_result(
                 target_id, target, result, runs, artifacts, gates, issues
@@ -689,7 +855,7 @@ def validate_not_produced_result(
     reason = result.get("reason")
     reason_code: str | None = None
     if not isinstance(reason, dict):
-        issues.append(f"schema-v2 not-produced {label} needs reason")
+        issues.append(f"not-produced {label} needs reason")
     else:
         reason_code = reason.get("code")
         if not valid_choice(reason_code, TARGET_REASON_PIPELINES):
@@ -698,21 +864,21 @@ def validate_not_produced_result(
             issues.append(f"{label} terminal reason needs detail")
 
     result_run_ids = checked_references(
-        result.get("run_ids", []),
+        result.get("run_ids"),
         runs,
         f"{label}.run_ids",
         "run",
         issues,
     )
     checked_references(
-        result.get("artifact_ids", []),
+        result.get("artifact_ids"),
         artifacts,
         f"{label}.artifact_ids",
         "artifact",
         issues,
     )
     result_gate_ids = checked_references(
-        result.get("gate_ids", []),
+        result.get("gate_ids"),
         gates,
         f"{label}.gate_ids",
         "gate",
@@ -814,7 +980,6 @@ def validate_readme(
     root: Path,
     pipeline: Any,
     preference: Any,
-    schema_version: int,
     issues: list[str],
 ) -> None:
     try:
@@ -824,19 +989,18 @@ def validate_readme(
         return
     if re.search(r"<[^>]+>", text):
         issues.append("README.md still contains angle-bracket placeholders")
-    if schema_version == 2:
-        if not re.search(
-            rf"^\*\*Status:\*\*\s+`?{re.escape(str(pipeline))}`?\s*$",
-            text,
-            re.MULTILINE,
-        ):
-            issues.append("README.md status does not match reproduction.json")
-        if not re.search(
-            rf"^\*\*Preference level:\*\*\s+{re.escape(str(preference))}\s*$",
-            text,
-            re.MULTILINE,
-        ):
-            issues.append("README.md preference level does not match reproduction.json")
+    if not re.search(
+        rf"^\*\*Status:\*\*\s+`?{re.escape(str(pipeline))}`?\s*$",
+        text,
+        re.MULTILINE,
+    ):
+        issues.append("README.md status does not match reproduction.json")
+    if not re.search(
+        rf"^\*\*Preference level:\*\*\s+{re.escape(str(preference))}\s*$",
+        text,
+        re.MULTILINE,
+    ):
+        issues.append("README.md preference level does not match reproduction.json")
 
 
 def validate_status_blocker(
@@ -845,20 +1009,19 @@ def validate_status_blocker(
     produced: int,
     target_count: int,
     targets: dict[str, dict[str, Any]],
-    schema_version: int,
     issues: list[str],
 ) -> None:
-    if schema_version != 2:
-        return
+    if "blocker" not in status:
+        issues.append("status needs blocker (an object or null)")
     blocker = status.get("blocker")
     if produced > 0:
         if blocker is not None:
-            issues.append("complete/partial schema-v2 status must have null blocker")
+            issues.append("complete/partial status must have null blocker")
         return
     if target_count == 0:
         return
     if not isinstance(blocker, dict):
-        issues.append("zero-produced schema-v2 status needs blocker")
+        issues.append("zero-produced status needs blocker")
         return
     reason_code = blocker.get("reason_code")
     expected_pipeline = (
@@ -907,17 +1070,14 @@ def main() -> int:
             f"validation failed: cannot read reproduction.json: {exc}", file=sys.stderr
         )
         return 2
-    schema_version = (
-        document.get("schema_version") if isinstance(document, dict) else None
-    )
-    if (
-        not isinstance(document, dict)
-        or isinstance(schema_version, bool)
-        or schema_version not in SUPPORTED_SCHEMA_VERSIONS
-    ):
-        issues.append("reproduction.json must use supported schema_version 1 or 2")
-        document = document if isinstance(document, dict) else {}
-        schema_version = schema_version if isinstance(schema_version, int) else 1
+    if not isinstance(document, dict):
+        issues.append("reproduction.json must contain an object")
+        document = {}
+    if "schema_version" in document:
+        issues.append(
+            "schema_version is no longer supported; migrate the record to the "
+            "single current contract"
+        )
     paper_id = document.get("paper_id")
     if not nonempty(paper_id):
         issues.append("reproduction.json needs paper_id")
@@ -931,14 +1091,13 @@ def main() -> int:
     datasets = validate_datasets(document, issues)
     artifacts = validate_artifacts(root, document, issues)
     gates, open_gate = validate_gates(document, issues)
-    runs = validate_runs(document, artifacts, gates, schema_version, issues)
+    runs = validate_runs(document, artifacts, gates, issues)
     produced, target_count, targets = validate_targets(
         document,
         datasets,
         runs,
         artifacts,
         gates,
-        schema_version,
         issues,
     )
     status = document.get("status")
@@ -960,33 +1119,26 @@ def main() -> int:
         issues.append("some targets are produced, so pipeline must be partial")
     elif produced == 0 and valid_choice(pipeline, {"complete", "partial"}):
         issues.append("no targets are produced, so pipeline must identify the blocker")
-    if schema_version == 2 and target_count == 0:
-        issues.append("schema-v2 reproduction must contain at least one target")
-    if schema_version == 2 and produced == 0 and target_count:
-        if numerical_agreement != "not_assessed":
-            issues.append("zero-produced schema-v2 status must use not_assessed")
+    if target_count == 0:
+        issues.append("reproduction must contain at least one target")
+    if produced == 0 and target_count and numerical_agreement != "not_assessed":
+        issues.append("zero-produced status must use not_assessed")
     validate_status_blocker(
         status,
         pipeline,
         produced,
         target_count,
         targets,
-        schema_version,
         issues,
     )
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
-    validate_readme(root, pipeline, preference, schema_version, issues)
+    validate_readme(root, pipeline, preference, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:
             print(f"- {issue}", file=sys.stderr)
         return 1
-    if schema_version == 1:
-        print(
-            "validated legacy schema-version-1 reproduction; "
-            "new records should use schema version 2"
-        )
     print(f"validated reproduction: {root}")
     return 0
 
