@@ -11,7 +11,11 @@ datasets:
 
 This is a faithful run of the authors' published `neccam/nslt` Luong recipe for Camgoz et al., *Neural Sign Language Translation* (CVPR 2018). It targets the Luong row of Table 5, not the separate Bahdanau system in Table 6.
 
-**Pipeline status:** complete. **Numerical agreement:** fully reproduced.
+**Preference level:** 2
+
+**Status:** `complete`
+
+**Numerical agreement:** fully reproduced.
 
 The authors' full 150,000-step run completed. Its terminal best-model loop selected checkpoint 118,000 on development BLEU-4 and evaluated that fixed checkpoint on both splits.
 
@@ -59,6 +63,11 @@ The launcher invokes the authors' module directly with its README recipe: four r
 No datasets, raw videos, outputs, or checkpoints are committed to this repository. The permitted selected checkpoint bundle, hparams, and exact predictions are preserved at [repro-sign/camgoz-nslt revision `7851726`](https://huggingface.co/repro-sign/camgoz-nslt/tree/7851726a660a9441fa8e1817a8818695dee1df8b); the repository's latest revision carries this model card and evidence record. The 503,848,900-byte model data file has SHA-256 `bbace325a51197db547c18493870c5c5a87b289939b7505bd7ce73ed79831a05`.
 
 ## Execution evidence
+
+The structured run policy was backfilled from the pre-migration report (whose
+SHA-256 is retained in `reproduction.json`). The launcher’s 24-hour wall ceiling
+and the documented 80 GPU-hour ceiling are preserved; declaration time, retry
+maximum, and cost ceiling were not recorded and remain explicit unknowns.
 
 The first single-A100 segment reached a verified checkpoint at step 91,000 before Modal's 24-hour function limit. The second segment resumed it without restarting, skipped the 6,132 already-seen examples, trained through step 150,000, and completed the upstream terminal best-model evaluation. The selected checkpoint is step 118,000.
 

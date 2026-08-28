@@ -17,7 +17,6 @@ The ingestion script enforces these invariants and writes:
 
 ```json
 {
-  "schema_version": 1,
   "paper_id": "...",
   "assignment": {
     "kind": "queue_record",
@@ -87,7 +86,7 @@ Each target needs:
 - published value and unit/scale;
 - copied-baseline determination and original source when copied;
 - reproduction plan: training/evaluation/checkpoint/seed requirements;
-- terminal status: `produced` or `not_produced`, plus evidence or reason.
+- terminal status: `produced` or `not_produced`; for `not_produced`, use a controlled reason and evidence from [stopping-criteria.md](stopping-criteria.md).
 
 Concrete targets need no separate resolution object. If alternatives remain, append one open target gate to `reproduction.json.gates`; put each alternative there as an object with `alternative_id`, `description`, `paper_evidence`, and `decision_needed`. A gate also has `gate_id`, `type`, `status`, `reason`, `evidence`, and `required_action`. Do not choose the alternative that is easiest to reproduce.
 

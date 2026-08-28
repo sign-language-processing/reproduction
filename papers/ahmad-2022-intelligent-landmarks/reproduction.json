@@ -1,5 +1,4 @@
 {
-  "schema_version": 1,
   "paper_id": "8526aecd1407305d815883725a864405e31a54c1",
   "assignment": {
     "kind": "queue_record",
@@ -190,7 +189,8 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "not_fully_reproduced",
-    "preference_level": 3
+    "preference_level": 3,
+    "blocker": null
   },
   "datasets": [
     {
@@ -268,78 +268,87 @@
     }
   ],
   "targets": [
-    {"target_id":"asl-light-gbm","paper_location":"Table III","system":"Light GBM [76]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":86.12,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"asl-svm","paper_location":"Table III","system":"SVM [76]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":87.6,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"asl-bounding-box","paper_location":"Table III","system":"Bonding Box [77] (paper spelling; likely bounding box)","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":90.0,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"asl-pruned-dcnn","paper_location":"Table III","system":"Pruned DCNN [82]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":91.0,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"asl-squeezecapsnet","paper_location":"Table III","system":"SqueezeCapsNet [83]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":91.6,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
+    {"target_id":"asl-light-gbm","paper_location":"Table III","system":"Light GBM [76]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":86.12,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"asl-svm","paper_location":"Table III","system":"SVM [76]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":87.6,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"asl-bounding-box","paper_location":"Table III","system":"Bonding Box [77] (paper spelling; likely bounding box)","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":90.0,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"asl-pruned-dcnn","paper_location":"Table III","system":"Pruned DCNN [82]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":91.0,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"asl-squeezecapsnet","paper_location":"Table III","system":"SqueezeCapsNet [83]","experiment_id":"table-iii-asl","split":"not specified","metric_id":"accuracy-percent","original_value":91.6,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
     {"target_id":"asl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-asl","split":"conditional shuffled 10-fold image CV","metric_id":"accuracy-percent","original_value":98.68,"copied_baseline":false,"result":{"status":"produced","reproduced_value":99.16918822359007,"difference":0.4891882235900701,"run_ids":["asl-alphabet-conditional"],"artifact_ids":["asl-alphabet-conditional-run-json"]}},
-    {"target_id":"isl-phase2-vgg16","paper_location":"Table III","system":"Phase 2 VGG16 [84]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":71.4,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"isl-pca-knn-horf","paper_location":"Table III","system":"PCA+kNN HORF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":86.85,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"isl-pca-knn-irf","paper_location":"Table III","system":"PCA+k-NN IRF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":94.6,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
-    {"target_id":"isl-nonblur-pca","paper_location":"Table III","system":"Non-blur PCA [86]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":95.0,"copied_baseline":true,"result":{"status":"not_produced","terminal_reason":"Copied comparison baseline; not independently reimplemented for this paper assignment."}},
+    {"target_id":"isl-phase2-vgg16","paper_location":"Table III","system":"Phase 2 VGG16 [84]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":71.4,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"isl-pca-knn-horf","paper_location":"Table III","system":"PCA+kNN HORF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":86.85,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"isl-pca-knn-irf","paper_location":"Table III","system":"PCA+k-NN IRF [85]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":94.6,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
+    {"target_id":"isl-nonblur-pca","paper_location":"Table III","system":"Non-blur PCA [86]","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":95.0,"copied_baseline":true,"result":{"status":"not_produced","reason":{"code":"copied_baseline","detail":"Copied comparison baseline; not independently reimplemented for this paper assignment."},"run_ids":[],"artifact_ids":[],"gate_ids":[],"evidence":["Table III identifies this row as a cited comparison method rather than the paper's proposed system."]}},
     {"target_id":"isl-proposed-rf","paper_location":"Table III","system":"Proposed method: MediaPipe landmark features plus Random Forest","experiment_id":"table-iii-isl","split":"not specified","metric_id":"accuracy-percent","original_value":98.76,"copied_baseline":false,"result":{"status":"produced","reproduced_value":97.95804720803116,"difference":-0.8019527919688414,"protocol":"Conditional 10-fold video-grouped, frame-level accuracy; this conservative non-leaking interpretation was selected before the run. The companion shuffled frame-level result is 99.86818667616673%, but is not comparable because video siblings cross folds.","run_ids":["isl-hs-conditional"],"artifact_ids":["isl-hs-conditional-run-json"]}}
   ],
   "runs": [
     {
       "run_id": "isl-hs-preflight-unshuffled",
       "kind": "representative_preflight",
-      "status": "completed",
       "exit_code": 0,
-      "started_at": "2026-08-25T08:17:56+02:00",
-      "ended_at": "2026-08-25T08:20:30+02:00",
-      "modal": {
-        "profile": "repro-sign",
-        "app_id": "ap-B5DAS6yjhDKZtNdVsfT4Xf",
-        "function_call_id": "fc-01M0VS3XC24JFYXCPV6FWYVTMW",
-        "container_id": "ta-01M0VS3YDG126VCYC4F0XWH60R"
-      },
+      "started_at_utc": "2026-08-25T06:17:56Z",
+      "finished_at_utc": "2026-08-25T06:20:30Z",
       "command": "python /app/evaluate.py --data-root /datasets/isl-hs --output-dir /results/preflight --videos-per-class 2 --folds 2",
-      "result_artifact": "modal://volume/8526aecd-landmark-results/preflight/run.json",
-      "result_sha256": "7bc22018a206e17cefb3354be62866a5f65ec9c33e76519dc872abfea7eedcaa",
+      "artifact_ids": ["isl-hs-preflight-unshuffled-run-json"],
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6",
+        "unknown_fields": ["attempt.max_attempts", "stop_policy.declared_at_utc"],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {"group_id":"isl-hs-preflight-unshuffled","number":1,"max_attempts":null},
+      "stop_policy": {"declared_at_utc":null,"max_wall_time_seconds":7200,"max_gpu_hours":null,"max_cost_chf":null},
+      "terminal": {"state":"succeeded","reason_code":"completed","detail":"All sampled frames were detected and the run diagnosed the split issue.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},
+      "compute": {"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-B5DAS6yjhDKZtNdVsfT4Xf","modal_function_call_id":"fc-01M0VS3XC24JFYXCPV6FWYVTMW","container_id":"ta-01M0VS3YDG126VCYC4F0XWH60R","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},
       "outcome": "All 3,120 sampled frames were detected. The unshuffled frame and grouped folds were identical because input ordering is contiguous by video; this run diagnosed the split issue."
     },
     {
       "run_id": "isl-hs-preflight-frame-shuffled",
       "kind": "representative_preflight",
-      "status": "completed",
       "exit_code": 0,
-      "started_at": "2026-08-25T08:22:31+02:00",
-      "ended_at": "2026-08-25T08:24:30+02:00",
-      "modal": {
-        "profile": "repro-sign",
-        "app_id": "ap-Vw43983kOrGHMepFeFRB4c",
-        "function_call_id": "fc-01M0VSBGR8E7CVJ6NCC137N3W1",
-        "container_id": "ta-01M0VSBJ4FD7CY723HEZYEKG3R"
-      },
+      "started_at_utc": "2026-08-25T06:22:31Z",
+      "finished_at_utc": "2026-08-25T06:24:30Z",
       "command": "python /app/evaluate.py --data-root /datasets/isl-hs --output-dir /results/preflight-frame-shuffled --videos-per-class 2 --folds 2",
-      "result_artifact": "modal://volume/8526aecd-landmark-results/preflight-frame-shuffled/run.json",
-      "result_sha256": "8641f9b7f4ca297b924897fc0a704732b696550c0834372fec60061856efb9d2",
+      "artifact_ids": ["isl-hs-preflight-frame-shuffled-run-json"],
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6",
+        "unknown_fields": ["attempt.max_attempts", "stop_policy.declared_at_utc"],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {"group_id":"isl-hs-preflight-frame-shuffled","number":1,"max_attempts":null},
+      "stop_policy": {"declared_at_utc":null,"max_wall_time_seconds":7200,"max_gpu_hours":null,"max_cost_chf":null},
+      "terminal": {"state":"succeeded","reason_code":"completed","detail":"The run completed both frame-stratified and video-grouped preflight evaluations.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},
+      "compute": {"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-Vw43983kOrGHMepFeFRB4c","modal_function_call_id":"fc-01M0VSBGR8E7CVJ6NCC137N3W1","container_id":"ta-01M0VSBJ4FD7CY723HEZYEKG3R","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},
       "outcome": "All 3,120 sampled frames were detected. Frame-stratified accuracy was 99.96794871794872% and video-grouped accuracy was 87.11538461538461%; the contrast confirms that the two conditional protocols are materially different."
     },
     {
       "run_id": "isl-hs-conditional",
       "kind": "conditional_full_evaluation",
-      "status": "completed",
       "exit_code": 0,
-      "started_at": "2026-08-25T08:24:55+02:00",
-      "ended_at": "2026-08-25T08:42:22+02:00",
-      "modal": {
-        "profile": "repro-sign",
-        "app_id": "ap-lJNFft0jeNJaEp5qGW3E0g",
-        "function_call_id": "fc-01M0VSFT8XTC04A012ABDWXW5A",
-        "container_id": "ta-01M0VSFVK3SJKJG7W76R8QJWWR"
-      },
+      "started_at_utc": "2026-08-25T06:24:55Z",
+      "finished_at_utc": "2026-08-25T06:42:22Z",
       "command": "python /app/evaluate.py --data-root /datasets/isl-hs --output-dir /results/isl-hs-conditional --videos-per-class 18 --folds 10",
       "artifact_ids": [
         "isl-hs-conditional-run-json"
       ],
+      "recording": {
+        "mode": "retrospective",
+        "source_record_sha256": "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6",
+        "unknown_fields": ["attempt.max_attempts", "stop_policy.declared_at_utc"],
+        "detail": "Backfilled from the already-committed report when the unified run contract was introduced."
+      },
+      "attempt": {"group_id":"isl-hs-conditional","number":1,"max_attempts":null},
+      "stop_policy": {"declared_at_utc":null,"max_wall_time_seconds":28800,"max_gpu_hours":null,"max_cost_chf":null},
+      "terminal": {"state":"succeeded","reason_code":"completed","detail":"The conditional evaluation decoded all videos and emitted both requested protocol results.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},
+      "compute": {"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-lJNFft0jeNJaEp5qGW3E0g","modal_function_call_id":"fc-01M0VSFT8XTC04A012ABDWXW5A","container_id":"ta-01M0VSFVK3SJKJG7W76R8QJWWR","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},
       "outcome": "Decoded all 468 videos and processed 28,071 of 28,080 requested frames. Shuffled frame-stratified 10-fold accuracy was 99.86818667616673% (SD 0.07134933564089702); video-grouped 10-fold accuracy was 97.95804720803116% (SD 0.9443523979078399)."
     },
-    {"run_id":"asl-alphabet-preflight","kind":"representative_preflight","status":"completed","exit_code":0,"modal":{"profile":"repro-sign"},"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-preflight --images-per-class 10 --folds 2","result_artifact":"modal://volume/8526aecd-landmark-results/asl-alphabet-preflight/run.json","result_sha256":"784e58a9fb41dfc8b60c1fc5e4a6a89eaf045b10382b40ea2c05f9b67a4e4a5f","artifact_ids":["asl-alphabet-preflight-run-json"],"outcome":"238 of 280 selected images were detected; two-fold conditional accuracy was 94.53781512605042% with SD 1.7826221374450815%."},
-    {"run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","status":"completed","exit_code":0,"modal":{"profile":"repro-sign","app_id":"ap-5urNHhjWI9XM0mCt1BRPq5"},"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","result_artifact":"modal://volume/8526aecd-landmark-results/asl-alphabet-conditional/run.json","result_sha256":"f0f5ee4363d6d9a5b4df543e2d62f4543eb27bdd2d56fd1cfa456e6736ce0cc6","artifact_ids":["asl-alphabet-conditional-run-json"],"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
+    {"run_id":"asl-alphabet-preflight","kind":"representative_preflight","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-preflight --images-per-class 10 --folds 2","artifact_ids":["asl-alphabet-preflight-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-preflight","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":7200,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The ASL preflight completed and emitted its conditional accuracy artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"238 of 280 selected images were detected; two-fold conditional accuracy was 94.53781512605042% with SD 1.7826221374450815%."},
+    {"run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","artifact_ids":["asl-alphabet-conditional-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-conditional","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":28800,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The conditional ASL evaluation completed and emitted its target metric artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-5urNHhjWI9XM0mCt1BRPq5","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
   ],
   "artifacts": [
+    {"artifact_id":"isl-hs-preflight-unshuffled-run-json","kind":"raw_metric_output","uri":"modal://volume/8526aecd-landmark-results/preflight/run.json","sha256":"7bc22018a206e17cefb3354be62866a5f65ec9c33e76519dc872abfea7eedcaa"},
+    {"artifact_id":"isl-hs-preflight-frame-shuffled-run-json","kind":"raw_metric_output","uri":"modal://volume/8526aecd-landmark-results/preflight-frame-shuffled/run.json","sha256":"8641f9b7f4ca297b924897fc0a704732b696550c0834372fec60061856efb9d2"},
     {
       "artifact_id": "isl-hs-conditional-run-json",
       "kind": "raw_metric_output",

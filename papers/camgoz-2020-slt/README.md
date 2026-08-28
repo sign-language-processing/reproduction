@@ -13,9 +13,9 @@ datasets:
 
 **Paper ID:** `camgoz-2020-slt`
 
-**Preference level:** `1`
+**Preference level:** 1
 
-**Pipeline status:** `complete`
+**Status:** `complete`
 
 **Numerical agreement:** not fully reproduced
 
@@ -71,6 +71,11 @@ The experiment consumes precomputed features and does not decode video, so `simp
 The image pins the published Python 3.7, PyTorch 1.4.0, TorchText 0.5.0 stack on CUDA 11.4.3 and runs on one T4. No source or config-value patch is applied. For packaging, the Dockerfile omits two conda self-management pins, replaces three unavailable patch releases (TensorBoard 2.1.2 to 2.1.1, tensorflow-estimator 2.1.2 to 2.1.0, and warmup-scheduler 0.1.1 to 0.3), and pins `typing-extensions` for the Python 3.7 child.
 
 ## Execution evidence
+
+The structured run policy was backfilled from the pre-migration report (whose
+SHA-256 is retained in `reproduction.json`). The committed 24-hour launcher
+ceiling is preserved; declaration time, retry maximum, GPU-hour ceiling, and
+cost ceiling were not recorded and remain explicit unknowns.
 
 | Run | Modal IDs | Hardware | Seed | Time | Terminal state | Evidence |
 | --- | --- | --- | ---: | ---: | --- | --- |

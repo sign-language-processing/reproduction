@@ -149,6 +149,14 @@ Classify failures before retrying:
 - Metric mismatch: inspect data splits, preprocessing, checkpoint selection, inference settings, and metric version; never tune until the number matches.
 - Failed full run: resume from a verified checkpoint when possible. Do not pay for a full restart without a new diagnosis and remaining retry budget.
 
+`reproduction.json` has one current contract and no version selector. Every
+retained run must use the controlled recording provenance, attempt, stop-policy,
+terminal classification, reason-code, and failure-class fields defined in
+`.agents/skills/reproduce-paper/references/stopping-criteria.md`. Declare ceilings
+before launch. Do not invent synonymous status or reason strings; put nuance in
+the detail field. Retrospective unknowns exist only for migrating already-
+committed evidence and may never hide a terminal classification.
+
 Monitor remote jobs to a terminal state, collect logs and outputs, and evaluate all targets. Do not treat job submission as completion.
 
 ## Human gates
@@ -178,6 +186,11 @@ Record one status consistently in `reproduction.json.status.pipeline` and `READM
 - `blocked_on_code` — no executable pipeline remains after substantial, documented attempts;
 - `insufficient_information` — critical experimental details cannot be responsibly resolved.
 
+When no target is produced, record a structured `status.blocker` whose
+controlled reason code maps to the pipeline status and whose target IDs carry
+the same terminal reason. `complete` and `partial` set `status.blocker` to
+`null`.
+
 Pipeline completeness and numerical agreement are separate. Record `numerical_agreement` as `fully_reproduced`, `not_fully_reproduced`, or `not_assessed`. A complete run may disagree with the paper and still be a fully documented reproduction attempt. Record raw differences; a human reviewer decides the scientific conclusion.
 
 ## Evidence and completion contract
@@ -192,7 +205,7 @@ A reproduction is ready for review only when:
 - setup, data, train, and evaluation entry points are idempotent and documented;
 - the retained full run reaches evaluation, or a representative preflight reaches it when the full run is gated;
 - every affordable and permitted target has a terminal full-run result;
-- every target embeds one terminal result with a reason and evidence;
+- every target embeds one terminal result with produced-value evidence or a controlled not-produced reason and evidence;
 - `reproduction.json` and `README.md` agree, contain no placeholders, and identify every guess, deviation, dead end, copied baseline, and author interaction;
 - a third party can repeat the attempt from the committed files and referenced immutable artifacts alone.
 

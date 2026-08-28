@@ -2,8 +2,11 @@
 
 **Paper ID:** `8526aecd1407305d815883725a864405e31a54c1`  
 **Citation:** Muhammad Jamil Hussain and Ahmad Shaoor. *2022 19th International Bhurban Conference on Applied Sciences and Technology (IBCAST)*, pp. 219-224. DOI: [10.1109/IBCAST54850.2022.9990143](https://doi.org/10.1109/IBCAST54850.2022.9990143).  
-**Preference level:** `3` — no author implementation was found after a documented source search.  
-**Pipeline status:** `partial`
+**Preference level:** 3
+
+No author implementation was found after a documented source search.
+
+**Status:** `partial`
 **Numerical agreement:** `not_fully_reproduced`
 
 ## Scope and target contract
@@ -133,6 +136,11 @@ The paper contains no code release. Exact-title/method searches across GitHub, Z
 Both paper-owned targets have conditional terminal results, but the Table III
 protocol gate remains open. An author-provided split, aggregation rule,
 reduction configuration, or seed could turn these into stricter reproductions.
+
+The structured run policies were backfilled from the pre-migration report
+(whose SHA-256 is retained in `reproduction.json`). Committed two-hour/eight-hour
+launcher ceilings and known ISL timestamps are preserved; declaration times and
+retry maxima remain explicit unknowns, as do the unrecorded ASL run timestamps.
 
 To populate the authorized datasets idempotently:
 
