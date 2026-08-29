@@ -17,9 +17,15 @@ results = modal.Volume.from_name("03785db2-asl-cnn-results", create_if_missing=T
 ENV = {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub", "PYTHONHASHSEED": "2026"}
 
 
+def output_path(name: str) -> Path:
+    if name in {"", ".", ".."} or name != Path(name).name:
+        raise ValueError("run name must be a single non-empty path component")
+    return Path("/results") / name
+
+
 @app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def preflight() -> dict:
-    output = Path("/results/preflight-threads")
+def preflight(run_name: str = "preflight") -> dict:
+    output = output_path(run_name)
     if output.exists():
         raise FileExistsError("preflight output exists; retain it rather than overwrite evidence")
     import subprocess
@@ -30,8 +36,8 @@ def preflight() -> dict:
 
 
 @app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def train() -> dict:
-    output = Path("/results/full-threads")
+def train(run_name: str = "train") -> dict:
+    output = output_path(run_name)
     if output.exists():
         raise FileExistsError("full output exists; retain it rather than overwrite evidence")
     import subprocess
@@ -42,12 +48,13 @@ def train() -> dict:
 
 
 @app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def svm() -> dict:
-    output = Path("/results/svm-full")
+def svm_full(run_name: str = "svm", weights_run_name: str = "full-threads") -> dict:
+    output = output_path(run_name)
+    weights = output_path(weights_run_name)
     if output.exists():
         raise FileExistsError("full SVM output exists; retain it rather than overwrite evidence")
     import subprocess
 
-    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "3000", "--validation-augmentations", "10"], check=True)
+    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", str(weights), "--output", str(output), "--limit-per-class", "3000", "--validation-augmentations", "10"], check=True)
     results.commit()
     return json.loads((output / "run.json").read_text())

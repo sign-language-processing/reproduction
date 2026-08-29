@@ -6,17 +6,21 @@
 
 **Paper:** user-provided PDF (SHA-256 `73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d`) · **Code:** none found after repository and author searches
 
-**Preference level:** 3 — a conditional reimplementation is necessary because the paper provides no executable artifact.
+**Preference level:** 3
 
-**Status:** `complete` — every Table III target was produced by a fully documented conditional reconstruction.
+**Status:** `complete`
 
-**Attempt date:** 2026-08-27
+**Numerical agreement:** not fully reproduced
+
+Every Table III target was produced by a fully documented conditional reconstruction; the paper provides no executable artifact.
+
+**Attempt date:** 2026-08-28
 
 ## Scope and target contract
 
 The requested target is every reported number in Table III: training and augmented-validation accuracy for SLR and OCNN; the two corresponding RBF-SVM variants; and augmented-validation accuracy for the averaged E-OCNN-SLR ensemble. The dataset is the 29-class ASL Alphabet release. The paper uses a random 80:20 image split (69,600/17,400), online augmentation for CNN training, and a fixed 10-fold offline augmentation of validation (174,000 images). It reports no test split, seed, or uncertainty interval.
 
-The implementation includes the two CNNs, their probability-average ensemble, and a conditional RBF-SVM attempt. The SVM feature layer, `C`, `gamma`, scaling, and exact offline augmentation instances are not reported, so the selected values are recorded below rather than attributed to the authors.
+The implementation includes the two CNNs, their probability-average ensemble, and a conditional RBF-SVM attempt. The SVM feature layer, `C`, `gamma`, scaling, and exact offline transforms are not reported, so the selected values are recorded below rather than attributed to the authors.
 
 ## Source provenance
 
@@ -50,14 +54,18 @@ The shared `datasets` Volume must contain `asl-alphabet/manifest.json`. The Moda
 
 ```bash
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh asl-alphabet manifest.json
+cnn_run="cnn-$(date -u +%Y%m%dT%H%M%SZ)"
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
-  papers/silanon-2023-asl-cnn/modal_app.py::train
+  papers/silanon-2023-asl-cnn/modal_app.py::train \
+  --run-name "$cnn_run"
 
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
-  papers/silanon-2023-asl-cnn/modal_app.py::svm
+  papers/silanon-2023-asl-cnn/modal_app.py::svm_full \
+  --run-name "svm-$(date -u +%Y%m%dT%H%M%SZ)" \
+  --weights-run-name "$cnn_run"
 ```
 
-The result is an immutable run directory in the paper-specific Modal output Volume; `run.json` holds the metrics, selected epochs, per-epoch histories, dataset manifest hash, and exact inferred configuration.
+Each run name creates a new immutable directory in the paper-specific Modal output Volume; `run.json` holds the metrics, selected epochs, per-epoch histories, dataset manifest hash, and exact inferred configuration. Existing evidence is never overwritten.
 
 ## Data provenance and permissions
 
@@ -69,7 +77,7 @@ The 29 classes are `A`–`Z`, `SPACE`, `DELETE`, and `NOTHING`; none are exclude
 
 ## Environment and implementation
 
-The Modal image is `tensorflow/tensorflow:2.15.0-gpu` with `Pillow==10.2.0` and `SciPy==1.11.4`, on an L4 GPU. It mounts the shared `huggingface-cache` at `/cache/huggingface` with `HF_HOME` and `HF_HUB_CACHE`; this image-only experiment does not download Hub artifacts.
+The Modal image is `tensorflow/tensorflow:2.15.0-gpu` (resolved digest `sha256:206b54412f00b02c0ebaf00f359281c4032a5b97b20a682b04496a29860230a6`) with `Pillow==10.2.0`, `SciPy==1.11.4`, and `scikit-learn==1.4.2`, on one NVIDIA L4 (20,833 MiB, compute capability 8.9). It mounts the shared `huggingface-cache` at `/cache/huggingface` with `HF_HOME` and `HF_HUB_CACHE`; this image-only experiment does not download Hub artifacts.
 
 There are no patches because no published code exists. `train.py` implements the CNNs and ensemble: Figure 4 supplies SLRNet-8’s visible layers; Section III.B/Table II supply OCNN’s five convolutions, pooling, batch normalization, dropout, dense layers, and output regularization; Section III.C supplies the average-probability ensemble. `svm.py` is the small separate Table III SVM evaluator. Comments identify the paper-derived items.
 
@@ -99,4 +107,4 @@ There are no patches because no published code exists. `train.py` implements the
 | `ap-N9rmp6VzHpboWeAXWZ9lii` / `ap-Ni5UKRAcpc6u845IhXbJFs` | Conditional exact-RBF SVC preflight and scale measurement. At 23,200 augmented training examples, fitting took 4.19 s (OCNN) and 4.78 s (SLR); feature extraction, not SVC fitting, dominates. |
 | `ap-ZEdZmXIbJTSGEGTN76O1Z7` | Terminal full conditional RBF-SVM run on L4: 696,000 augmented training and 174,000 augmented validation examples. SLR-SVM: 99.81% training / 99.78% validation; OCNN-SVM: 99.63% / 99.45%. Feature extraction took 2,828.84 s (SLR) and 2,223.92 s (OCNN); fitting took 2,249.80 s and 1,032.21 s. Raw JSON SHA-256 `2f763720f6fd6d8f2bc4859c20190d04f9dceb36390ceb4ff27a1259c5040ed0`. |
 
-All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
+The full CNN run lasted 4.29 L4-hours; the SVM evaluation lasted 9.12 L4-hours. `reproduction.json` records source commits, image digest, dependency manifest, timestamps, ceilings, and dashboard URLs. Modal exposed app IDs for these detached runs but not function-call IDs; those fields are explicitly `null`, not inferred. All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
