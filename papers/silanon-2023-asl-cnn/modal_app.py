@@ -41,32 +41,8 @@ def train() -> dict:
     return json.loads((output / "run.json").read_text())
 
 
-@app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def svm_preflight() -> dict:
-    output = Path("/results/svm-preflight")
-    if output.exists():
-        raise FileExistsError("SVM preflight output exists; retain it rather than overwrite evidence")
-    import subprocess
-
-    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "30"], check=True)
-    results.commit()
-    return json.loads((output / "run.json").read_text())
-
-
-@app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def svm_scale() -> dict:
-    output = Path("/results/svm-scale-100")
-    if output.exists():
-        raise FileExistsError("SVM scale output exists; retain it rather than overwrite evidence")
-    import subprocess
-
-    subprocess.run(["python", "/app/svm.py", "--data-root", "/datasets/asl-alphabet", "--weights-root", "/results/full-threads", "--output", str(output), "--limit-per-class", "100"], check=True)
-    results.commit()
-    return json.loads((output / "run.json").read_text())
-
-
 @app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def svm_full() -> dict:
+def svm() -> dict:
     output = Path("/results/svm-full")
     if output.exists():
         raise FileExistsError("full SVM output exists; retain it rather than overwrite evidence")

@@ -8,7 +8,7 @@
 
 **Preference level:** 3 — a conditional reimplementation is necessary because the paper provides no executable artifact.
 
-**Status:** `partial` — the CNN and ensemble targets completed; a fully documented conditional RBF-SVM attempt is in progress.
+**Status:** `complete` — every Table III target was produced by a fully documented conditional reconstruction.
 
 **Attempt date:** 2026-08-27
 
@@ -30,7 +30,7 @@ No author repository, release, configuration, or weights were found. A GitHub se
 
 ## Results
 
-The retained full run used the stated 80:20 image split, 10 training epochs, Table I augmentation ranges, and the stated 10× augmented validation cardinality. It produced the CNN and ensemble values below. They are valid results of this explicitly conditional reconstruction, but not a numerical match: the exact author split, saved offline validation images, convolution padding, and optimizer are unavailable. The RBF-SVM rows are a conditional attempt with separately recorded, unreported choices.
+The retained runs used the stated 80:20 image split, 10 training epochs, Table I augmentation ranges, and the stated 10× augmented validation cardinality. They produced every Table III value below. These are valid results of this explicitly conditional reconstruction, but not a numerical match: the exact author split, saved offline validation images, convolution padding, optimizer, and SVM configuration are unavailable.
 
 | Target ID | System | Split | Original | Reproduced | Evidence |
 | --- | --- | --- | ---: | ---: | --- |
@@ -38,10 +38,10 @@ The retained full run used the stated 80:20 image split, 10 training epochs, Tab
 | slr-validation | SLRNet-8 | 10× augmented validation | 83.50% | 98.00% | `full-threads/run.json` |
 | ocnn-train | OCNN | checkpoint training | 96.85% | 95.74% | `full-threads/run.json` |
 | ocnn-validation | OCNN | 10× augmented validation | 84.68% | 96.11% | `full-threads/run.json` |
-| slr-svm-train | SLRNet-8 + RBF SVM | checkpoint training | 99.45% | Pending | Conditional full run active |
-| slr-svm-validation | SLRNet-8 + RBF SVM | 10× augmented validation | 85.41% | Pending | Conditional full run active |
-| ocnn-svm-train | OCNN + RBF SVM | checkpoint training | 99.01% | Pending | Conditional full run active |
-| ocnn-svm-validation | OCNN + RBF SVM | 10× augmented validation | 85.74% | Pending | Conditional full run active |
+| slr-svm-train | SLRNet-8 + RBF SVM | checkpoint training | 99.45% | 99.81% | `svm-full/run.json` |
+| slr-svm-validation | SLRNet-8 + RBF SVM | 10× augmented validation | 85.41% | 99.78% | `svm-full/run.json` |
+| ocnn-svm-train | OCNN + RBF SVM | checkpoint training | 99.01% | 99.63% | `svm-full/run.json` |
+| ocnn-svm-validation | OCNN + RBF SVM | 10× augmented validation | 85.74% | 99.45% | `svm-full/run.json` |
 | e-ocnn-slr-validation | E-OCNN-SLR | 10× augmented validation | 87.01% | 98.67% | `full-threads/run.json` |
 
 ## How to repeat
@@ -52,6 +52,9 @@ The shared `datasets` Volume must contain `asl-alphabet/manifest.json`. The Moda
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh asl-alphabet manifest.json
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
   papers/silanon-2023-asl-cnn/modal_app.py::train
+
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run \
+  papers/silanon-2023-asl-cnn/modal_app.py::svm
 ```
 
 The result is an immutable run directory in the paper-specific Modal output Volume; `run.json` holds the metrics, selected epochs, per-epoch histories, dataset manifest hash, and exact inferred configuration.
@@ -68,7 +71,7 @@ The 29 classes are `A`–`Z`, `SPACE`, `DELETE`, and `NOTHING`; none are exclude
 
 The Modal image is `tensorflow/tensorflow:2.15.0-gpu` with `Pillow==10.2.0` and `SciPy==1.11.4`, on an L4 GPU. It mounts the shared `huggingface-cache` at `/cache/huggingface` with `HF_HOME` and `HF_HUB_CACHE`; this image-only experiment does not download Hub artifacts.
 
-There are no patches because no published code exists. `train.py` is the only implementation: Figure 4 supplies SLRNet-8’s visible layers; Section III.B/Table II supply OCNN’s five convolutions, pooling, batch normalization, dropout, dense layers, and output regularization; Section III.C supplies the average-probability ensemble. Comments identify the paper-derived items.
+There are no patches because no published code exists. `train.py` implements the CNNs and ensemble: Figure 4 supplies SLRNet-8’s visible layers; Section III.B/Table II supply OCNN’s five convolutions, pooling, batch normalization, dropout, dense layers, and output regularization; Section III.C supplies the average-probability ensemble. `svm.py` is the small separate Table III SVM evaluator. Comments identify the paper-derived items.
 
 ## Decisions not specified by the paper
 
@@ -94,6 +97,6 @@ There are no patches because no published code exists. `train.py` is the only im
 | `ap-pgI9ZErpb0k0ZP6X5Pt74K` | Real-data threaded-loader preflight completed: both models trained, saved/reloaded checkpoints, and evaluated. Tiny-subset ensemble accuracy was 9.4828%; it proves the path only. |
 | `ap-DuMtpPTQjVjbfF5EGtZlaA` | Terminal full real-data run on L4. SLR selected epoch 7 (97.20% training / 98.00% validation); OCNN selected epoch 10 (95.74% / 96.11%); probability-average ensemble was 98.67%. Raw JSON SHA-256 `d44eb667395866fc68727926d17b443a655f72c6beb7c8a10c3055e32d2746ff`. |
 | `ap-N9rmp6VzHpboWeAXWZ9lii` / `ap-Ni5UKRAcpc6u845IhXbJFs` | Conditional exact-RBF SVC preflight and scale measurement. At 23,200 augmented training examples, fitting took 4.19 s (OCNN) and 4.78 s (SLR); feature extraction, not SVC fitting, dominates. |
-| `ap-ZEdZmXIbJTSGEGTN76O1Z7` | Full conditional RBF-SVM attempt: 696,000 augmented training and 174,000 augmented validation examples. Pending. |
+| `ap-ZEdZmXIbJTSGEGTN76O1Z7` | Terminal full conditional RBF-SVM run on L4: 696,000 augmented training and 174,000 augmented validation examples. SLR-SVM: 99.81% training / 99.78% validation; OCNN-SVM: 99.63% / 99.45%. Feature extraction took 2,828.84 s (SLR) and 2,223.92 s (OCNN); fitting took 2,249.80 s and 1,032.21 s. Raw JSON SHA-256 `2f763720f6fd6d8f2bc4859c20190d04f9dceb36390ceb4ff27a1259c5040ed0`. |
 
 All Modal calls use workspace/profile `repro-sign`. No author or Team S contact was needed; the already-authorized public dataset was present in the shared v2 dataset volume.
