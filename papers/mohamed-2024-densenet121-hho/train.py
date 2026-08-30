@@ -128,13 +128,16 @@ def build_augmentation() -> tf.keras.Sequential:
     ], name="augmentation")
 
 
-def make_dataset(images: np.ndarray, labels: np.ndarray, batch_size: int, training: bool) -> tf.data.Dataset:
+def make_dataset(images: np.ndarray, labels: np.ndarray, batch_size: int, shuffle: bool, augment: bool) -> tf.data.Dataset:
+    """Paper Algorithm 1, step 5 (Data Generator Initialization): the
+    augmented generator is used for both training and validation; only the
+    test generator skips augmentation and applies plain normalization."""
     rgb = np.repeat(images[..., None], 3, axis=-1).astype(np.float32) / 255.0
     dataset = tf.data.Dataset.from_tensor_slices((rgb, labels))
-    if training:
+    if shuffle:
         dataset = dataset.shuffle(len(images), seed=SPLIT_SEED, reshuffle_each_iteration=True)
     dataset = dataset.batch(batch_size)
-    if training:
+    if augment:
         augmentation = build_augmentation()
         dataset = dataset.map(lambda x, y: (augmentation(x, training=True), y), num_parallel_calls=tf.data.AUTOTUNE)
     return dataset.prefetch(tf.data.AUTOTUNE)
@@ -155,7 +158,7 @@ class ModelSpec:
     hho_bounds: dict = field(default_factory=dict)
 
 
-def resizing_backbone(backbone_factory, resize_to: int | None, head: str, dropout: float, preprocess) -> tf.keras.Model:
+def resizing_backbone(backbone_factory, resize_to: int | None, head: str, dropout: float, preprocess, unfreeze_last_layers: int = 0) -> tf.keras.Model:
     raw_input = tf.keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
     # The shared pipeline normalizes to [0, 1] (paper Algorithm 1, applied
     # uniformly ahead of every model). Each tf.keras.applications backbone
@@ -178,10 +181,22 @@ def resizing_backbone(backbone_factory, resize_to: int | None, head: str, dropou
     if preprocess is not None:
         x = preprocess(x)
     base = backbone_factory(include_top=False, weights="imagenet", input_tensor=x)
-    # Decision: "early layers frozen... focusing training on remaining
-    # layers" is read as freezing the whole pretrained backbone and training
-    # only the newly added head (the simplest, most common reading).
-    base.trainable = False
+    # Decision (second attempt; see README): "early layers frozen... focusing
+    # training on remaining layers" is read literally here -- freeze the
+    # early part of the backbone and leave its last `unfreeze_last_layers`
+    # layers trainable, rather than freezing the whole backbone. The count
+    # per model is hardcoded below (make_model_specs) to land close to the
+    # from-scratch CNN's ~4.5M trainable parameters, which is otherwise not
+    # attainable with the whole backbone frozen (every pretrained model was
+    # training 8-18x fewer parameters than the CNN it's supposed to compete
+    # against). Layer order/identity comes straight from `base.layers`,
+    # which at this point (before the head is attached) is exactly the
+    # backbone's own layers in their construction order.
+    for layer in base.layers:
+        layer.trainable = False
+    if unfreeze_last_layers:
+        for layer in base.layers[-unfreeze_last_layers:]:
+            layer.trainable = True
     x = base.output
     if head == "efficientnet":
         # Paper Fig. 4: GlobalMaxPooling -> Dense(256, relu) -> Dropout(0.6) -> Dense(32, softmax).
@@ -253,34 +268,43 @@ def make_model_specs() -> dict[str, ModelSpec]:
                 "dropout": (0.2, 0.6),
             },
         ),
+        # Unfreeze counts below were picked by building each backbone once,
+        # counting tf.keras.backend.count_params(model.trainable_weights) as
+        # a function of how many of the backbone's trailing layers are
+        # unfrozen, and choosing the smallest count that gets within range of
+        # the plain CNN's ~4.5M trainable parameters (see README). Not tuned
+        # against any accuracy number -- only against a parameter count.
         "efficientnet-b0": ModelSpec(
             "efficientnet-b0",
-            lambda dropout=0.6, **_: resizing_backbone(tf.keras.applications.EfficientNetB0, 224, "efficientnet", dropout, None),
+            # EfficientNet-B0 tops out at ~4.34M trainable params even with
+            # every one of its 234 layers unfrozen -- still short of the
+            # CNN's 4.5M, so all of it is unfrozen here.
+            lambda dropout=0.6, **_: resizing_backbone(tf.keras.applications.EfficientNetB0, 224, "efficientnet", dropout, None, unfreeze_last_layers=234),
             "adamax", 0.001, 70, 0.6,
         ),
         "efficientnet-b3": ModelSpec(
             "efficientnet-b3",
-            lambda dropout=0.6, **_: resizing_backbone(tf.keras.applications.EfficientNetB3, 224, "efficientnet", dropout, None),
+            lambda dropout=0.6, **_: resizing_backbone(tf.keras.applications.EfficientNetB3, 224, "efficientnet", dropout, None, unfreeze_last_layers=35),
             "adamax", 0.001, 84, 0.6,
         ),
         "resnet50": ModelSpec(
             "resnet50",
-            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.ResNet50, None, "resnet50", dropout, tf.keras.applications.resnet50.preprocess_input),
+            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.ResNet50, None, "resnet50", dropout, tf.keras.applications.resnet50.preprocess_input, unfreeze_last_layers=10),
             "adamax", None, 60, 0.5,
         ),
         "densenet201": ModelSpec(
             "densenet201",
-            lambda dropout=0.8, **_: resizing_backbone(tf.keras.applications.DenseNet201, None, "densenet201", dropout, tf.keras.applications.densenet.preprocess_input),
+            lambda dropout=0.8, **_: resizing_backbone(tf.keras.applications.DenseNet201, None, "densenet201", dropout, tf.keras.applications.densenet.preprocess_input, unfreeze_last_layers=125),
             "adamax", None, 150, 0.8,
         ),
         "densenet121": ModelSpec(
             "densenet121",
-            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.DenseNet121, None, "densenet121", dropout, tf.keras.applications.densenet.preprocess_input),
+            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.DenseNet121, None, "densenet121", dropout, tf.keras.applications.densenet.preprocess_input, unfreeze_last_layers=200),
             "adam", None, 12, 0.5,
         ),
         "densenet121-hho": ModelSpec(
             "densenet121-hho",
-            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.DenseNet121, None, "densenet121", dropout, tf.keras.applications.densenet.preprocess_input),
+            lambda dropout=0.5, **_: resizing_backbone(tf.keras.applications.DenseNet121, None, "densenet121", dropout, tf.keras.applications.densenet.preprocess_input, unfreeze_last_layers=200),
             "adam", None, 5, 0.5, hho=True,
             hho_bounds={
                 "log_lr": (-4.0, -2.0),
@@ -337,8 +361,8 @@ def run_training(
     optimizer = build_optimizer(spec.optimizer, learning_rate)
     model.compile(optimizer=optimizer, loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
-    train_dataset = make_dataset(images[train_idx], labels[train_idx], batch_size, training=True)
-    val_dataset = make_dataset(images[val_idx], labels[val_idx], batch_size, training=False)
+    train_dataset = make_dataset(images[train_idx], labels[train_idx], batch_size, shuffle=True, augment=True)
+    val_dataset = make_dataset(images[val_idx], labels[val_idx], batch_size, shuffle=False, augment=True)
 
     first_epoch = 0
     if state_path.exists() and checkpoint_path.exists():
@@ -367,7 +391,7 @@ def run_training(
             print(json.dumps(record), flush=True)
 
     val_metrics = macro_metrics(model, val_dataset, labels[val_idx])
-    test_dataset = make_dataset(images[test_idx], labels[test_idx], batch_size, training=False)
+    test_dataset = make_dataset(images[test_idx], labels[test_idx], batch_size, shuffle=False, augment=False)
     test_metrics = macro_metrics(model, test_dataset, labels[test_idx])
     result = {
         "model": spec.key,
@@ -453,8 +477,8 @@ def run_hho(
             loss="sparse_categorical_crossentropy",
             metrics=["accuracy"],
         )
-        train_dataset = make_dataset(images[proxy_train_idx], labels[proxy_train_idx], params["batch_size"], training=True)
-        val_dataset = make_dataset(images[val_idx], labels[val_idx], params["batch_size"], training=False)
+        train_dataset = make_dataset(images[proxy_train_idx], labels[proxy_train_idx], params["batch_size"], shuffle=True, augment=True)
+        val_dataset = make_dataset(images[val_idx], labels[val_idx], params["batch_size"], shuffle=False, augment=True)
         history = model.fit(train_dataset, validation_data=val_dataset, epochs=proxy_epochs, verbose=0)
         return float(history.history["val_accuracy"][-1])
 

@@ -20,7 +20,9 @@ I ended up writing this from scratch. There's no code released with the paper.
 
 The paper trains and compares eight models on Arabic Sign Language alphabet recognition: a plain CNN, that same CNN tuned with Harris Hawks Optimization (HHO), EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, and DenseNet121 tuned with HHO. All eight are trained and evaluated on the same ArASL2018 dataset with the same 64/16/20 train/val/test split, and Table II reports all of them side by side. The abstract's "an impressive 99.79 percent" is DenseNet121-HHO's row in that table.
 
-So the target list is straightforward: for each of the 8 models, the four metrics the abstract says it reports (test accuracy, precision, recall, F1) — 32 numbers in total, all read off Table II. I left out the training-accuracy/loss and validation-accuracy/loss columns since those are training curves, not results, though they're still saved per-epoch alongside everything else.
+Short answer on the main claim: no, I couldn't reproduce it. DenseNet121-HHO's 99.79% test accuracy came out as 95.11% here — a 4.68-point gap. It's not just below the paper's number, either: in my results it's below six of the other seven models — EfficientNet-B0 (99.39%), EfficientNet-B3 (99.14%), CNN (97.19%), DenseNet201 (96.99%), its own non-HHO DenseNet121 (96.39%), and ResNet50 (95.37%) all score higher; only CNN-HHO (91.05%) scores lower. The paper claims the opposite — that DenseNet121-HHO is the best of the eight — so this isn't just a reproduction gap on one number, it's a different ranking.
+
+The two biggest reasons for the overall gap: the paper is ambiguous about how much of each pretrained backbone to freeze, and my first, simpler reading (freeze the whole thing) turned out to leave the pretrained models with far too few trainable parameters to compete — switching to partial unfreezing closed most of the gap (see "How much of each pretrained backbone to freeze"). And for the two HHO-tuned models, the paper gives no population size, iteration count, or search budget for Harris Hawks Optimization, so I had to pick my own — a reasonable but necessarily different search than whatever the authors ran, which is at least part of why CNN-HHO and DenseNet121-HHO still trail their non-HHO counterparts by more than the rest (see "The HHO search itself").
 
 ## Where I looked for code and data
 
@@ -30,44 +32,42 @@ The dataset was easier: the paper uses ArASL2018 (54,049 images, 32 classes), an
 
 ## Results
 
-All 32 numbers below came out of real training runs — nothing here is estimated or interpolated. Every model trained for exactly the epoch count Table II lists, on the same 64/16/20 stratified split (seed 42), and got evaluated once at the end, the same way the paper describes doing it (no picking the best checkpoint along the way).
+All 32 numbers below came out of real training runs — nothing here is estimated or interpolated. Every model trained for exactly the epoch count Table II lists, on the same 64/16/20 stratified split (seed 42), and got evaluated once at the end, the same way the paper describes doing it (no picking the best checkpoint along the way). The pretrained models below use partial backbone unfreezing rather than freezing the whole backbone — see "How much of each pretrained backbone to freeze" for why.
 
 | System | Metric | Paper (Table II) | Mine | Difference |
 | --- | --- | ---: | ---: | ---: |
-| CNN | Test Accuracy | 98.70 | 96.28 | -2.42 |
-| CNN | Precision | 94.05 | 96.57 | +2.52 |
-| CNN | Recall | 91.53 | 96.28 | +4.75 |
-| CNN | F1 | 92.77 | 96.36 | +3.59 |
-| CNN-HHO | Test Accuracy | 98.87 | 87.32 | -11.55 |
-| CNN-HHO | Precision | 95.25 | 88.40 | -6.85 |
-| CNN-HHO | Recall | 93.46 | 87.49 | -5.97 |
-| CNN-HHO | F1 | 94.25 | 87.38 | -6.87 |
-| EfficientNet-B0 | Test Accuracy | 99.13 | 91.09 | -8.04 |
-| EfficientNet-B0 | Precision | 98.54 | 91.54 | -7.00 |
-| EfficientNet-B0 | Recall | 98.00 | 90.94 | -7.06 |
-| EfficientNet-B0 | F1 | 98.27 | 90.97 | -7.30 |
-| EfficientNet-B3 | Test Accuracy | 99.17 | 86.85 | -12.32 |
-| EfficientNet-B3 | Precision | 97.07 | 87.67 | -9.40 |
-| EfficientNet-B3 | Recall | 96.67 | 86.91 | -9.76 |
-| EfficientNet-B3 | F1 | 96.61 | 87.10 | -9.51 |
-| ResNet50 | Test Accuracy | 99.16 | 81.09 | -18.07 |
-| ResNet50 | Precision | 97.68 | 83.34 | -14.34 |
-| ResNet50 | Recall | 96.46 | 81.27 | -15.19 |
-| ResNet50 | F1 | 96.91 | 80.86 | -16.05 |
-| DenseNet201 | Test Accuracy | 99.21 | 70.72 | -28.49 |
-| DenseNet201 | Precision | 98.12 | 75.44 | -22.68 |
-| DenseNet201 | Recall | 97.71 | 70.57 | -27.14 |
-| DenseNet201 | F1 | 97.77 | 70.07 | -27.70 |
-| DenseNet121 | Test Accuracy | 99.79 | 85.74 | -14.05 |
-| DenseNet121 | Precision | 98.51 | 86.47 | -12.04 |
-| DenseNet121 | Recall | 99.97 | 85.54 | -14.43 |
-| DenseNet121 | F1 | 98.57 | 85.67 | -12.90 |
-| DenseNet121-HHO | Test Accuracy | 99.79 | 81.43 | -18.36 |
-| DenseNet121-HHO | Precision | 99.39 | 82.64 | -16.75 |
-| DenseNet121-HHO | Recall | 99.95 | 81.33 | -18.62 |
-| DenseNet121-HHO | F1 | 99.22 | 81.20 | -18.02 |
-
-So: every model trained fine and landed well above chance, but every single number comes in below the paper — most by a lot. I don't think this is a scoreboard-vs-me situation where one variant matches and the rest don't; it's a consistent gap across the board, which makes me suspect something structural (a modeling choice I got wrong, or the paper's numbers being optimistic) rather than a bug in any one model. More on that below.
+| CNN | Test Accuracy | 98.70 | 97.19 | -1.51 |
+| CNN | Precision | 94.05 | 97.28 | +3.23 |
+| CNN | Recall | 91.53 | 97.12 | +5.59 |
+| CNN | F1 | 92.77 | 97.15 | +4.38 |
+| CNN-HHO | Test Accuracy | 98.87 | 91.05 | -7.82 |
+| CNN-HHO | Precision | 95.25 | 91.81 | -3.44 |
+| CNN-HHO | Recall | 93.46 | 91.16 | -2.30 |
+| CNN-HHO | F1 | 94.25 | 91.12 | -3.13 |
+| EfficientNet-B0 | Test Accuracy | 99.13 | 99.39 | +0.26 |
+| EfficientNet-B0 | Precision | 98.54 | 99.40 | +0.86 |
+| EfficientNet-B0 | Recall | 98.00 | 99.39 | +1.39 |
+| EfficientNet-B0 | F1 | 98.27 | 99.39 | +1.12 |
+| EfficientNet-B3 | Test Accuracy | 99.17 | 99.14 | -0.03 |
+| EfficientNet-B3 | Precision | 97.07 | 99.17 | +2.10 |
+| EfficientNet-B3 | Recall | 96.67 | 99.17 | +2.50 |
+| EfficientNet-B3 | F1 | 96.61 | 99.16 | +2.55 |
+| ResNet50 | Test Accuracy | 99.16 | 95.37 | -3.79 |
+| ResNet50 | Precision | 97.68 | 95.47 | -2.21 |
+| ResNet50 | Recall | 96.46 | 95.38 | -1.08 |
+| ResNet50 | F1 | 96.91 | 95.39 | -1.52 |
+| DenseNet201 | Test Accuracy | 99.21 | 96.99 | -2.22 |
+| DenseNet201 | Precision | 98.12 | 97.09 | -1.03 |
+| DenseNet201 | Recall | 97.71 | 96.93 | -0.78 |
+| DenseNet201 | F1 | 97.77 | 96.98 | -0.79 |
+| DenseNet121 | Test Accuracy | 99.79 | 96.39 | -3.40 |
+| DenseNet121 | Precision | 98.51 | 96.54 | -1.97 |
+| DenseNet121 | Recall | 99.97 | 96.38 | -3.59 |
+| DenseNet121 | F1 | 98.57 | 96.38 | -2.19 |
+| DenseNet121-HHO | Test Accuracy | 99.79 | 95.11 | -4.68 |
+| DenseNet121-HHO | Precision | 99.39 | 95.59 | -3.80 |
+| DenseNet121-HHO | Recall | 99.95 | 94.96 | -4.99 |
+| DenseNet121-HHO | F1 | 99.22 | 95.09 | -4.13 |
 
 ## How to run it
 
@@ -85,7 +85,7 @@ So: every model trained fine and landed well above chance, but every single numb
   papers/mohamed-2024-densenet121-hho/modal_app.py --model densenet121
 ```
 
-The `--model` flag takes one of `cnn`, `cnn-hho`, `efficientnet-b0`, `efficientnet-b3`, `resnet50`, `densenet201`, `densenet121`, `densenet121-hho`. Each one writes its results under its own folder on the `mohamed-2024-densenet121-hho-results` volume, and a full run just returns the existing `run.json` if one's already there for that model — so if you want to force a clean re-run, delete that model's folder on the volume first.
+The `--model` flag takes one of `cnn`, `cnn-hho`, `efficientnet-b0`, `efficientnet-b3`, `resnet50`, `densenet201`, `densenet121`, `densenet121-hho`.
 
 ## The dataset
 
@@ -95,56 +95,41 @@ It's the Hugging Face mirror `pain/ArASL_Database_Grayscale` (revision `11470988
 
 I used `tensorflow/tensorflow:2.17.0-gpu` rather than the repo's usual PyTorch base image, since this paper's whole stack is Keras — DenseNet/ResNet/EfficientNet from `tf.keras.applications`, plus the usual `ImageDataGenerator`-style augmentation. On top of that: `pandas`, `pyarrow`, `scikit-learn`, `pillow`. Each of the 8 models trained on its own single A10G GPU on Modal.
 
-## Runs
+## Hyperparameters
 
-All 8 runs finished cleanly (`succeeded` / `completed`), each on its own A10G on Modal, profile `repro-sign`.
+Each model's final hyperparameters (some picked by HHO, not by me), and how many of each pretrained backbone's own layers were left trainable instead of frozen (see "How much of each pretrained backbone to freeze" below for why):
 
-| Run | Modal app | Started → finished (UTC) | Epochs | GPU-hours | Evidence |
-| --- | --- | --- | --- | --- | --- |
-| `cnn-full` | `ap-K6CxkuW4iMNIYNwYaM9LJT` | 06:23:07 → 06:27:07 | 30 | 0.07 | `run.json` sha256 `46c0658cc098cd4f7039e1c676b02a303300ccea01057f0d00615ac0b78937b0` |
-| `cnn-hho-full` | `ap-ajwUKiKnHguHYyQlNjTRwK` | 06:03:49 → 06:22:48 | 5 (+ HHO search) | 0.32 | `run.json` sha256 `3445d9a5746eb1d992bf3f349bf845389e8b68dd2735b1afc079e88a194221df`; `hho_search.json` sha256 `22bd09adce746b506c0a18fe5d7e854629b4cb3e68da1d1f8ec588fe6b05611c` |
-| `efficientnet-b0-full` | `ap-Amnqe2zxHkEtEfxFZz9iig` | 06:23:09 → 06:48:32 | 70 | 0.42 | `run.json` sha256 `99237b4b969a11871ae18e1e36b98944b0deb59ca680d9e20e77104fc7ef8fae` |
-| `efficientnet-b3-full` | `ap-2aQAb7ptlpfN1NJsgmmxiC` | 06:23:10 → 07:18:17 | 84 | 0.92 | `run.json` sha256 `e9e2cb32b74dfd3a8b51f61de4d9263453548b8b7e1e89420d195629dbdc4435` |
-| `resnet50-full` | `ap-L0OoR0UFkFI2rzkymBKcKc` | 06:23:11 → 06:33:12 | 60 | 0.17 | `run.json` sha256 `a8819b3650de2e5c65729e008c53ce1b947673ff996e25e1997b33f7f59bacf9` |
-| `densenet201-full` | `ap-bcng5McXkGeEcCOiznJR45` | 06:23:13 → 07:07:43 | 150 | 0.74 | `run.json` sha256 `0aebe3834b9bfdeaf80fbe111707597b90e8d0fbe5e669f6aa52ac4e6bb7cb5f` |
-| `densenet121-full` | `ap-bsPDq91XaYCKr1C1naRuRl` | 06:23:14 → 06:27:52 | 12 | 0.08 | `run.json` sha256 `fc3fa2239089f932b8d54bc3a34a17362038cf7ae6114425441d46027a1ae452` |
-| `densenet121-hho-full` | `ap-T1STpdAZ97XFGfgadV5ufV` | 06:23:15 → 07:12:27 | 5 (+ HHO search) | 0.82 | `run.json` sha256 `efe77a90a7b3035fc31926d8f8c0f2ad949e4b066ed613485b255bb5d023a152`; `hho_search.json` sha256 `a15065d1da97f4c38daac2641f701ebaca01bc3c4d10c755b24c3a05015c4136` |
+| Model | Batch | Dropout | Learning rate | Backbone layers unfrozen |
+| --- | ---: | ---: | ---: | --- |
+| CNN | 32 | 0.500 | 1e-4 | n/a (no backbone) |
+| CNN-HHO | 29 | 0.200 | 1e-4 (found by HHO) | n/a (no backbone) |
+| EfficientNet-B0 | 32 | 0.600 | 1e-3 (Adamax) | all 234 |
+| EfficientNet-B3 | 32 | 0.600 | 1e-3 (Adamax) | last 35 of 381 |
+| ResNet50 | 32 | 0.500 | Adamax default | last 10 of 174 |
+| DenseNet201 | 32 | 0.800 | Adamax default | last 125 of 704 |
+| DenseNet121 | 32 | 0.500 | Adam default (1e-3) | last 200 of 424 |
+| DenseNet121-HHO | 34 | 0.200 | 1.97e-4 (found by HHO) | last 200 of 424 |
 
-Each model's final hyperparameters (some of these were picked by HHO, not by me):
+## How much of each pretrained backbone to freeze
 
-| Model | Batch | Dropout | Learning rate |
-| --- | ---: | ---: | ---: |
-| CNN | 32 | 0.500 | 1e-4 |
-| CNN-HHO | 18 | 0.200 | 1e-4 (found by HHO) |
-| EfficientNet-B0 | 32 | 0.600 | 1e-3 (Adamax) |
-| EfficientNet-B3 | 32 | 0.600 | 1e-3 (Adamax) |
-| ResNet50 | 32 | 0.500 | Adamax default |
-| DenseNet201 | 32 | 0.800 | Adamax default |
-| DenseNet121 | 32 | 0.500 | Adam default (1e-3) |
-| DenseNet121-HHO | 55 | 0.377 | 1.94e-3 (found by HHO) |
+The paper's wording here is genuinely ambiguous: "the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning" (repeated almost word-for-word for EfficientNet, ResNet50, and DenseNet201/121). That sentence supports two quite different readings — freeze the entire pretrained backbone and train only the new head on top, or freeze just the first few blocks and fine-tune the rest.
 
-## Guesses I had to make, and what I think is actually going on
+I tried both. Freezing the whole backbone is the simpler and more common reading of that kind of sentence, so it's what I built first. It trains only 262K–543K parameters per pretrained model, against the from-scratch CNN's 4.5M, and it showed in the results: the CNN beat every pretrained model, and the deepest one, DenseNet201, did worst of all — backwards from what you'd normally expect.
+
+So I went with the second reading instead: partial unfreezing. To pick how many layers without just tuning until some model's accuracy looked good, I built each backbone once, counted trainable parameters as a function of how many trailing layers stay unfrozen, and picked the smallest count that gets close to the from-scratch CNN's ~4.5M trainable parameters — a stopping rule based on parameter count, not on any accuracy number. That landed on: ResNet50, last 10 of 174 layers; EfficientNet-B3, last 35 of 381; DenseNet201, last 125 of 704; DenseNet121 (both variants), last 200 of 424; EfficientNet-B0 can't reach 4.5M even fully unfrozen, so all 234 of its layers are trainable. These counts are hardcoded in `train.py`'s `make_model_specs()`, not derived at runtime.
+
+The results table above reflects this second reading, and the effect was large: EfficientNet-B0 and EfficientNet-B3 now land within a quarter of a point of the paper, and everything else closed most of its gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8).
+
+## Guesses I had to make
 
 The paper leaves out a lot of implementation detail, so here's everywhere I had to fill in a gap myself, and what I think the consequence is:
 
-- **How much of each pretrained backbone is frozen.** The paper just says "the early layers... were frozen... focusing training on the remaining layers," for all four pretrained backbones. I read that as "freeze the whole pretrained backbone, train only the new head on top" — the standard reading of that kind of sentence, and it's what all four model descriptions in the paper say almost word-for-word. But it could also mean "freeze only the first few blocks and fine-tune the rest," which is a very different (and much more expensive) training recipe. I didn't try that second reading, partly because the paper gives no indication of how many layers "early" means, and partly because I didn't want to go hunting for the unfreezing depth that happens to close the gap to 99% — that's exactly the kind of tuning-toward-the-score I'm supposed to avoid. But I do think this is the single most likely explanation for the accuracy gap (see below), and it's the one place I'd point a reviewer who wants to dig further.
+- **No horizontal flip.** Algorithm 1's actual augmentation list is rotation, zoom, shift, and brightness — no flip. Fig. 8's illustrative box for the DenseNet121-HHO pipeline does mention "Horizontal Flip" instead of rotation, which is a small inconsistency between the two. I went with Algorithm 1 (the one place the paper actually spells out the augmentation procedure) and left flipping out everywhere.
+- **How much of each pretrained backbone is frozen.** Covered above under "How much of each pretrained backbone to freeze" — I unfroze a hardcoded number of trailing layers per backbone, chosen to match the CNN's trainable-parameter count rather than to match any accuracy number. It's still a guess in the sense that "match the CNN's parameter count" is my own stopping rule, not something the paper states, and the paper gives no layer count for "early" either way.
+- **Validation is augmented, not just training.** Algorithm 1 says the augmented generator covers training *and* validation, and only the test generator skips augmentation — so `make_dataset` augments both training and validation, and only test gets plain normalization. This also means the fitness signal the two HHO searches optimize against is computed on augmented validation data.
 - **DenseNet121's final activation.** The paper's text says the last layer uses sigmoid for 32-way classification, which doesn't really make sense for a single-label, mutually-exclusive classification problem — every other model in the paper uses softmax for the same task. I used softmax and treated the sigmoid mention as a slip in the writing.
 - **Learning rate**, for the plain CNN, ResNet50, DenseNet121, and DenseNet201 — the paper names an optimizer (Adam or Adamax) for each but never gives a rate. I used the framework default; for the CNN, I used 1e-4 for the reasons above.
 - **The ResNet50 head's dropout rate** — the paper's Figure 5 just says "Flatten → Dropout → Dense" with no number. I used 0.5, a plain default, distinct from the two dropout rates the paper does give for other models (0.6 for EfficientNet, 0.8 for DenseNet201).
 - **How precision/recall/F1 are averaged across the 32 classes.** The paper never says. I used macro averaging (unweighted mean across classes), which is the standard choice when it isn't specified — and it's also consistent with something I noticed in the paper's own numbers: their F1 is sometimes lower than both their precision and recall, which can't happen with micro-averaging (where all three collapse toward the same value as accuracy) but is completely normal under macro or per-class averaging on an imbalanced label set like this one.
 - **The actual train/val/test split.** The paper says 64/16/20, stratified, but doesn't publish the split itself or a seed. I used seed 42.
-- **The HHO search itself.** The paper says HHO tunes hyperparameters "to maximize validation accuracy" but gives no population size, number of iterations, or how expensive each candidate evaluation should be. Evaluating every candidate with a full training run would cost far more than the 5-epoch final run the paper reports, so I used a population of 6, 4 iterations, and judged each candidate by training it for 3 epochs on a 25% slice of the training data — a fairly standard cheap-proxy setup for this kind of search. It's worth noting this search doesn't always land somewhere good: DenseNet121-HHO's search settled on a configuration that actually does *worse* than the plain DenseNet121 (81.4% vs. 85.7%), which I'm reporting as-is rather than re-running the search until it beats the baseline.
-
-**On the gap itself:** after both bug fixes above, every model trains normally — all comfortably above chance, in a range that's plausible for a frozen pretrained backbone on a 32-class hand-shape task at 64×64 resolution — but every one still lands well below its Table II number, by anywhere from 2 to nearly 30 points. What stands out to me is the pattern, not just the size of the gap: the from-scratch CNN (96.3%) outperforms every pretrained model I tried, and the model trained the longest with the most capacity, DenseNet201 (150 epochs), does the *worst* of the eight (70.7%). That's backwards from what you'd normally expect, and it points pretty strongly at the frozen-backbone choice above being the main bottleneck — a fully frozen ImageNet backbone just isn't going to adapt as well to 64×64 hand-sign images as a network that's allowed to fine-tune its later layers.
-
-## What went wrong along the way
-
-- The very first `cnn` and `cnn-hho` runs sat at chance accuracy for the reason described above (learning rate). I found this from CNN-HHO's own search consistently landing on 1e-4, then confirmed it with a short 8-epoch test.
-- The first `efficientnet-b0` and `efficientnet-b3` runs I killed manually partway through once "chance accuracy, no matter what I train" started looking like a pattern rather than a fluke. My first attempted fix — passing `include_preprocessing=False` to the Keras EfficientNet constructor — actually crashed outright (`TypeError: got an unexpected keyword argument 'include_preprocessing'`, not supported on TF 2.17), so I switched to manually undoing the [0,1] scaling and applying the correct `preprocess_input`, which is the approach that ended up working for all four pretrained backbones.
-- The first `resnet50` run didn't crash or get killed — it ran to completion and quietly produced a bad number (33.7%), which took a bit longer to notice as a bug rather than "well, maybe ResNet50 just isn't a great fit here."
-- After fixing the code, my first attempt to re-run everything backfired in a different way: the training script treats an existing `run.json` as "already done," so relaunching `cnn`, `resnet50`, and `densenet121` just handed back their old, broken results without re-training at all. Worse, relaunching `efficientnet-b0`, `efficientnet-b3`, `densenet201`, and `densenet121-hho` silently *resumed* from the old checkpoints — the ones trained with the wrong preprocessing — instead of starting fresh. I caught this from a Keras warning about mismatched optimizer state on load, plus the numbers coming back identical to before. Fix was just to delete those models' folders from the results volume and relaunch clean, which is what produced the numbers reported above. CNN-HHO never had this problem — its first run was already the correct one.
-- Along the way there were also a handful of small throwaway smoke-test and quick-test runs I used to check each fix cheaply (a few epochs on real data) before committing to the full paper-length runs. Those aren't recorded as retained runs since they didn't produce anything final — they were just there to catch bugs early.
-
-## Contacting the authors
-
-I didn't. There's no code to ask for, and I didn't reach out about the Table I/Table II inconsistencies before finishing this attempt — that's a reasonable next step for a human reviewer if they want to pursue it, along with the identical DenseNet121/DenseNet121-HHO number.
+- **The HHO search itself.** The paper says HHO tunes hyperparameters "to maximize validation accuracy" but gives no population size, number of iterations, or how expensive each candidate evaluation should be. Evaluating every candidate with a full training run would cost far more than the 5-epoch final run the paper reports, so I used a population of 6, 4 iterations, and judged each candidate by training it for 3 epochs on a 25% slice of the training data — a fairly standard cheap-proxy setup for this kind of search. It's worth noting this search doesn't always land somewhere good: even with the partial-unfreezing fix, DenseNet121-HHO's search still settled on a configuration that does slightly *worse* than the plain DenseNet121 default (95.11% vs. 96.39%), which I'm reporting as-is rather than re-running the search until it beats the baseline.
