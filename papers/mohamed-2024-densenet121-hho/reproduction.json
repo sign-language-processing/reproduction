@@ -1,0 +1,1341 @@
+{
+  "paper_id": "mohamed-2024-densenet121-hho",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "sha256": "4ef8ddac3cc8b81f83c3ea677007d083adb7b89de9947f218355b7e43d55a65d"
+    },
+    "request": "Implement this paper (PDF attached); dataset available at Modal volume path datasets/arasl-database-grayscale."
+  },
+  "paper": {
+    "title": "DenseNet121 with Harris Hawks Optimization: A Novel Deep Learning Approach for Arabic Sign Language Recognition",
+    "citation": "S. N. Mohamed, H. Hussein, and M. S. Elgamel, \"DenseNet121 with Harris Hawks Optimization: A Novel Deep Learning Approach for Arabic Sign Language Recognition,\" in 2024 International Conference on Computer and Applications (ICCA), 2024. DOI: 10.1109/ICCA62237.2024.10928112",
+    "url": "https://ieeexplore.ieee.org/document/10928112/",
+    "pdf_sha256": "b0c54b9bdb123ac278d3317418c6fcb888ab99a1b7f8b312aabc2629d008de3c",
+    "accessed_at": "2026-08-30"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://ieeexplore.ieee.org/document/10928112/",
+      "revision_or_sha256": "b0c54b9bdb123ac278d3317418c6fcb888ab99a1b7f8b312aabc2629d008de3c",
+      "role": "Target values and disclosed protocol (Table II, Table I, Section III, Discussion)"
+    },
+    {
+      "source_id": "arasl2018-huggingface",
+      "kind": "dataset",
+      "url": "https://huggingface.co/datasets/pain/ArASL_Database_Grayscale",
+      "revision_or_sha256": "114709884276379a01e0722d71cd590c8ad3a05d",
+      "role": "Hugging Face mirror of the paper's cited ArASL2018 corpus, used to populate the shared Modal dataset Volume"
+    },
+    {
+      "source_id": "arasl2018-mendeley-original",
+      "kind": "dataset",
+      "url": "https://data.mendeley.com/datasets/y7pckrw6z2/1",
+      "revision_or_sha256": "not re-downloaded; identity verified indirectly (see datasets[].notes)",
+      "role": "Authoritative original ArASL2018 release cited by the paper's Data in Brief reference"
+    }
+  ],
+  "status": {
+    "pipeline": "complete",
+    "numerical_agreement": "not_fully_reproduced",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "arasl2018-grayscale",
+      "name": "ArASL2018 / Arabic Alphabets Sign Language Dataset",
+      "version_or_subset": "Hugging Face snapshot pain/ArASL_Database_Grayscale (single 'train' split; parquet), revision 114709884276379a01e0722d71cd590c8ad3a05d",
+      "license_or_permission": "CC BY 4.0 (Hugging Face dataset card); underlying corpus is Latif, Mohammad, Alghazo, AlKhalaf & AlKhalaf, \"ArASL: Arabic Alphabets Sign Language Dataset,\" Data in Brief 23:103777, 2019, released 'publicly available and free for all researchers.' Permits this project-cloud training run.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "arasl-database-grayscale",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 54049,
+          "files": [
+            {
+              "path": "data/train-00000-of-00001-aa6a48ea2f282316.parquet",
+              "sha256": "7c6d9b276f5960bf9fb0efc99c7df3d3854b0690101751f74ab30d68a125d3a3"
+            }
+          ]
+        }
+      ],
+      "notes": "The single 54,049-image/32-class 'train' split is repartitioned into the paper's own 64/16/20 stratified train/validation/test split at run time (Algorithm 1); there is no author-published test split to match. Identity check: exact 54,049 total and exact 32-class label set independently match both the paper's stated dataset size and the Data in Brief description; native per-image resolution is 64x64 grayscale for 53,401/54,049 rows, with 648 rows (1.2%) natively 256x256 or 768x1024 (10 of those RGB) -- consistent with the original corpus's reported per-image dimension variation, and handled by the paper's own resize-to-64x64 preprocessing step rather than being a data-integrity problem. The paper cites two Mendeley listings for what states the same 54,049-image/32-class corpus (refs [18] DOI 10.17632/6y5dwtrdth.1 and [19] Data in Brief 10.1016/j.dib.2019.103777); this Hugging Face mirror's homepage points to the [19] listing (data.mendeley.com/datasets/y7pckrw6z2/1). The Mendeley original was not independently re-downloaded because the mirror's exact sample/class counts and per-image characteristics already establish dataset identity."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Test accuracy",
+      "direction": "higher_is_better",
+      "implementation": "argmax(softmax output) equality against the integer label, over the held-out test split",
+      "version": "tensorflow 2.17.0 / numpy",
+      "aggregation": "correct predictions / total test examples",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "macro-precision",
+      "name": "Macro-averaged precision",
+      "direction": "higher_is_better",
+      "implementation": "sklearn.metrics.precision_recall_fscore_support(average='macro')",
+      "version": "scikit-learn 1.5.2",
+      "aggregation": "unweighted mean of per-class precision over all 32 classes",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "macro-recall",
+      "name": "Macro-averaged recall",
+      "direction": "higher_is_better",
+      "implementation": "sklearn.metrics.precision_recall_fscore_support(average='macro')",
+      "version": "scikit-learn 1.5.2",
+      "aggregation": "unweighted mean of per-class recall over all 32 classes",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "macro-f1",
+      "name": "Macro-averaged F1",
+      "direction": "higher_is_better",
+      "implementation": "sklearn.metrics.precision_recall_fscore_support(average='macro')",
+      "version": "scikit-learn 1.5.2",
+      "aggregation": "unweighted mean of per-class F1 over all 32 classes",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "cnn",
+      "system": "Baseline CNN: 3 Conv(32/64/128, 3x3, ReLU) blocks each with MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout(0.5), Dense(32, softmax); optimizer not stated in paper, Adam used (documented default)",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (30 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.1, Fig. 2, Table II CNN row"
+    },
+    {
+      "experiment_id": "cnn-hho",
+      "system": "Baseline CNN architecture with Harris Hawks Optimization tuning learning rate, batch size, conv filter count, and dropout rate to maximize validation accuracy, then a fixed final retrain",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (5 per Table II) of the HHO-selected configuration; no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.6, Fig. 7, Table II CNN-HHO row"
+    },
+    {
+      "experiment_id": "efficientnet-b0",
+      "system": "ImageNet-pretrained EfficientNet-B0 (frozen backbone), input resized to 224x224x3, GlobalMaxPooling, Dense(256, ReLU), Dropout(0.6), Dense(32, softmax); Adamax, lr=0.001",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (70 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.2, Figs. 3-4, Table II EfficientNet-B0 row"
+    },
+    {
+      "experiment_id": "efficientnet-b3",
+      "system": "ImageNet-pretrained EfficientNet-B3 (frozen backbone), same head/optimizer recipe as EfficientNet-B0 (paper describes B0 and B3 together)",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (84 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.2, Table II EfficientNet-B3 row"
+    },
+    {
+      "experiment_id": "resnet50",
+      "system": "ImageNet-pretrained ResNet50 (frozen backbone), Flatten, Dropout, Dense(32, softmax); Adamax",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (60 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.3, Fig. 5, Table II ResNet50 row"
+    },
+    {
+      "experiment_id": "densenet201",
+      "system": "ImageNet-pretrained DenseNet201 (frozen backbone), Flatten, Dropout(0.8), Dense(32, softmax); Adamax",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (150 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.4, Table II DenseNet201 row"
+    },
+    {
+      "experiment_id": "densenet121",
+      "system": "ImageNet-pretrained DenseNet121 (frozen backbone), MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout, Dense(32, softmax [paper states sigmoid; overridden, see deviations]); Adam",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (12 per Table II); no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.5, Fig. 6, Table II DenseNet121 row"
+    },
+    {
+      "experiment_id": "densenet121-hho",
+      "system": "DenseNet121 architecture (as above) with Harris Hawks Optimization tuning learning rate, batch size, and dropout rate to maximize validation accuracy, then a fixed final retrain",
+      "dataset_id": "arasl2018-grayscale",
+      "required_seeds": [
+        42
+      ],
+      "checkpoint_rule": "Report the fixed final epoch (5 per Table II) of the HHO-selected configuration; no best-checkpoint selection",
+      "paper_evidence": "Paper \u00a7III.B.7, Figs. 8-9, Table II DenseNet121-HHO row; Abstract; Discussion"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "cnn-test-accuracy",
+      "paper_location": "Table II, row \"CNN\", column \"Test Accuracy (%)\"",
+      "experiment_id": "cnn",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.7,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.2812,
+        "difference": -2.4188,
+        "run_ids": [
+          "cnn-full"
+        ],
+        "artifact_ids": [
+          "cnn-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-precision",
+      "paper_location": "Table II, row \"CNN\", column \"Precision (%)\"",
+      "experiment_id": "cnn",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 94.05,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.5676,
+        "difference": 2.5176,
+        "run_ids": [
+          "cnn-full"
+        ],
+        "artifact_ids": [
+          "cnn-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-recall",
+      "paper_location": "Table II, row \"CNN\", column \"Recall (%)\"",
+      "experiment_id": "cnn",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 91.53,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.2792,
+        "difference": 4.7492,
+        "run_ids": [
+          "cnn-full"
+        ],
+        "artifact_ids": [
+          "cnn-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-f1",
+      "paper_location": "Table II, row \"CNN\", column \"F1-Score (%)\"",
+      "experiment_id": "cnn",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 92.77,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.3588,
+        "difference": 3.5888,
+        "run_ids": [
+          "cnn-full"
+        ],
+        "artifact_ids": [
+          "cnn-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-hho-test-accuracy",
+      "paper_location": "Table II, row \"CNN-HHO\", column \"Test Accuracy (%)\"",
+      "experiment_id": "cnn-hho",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.87,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.3173,
+        "difference": -11.5527,
+        "run_ids": [
+          "cnn-hho-full"
+        ],
+        "artifact_ids": [
+          "cnn-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-hho-precision",
+      "paper_location": "Table II, row \"CNN-HHO\", column \"Precision (%)\"",
+      "experiment_id": "cnn-hho",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 95.25,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 88.4004,
+        "difference": -6.8496,
+        "run_ids": [
+          "cnn-hho-full"
+        ],
+        "artifact_ids": [
+          "cnn-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-hho-recall",
+      "paper_location": "Table II, row \"CNN-HHO\", column \"Recall (%)\"",
+      "experiment_id": "cnn-hho",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 93.46,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.4861,
+        "difference": -5.9739,
+        "run_ids": [
+          "cnn-hho-full"
+        ],
+        "artifact_ids": [
+          "cnn-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "cnn-hho-f1",
+      "paper_location": "Table II, row \"CNN-HHO\", column \"F1-Score (%)\"",
+      "experiment_id": "cnn-hho",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 94.25,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.3792,
+        "difference": -6.8708,
+        "run_ids": [
+          "cnn-hho-full"
+        ],
+        "artifact_ids": [
+          "cnn-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b0-test-accuracy",
+      "paper_location": "Table II, row \"EfficientNet-B0\", column \"Test Accuracy (%)\"",
+      "experiment_id": "efficientnet-b0",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.13,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.0916,
+        "difference": -8.0384,
+        "run_ids": [
+          "efficientnet-b0-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b0-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b0-precision",
+      "paper_location": "Table II, row \"EfficientNet-B0\", column \"Precision (%)\"",
+      "experiment_id": "efficientnet-b0",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.54,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.5387,
+        "difference": -7.0013,
+        "run_ids": [
+          "efficientnet-b0-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b0-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b0-recall",
+      "paper_location": "Table II, row \"EfficientNet-B0\", column \"Recall (%)\"",
+      "experiment_id": "efficientnet-b0",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.0,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 90.9363,
+        "difference": -7.0637,
+        "run_ids": [
+          "efficientnet-b0-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b0-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b0-f1",
+      "paper_location": "Table II, row \"EfficientNet-B0\", column \"F1-Score (%)\"",
+      "experiment_id": "efficientnet-b0",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.27,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 90.9744,
+        "difference": -7.2956,
+        "run_ids": [
+          "efficientnet-b0-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b0-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b3-test-accuracy",
+      "paper_location": "Table II, row \"EfficientNet-B3\", column \"Test Accuracy (%)\"",
+      "experiment_id": "efficientnet-b3",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.17,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 86.8548,
+        "difference": -12.3152,
+        "run_ids": [
+          "efficientnet-b3-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b3-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b3-precision",
+      "paper_location": "Table II, row \"EfficientNet-B3\", column \"Precision (%)\"",
+      "experiment_id": "efficientnet-b3",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 97.07,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.6681,
+        "difference": -9.4019,
+        "run_ids": [
+          "efficientnet-b3-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b3-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b3-recall",
+      "paper_location": "Table II, row \"EfficientNet-B3\", column \"Recall (%)\"",
+      "experiment_id": "efficientnet-b3",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 96.67,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 86.9055,
+        "difference": -9.7645,
+        "run_ids": [
+          "efficientnet-b3-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b3-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "efficientnet-b3-f1",
+      "paper_location": "Table II, row \"EfficientNet-B3\", column \"F1-Score (%)\"",
+      "experiment_id": "efficientnet-b3",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 96.61,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.1015,
+        "difference": -9.5085,
+        "run_ids": [
+          "efficientnet-b3-full"
+        ],
+        "artifact_ids": [
+          "efficientnet-b3-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "resnet50-test-accuracy",
+      "paper_location": "Table II, row \"ResNet50\", column \"Test Accuracy (%)\"",
+      "experiment_id": "resnet50",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.16,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.0916,
+        "difference": -18.0684,
+        "run_ids": [
+          "resnet50-full"
+        ],
+        "artifact_ids": [
+          "resnet50-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "resnet50-precision",
+      "paper_location": "Table II, row \"ResNet50\", column \"Precision (%)\"",
+      "experiment_id": "resnet50",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 97.68,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 83.3427,
+        "difference": -14.3373,
+        "run_ids": [
+          "resnet50-full"
+        ],
+        "artifact_ids": [
+          "resnet50-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "resnet50-recall",
+      "paper_location": "Table II, row \"ResNet50\", column \"Recall (%)\"",
+      "experiment_id": "resnet50",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 96.46,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.2719,
+        "difference": -15.1881,
+        "run_ids": [
+          "resnet50-full"
+        ],
+        "artifact_ids": [
+          "resnet50-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "resnet50-f1",
+      "paper_location": "Table II, row \"ResNet50\", column \"F1-Score (%)\"",
+      "experiment_id": "resnet50",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 96.91,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 80.8572,
+        "difference": -16.0528,
+        "run_ids": [
+          "resnet50-full"
+        ],
+        "artifact_ids": [
+          "resnet50-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet201-test-accuracy",
+      "paper_location": "Table II, row \"DenseNet201\", column \"Test Accuracy (%)\"",
+      "experiment_id": "densenet201",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.21,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 70.7216,
+        "difference": -28.4884,
+        "run_ids": [
+          "densenet201-full"
+        ],
+        "artifact_ids": [
+          "densenet201-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet201-precision",
+      "paper_location": "Table II, row \"DenseNet201\", column \"Precision (%)\"",
+      "experiment_id": "densenet201",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.12,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 75.4435,
+        "difference": -22.6765,
+        "run_ids": [
+          "densenet201-full"
+        ],
+        "artifact_ids": [
+          "densenet201-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet201-recall",
+      "paper_location": "Table II, row \"DenseNet201\", column \"Recall (%)\"",
+      "experiment_id": "densenet201",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 97.71,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 70.5682,
+        "difference": -27.1418,
+        "run_ids": [
+          "densenet201-full"
+        ],
+        "artifact_ids": [
+          "densenet201-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet201-f1",
+      "paper_location": "Table II, row \"DenseNet201\", column \"F1-Score (%)\"",
+      "experiment_id": "densenet201",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 97.77,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 70.0747,
+        "difference": -27.6953,
+        "run_ids": [
+          "densenet201-full"
+        ],
+        "artifact_ids": [
+          "densenet201-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-test-accuracy",
+      "paper_location": "Table II, row \"DenseNet121\", column \"Test Accuracy (%)\"",
+      "experiment_id": "densenet121",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.79,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 85.7354,
+        "difference": -14.0546,
+        "run_ids": [
+          "densenet121-full"
+        ],
+        "artifact_ids": [
+          "densenet121-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-precision",
+      "paper_location": "Table II, row \"DenseNet121\", column \"Precision (%)\"",
+      "experiment_id": "densenet121",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.51,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 86.47,
+        "difference": -12.04,
+        "run_ids": [
+          "densenet121-full"
+        ],
+        "artifact_ids": [
+          "densenet121-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-recall",
+      "paper_location": "Table II, row \"DenseNet121\", column \"Recall (%)\"",
+      "experiment_id": "densenet121",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.97,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 85.5385,
+        "difference": -14.4315,
+        "run_ids": [
+          "densenet121-full"
+        ],
+        "artifact_ids": [
+          "densenet121-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-f1",
+      "paper_location": "Table II, row \"DenseNet121\", column \"F1-Score (%)\"",
+      "experiment_id": "densenet121",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 98.57,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 85.6733,
+        "difference": -12.8967,
+        "run_ids": [
+          "densenet121-full"
+        ],
+        "artifact_ids": [
+          "densenet121-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-hho-test-accuracy",
+      "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Test Accuracy (%)\"",
+      "experiment_id": "densenet121-hho",
+      "metric_id": "accuracy",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.79,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.4339,
+        "difference": -18.3561,
+        "run_ids": [
+          "densenet121-hho-full"
+        ],
+        "artifact_ids": [
+          "densenet121-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-hho-precision",
+      "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Precision (%)\"",
+      "experiment_id": "densenet121-hho",
+      "metric_id": "macro-precision",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.39,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 82.6372,
+        "difference": -16.7528,
+        "run_ids": [
+          "densenet121-hho-full"
+        ],
+        "artifact_ids": [
+          "densenet121-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-hho-recall",
+      "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Recall (%)\"",
+      "experiment_id": "densenet121-hho",
+      "metric_id": "macro-recall",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.95,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.3273,
+        "difference": -18.6227,
+        "run_ids": [
+          "densenet121-hho-full"
+        ],
+        "artifact_ids": [
+          "densenet121-hho-run-json"
+        ]
+      }
+    },
+    {
+      "target_id": "densenet121-hho-f1",
+      "paper_location": "Table II, row \"DenseNet121-HHO\", column \"F1-Score (%)\"",
+      "experiment_id": "densenet121-hho",
+      "metric_id": "macro-f1",
+      "split": "Paper-specified stratified 20% test split (Algorithm 1); exact held-out indices are not published, so this attempt's own seed-42 stratified split is used",
+      "original_value": 99.22,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.2037,
+        "difference": -18.0163,
+        "run_ids": [
+          "densenet121-hho-full"
+        ],
+        "artifact_ids": [
+          "densenet121-hho-run-json"
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "cnn-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model cnn",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:07Z",
+      "finished_at_utc": "2026-08-30T06:27:07Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cnn-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 30 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "cnn-run-json",
+        "cnn-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-K6CxkuW4iMNIYNwYaM9LJT",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "cnn-hho-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model cnn-hho",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:03:49Z",
+      "finished_at_utc": "2026-08-30T06:22:48Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cnn-hho-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:03:37Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 5 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "cnn-hho-run-json",
+        "cnn-hho-metrics-jsonl",
+        "cnn-hho-hho-search-json"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-ajwUKiKnHguHYyQlNjTRwK",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "efficientnet-b0-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model efficientnet-b0",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:09Z",
+      "finished_at_utc": "2026-08-30T06:48:32Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "efficientnet-b0-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 70 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "efficientnet-b0-run-json",
+        "efficientnet-b0-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-Amnqe2zxHkEtEfxFZz9iig",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "efficientnet-b3-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model efficientnet-b3",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:10Z",
+      "finished_at_utc": "2026-08-30T07:18:17Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "efficientnet-b3-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 84 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "efficientnet-b3-run-json",
+        "efficientnet-b3-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-2aQAb7ptlpfN1NJsgmmxiC",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "resnet50-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model resnet50",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:11Z",
+      "finished_at_utc": "2026-08-30T06:33:12Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "resnet50-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 60 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "resnet50-run-json",
+        "resnet50-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-L0OoR0UFkFI2rzkymBKcKc",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "densenet201-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model densenet201",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:13Z",
+      "finished_at_utc": "2026-08-30T07:07:43Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "densenet201-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 150 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "densenet201-run-json",
+        "densenet201-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-bcng5McXkGeEcCOiznJR45",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "densenet121-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model densenet121",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:14Z",
+      "finished_at_utc": "2026-08-30T06:27:52Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "densenet121-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 12 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "densenet121-run-json",
+        "densenet121-metrics-jsonl"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-bsPDq91XaYCKr1C1naRuRl",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "densenet121-hho-full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model densenet121-hho",
+      "exit_code": 0,
+      "started_at_utc": "2026-08-30T06:23:15Z",
+      "finished_at_utc": "2026-08-30T07:12:27Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "densenet121-hho-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-08-30T06:20:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training completed all 5 epochs and evaluation emitted val/test accuracy, precision, recall, and F1.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "densenet121-hho-run-json",
+        "densenet121-hho-metrics-jsonl",
+        "densenet121-hho-hho-search-json"
+      ],
+      "source_revision": "reproduction repo working tree (see git log for papers/mohamed-2024-densenet121-hho)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-T1STpdAZ97XFGfgadV5ufV",
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "cnn-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn/run.json",
+      "sha256": "46c0658cc098cd4f7039e1c676b02a303300ccea01057f0d00615ac0b78937b0",
+      "size_bytes": 646
+    },
+    {
+      "artifact_id": "cnn-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn/metrics.jsonl",
+      "sha256": "0ef8e35b83e09000370413270eeab7aada45a38324a254116ed7bf62a11f6947",
+      "size_bytes": 5170
+    },
+    {
+      "artifact_id": "cnn-hho-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho/run.json",
+      "sha256": "3445d9a5746eb1d992bf3f349bf845389e8b68dd2735b1afc079e88a194221df",
+      "size_bytes": 645
+    },
+    {
+      "artifact_id": "cnn-hho-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho/metrics.jsonl",
+      "sha256": "16c6a028fd4d7e28a1470eb49e2a61abf2f9893a0357347c928b5ee901968837",
+      "size_bytes": 854
+    },
+    {
+      "artifact_id": "cnn-hho-hho-search-json",
+      "kind": "run_manifest",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho/hho_search.json",
+      "sha256": "22bd09adce746b506c0a18fe5d7e854629b4cb3e68da1d1f8ec588fe6b05611c",
+      "size_bytes": 1412
+    },
+    {
+      "artifact_id": "efficientnet-b0-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/efficientnet-b0/run.json",
+      "sha256": "99237b4b969a11871ae18e1e36b98944b0deb59ca680d9e20e77104fc7ef8fae",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "efficientnet-b0-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/efficientnet-b0/metrics.jsonl",
+      "sha256": "d15d52f00d69485f1438c50887a17ab3e1b13f7d748953f3ed952da298b432b1",
+      "size_bytes": 12074
+    },
+    {
+      "artifact_id": "efficientnet-b3-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/efficientnet-b3/run.json",
+      "sha256": "e9e2cb32b74dfd3a8b51f61de4d9263453548b8b7e1e89420d195629dbdc4435",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "efficientnet-b3-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/efficientnet-b3/metrics.jsonl",
+      "sha256": "f9f41a649c1d57c0dc11b22c24de31627d948dc08edd7425aa722db4890e062a",
+      "size_bytes": 14420
+    },
+    {
+      "artifact_id": "resnet50-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/resnet50/run.json",
+      "sha256": "a8819b3650de2e5c65729e008c53ce1b947673ff996e25e1997b33f7f59bacf9",
+      "size_bytes": 646
+    },
+    {
+      "artifact_id": "resnet50-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/resnet50/metrics.jsonl",
+      "sha256": "86365e4867c9a4ebf6795504504f291520c32f679ef49b58b4b57269c9d0bbf7",
+      "size_bytes": 10273
+    },
+    {
+      "artifact_id": "densenet201-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet201/run.json",
+      "sha256": "0aebe3834b9bfdeaf80fbe111707597b90e8d0fbe5e669f6aa52ac4e6bb7cb5f",
+      "size_bytes": 652
+    },
+    {
+      "artifact_id": "densenet201-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet201/metrics.jsonl",
+      "sha256": "b7ab38e1518d1ced7f7572557c0cb2d3c9576f84c67efaafa260d214d21af1ea",
+      "size_bytes": 25892
+    },
+    {
+      "artifact_id": "densenet121-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121/run.json",
+      "sha256": "fc3fa2239089f932b8d54bc3a34a17362038cf7ae6114425441d46027a1ae452",
+      "size_bytes": 650
+    },
+    {
+      "artifact_id": "densenet121-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121/metrics.jsonl",
+      "sha256": "fc6c605c67191cc39085073351073b61feef7faa14878b53accf1e4c3da4e8c2",
+      "size_bytes": 2059
+    },
+    {
+      "artifact_id": "densenet121-hho-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121-hho/run.json",
+      "sha256": "efe77a90a7b3035fc31926d8f8c0f2ad949e4b066ed613485b255bb5d023a152",
+      "size_bytes": 685
+    },
+    {
+      "artifact_id": "densenet121-hho-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121-hho/metrics.jsonl",
+      "sha256": "897e48c637b2b46eeae265c4f100f17c0352e5d608d31a383d1c9b3fb1ff63ea",
+      "size_bytes": 854
+    },
+    {
+      "artifact_id": "densenet121-hho-hho-search-json",
+      "kind": "run_manifest",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121-hho/hho_search.json",
+      "sha256": "a15065d1da97f4c38daac2641f701ebaca01bc3c4d10c755b24c3a05015c4136",
+      "size_bytes": 1358
+    }
+  ],
+  "gates": []
+}
