@@ -1,6 +1,6 @@
 # DenseNet121 with Harris Hawks Optimization (ArSL recognition) reproduction
 
-**Paper ID:** `mohamed-2024-densenet121-hho`
+**Paper ID:** `e13b83983c37b44c5b555743fffd4d6cec545e4f`
 
 **Citation:** S. N. Mohamed, H. Hussein, and M. S. Elgamel, "DenseNet121 with Harris Hawks Optimization: A Novel Deep Learning Approach for Arabic Sign Language Recognition," in *2024 International Conference on Computer and Applications (ICCA)*, 2024. DOI: [10.1109/ICCA62237.2024.10928112](https://ieeexplore.ieee.org/document/10928112/)
 
