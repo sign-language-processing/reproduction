@@ -55,12 +55,14 @@ terminal run classification or tuning toward the paper.
 Each target embeds one terminal `result` using the schema in
 [stopping-criteria.md](stopping-criteria.md):
 
-- `produced`: the requested pipeline emitted a traceable value; or
-- `not_produced`: no value was emitted, with a controlled reason code, specific detail, and evidence.
+- `produced`: a sufficiently specified implementation of the requested pipeline emitted a traceable, comparable value; or
+- `not_produced`: no comparable value was emitted, with a controlled reason code, specific detail, and evidence.
 
-Do not use numerical closeness to assign these states. Store the reproduced value, mechanically computed delta, run IDs, and artifact IDs beside the target contract without repeating the target in another file.
+Set each target's `in_scope` field before running it. Copied comparison rows may remain in the target ledger with `in_scope: false` when the assignment requires accounting for the whole table but does not require rerunning prior work. Only `in_scope: true` targets determine pipeline coverage.
 
-Choose the overall reproducibility status from target coverage and the actual blocker:
+Do not use numerical closeness to assign target states. If a split, aggregation, feature-reduction rule, or other behavior-changing protocol detail is unresolved, a run using an invented choice is conditional evidence, not a produced target result—even when its number is close to the paper. Preserve the conditional run, artifact, observed value, and difference in the evidence ledger and README. Store comparable reproduced values, mechanically computed deltas, run IDs, and artifact IDs beside the target contract without repeating the target in another file.
+
+Choose `status.pipeline` from in-scope target coverage and the actual blocker:
 
 - all targets produced → `complete`;
 - only some produced → `partial`;
@@ -70,6 +72,14 @@ Choose the overall reproducibility status from target coverage and the actual bl
 - none produced because essential target/protocol details remain unknowable → `insufficient_information`.
 
 If multiple blockers exist, report all and choose the earliest blocker that independently prevents the requested target pipeline. Explain the choice.
+
+Choose `status.numerical_agreement` only after target eligibility is settled:
+
+- no in-scope targets produced → `not_assessed`;
+- at least one comparable target produced and the assessed values agree under the documented basis → `agrees`;
+- at least one comparable target produced and any assessed value does not agree under the documented basis → `does_not_agree`.
+
+Record that basis in `status.numerical_agreement_basis`, including the assessed target scope and any tolerance, reported precision, uncertainty, or reviewer judgment used. Numerical agreement summarizes values, not protocol fidelity or overall reproducibility.
 
 ## Final consistency checks
 

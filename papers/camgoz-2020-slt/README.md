@@ -15,9 +15,9 @@ datasets:
 
 **Preference level:** 1
 
-**Status:** `complete`
+**Pipeline status:** `complete`
 
-**Numerical agreement:** not fully reproduced
+**Numerical agreement:** `does_not_agree` — all four comparable targets differ from the paper by 2.5840 to 20.2533 points.
 
 **Attempt date:** 2026-08-20
 
@@ -25,7 +25,7 @@ datasets:
 
 This reproduces the authors' supplied joint Sign2(Gloss+Text) configuration, with recognition and translation loss weights both equal to 1. It corresponds to the lambda_R=1, lambda_T=1 row of Table 4: dev WER/BLEU-4 35.13/21.73 and test WER/BLEU-4 33.75/21.22. The published config's seed 42 and development-set checkpoint/search selection are used.
 
-All four target metrics were produced, so the pipeline status is `complete`. The values remain below the paper and are therefore not a full numerical reproduction; the approximately 19 BLEU result is accepted as done.
+All four target metrics were produced, so the pipeline status is `complete`. Their values do not numerically agree with the paper; the approximately 19 BLEU result is accepted as done.
 
 ## Source provenance
 

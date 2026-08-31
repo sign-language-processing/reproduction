@@ -8,7 +8,9 @@
 
 **Preference level:** <1, 2, or 3>
 
-**Status:** `<reproducibility_status>`
+**Pipeline status:** `<pipeline_status>`
+
+**Numerical agreement:** `<agrees, does_not_agree, or not_assessed>` — <assessment basis>
 
 **Attempt date:** <date>
 
@@ -36,7 +38,7 @@ Account for every target, including numbers not produced. State which original s
 
 When no target was produced, state the selected `status.blocker` reason code and why it is the earliest blocker that independently prevents the requested pipeline. Report other blockers separately rather than hiding them behind the selected one.
 
-Pipeline completeness and numerical agreement are separate: report the observed differences without declaring scientific success or failure.
+Pipeline completeness and numerical agreement are separate. Conditional runs with behavior-changing invented choices remain evidence, not produced target values, regardless of numerical closeness. Report all observed differences without declaring scientific success or failure.
 
 ## How to repeat this
 

@@ -22,8 +22,8 @@ PIPELINE_STATUSES = {
     "insufficient_information",
 }
 NUMERICAL_AGREEMENTS = {
-    "fully_reproduced",
-    "not_fully_reproduced",
+    "agrees",
+    "does_not_agree",
     "not_assessed",
 }
 TARGET_STATUSES = {"produced", "not_produced"}
@@ -776,9 +776,16 @@ def validate_targets(
         if experiment.get("dataset_id") not in datasets:
             issues.append(f"experiment {experiment_id!r} references unknown dataset")
     targets = keyed(document.get("targets"), "target_id", "targets", issues)
-    produced = 0
+    in_scope_produced = 0
+    in_scope_total = 0
     for target_id, target in targets.items():
         label = f"target {target_id!r}"
+        in_scope = target.get("in_scope")
+        if not isinstance(in_scope, bool):
+            issues.append(f"{label} needs boolean in_scope")
+            in_scope = True
+        if in_scope:
+            in_scope_total += 1
         for field in ("paper_location", "split"):
             if not nonempty(target.get(field)):
                 issues.append(f"{label} needs {field}")
@@ -796,7 +803,8 @@ def validate_targets(
             issues.append(f"{label} needs a terminal result")
             continue
         if result["status"] == "produced":
-            produced += 1
+            if in_scope:
+                in_scope_produced += 1
             reproduced = result.get("reproduced_value")
             difference = result.get("difference")
             if not finite_number(reproduced) or not finite_number(difference):
@@ -839,7 +847,9 @@ def validate_targets(
             validate_not_produced_result(
                 target_id, target, result, runs, artifacts, gates, issues
             )
-    return produced, len(targets), targets
+    if targets and not in_scope_total:
+        issues.append("targets must contain at least one in-scope target")
+    return in_scope_produced, in_scope_total, targets
 
 
 def validate_not_produced_result(
@@ -976,9 +986,48 @@ def validate_gates(
     return gates, open_gate
 
 
+def validate_status(
+    document: dict[str, Any], produced: int, target_count: int, issues: list[str]
+) -> tuple[dict[str, Any], Any, Any, Any]:
+    status = document.get("status")
+    if not isinstance(status, dict):
+        issues.append("status must be an object")
+        status = {}
+    pipeline = status.get("pipeline")
+    if not valid_choice(pipeline, PIPELINE_STATUSES):
+        issues.append(f"invalid pipeline status {pipeline!r}")
+    numerical_agreement = status.get("numerical_agreement")
+    if not valid_choice(numerical_agreement, NUMERICAL_AGREEMENTS):
+        issues.append(f"invalid numerical_agreement {numerical_agreement!r}")
+    if not nonempty(status.get("numerical_agreement_basis")):
+        issues.append("status.numerical_agreement_basis must be non-empty")
+    preference = status.get("preference_level")
+    if isinstance(preference, bool) or preference not in (1, 2, 3):
+        issues.append("preference_level must be 1, 2, or 3")
+    if target_count and produced == target_count and pipeline != "complete":
+        issues.append("all in-scope targets are produced, so pipeline must be complete")
+    elif 0 < produced < target_count and pipeline != "partial":
+        issues.append("some in-scope targets are produced, so pipeline must be partial")
+    elif produced == 0 and pipeline in {"complete", "partial"}:
+        issues.append(
+            "no in-scope targets are produced, so pipeline must identify the blocker"
+        )
+    if produced == 0 and numerical_agreement != "not_assessed":
+        issues.append(
+            "no in-scope targets are produced, so numerical_agreement must be "
+            "not_assessed"
+        )
+    elif produced > 0 and numerical_agreement == "not_assessed":
+        issues.append(
+            "produced in-scope targets require an agrees/does_not_agree assessment"
+        )
+    return status, pipeline, numerical_agreement, preference
+
+
 def validate_readme(
     root: Path,
     pipeline: Any,
+    numerical_agreement: Any,
     preference: Any,
     issues: list[str],
 ) -> None:
@@ -990,11 +1039,17 @@ def validate_readme(
     if re.search(r"<[^>]+>", text):
         issues.append("README.md still contains angle-bracket placeholders")
     if not re.search(
-        rf"^\*\*Status:\*\*\s+`?{re.escape(str(pipeline))}`?\s*$",
+        rf"^\*\*Pipeline status:\*\*\s+`?{re.escape(str(pipeline))}`?(?:\s+—.*)?$",
         text,
         re.MULTILINE,
     ):
-        issues.append("README.md status does not match reproduction.json")
+        issues.append("README.md pipeline status does not match reproduction.json")
+    if not re.search(
+        rf"^\*\*Numerical agreement:\*\*\s+`?{re.escape(str(numerical_agreement))}`?(?:\s+—.*)?$",
+        text,
+        re.MULTILINE,
+    ):
+        issues.append("README.md numerical agreement does not match reproduction.json")
     if not re.search(
         rf"^\*\*Preference level:\*\*\s+{re.escape(str(preference))}\s*$",
         text,
@@ -1045,6 +1100,10 @@ def validate_status_blocker(
     )
     for target_id in target_ids:
         target = targets[target_id]
+        if target.get("in_scope") is not True:
+            issues.append(
+                f"status.blocker target {target_id!r} must be an in-scope target"
+            )
         result = target.get("result", {})
         reason = result.get("reason")
         target_reason = reason.get("code") if isinstance(reason, dict) else None
@@ -1100,29 +1159,11 @@ def main() -> int:
         gates,
         issues,
     )
-    status = document.get("status")
-    if not isinstance(status, dict):
-        issues.append("status must be an object")
-        status = {}
-    pipeline = status.get("pipeline")
-    if not valid_choice(pipeline, PIPELINE_STATUSES):
-        issues.append(f"invalid pipeline status {pipeline!r}")
-    numerical_agreement = status.get("numerical_agreement")
-    if not valid_choice(numerical_agreement, NUMERICAL_AGREEMENTS):
-        issues.append(f"invalid numerical_agreement {numerical_agreement!r}")
-    preference = status.get("preference_level")
-    if isinstance(preference, bool) or preference not in (1, 2, 3):
-        issues.append("preference_level must be 1, 2, or 3")
-    if target_count and produced == target_count and pipeline != "complete":
-        issues.append("all targets are produced, so pipeline must be complete")
-    elif 0 < produced < target_count and pipeline != "partial":
-        issues.append("some targets are produced, so pipeline must be partial")
-    elif produced == 0 and valid_choice(pipeline, {"complete", "partial"}):
-        issues.append("no targets are produced, so pipeline must identify the blocker")
+    status, pipeline, numerical_agreement, preference = validate_status(
+        document, produced, target_count, issues
+    )
     if target_count == 0:
         issues.append("reproduction must contain at least one target")
-    if produced == 0 and target_count and numerical_agreement != "not_assessed":
-        issues.append("zero-produced status must use not_assessed")
     validate_status_blocker(
         status,
         pipeline,
@@ -1133,7 +1174,7 @@ def main() -> int:
     )
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
-    validate_readme(root, pipeline, preference, issues)
+    validate_readme(root, pipeline, numerical_agreement, preference, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:

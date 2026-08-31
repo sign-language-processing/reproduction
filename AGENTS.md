@@ -177,21 +177,28 @@ A queue ethics flag alone does not automatically block work. Record how it was i
 
 ## Completion status
 
-Record one status consistently in `reproduction.json.status.pipeline` and `README.md`:
+Status has two axes. Never choose between a pipeline status and a numerical-agreement status as though they were alternatives, and never let a close score turn an under-specified conditional experiment into a target result.
 
-- `complete` — the target pipeline ran and produced every requested number;
-- `partial` — the pipeline produced only some requested numbers;
-- `blocked_on_data` — exact required data is unobtainable or unusable under its terms;
-- `blocked_on_compute` — the reviewed compute requirement exceeds the available budget or infrastructure;
-- `blocked_on_code` — no executable pipeline remains after substantial, documented attempts;
-- `insufficient_information` — critical experimental details cannot be responsibly resolved.
+| Field | Question | Values |
+| --- | --- | --- |
+| `status.pipeline` | Did the sufficiently specified, in-scope target pipeline produce the requested numbers? | `complete`, `partial`, `blocked_on_data`, `blocked_on_compute`, `blocked_on_code`, `insufficient_information` |
+| `status.numerical_agreement` | Do the comparable produced values agree with the published values under the stated assessment basis? | `agrees`, `does_not_agree`, `not_assessed` |
 
 When no target is produced, record a structured `status.blocker` whose
 controlled reason code maps to the pipeline status and whose target IDs carry
 the same terminal reason. `complete` and `partial` set `status.blocker` to
 `null`.
 
-Pipeline completeness and numerical agreement are separate. Record `numerical_agreement` as `fully_reproduced`, `not_fully_reproduced`, or `not_assessed`. A complete run may disagree with the paper and still be a fully documented reproduction attempt. Record raw differences; a human reviewer decides the scientific conclusion.
+Derive `status.pipeline` from targets whose `in_scope` field is `true`:
+
+- `complete` — every in-scope target produced a comparable value;
+- `partial` — only some in-scope targets produced comparable values;
+- `blocked_on_data` — none produced because exact required data is unobtainable or unusable under its terms;
+- `blocked_on_compute` — none produced because the reviewed compute requirement exceeds the available budget or infrastructure;
+- `blocked_on_code` — none produced because no executable pipeline remains after substantial, documented attempts;
+- `insufficient_information` — none produced because critical target or protocol details cannot be responsibly resolved.
+
+Set `status.numerical_agreement` to `not_assessed` when no in-scope target produced a comparable value. Otherwise set it to `agrees` or `does_not_agree` and explain the judgment in `status.numerical_agreement_basis`. A material invented split, aggregation, feature reduction, or other behavior-changing choice is conditional evidence: preserve its run and raw numbers, but do not mark the target `produced`. Decide comparability before inspecting closeness. A complete run may disagree with the paper and still be a fully documented reproduction attempt. Record raw differences; a human reviewer decides the scientific conclusion.
 
 ## Evidence and completion contract
 

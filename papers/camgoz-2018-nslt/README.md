@@ -13,9 +13,9 @@ This is a faithful run of the authors' published `neccam/nslt` Luong recipe for 
 
 **Preference level:** 2
 
-**Status:** `complete`
+**Pipeline status:** `complete`
 
-**Numerical agreement:** fully reproduced.
+**Numerical agreement:** `agrees` — both in-scope BLEU-4 values were emitted by the published recipe and were reviewed as agreeing with the paper's integer-rounded values; raw differences are reported below.
 
 The authors' full 150,000-step run completed. Its terminal best-model loop selected checkpoint 118,000 on development BLEU-4 and evaluated that fixed checkpoint on both splits.
 
