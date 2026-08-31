@@ -58,11 +58,14 @@
       "manifest_sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d",
       "archive_sha256": "7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4",
       "counts": {"classes": 29, "images": 87000, "images_per_class": 3000, "training": 69600, "validation": 17400, "augmented_validation": 174000},
-      "classes": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "SPACE", "DELETE", "NOTHING"]
-      ,"splits": [
+      "classes": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "space", "del", "nothing"],
+      "selection": {"manifest_field": "stored_classes", "detail": "The shared manifest's training_classes is a 28-class selection for another study. This paper's 29-class target uses all stored classes."},
+      "splits": [
         {"name": "source", "sample_count": 87000, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
         {"name": "conditional_seeded_training", "sample_count": 69600, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
-        {"name": "conditional_seeded_validation", "sample_count": 17400, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]}
+        {"name": "conditional_seeded_validation", "sample_count": 17400, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "lexicographic_per_class_diagnostic_training", "sample_count": 69600, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "lexicographic_per_class_diagnostic_validation", "sample_count": 17400, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]}
       ]
     }
   ],
@@ -146,11 +149,34 @@
       "observation": "SLR-SVM reached 99.80545977011495% training and 99.78045977011493% augmented-validation accuracy; OCNN-SVM reached 99.6257183908046% and 99.45114942528735%.",
       "hypothesis_supported": true,
       "next_action": "Report the conditional results without attributing missing SVM choices to the authors."
+    },
+    {
+      "run_id": "split-lexicographic-full-20260831T065151Z",
+      "kind": "source_order_split_diagnostic",
+      "hypothesis": "The unexpectedly high validation values are primarily caused by the retained seeded random split rather than another unreported protocol detail.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::train --run-name split-lexicographic-full-20260831T065151Z --split-policy lexicographic_per_class --seed 2026",
+      "started_at_utc": "2026-08-31T06:51:53Z",
+      "finished_at_utc": "2026-08-31T13:06:19Z",
+      "duration_seconds": 22466.0,
+      "exit_code": 0,
+      "recording": {"mode": "contemporaneous", "source_record_sha256": null, "unknown_fields": []},
+      "attempt": {"group_id": "source-order-split", "number": 1, "max_attempts": 1},
+      "stop_policy": {"declared_at_utc": "2026-08-31T06:51:40Z", "max_wall_time_seconds": 43200, "max_gpu_hours": 12.0, "max_cost_chf": 100.0},
+      "terminal": {"state": "succeeded", "reason_code": "completed", "detail": "Both CNNs trained, reloaded their selected checkpoints, and emitted all CNN and ensemble metrics for the one predeclared source-order split diagnostic.", "failure_class": null, "retry_decision": "not_needed", "gate_ids": []},
+      "source": {"repository_commit": "5985e42ed9291c4e7c4bc8d410da42752b8c1eef", "dirty_diff_sha256": null, "upstream_revision": null, "patch_sha256": []},
+      "environment": {"image": "tensorflow/tensorflow:2.15.0-gpu", "base_image_digest": "sha256:206b54412f00b02c0ebaf00f359281c4032a5b97b20a682b04496a29860230a6", "dependency_manifest": "papers/silanon-2023-asl-cnn/modal_app.py", "software": {"tensorflow": "2.15.0", "precision": "fp32"}},
+      "configuration": {"seed": 2026, "split_policy": "lexicographic_per_class", "class_selection": "manifest.stored_classes (29 classes)", "epochs": 10, "batch_size": 128, "reader_threads": 8, "effective_batch_size": 128},
+      "compute": {"platform": "modal", "modal_profile": "repro-sign", "modal_environment": "main", "modal_app_id": "ap-6KKwVA1MAZ010dEWPMKUs7", "modal_function_call_id": "fc-01M1B9DFJ9QNMJ8D13BZ45BMZG", "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-6KKwVA1MAZ010dEWPMKUs7", "hardware": "NVIDIA L4 20833 MiB, compute capability 8.9", "gpu_count": 1, "wall_time_hours": 6.240555555555556, "gpu_hours": 6.240555555555556, "shared_cache": {"modal_volume": "huggingface-cache", "mount_path": "/cache/huggingface", "environment": {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"}}},
+      "artifact_ids": ["split-lexicographic-full-run-json"],
+      "observation": "SLR selected epoch 5 (95.30172348022461% training / 93.28103448275861% validation); OCNN selected epoch 10 (95.65804600715637% / 94.85229885057471%); ensemble augmented-validation accuracy was 96.60574712643678%.",
+      "hypothesis_supported": false,
+      "next_action": "Do not sweep splits or seeds; report that source-order partitioning alone did not explain the validation discrepancy."
     }
   ],
   "artifacts": [
     {"artifact_id": "full-threads-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/full-threads/run.json", "sha256": "d44eb667395866fc68727926d17b443a655f72c6beb7c8a10c3055e32d2746ff", "size_bytes": 4241},
-    {"artifact_id": "svm-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/svm-full/run.json", "sha256": "2f763720f6fd6d8f2bc4859c20190d04f9dceb36390ceb4ff27a1259c5040ed0"}
+    {"artifact_id": "svm-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/svm-full/run.json", "sha256": "2f763720f6fd6d8f2bc4859c20190d04f9dceb36390ceb4ff27a1259c5040ed0"},
+    {"artifact_id": "split-lexicographic-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/split-lexicographic-full-20260831T065151Z/run.json", "sha256": "e4f4614a139653c5f305f34bb505f3caf8d9080cf380dc8a06c3ca8d1e5cbe1e", "size_bytes": 4702}
   ],
   "gates": []
 }
