@@ -269,7 +269,7 @@ def main():
         "paper": "Silanon and Lertchuwongsa (2023), Table III",
         "source_manifest_sha256": sha256(arguments.data_root / "manifest.json"),
         "samples": {"training": len(train_paths), "validation_original": len(validation_paths), "validation_augmented": len(validation_paths) * arguments.validation_augmentations},
-        "class_selection": {"manifest_field": "stored_classes", "classes": classes},
+        "class_selection": {"manifest_field": "stored_classes", "classes": manifest["stored_classes"]},
         "split_policy": arguments.split_policy,
         "seed": arguments.seed,
         "image_size": IMAGE_SIZE,
