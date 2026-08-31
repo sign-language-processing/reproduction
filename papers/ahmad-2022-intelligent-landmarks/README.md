@@ -6,21 +6,21 @@
 
 No author implementation was found after a documented source search.
 
-**Status:** `partial`
-**Numerical agreement:** `not_fully_reproduced`
+**Pipeline status:** `insufficient_information`
+**Numerical agreement:** `not_assessed` — Table III's evaluation protocol is unresolved, so neither conditional value is a comparable target result.
 
 ## Scope and target contract
 
 The confirmed assignment says “TABLE III.” Table III is a comparison table with one `Accuracy (%)` column. Nine rows are copied comparisons, so they are retained in [`reproduction.json`](reproduction.json) but are not reimplemented as part of this paper. The two paper-owned rows are the proposed MediaPipe-landmark + Random Forest method:
 
-| Dataset | Table III system | Paper accuracy | Status |
+| Dataset | Table III system | Paper accuracy | Conditional observation (not a target result) |
 | --- | --- | ---: | --- |
 | ASL Alphabet | Proposed method / Random Forest | 98.68% | 99.17% ± 0.10% (conditional) |
 | ISL-HS | Proposed method / Random Forest | 98.76% | 97.96% ± 0.94% (conditional, video-grouped CV) |
 
 The target paper does not state the Table III split, whether the number is a 10-fold mean or a hold-out result, seed, feature-reduction rule, frame-to-video aggregation, or metric implementation. It reports 10-fold *learning curves*, but does not tie that procedure to the table. Its detailed tables round Random Forest accuracy to `0.987` on both datasets, which cannot uniquely yield Table III's 98.68% and 98.76%. A run with an invented protocol would therefore be a conditional experiment, not a faithful Table III reproduction.
 
-The complete Table III ledger, including the copied baselines and their terminal `not_produced` status, is in [`reproduction.json`](reproduction.json).
+The complete Table III ledger is in [`reproduction.json`](reproduction.json). The nine copied baselines are explicitly out of scope, and both paper-owned rows have terminal `not_produced` results because the missing protocol prevents a valid target comparison.
 
 ## Re-read protocol
 
@@ -133,9 +133,10 @@ The paper contains no code release. Exact-title/method searches across GitHub, Z
 
 ## Remaining faithful limitation
 
-Both paper-owned targets have conditional terminal results, but the Table III
-protocol gate remains open. An author-provided split, aggregation rule,
-reduction configuration, or seed could turn these into stricter reproductions.
+Both paper-owned targets have conditional observations, but neither has a
+comparable terminal target result and the Table III protocol gate remains open.
+An author-provided split, aggregation rule, reduction configuration, or seed
+could make a target-level numerical assessment possible.
 
 The structured run policies were backfilled from the pre-migration report
 (whose SHA-256 is retained in `reproduction.json`). Committed two-hour/eight-hour

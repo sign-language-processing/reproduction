@@ -6,8 +6,8 @@
 
 Clean-room implementation; no author code was found.
 
-**Status:** `insufficient_information`
-**Numerical agreement:** `not_assessed`
+**Pipeline status:** `insufficient_information`
+**Numerical agreement:** `not_assessed` — no comparable target value exists because the paper's signer split is unresolved.
 
 ## Target
 
