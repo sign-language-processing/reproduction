@@ -24,25 +24,33 @@ def output_path(name: str) -> Path:
 
 
 @app.function(image=image, gpu="L4", cpu=8, timeout=2 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def preflight(run_name: str = "preflight") -> dict:
+def preflight(
+    run_name: str = "preflight",
+    split_policy: str = "stratified_random",
+    seed: int = 2026,
+) -> dict:
     output = output_path(run_name)
     if output.exists():
         raise FileExistsError("preflight output exists; retain it rather than overwrite evidence")
     import subprocess
 
-    subprocess.run(["python", "/app/train.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output), "--limit-per-class", "10", "--validation-augmentations", "2"], check=True)
+    subprocess.run(["python", "/app/train.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output), "--limit-per-class", "10", "--validation-augmentations", "2", "--split-policy", split_policy, "--seed", str(seed)], check=True)
     results.commit()
     return json.loads((output / "run.json").read_text())
 
 
 @app.function(image=image, gpu="L4", cpu=8, timeout=12 * 60 * 60, volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results}, env=ENV)
-def train(run_name: str = "train") -> dict:
+def train(
+    run_name: str = "train",
+    split_policy: str = "stratified_random",
+    seed: int = 2026,
+) -> dict:
     output = output_path(run_name)
     if output.exists():
         raise FileExistsError("full output exists; retain it rather than overwrite evidence")
     import subprocess
 
-    subprocess.run(["python", "/app/train.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output)], check=True)
+    subprocess.run(["python", "/app/train.py", "--data-root", "/datasets/asl-alphabet", "--output-dir", str(output), "--split-policy", split_policy, "--seed", str(seed)], check=True)
     results.commit()
     return json.loads((output / "run.json").read_text())
 

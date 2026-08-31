@@ -20,6 +20,7 @@ import tensorflow as tf
 
 
 SEED = 2026
+SPLIT_POLICIES = ("stratified_random", "lexicographic_per_class")
 IMAGE_SIZE = (64, 64)  # SLRNet-8's published input resolution.
 CLASS_COUNT = 29
 EPOCHS = 10  # Figures 5 and 6 plot exactly ten training epochs.
@@ -109,8 +110,26 @@ class AugmentedImages(tf.keras.utils.Sequence):
         return images, targets
 
 
-def indexed_data(data_root: Path, limit_per_class: int | None):
+def indexed_data(
+    data_root: Path,
+    limit_per_class: int | None,
+    *,
+    split_policy: str = "stratified_random",
+    seed: int = SEED,
+):
+    """Return the paper's 80:20 class-stratified image split.
+
+    Section IV.B says only that the split is random.  ``stratified_random``
+    is therefore the retained conditional protocol.  The source-order option
+    is a single, named diagnostic for an otherwise undocumented split file;
+    it is not an alternative claimed author protocol.
+    """
+    if split_policy not in SPLIT_POLICIES:
+        raise ValueError(f"unknown split policy {split_policy!r}")
     manifest = json.loads((data_root / "manifest.json").read_text(encoding="utf-8"))
+    # The shared manifest retains a 28-class selection for another study.
+    # This Table III target explicitly uses the physical 29-class release, so
+    # select its stored classes rather than inheriting that other study's list.
     classes = manifest["stored_classes"]
     if len(classes) != CLASS_COUNT:
         raise ValueError(f"expected {CLASS_COUNT} stored classes, got {len(classes)}")
@@ -124,12 +143,13 @@ def indexed_data(data_root: Path, limit_per_class: int | None):
             samples = samples[:limit_per_class]
         paths.extend(str(path) for path in samples)
         labels.extend([label] * len(samples))
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(seed)
     paths, labels = np.asarray(paths), np.asarray(labels)
     train, validation = [], []
     for label in range(CLASS_COUNT):
         indices = np.flatnonzero(labels == label)
-        rng.shuffle(indices)
+        if split_policy == "stratified_random":
+            rng.shuffle(indices)
         split = int(len(indices) * 0.8)
         train.extend(indices[:split])
         validation.extend(indices[split:])
@@ -222,17 +242,24 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--limit-per-class", type=int)
     parser.add_argument("--validation-augmentations", type=int, default=VALIDATION_AUGMENTATIONS)
+    parser.add_argument("--split-policy", choices=SPLIT_POLICIES, default="stratified_random")
+    parser.add_argument("--seed", type=int, default=SEED)
     arguments = parser.parse_args()
     if arguments.output_dir.exists():
         raise FileExistsError(f"refusing to overwrite evidence: {arguments.output_dir}")
     if arguments.limit_per_class is not None and arguments.limit_per_class < 5:
         raise ValueError("limit-per-class must allow a nonempty 80:20 split")
-    random.seed(SEED)
-    np.random.seed(SEED)
-    tf.keras.utils.set_random_seed(SEED)
-    (train_paths, train_labels), (validation_paths, validation_labels), manifest = indexed_data(arguments.data_root, arguments.limit_per_class)
-    train_data = AugmentedImages(train_paths, train_labels, batch_size=BATCH_SIZE, repeats=1, shuffle=True, seed=SEED)
-    validation_data = AugmentedImages(validation_paths, validation_labels, batch_size=BATCH_SIZE, repeats=arguments.validation_augmentations, shuffle=False, seed=SEED)
+    random.seed(arguments.seed)
+    np.random.seed(arguments.seed)
+    tf.keras.utils.set_random_seed(arguments.seed)
+    (train_paths, train_labels), (validation_paths, validation_labels), manifest = indexed_data(
+        arguments.data_root,
+        arguments.limit_per_class,
+        split_policy=arguments.split_policy,
+        seed=arguments.seed,
+    )
+    train_data = AugmentedImages(train_paths, train_labels, batch_size=BATCH_SIZE, repeats=1, shuffle=True, seed=arguments.seed)
+    validation_data = AugmentedImages(validation_paths, validation_labels, batch_size=BATCH_SIZE, repeats=arguments.validation_augmentations, shuffle=False, seed=arguments.seed)
     arguments.output_dir.mkdir(parents=True)
     slr = slr_model()
     ocnn = ocnn_model()
@@ -242,7 +269,9 @@ def main():
         "paper": "Silanon and Lertchuwongsa (2023), Table III",
         "source_manifest_sha256": sha256(arguments.data_root / "manifest.json"),
         "samples": {"training": len(train_paths), "validation_original": len(validation_paths), "validation_augmented": len(validation_paths) * arguments.validation_augmentations},
-        "seed": SEED,
+        "class_selection": {"manifest_field": "stored_classes", "classes": classes},
+        "split_policy": arguments.split_policy,
+        "seed": arguments.seed,
         "image_size": IMAGE_SIZE,
         "epochs": EPOCHS,
         "batch_size": BATCH_SIZE,
