@@ -1,0 +1,32 @@
+From e5e2e7c1f2a9a769d4d334dac0f17c839793be0d Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Tue, 1 Sep 2026 10:16:58 +0200
+Subject: [PATCH] Fix torch.div() integer-division break in beam search
+
+PyTorch >=1.5 changed torch.div() to always perform true (float)
+division; the original call relied on the pre-1.5 default of integer
+floor division to recover a flat top-k index's batch origin into the
+LongTensor _batch_index. Under a modern torch this raised
+'RuntimeError: result type Float can't be cast to the desired output
+type Long'. Pass rounding_mode='floor' (added in torch 1.8) to restore
+the original integer semantics.
+---
+ onmt/translate/beam_search.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/onmt/translate/beam_search.py b/onmt/translate/beam_search.py
+index 9e9c89f..b1b3b4f 100644
+--- a/onmt/translate/beam_search.py
++++ b/onmt/translate/beam_search.py
+@@ -187,7 +187,7 @@ class BeamSearch(DecodeStrategy):
+         torch.mul(self.topk_scores, length_penalty, out=self.topk_log_probs)
+ 
+         # Resolve beam origin and map to batch index flat representation.
+-        torch.div(self.topk_ids, vocab_size, out=self._batch_index)
++        torch.div(self.topk_ids, vocab_size, rounding_mode='floor', out=self._batch_index)
+         self._batch_index += self._beam_offset[:_B].unsqueeze(1)
+         self.select_indices = self._batch_index.view(_B * self.beam_size)
+         self.topk_ids.fmod_(vocab_size)  # resolve true word ids
+-- 
+2.50.1 (Apple Git-155)
+
