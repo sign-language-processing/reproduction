@@ -1,0 +1,182 @@
+{
+  "paper_id": "03785db2dc052c9c21dfefc690b03b8ad0703d9d",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "/Users/amitmoryossef/Downloads/03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf",
+      "sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d"
+    },
+    "user_provided_review_summary": {
+      "confirmation": "confirmed",
+      "status": "final",
+      "what_to_reproduce": "Table III",
+      "dataset": "ASL Alphabet",
+      "metric": "Accuracy",
+      "code_repositories": "none confirmed",
+      "compute_requirements": "not specified"
+    }
+  },
+  "paper": {
+    "title": "A Novel Classification Layer Technique for ASL Analysis Using CNN",
+    "citation": "P. Silanon and S. Lertchuwongsa, International Joint Conference on Computer Science and Software Engineering, 2023, DOI 10.1109/JCSSE58229.2023.10202089",
+    "url": "https://doi.org/10.1109/JCSSE58229.2023.10202089",
+    "pdf_sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d",
+    "accessed_at": "2026-08-27"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://doi.org/10.1109/JCSSE58229.2023.10202089",
+      "revision_or_sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d",
+      "role": "User-provided target paper and experimental protocol"
+    },
+    {
+      "source_id": "author-code-search",
+      "kind": "source-search",
+      "url": "https://github.com/search?q=%22A+Novel+Classification+Layer+Technique+for+ASL+Analysis+Using+CNN%22&type=repositories",
+      "revision_or_sha256": "accessed-2026-08-27",
+      "role": "No published executable artifact found; user-provided final review also confirms none"
+    }
+  ],
+  "status": {
+    "pipeline": "complete",
+    "numerical_agreement": "not_fully_reproduced",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "asl-alphabet-v1",
+      "name": "ASL Alphabet",
+      "source_url": "https://www.kaggle.com/datasets/grassknoted/asl-alphabet",
+      "version_or_subset": "Kaggle version 1, all 29 classes",
+      "license_or_permission": "GPL-2.0 as declared by source metadata; project has an existing authorized acquisition",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "asl-alphabet",
+      "manifest_sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d",
+      "archive_sha256": "7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4",
+      "counts": {"classes": 29, "images": 87000, "images_per_class": 3000, "training": 69600, "validation": 17400, "augmented_validation": 174000},
+      "classes": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "space", "del", "nothing"],
+      "selection": {"manifest_field": "stored_classes", "detail": "The shared manifest's training_classes is a 28-class selection for another study. This paper's 29-class target uses all stored classes."},
+      "splits": [
+        {"name": "source", "sample_count": 87000, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "conditional_seeded_training", "sample_count": 69600, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "conditional_seeded_validation", "sample_count": 17400, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "lexicographic_per_class_diagnostic_training", "sample_count": 69600, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]},
+        {"name": "lexicographic_per_class_diagnostic_validation", "sample_count": 17400, "files": [{"path": "manifest.json", "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"}]}
+      ]
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "classification accuracy",
+      "direction": "higher",
+      "implementation": "correct argmax predictions / all evaluated augmented samples * 100",
+      "version": "TensorFlow 2.15.0 argmax accuracy",
+      "aggregation": "Table III validation uses 10 offline augmentations per image",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table-iii",
+      "paper_location": "Table III; Sections III.A--III.C; Table I; Figure 4",
+      "system": "SLR, OCNN, RBF-SVM substitutions, and probability-average ensemble",
+      "dataset_id": "asl-alphabet-v1",
+      "checkpoint_rule": "maximum augmented validation accuracy; paired training accuracy at that checkpoint",
+      "paper_evidence": "Table III and Section IV.A",
+      "selection": "maximum validation accuracy; paired training accuracy at that checkpoint",
+      "split": "random 80:20 image split, seed not reported",
+      "training": "10 epochs visible in Figures 5 and 6; online augmentation",
+      "validation": "offline tenfold augmentation"
+    }
+  ],
+  "targets": [
+    {"target_id": "slr-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 98.41, "result": {"status": "produced", "reproduced_value": 97.19540476799011, "difference": -1.2145952320098934, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "slr-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 83.5, "result": {"status": "produced", "reproduced_value": 97.99885057471265, "difference": 14.49885057471265, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "ocnn-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 96.85, "result": {"status": "produced", "reproduced_value": 95.74137926101685, "difference": -1.1086207389831515, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "ocnn-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "augmented validation", "metric_id": "accuracy", "original_value": 84.68, "result": {"status": "produced", "reproduced_value": 96.10747126436782, "difference": 11.427471264367824, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "slr-svm-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.45, "result": {"status": "produced", "reproduced_value": 99.80545977011495, "difference": 0.35545977011494885, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "slr-svm-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.41, "result": {"status": "produced", "reproduced_value": 99.78045977011493, "difference": 14.370459770114935, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "ocnn-svm-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.01, "result": {"status": "produced", "reproduced_value": 99.6257183908046, "difference": 0.6157183908046012, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "ocnn-svm-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.74, "result": {"status": "produced", "reproduced_value": 99.45114942528735, "difference": 13.71114942528735, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "e-ocnn-slr-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "E-OCNN-SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 87.01, "result": {"status": "produced", "reproduced_value": 98.6683908045977, "difference": 11.658390804597701, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}}
+  ],
+  "runs": [
+    {
+      "run_id": "full-threads",
+      "kind": "full_reconstruction",
+      "hypothesis": "The paper-specified architectures, 80:20 split, Table I augmentation ranges, and tenfold validation produce all CNN and ensemble Table III values.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::train",
+      "started_at_utc": "2026-08-28T07:30:47.075686Z",
+      "finished_at_utc": "2026-08-28T11:48:12Z",
+      "duration_seconds": 15444.924314,
+      "exit_code": 0,
+      "recording": {"mode": "contemporaneous", "source_record_sha256": null, "unknown_fields": []},
+      "attempt": {"group_id": "full-cnn", "number": 1, "max_attempts": 1},
+      "stop_policy": {"declared_at_utc": "2026-08-28T07:30:00Z", "max_wall_time_seconds": 43200, "max_gpu_hours": 12.0, "max_cost_chf": 100.0},
+      "terminal": {"state": "succeeded", "reason_code": "completed", "detail": "Both CNNs trained, reloaded their selected checkpoints, and emitted all CNN and ensemble metrics.", "failure_class": null, "retry_decision": "not_needed", "gate_ids": []},
+      "source": {"repository_commit": "98857aef5230c46a9c356277cd5d3a6b74940cf3", "dirty_diff_sha256": null, "upstream_revision": null, "patch_sha256": []},
+      "environment": {"image": "tensorflow/tensorflow:2.15.0-gpu", "base_image_digest": "sha256:206b54412f00b02c0ebaf00f359281c4032a5b97b20a682b04496a29860230a6", "dependency_manifest": "papers/silanon-2023-asl-cnn/modal_app.py", "software": {"tensorflow": "2.15.0", "precision": "fp32"}},
+      "configuration": {"seed": 2026, "epochs": 10, "batch_size": 128, "reader_threads": 8, "effective_batch_size": 128},
+      "compute": {"platform": "modal", "modal_profile": "repro-sign", "modal_environment": "main", "modal_app_id": "ap-DuMtpPTQjVjbfF5EGtZlaA", "modal_function_call_id": null, "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DuMtpPTQjVjbfF5EGtZlaA", "hardware": "NVIDIA L4 20833 MiB, compute capability 8.9", "gpu_count": 1, "wall_time_hours": 4.290256754, "gpu_hours": 4.290256754, "shared_cache": {"modal_volume": "huggingface-cache", "mount_path": "/cache/huggingface", "environment": {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"}}},
+      "artifact_ids": ["full-threads-run-json"],
+      "observation": "SLR selected epoch 7, OCNN selected epoch 10, and the probability-average ensemble reached 98.6683908045977% augmented-validation accuracy.",
+      "hypothesis_supported": true,
+      "next_action": "Use the selected CNN weights for the conditional SVM evaluation."
+    },
+    {
+      "run_id": "svm-full",
+      "kind": "conditional_full_evaluation",
+      "hypothesis": "An RBF SVM over each final CNN feature tensor can execute the paper's stated 696,000/174,000 augmented-example scale when its missing choices are recorded explicitly.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::svm_full",
+      "started_at_utc": "2026-08-28T13:56:17.858596Z",
+      "finished_at_utc": "2026-08-28T23:03:18Z",
+      "duration_seconds": 32820.141404,
+      "exit_code": 0,
+      "recording": {"mode": "contemporaneous", "source_record_sha256": null, "unknown_fields": []},
+      "attempt": {"group_id": "full-svm", "number": 1, "max_attempts": 1},
+      "stop_policy": {"declared_at_utc": "2026-08-28T13:56:00Z", "max_wall_time_seconds": 43200, "max_gpu_hours": 12.0, "max_cost_chf": 100.0},
+      "terminal": {"state": "succeeded", "reason_code": "completed", "detail": "Both full-scale RBF-SVM fits and augmented-validation evaluations completed and emitted every SVM target.", "failure_class": null, "retry_decision": "not_needed", "gate_ids": []},
+      "source": {"repository_commit": "1c6d2038a293ae0d24ab8f421efa78c8c029f914", "dirty_diff_sha256": null, "upstream_revision": null, "patch_sha256": []},
+      "environment": {"image": "tensorflow/tensorflow:2.15.0-gpu", "base_image_digest": "sha256:206b54412f00b02c0ebaf00f359281c4032a5b97b20a682b04496a29860230a6", "dependency_manifest": "papers/silanon-2023-asl-cnn/modal_app.py", "software": {"tensorflow": "2.15.0", "scikit_learn": "1.4.2", "precision": "fp32"}},
+      "configuration": {"seed": 2026, "feature_layers": {"slr": "global_average_pooling", "ocnn": "flatten"}, "svm": {"kernel": "rbf", "C": 1.0, "gamma": "scale"}, "training_augmentation_instances_per_source": 10, "validation_augmentation_instances_per_source": 10},
+      "compute": {"platform": "modal", "modal_profile": "repro-sign", "modal_environment": "main", "modal_app_id": "ap-ZEdZmXIbJTSGEGTN76O1Z7", "modal_function_call_id": null, "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ZEdZmXIbJTSGEGTN76O1Z7", "hardware": "NVIDIA L4 20833 MiB, compute capability 8.9", "gpu_count": 1, "wall_time_hours": 9.116705946, "gpu_hours": 9.116705946, "shared_cache": {"modal_volume": "huggingface-cache", "mount_path": "/cache/huggingface", "environment": {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"}}},
+      "artifact_ids": ["svm-full-run-json"],
+      "observation": "SLR-SVM reached 99.80545977011495% training and 99.78045977011493% augmented-validation accuracy; OCNN-SVM reached 99.6257183908046% and 99.45114942528735%.",
+      "hypothesis_supported": true,
+      "next_action": "Report the conditional results without attributing missing SVM choices to the authors."
+    },
+    {
+      "run_id": "split-lexicographic-full-20260831T065151Z",
+      "kind": "source_order_split_diagnostic",
+      "hypothesis": "The unexpectedly high validation values are primarily caused by the retained seeded random split rather than another unreported protocol detail.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::train --run-name split-lexicographic-full-20260831T065151Z --split-policy lexicographic_per_class --seed 2026",
+      "started_at_utc": "2026-08-31T06:51:53Z",
+      "finished_at_utc": "2026-08-31T13:06:19Z",
+      "duration_seconds": 22466.0,
+      "exit_code": 0,
+      "recording": {"mode": "contemporaneous", "source_record_sha256": null, "unknown_fields": []},
+      "attempt": {"group_id": "source-order-split", "number": 1, "max_attempts": 1},
+      "stop_policy": {"declared_at_utc": "2026-08-31T06:51:40Z", "max_wall_time_seconds": 43200, "max_gpu_hours": 12.0, "max_cost_chf": 100.0},
+      "terminal": {"state": "succeeded", "reason_code": "completed", "detail": "Both CNNs trained, reloaded their selected checkpoints, and emitted all CNN and ensemble metrics for the one predeclared source-order split diagnostic.", "failure_class": null, "retry_decision": "not_needed", "gate_ids": []},
+      "source": {"repository_commit": "5985e42ed9291c4e7c4bc8d410da42752b8c1eef", "dirty_diff_sha256": null, "upstream_revision": null, "patch_sha256": []},
+      "environment": {"image": "tensorflow/tensorflow:2.15.0-gpu", "base_image_digest": "sha256:206b54412f00b02c0ebaf00f359281c4032a5b97b20a682b04496a29860230a6", "dependency_manifest": "papers/silanon-2023-asl-cnn/modal_app.py", "software": {"tensorflow": "2.15.0", "precision": "fp32"}},
+      "configuration": {"seed": 2026, "split_policy": "lexicographic_per_class", "class_selection": "manifest.stored_classes (29 classes)", "epochs": 10, "batch_size": 128, "reader_threads": 8, "effective_batch_size": 128},
+      "compute": {"platform": "modal", "modal_profile": "repro-sign", "modal_environment": "main", "modal_app_id": "ap-6KKwVA1MAZ010dEWPMKUs7", "modal_function_call_id": "fc-01M1B9DFJ9QNMJ8D13BZ45BMZG", "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-6KKwVA1MAZ010dEWPMKUs7", "hardware": "NVIDIA L4 20833 MiB, compute capability 8.9", "gpu_count": 1, "wall_time_hours": 6.240555555555556, "gpu_hours": 6.240555555555556, "shared_cache": {"modal_volume": "huggingface-cache", "mount_path": "/cache/huggingface", "environment": {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"}}},
+      "artifact_ids": ["split-lexicographic-full-run-json"],
+      "observation": "SLR selected epoch 5 (95.30172348022461% training / 93.28103448275861% validation); OCNN selected epoch 10 (95.65804600715637% / 94.85229885057471%); ensemble augmented-validation accuracy was 96.60574712643678%.",
+      "hypothesis_supported": false,
+      "next_action": "Do not sweep splits or seeds; report that source-order partitioning alone did not explain the validation discrepancy."
+    }
+  ],
+  "artifacts": [
+    {"artifact_id": "full-threads-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/full-threads/run.json", "sha256": "d44eb667395866fc68727926d17b443a655f72c6beb7c8a10c3055e32d2746ff", "size_bytes": 4241},
+    {"artifact_id": "svm-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/svm-full/run.json", "sha256": "2f763720f6fd6d8f2bc4859c20190d04f9dceb36390ceb4ff27a1259c5040ed0"},
+    {"artifact_id": "split-lexicographic-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/split-lexicographic-full-20260831T065151Z/run.json", "sha256": "e4f4614a139653c5f305f34bb505f3caf8d9080cf380dc8a06c3ca8d1e5cbe1e", "size_bytes": 4702}
+  ],
+  "gates": []
+}
