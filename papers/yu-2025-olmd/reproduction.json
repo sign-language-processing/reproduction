@@ -207,7 +207,8 @@
           ]
         }
       ],
-      "used_by_targets": true
+      "used_by_targets": true,
+      "comparison_note": "Continuous German Sign Language weather forecasts, 9 signers, gloss annotation only (columns id|folder|signer|annotation). The CSLR benchmark proper. 1231 gloss types in train, 1295 across all splits."
     },
     {
       "dataset_id": "phoenix14t",
@@ -256,7 +257,8 @@
           ]
         }
       ],
-      "used_by_targets": true
+      "used_by_targets": true,
+      "comparison_note": "An extension of the same RWTH-PHOENIX weather corpus, re-segmented and paired with German translations (columns name|video|start|end|speaker|orth|translation). Same 9 signers. Built for sign language translation, but the `orth` gloss column supports CSLR, which is how OLMD uses it. 1085 gloss types in train, 1115 across all splits, sharing 953 with PHOENIX14. Utterance ids do not overlap with PHOENIX14 because the re-segmentation produced different clip boundaries, so the two are distinct experiments rather than a subset relation."
     },
     {
       "dataset_id": "csl-daily",
@@ -419,7 +421,7 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: on 2026-09-08 the assignee directed starting with PHOENIX14 only, so this target is in the first stage (about 54.7 GPU-hours) and still awaits authorization; no run has been launched."
         },
         "run_ids": [
           "preflight-phoenix14-001",
@@ -466,7 +468,7 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: on 2026-09-08 the assignee directed starting with PHOENIX14 only, so this target is in the first stage (about 54.7 GPU-hours) and still awaits authorization; no run has been launched."
         },
         "run_ids": [
           "preflight-phoenix14-001",
@@ -513,7 +515,7 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: on 2026-09-08 the assignee directed starting with PHOENIX14 only, so this target is deferred to the second stage, after PHOENIX14 completes, and still awaits authorization; no run has been launched."
         },
         "run_ids": [
           "preflight-phoenix14-001",
@@ -560,7 +562,7 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: on 2026-09-08 the assignee directed starting with PHOENIX14 only, so this target is deferred to the second stage, after PHOENIX14 completes, and still awaits authorization; no run has been launched."
         },
         "run_ids": [
           "preflight-phoenix14-001",
@@ -3170,11 +3172,78 @@
         "Post-fix estimate for the paper's protocol (70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch): PHOENIX14 54.7 GPU-hours, PHOENIX14-T 67.3 GPU-hours, about 122 GPU-hours for both in-scope datasets.",
         "Pure GPU compute alone, with loading entirely free, would still be about 22.4 and 27.7 GPU-hours, so no further I/O optimization brings the assignment under the gate.",
         "One-time CPU-only cache construction adds roughly 12.6 h and 15.3 h per dataset and is reusable across epochs and seeds.",
-        "The paper reports a single value per cell and states no seed policy, so this estimate assumes one run per dataset; any seed replication multiplies it."
+        "The paper reports a single value per cell and states no seed policy, so this estimate assumes one run per dataset; any seed replication multiplies it.",
+        "Corrected per-step estimate: PHOENIX14 44.0 GPU-hours (0.628 h/epoch over 2836 steps), PHOENIX14-T 53.9 GPU-hours (0.770 h/epoch over 3548 steps), 97.9 for both. On A100-40GB at the confirmed $2.10/GPU-hour that is $92, $113 and $206, plus about $5 per dataset for the one-time CPU cache build. Both datasets still exceed the 24-hour single-GPU gate."
       ],
-      "required_action": "Discuss the roughly 122 GPU-hour plan for both Table 1 datasets in Slack #repro-sign-team-r and confirm the budget before launching. AGENTS.md requires this discussion for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.",
+      "required_action": "Discuss the full-run budget in Slack #repro-sign-team-r and confirm before launching. AGENTS.md requires this for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.\n\nOn 2026-09-08 the assignee directed starting with PHOENIX14 only, which reduces the ask from about 122 GPU-hours for both Table 1 datasets to about 54.7 GPU-hours for PHOENIX14 plus a one-time, reusable, CPU-only cache build of about 12.6 hours. That is still above the 24-hour autonomous threshold, so the gate remains open. When asked to authorize the spend directly or route it to the channel first, the assignee declined to decide and the agent stopped without launching. No cache build and no training run have been started.",
       "opened_at_utc": "2026-09-08T17:25:00Z",
-      "owner": "human"
+      "owner": "human",
+      "staging": {
+        "decision": "PHOENIX14 first, per the assignee on 2026-09-08",
+        "phoenix14_gpu_hours": 44.0,
+        "phoenix14_cache_build_hours_cpu": 12.6,
+        "deferred": "PHOENIX14-T (about 53.9 GPU-hours) after PHOENIX14 completes",
+        "targets_reachable_first": [
+          "table1-p14-dev-wer",
+          "table1-p14-test-wer"
+        ],
+        "targets_deferred": [
+          "table1-p14t-dev-wer",
+          "table1-p14t-test-wer"
+        ],
+        "note": "Staging does not change the protocol: each dataset still runs the paper's full 70 epochs with best-dev checkpoint selection. It only sequences the two experiments."
+      },
+      "awaiting": "Assignee or team authorization of the PHOENIX14 GPU spend. Nothing launched.",
+      "cost_estimate": {
+        "basis": "Per-step accounting from measured values: cache read 0.267 s/clip, training forward+backward 0.194 s/clip-equivalent, inference 0.0941 s/clip. A training step loads 2 clips, so a step costs 2*0.267 + 0.194 s. Protocol is 70 epochs at batch size 2 with best-dev checkpoint selection, which requires a dev pass every epoch, plus one test pass at the end.",
+        "corrects": "An earlier figure of 54.7 GPU-hours for PHOENIX14 and 122 for both charged cache reads per clip during training rather than per step, double-counting loading. The figures below supersede it.",
+        "phoenix14": {
+          "steps_per_epoch": 2836,
+          "hours_per_epoch": 0.628,
+          "gpu_hours": 44.0,
+          "days_single_gpu": 1.8
+        },
+        "phoenix14t": {
+          "steps_per_epoch": 3548,
+          "hours_per_epoch": 0.77,
+          "gpu_hours": 53.9,
+          "days_single_gpu": 2.2
+        },
+        "both_gpu_hours": 97.9,
+        "modal_rates_usd_per_hour_confirmed_2026_09_08": {
+          "A100-40GB": 2.1,
+          "A100-80GB": 2.5,
+          "H100-SXM5": 3.95,
+          "H200-SXM": 4.54,
+          "B200": 6.25,
+          "L40S": 1.95,
+          "A10": 1.1,
+          "L4": 0.8,
+          "T4": 0.59,
+          "cpu_core": 0.047,
+          "memory_gib": 0.008
+        },
+        "cost_usd_a100_40gb": {
+          "phoenix14": 92,
+          "phoenix14t": 113,
+          "both": 206
+        },
+        "cache_build": {
+          "phoenix14_wall_hours": 12.6,
+          "phoenix14_core_hours": 101.1,
+          "phoenix14_usd": 4.75,
+          "phoenix14t_wall_hours": 15.3,
+          "phoenix14t_core_hours": 122.0,
+          "phoenix14t_usd": 5.73,
+          "note": "CPU only, one-time, reusable across epochs, seeds and both datasets."
+        },
+        "all_in_usd_a100_40gb": {
+          "phoenix14_only": 97,
+          "both": 216
+        },
+        "share_of_study_budget": "About 0.5% of the study's CHF 20,000 for PHOENIX14 alone and about 1.1% for both, so cost is not the constraint; the 24-hour single-GPU wall-clock gate is.",
+        "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset. Any seed replication multiplies it."
+      }
     }
   ],
   "guesses": [
