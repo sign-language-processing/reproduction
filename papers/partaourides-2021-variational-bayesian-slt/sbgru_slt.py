@@ -432,15 +432,13 @@ def build_vocabs(train_pairs):
 
 def evaluate_split(model, pairs, sv, tv, device, beam=None):
     beam = beam or int(GUESSES["beam_width"])
-    hyps, refs = [], []
+    hyps = []
     for batch in make_batches(pairs, sv, tv, 64, shuffle=False, device=device):
         seqs = beam_decode(model, batch, beam, int(GUESSES["max_decode_len"]),
                            float(GUESSES["length_penalty"]))
         for s in seqs:
             hyps.append(tv.decode(s))
-    refs = [t for _, t in pairs]
-    # pairs were length-sorted inside make_batches for src; realign by decoding order
-    # -> rebuild refs in the same emitted order
+    # make_batches emits in ascending src-length order; align refs the same way
     order = sorted(range(len(pairs)), key=lambda i: len(pairs[i][0]))
     refs = [pairs[i][1] for i in order]
     return score_corpus(hyps, refs)

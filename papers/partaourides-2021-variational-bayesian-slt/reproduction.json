@@ -180,9 +180,9 @@
     }
   ],
   "status": {
-    "pipeline": null,
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "No target produced yet; reproduction in progress.",
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement.",
     "preference_level": 3,
     "blocker": null
   },
@@ -310,7 +310,19 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 4.664,
+        "difference": -11.636,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
       "experiment_id": "baseline",
       "metric_id": "bleu4",
       "original_value": 16.3,
@@ -327,7 +339,19 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 19.3526,
+        "difference": -20.9474,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
       "experiment_id": "baseline",
       "metric_id": "rouge",
       "original_value": 40.3,
@@ -344,7 +368,19 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 3.8215,
+        "difference": -12.4785,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
       "experiment_id": "baseline",
       "metric_id": "bleu4",
       "original_value": 16.3,
@@ -361,7 +397,19 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 16.7469,
+        "difference": -23.9531,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
       "experiment_id": "baseline",
       "metric_id": "rouge",
       "original_value": 40.7,
@@ -378,7 +426,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test bleu4=3.6821 (paper 16.7); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "bleu4",
       "original_value": 16.7,
@@ -395,7 +462,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test rouge=11.6607 (paper 41.1); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "rouge",
       "original_value": 41.1,
@@ -412,7 +498,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test bleu4=4.0604 (paper 17.0); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "bleu4",
       "original_value": 17.0,
@@ -429,7 +534,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test rouge=11.2875 (paper 41.5); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "rouge",
       "original_value": 41.5,
@@ -446,7 +570,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test bleu4=3.6821 (paper 16.2); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "bleu4",
       "original_value": 16.2,
@@ -463,7 +606,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test rouge=11.6607 (paper 40.6); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "rouge",
       "original_value": 40.6,
@@ -480,7 +642,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test bleu4=4.0604 (paper 16.7); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "bleu4",
       "original_value": 16.7,
@@ -497,7 +678,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test rouge=11.2875 (paper 40.7); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-repar",
       "metric_id": "rouge",
       "original_value": 40.7,
@@ -514,7 +714,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test bleu4=3.3512 (paper 18.4); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-bp",
       "metric_id": "bleu4",
       "original_value": 18.4,
@@ -531,7 +750,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test rouge=12.5089 (paper 43.9); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-bp",
       "metric_id": "rouge",
       "original_value": 43.9,
@@ -548,7 +786,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test bleu4=3.656 (paper 17.0); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-bp",
       "metric_id": "bleu4",
       "original_value": 17.0,
@@ -565,7 +822,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test rouge=11.9177 (paper 43.1); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "gru-bp",
       "metric_id": "rouge",
       "original_value": 43.1,
@@ -582,7 +858,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test bleu4=3.7617 (paper 17.9); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "bleu4",
       "original_value": 17.9,
@@ -599,7 +894,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test rouge=12.0865 (paper 43.0); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "rouge",
       "original_value": 43.0,
@@ -616,7 +930,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test bleu4=3.9879 (paper 18.1); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "bleu4",
       "original_value": 18.1,
@@ -633,7 +966,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test rouge=11.4581 (paper 43.5); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "rouge",
       "original_value": 43.5,
@@ -650,7 +1002,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test bleu4=3.7617 (paper 17.7); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "bleu4",
       "original_value": 17.7,
@@ -667,7 +1038,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test rouge=12.0865 (paper 43.0); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "rouge",
       "original_value": 43.0,
@@ -684,7 +1074,26 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test bleu4=3.9879 (paper 17.8); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "bleu4",
       "original_value": 17.8,
@@ -701,14 +1110,385 @@
       "unit_scale": "0-100",
       "copied_baseline": false,
       "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
-      "result": null,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test rouge=11.4581 (paper 42.8); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
       "experiment_id": "sb-gru",
       "metric_id": "rouge",
       "original_value": 42.8,
       "weight_compression_eval": true
     }
   ],
-  "runs": [],
-  "artifacts": [],
-  "gates": []
+  "runs": [
+    {
+      "run_id": "train-plain",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/plain --mode plain --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:28Z",
+      "finished_at_utc": "2026-09-08T14:55:35Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-plain",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped at dev-BLEU-4 plateau (best epoch 94/134, patience 20 evals); dev+test evaluated, all four metrics emitted. Dev BLEU-4 flat at ~4.4 from epoch ~70.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-0TID6xKjXXNhbwYMP1njUJ",
+        "function_call_id": "fc-01M20QAAJ3CRB2QTCZB4270W6V",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "plain-results"
+      ]
+    },
+    {
+      "run_id": "train-repar",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/repar --mode repar --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:10Z",
+      "finished_at_utc": "2026-09-08T14:57:21Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-repar",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 116/156). Gaussian-posterior KL well-behaved (~0.09). Dev BLEU-4 plateaued ~3.7.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-ZpAxljsKew8rsKOAT5Abhv",
+        "function_call_id": "fc-01M20QAD1JBS07PTC7KNM8KN37",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "repar-results"
+      ]
+    },
+    {
+      "run_id": "train-bp",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/bp --mode bp --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:11Z",
+      "finished_at_utc": "2026-09-08T14:49:19Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-bp",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 42/82). IBP stick-breaking KL term ~3170 (after /N) dominates NLL~5.5; dev BLEU-4 frozen ~3.4 - the variational last encoder layer stops learning.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-SRVwv8HXPaM0xtwKlrEaFN",
+        "function_call_id": "fc-01M20QAG46B32E7BBZBEF44W4P",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "bp-results"
+      ]
+    },
+    {
+      "run_id": "train-sb",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/sb --mode sb --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:13Z",
+      "finished_at_utc": "2026-09-08T14:55:04Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-sb",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 94/134). Same KL domination as bp; dev BLEU-4 frozen at 3.48->3.68 for 60+ epochs.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-KcpysRyUJ9PAbuxskpyxNY",
+        "function_call_id": "fc-01M20QAK0XJTPWCXEXWABMM124",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "sb-results"
+      ]
+    },
+    {
+      "run_id": "eval-repar-wc",
+      "command": "python -u /app/sbgru_slt.py evaluate --data-dir /datasets/rwth-phoenix-2014-t/annotations --checkpoint /outputs/repar/best.pt --out-dir /outputs/repar/eval_q2 --quantize-bits 2",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:09:52Z",
+      "finished_at_utc": "2026-09-08T15:10:07Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-repar-wc",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:08:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Post-hoc uniform 2-bit quantisation of the last encoder layer's effective candidate weight; dev+test re-scored, all metrics emitted.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-DTPMdzded597fvvZWMOCu9",
+        "function_call_id": "fc-01M20S2E08Y08DAZZMR358QH7P",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "repar-wc-eval"
+      ]
+    },
+    {
+      "run_id": "eval-sb-wc",
+      "command": "python -u /app/sbgru_slt.py evaluate --data-dir /datasets/rwth-phoenix-2014-t/annotations --checkpoint /outputs/sb/best.pt --out-dir /outputs/sb/eval_q2 --quantize-bits 2",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:09:45Z",
+      "finished_at_utc": "2026-09-08T15:10:00Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-sb-wc",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:08:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Post-hoc uniform 2-bit quantisation of the last encoder layer's effective candidate weight; dev+test re-scored, all metrics emitted.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-0uFwmdSWXHnYOJx5K8s32Y",
+        "function_call_id": "fc-01M20S2DYA246DF60KMF34FWDR",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "sb-wc-eval"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "plain-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/plain/results.json",
+      "sha256": "27c9ed5559c12042243989d688b224af2bb5eb310b89d1539670528d4c8821ee"
+    },
+    {
+      "artifact_id": "repar-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/repar/results.json",
+      "sha256": "d715607208f805ffa722a13918634c7b9b4219c5dcd9cdf1d087475c84678064"
+    },
+    {
+      "artifact_id": "bp-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/bp/results.json",
+      "sha256": "1d0f1a0434b11cca31ba0c0b6651dd7eb7dc9bafe61add80e29ea712c6f16b54"
+    },
+    {
+      "artifact_id": "sb-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/sb/results.json",
+      "sha256": "68ff5fa34447d8e1d1fd4666ec50d0aa67afa4a2f9bb6b62b63582f2700bfbe9"
+    },
+    {
+      "artifact_id": "repar-wc-eval",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/repar/eval_q2/eval.json",
+      "sha256": "5d40e0d5901a12297b9835cec36c646fb26b5e025dd7060f206b6e68e96bf468"
+    },
+    {
+      "artifact_id": "sb-wc-eval",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/sb/eval_q2/eval.json",
+      "sha256": "ad4c39fba0728615abf3ef3fcfcd97454c34efe58553100ec139b3a9243388e3"
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "sbgru-protocol",
+      "type": "protocol",
+      "status": "open",
+      "reason": "The five non-baseline Table 1 rows depend on a variational-Bayesian SB-GRU with no published code and several behaviour-changing hyperparameters the paper never states: IBP innovation alpha, inference cutoff tau, Gumbel-Softmax anneal schedule, MC sample count, KL-term weighting/warm-up, Kumaraswamy init, and the weight-compression bit-precision rule. With the canonical defaults chosen here the IBP KL term dominates the translation loss by ~500x and the variational encoder layer stops learning.",
+      "evidence": [
+        "Paper Sections 3-3.3, Eqs. 1,7-15: equations given, no hyperparameter values.",
+        "runs train-bp / train-sb: dev BLEU-4 frozen (~3.4-3.7) for 60+ epochs; KL/N ~= 3170 vs NLL ~= 5.5.",
+        "Paper Section 4: only 'ADAM [20], lr 0.00001, batch 128, dropout 0.2, until convergence'."
+      ],
+      "required_action": "Human decision: supply the intended alpha / tau / lambda schedule / KL weighting (or confirm the reimplementation should stand as evidence that the method is under-specified), and decide whether to invest further debugging in the baseline seq2seq, which itself reproduces only ~4.4 BLEU-4 vs 16.3.",
+      "alternatives": []
+    }
+  ]
 }
