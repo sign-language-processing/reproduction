@@ -15,9 +15,9 @@ documented search (see [Source provenance](#source-provenance))
 Level 3 means reimplementation from the paper: no published code exists.
 
 **Pipeline status:** `blocked_on_compute` — the pipeline is implemented and verified end to
-end, but the reviewed full-run requirement (~122 GPU-hours for both in-scope datasets)
-exceeds the 24-hour single-GPU autonomous gate. Awaiting a `#repro-sign-team-r` budget
-decision; see gate `compute-full-run-table1`.
+end with TLP active, but the measured full-run requirement (~25.5 GPU-hours for PHOENIX14
+GPU-bound, ~57.8 with the cache alone) exceeds the 24-hour single-GPU autonomous gate.
+Awaiting authorization; see gate `compute-full-run-table1`.
 
 **Numerical agreement:** `not_assessed` — no in-scope target produced a comparable value.
 
@@ -130,6 +130,93 @@ material that does not exist publicly. A number from this implementation is ther
 conditional evidence about an inferred architecture, and a reviewer should weigh that
 before treating agreement or disagreement as a statement about the paper.
 
+## Preflight
+
+`preflight-phoenix14-002` (Modal app `ap-29IaSd3vio60Lv8PSxDRha`, A100-SXM4-40GB, exit 0,
+124 s) met every AGENTS.md preflight requirement on PHOENIX14 with TLP active:
+
+| Requirement | Result |
+| --- | --- |
+| Real data through the real loader | 24 train + 8 dev utterances, real PNG frames, real preprocessing |
+| Intended weights | ImageNet-pretrained ResNet34 loaded |
+| Real optimizer steps | 12 steps, Adam lr 0.001 wd 0.001, batch size 2 |
+| Checkpoint save **and reload** | 1.34 GB saved, reloaded, **every tensor verified equal** |
+| Real evaluation on a subset | 8 dev utterances decoded and scored |
+| Parsed metric + terminal status | corpus WER emitted, exit code 0 |
+
+CTC loss fell **57.72 → 20.89** and total loss **71.42 → 25.90** across 12 steps.
+
+### The preflight WER is not a result
+
+Both preflights scored **WER 100.0** with **94 deletions, 0 insertions, 0 substitutions** —
+the model emitted *empty* hypotheses. That is the expected CTC early-training regime after
+12 steps from initialization: the blank class dominates before alignments sharpen, which is
+consistent with the falling loss. It demonstrates that the metric path executes end to end
+and **must never be compared with the paper's 17.1/17.2**.
+
+### The first preflight's estimate was wrong; the second fixed it
+
+`preflight-phoenix14-001` reported `hours_70_epochs: 21.4`. That figure is void: it counted
+training only, and its timer wrapped just the optimizer step, so frame loading fell outside
+it. `preflight-phoenix14-002` times loading and GPU work separately and includes the
+per-epoch dev pass.
+
+### TLP's auxiliary regularizer behaves correctly
+
+`preflight-phoenix14-002` records per-step loss components. CTC falls monotonically
+57.72 → 20.89, while TLP's lifting regularizer drifts down from ~1650 to ~1300 with noise —
+the expected behaviour as the predictor learns to predict odd samples from even ones. It
+contributes ~1.8 to the total at TLP's own 0.001 weight, so it is active without dominating.
+
+## Compute requirement (measured, with TLP active)
+
+Measured on A100-40GB with the full 111.8 M-parameter model, on real ~180-frame clips:
+
+| Cost | Measured |
+| --- | ---: |
+| GPU step (batch 2, fwd+bwd+update) | **0.422 s** |
+| Serial batch load (2 clips of PNGs) | **5.326 s** — 12.6× the GPU work |
+| Cached batch load (JPEG `.npz`) | 0.534 s |
+| Peak memory | 24.47 GiB |
+
+**TLP costs only ~9% more GPU time, not 2×.** The A100 step went 0.388 s → 0.422 s. An
+earlier provisional range of 70–79 GPU-hours scaled a doubling seen on an A10; that
+reflected the A10's weaker throughput, not the model, and is superseded.
+
+For 70 epochs, batch size 2, with best-dev checkpoint selection (a dev pass each epoch):
+
+| Scenario | PHOENIX14 | PHOENIX14-T | Both |
+| --- | ---: | ---: | ---: |
+| As measured (serial PNG loading) | ~317 GPU-h | — | — |
+| **With the JPEG cache** | **~57.8 GPU-h** ($121, 2.4 d) | ~72.3 GPU-h | ~130 GPU-h |
+| **Cache + prefetching (GPU-bound)** | **~25.5 GPU-h** ($54, 1.1 d) | ~31.9 GPU-h | ~57 GPU-h |
+
+Plus a one-time, CPU-only, reusable cache build: ~12.6 h and ~$4.75 for PHOENIX14.
+
+`cache-probe-phoenix14-001` verified the cache: per-clip reads drop from 6.45 s to
+**0.267 s (24.1×)**, frame counts match exactly, and JPEG q90 costs **1.028 mean absolute
+pixel levels out of 255**. The cache is 1.73 MB/clip (~11 GiB per dataset, against 224 GiB
+raw `uint8`), built at **256×256 pre-crop** so the paper's random 224×224 crop and 50%
+horizontal flip still vary per epoch — caching post-crop would have silently removed the
+stated augmentation.
+
+The 317-hour figure describes **this reproduction's serial PNG loading, not the paper's
+protocol** — which is why no compute gate was opened on it. The cache and a prefetching
+loader are ordinary engineering, not protocol changes.
+
+### The gate still applies
+
+Even the GPU-bound best case of **~25.5 GPU-hours for PHOENIX14 marginally exceeds** the
+AGENTS.md 24-hour single-GPU threshold, and the cache-only figure of ~57.8 clearly does.
+Gate `compute-full-run-table1` remains open for authorization.
+
+Cost is not the constraint: ~$54–121 for PHOENIX14 is well under 1% of the study's
+CHF 20,000. Wall-clock is: 1.1–2.4 days on one GPU.
+
+**Reducing epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate is
+not on the table** — that would be a protocol change requiring its own decision, and
+AGENTS.md forbids shrinking the experiment silently.
+
 ## How to repeat this
 
 ```bash
@@ -215,10 +302,13 @@ happen on Modal. Recorded as an environment limitation, not patched.
 
 | Run ID | Kind | Platform | Terminal state | Key outcome |
 | --- | --- | --- | --- | --- |
-| `data-inspect-001` | data check | Modal CPU | succeeded / completed | All nine splits match; vocabularies 1295 / 1115 / 2000 confirm the paper |
+| `data-inspect-001` | data check | Modal CPU | succeeded / completed | Nine splits match; vocabularies 1295 / 1115 / 2000 confirm the paper |
 | `diagnose-csl-001` | data check | Modal CPU | succeeded / completed | CSL-Daily corpus defect isolated to `S000005_P0004_T00` |
-| `gpu-smoke-003` | smoke test | Modal A10 | succeeded / completed | 61.365 M params; finite loss; gradients flow |
-| `preflight-phoenix14-001` | preflight | Modal A100-40GB | succeeded / completed | Full preflight passed; checkpoint reload verified; parsed WER |
+| `gpu-smoke-003` | smoke test | Modal A10 | succeeded / completed | Model constructs; finite loss; gradients flow |
+| `preflight-phoenix14-001` | preflight | Modal A100-40GB | succeeded / completed | Preflight passed (pre-TLP); its compute estimate later found void |
+| `throughput-phoenix14-001` | measurement | Modal A100-40GB | succeeded / completed | I/O is 165–295× GPU cost; bottleneck is per-request latency |
+| `cache-probe-phoenix14-001` | measurement | Modal CPU | succeeded / completed | JPEG cache gives 24.1× with verified fidelity |
+| `preflight-phoenix14-002` | preflight | Modal A100-40GB | succeeded / completed | Preflight passed with TLP; measured 0.422 s GPU step |
 
 Full provenance for each — commands, Modal app IDs, dashboards, mounts, cache environment,
 declared stop ceilings, and terminal classifications — is in `reproduction.json.runs`.
