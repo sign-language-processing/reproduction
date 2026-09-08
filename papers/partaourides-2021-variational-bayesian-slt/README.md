@@ -243,5 +243,9 @@ gate applies.
 
 ## Author and team contact
 
-None. (Contacting the authors for the missing hyperparameters is a possible next step but is
-gated on an independent attempt first — this attempt — and on a decision to continue.)
+No contact has been made yet. An author-contact email is **drafted but not sent** at
+`author-contact-draft.md` — it lists every missing hyperparameter with the value this
+attempt used and the reproduced-vs-paper numbers, and asks whether code is available.
+Sending is gated on explicit approval; when sent, record the date, recipients, and any
+reply here and in `reproduction.json.author_contact`. This is post-independent-attempt
+author help (not Team S data coordination).
