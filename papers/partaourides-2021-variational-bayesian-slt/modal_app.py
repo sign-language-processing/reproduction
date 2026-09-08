@@ -101,7 +101,7 @@ def _run(cmd: list[str]) -> dict:
     }
 
 
-@app.function(image=image, gpu="A10G", timeout=1200, volumes=VOLUMES, environment_name="main")
+@app.function(image=image, gpu="A10G", timeout=1200, volumes=VOLUMES)
 def check_env() -> str:
     out = subprocess.run(
         ["python", "-c", "import torch,sacrebleu,rouge_score;print(torch.__version__,torch.cuda.is_available(),torch.cuda.get_device_name(0))"],
@@ -112,12 +112,12 @@ def check_env() -> str:
     return msg
 
 
-@app.function(image=image, gpu="A10G", timeout=3600, volumes=VOLUMES, environment_name="main")
+@app.function(image=image, gpu="A10G", timeout=3600, volumes=VOLUMES)
 def preflight() -> dict:
     return _run(["preflight", "--data-dir", DATA_DIR, "--scratch", "/outputs/_preflight"])
 
 
-@app.function(image=image, gpu="A10G", timeout=24 * 3600, volumes=VOLUMES, environment_name="main")
+@app.function(image=image, gpu="A10G", timeout=24 * 3600, volumes=VOLUMES)
 def train(mode: str, max_epochs: int = 0) -> dict:
     out_dir = f"/outputs/{mode}"
     meta = _run(["train", "--data-dir", DATA_DIR, "--out-dir", out_dir,
@@ -130,7 +130,7 @@ def train(mode: str, max_epochs: int = 0) -> dict:
     return meta
 
 
-@app.function(image=image, gpu="A10G", timeout=3600, volumes=VOLUMES, environment_name="main")
+@app.function(image=image, gpu="A10G", timeout=3600, volumes=VOLUMES)
 def evaluate(mode: str, quantize_bits: int = 0) -> dict:
     out_dir = f"/outputs/{mode}/eval_q{quantize_bits}"
     meta = _run(["evaluate", "--data-dir", DATA_DIR,

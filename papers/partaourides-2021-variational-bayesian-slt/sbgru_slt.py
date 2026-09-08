@@ -64,8 +64,11 @@ GUESSES: dict[str, object] = {
     "gumbel_tau_start": 1.0,    # Gumbel-Softmax / concrete temperature lambda
     "gumbel_tau_end": 0.5,
     "gumbel_anneal_steps": 20000,
-    "kuma_ab_init": 1.0,        # initial Kumaraswamy a_k, b_k
-    "kl_w_estimator": "montecarlo",  # paper says MC; closed-form also available
+    "kuma_a_init": 10.0,        # Kumaraswamy a_k init (a large, b=1 -> sticks near 1)
+    "kuma_b_init": 1.0,
+    "wy_sigma_init": 1.0,       # Gaussian posterior sigma at init (KL_w ~= 0), std BBB
+    "kl_w_estimator": "montecarlo",   # paper says MC; closed-form also available
+    "kl_z_estimator": "analytic",     # analytic Bernoulli KL for stability (paper: MC of same)
     "seed": 1,                  # no seed policy stated
 }
 
@@ -189,14 +192,16 @@ class SBGRULayer(nn.Module):
         nn.init.xavier_uniform_(w0)
         if mode in {"repar", "sb"}:
             self.W_y_mu = nn.Parameter(w0)
-            self.W_y_rho = nn.Parameter(torch.full((cat, hid_dim), -5.0))  # small sigma
+            rho0 = math.log(math.expm1(float(GUESSES["wy_sigma_init"])))  # softplus^-1(sigma)
+            self.W_y_rho = nn.Parameter(torch.full((cat, hid_dim), rho0))
         else:
             self.W_y = nn.Parameter(w0)
 
         if mode in {"bp", "sb"}:
-            ab = math.log(math.expm1(float(GUESSES["kuma_ab_init"])))  # softplus^-1
-            self.kuma_a_raw = nn.Parameter(torch.full((hid_dim,), ab))
-            self.kuma_b_raw = nn.Parameter(torch.full((hid_dim,), ab))
+            a0 = math.log(math.expm1(float(GUESSES["kuma_a_init"])))  # softplus^-1
+            b0 = math.log(math.expm1(float(GUESSES["kuma_b_init"])))
+            self.kuma_a_raw = nn.Parameter(torch.full((hid_dim,), a0))
+            self.kuma_b_raw = nn.Parameter(torch.full((hid_dim,), b0))
             # posterior Bernoulli logits per (cat, hid); init ~ p=0.9 retained
             self.z_logits = nn.Parameter(torch.full((cat, hid_dim), 2.2))
 
@@ -243,9 +248,14 @@ class SBGRULayer(nn.Module):
         # KL[q(z)||p(z)]  (Eq. 14): prior Bernoulli(pi_k), posterior Bernoulli(sigmoid(logits))
         q_p = torch.sigmoid(q_logits).clamp(1e-6, 1 - 1e-6)
         p_p = pi.unsqueeze(0).expand_as(q_p).clamp(1e-6, 1 - 1e-6)
-        log_q_z = z * torch.log(q_p) + (1 - z) * torch.log1p(-q_p)
-        log_p_z = z * torch.log(p_p) + (1 - z) * torch.log1p(-p_p)
-        self.last_kl["z"] = (log_q_z - log_p_z).sum()
+        if GUESSES["kl_z_estimator"] == "analytic":
+            kl_z = (q_p * (torch.log(q_p) - torch.log(p_p))
+                    + (1 - q_p) * (torch.log1p(-q_p) - torch.log1p(-p_p)))
+        else:  # MC of the same quantity, with the relaxed sample
+            log_q_z = z * torch.log(q_p) + (1 - z) * torch.log1p(-q_p)
+            log_p_z = z * torch.log(p_p) + (1 - z) * torch.log1p(-p_p)
+            kl_z = log_q_z - log_p_z
+        self.last_kl["z"] = kl_z.sum()
         return z
 
     def effective_W(self, gumbel_tau: float, train: bool):
@@ -487,7 +497,7 @@ def train(args):
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), float(GUESSES["grad_clip_norm"]))
             opt.step()
-            ep_nll += nll.item(); ep_kl += float(kl); nb += 1
+            ep_nll += nll.detach().item(); ep_kl += kl.detach().item(); nb += 1
 
         msg = (f"epoch {epoch:3d} nll={ep_nll / nb:.4f} kl={ep_kl / nb:.4f} "
                f"g_tau={g_tau:.3f} kl_beta={kl_beta:.2f} t={time.time() - t0:.0f}s")
