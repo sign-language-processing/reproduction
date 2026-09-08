@@ -3130,8 +3130,253 @@
       ]
     }
   ],
-  "runs": [],
-  "artifacts": [],
+  "runs": [
+    {
+      "run_id": "data-inspect-001",
+      "purpose": "Verify the dataset loaders parse all nine splits of the three mounted corpora and that counts and gloss vocabularies match the values recorded at the data gate and stated in the paper.",
+      "kind": "data_check",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action inspect",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:05:00Z",
+      "finished_at_utc": "2026-09-08T15:07:00Z",
+      "repository_commit": "347f55b (plus the working-tree additions committed alongside this entry)",
+      "compute": {
+        "platform": "modal",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu_only": true,
+        "modal_profile": "repro-sign",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "volumes": {
+          "datasets": "/datasets (read-only)",
+          "huggingface-cache": "/cache/huggingface (read-write)",
+          "olmd-yu-2025-results": "/outputs (read-write)"
+        },
+        "cache_env": {
+          "HF_HOME": "/cache/huggingface",
+          "HF_HUB_CACHE": "/cache/huggingface/hub",
+          "TORCH_HOME": "/cache/huggingface/torch"
+        },
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "app_id": "ap-hFrAk4jEPvwgpGi9iyH5ZF",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-hFrAk4jEPvwgpGi9iyH5ZF"
+      },
+      "observed": "All nine splits parse and match: PHOENIX14 5672/540/629, PHOENIX14-T 7096/519/642, CSL-Daily 18400/1077/1176. Gloss vocabularies independently corroborate the paper's own stated sizes: PHOENIX14 1295 (paper: '1,295 words'), PHOENIX14-T 1115 (paper: '1,115 gloss vocabulary'), CSL-Daily 2000 (paper: '2,000 sign vocabulary'), giving 1296/1116/2001 classes with the CTC blank.",
+      "hypothesis_supported": true,
+      "findings": [
+        "An initial run built the vocabulary from the training split only, giving PHOENIX14 1231 rather than 1295. Corrected to build over train+dev+test, which matches the corpus gloss dictionaries and the paper. The train-only version would have left dev and test glosses unmappable.",
+        "CSL-Daily yields 18400 training utterances, not the 18401 names in split_1.txt. Diagnosed in run diagnose-csl-001: S000005_P0004_T00 is listed in the split file but has no entry in csl2020ct_v2.pkl. A defect in the published corpus, not in this loader."
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-inspect",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:00:00Z",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All nine splits parsed and every count and vocabulary size matched.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "diagnose-csl-001",
+      "purpose": "Explain the single CSL-Daily training utterance that the loader does not yield, rather than accepting a silent off-by-one.",
+      "kind": "data_check",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action diagnose-csl",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:20:00Z",
+      "finished_at_utc": "2026-09-08T15:21:00Z",
+      "compute": {
+        "platform": "modal",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu_only": true,
+        "modal_profile": "repro-sign",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "volumes": {
+          "datasets": "/datasets (read-only)",
+          "huggingface-cache": "/cache/huggingface (read-write)",
+          "olmd-yu-2025-results": "/outputs (read-write)"
+        },
+        "cache_env": {
+          "HF_HOME": "/cache/huggingface",
+          "HF_HUB_CACHE": "/cache/huggingface/hub",
+          "TORCH_HOME": "/cache/huggingface/torch"
+        },
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "app_id": "ap-okhLIEy5nJW1PTMzKpYmMG",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-okhLIEy5nJW1PTMzKpYmMG"
+      },
+      "observed": "split_1.txt lists 18401 unique training names; csl2020ct_v2.pkl holds 20654 info entries; exactly one split name, S000005_P0004_T00, is absent from the pickle, and no wanted entry has empty glosses. The usable training count is therefore 18400.",
+      "hypothesis_supported": true,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-csl",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:18:00Z",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Identified the exact missing utterance name.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "gpu-smoke-003",
+      "purpose": "Confirm the reimplemented model constructs on GPU, that shapes flow end to end through backbone, LMA, OMP, coupling and all three CTC heads, that the Eq. 14 loss is finite and produces gradients, and to measure the true parameter count and peak memory. This is NOT the AGENTS.md preflight: it loads no dataset and runs no evaluation.",
+      "kind": "smoke_test",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action smoke",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:40:00Z",
+      "finished_at_utc": "2026-09-08T15:44:00Z",
+      "compute": {
+        "platform": "modal",
+        "gpu": "A10",
+        "gpu_count": 1,
+        "peak_memory_gib": 13.735,
+        "torch": "2.11.0a0+eb65b36914.nv26.02",
+        "modal_profile": "repro-sign",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "volumes": {
+          "datasets": "/datasets (read-only)",
+          "huggingface-cache": "/cache/huggingface (read-write)",
+          "olmd-yu-2025-results": "/outputs (read-write)"
+        },
+        "cache_env": {
+          "HF_HOME": "/cache/huggingface",
+          "HF_HUB_CACHE": "/cache/huggingface/hub",
+          "TORCH_HOME": "/cache/huggingface/torch"
+        },
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "app_id": "ap-u9ihrkoALruc7YMq1cUYsw",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-u9ihrkoALruc7YMq1cUYsw"
+      },
+      "config": {
+        "context": 9,
+        "num_classes": 1296,
+        "batch_size": 2,
+        "frames": 128,
+        "gamma_ctc": 1.0,
+        "gamma_distill": 25.0,
+        "target_lengths": [
+          11,
+          11
+        ]
+      },
+      "observed": "Forward and backward succeeded. All three heads emit 29 timesteps for a 128-frame clip, above the PHOENIX14 mean of 11.5 glosses, so CTC is feasible. Loss 59.014 (CTC 51.260, distillation 0.310), gradient norm 101.573, peak memory 13.735 GiB at batch size 2 with T=128 on an A10. Parameter count 61.365 M, matching the independent analytical estimate of 61.354 M.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Recorded as attempt 1 of the retained gpu-smoke group. Two earlier probes in this session were discarded rather than retained: a T=32 probe that crashed in max_pool1d (which established the parallel-branch topology) and a run whose return value failed to deserialize locally because a torch tensor leaked into it. Neither informs a terminal decision beyond the finding below, so per AGENTS.md they are not retained run entries.",
+        "A first attempt with T=32 crashed in max_pool1d with 'Invalid computed output size: 0'. Two SEQUENTIAL {K5,P2,K5,P2} branches reduce length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a mean target of 11.5 glosses. The two 1D-CNNs must therefore be PARALLEL peers over the same features, which also matches Fig. 2's 'share architecture' and Eq. 12's two peer local CTC losses. Recorded as guess temporal-branch-topology.",
+        "The measured 61.365 M is 19.4 M below the paper's Table 5 context-9 figure of 80.74 M. That column reconciles with no consistent reading of the architecture (see guess table5-baseline-param-discrepancy), so it is reported as a difference rather than tuned toward."
+      ],
+      "artifact_ids": [
+        "smoke-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "gpu-smoke",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:35:00Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Model ran forward and backward on GPU and reported finite loss and gradients.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "smoke-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/smoke/smoke.json",
+      "sha256": "ee7df43504a078cb22a7d1cebe5752c873a90b7be0ef92209799779b26310621",
+      "description": "Parameter counts, logit shapes, output lengths, loss components, gradient norm and peak memory from run gpu-smoke-003.",
+      "size_bytes": 897
+    }
+  ],
   "gates": [],
   "guesses": [
     {
