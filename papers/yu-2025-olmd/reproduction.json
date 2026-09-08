@@ -307,6 +307,20 @@
         "inference": "central 224x224 crop",
         "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
         "reported_hardware": "1 NVIDIA A6000 GPU"
+      },
+      "headline_configuration": {
+        "lma_context_length": 9,
+        "decoupling_locations": "after ResNet34 stages 2, 3 and 4 (Table 3 last row)",
+        "decoupling_pooling": "AvgPool (Table 7)",
+        "omp_design": "cascaded (Table 6)",
+        "orientation_branches": "both HMP and VMP enabled (Table 4 last row)",
+        "coupling": "stage coupling and cross-stage coupling both enabled (Table 8)",
+        "loss_weights": "gamma_1 = 1, gamma_2 = 25 (stated after Equation 14)",
+        "classifiers": "shared across all CTC heads, following SMKD (Equation 12)",
+        "stage_coupling_init": "alpha and beta are learnable scalars initialized to zero (Equation 5)",
+        "expected_cost_phoenix14": "Table 5 context 9: 80.74M params, 474.9G FLOPs, 0.047s inference on a 100-frame video; the no-LMA column is 78.95M / 363.4G. Usable as preflight sanity checks.",
+        "consistency_note": "Every full-model row in Tables 3, 4, 6, 7 and 8 reports 17.1 / 17.2, matching Table 5 context 9 and the Table 1 PHOENIX14 row. No ablation disagrees.",
+        "ablation_scope_caveat": "All ablations, parameter and FLOP measurements are PHOENIX14 only. The PHOENIX14-T and CSL-Daily numbers come from a configuration the paper does not separately specify; identical settings are assumed."
       }
     },
     {
@@ -328,6 +342,20 @@
         "inference": "central 224x224 crop",
         "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
         "reported_hardware": "1 NVIDIA A6000 GPU"
+      },
+      "headline_configuration": {
+        "lma_context_length": 9,
+        "decoupling_locations": "after ResNet34 stages 2, 3 and 4 (Table 3 last row)",
+        "decoupling_pooling": "AvgPool (Table 7)",
+        "omp_design": "cascaded (Table 6)",
+        "orientation_branches": "both HMP and VMP enabled (Table 4 last row)",
+        "coupling": "stage coupling and cross-stage coupling both enabled (Table 8)",
+        "loss_weights": "gamma_1 = 1, gamma_2 = 25 (stated after Equation 14)",
+        "classifiers": "shared across all CTC heads, following SMKD (Equation 12)",
+        "stage_coupling_init": "alpha and beta are learnable scalars initialized to zero (Equation 5)",
+        "expected_cost_phoenix14": "Table 5 context 9: 80.74M params, 474.9G FLOPs, 0.047s inference on a 100-frame video; the no-LMA column is 78.95M / 363.4G. Usable as preflight sanity checks.",
+        "consistency_note": "Every full-model row in Tables 3, 4, 6, 7 and 8 reports 17.1 / 17.2, matching Table 5 context 9 and the Table 1 PHOENIX14 row. No ablation disagrees.",
+        "ablation_scope_caveat": "All ablations, parameter and FLOP measurements are PHOENIX14 only. The PHOENIX14-T and CSL-Daily numbers come from a configuration the paper does not separately specify; identical settings are assumed."
       }
     },
     {
@@ -349,6 +377,20 @@
         "inference": "central 224x224 crop",
         "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
         "reported_hardware": "1 NVIDIA A6000 GPU"
+      },
+      "headline_configuration": {
+        "lma_context_length": 9,
+        "decoupling_locations": "after ResNet34 stages 2, 3 and 4 (Table 3 last row)",
+        "decoupling_pooling": "AvgPool (Table 7)",
+        "omp_design": "cascaded (Table 6)",
+        "orientation_branches": "both HMP and VMP enabled (Table 4 last row)",
+        "coupling": "stage coupling and cross-stage coupling both enabled (Table 8)",
+        "loss_weights": "gamma_1 = 1, gamma_2 = 25 (stated after Equation 14)",
+        "classifiers": "shared across all CTC heads, following SMKD (Equation 12)",
+        "stage_coupling_init": "alpha and beta are learnable scalars initialized to zero (Equation 5)",
+        "expected_cost_phoenix14": "Table 5 context 9: 80.74M params, 474.9G FLOPs, 0.047s inference on a 100-frame video; the no-LMA column is 78.95M / 363.4G. Usable as preflight sanity checks.",
+        "consistency_note": "Every full-model row in Tables 3, 4, 6, 7 and 8 reports 17.1 / 17.2, matching Table 5 context 9 and the Table 1 PHOENIX14 row. No ablation disagrees.",
+        "ablation_scope_caveat": "All ablations, parameter and FLOP measurements are PHOENIX14 only. The PHOENIX14-T and CSL-Daily numbers come from a configuration the paper does not separately specify; identical settings are assumed."
       }
     },
     {
@@ -3085,15 +3127,22 @@
   "guesses": [
     {
       "guess_id": "loss-weights",
-      "detail": "The loss weights gamma_1 (CTC) and gamma_2 (distillation) are not stated numerically in the paper text.",
-      "planned_resolution": "Search the full PDF including any appendix; if still absent, adopt the VAC convention the paper's loss is derived from and record the choice as a deviation.",
-      "status": "open"
+      "detail": "The loss weights are stated in the paper after Equation 14: 'gamma_1 and gamma_2 are two hyperparameters used to balance contributions, we set them to 1 and 25, respectively.' Not a guess.",
+      "status": "resolved",
+      "resolution": "gamma_1 = 1, gamma_2 = 25",
+      "evidence": [
+        "arXiv:2503.08205v1, text immediately following Equation 14."
+      ]
     },
     {
       "guess_id": "lma-context-length",
-      "detail": "The LMA context length used for the Table 1/Table 2 headline results is not stated in the Implementation Details; Table 5 ablates it.",
-      "planned_resolution": "Read the optimum from the paper's Table 5 ablation and record which value was selected and why.",
-      "status": "open"
+      "detail": "Table 5 ablates the LMA motion context length on PHOENIX14. Context 9 is the optimum (Dev 17.1 / Test 17.2) and matches the Table 1 OLMD row exactly, which identifies it as the headline configuration.",
+      "status": "resolved",
+      "resolution": "LMA motion context length k = 9 (so n = 4, giving 2n = 8 difference maps)",
+      "evidence": [
+        "arXiv:2503.08205v1 Table 5: context 9 gives Dev 17.1 / Test 17.2, Params 80.74M, FLOPs 474.9G, inference 0.047s on a 100-frame video.",
+        "Table 1 OLMD PHOENIX14 row is 17.1 / 17.2, identical to Table 5 context 9."
+      ]
     },
     {
       "guess_id": "seed-policy",
@@ -3106,6 +3155,160 @@
       "detail": "The paper gives the WER formula but does not name the scoring implementation.",
       "planned_resolution": "Pin the official evaluation script distributed with each dataset and record its version.",
       "status": "open"
+    },
+    {
+      "guess_id": "mp-block-internals",
+      "severity": "blocking",
+      "status": "open",
+      "detail": "The MP-Block is the core of the paper's headline HMP/VMP contribution, but the paper describes it only as '(2D CNNs, detailed in the supplementary materials)'. Number of convolutions, kernel sizes, dilation, channel widths, normalization, activation, and whether it is a residual bottleneck are all unavailable.",
+      "planned_resolution": "No public supplementary material exists to consult (verified). The design must be inferred and constrained by the Table 5 parameter/FLOP budget; every choice recorded as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1, HMP/VMP paragraph: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
+        "arXiv abs page lists only [v1] with no ancillary files; the 9-page PDF contains no /EmbeddedFile and no appendix; the AAAI proceedings entry exposes no supplementary galley. Verified 2026-09-08."
+      ]
+    },
+    {
+      "guess_id": "lma-reduction-ratio",
+      "severity": "blocking",
+      "status": "open",
+      "detail": "LMA compresses channels to C/r 'by a CNN', but the value of r is never given. It directly determines LMA's parameter and FLOP cost.",
+      "planned_resolution": "Constrain r from Table 5: the no-LMA column is 78.95M params / 363.4G FLOPs and context 9 is 80.74M / 474.9G, so all three LMA instances cost 1.79M params / 111.5G FLOPs. Select the r consistent with that budget and record it as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 LMA paragraph: 'the channel dimension is compressed to C/r by a CNN'.",
+        "Table 5 params/FLOPs columns provide the only numerical constraint on r."
+      ]
+    },
+    {
+      "guess_id": "cross-stage-injection-point",
+      "severity": "blocking",
+      "status": "open",
+      "detail": "Equation 6 produces the cross-stage coupling output X_CS in R^{C x T}, but no equation or sentence states where X_CS enters the network (added before the 1D-CNN? concatenated? injected after the first 1D-CNN?). Table 8 attributes 1.2 Dev / 1.3 Test WER to coupling, so the choice is material.",
+      "planned_resolution": "Infer from Figure 2's data flow; record the selected injection point as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 Equation 6 and the cross-stage coupling paragraph.",
+        "Table 8: stage+cross-stage 17.1/17.2 vs coupling-free 18.3/18.5."
+      ]
+    },
+    {
+      "guess_id": "ffn-and-ds-widths",
+      "severity": "open",
+      "status": "open",
+      "detail": "The FFN widths C_in, C_hid, C_out (Equation 3) are symbolic only; the expansion ratio is not stated. The DS convolution (Equation 4) is given only as '2D CNN with a stride of 2 in the last dimension' with no kernel size, padding, norm, or channel mapping. Equation 4 also writes both operands as R^{C x ...} even though ResNet34 stages differ in channel count, so a projection is required that the paper does not describe.",
+      "planned_resolution": "Choose minimal consistent widths, constrain against Table 5's budget, record as deviations.",
+      "evidence": [
+        "arXiv:2503.08205v1 Equations 3 and 4."
+      ]
+    },
+    {
+      "guess_id": "ctc-decoding",
+      "severity": "open",
+      "status": "open",
+      "detail": "The paper never states how CTC outputs are decoded. Full-text search finds zero occurrences of 'beam', 'greedy', or 'best path', and no beam width or language model is mentioned.",
+      "planned_resolution": "Adopt the decoding used by the VAC/SMKD/CorrNet lineage this work builds on; record as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 full text: 0 hits for 'beam'; Equation 15 gives only the generic WER definition."
+      ]
+    },
+    {
+      "guess_id": "gloss-post-processing",
+      "severity": "open",
+      "status": "open",
+      "detail": "Standard PHOENIX evaluation removes tokens such as __ON__, __OFF__ and si-markers before scoring, which materially shifts WER. The paper does not mention any gloss post-processing.",
+      "planned_resolution": "Apply the official PHOENIX evaluation package's own post-processing and record exactly what it does.",
+      "evidence": [
+        "arXiv:2503.08205v1 full text: no mention of gloss post-processing or __ON__/__OFF__ handling."
+      ]
+    },
+    {
+      "guess_id": "metric-script",
+      "severity": "open",
+      "status": "open",
+      "detail": "The paper gives the WER formula but never names the scoring implementation; there is no mention of sclite, mergectm, the evaluatePHOENIX14 scripts, or the CSL-Daily evaluation.",
+      "planned_resolution": "Pin each dataset's official evaluation script and record its version and hash.",
+      "evidence": [
+        "arXiv:2503.08205v1 full text: 0 hits for 'sclite' and 'mergectm'."
+      ]
+    },
+    {
+      "guess_id": "checkpoint-selection",
+      "severity": "open",
+      "status": "open",
+      "detail": "The paper never mentions checkpoints or model selection (0 hits for 'checkpoint'), yet reports both Dev and Test for every configuration. Whether Test numbers come from the Dev-best epoch, the final epoch, or the Test-best epoch is unknown.",
+      "planned_resolution": "Select the best-Dev-WER epoch, the convention in this lineage, and record it as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 full text: 0 hits for 'checkpoint'; Dev and Test both reported throughout."
+      ]
+    },
+    {
+      "guess_id": "batching-and-padding",
+      "severity": "open",
+      "status": "open",
+      "detail": "Batch size 2 with variable-length video requires a padding and length-masking strategy, which the paper does not describe. This interacts with LMA's k=9 sliding window, whose sequence-boundary handling (zero / replicate / reflect padding) is also unspecified and affects 8 frames of every clip.",
+      "planned_resolution": "Adopt the lineage's padding convention; record both the padding and the LMA boundary rule as deviations.",
+      "evidence": [
+        "arXiv:2503.08205v1 Implementation Details states only batch size 2.",
+        "Equation 7 defines the sliding window without boundary handling."
+      ]
+    },
+    {
+      "guess_id": "temporal-scale-range",
+      "severity": "open",
+      "status": "open",
+      "detail": "The paper states 'a 20% probability of temporal scale adjustment' but never gives the scale factor range, so the augmentation magnitude is unknown.",
+      "planned_resolution": "Adopt the lineage's temporal augmentation range and record it as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 Implementation Details."
+      ]
+    },
+    {
+      "guess_id": "unstated-training-hyperparameters",
+      "severity": "open",
+      "status": "open",
+      "detail": "Full-text search finds no mention of gradient clipping, warmup, dropout, label smoothing, mixed precision, gradient accumulation, BatchNorm freezing or momentum, weight initialization for the new modules (only alpha/beta = 0 is stated), optimizer betas/eps, or any random seed. No maximum sequence length or input frame subsampling is specified either.",
+      "planned_resolution": "Use framework defaults, single seed, no AMP unless memory forces it; record each as a deviation.",
+      "evidence": [
+        "arXiv:2503.08205v1 full text: 0 hits for 'clip', 'warm', 'dropout'; Implementation Details is two paragraphs."
+      ]
+    },
+    {
+      "guess_id": "bilstm-layer-count",
+      "severity": "open",
+      "status": "open",
+      "detail": "The paper states BiLSTM 'hidden layers ... to 1024' but not the number of layers, nor whether 1024 is per-direction or total. Figure 2 also annotates the 1D-CNN blocks 'xN' without defining N.",
+      "planned_resolution": "Adopt the lineage's 2-layer BiLSTM convention and N=1; record as deviations.",
+      "evidence": [
+        "arXiv:2503.08205v1 Implementation Details and Figure 2."
+      ]
+    },
+    {
+      "guess_id": "distillation-temperature",
+      "severity": "open",
+      "status": "open",
+      "detail": "Equation 13 defines the self-distillation loss as a sum of KL divergences but gives no temperature, and does not state whether the global-branch teacher targets are detached.",
+      "planned_resolution": "Follow the VAC formulation this loss is derived from; record the temperature and detachment choice as deviations.",
+      "evidence": [
+        "arXiv:2503.08205v1 Equations 12 and 13; the paper credits SMKD for shared classifiers and VAC-style distillation."
+      ]
+    },
+    {
+      "guess_id": "eq10-concat-inconsistency",
+      "severity": "open",
+      "status": "open",
+      "detail": "Equation 10 writes the concatenation list as [C_(-n),...,C_(n)], which is 2n+1 maps and includes the identically-zero centre difference C_(0), while Equation 9 defines differences only for i != 0 and Figure 4 labels the concatenated tensor '4C' at context 5 (that is 2n = 4 maps). For k=9 this is 8 maps versus 9.",
+      "planned_resolution": "Follow Figure 4 and Equation 9 (2n non-zero difference maps) and record the discrepancy.",
+      "evidence": [
+        "arXiv:2503.08205v1 Equations 9 and 10; Figure 4 '4C' label at context 5."
+      ]
+    },
+    {
+      "guess_id": "hmp-vmp-naming-inconsistency",
+      "severity": "informational",
+      "status": "open",
+      "detail": "The OMP paragraph says HMP and VMP purify 'vertical and horizontal motions, respectively', which contradicts Equation 2, Figure 3 and the Figure 2 caption, where HMP operates on X_h. Treated as a writing error; the figure flow is authoritative.",
+      "planned_resolution": "Implement HMP on X_h per Equation 2 and Figure 3; record the paper's inconsistent sentence.",
+      "evidence": [
+        "arXiv:2503.08205v1 OMP paragraph versus Equation 2, Figure 3 and the Figure 2 caption."
+      ]
     }
   ],
   "deviations": [],
