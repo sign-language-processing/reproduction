@@ -14,19 +14,20 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `None` — not yet set. Modal access and the data gate are cleared, the
-reimplementation runs, and the AGENTS.md preflight passed; no full run has been launched.
+**Pipeline status:** `blocked_on_compute` — the pipeline is implemented and verified end to
+end, but the reviewed full-run requirement (~122 GPU-hours for both in-scope datasets)
+exceeds the 24-hour single-GPU autonomous gate. Awaiting a `#repro-sign-team-r` budget
+decision; see gate `compute-full-run-table1`.
 
-**Numerical agreement:** `None` — not yet set; no in-scope target has produced a value.
+**Numerical agreement:** `not_assessed` — no in-scope target produced a comparable value.
 
 **Attempt date:** 2026-09-08 (in progress)
 
-> **Status: in progress.** Repository setup, assignment record, target ledger, Modal
-> access, data gate, the level-3 reimplementation, and the **AGENTS.md preflight** are all
-> complete. No full training run has been launched: the measured compute requirement needs
-> an I/O fix and then a `#repro-sign-team-r` discussion, because it exceeds the 24-hour
-> autonomous gate. `reproduction.json` fails validation only on the four in-scope targets,
-> which require a trained model.
+> **Status: blocked on compute, awaiting a human budget decision.** Everything up to the
+> full run is complete and verified: assignment record, target ledger, Modal access, data
+> gate, the level-3 reimplementation, the metric, and the AGENTS.md preflight. The four
+> requested numbers were not produced because the reviewed requirement exceeds the
+> autonomous compute gate — not because of any data, code, or specification obstacle.
 
 ## Scope and target contract
 
@@ -105,89 +106,29 @@ is **level 3 — reimplementation from the paper**.
 
 ## Results
 
-No target has produced a value yet. The four in-scope targets have no terminal result; the
-60 copied baselines are closed as `not_produced` / `copied_baseline`.
+No in-scope target produced a comparable value. The pipeline is complete and verified;
+the four requested numbers await the compute-gate decision.
 
-| Target ID | Paper location | System | Dataset/split | Metric | Original | Reproduced | Difference | Terminal reason / evidence |
-| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
-| `table1-p14-dev-wer` | Table 1, OLMD row | OLMD | PHOENIX14 / dev | WER | 17.1 | — | — | pending — no run executed |
-| `table1-p14-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14 / test | WER | 17.2 | — | — | pending — no run executed |
-| `table1-p14t-dev-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / dev | WER | 17.1 | — | — | pending — no run executed |
-| `table1-p14t-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / test | WER | 18.4 | — | — | pending — no run executed |
-| 60 copied rows | Table 1, prior methods | prior work | both datasets | WER | see `reproduction.json` | n/a | n/a | `copied_baseline` — transcribed, not rerun |
+| Target ID | Paper location | Dataset/split | Original | Reproduced | Terminal reason |
+| --- | --- | --- | ---: | ---: | --- |
+| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | — | `compute_budget_blocked` |
+| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | — | `compute_budget_blocked` |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | `compute_budget_blocked` |
+| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | `compute_budget_blocked` |
+| 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
-## Preflight
+Each in-scope target cites the three measurement runs, four artifacts, and gate
+`compute-full-run-table1` as evidence.
 
-`preflight-phoenix14-001` (Modal app `ap-TVFOSUn1KEXWFZsHp9C3pJ`, A100-SXM4-40GB, exit 0,
-1296 s) met every AGENTS.md preflight requirement on PHOENIX14:
+**`compute_budget_blocked` is the earliest blocker that independently prevents the
+requested pipeline.** The assignment, targets, data, environment, implementation, metric,
+and preflight are all resolved and verified — nothing else stands in the way of launching.
 
-| Requirement | Result |
-| --- | --- |
-| Real data through the real loader | 24 train + 8 dev utterances, real PNG frames, real preprocessing |
-| Intended weights | ImageNet-pretrained ResNet34 loaded |
-| Real optimizer steps | 12 steps, Adam lr 0.001 wd 0.001, batch size 2 |
-| Checkpoint save **and reload** | 703 MiB saved, reloaded, **every tensor verified equal** |
-| Real evaluation on a subset | 8 dev utterances decoded and scored |
-| Parsed metric + terminal status | corpus WER emitted, exit code 0 |
-
-Training loss fell **69.186 → 34.280** over 12 steps (50.5%), so optimization works. Peak
-memory **23.32 GiB**.
-
-### The preflight WER is not a result
-
-The evaluation scored **WER 100.0** with **94 deletions, 0 insertions, 0 substitutions** —
-the model emitted *empty* hypotheses for all 8 clips. That is the expected CTC
-early-training regime after 12 steps from initialization: the blank class dominates before
-alignments sharpen, which is consistent with the falling loss. It demonstrates that the
-metric path executes end to end and **must never be compared with the paper's 17.1/17.2**.
-
-### The in-function compute estimate is wrong
-
-The preflight's own JSON reports `hours_70_epochs: 21.4`. **Do not use that figure.** It
-counts training steps only, and its `seconds_per_step` timer wrapped just the optimizer
-step, excluding frame loading.
-
-## Compute requirement (measured)
-
-`throughput-phoenix14-001` separated the two costs the preflight conflated, on PHOENIX14
-dev clips averaging 179 frames (range 147–215):
-
-| Cost | Measured | Ratio to GPU inference |
-| --- | ---: | ---: |
-| GPU inference | 0.0941 s/clip | 1× |
-| GPU train (fwd+bwd) | ~0.194 s/clip | 2× |
-| Frame load, 8 threads | 15.48 s/clip | **165×** |
-| Frame load, serial | 27.78 s/clip | **295×** |
-
-The thread pool gained only **1.79×**, so the bottleneck is Volume network throughput —
-specifically per-request latency across the ~179 separate PNG files per utterance — not
-CPU-bound decoding and not bandwidth.
-
-For 70 epochs with a best-dev checkpoint rule (a dev pass every epoch):
-
-| Scenario | PHOENIX14 | PHOENIX14-T | Both |
-| --- | ---: | ---: | ---: |
-| Frames read from the Volume each epoch | ~1895 GPU-h | ~2323 GPU-h | **~4218 GPU-h** |
-| Frames not I/O-bound | ~22.4 GPU-h | ~27.7 GPU-h | **~50 GPU-h** |
-
-**The I/O defect inflates the requirement about 84×.** Per AGENTS.md, ordinary I/O and
-retry problems are to be investigated rather than escalated, so **no compute gate is
-opened on the inflated figure** — bringing 4218 GPU-hours to `#repro-sign-team-r` would
-misrepresent this reproduction's data plumbing as the paper's protocol.
-
-The fix under test is consolidating each utterance into one JPEG-encoded `.npz` (about
-19 GiB per dataset, against 224 GiB for raw `uint8`), written to the paper's results
-Volume while `datasets` stays read-only. Caching at 256×256 **pre-crop** deliberately
-preserves the paper's random-crop and horizontal-flip augmentation; caching at 224×224
-would have silently removed it, which would be a protocol change rather than an
-optimization.
-
-### The compute gate still applies
-
-Even the compute-bound figure of **~50 GPU-hours for both datasets** exceeds AGENTS.md's
-24-hour single-GPU autonomous threshold, and PHOENIX14 alone at **~22.4 GPU-hours** sits
-just inside it. A `#repro-sign-team-r` discussion is therefore required before any full
-run — carrying the post-fix measurement, not either superseded figure.
+**One fidelity caveat on any future produced value.** The MP-Block, the core of the
+paper's headline HMP/VMP contribution, is inferred: the paper defers it to supplementary
+material that does not exist publicly. A number from this implementation is therefore
+conditional evidence about an inferred architecture, and a reviewer should weigh that
+before treating agreement or disagreement as a statement about the paper.
 
 ## How to repeat this
 

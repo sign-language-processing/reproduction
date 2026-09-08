@@ -126,12 +126,21 @@
     ]
   },
   "status": {
-    "pipeline": null,
-    "numerical_agreement": null,
-    "numerical_agreement_basis": "Not yet assessed: no run has been executed. Agreement will be assessed only on in-scope OLMD targets that produce a comparable WER from the declared checkpoint, split, and metric implementation.",
+    "pipeline": "blocked_on_compute",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no in-scope target produced a comparable value, because no full training run has been launched. The only WER emitted so far, 100.0 from a 12-step preflight, reflects CTC early-training blank collapse rather than the trained model, and comparing it with the paper's 17.1/17.2/17.1/18.4 would be meaningless. Assessment is deferred until a full run completes.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
-    "blocker": null
+    "blocker": {
+      "reason_code": "compute_budget_blocked",
+      "detail": "The reviewed full-run requirement of about 122 GPU-hours for both in-scope Table 1 datasets exceeds the AGENTS.md 24-hour single-GPU autonomous gate, so the runs that would produce the four requested numbers have not been launched. This is the earliest blocker that independently prevents the requested pipeline: the assignment, targets, data, environment, implementation, metric and preflight are all resolved and verified. The MP-Block inference recorded in guesses remains a fidelity caveat on any future produced value, but it does not prevent the runs.",
+      "target_ids": [
+        "table1-p14-dev-wer",
+        "table1-p14-test-wer",
+        "table1-p14t-dev-wer",
+        "table1-p14t-test-wer"
+      ]
+    }
   },
   "metric_definitions": [
     {
@@ -405,7 +414,34 @@
       "evidence": [
         "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.1 for PHOENIX14 dev.",
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
-      ]
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "compute_budget_blocked",
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+        },
+        "run_ids": [
+          "preflight-phoenix14-001",
+          "throughput-phoenix14-001",
+          "cache-probe-phoenix14-001"
+        ],
+        "artifact_ids": [
+          "preflight-json",
+          "preflight-checkpoint",
+          "throughput-json",
+          "cache-probe-json"
+        ],
+        "gate_ids": [
+          "compute-full-run-table1"
+        ],
+        "evidence": [
+          "preflight-phoenix14-001 passed every AGENTS.md preflight requirement on PHOENIX14: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0, with training loss falling 69.186 to 34.280.",
+          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is the expected CTC early-training regime after 12 steps and is explicitly NOT a comparable value for this target.",
+          "throughput-phoenix14-001 and cache-probe-phoenix14-001 measured the requirement: about 54.7 GPU-hours for PHOENIX14 after a 24.1x I/O fix, with pure GPU compute alone still about 22.4 to 27.7 GPU-hours per dataset.",
+          "Gate compute-full-run-table1 is open and requires a human budget decision before launch."
+        ]
+      }
     },
     {
       "target_id": "table1-p14-test-wer",
@@ -425,7 +461,34 @@
       "evidence": [
         "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.2 for PHOENIX14 test.",
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
-      ]
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "compute_budget_blocked",
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14 is about 54.7 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+        },
+        "run_ids": [
+          "preflight-phoenix14-001",
+          "throughput-phoenix14-001",
+          "cache-probe-phoenix14-001"
+        ],
+        "artifact_ids": [
+          "preflight-json",
+          "preflight-checkpoint",
+          "throughput-json",
+          "cache-probe-json"
+        ],
+        "gate_ids": [
+          "compute-full-run-table1"
+        ],
+        "evidence": [
+          "preflight-phoenix14-001 passed every AGENTS.md preflight requirement on PHOENIX14: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0, with training loss falling 69.186 to 34.280.",
+          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is the expected CTC early-training regime after 12 steps and is explicitly NOT a comparable value for this target.",
+          "throughput-phoenix14-001 and cache-probe-phoenix14-001 measured the requirement: about 54.7 GPU-hours for PHOENIX14 after a 24.1x I/O fix, with pure GPU compute alone still about 22.4 to 27.7 GPU-hours per dataset.",
+          "Gate compute-full-run-table1 is open and requires a human budget decision before launch."
+        ]
+      }
     },
     {
       "target_id": "table1-p14t-dev-wer",
@@ -445,7 +508,34 @@
       "evidence": [
         "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.1 for PHOENIX14-T dev.",
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
-      ]
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "compute_budget_blocked",
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+        },
+        "run_ids": [
+          "preflight-phoenix14-001",
+          "throughput-phoenix14-001",
+          "cache-probe-phoenix14-001"
+        ],
+        "artifact_ids": [
+          "preflight-json",
+          "preflight-checkpoint",
+          "throughput-json",
+          "cache-probe-json"
+        ],
+        "gate_ids": [
+          "compute-full-run-table1"
+        ],
+        "evidence": [
+          "preflight-phoenix14-001 passed every AGENTS.md preflight requirement on PHOENIX14: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0, with training loss falling 69.186 to 34.280.",
+          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is the expected CTC early-training regime after 12 steps and is explicitly NOT a comparable value for this target.",
+          "throughput-phoenix14-001 and cache-probe-phoenix14-001 measured the requirement: about 67.3 GPU-hours for PHOENIX14-T after a 24.1x I/O fix, with pure GPU compute alone still about 22.4 to 27.7 GPU-hours per dataset.",
+          "Gate compute-full-run-table1 is open and requires a human budget decision before launch."
+        ]
+      }
     },
     {
       "target_id": "table1-p14t-test-wer",
@@ -465,7 +555,34 @@
       "evidence": [
         "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 18.4 for PHOENIX14-T test.",
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
-      ]
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "compute_budget_blocked",
+          "detail": "The pipeline is implemented and verified end to end, but the reviewed full-run requirement for PHOENIX14-T is about 67.3 GPU-hours (roughly 122 for both in-scope datasets), which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the #repro-sign-team-r discussion recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle."
+        },
+        "run_ids": [
+          "preflight-phoenix14-001",
+          "throughput-phoenix14-001",
+          "cache-probe-phoenix14-001"
+        ],
+        "artifact_ids": [
+          "preflight-json",
+          "preflight-checkpoint",
+          "throughput-json",
+          "cache-probe-json"
+        ],
+        "gate_ids": [
+          "compute-full-run-table1"
+        ],
+        "evidence": [
+          "preflight-phoenix14-001 passed every AGENTS.md preflight requirement on PHOENIX14: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0, with training loss falling 69.186 to 34.280.",
+          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is the expected CTC early-training regime after 12 steps and is explicitly NOT a comparable value for this target.",
+          "throughput-phoenix14-001 and cache-probe-phoenix14-001 measured the requirement: about 67.3 GPU-hours for PHOENIX14-T after a 24.1x I/O fix, with pure GPU compute alone still about 22.4 to 27.7 GPU-hours per dataset.",
+          "Gate compute-full-run-table1 is open and requires a human budget decision before launch."
+        ]
+      }
     },
     {
       "target_id": "table1-p14-dev-wer-sfl",
@@ -2918,6 +3035,85 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "cache-probe-phoenix14-001",
+      "purpose": "Test the hypothesis that the frame-loading cost is per-request latency across the ~179 PNG files per utterance rather than bandwidth, by consolidating each clip into one JPEG-encoded .npz and re-measuring.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action cache-probe",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T17:05:00Z",
+      "finished_at_utc": "2026-09-08T17:18:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 8.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-LD2AbD30PPhtoQEKAqF0xj",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-LD2AbD30PPhtoQEKAqF0xj",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Hypothesis supported. Reading a consolidated clip costs 0.267 s against 6.45 s for the PNG directory in the same container, a 24.1x speedup. Writing the cache costs 0.20 s per clip with 8 threads. The cache averages 1.73 MB per clip at 162.8 frames, so about 11.0 GiB for PHOENIX14 and 13.3 GiB for PHOENIX14-T. Fidelity verified: frame counts match exactly and JPEG q90 costs 1.028 mean absolute pixel levels out of 255 against the same bilinear 256x256 resize.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The PNG baseline measured 6.45 s per clip here versus 27.78 s in throughput-phoenix14-001, because the Volume cache was warm for these six clips. The 24.1x speedup is therefore a conservative floor; against the cold-cache 27.78 s it would be about 104x.",
+        "Post-fix estimate for 70 epochs with a best-dev checkpoint rule: 54.7 GPU-hours for PHOENIX14 and 67.3 for PHOENIX14-T, about 122 GPU-hours for both Table 1 datasets. That is 35x better than the 4218 GPU-hours measured without the fix, but still well beyond the 24-hour autonomous gate -- PHOENIX14 alone at 54.7 GPU-hours already exceeds it.",
+        "Cache reading at 0.267 s per clip still exceeds the 0.194 s of GPU training compute, so the pipeline remains marginally I/O-bound and further optimization is possible; it would not, however, bring either dataset under 24 hours, because pure compute alone is about 22.4 and 27.7 GPU-hours.",
+        "One-time cache construction costs roughly 12.6 h for PHOENIX14 and 15.3 h for PHOENIX14-T, on CPU only, and is reusable across every epoch, seed and both experiments.",
+        "Caching is deliberately done at 256x256 BEFORE cropping, so the paper's random 224x224 crop and 50% horizontal flip still vary per epoch. Caching post-crop would have been smaller and faster but would silently remove the stated augmentation, which is a protocol change rather than an optimization."
+      ],
+      "measurements": {
+        "png_read_seconds_per_clip_warm": 6.45,
+        "cache_write_seconds_per_clip": 0.2,
+        "cache_read_seconds_per_clip": 0.267,
+        "speedup_vs_png_warm": 24.1,
+        "cache_bytes_per_clip_mean": 1725242,
+        "frames_per_clip_mean": 162.8,
+        "fidelity_mean_abs_pixel_delta": 1.028,
+        "fidelity_frame_counts_match": true
+      },
+      "artifact_ids": [
+        "cache-probe-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-probe-phoenix14",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T17:03:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": null,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Confirmed the latency hypothesis and quantified the post-fix requirement.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -2952,9 +3148,35 @@
       "sha256": "0fa76421ec3267b2a4ff3c4ae130f7574cfefb253ed4dabfe3f13078c05628f0",
       "size_bytes": 394,
       "description": "Serial and parallel load cost, pure GPU inference cost, and clip frame statistics."
+    },
+    {
+      "artifact_id": "cache-probe-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/cache-probe/phoenix14-probe.json",
+      "sha256": "b723ae9b674846a6ab0ad8a28014b076ff35b4ed0cbce34d76d6a9355fb92fd5",
+      "size_bytes": 482,
+      "description": "PNG vs consolidated-cache read cost, cache size, and JPEG fidelity check."
     }
   ],
-  "gates": [],
+  "gates": [
+    {
+      "gate_id": "compute-full-run-table1",
+      "type": "compute",
+      "status": "open",
+      "reason": "The reviewed compute requirement for the assigned Table 1 full runs exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours.",
+      "evidence": [
+        "throughput-phoenix14-001 measured GPU inference at 0.0941 s per clip and training forward+backward at about 0.194 s per clip on an A100-40GB.",
+        "cache-probe-phoenix14-001 confirmed the loading bottleneck is per-request latency and reduced the per-clip read from 6.45 s (warm PNG) to 0.267 s, a 24.1x speedup, at 1.73 MB per clip.",
+        "Post-fix estimate for the paper's protocol (70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch): PHOENIX14 54.7 GPU-hours, PHOENIX14-T 67.3 GPU-hours, about 122 GPU-hours for both in-scope datasets.",
+        "Pure GPU compute alone, with loading entirely free, would still be about 22.4 and 27.7 GPU-hours, so no further I/O optimization brings the assignment under the gate.",
+        "One-time CPU-only cache construction adds roughly 12.6 h and 15.3 h per dataset and is reusable across epochs and seeds.",
+        "The paper reports a single value per cell and states no seed policy, so this estimate assumes one run per dataset; any seed replication multiplies it."
+      ],
+      "required_action": "Discuss the roughly 122 GPU-hour plan for both Table 1 datasets in Slack #repro-sign-team-r and confirm the budget before launching. AGENTS.md requires this discussion for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.",
+      "opened_at_utc": "2026-09-08T17:25:00Z",
+      "owner": "human"
+    }
+  ],
   "guesses": [
     {
       "guess_id": "loss-weights",
