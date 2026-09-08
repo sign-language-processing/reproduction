@@ -15,9 +15,9 @@ documented search (see [Source provenance](#source-provenance))
 Level 3 means reimplementation from the paper: no published code exists.
 
 **Pipeline status:** `blocked_on_compute` — the pipeline is implemented and verified end to
-end with TLP active, but the measured full-run requirement (~25.5 GPU-hours for PHOENIX14
-GPU-bound, ~57.8 with the cache alone) exceeds the 24-hour single-GPU autonomous gate.
-Awaiting authorization; see gate `compute-full-run-table1`.
+end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run
+requirement (**24.5 GPU-hours** for PHOENIX14) exceeds the 24-hour single-GPU autonomous
+gate by about 2%. Awaiting authorization; see gate `compute-full-run-table1`.
 
 **Numerical agreement:** `not_assessed` — no in-scope target produced a comparable value.
 
@@ -183,35 +183,51 @@ Measured on A100-40GB with the full 111.8 M-parameter model, on real ~180-frame 
 earlier provisional range of 70–79 GPU-hours scaled a doubling seen on an A10; that
 reflected the A10's weaker throughput, not the model, and is superseded.
 
+### Prefetching hides 95.7% of the loading latency (measured)
+
+`loader-benchmark-001` measured the JPEG cache behind a DataLoader with 8 workers,
+`prefetch_factor=4` and pinned memory:
+
+| | Measured |
+| --- | ---: |
+| Median wall time per step | **0.4073 s** |
+| Median GPU step | 0.390 s |
+| **Loading still exposed** | **17.3 ms (4.3%)** |
+
+Before the cache and DataLoader, batch loading cost **5.326 s fully exposed**. The first
+step takes 4.98 s (worker startup, cuDNN autotuning) and steady state arrives by the third.
+
 For 70 epochs, batch size 2, with best-dev checkpoint selection (a dev pass each epoch):
 
-| Scenario | PHOENIX14 | PHOENIX14-T | Both |
-| --- | ---: | ---: | ---: |
-| As measured (serial PNG loading) | ~317 GPU-h | — | — |
-| **With the JPEG cache** | **~57.8 GPU-h** ($121, 2.4 d) | ~72.3 GPU-h | ~130 GPU-h |
-| **Cache + prefetching (GPU-bound)** | **~25.5 GPU-h** ($54, 1.1 d) | ~31.9 GPU-h | ~57 GPU-h |
+| Stage of the estimate | PHOENIX14 | PHOENIX14-T |
+| --- | ---: | ---: |
+| Serial PNG loading (as first written) | ~317 GPU-h | — |
+| With the JPEG cache alone | ~57.8 GPU-h | ~72.3 GPU-h |
+| **Cache + prefetching (measured)** | **24.5 GPU-h** ($52, 1.0 d) | **30.1 GPU-h** ($63, 1.3 d) |
 
-Plus a one-time, CPU-only, reusable cache build: ~12.6 h and ~$4.75 for PHOENIX14.
+Plus a one-time, CPU-only, idempotent, resumable cache build measured at **8.5 h / $6.42 /
+9.7 GiB** for PHOENIX14 (10.3 h / $7.75 / 11.8 GiB for PHOENIX14-T).
 
-`cache-probe-phoenix14-001` verified the cache: per-clip reads drop from 6.45 s to
-**0.267 s (24.1×)**, frame counts match exactly, and JPEG q90 costs **1.028 mean absolute
-pixel levels out of 255**. The cache is 1.73 MB/clip (~11 GiB per dataset, against 224 GiB
-raw `uint8`), built at **256×256 pre-crop** so the paper's random 224×224 crop and 50%
-horizontal flip still vary per epoch — caching post-crop would have silently removed the
-stated augmentation.
+**The estimate fell 13× through data plumbing alone** — no change to the model, protocol,
+epochs or augmentation.
 
-The 317-hour figure describes **this reproduction's serial PNG loading, not the paper's
-protocol** — which is why no compute gate was opened on it. The cache and a prefetching
-loader are ordinary engineering, not protocol changes.
+Two caveats on the measurement: the benchmark landed on an A100-**80**GB while
+`preflight-phoenix14-002` measured 0.422 s on an A100-**40**GB (close, and the 0.390 s GPU
+step is consistent, but not identical hardware); and with only 20 batches cached the 40-step
+benchmark cycled one epoch, so later steps re-read page-cached clips. Real full-dataset
+throughput could be slightly worse. The full run should pin the GPU type.
 
 ### The gate still applies
 
-Even the GPU-bound best case of **~25.5 GPU-hours for PHOENIX14 marginally exceeds** the
-AGENTS.md 24-hour single-GPU threshold, and the cache-only figure of ~57.8 clearly does.
-Gate `compute-full-run-table1` remains open for authorization.
+At a measured **24.5 GPU-hours, PHOENIX14 exceeds the 24-hour threshold by about 2%** —
+close, but over. The run is now GPU-bound (only 4.3% of step time is exposed loading), so
+no further engineering closes a 2% gap: the only remaining levers would be trimming epochs
+or evaluation scope, and AGENTS.md forbids doing that silently. Gate
+`compute-full-run-table1` therefore remains open for authorization of ~24.5 GPU-hours,
+about $52, and roughly one day of wall-clock, plus the 8.5-hour CPU cache build.
 
-Cost is not the constraint: ~$54–121 for PHOENIX14 is well under 1% of the study's
-CHF 20,000. Wall-clock is: 1.1–2.4 days on one GPU.
+Cost is not the constraint: ~$52 for PHOENIX14 is about 0.25% of the study's CHF 20,000.
+Wall-clock is.
 
 **Reducing epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate is
 not on the table** — that would be a protocol change requiring its own decision, and

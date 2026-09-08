@@ -133,7 +133,7 @@
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": {
       "reason_code": "compute_budget_blocked",
-      "detail": "The measured full-run requirement exceeds the AGENTS.md 24-hour single-GPU autonomous gate: about 25.5 GPU-hours for PHOENIX14 with a prefetching cached loader and about 57.8 with the cache alone, so the runs that would produce the requested numbers have not been launched. This is the earliest blocker that independently prevents the requested pipeline: the assignment, targets, data, environment, implementation including TLP, metric and preflight are all resolved and verified. The MP-Block inference recorded in guesses remains a fidelity caveat on any future produced value, but it does not prevent the runs.",
+      "detail": "The measured full-run requirement exceeds the AGENTS.md 24-hour single-GPU autonomous gate: about 24.5 GPU-hours for PHOENIX14 and 30.1 for PHOENIX14-T, after data-plumbing improvements cut the figure 13x from about 317. The runs that would produce the requested numbers have therefore not been launched. This is the earliest blocker that independently prevents the requested pipeline: the assignment, targets, data, environment, implementation including TLP, metric, data loading and preflight are all resolved and verified. The MP-Block inference recorded in guesses remains a fidelity caveat on any future produced value, but it does not prevent the runs.",
       "target_ids": [
         "table1-p14-dev-wer",
         "table1-p14-test-wer",
@@ -421,20 +421,24 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP active, but the measured full-run requirement for PHOENIX14 is about 25.5 GPU-hours with a prefetching cached loader and about 57.8 with the cache alone, either of which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: the assignee directed starting with PHOENIX14 only, so this target is in the first stage."
+          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14 is about 24.5 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: the assignee directed starting with PHOENIX14 only, so this target is in the first stage."
         },
         "run_ids": [
           "preflight-phoenix14-001",
           "preflight-phoenix14-002",
           "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001"
+          "cache-probe-phoenix14-001",
+          "cache-build-trial-001",
+          "loader-benchmark-001"
         ],
         "artifact_ids": [
           "preflight-json",
           "preflight2-json",
           "preflight-checkpoint",
           "throughput-json",
-          "cache-probe-json"
+          "cache-probe-json",
+          "cache-build-json",
+          "loader-benchmark-json"
         ],
         "gate_ids": [
           "compute-full-run-table1"
@@ -470,20 +474,24 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP active, but the measured full-run requirement for PHOENIX14 is about 25.5 GPU-hours with a prefetching cached loader and about 57.8 with the cache alone, either of which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: the assignee directed starting with PHOENIX14 only, so this target is in the first stage."
+          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14 is about 24.5 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: the assignee directed starting with PHOENIX14 only, so this target is in the first stage."
         },
         "run_ids": [
           "preflight-phoenix14-001",
           "preflight-phoenix14-002",
           "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001"
+          "cache-probe-phoenix14-001",
+          "cache-build-trial-001",
+          "loader-benchmark-001"
         ],
         "artifact_ids": [
           "preflight-json",
           "preflight2-json",
           "preflight-checkpoint",
           "throughput-json",
-          "cache-probe-json"
+          "cache-probe-json",
+          "cache-build-json",
+          "loader-benchmark-json"
         ],
         "gate_ids": [
           "compute-full-run-table1"
@@ -519,20 +527,24 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP active, but the measured full-run requirement for PHOENIX14-T is about 31.9 GPU-hours with a prefetching cached loader and about 72.3 with the cache alone, either of which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
+          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14-T is about 30.1 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
         },
         "run_ids": [
           "preflight-phoenix14-001",
           "preflight-phoenix14-002",
           "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001"
+          "cache-probe-phoenix14-001",
+          "cache-build-trial-001",
+          "loader-benchmark-001"
         ],
         "artifact_ids": [
           "preflight-json",
           "preflight2-json",
           "preflight-checkpoint",
           "throughput-json",
-          "cache-probe-json"
+          "cache-probe-json",
+          "cache-build-json",
+          "loader-benchmark-json"
         ],
         "gate_ids": [
           "compute-full-run-table1"
@@ -568,20 +580,24 @@
         "status": "not_produced",
         "reason": {
           "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP active, but the measured full-run requirement for PHOENIX14-T is about 31.9 GPU-hours with a prefetching cached loader and about 72.3 with the cache alone, either of which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
+          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14-T is about 30.1 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
         },
         "run_ids": [
           "preflight-phoenix14-001",
           "preflight-phoenix14-002",
           "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001"
+          "cache-probe-phoenix14-001",
+          "cache-build-trial-001",
+          "loader-benchmark-001"
         ],
         "artifact_ids": [
           "preflight-json",
           "preflight2-json",
           "preflight-checkpoint",
           "throughput-json",
-          "cache-probe-json"
+          "cache-probe-json",
+          "cache-build-json",
+          "loader-benchmark-json"
         ],
         "gate_ids": [
           "compute-full-run-table1"
@@ -3366,6 +3382,159 @@
         "gate_ids": []
       },
       "artifact_ids": []
+    },
+    {
+      "run_id": "loader-benchmark-001",
+      "purpose": "Measure whether the prefetching DataLoader over the JPEG cache actually hides loading latency, rather than assuming the improvement.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action benchmark-loader --limit 40",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T19:05:00Z",
+      "finished_at_utc": "2026-09-08T19:09:00Z",
+      "config": {
+        "batch_size": 2,
+        "num_workers": 8,
+        "prefetch_factor": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "steps": 40,
+        "cached_clips": 40
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-ZA3BctYFEQ8E1oEcZe4QO5",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-ZA3BctYFEQ8E1oEcZe4QO5",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Prefetching works. Median wall time per step is 0.4073 s against a median GPU step of 0.390 s, so only 17.3 ms of loading remains exposed and 95.7% of the latency is hidden. Before the cache and DataLoader, batch loading cost 5.326 s fully exposed. All 40 clips were cache hits. Peak memory 23.96 GiB. The first step took 4.981 s (worker startup and cuDNN autotuning) and steady state was reached by the third.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Extrapolated to the real dataset sizes, PHOENIX14 costs about 24.5 GPU-hours (2836 steps per epoch at 0.4073 s, plus a dev pass, over 70 epochs) and PHOENIX14-T about 30.1, so about 54.6 for both. On A100-40GB that is roughly $52 and $63.",
+        "The estimate has fallen from about 317 GPU-hours as first written, to 57.8 with the cache alone, to a measured 24.5 with cache plus prefetching -- a 13x reduction achieved entirely through data plumbing, with no change to the model, protocol or augmentation.",
+        "PHOENIX14 at 24.5 GPU-hours still marginally exceeds the AGENTS.md 24-hour single-GPU autonomous gate, by about 2%. The gate stays open: shaving the estimate to fit would mean trimming epochs or evaluation scope, which AGENTS.md forbids doing silently.",
+        "The gpu_hours_70_epochs value of 2.2 in this run's own artifact is an artifact of the 40-clip subset, which yields 20 steps per epoch instead of 2836. The dataset-scale figures above are the ones to use.",
+        "Caveat on hardware: this benchmark landed on an A100-80GB while preflight-phoenix14-002 measured 0.422 s on an A100-40GB. The two are close, and the 0.390 s GPU step here is consistent with that, but they are not identical hardware. The full run should pin the GPU type so the estimate and the run agree.",
+        "Caveat on cycling: with only 20 batches cached, the 40-step benchmark completed one epoch and restarted, so later steps re-read clips already in the page cache. On the full dataset each step reads a fresh clip, which could make real throughput slightly worse than measured here."
+      ],
+      "measurements": {
+        "seconds_per_step_wall_median": 0.4073,
+        "seconds_per_step_gpu_median": 0.39,
+        "overhead_seconds": 0.0174,
+        "loading_hidden_fraction": 0.9573,
+        "first_step_seconds": 4.981,
+        "peak_memory_gib": 23.957,
+        "cache_hits": 40,
+        "phoenix14_gpu_hours_extrapolated": 24.5,
+        "phoenix14t_gpu_hours_extrapolated": 30.1
+      },
+      "artifact_ids": [
+        "loader-benchmark-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "loader-benchmark",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T19:03:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Measured that prefetching hides 95.7% of loading latency.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "loader-benchmark-000",
+      "purpose": "First benchmark attempt, which exhausted the DataLoader iterator.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action benchmark-loader --limit 40",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T18:55:00Z",
+      "finished_at_utc": "2026-09-08T18:58:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-unrecorded",
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Failed with 'RuntimeError: coroutine raised StopIteration'. The 40-clip subset yields 20 batches but 40 steps were requested, so next(iterator) ran off the end.",
+      "hypothesis_supported": false,
+      "findings": [
+        "Deterministic code defect in the benchmark harness, not in the model or loader. Fixed by cycling epochs and reporting epochs_consumed."
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "loader-benchmark",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T18:53:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Requested more steps than the cached subset could supply.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "loader-benchmark-001",
+        "gate_ids": []
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -3424,6 +3593,14 @@
       "sha256": "82a8d8e0907efecd44c5982390ddcaa011b8296af8be67491c022bb4a22e0a5c",
       "size_bytes": 775,
       "description": "Trial cache build: per-split counts, sizes, timings, and the fidelity check."
+    },
+    {
+      "artifact_id": "loader-benchmark-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/loader-benchmark/phoenix14-loader.json",
+      "sha256": "c6853289288cc76b7f4a085c6030adcf16dd0be93c48024c1c45743eaf6e8b5c",
+      "size_bytes": 644,
+      "description": "Prefetching DataLoader benchmark: wall vs GPU step time, hidden-latency fraction, per-step warmup, and peak memory."
     }
   ],
   "gates": [
@@ -3441,16 +3618,17 @@
         "The paper reports a single value per cell and states no seed policy, so this estimate assumes one run per dataset; any seed replication multiplies it.",
         "Corrected per-step estimate: PHOENIX14 44.0 GPU-hours (0.628 h/epoch over 2836 steps), PHOENIX14-T 53.9 GPU-hours (0.770 h/epoch over 3548 steps), 97.9 for both. On A100-40GB at the confirmed $2.10/GPU-hour that is $92, $113 and $206, plus about $5 per dataset for the one-time CPU cache build. Both datasets still exceed the 24-hour single-GPU gate.",
         "TLP implementation (2026-09-08) supersedes the earlier estimate: model parameters rose from 61.365 M to 111.762 M and the T=128 training step from 0.388 s to 0.777 s on an A10, so the requirement rises to a provisional 70-79 GPU-hours for PHOENIX14. Re-measurement on the A100 preflight path is required before authorizing.",
-        "preflight-phoenix14-002 measured GPU step 0.422 s and serial batch load 5.326 s on A100-40GB with TLP active, so the pipeline is 12.6x I/O-bound as written. With the verified JPEG cache PHOENIX14 costs about 57.8 GPU-hours (~$121); with cache plus prefetching about 25.5 GPU-hours (~$54, 1.1 days), which still marginally exceeds the 24-hour gate."
+        "preflight-phoenix14-002 measured GPU step 0.422 s and serial batch load 5.326 s on A100-40GB with TLP active, so the pipeline is 12.6x I/O-bound as written. With the verified JPEG cache PHOENIX14 costs about 57.8 GPU-hours (~$121); with cache plus prefetching about 25.5 GPU-hours (~$54, 1.1 days), which still marginally exceeds the 24-hour gate.",
+        "loader-benchmark-001 measured wall step 0.4073 s against GPU step 0.390 s, hiding 95.7% of loading latency, giving a measured 24.5 GPU-hours for PHOENIX14 and 30.1 for PHOENIX14-T."
       ],
       "required_action": "Discuss the full-run budget in Slack #repro-sign-team-r and confirm before launching. AGENTS.md requires this for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.\n\nOn 2026-09-08 the assignee directed starting with PHOENIX14 only, which reduces the ask from about 122 GPU-hours for both Table 1 datasets to about 54.7 GPU-hours for PHOENIX14 plus a one-time, reusable, CPU-only cache build of about 12.6 hours. That is still above the 24-hour autonomous threshold, so the gate remains open. When asked to authorize the spend directly or route it to the channel first, the assignee declined to decide and the agent stopped without launching. No cache build and no training run have been started.",
       "opened_at_utc": "2026-09-08T17:25:00Z",
       "owner": "human",
       "staging": {
         "decision": "PHOENIX14 first, per the assignee on 2026-09-08",
-        "phoenix14_gpu_hours": 25.5,
-        "phoenix14_cache_build_hours_cpu": 12.6,
-        "deferred": "PHOENIX14-T (25.5 to 31.9 GPU-hours) after PHOENIX14 completes",
+        "phoenix14_gpu_hours": 24.5,
+        "phoenix14_cache_build_hours_cpu": 8.5,
+        "deferred": "PHOENIX14-T (30.1 GPU-hours) after PHOENIX14 completes",
         "targets_reachable_first": [
           "table1-p14-dev-wer",
           "table1-p14-test-wer"
@@ -3464,7 +3642,7 @@
       },
       "awaiting": "Assignee or team authorization. The estimate is now measured rather than scaled. Nothing launched, and no cache has been built.",
       "cost_estimate": {
-        "status": "measured, with TLP active",
+        "status": "measured, with TLP, JPEG cache and prefetching DataLoader",
         "basis": "preflight-phoenix14-002 on A100-40GB measured a 0.422 s GPU step at batch size 2 on real clips and 5.326 s of serial batch loading. cache-probe-phoenix14-001 measured the JPEG cache at 0.267 s per clip. Protocol is 70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch, plus one test pass.",
         "supersedes": "The provisional 70-79 and 86-97 GPU-hour ranges, which scaled a doubling observed on an A10. TLP in fact costs only about 9% more GPU time on the A100, so those were too pessimistic.",
         "scenarios": {
@@ -3480,20 +3658,29 @@
             "phoenix14_days": 2.4
           },
           "with_cache_and_prefetch": {
-            "phoenix14_gpu_hours": 25.5,
-            "phoenix14t_gpu_hours": 31.9,
-            "both_gpu_hours": 57.4,
-            "phoenix14_usd_a100_40gb": 54,
-            "phoenix14_days": 1.1,
-            "note": "GPU-bound ceiling. Requires a prefetching DataLoader so loading overlaps compute; both are ordinary engineering, not protocol changes."
+            "phoenix14_gpu_hours": 24.5,
+            "phoenix14t_gpu_hours": 30.1,
+            "both_gpu_hours": 54.6,
+            "phoenix14_usd_a100_40gb": 52,
+            "phoenix14t_usd_a100_40gb": 63,
+            "both_usd": 115,
+            "phoenix14_days": 1.0,
+            "measured_by": "loader-benchmark-001",
+            "basis": "Median wall step 0.4073 s with 8 workers, prefetch_factor 4 and pinned memory over the JPEG cache, against a 0.390 s GPU step: 95.7% of loading latency hidden, 17.3 ms exposed.",
+            "caveats": "Benchmarked on A100-80GB while preflight-002 measured on A100-40GB; and the 40-clip subset cycled one epoch, so later steps re-read page-cached clips. Real full-dataset throughput could be slightly worse."
           }
         },
         "cache_build": {
-          "phoenix14_wall_hours": 12.6,
-          "phoenix14_usd": 4.75,
-          "note": "CPU only, one-time, reusable across epochs and seeds."
+          "phoenix14_wall_hours": 8.5,
+          "phoenix14_usd": 6.42,
+          "phoenix14_gib": 9.7,
+          "phoenix14t_wall_hours": 10.3,
+          "phoenix14t_usd": 7.75,
+          "phoenix14t_gib": 11.8,
+          "measured_by": "cache-build-trial-001",
+          "note": "CPU only at 16 workers, one-time, idempotent, resumable, reusable across seeds."
         },
-        "gate_assessment": "PHOENIX14 alone is about 25.5 GPU-hours even in the best case, which still exceeds the AGENTS.md 24-hour single-GPU autonomous threshold, though only marginally. With the cache alone and no prefetching it is about 57.8. Either way this needs authorization.",
+        "gate_assessment": "PHOENIX14 is now a measured 24.5 GPU-hours, which still exceeds the AGENTS.md 24-hour single-GPU autonomous threshold by about 2%. The estimate has fallen 13x from 317 GPU-hours through data plumbing alone, with no change to the model, protocol or augmentation, and no further engineering will close a 2% gap: the run is now GPU-bound, so only trimming epochs or evaluation scope would fit it under the gate, and AGENTS.md forbids doing that silently. Authorization is therefore required for about 24.5 GPU-hours, roughly $52 and one day of wall-clock, plus an 8.5-hour CPU cache build.",
         "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset."
       }
     }
