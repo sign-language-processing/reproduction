@@ -1,0 +1,2587 @@
+{
+ "paper_id": "yu-2025-cvsign",
+ "assignment": {
+  "kind": "direct_user_request",
+  "source": {
+   "sha256": "7bfbb7f048418d4b5bc3867bde0327e4e1d038d8e2225dd78bc3262cb83c9623"
+  },
+  "request": "User message hashed above (not quoted here): it attached the paper PDF, invoked /reproduce-paper, and said not to search online for the code because it does not exist. Interpreted as: reproduce this paper (CVSign) and skip the skill's default online source-search checklist for CVSign's own code because none exists. This directs preference level 3 (clean-room reimplementation from the paper). Prior-work papers that CVSign explicitly cites as the source of specific reused components (TLP temporal decoder, VAC/SMKD training losses) were read to resolve their architecture/loss details, since that is understanding cited methodology, not searching for CVSign's own code; no code repositories were opened or used for any component.",
+  "revisions": [
+   {
+    "date": "2026-09-27",
+    "request": "After an external review found implementation defects in the first attempt, the assigning user supplied the paper PDF again and confirmed that publicly available dependencies may be used. This lifts the earlier instruction's effect on cited components: the published code of TLP, VAC/SMKD and CorrNet may be used. It does not change the target scope.",
+    "sha256": "f8a14dee880741ef4d32297c5b906b97404ab11fe95d887f1d02a55256be7fa9"
+   }
+  ]
+ },
+ "paper": {
+  "title": "Improving Continuous Sign Language Recognition via Cross-Frame Interactions in Expanded Contextual Spaces",
+  "citation": "Yu, Y., Liu, S., Feng, Y., Xu, M., Jin, Z., Yang, X. (2025). Improving Continuous Sign Language Recognition via Cross-Frame Interactions in Expanded Contextual Spaces. In 2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). doi:10.1109/ICASSP49660.2025.10890162.",
+  "url": "https://doi.org/10.1109/ICASSP49660.2025.10890162",
+  "pdf_sha256": "d9f9946bbae293bf26e998d5b34eaf6628d5566738bf8cd6dfc47f68b69a228f",
+  "accessed_at": "2026-09-05"
+ },
+ "sources": [
+  {
+   "source_id": "paper-pdf",
+   "kind": "paper",
+   "url": "https://doi.org/10.1109/ICASSP49660.2025.10890162",
+   "revision_or_sha256": "d9f9946bbae293bf26e998d5b34eaf6628d5566738bf8cd6dfc47f68b69a228f",
+   "role": "Source of the CVSign architecture (Sec. II, Eqs. 1-10, Fig. 2), training recipe (Implementation Details) and target values (Table I). No code, supplement or project page is linked. File re-supplied by the user on 2026-09-27 with the same SHA-256."
+  },
+  {
+   "source_id": "rwth-phoenix-2014-page",
+   "kind": "dataset",
+   "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/",
+   "revision_or_sha256": "phoenix-2014.v3.tar.gz (accessed 2026-09-05)",
+   "role": "Canonical PHOENIX14 (non-T) release page and download link"
+  },
+  {
+   "source_id": "rwth-phoenix-2014-t-page",
+   "kind": "dataset",
+   "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+   "revision_or_sha256": "accessed 2026-09-05",
+   "role": "Canonical PHOENIX14-T release page and license statement"
+  },
+  {
+   "source_id": "csl-daily-agreement-page",
+   "kind": "dataset",
+   "url": "https://ustc-slr.github.io/datasets/",
+   "revision_or_sha256": "accessed 2026-09-05",
+   "role": "CSL-Daily release-agreement requirement (signed agreement by full-time staff emailed to the dataset authors) that gates project use of the already-present Modal copy"
+  },
+  {
+   "source_id": "cvsign-code-search",
+   "kind": "search",
+   "url": "https://github.com/search?q=CVSign&type=repositories",
+   "revision_or_sha256": "searched 2026-09-27",
+   "role": "No CVSign code found. Searched: the paper PDF (no code/data footnote or link); GitHub repositories for 'CVSign', 'cross-frame interactions expanded contextual spaces', 'Contextual Variability Awareness sign'; GitHub code for 'Contextual Correspondence Awareness'; a GitHub account matching the first author's name (unrelated); web search for CVSign with both module names (only the IEEE Xplore page). The first attempt skipped this checklist on user instruction."
+  },
+  {
+   "source_id": "corrnet-code",
+   "kind": "code",
+   "url": "https://github.com/hulianyuyy/CorrNet",
+   "revision_or_sha256": "5a361cc709ae8f697f4c9e23760e64c2daa8f744",
+   "role": "Selected harness. CVSign's encoder is CorrNet's 2D-as-3D ResNet with modules after layers 2/3/4 behind zero-initialised residual gates, sigmoid(affinity)-0.5 weighting, and 1x3x3 / 1x1x1 kernels, the notation of Eqs. 6, 8, 9; its baseline.yaml already carries CVSign's batch size, optimiser, VAC loss weights and SMKD shared weight-normalised classifier. Pinned to the last commit touching code (2023-11-23, before CVSign); HEAD a812814 (2025-12-02) differs only in demos. No licence file in the repository."
+  },
+  {
+   "source_id": "tlp-code",
+   "kind": "code",
+   "url": "https://github.com/hulianyuyy/Temporal-Lift-Pooling",
+   "revision_or_sha256": "21be215c6ba749d98ce6a51f4b84cc9d5029bfe6",
+   "role": "modules/tconv.py (Temporal_LiftPool + K5,P2,K5,P2 TemporalConv) and its Cu/Cp loss weights: the 'Temporal Decoder from TLP'. No licence file."
+  },
+  {
+   "source_id": "vac-code",
+   "kind": "code",
+   "url": "https://github.com/ycmin95/VAC_CSLR",
+   "revision_or_sha256": "71f3e0334fbc8cecc7ce9816ec69781068abaac0",
+   "role": "Considered. The VE/VA losses (SeqKD at T=8, weight 25, blank excluded; CTC reduction='none' then mean) are carried unchanged by CorrNet and TLP, which derive from it; not used directly."
+  },
+  {
+   "source_id": "ctcdecode-code",
+   "kind": "code",
+   "url": "https://github.com/parlance/ctcdecode",
+   "revision_or_sha256": "c90ad94a0b19554f80804fb7812f2a1447a34a70",
+   "role": "Beam-search CTC decoder (beam 10, no LM) imported by CorrNet utils/decode.py; built with patches/ctcdecode-cxx17.patch."
+  },
+  {
+   "source_id": "sctk-code",
+   "kind": "code",
+   "url": "https://github.com/usnistgov/SCTK",
+   "revision_or_sha256": "9688a26882a688132a5e414cadcb4c19b6fffaba",
+   "role": "sclite, the scorer CorrNet's configs/baseline.yaml selects (evaluate_tool: sclite)."
+  },
+  {
+   "source_id": "resnet34-imagenet",
+   "kind": "weights",
+   "url": "https://download.pytorch.org/models/resnet34-333f7ec4.pth",
+   "revision_or_sha256": "333f7ec4c6338da2cbed37f1fc0445f9624f1355633fa1d7eab79a91084c6cef",
+   "role": "ImageNet ResNet34 initialisation (Implementation Details), loaded into CorrNet's 3D-kernel ResNet as its resnet18() does."
+  },
+  {
+   "source_id": "corrnet-phoenix14t-checkpoint",
+   "kind": "weights",
+   "url": "https://drive.google.com/file/d/1c_wNHYMqCbqRE5KqrQL1P6chOw5VBS6Q/view",
+   "revision_or_sha256": "e0e7e5678b4dec791a1d5681110666f91c88bb6dccf620d383ad8029a7af0162",
+   "role": "CorrNet's released PHOENIX14-T ResNet18 checkpoint (README: dev 18.9 / test 20.5). Scored through the same frames, loader, decoder and scorer as CVSign to validate the harness; not a CVSign target."
+  }
+ ],
+ "status": {
+  "pipeline": "complete",
+  "numerical_agreement": "agrees",
+  "numerical_agreement_basis": "Assessed on the two produced in-scope targets, PHOENIX14-T dev and test (Table I); PHOENIX14 and CSL-Daily are out of scope (restricted by the assigning user). Reproduced dev 17.5 vs published 17.4 (+0.1) and test 19.4 vs 18.6 (+0.8) WER, from one seed-0 run stopped at 63 of 70 epochs with the checkpoint chosen on dev and test scored once. The paper reports one number per cell without seeds or variance. Basis for 'agrees': both values fall within 1 WER point of the paper, dev essentially exactly; the test gap is small next to the ordering margins in Table I (CVSign's claimed test lead over TCNet is 0.8; our 19.4 would tie TCNet's 19.4 and sit behind SignGraph's 19.1 and TwoStream-SLR's 19.3, while our dev 17.5 stays below every Table I baseline), so a reviewer may read the test value as not supporting the paper's state-of-the-art claim on that split. The tolerance is the agent's judgement, not a paper-provided criterion; unstated CCA/CVA details (C_hid, heads, Eq. 5 scaling, Conv_Block norm) are guesses that could move either number.",
+  "preference_level": 3,
+  "preference_level_basis": "CVSign's own modules (CCA, CVA) have no published code and are implemented from the paper (level 3). Everything CVSign says it borrows runs as pinned published code with minimal patches (level 2): the CorrNet harness, TLP's temporal decoder, the VAC/SMKD losses and shared classifier, decoding and scoring.",
+  "blocker": null
+ },
+ "datasets": [
+  {
+   "dataset_id": "phoenix14-v3",
+   "name": "RWTH-PHOENIX-Weather 2014 (multi-signer)",
+   "version_or_subset": "phoenix-2014.v3, multi-signer release, fullFrame-210x260px extracted PNG frames. Layout verified read-only on 2026-09-05: raw/phoenix2014-release/phoenix-2014-multisigner/{annotations/manual/*.corpus.csv (header id|folder|signer|annotation), features/fullFrame-210x260px/<split>/<id>/1/*.png}. The sibling phoenix-2014-signerindependent-SI5 release is present in the archive and deliberately unused.",
+   "sources": [
+    {
+     "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/",
+     "accessed_at": "2026-09-05"
+    },
+    {
+     "url": "https://www-i6.informatik.rwth-aachen.de/ftp/pub/rwth-phoenix/2016/phoenix-2014.v3.tar.gz",
+     "accessed_at": "2026-09-05"
+    }
+   ],
+   "license_or_permission": "CC BY-NC-SA 3.0 (non-commercial research use); no registration/click-through is presented on the download page. This project already treats the sibling CC BY-NC-SA RWTH-PHOENIX-2014-T release as permitting non-commercial project-cloud processing (papers/camgoz-2018-nslt/reproduction.json), so the same basis is applied here.",
+   "cloud_processing_allowed": true,
+   "modal_volume": "datasets",
+   "modal_path": "rwth-phoenix-2014",
+   "splits": [
+    {
+     "name": "train",
+     "sample_count": 5672,
+     "files": [
+      {
+       "path": "raw/phoenix2014-release/phoenix-2014-multisigner/features/fullFrame-210x260px/train",
+       "sha256": null
+      }
+     ],
+     "frame_count": 799006,
+     "frames_per_clip": {
+      "min": 16,
+      "max": 299,
+      "mean": 140.8684767277856
+     }
+    },
+    {
+     "name": "dev",
+     "sample_count": 540,
+     "files": [
+      {
+       "path": "raw/phoenix2014-release/phoenix-2014-multisigner/features/fullFrame-210x260px/dev",
+       "sha256": null
+      }
+     ],
+     "frame_count": 75186,
+     "frames_per_clip": {
+      "min": 32,
+      "max": 251,
+      "mean": 139.23333333333332
+     }
+    },
+    {
+     "name": "test",
+     "sample_count": 629,
+     "files": [
+      {
+       "path": "raw/phoenix2014-release/phoenix-2014-multisigner/features/fullFrame-210x260px/test",
+       "sha256": null
+      }
+     ],
+     "frame_count": 89472,
+     "frames_per_clip": {
+      "min": 39,
+      "max": 251,
+      "mean": 142.24483306836248
+     }
+    }
+   ],
+   "video_decoding": "Not used; the official release provides pre-extracted fullFrame-210x260px PNG frame sequences, consumed directly by the image data loader.",
+   "deviations": [
+    "Split checksums are null: per-split content hashes have not been computed. Clip counts (5672/540/629) and frame counts were verified directly against the extracted frames."
+   ]
+  },
+  {
+   "dataset_id": "phoenix14t-video",
+   "name": "RWTH-PHOENIX-Weather 2014 T",
+   "version_or_subset": "Original MP4 videos (train/dev/test), gloss annotations from PHOENIX-2014-T.*.corpus.csv",
+   "sources": [
+    {
+     "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+     "accessed_at": "2026-09-05"
+    }
+   ],
+   "license_or_permission": "CC BY-NC-SA (3.0 per version-specific page, 4.0 per generic RWTH page); non-commercial project-cloud research processing, following the precedent already recorded for this exact Volume path's license basis in papers/camgoz-2018-nslt/reproduction.json.",
+   "cloud_processing_allowed": true,
+   "modal_volume": "datasets",
+   "modal_path": "rwth-phoenix-2014-t/videos",
+   "splits": [
+    {
+     "name": "train",
+     "sample_count": 7096,
+     "files": [
+      {
+       "path": "videos/train (sorted filename:size manifest)",
+       "sha256": "9d4bcd579409139d0392a053789fb9572446a6ca1b886148f05abc269d9a0c95"
+      }
+     ],
+     "frame_count": 827354,
+     "frames_per_clip": {
+      "min": 16,
+      "max": 475,
+      "mean": 116.59441939120632
+     }
+    },
+    {
+     "name": "dev",
+     "sample_count": 519,
+     "files": [
+      {
+       "path": "videos/dev (sorted filename:size manifest)",
+       "sha256": "6590341554887fbee0605fe5671adce1fd5e0e0c1f78158566f2129fcb96a5c9"
+      }
+     ],
+     "frame_count": 55775,
+     "frames_per_clip": {
+      "min": 16,
+      "max": 272,
+      "mean": 107.46628131021194
+     }
+    },
+    {
+     "name": "test",
+     "sample_count": 642,
+     "files": [
+      {
+       "path": "videos/test (sorted filename:size manifest)",
+       "sha256": "5596226bb5475accbfa3efef48cf03f21242abf94a4f15e74b478bc9fff11b4c"
+      }
+     ],
+     "frame_count": 64627,
+     "frames_per_clip": {
+      "min": 17,
+      "max": 242,
+      "mean": 100.66510903426791
+     }
+    }
+   ],
+   "video_decoding": "Required; CVSign trains its own ResNet34 visual encoder on raw frames (unlike the pami0 precomputed-feature path used for SLT reproductions in this repo), so this record decodes the supplied MP4s with simple-video-utils rather than reusing the existing phoenix14t-pami0-author feature dataset.",
+   "deviations": [
+    "Reuses the manifests already verified in papers/camgoz-2018-nslt/reproduction.json for the same modal_path (video counts and manifest sha256 copied from that record); this record decodes frames itself instead of consuming precomputed CNN features, because CVSign needs raw frames to train its own visual encoder.",
+    "Superseded 2026-09-27: used only by the first attempt's runs. The MP4s are a lossy HEVC re-encoding of the release (rwth-phoenix-2014-t/raw/PROVENANCE.txt), and that attempt's loader also reversed simple-video-utils' RGB output to BGR. The current attempt uses phoenix14t-png-v3."
+   ]
+  },
+  {
+   "dataset_id": "csl-daily-video",
+   "name": "CSL-Daily",
+   "version_or_subset": "Sentence-level MP4 videos at videos/<name>.mp4 (20654 files) + sentence_label/csl2020ct_v2.pkl gloss annotations + sentence_label/split_1.txt (official split 1: 18401 train / 1077 dev / 1176 test). Layout surveyed read-only on 2026-09-05 (Modal app ap-DDAuOKjaCbR9ST6nLPbVFw): csl2020ct_v2.pkl is a dict with keys info, gloss_map, char_map, word_map, postag_map; info is a list of 20654 records {name, length, label_gloss, label_char, label_word, label_postag, signer, time}. label_gloss is the gloss sequence CVSign trains against; label_char/label_word/label_postag belong to translation tasks and are unused. split_1.txt is pipe-delimited with a name|split header.",
+   "sources": [
+    {
+     "url": "https://ustc-slr.github.io/datasets/",
+     "accessed_at": "2026-09-05"
+    }
+   ],
+   "license_or_permission": "Research use authorized for this project by the assigning user on 2026-09-05 (see gate csl-daily-license), recorded as a project-member attestation rather than a verified agreement document; a citable reference is still to be added. The official CSL-Daily release requires a Dataset Release Agreement signed by a full-time staff member and emailed to the dataset authors. Non-commercial research use only; no redistribution of the data by this project.",
+   "cloud_processing_allowed": true,
+   "modal_volume": "datasets",
+   "modal_path": "csl-daily",
+   "splits": [
+    {
+     "name": "train",
+     "sample_count": 18400,
+     "files": [
+      {
+       "path": "sentence_label/split_1.txt (train rows)",
+       "sha256": null
+      }
+     ],
+     "frame_count_measured_from_videos": 2997359,
+     "frame_count_declared_in_annotations": 2185273,
+     "frames_per_clip": {
+      "min": 24,
+      "max": 898,
+      "mean": 162.89994565217393
+     }
+    },
+    {
+     "name": "dev",
+     "sample_count": 1077,
+     "files": [
+      {
+       "path": "sentence_label/split_1.txt (dev rows)",
+       "sha256": null
+      }
+     ],
+     "frame_count_measured_from_videos": 177733,
+     "frame_count_declared_in_annotations": 131931,
+     "frames_per_clip": {
+      "min": 41,
+      "max": 389,
+      "mean": 165.02599814298978
+     }
+    },
+    {
+     "name": "test",
+     "sample_count": 1176,
+     "files": [
+      {
+       "path": "sentence_label/split_1.txt (test rows)",
+       "sha256": null
+      }
+     ],
+     "frame_count_measured_from_videos": 203358,
+     "frame_count_declared_in_annotations": 150248,
+     "frames_per_clip": {
+      "min": 41,
+      "max": 453,
+      "mean": 172.9234693877551
+     }
+    }
+   ],
+   "video_decoding": "simple-video-utils, as for PHOENIX14-T; CVSign trains its visual encoder from raw frames.",
+   "deviations": [
+    "Train split is 18400, not the official 18401: S000005_P0004_T00 appears in split_1.txt with no record in csl2020ct_v2.pkl and cannot be trained or scored, so the manifest builder skips it and names it on stderr. The converse orphan, S000007_P0003_T00, has a record but no split assignment and is not assigned one, since choosing its split would be inventing data. Dev (1077) and test (1176) are complete, so no reported WER is affected.",
+    "UNRESOLVED, see gate csl-daily-frame-source: the videos/*.mp4 on the shared Volume are not the artifact the annotations describe. sentence_label/README.txt defines `length` as 'the number of frames in the video' and documents the official distribution as extracted frames (csl-daily-frames-512x512.tar.gz), yet 20630 of 20653 clips have a declared length different from their MP4's actual frame count. In aggregate the MP4s hold 37 percent more frames than declared (train 2997359 measured against 2185273 declared), and per clip the excess varies widely (52 vs 168, 47 vs 108, 37 vs 202, 33 vs 217), which is what untrimmed recordings would look like against sentence-trimmed frames. No training should start on this copy until the frame source is reconciled."
+   ]
+  },
+  {
+   "dataset_id": "phoenix14t-png-v3",
+   "name": "RWTH-PHOENIX-Weather 2014 T, official fullFrame-210x260px PNG frames, resized to 256x256 by CorrNet's preprocessing",
+   "version_or_subset": "PHOENIX-2014-T-release-v3 (phoenix-2014-T.v3.tar.gz), features/fullFrame-210x260px/{train,dev,test}/<id>/*.png, gloss labels from annotations/manual/PHOENIX-2014-T.<split>.corpus.csv via CorrNet's committed preprocess/phoenix2014-T/<split>_info.npy (equal to the CSVs row for row once the CSV frame glob <id>/1/*.png is mapped to the on-disk <id>/*.png). Resized with CorrNet 5a361cc preprocess/dataset_preprocess-T.py resize_dataset (cv2 INTER_LANCZOS4, opencv-python-headless 4.10.0.84) and archived as one tar.",
+   "sources": [
+    {
+     "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+     "accessed_at": "2026-09-05"
+    },
+    {
+     "url": "https://www-i6.informatik.rwth-aachen.de/ftp/pub/rwth-phoenix/2016/phoenix-2014-T.v3.tar.gz",
+     "accessed_at": "2026-09-15"
+    }
+   ],
+   "license_or_permission": "CC BY-NC-SA (non-commercial research); same basis and Volume path already recorded for PHOENIX14-T in this record and in papers/camgoz-2018-nslt. The derived archive stays on the paper's private results Volume and is not redistributed.",
+   "cloud_processing_allowed": true,
+   "modal_volume": "datasets",
+   "modal_path": "rwth-phoenix-2014-t/raw/PHOENIX-2014-T-release-v3/PHOENIX-2014-T",
+   "splits": [
+    {
+     "name": "train",
+     "sample_count": 7096,
+     "frame_count": 827354,
+     "files": [
+      {
+       "path": "yu-2025-cvsign-results:/data/phoenix2014-T-fullFrame-256x256px.tar (all splits)",
+       "sha256": "18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd"
+      }
+     ]
+    },
+    {
+     "name": "dev",
+     "sample_count": 519,
+     "frame_count": 55775,
+     "files": [
+      {
+       "path": "yu-2025-cvsign-results:/data/phoenix2014-T-fullFrame-256x256px.tar (all splits)",
+       "sha256": "18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd"
+      }
+     ]
+    },
+    {
+     "name": "test",
+     "sample_count": 642,
+     "frame_count": 64627,
+     "files": [
+      {
+       "path": "yu-2025-cvsign-results:/data/phoenix2014-T-fullFrame-256x256px.tar (all splits)",
+       "sha256": "18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd"
+      }
+     ]
+    }
+   ],
+   "video_decoding": "Not used; the published pipeline reads PNG frames.",
+   "deviations": [
+    "CorrNet's dataset_preprocess-T.py cannot run end to end on this release (its CSV globs <id>/1/*.png match nothing), so its resize_dataset() is driven with CorrNet's committed split files, as its __main__ would with a CSV whose paths matched.",
+    "opencv 4.10.0.84 instead of CorrNet's pinned 4.5.5.64 (no Python 3.12 wheel); LANCZOS4 resize output was not compared across versions.",
+    "One non-frame file in the release (dev/31May_2011_Tuesday_tagesschau-4295/createDnnTrainingLabels-profile.py.lprof) is ignored, as CorrNet's *.png glob does."
+   ]
+  }
+ ],
+ "metric_definitions": [
+  {
+   "metric_id": "wer-cleanroom-eq11",
+   "name": "Word Error Rate (gloss-level)",
+   "direction": "lower_is_better",
+   "implementation": "Clean-room Levenshtein alignment over predicted vs. reference gloss token sequences, counting substitutions+insertions+deletions exactly as CVSign Eq. 11; corpus-level aggregation (sum of edit operations over all sequences in the split, divided by the sum of reference token counts), matching standard CSLR reporting practice.",
+   "version": "reproduction-internal, no external toolkit",
+   "aggregation": "corpus-level: sum(edit ops)/sum(reference length) * 100",
+   "unit_or_scale": "percent"
+  },
+  {
+   "metric_id": "wer-sclite-corrnet",
+   "name": "Word Error Rate (gloss-level), PHOENIX sign-recognition protocol",
+   "direction": "lower_is_better",
+   "implementation": "CorrNet 5a361cc seq_eval + evaluation/slr_eval/wer_calculation.evaluate with evaluate_tool: sclite: ctcdecode (c90ad94, beam width 10, no LM) on the BiLSTM-branch logits, hypotheses written as CTM, normalised by evaluation/slr_eval/preprocess.sh (the PHOENIX gloss simplifications) and mergectmstm.py, scored by sclite (SCTK 9688a26) against CorrNet's phoenix2014-T-groundtruth-<split>.stm, which equals the official RWTH PHOENIX-2014-T-groundtruth-{dev,test}.stm gloss for gloss (519/519 and 642/642 sentences). Eq. 11 of the paper.",
+   "version": "CorrNet 5a361cc709ae8f697f4c9e23760e64c2daa8f744; SCTK 9688a26882a688132a5e414cadcb4c19b6fffaba; ctcdecode c90ad94a0b19554f80804fb7812f2a1447a34a70",
+   "aggregation": "corpus-level: sclite Sum/Avg Err over all sentences of the split",
+   "unit_or_scale": "percent"
+  }
+ ],
+ "experiments": [
+  {
+   "experiment_id": "cvsign-phoenix14",
+   "system": "CVSign on the CorrNet harness (CorrNet 5a361cc, run through its own main.py): CorrNet's ResNet with 3D kernels, resnet34 initialised from ImageNet (torchvision resnet34-333f7ec4), CorrNet's correlation modules replaced by the paper's CCA (Eqs. 1-6; L=[3,5,9] after layers 2/3/4; full-image query area) and CVA (Eqs. 7-9; L=[9,9,9]) combined by Eq. 10 with zero-initialised alpha/beta; TLP's temporal decoder (TLP 21be215 modules/tconv.py: K5,P2,K5,P2 with temporal lift pooling) and 2-layer BiLSTM (512 per direction); SMKD shared weight-normalised classifier; loss ConvCTC 1 + SeqCTC 1 + SeqKD distillation 25 (T=8, blank excluded) + TLP lift-pool regularisers Cu/Cp 0.001. Adam, lr 1e-4, weight decay 1e-4, x0.2 at epochs 25 and 40, 70 epochs, batch size 2, AMP, seed 0. CorrNet's data pipeline: 256x256 frames, one random 224 crop per clip, horizontal flip p=0.5, temporal rescale +-20% (32-230 frames), [-1,1] scaling; centre crop at test. patches/: corrnet-ctc-without-cudnn, cvsign-1..3; Dockerfile.",
+   "dataset_id": "phoenix14-v3",
+   "required_seeds": [
+    0
+   ],
+   "checkpoint_rule": "Lowest dev WER over the 70 per-epoch evaluations that upstream main.py logs to dev.txt, earliest epoch on ties; that epoch's checkpoint is scored once on dev and test with --phase test. The paper states no rule; this is the rule of the VAC/TLP/CorrNet code the paper builds on (main.py keeps _best_model.pt by dev WER). Selection reads dev.txt rather than _best_model.pt because main.py resets its best-so-far on resume.",
+   "paper_evidence": "Paper PDF sha256 d9f9946bbae293bf26e998d5b34eaf6628d5566738bf8cd6dfc47f68b69a228f: Section II (Methods, Eqs. 1-10), Fig. 2, 'Implementation Details' paragraph (ResNet34, batch size 2, Adam, lr 1e-4 x0.2 at epochs 25 and 40, 70 epochs, single A6000), Table I 'CVSign (ours)' row, Table IV (layer placement 2/3/4), Table V (radius=Full), Table VI (CCA L=[3,5,9]), Table VII (CVA L=[9,9,9])."
+  },
+  {
+   "experiment_id": "cvsign-phoenix14t",
+   "system": "CVSign on the CorrNet harness (CorrNet 5a361cc, run through its own main.py): CorrNet's ResNet with 3D kernels, resnet34 initialised from ImageNet (torchvision resnet34-333f7ec4), CorrNet's correlation modules replaced by the paper's CCA (Eqs. 1-6; L=[3,5,9] after layers 2/3/4; full-image query area) and CVA (Eqs. 7-9; L=[9,9,9]) combined by Eq. 10 with zero-initialised alpha/beta; TLP's temporal decoder (TLP 21be215 modules/tconv.py: K5,P2,K5,P2 with temporal lift pooling) and 2-layer BiLSTM (512 per direction); SMKD shared weight-normalised classifier; loss ConvCTC 1 + SeqCTC 1 + SeqKD distillation 25 (T=8, blank excluded) + TLP lift-pool regularisers Cu/Cp 0.001. Adam, lr 1e-4, weight decay 1e-4, x0.2 at epochs 25 and 40, 70 epochs, batch size 2, AMP, seed 0. CorrNet's data pipeline: 256x256 frames, one random 224 crop per clip, horizontal flip p=0.5, temporal rescale +-20% (32-230 frames), [-1,1] scaling; centre crop at test. patches/: corrnet-ctc-without-cudnn, cvsign-1..3; Dockerfile.",
+   "dataset_id": "phoenix14t-png-v3",
+   "required_seeds": [
+    0
+   ],
+   "checkpoint_rule": "Lowest dev WER over the 70 per-epoch evaluations that upstream main.py logs to dev.txt, earliest epoch on ties; that epoch's checkpoint is scored once on dev and test with --phase test. The paper states no rule; this is the rule of the VAC/TLP/CorrNet code the paper builds on (main.py keeps _best_model.pt by dev WER). Selection reads dev.txt rather than _best_model.pt because main.py resets its best-so-far on resume.",
+   "paper_evidence": "Same paper evidence as cvsign-phoenix14; Table I 'CVSign (ours)' PHOENIX14-T columns."
+  },
+  {
+   "experiment_id": "cvsign-csl-daily",
+   "system": "Identical CVSign configuration and training recipe as cvsign-phoenix14, applied to CSL-Daily.",
+   "dataset_id": "csl-daily-video",
+   "required_seeds": [
+    0
+   ],
+   "checkpoint_rule": "Same inferred best-Dev-WER checkpoint rule as cvsign-phoenix14. Not runnable until the csl-daily-license gate is resolved.",
+   "paper_evidence": "Same paper evidence as cvsign-phoenix14; Table II 'CVSign (ours)' row."
+  }
+ ],
+ "targets": [
+  {
+   "target_id": "table1-phoenix14-dev-wer",
+   "in_scope": false,
+   "out_of_scope_reason": "Dropped by the assigning user on 2026-09-16 for cost, restated 2026-09-27: the reproduction is limited to the PHOENIX14-T column of Table I, and the compute approval of 2026-09-27 covered PHOENIX14-T only. Treated like the CSL-Daily deferral of 2026-09-14: a scoping decision, not a judgement about feasibility; PHOENIX14's data gate is complete.",
+   "paper_location": "Table I, page 3, 'CVSign (ours)' row, PHOENIX14 Dev(%) column",
+   "experiment_id": "cvsign-phoenix14",
+   "split": "dev",
+   "metric_id": "wer-sclite-corrnet",
+   "original_value": 17.8,
+   "copied_baseline": false,
+   "result": {
+    "status": "not_produced",
+    "reason": {
+     "code": "compute_budget_blocked",
+     "detail": "PHOENIX14 was never launched. The assigning user restricted the reproduction to the PHOENIX14-T column for cost (2026-09-16, restated 2026-09-27); the approval of 2026-09-27 covered PHOENIX14-T only. With the upstream pipeline, PHOENIX14 (799006 train frames vs PHOENIX14-T's 827354) would cost about the 37 L40S GPU-hours PHOENIX14-T took, above the 24 GPU-hour threshold. Its data gate is complete."
+    },
+    "run_ids": [
+     "preflight-phoenix14-002"
+    ],
+    "artifact_ids": [],
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ],
+    "evidence": [
+     "full-phoenix14t-002: 36.8 L40S GPU-hours for 63 PHOENIX14-T epochs",
+     "dataset phoenix14-v3: 799006 train frames against PHOENIX14-T's 827354"
+    ]
+   }
+  },
+  {
+   "target_id": "table1-phoenix14-test-wer",
+   "in_scope": false,
+   "out_of_scope_reason": "Dropped by the assigning user on 2026-09-16 for cost, restated 2026-09-27: the reproduction is limited to the PHOENIX14-T column of Table I, and the compute approval of 2026-09-27 covered PHOENIX14-T only. Treated like the CSL-Daily deferral of 2026-09-14: a scoping decision, not a judgement about feasibility; PHOENIX14's data gate is complete.",
+   "paper_location": "Table I, page 3, 'CVSign (ours)' row, PHOENIX14 Test(%) column",
+   "experiment_id": "cvsign-phoenix14",
+   "split": "test",
+   "metric_id": "wer-sclite-corrnet",
+   "original_value": 18.0,
+   "copied_baseline": false,
+   "result": {
+    "status": "not_produced",
+    "reason": {
+     "code": "compute_budget_blocked",
+     "detail": "PHOENIX14 was never launched. The assigning user restricted the reproduction to the PHOENIX14-T column for cost (2026-09-16, restated 2026-09-27); the approval of 2026-09-27 covered PHOENIX14-T only. With the upstream pipeline, PHOENIX14 (799006 train frames vs PHOENIX14-T's 827354) would cost about the 37 L40S GPU-hours PHOENIX14-T took, above the 24 GPU-hour threshold. Its data gate is complete."
+    },
+    "run_ids": [
+     "preflight-phoenix14-002"
+    ],
+    "artifact_ids": [],
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ],
+    "evidence": [
+     "full-phoenix14t-002: 36.8 L40S GPU-hours for 63 PHOENIX14-T epochs",
+     "dataset phoenix14-v3: 799006 train frames against PHOENIX14-T's 827354"
+    ]
+   }
+  },
+  {
+   "target_id": "table1-phoenix14t-dev-wer",
+   "in_scope": true,
+   "paper_location": "Table I, page 3, 'CVSign (ours)' row, PHOENIX14-T Dev(%) column",
+   "experiment_id": "cvsign-phoenix14t",
+   "split": "dev",
+   "metric_id": "wer-sclite-corrnet",
+   "original_value": 17.4,
+   "copied_baseline": false,
+   "result": {
+    "status": "produced",
+    "reproduced_value": 17.5,
+    "difference": 0.1,
+    "run_ids": [
+     "full-phoenix14t-002",
+     "eval-phoenix14t-002"
+    ],
+    "artifact_ids": [
+     "eval-002-dev-sys",
+     "eval-002-dev-ctm",
+     "full-002-checkpoint-epoch42"
+    ],
+    "gate_ids": [
+     "phoenix14t-rerun-stopped-epoch-63"
+    ],
+    "evidence": [
+     "sclite Sum/Avg Err 17.5 (sub 10.1, del 5.5, ins 1.9 over 519 sentences / 3748 glosses), checkpoint epoch 42 selected by lowest dev WER among the 63 completed epochs",
+     "Training stopped after epoch 62 of 70 on the assigning user's instruction; both LR decays applied; dev WER 17.5-18.2 from epoch 35 on",
+     "Harness validated by corrnet-checkpoint-check-001 (CorrNet's released checkpoint reproduces 18.9 / 20.5 exactly)",
+     "Superseded first-attempt values (full-phoenix14t-001, defective clean-room implementation): dev 31.48, test 31.64"
+    ]
+   }
+  },
+  {
+   "target_id": "table1-phoenix14t-test-wer",
+   "in_scope": true,
+   "paper_location": "Table I, page 3, 'CVSign (ours)' row, PHOENIX14-T Test(%) column",
+   "experiment_id": "cvsign-phoenix14t",
+   "split": "test",
+   "metric_id": "wer-sclite-corrnet",
+   "original_value": 18.6,
+   "copied_baseline": false,
+   "result": {
+    "status": "produced",
+    "reproduced_value": 19.4,
+    "difference": 0.8,
+    "run_ids": [
+     "full-phoenix14t-002",
+     "eval-phoenix14t-002"
+    ],
+    "artifact_ids": [
+     "eval-002-test-sys",
+     "eval-002-test-ctm",
+     "full-002-checkpoint-epoch42"
+    ],
+    "gate_ids": [
+     "phoenix14t-rerun-stopped-epoch-63"
+    ],
+    "evidence": [
+     "sclite Sum/Avg Err 19.4 (sub 11.0, del 5.6, ins 2.9 over 642 sentences / 4264 glosses), checkpoint epoch 42 selected by lowest dev WER among the 63 completed epochs",
+     "Training stopped after epoch 62 of 70 on the assigning user's instruction; both LR decays applied; dev WER 17.5-18.2 from epoch 35 on",
+     "Harness validated by corrnet-checkpoint-check-001 (CorrNet's released checkpoint reproduces 18.9 / 20.5 exactly)",
+     "Superseded first-attempt values (full-phoenix14t-001, defective clean-room implementation): dev 31.48, test 31.64"
+    ]
+   }
+  },
+  {
+   "target_id": "table2-cslday-dev-wer",
+   "in_scope": false,
+   "paper_location": "Table II, page 3, 'CVSign (ours)' row, Dev(%) column",
+   "experiment_id": "cvsign-csl-daily",
+   "split": "dev",
+   "metric_id": "wer-cleanroom-eq11",
+   "original_value": 25.7,
+   "copied_baseline": false,
+   "out_of_scope_reason": "Deferred by the assigning user on 2026-09-14, who decided to reproduce only Table I (PHOENIX) for now and to skip Table II. Not withdrawn, and not a judgement about CSL-Daily's feasibility -- the open gate csl-daily-frame-source remains the substantive obstacle and is unaffected by this scoping decision.",
+   "result": {
+    "status": "not_produced",
+    "reason": {
+     "code": "data_unavailable",
+     "detail": "CSL-Daily training never started. Two independent reasons, either sufficient. The substantive one is gate csl-daily-frame-source: the copy on the shared Volume supplies MP4s holding 37 percent more frames in aggregate than the annotations declare, with per-clip ratios from about 1.3x to 6.6x, so it is a different temporal extent per clip than the corpus CVSign and its baselines report on, and training on it would answer a different question. The second is scope: Table II was deferred by the assigning user on 2026-09-14 in favour of Table I. The data gate is unaffected by that deferral and would still have to be resolved first."
+    },
+    "run_ids": [
+     "csl-daily-survey-001"
+    ],
+    "artifact_ids": [],
+    "gate_ids": [
+     "csl-daily-frame-source"
+    ],
+    "evidence": [
+     "csl-daily-survey-001 (Modal ap-VrlLhTk4RdfJ9NXMhfJxMq): declared_frame_mismatches 20630 of 20653 clips; train 2997359 frames measured by ffprobe against 2185273 declared",
+     "/datasets/csl-daily/sentence_label/README.txt section 3: 'length: the number of frames in the video'; section 1 documents the release as extracted frames (csl-daily-frames-512x512.tar.gz), not the MP4s present",
+     "Assigning user, chat, 2026-09-14: decided to reproduce only Table I (PHOENIX) for now and to skip Table II"
+    ]
+   }
+  },
+  {
+   "target_id": "table2-cslday-test-wer",
+   "in_scope": false,
+   "paper_location": "Table II, page 3, 'CVSign (ours)' row, Test(%) column",
+   "experiment_id": "cvsign-csl-daily",
+   "split": "test",
+   "metric_id": "wer-cleanroom-eq11",
+   "original_value": 24.7,
+   "copied_baseline": false,
+   "out_of_scope_reason": "Deferred by the assigning user on 2026-09-14, who decided to reproduce only Table I (PHOENIX) for now and to skip Table II. Not withdrawn, and not a judgement about CSL-Daily's feasibility -- the open gate csl-daily-frame-source remains the substantive obstacle and is unaffected by this scoping decision.",
+   "result": {
+    "status": "not_produced",
+    "reason": {
+     "code": "data_unavailable",
+     "detail": "CSL-Daily training never started. Two independent reasons, either sufficient. The substantive one is gate csl-daily-frame-source: the copy on the shared Volume supplies MP4s holding 37 percent more frames in aggregate than the annotations declare, with per-clip ratios from about 1.3x to 6.6x, so it is a different temporal extent per clip than the corpus CVSign and its baselines report on, and training on it would answer a different question. The second is scope: Table II was deferred by the assigning user on 2026-09-14 in favour of Table I. The data gate is unaffected by that deferral and would still have to be resolved first."
+    },
+    "run_ids": [
+     "csl-daily-survey-001"
+    ],
+    "artifact_ids": [],
+    "gate_ids": [
+     "csl-daily-frame-source"
+    ],
+    "evidence": [
+     "csl-daily-survey-001 (Modal ap-VrlLhTk4RdfJ9NXMhfJxMq): declared_frame_mismatches 20630 of 20653 clips; train 2997359 frames measured by ffprobe against 2185273 declared",
+     "/datasets/csl-daily/sentence_label/README.txt section 3: 'length: the number of frames in the video'; section 1 documents the release as extracted frames (csl-daily-frames-512x512.tar.gz), not the MP4s present",
+     "Assigning user, chat, 2026-09-14: decided to reproduce only Table I (PHOENIX) for now and to skip Table II"
+    ]
+   }
+  }
+ ],
+ "runs": [
+  {
+   "run_id": "preflight-phoenix14t-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/scripts/modal_app.py::launch_preflight --dataset phoenix14t",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-05T14:40:26Z",
+   "finished_at_utc": "2026-09-05T14:42:57Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "preflight-phoenix14t",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-05T14:40:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 0.5,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "20 real training steps on PHOENIX14-T (loaded real MP4s via simple-video-utils, ran forward/backward/optimizer step), plus a full real dev-split (519 sequences) evaluation pass and checkpoint save, all completed and emitted parsed metrics. This preflight followed three earlier failed attempts on this same dataset (not separately recorded as formal runs, since they preceded a correct/working codebase rather than testing a fixed hypothesis against fixed code): (1) CUDA OOM on A10G at the CCA affinity matmul (full-image-radius attention over long video clips) -- fixed by also chunking the ResNet stage's own convolution over time, not just the CCA/CVA block; (2) CUDA OOM persisted after escalating to A100 (40GB) with mixed precision -- fixed by adding gradient checkpointing (torch.utils.checkpoint) around each temporal chunk so backward-pass activations are recomputed instead of retained; (3) a KeyError in GlossVocab.encode when the dev split contained a gloss token absent from the train-split vocabulary -- fixed by reserving an <unk> id. This run measured throughput for the compute estimate: 1.6356 s/train-step (batch size 2) and 0.1944 s/dev-sequence.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-6mTbVJZtJGgBQLc1LqH7mZ",
+    "hardware": "one A100-SXM4-40GB",
+    "gpu_count": 1,
+    "start_evidence": "modal_app.py preflight() result.started_at 2026-09-05T14:40:26.271279+00:00",
+    "end_evidence": "modal_app.py preflight() result.finished_at 2026-09-05T14:42:57.145459+00:00; history.jsonl epoch-0 record with train_steps=20, seconds_per_train_step=1.6356191112, eval_seconds_per_sequence=0.1944492728",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "scheduling-audit-001",
+   "command": "local CPU audit of scripts/model.py: torch.utils.flop_counter FLOP accounting and output-equivalence tests of the committed frame-scheduling against a halo-free schedule; no Modal/GPU resources used",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-05T21:10:00Z",
+   "finished_at_utc": "2026-09-05T22:35:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "scheduling-audit",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-05T21:05:00Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Audit of the frame scheduling that produced the run preflight-phoenix14t-001 throughput figure, prompted by a user review question about the ~207 GPU-hour estimate. Two defects found in scripts/model.py, both in our own scheduling code rather than in CVSign's method. (1) Redundant halo computation: _chunked_stage ran each temporal chunk as [start-n, start+chunk+n] with chunk=8 and n=4, pushing 16 frames through the ResNet stage, CCA and CVA and discarding 8, for each of layers 2/3/4. Measured with torch.utils.flop_counter at the realistic shape (T=140 frames, 224px): 18.5 GFLOP/frame forward versus 10.2 GFLOP/frame for identical outputs, i.e. 1.81x of the encoder's forward work was discarded. (2) The halo made results depend on a knob documented as inert: the ResNet stages and CVA's Conv_Block carry BatchNorm, so chunk boundaries silently redefined every normalization batch (B*(chunk+2n)=32 frames per chunk, frames double-counted across chunks). Measured on the committed code, changing frame_chunk_size from 4 to 16 changed the training-mode encoder output by 1.47 absolute on a feature scale of 107, about 1.4 percent. Fix applied and verified: each ResNet stage now runs once over all real frames of the batch (the paper's visual encoder is a 2D CNN, Fig. 2, so this is exact); CVA runs unchunked per clip inside a single gradient checkpoint, keeping its Conv_Block normalization batch intact; CCA chunks only its affinity matrix, which is exact because CCA contains no normalization layer. Padded timesteps are no longer computed at all: the encoder now consumes each clip's `lengths[i]` real frames, so the zero frames that batch size 2 forces on unequal-length clips no longer enter any BatchNorm. Paper compatibility checked before applying: Eq. 1's sliding window has stride 1 over the whole video; Eq. 8's Conv_Block has kernel 1x3x3 and Eqs. 6/9 use Conv_1x1x1, so every operation downstream of the window is temporally pointwise and computing a sub-range of output positions is exactly equivalent; the paper defines V = {v_t} with exactly T frames and never introduces padding frames. Verification: eval-mode equivalence to the committed code 6.3e-4 max absolute on feature scale 107 (6e-6 relative, float accumulation order); the new code is bit-identical (0.0) across frame_chunk_size 4 vs 16 in both eval and training mode, where the committed code differed by 1.47 in training mode; padded positions are exactly zero; a clip's output no longer depends on its batch-mate; train.py's full path (ManifestImageDataset -> collate_fn -> CVSignModel -> CVSignLoss -> backward -> evaluate()) runs end to end on synthetic unequal-length clips; state_dict save/reload round-trips exactly. Net effect on a full training step including backward and checkpoint recompute, measured on clips of 64 and 44 frames: 20.6 -> 8.3 GFLOP per real frame, a 2.49x reduction (CPU wall clock agrees at 2.6x). frame_chunk_size default raised 8 -> 32, now free. Independent corroboration that the inefficiency is ours and not CVSign's: the paper's Implementation Details state all experiments ran on a single NVIDIA A6000, and Tables III-VII are roughly 24 separate 70-epoch PHOENIX14 trainings in addition to PHOENIX14-T and CSL-Daily, which is impossible at 115 h/run on faster hardware. The measured ~12 TFLOP/s effective throughput of the preflight is about 4 percent of A100 fp16 peak, so headroom remains beyond this fix.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate",
+     "encoder-frame-scheduling"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "local",
+    "modal_profile": null,
+    "modal_app_id": null,
+    "hardware": "local CPU (macOS, torch 2.14.0); no GPU used",
+    "gpu_count": 0,
+    "start_evidence": "local audit session 2026-09-05; FLOP accounting via torch.utils.flop_counter.FlopCounterMode",
+    "end_evidence": "scripts/model.py updated in this repository; equivalence, chunk-invariance, padding and end-to-end integration checks all passed as recorded in terminal.detail"
+   }
+  },
+  {
+   "run_id": "dataset-survey-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_inspect_csl_daily; and ::launch_dataset_stats --dataset phoenix14t",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-05T23:05:00Z",
+   "finished_at_utc": "2026-09-05T23:30:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "dataset-survey",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-05T23:00:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Read-only CPU surveys on Modal, no GPU used. (1) inspect_csl_daily established CSL-Daily's real on-disk layout so its manifest parser could be written against it rather than a guessed structure: videos/<name>.mp4 (20654 files), sentence_label/{csl2020ct_v2.pkl, split_1.txt, README.txt, gloss_map.txt, char_map.txt, ...}. The pickle's opcode stream was disassembled with pickletools before any load and contained no global imports whatsoever; it was then read through an allowlist-restricted Unpickler. It is a dict {info, gloss_map, char_map, word_map, postag_map} whose info is a list of 20654 records {name, length, label_gloss, label_char, label_word, label_postag, signer, time}. split_1.txt is pipe-delimited with a name|split header. (2) dataset_stats measured PHOENIX14-T's real frame counts by ffprobe packet count (no decoding): train 7096 clips / 827354 frames (mean 116.59, min 16, max 475), dev 519 / 55775 (mean 107.47), test 642 / 64627 (mean 100.67). The train total matches the frame count published for this corpus, which corroborates the counting method. These replace clip-count scaling as the basis for projecting cost between corpora.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-DDAuOKjaCbR9ST6nLPbVFw (inspect_csl_daily); ap-seg38JyqNXzKA4NjJtAD83 (dataset_stats phoenix14t)",
+    "hardware": "CPU only",
+    "gpu_count": 0,
+    "start_evidence": "Modal dashboard runs ap-DDAuOKjaCbR9ST6nLPbVFw and ap-seg38JyqNXzKA4NjJtAD83, workspace repro-sign",
+    "end_evidence": "both local entrypoints exited 0 and printed the structures recorded above"
+   }
+  },
+  {
+   "run_id": "dataset-survey-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_dataset_stats --dataset phoenix14 (and ::launch_inspect_csl_daily)",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-05T23:40:00Z",
+   "finished_at_utc": "2026-09-06T00:25:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "dataset-survey-phoenix14",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-05T23:35:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Read-only CPU surveys, no GPU. Two defects surfaced and were fixed. (1) build_phoenix14_manifest failed on first contact with the real archive. It had been written before the archive was downloaded and located the annotation CSVs by rglob, which matched several files at once (the multi-signer and signerindependent-SI5 releases, plus annotations/automatic), so its 'expected exactly one CSV' guard raised rather than mis-parsing. The layout was then surveyed directly and the parser rewritten against it: annotations at raw/phoenix2014-release/phoenix-2014-multisigner/annotations/manual/<split>.corpus.csv with header id|folder|signer|annotation, frames at features/fullFrame-210x260px/<split>/<id>/1/*.png. The frame directory is now read from the CSV's own `folder` column, which carries the glob '<id>/1/*.png'; the previous code would have pointed one directory level too high even had it found the CSVs. (2) Both this failure and the CSL-Daily one below were invisible from outside the container, because modal_app.py ran build_manifests.py through subprocess.check_call, which reports only an exit status. All five call sites now go through _build_manifest_file, which captures and re-raises the parser's own stderr. Results after the fix: PHOENIX14 multi-signer train 5672 clips / 799006 frames (mean 140.87, min 16, max 299), dev 540 / 75186 (mean 139.23), test 629 / 89472 (mean 142.24). Clip counts match the expected 5672/540/629 exactly. CSL-Daily cross-check: split_1.txt, csl2020ct_v2.pkl and videos/ each hold exactly 20654 names, but they disagree about one clip -- S000005_P0004_T00 is in split_1.txt with no annotation record, and S000007_P0003_T00 has a record but no split assignment. Every split name has a video. The unannotated clip is skipped by the manifest builder (named on stderr), giving 18400 rather than 18401 training clips; the clip with no split is not assigned to one, since choosing its split would be inventing data. Dev (1077) and test (1176) are complete, so no reported WER is affected. Record correction 2026-09-17: this run was recorded as attempt 2 of the same group as dataset-survey-001, which made the group's max_attempts inconsistent and left attempt 2 unlinked from a succeeded attempt 1 that could not link to it. It was never a retry - dataset-survey-001 surveyed PHOENIX14-T and CSL-Daily, this one surveyed PHOENIX14 - so it now stands as its own single-attempt group.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-563xQFZXhd95kJPURvxzmK (dataset_stats phoenix14)",
+    "hardware": "CPU only",
+    "gpu_count": 0,
+    "start_evidence": "Modal dashboard run ap-563xQFZXhd95kJPURvxzmK, workspace repro-sign",
+    "end_evidence": "dataset_stats returned the per-split clip/frame counts recorded above; inspect_csl_daily returned the cross_check block recorded above"
+   }
+  },
+  {
+   "run_id": "csl-daily-survey-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_dataset_stats --dataset csl-daily (and ::launch_inspect_csl_daily)",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-06T00:30:00Z",
+   "finished_at_utc": "2026-09-06T01:05:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "csl-daily-survey",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-06T00:25:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Read-only CPU survey of CSL-Daily, no GPU. Measured per-split clip and frame counts by ffprobe packet count (no decoding): train 18400 clips / 2997359 frames (mean 162.90, min 24, max 898), dev 1077 / 177733 (mean 165.03), test 1176 / 203358 (mean 172.92). The declared-versus-actual check built into dataset_stats then failed for 20630 of 20653 clips. sentence_label/README.txt was read before escalating and states that `length` is 'the number of frames in the video' and that the official distribution is extracted frames (csl-daily-frames-512x512.tar.gz), so the annotations and the MP4s on the Volume describe different artifacts. Aggregate declared train frames are 2185273 against 2997359 measured, 37 percent fewer, with per-clip ratios ranging from about 1.3x to 6.6x in the sampled clips. Recorded as gate csl-daily-frame-source; no CSL-Daily training may start until it resolves. Record correction 2026-09-17: this run's retry_decision read 'await_gate', which the retained-run contract does not allow on a succeeded run - the survey itself completed and emitted its counts. The gate it opened, csl-daily-frame-source, is still referenced in gate_ids and is still open; only the decision field changed.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "csl-daily-frame-source"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-VrlLhTk4RdfJ9NXMhfJxMq (dataset_stats csl-daily)",
+    "hardware": "CPU only",
+    "gpu_count": 0,
+    "start_evidence": "Modal dashboard run ap-VrlLhTk4RdfJ9NXMhfJxMq, workspace repro-sign",
+    "end_evidence": "dataset_stats and inspect_csl_daily returned the counts and cross-checks recorded above"
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_preflight --dataset phoenix14",
+   "exit_code": 1,
+   "started_at_utc": "2026-09-14T11:25:00Z",
+   "finished_at_utc": "2026-09-14T12:30:55Z",
+   "attempt": {
+    "group_id": "preflight-phoenix14",
+    "number": 1,
+    "max_attempts": 2
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-14T11:20:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "failed",
+    "reason_code": "command_failed",
+    "detail": "First PHOENIX14 preflight. Hit the function's 3600s timeout without completing one epoch of 100 steps plus the dev-split evaluation; no history.jsonl was written, so it produced no throughput or peak-memory measurement. Only vocab.json reached /outputs/preflight/phoenix14/20260914T113057Z. Cause diagnosed in run io-gpu-probe-001 and it is not the GPU: the loader ran with --num-workers 4, and PHOENIX14 stores one PNG per frame, so a clip is ~141 separate reads from the network Volume. Measured cold delivery at 4 workers was 17.4 frames/s, against the A100's measured 644.7 frames/s of compute -- the card was starved roughly 37-fold. At 16.2-17.4 frames/s the preflight's 28200 training frames plus 75186 dev frames need about 107 minutes, which matches the observed timeout at 60. Superseded by preflight-phoenix14-002 after --num-workers was raised to 16 and cpu to 16; no other change was made, and nothing about the model or protocol was touched. Exit status: the modal client raised FunctionTimeoutError and printed 'Stopping app - uncaught exception raised locally'; recorded as 1 on that basis. The shell that launched it piped output through tee and grep, so the pipeline's own reported status of 0 was the last stage's and not the wrapper's -- the FunctionTimeoutError is the authoritative terminal evidence here, not that 0.",
+    "failure_class": "deterministic_code",
+    "retry_decision": "retry",
+    "next_run_id": "preflight-phoenix14-002",
+    "gate_ids": []
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-xbeZVXQE7Y6e8rUKNrewor",
+    "hardware": "one A100-SXM4-40GB",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-xbeZVXQE7Y6e8rUKNrewor, workspace repro-sign; output dir preflight/phoenix14/20260914T113057Z",
+    "end_evidence": "FunctionTimeoutError: Task's current input hit its timeout of 3600s (2026-09-14T12:30:55Z)",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   },
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   }
+  },
+  {
+   "run_id": "io-gpu-probe-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_io_probe --dataset phoenix14 [--workers 4|16|32] [--start N]; and ::launch_gpu_probe --gpu [A100|A10G|L4|T4]",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-14T12:32:00Z",
+   "finished_at_utc": "2026-09-14T13:05:00Z",
+   "attempt": {
+    "group_id": "io-gpu-probe",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-14T12:30:00Z",
+    "max_wall_time_seconds": 5400,
+    "max_gpu_hours": 0.5,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Diagnosis of preflight-phoenix14-001's timeout, and the measurement the GPU choice rests on. The epoch loop's own timing could not attribute that hour: it wraps `for ... in train_loader`, so waiting for data is counted as training time. Two probes were added to separate them. (1) io_probe mounts the dataset with no GPU and times the loader alone. PHOENIX14 cold, on clips never read before: 17.4 frames/s at 4 workers, 171.9 at 16, 59.5 at 32 (oversubscribed on 8 CPUs). Re-probing already-read clips gave 57.8 frames/s single-threaded against 3.05 cold, a 19x cache effect, which is why the scaling numbers were re-measured on unread slices. (2) gpu_probe runs the real model on synthetic batches at the real shapes (batch 2, 224px, 141 frames, full backward, AMP, CTC) and mounts no dataset, so no input rate folds into it. Measured: A100-SXM4-40GB 644.7 frames/s, A10 294.1, L4 166.1, T4 138.8 -- and peak memory 7.83 GiB on every one of them, since peak is set by CCA's frame_chunk_size and not by the card. The 2026-09-05 A10G out-of-memory failure recorded under preflight-phoenix14t-001 predates the scheduling fix in scheduling-audit-001 and does not hold against the current code. Mounts: gpu_probe mounted the shared huggingface-cache Volume read-write at /cache/huggingface with HF_HOME and HF_HUB_CACHE set, as every GPU function in this app does; io_probe mounted only the datasets Volume read-only, since it downloads no Hub artifact and builds no model.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-ntSRJUo5LsTzGqS0BLKpOT (io_probe phoenix14 w=4); ap-NOpSUTL3cXqOhS5oLCl8Ih (gpu_probe A100); plus io_probe w=16/32 and gpu_probe L4/A10G/T4 apps",
+    "hardware": "CPU-only for io_probe; one A100-SXM4-40GB / A10 / L4 / T4 for gpu_probe",
+    "gpu_count": 1,
+    "start_evidence": "Modal apps listed above, workspace repro-sign",
+    "end_evidence": "each entrypoint printed its JSON result and the apps exited 0",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   },
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_preflight --dataset phoenix14",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-14T13:15:08Z",
+   "finished_at_utc": "2026-09-14T13:32:09Z",
+   "attempt": {
+    "group_id": "preflight-phoenix14",
+    "number": 2,
+    "max_attempts": 2
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-14T13:08:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Representative PHOENIX14 preflight, complete: manifest build, 100 real training steps (first 10 discarded), checkpoint save, and a full real dev-split evaluation over all 540 sequences, in 1021s against the 3600s ceiling. The only change from preflight-phoenix14-001 was --num-workers 4 -> 16 and cpu 8 -> 16. Measured: steady 0.0041205 s/frame (242.7 frames/s) over 25202 frames in 90 steps, eval 1.6379 s/sequence, peak GPU memory 11581716480 bytes (10.79 GiB) of 39.49 GiB. dev_wer is 100.0, which is expected and not a result: 100 steps from an untrained decoder emit no correct glosses. Note the input path still binds even at 16 workers -- 242.7 frames/s against the A100's 644.7 frames/s of compute measured in io-gpu-probe-001, so the card idles about 62 percent of training. Peak memory here exceeds the 7.83 GiB the synthetic probe reported because real clips run to 299 frames against the probe's 141, and the ResNet stages process every real frame of the batch at once.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-oHnO9QTndxRmwu1Oo6PADk",
+    "hardware": "one A100-SXM4-40GB, driver 580.95.05",
+    "gpu_count": 1,
+    "start_evidence": "preflight() result.started_at 2026-09-14T13:15:08.411093+00:00; https://modal.com/apps/repro-sign/main/ap-oHnO9QTndxRmwu1Oo6PADk",
+    "end_evidence": "preflight() result.finished_at 2026-09-14T13:32:09.647615+00:00, preflight_wall_seconds 1021.24; history.jsonl at /outputs/preflight/phoenix14/20260914T131508Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   },
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14t-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_preflight --dataset phoenix14t",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-14T13:33:53Z",
+   "finished_at_utc": "2026-09-14T13:36:46Z",
+   "attempt": {
+    "group_id": "preflight-phoenix14t-remeasure",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-14T13:32:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "PHOENIX14-T preflight re-measured on the current code, superseding the throughput figure in preflight-phoenix14t-001 (which measured the defective frame schedule that scheduling-audit-001 fixed, and only 20 steps from a timer started before worker start-up). Complete in 173s: 100 training steps with the first 10 discarded, checkpoint, and the full 519-sequence dev evaluation. Measured: steady 0.00298177 s/frame (335.4 frames/s) over 21442 frames, eval 0.13716 s/sequence, peak GPU memory 10951529472 bytes (10.20 GiB). The contrast with PHOENIX14 isolates the storage layout rather than the model: same code, same A100, same batch size, and evaluation is 12x faster per sequence (0.137s against 1.638s) because this corpus ships one MP4 per clip instead of one PNG per frame. dev_wer 100.0 is again expected at 100 steps and is not a result.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-xVSJa5mtSu49md0jp4zYP6",
+    "hardware": "one A100-SXM4-40GB, driver 580.95.05",
+    "gpu_count": 1,
+    "start_evidence": "preflight() result.started_at 2026-09-14T13:33:53.135834+00:00; https://modal.com/apps/repro-sign/main/ap-xVSJa5mtSu49md0jp4zYP6",
+    "end_evidence": "preflight() result.finished_at 2026-09-14T13:36:46.461192+00:00, preflight_wall_seconds 173.33",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   },
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   }
+  },
+  {
+   "run_id": "repack-probe-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_repack_probe --clips 32 --start 4000 --workers 16",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-15T07:18:00Z",
+   "finished_at_utc": "2026-09-15T08:11:10Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "repack-probe",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-15T07:15:00Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": null,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "CPU-only prototype of the storage change suggested by the input bottleneck in preflight-phoenix14-002, run on 32 train clips and writing only to the paper-scoped results Volume; the shared datasets Volume was mounted read-only and is unchanged. Each clip's frames were packed into one uncompressed tar holding the ORIGINAL PNG bytes -- no re-encode, no resize, no colour conversion -- and read back in a separate container so the measurement was not against a cache the writer had just warmed. Two results are trustworthy. (1) Equivalence: the tensor built from the tar equals the tensor built from the loose PNGs EXACTLY for all 32 of 32 clips (torch.equal, deterministic centre-crop transform so that augmentation randomness could not mask a difference); bit_identical true, zero mismatches. This is what would make the change a storage-layout change rather than a data change, though a decision to adopt it needs the check run over the whole corpus, not 32 clips. (2) Single-threaded read: 68.7 frames/s from tar against 1.87 frames/s cold from loose PNGs, a 37x gain, which is the per-file request latency being removed; 68.7 frames/s is close to the 57.8 frames/s measured for warm single-threaded PNG reads in io-gpu-probe-001, i.e. the tar path is already decode-bound rather than latency-bound. ONE REPORTED NUMBER IS INVALID AND MUST NOT BE USED: tar_loader_frames_per_second came back as 12547.7, which is impossible -- it exceeds 16 workers times the 68.7 frames/s single-worker rate by more than tenfold. 32 clips at batch size 2 is only 16 batches, so with num_workers 16 every remaining batch was already computed and queued before the timer started after batch 2; the figure measures a queue draining, not the loader producing. Settling whether the tar path can actually feed a fast card needs a build of a few hundred clips and a loader measured over many more batches than workers. Extrapolating instead from the trustworthy single-thread figure, 16 workers at 68.7 frames/s each implies roughly 1100 frames/s at perfect scaling, so the tar path should clear the A10's 294.1 frames/s comfortably but would only marginally reach the A100's 644.7 -- which means the A10 recommendation in gate compute-full-run-estimate may well survive the repack, and the claim that the A100 becomes the cheapest card per frame is NOT established by this run. Sizing, from the build phase: about 47.5 KB per frame, with tar adding 1.8 percent, so repacking all 963664 frames of PHOENIX14 would occupy roughly 47 GB alongside the originals rather than replacing them.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-i6Vwji26SAPsaje77QBdOv",
+    "hardware": "CPU only",
+    "gpu_count": 0,
+    "start_evidence": "Modal app ap-i6Vwji26SAPsaje77QBdOv, workspace repro-sign; https://modal.com/apps/repro-sign/main/ap-i6Vwji26SAPsaje77QBdOv",
+    "end_evidence": "repack_read returned bit_identical true, 32 clips, tar 68.73 frames/s vs PNG 1.87 frames/s; 32 prototype tars remain at /outputs/repack-probe on Volume yu-2025-cvsign-results",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14-tuning-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_preflight_tuning --dataset phoenix14 --workers 32 --cpu 32 --memory 65536",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-15T10:59:37Z",
+   "finished_at_utc": "2026-09-15T11:14:03Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "preflight-phoenix14-tuning",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-15T10:55:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Loader-width test: the same preflight at cpu=32/32 workers against the cpu=16/16-worker configuration of preflight-phoenix14-002, to check whether the 32-worker regression seen in io-gpu-probe-001 was only oversubscription of 8 CPUs. It was not. Training throughput fell 2.3x, from 0.0041205 to 0.0095628 s/frame (242.7 -> 104.6 frames/s), on 32 real cores, so the regression survives giving the workers a core each and corroborates the earlier io_probe finding rather than explaining it away. Evaluation moved the other way: 1.6379 -> 0.9792 s/sequence, 1.67x FASTER. Peak GPU memory was byte-identical at 11581716480, as expected, since the loader width cannot affect the model.\n\nTHE PREFLIGHT'S WALL CLOCK IS A MISLEADING PROXY AND WAS NEARLY READ THE WRONG WAY. 32 workers finished the preflight faster, 866.5s against 1021.2s, which taken at face value would have endorsed the worse configuration. The preflight caps training at 100 steps while running the FULL dev split, so evaluation is over-weighted relative to a real epoch, where 799006 training frames face only 540 dev clips. Projected per phase over 70 epochs: 16 workers 81.2 GPU-hours, 32 workers 158.9 -- 32 workers is almost exactly twice as expensive for the full run while appearing 15 percent cheaper in the preflight. Full-run cost must be projected per phase from steady_seconds_per_frame and eval_seconds_per_sequence, never from preflight_wall_seconds.\n\nActionable result: keep 16 workers for the training loader and use 32 only for the dev loader. train.py currently passes args.num_workers to both, so this needs the two DataLoader constructions separated. Projected 74.3 GPU-hours against 81.2, a saving of about 6.9 GPU-hours or roughly USD 15 on an A10 -- small, but free and carrying no data or protocol implication. Mechanism not established: memory pressure from 32 workers prefetching whole clips (a 299-frame batch of 2 is about 360 MB at 224px float32) and eviction of the Volume's client cache are plausible, and evaluation's sequential shuffle=False access pattern plausibly benefits from more readers where training's shuffled access does not, but neither was tested.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-rHKe5ATktWK7a55ScZR4jn",
+    "hardware": "one A100-SXM4-40GB, driver 580.95.05",
+    "gpu_count": 1,
+    "start_evidence": "preflight() result.started_at 2026-09-15T10:59:37.419116+00:00; https://modal.com/apps/repro-sign/main/ap-rHKe5ATktWK7a55ScZR4jn",
+    "end_evidence": "preflight() result.finished_at 2026-09-15T11:14:03.872761+00:00, preflight_wall_seconds 866.45, num_workers 32",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "resume-check-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_resume_check --dataset phoenix14",
+   "exit_code": 1,
+   "started_at_utc": "2026-09-15T13:01:57Z",
+   "finished_at_utc": "2026-09-15T13:40:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "resume-check",
+    "number": 1,
+    "max_attempts": 2
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-15T12:40:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "failed",
+    "reason_code": "command_failed",
+    "detail": "First end-to-end exercise of checkpoint resume, and it found a real defect. The full PHOENIX14 run is about 74 GPU-hours against Modal's 24h per-call ceiling, so resume is mandatory rather than a convenience, and it had been recorded as implemented but never exercised. The check trains two epochs, then runs train.py again with --resume against the same output directory. The first process succeeded; the resumed one exited 1 with 'TypeError: RNG state must be a torch.ByteTensor' at train.py's torch.set_rng_state. Cause: the checkpoint is loaded with map_location=device, which moves every tensor in it to the GPU, and set_rng_state accepts only a CPU ByteTensor. The defect was introduced in this session by the change that began persisting RNG state, so the check caught a bug in its own prerequisite rather than a pre-existing one; without RNG persistence the resume path had a different problem, replaying the data order epoch 0 saw instead of continuing it. Fixed by loading both RNG tensors with .cpu(). Two preceding non-runs are not recorded separately: a first attempt invoked train.py without cwd=/workspace/scripts and exited 2 before reaching any resume logic, and two attempts were killed by Modal image-build shutdowns ('terminated due to external shut-down') that never started the function.",
+    "failure_class": "deterministic_code",
+    "retry_decision": "retry",
+    "next_run_id": "resume-check-002",
+    "gate_ids": []
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-svOj7RtZ8ytMZiGJ10RZWh",
+    "hardware": "one A10",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-svOj7RtZ8ytMZiGJ10RZWh, output dir /outputs/resume-check/phoenix14/20260915T130157Z",
+    "end_evidence": "modal app logs: TypeError: RNG state must be a torch.ByteTensor at train.py:152; subprocess exit 1",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "resume-check-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_resume_check --dataset phoenix14",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-15T13:42:28Z",
+   "finished_at_utc": "2026-09-15T13:55:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "resume-check",
+    "number": 2,
+    "max_attempts": 2
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-15T13:41:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Checkpoint resume verified end-to-end on a real restart, which the completion contract required before a full run and which had never been done. Two epochs, then a second train.py process with --resume against the same output directory. Every assertion held: epochs before resume [0, 1], after [0, 1, 2], resumed_at_next_epoch true, no_duplicate_epochs true, checkpoint epoch 1 -> 2, best_dev_wer carried, and both the GradScaler state and the RNG state present in the checkpoint and restored. Training loss fell 47.39 -> 31.15 -> 22.51 across the three epochs, so the resumed epoch continued the trajectory rather than restarting from the initial weights. Three defects were fixed in our own scripts to get here, all in the resume path and none touching the model or the protocol: the checkpoint is now written to a temp file and renamed, so a kill landing inside torch.save cannot leave a truncated file as the only way back into an 80-hour run; the GradScaler state is saved and restored, so each restart no longer resets the AMP loss scale; and the torch and CUDA RNG states are saved and restored on CPU, so the data order and augmentation stream continue across a restart instead of replaying what epoch 0 saw. Separately this run exercised the split loader widths (--num-workers for training, --eval-num-workers for the dev split) added after preflight-phoenix14-tuning-001.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-hDSwec29ZDfRBRPcUITcUS",
+    "hardware": "one A10",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-hDSwec29ZDfRBRPcUITcUS; https://modal.com/apps/repro-sign/main/ap-hDSwec29ZDfRBRPcUITcUS",
+    "end_evidence": "resume_check.json at /outputs/resume-check/phoenix14/20260915T134228Z: resumed_at_next_epoch true, no_duplicate_epochs true, scaler_state_persisted true, rng_state_persisted true, best_dev_wer_carried true",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "full-phoenix14t-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/scripts/modal_app.py::launch_train --dataset phoenix14t (relaunched twice to resume past Modal's 24h per-call ceiling)",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-15T14:36:00Z",
+   "finished_at_utc": "2026-09-17T20:26:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "full-phoenix14t",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-15T14:30:00Z",
+    "max_wall_time_seconds": 259200,
+    "max_gpu_hours": 70.0,
+    "max_cost_chf": 160.0
+   },
+   "terminal": {
+    "state": "stopped",
+    "reason_code": "no_new_hypothesis",
+    "detail": "PHOENIX14-T training, 53 of 70 epochs, one A10, 47.1 GPU-hours of epoch time. Spanned three Modal calls because the per-call ceiling is 24h; the two resumes were verified to continue rather than restart (history.jsonl holds 53 contiguous records, 0-52, no duplicates, and training loss continued 3.603 -> 3.474 across the first resume instead of returning to its initial ~11). Stopped by the assigning user on 2026-09-17 with the remaining 17 epochs unrun; recorded as gate phoenix14t-training-truncated. Continuing could not have tested a new hypothesis at that point: both scheduled learning-rate decays had been applied, the rate stood at 4e-6, and dev WER had not improved for 27 consecutive epochs while training loss kept falling (3.10 -> 2.36), the ordinary signature of overfitting after convergence. Best dev WER 31.4835 at epoch 26, which is the checkpoint both evaluations use. Throughput held at 268.1 frames/s against the A10's 294.1 frames/s of measured compute, so the input path was still marginally binding even on this MP4-backed corpus; mean epoch 53.1 minutes. Peak GPU memory reached 13.23 GiB, well above the 10.20 GiB the preflight measured, because the preflight's 100 steps did not draw the corpus's longest clips - this retroactively justifies having ruled out the T4's 14.56 GiB in gate compute-full-run-estimate.",
+    "failure_class": "budget_protocol",
+    "retry_decision": "stop",
+    "gate_ids": [
+     "phoenix14t-training-truncated"
+    ]
+   },
+   "artifact_ids": [
+    "phoenix14t-history"
+   ],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-RNAeQ2z21gLJQBLgJcsJyo; ap-msO0Jn9CfNjNW9KuuKEJlK; ap-mj9Sj2L28NDneomyObFFRu",
+    "hardware": "one A10 (NVIDIA A10, 23028 MiB), driver 580.95.05",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-RNAeQ2z21gLJQBLgJcsJyo created 2026-09-15 16:36 CEST, call fc-01M2JR65SSP0F172KP5R5KFR6P",
+    "end_evidence": "app ap-mj9Sj2L28NDneomyObFFRu stopped 2026-09-17; history.jsonl sha256 d01ebb2080a39c312ce3116a52090eef687a10849c5e74d876301b61b39b445e, 53 records, total epoch time 47.1 GPU-hours",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "eval-phoenix14t-dev-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_evaluate --dataset phoenix14t --split dev",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-17T20:31:00Z",
+   "finished_at_utc": "2026-09-17T20:36:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "eval-phoenix14t-dev",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-17T20:29:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Dev-split evaluation of best_checkpoint.pt (epoch 26) on one A10. WER 31.483457844183565 over 519 sequences and 3748 reference tokens: 712 substitutions, 77 insertions, 391 deletions. The value reproduces the training loop's own epoch-26 dev figure to every digit recorded, which is a consistency check on the evaluation path rather than an independent result: the same metric implementation and the same decode are used in both. Deletions running five times insertions is the ordinary shape of an undertrained CTC model emitting too few glosses.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "phoenix14t-eval-dev"
+   ],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-ymzidq6012nIPILSmFtfbe",
+    "hardware": "one A10",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-ymzidq6012nIPILSmFtfbe, workspace repro-sign",
+    "end_evidence": "eval_dev.json sha256 a0606597dfc8994c954203fb4753047f28daccae963b6c688bcaa8131c0a62d0, checkpoint_epoch 26",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "eval-phoenix14t-test-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/scripts/modal_app.py::launch_evaluate --dataset phoenix14t --split test",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-17T20:38:00Z",
+   "finished_at_utc": "2026-09-17T20:43:00Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "eval-phoenix14t-test",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-17T20:37:00Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 5.0
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Test-split evaluation of the same epoch-26 checkpoint on one A10. WER 31.636960600375236 over 642 sequences and 4264 reference tokens: 784 substitutions, 126 insertions, 439 deletions. The test split was evaluated exactly once, after checkpoint selection had been fixed by dev WER, so it was not used to choose anything.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "phoenix14t-eval-test"
+   ],
+   "source_revision": "clean-room implementation; no upstream source",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-rvoERyeNdv8fnzdxRJyaUn",
+    "hardware": "one A10",
+    "gpu_count": 1,
+    "start_evidence": "Modal app ap-rvoERyeNdv8fnzdxRJyaUn, workspace repro-sign",
+    "end_evidence": "eval_test.json sha256 2451793bd11dbe73584e7175115006c51885c3746c0ccef4aef31bc2d4a07492, checkpoint_epoch 26",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "prepare-frames-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_prepare_frames",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T16:09:03Z",
+   "finished_at_utc": "2026-09-27T16:39:38Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "prepare-frames-001",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T16:09:03Z",
+    "max_wall_time_seconds": 43200,
+    "max_gpu_hours": null,
+    "max_cost_chf": null
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Copied the 947756 official 210x260 PNG frames (read-only mount) to local disk in 1040 s, resized them with CorrNet's resize_dataset in 504 s, and archived the 256x256 output: train 827354 / dev 55775 / test 64627 frames, each equal to the original PNG count and to the sum of num_frames in CorrNet's committed split files; 68060743680 bytes, sha256 18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd. The committed split files were first checked to equal the official CSVs row for row once <id>/1/*.png is mapped to <id>/*.png. Earlier attempts of this step failed on glue errors only (Modal disk-size minimum, over-strict checks) and are not retained.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "phoenix14t-frames-256-tar",
+    "phoenix14t-frames-256-manifest"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-a6kOMHoUft4c3SoPV94H3z",
+    "hardware": "CPU only, cpu=32, memory 64 GiB",
+    "gpu_count": 0,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-a6kOMHoUft4c3SoPV94H3z",
+    "end_evidence": "Modal app ap-a6kOMHoUft4c3SoPV94H3z stopped 2026-09-27T16:39:38Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "corrnet-checkpoint-check-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_check_corrnet",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T16:39:31Z",
+   "finished_at_utc": "2026-09-27T16:48:52Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "corrnet-checkpoint-check-001",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T16:39:31Z",
+    "max_wall_time_seconds": 14400,
+    "max_gpu_hours": 4.0,
+    "max_cost_chf": 12.9
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Pristine CorrNet 5a361cc, its configs/baseline.yaml, --phase test with the authors' released PHOENIX14-T checkpoint (sha256 e0e7e567...). Scored through the same frames archive, loader, ctcdecode beam search and sclite as CVSign: dev 18.9 (519 sentences, 3748 glosses: sub 10.7, del 5.4, ins 2.8), test 20.5 (642, 4264: sub 11.5, del 5.7, ins 3.2), exactly CorrNet's README values 18.9 / 20.5. This validates data, preprocessing, decoding and scoring; it is not a CVSign target. upstream command ran 16:46:55-16:48:36 after 223 s of staging; peak 17617 MiB (nvidia-smi).",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "corrnet-check-dev-sys",
+    "corrnet-check-test-sys"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-CCEQ2Kh87FGwq9whOeYXVZ",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-CCEQ2Kh87FGwq9whOeYXVZ",
+    "end_evidence": "Modal app ap-CCEQ2Kh87FGwq9whOeYXVZ stopped 2026-09-27T16:48:52Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14t-003",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_preflight",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T16:39:31Z",
+   "finished_at_utc": "2026-09-27T16:51:29Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "preflight-phoenix14t-003",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T16:39:31Z",
+    "max_wall_time_seconds": 14400,
+    "max_gpu_hours": 4.0,
+    "max_cost_chf": 12.9
+   },
+   "terminal": {
+    "state": "stopped",
+    "reason_code": "invalid_run",
+    "detail": "CVSign through upstream main.py on 200 real training clips (incl. the 20 longest) / 50 dev / 50 test: epoch 0, resume to epoch 1 from its checkpoint, --phase test. All three commands exited 0, but mean training loss rose 434 -> 1908 between the epochs. Diagnosed in diagnose-loss-002 to diagnose-nan-003: cuDNN's CTC kernel returned NaN gradients, so the AMP GradScaler skipped nearly every update. The run is invalid as a preflight and was superseded by preflight-phoenix14t-004.",
+    "failure_class": "invalid_run",
+    "retry_decision": "stop",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "preflight-003-log"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-gMk30PtMhzGkaNDXk5Dpeh",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-gMk30PtMhzGkaNDXk5Dpeh",
+    "end_evidence": "Modal app ap-gMk30PtMhzGkaNDXk5Dpeh stopped 2026-09-27T16:51:29Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-loss-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_loss --run-id diagnose-loss-002",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T17:11:08Z",
+   "finished_at_utc": "2026-09-27T17:23:46Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-loss-002",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T17:11:08Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": 2.0,
+    "max_cost_chf": 6.4
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Hypothesis: CCA/CVA or TLP's Cu/Cp regularisers make training diverge. 200 steps per variant with per-term logging. The visual-branch CTC (ConvCTC) climbs and reaches inf also with the CVSign gates frozen at 0 (plain ResNet34 + TLP decoder) and with Cu=Cp=0, while SeqCTC falls. Hypothesis not supported: the cause is outside CCA/CVA.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-loss-002-gates-frozen"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-XPxep0lOJBnXkFJrNYheWn",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-XPxep0lOJBnXkFJrNYheWn",
+    "end_evidence": "Modal app ap-XPxep0lOJBnXkFJrNYheWn stopped 2026-09-27T17:23:46Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-loss-003",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_loss --run-id diagnose-loss-003 --variants corrnet_pristine,gates_frozen",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T17:24:08Z",
+   "finished_at_utc": "2026-09-27T17:34:07Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-loss-003",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T17:24:08Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": 2.0,
+    "max_cost_chf": 6.4
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Control: pristine CorrNet (ResNet18, its own decoder) on the same 200 clips. Its GradScaler scale fell from 32768 to 2 by step 20 and below 1 by step 40, as in CVSign, so the defect is in the shared harness/environment, not in CVSign.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-loss-003-corrnet"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-h7VHuKHBMwCqQIjRnqwU2b",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-h7VHuKHBMwCqQIjRnqwU2b",
+    "end_evidence": "Modal app ap-h7VHuKHBMwCqQIjRnqwU2b stopped 2026-09-27T17:34:07Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-grads-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_grads",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T17:33:08Z",
+   "finished_at_utc": "2026-09-27T17:38:07Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-grads-001",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T17:33:08Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 3.2
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Pristine CorrNet, 4 batches from a fresh model, unscaled backward per loss term, fp16 and fp32, cuDNN on and off: no non-finite gradient in any of 64 combinations. The NaNs are not present at initialisation.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-aLQCNN7r7YhLv06AILwhfb",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-aLQCNN7r7YhLv06AILwhfb",
+    "end_evidence": "Modal app ap-aLQCNN7r7YhLv06AILwhfb stopped 2026-09-27T17:38:07Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-loss-004",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_loss --run-id diagnose-loss-004 --steps 60 --variants corrnet_pristine",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T17:38:47Z",
+   "finished_at_utc": "2026-09-27T17:49:51Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-loss-004",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T17:38:47Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": 2.0,
+    "max_cost_chf": 6.4
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Pristine CorrNet under upstream's AMP loop, gradients inspected after unscale_ at every step: on most steps all backbone parameter gradients are NaN (not inf) at every scale from 8192 down to 1e-4, so the scaler halves forever.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-loss-004-corrnet"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-QMpQZmIEpLSNI3xqW25sp9",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-QMpQZmIEpLSNI3xqW25sp9",
+    "end_evidence": "Modal app ap-QMpQZmIEpLSNI3xqW25sp9 stopped 2026-09-27T17:49:51Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-einsum-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_einsum",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T17:50:47Z",
+   "finished_at_utc": "2026-09-27T17:59:55Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-einsum-001",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T17:50:47Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 3.2
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Hypothesis: CorrNet's fp16 affinity einsum overflows. Refuted: affinities peak near 1300 (fp16 max 65504) and running the einsums in fp32 still leaves NaN gradients on 28 of 60 steps.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-einsum-001-fp32"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-9uld4CFQGE2ytjhwbJgtuN",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-9uld4CFQGE2ytjhwbJgtuN",
+    "end_evidence": "Modal app ap-9uld4CFQGE2ytjhwbJgtuN stopped 2026-09-27T17:59:55Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-nan-001",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_einsum --run-id diagnose-nan-001 --steps 40 --modes cudnn_nondeterministic,cudnn_off,fp32",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:00:24Z",
+   "finished_at_utc": "2026-09-27T18:05:47Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-nan-001",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:00:24Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 3.2
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Pristine CorrNet, 40 steps: cudnn.deterministic=False still NaN on 27/40 steps; cuDNN disabled: NaN only on the first 5 (scaler calibration), scale settles at 256; full fp32: no NaN. A cuDNN kernel is the source.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-nan-001-cudnn-off",
+    "diagnose-nan-001-fp32"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-QrctkEZt7Ig2ataQ0snJM4",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-QrctkEZt7Ig2ataQ0snJM4",
+    "end_evidence": "Modal app ap-QrctkEZt7Ig2ataQ0snJM4 stopped 2026-09-27T18:05:47Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-nan-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_einsum --run-id diagnose-nan-002 --steps 40 --modes cudnn_off_lstm,cudnn_off_bn,cudnn_off_conv3d",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:06:16Z",
+   "finished_at_utc": "2026-09-27T18:15:17Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-nan-002",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:06:16Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 3.2
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "cuDNN disabled only for the LSTM, only for BatchNorm, or only for Conv3d: NaN persists on 19, 27 and 23 of 40 steps. None of these modules is the source.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-nan-002-lstm"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-DnuMvPSkmVK90yqxav5IVx",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-DnuMvPSkmVK90yqxav5IVx",
+    "end_evidence": "Modal app ap-DnuMvPSkmVK90yqxav5IVx stopped 2026-09-27T18:15:17Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-nan-003",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_einsum --run-id diagnose-nan-003 --steps 40 --modes cudnn_off_ctc",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:15:40Z",
+   "finished_at_utc": "2026-09-27T18:20:52Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-nan-003",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:15:40Z",
+    "max_wall_time_seconds": 3600,
+    "max_gpu_hours": 1.0,
+    "max_cost_chf": 3.2
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "cuDNN disabled only for nn.CTCLoss: NaN only on the first 5 calibration steps, scale settles at 256, loss falls 645 -> ~150 as with cuDNN fully off. Supports the hypothesis; retained as patches/corrnet-ctc-without-cudnn.patch.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-nan-003-ctc"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-7wLjhA3RHnH5pNt97IlxBx",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-7wLjhA3RHnH5pNt97IlxBx",
+    "end_evidence": "Modal app ap-7wLjhA3RHnH5pNt97IlxBx stopped 2026-09-27T18:20:52Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "diagnose-loss-005",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_diagnose_loss --run-id diagnose-loss-005 --steps 200 --variants as_configured",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:21:43Z",
+   "finished_at_utc": "2026-09-27T18:38:31Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "diagnose-loss-005",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:21:43Z",
+    "max_wall_time_seconds": 7200,
+    "max_gpu_hours": 2.0,
+    "max_cost_chf": 6.4
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "CVSign with the CTC patch, 200 steps: 7 non-finite steps, all in the scaler's calibration at the start; scale holds at 512; loss 357 -> 79 with SeqCTC 169 -> 37, ConvCTC 166 -> 39, distillation 0.86 -> 0.09; alpha/beta move by ~1e-3.",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": []
+   },
+   "artifact_ids": [
+    "diagnose-loss-005-cvsign"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory; the diagnose_* entry points were removed from the working tree later and are preserved at commit 2bcb12c (papers/yu-2025-cvsign/modal_app.py)",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-JkJyQqbxHq4udFKqHdZRTr",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-3vxFvOHbWDafqSfkDLYxu2",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-JkJyQqbxHq4udFKqHdZRTr",
+    "end_evidence": "Modal app ap-JkJyQqbxHq4udFKqHdZRTr stopped 2026-09-27T18:38:31Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "preflight-phoenix14t-004",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_preflight --run-id preflight-phoenix14t-004",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:21:56Z",
+   "finished_at_utc": "2026-09-27T18:37:17Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "preflight-phoenix14t-004",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:21:56Z",
+    "max_wall_time_seconds": 14400,
+    "max_gpu_hours": 4.0,
+    "max_cost_chf": 12.9
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "detail": "Representative preflight with every retained patch, through upstream main.py on real clips (200 train incl. the 20 longest, 50 dev, 50 test): epoch 0 (mean training loss 182.6), resume from dev_100.00_epoch0_model.pt into epoch 1 (111.0), then --phase test on the epoch-1 checkpoint (829166881 bytes); every command exited 0 and sclite scored dev and test (100.0 each: after 200 steps the CTC model still emits blanks only, as expected this early). Training 100 steps in 89 s (27451 frames, 3.24 ms/frame); dev evaluation 25 batches in 12-14 s (~0.26 s/clip); peak 44172 MiB by nvidia-smi incl. allocator cache on the 46068 MiB L40S, with the longest clips drawn (upstream pads each batch to its longest clip, capped at 230 frames).",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [
+     "compute-full-run-estimate"
+    ]
+   },
+   "artifact_ids": [
+    "preflight-004-log",
+    "preflight-004-dirty-patch"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (image im-aWcR4UO7PVU4pJ0XbvV4K9 before the CTC patch; im-3vxFvOHbWDafqSfkDLYxu2 with it); glue modal_app.py in the paper directory",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-vFCzYLD3GJfm81ATAPZ1ko",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-3vxFvOHbWDafqSfkDLYxu2",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (NGC base ghcr.io/sign-language-processing/reproduction:latest)",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-vFCzYLD3GJfm81ATAPZ1ko",
+    "end_evidence": "Modal app ap-vFCzYLD3GJfm81ATAPZ1ko stopped 2026-09-27T18:37:17Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "full-phoenix14t-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-cvsign/modal_app.py::launch_train --run-id full-phoenix14t-002 (relaunched once, resuming, after the allocator fix)",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-27T18:51:25Z",
+   "finished_at_utc": "2026-09-29T07:55:52Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "full-phoenix14t-002",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-27T18:51:15Z",
+    "max_wall_time_seconds": 345600,
+    "max_gpu_hours": 70.0,
+    "max_cost_chf": 200.0
+   },
+   "terminal": {
+    "state": "stopped",
+    "reason_code": "no_new_hypothesis",
+    "detail": "CVSign on PHOENIX14-T through upstream CorrNet main.py (configs/cvsign.yaml), one L40S, seed 0, batch 2, AMP. Two Modal calls: call 1 (ap-PG7hCkzAj58L1TNd4leNqJ, fc-01M3J3AD1SCXE1TVWMRPABM06D, container 2026-09-27T19:09Z) hit CUDA OOM three times in fp32 dev evaluation (a single 10.41 GiB CCA affinity allocation with ~11 GiB reserved but unallocated) and resumed each time from the previous epoch checkpoint via Modal retries; it was stopped at 2026-09-28T09:36Z after the complete epoch-22 checkpoint. Call 2 (ap-UMUATyo0fxwEHXrbIeT0Tb, fc-01M3KNZER76EW56MVVS39M65B3) resumed at epoch 23 with PYTORCH_ALLOC_CONF=expandable_segments:True and had no OOM in 40 evaluations. Every resume loaded model, optimizer, scheduler and RNG state; dev.txt holds one entry per epoch 0-62. Stopped after epoch 62 on the assigning user's instruction (gate phoenix14t-rerun-stopped-epoch-63). Dev WER 83.4 (epoch 0), 30.4 (3), 20.6 (15), 18.7 (25, after the first decay), 17.5 (42, 44, 51; lowest), 17.6 (62); mean training loss 82.2 -> 4.99. About 33 min per epoch incl. dev evaluation; 36.8 GPU-hours of container time incl. three recomputed epochs and staging, about USD 118.",
+    "failure_class": "budget_protocol",
+    "retry_decision": "stop",
+    "gate_ids": [
+     "phoenix14t-rerun-stopped-epoch-63"
+    ]
+   },
+   "artifact_ids": [
+    "full-002-dev-history",
+    "full-002-log",
+    "full-002-stdout",
+    "full-002-checkpoint-epoch42"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (all five); dirty diff sha256 521011fc3a0899b21e08593efdd4c63b395614e673b2d159fa04784c7abaea75; image im-3vxFvOHbWDafqSfkDLYxu2",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-PG7hCkzAj58L1TNd4leNqJ; ap-UMUATyo0fxwEHXrbIeT0Tb",
+    "function_call_ids": "fc-01M3J3AD1SCXE1TVWMRPABM06D; fc-01M3KNZER76EW56MVVS39M65B3",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-3vxFvOHbWDafqSfkDLYxu2",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19; call 2 also PYTORCH_ALLOC_CONF=expandable_segments:True",
+    "gpu_hours": 36.8,
+    "cost_usd_estimate": 118,
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-PG7hCkzAj58L1TNd4leNqJ",
+    "end_evidence": "app ap-UMUATyo0fxwEHXrbIeT0Tb stopped 2026-09-29T07:55:52Z; 63 epoch checkpoints dev_*_epoch{0..62}_model.pt (790.8 MiB each)",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  },
+  {
+   "run_id": "eval-phoenix14t-002",
+   "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-cvsign/modal_app.py::launch_evaluate --train-run-id full-phoenix14t-002 --eval-run-id eval-phoenix14t-002",
+   "exit_code": 0,
+   "started_at_utc": "2026-09-29T07:56:19Z",
+   "finished_at_utc": "2026-09-29T08:06:31Z",
+   "recording": {
+    "mode": "contemporaneous",
+    "source_record_sha256": null,
+    "unknown_fields": []
+   },
+   "attempt": {
+    "group_id": "eval-phoenix14t-002",
+    "number": 1,
+    "max_attempts": 1
+   },
+   "stop_policy": {
+    "declared_at_utc": "2026-09-29T07:56:17Z",
+    "max_wall_time_seconds": 14400,
+    "max_gpu_hours": 4.0,
+    "max_cost_chf": 12.9
+   },
+   "terminal": {
+    "state": "succeeded",
+    "reason_code": "completed",
+    "failure_class": null,
+    "retry_decision": "not_needed",
+    "gate_ids": [],
+    "detail": "Selected epoch 42 as the lowest dev WER among epochs 0-62 (17.5, tied with 44 and 51; earliest on ties, rule fixed in the experiment before training). Checkpoint dev_17.50_epoch42_model.pt sha256 efa064bac48410b7497d1a0f3651c067e37647ad65421ec8b7def9948dde5fd7. Upstream --phase test scored dev and test once with ctcdecode beam 10 and sclite: dev 17.5 (519 sentences, 3748 glosses; sub 10.1, del 5.5, ins 1.9), test 19.4 (642, 4264; sub 11.0, del 5.6, ins 2.9). The visual (1D-CNN) branch alone scores dev 17.8 / test 19.4. Test was scored exactly once. Peak 34745 MiB; 220 s upstream time after 238 s staging."
+   },
+   "artifact_ids": [
+    "eval-002-dev-sys",
+    "eval-002-test-sys",
+    "eval-002-dev-ctm",
+    "eval-002-test-ctm"
+   ],
+   "source_revision": "CorrNet 5a361cc + TLP 21be215 tconv.py + patches/ (all five); dirty diff sha256 521011fc3a0899b21e08593efdd4c63b395614e673b2d159fa04784c7abaea75; image im-3vxFvOHbWDafqSfkDLYxu2",
+   "compute": {
+    "platform": "modal",
+    "modal_profile": "repro-sign",
+    "modal_app_id": "ap-zZYjX5jatTBJkGpAVFxduX",
+    "hardware": "one NVIDIA L40S (46068 MiB), driver 580.95.05, cpu=16, memory 64 GiB",
+    "gpu_count": 1,
+    "image_id": "im-3vxFvOHbWDafqSfkDLYxu2",
+    "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19; PYTORCH_ALLOC_CONF=expandable_segments:True",
+    "start_evidence": "https://modal.com/apps/repro-sign/main/ap-zZYjX5jatTBJkGpAVFxduX",
+    "end_evidence": "app stopped 2026-09-29T08:06:31Z",
+    "shared_cache": {
+     "modal_volume": "huggingface-cache",
+     "mount_path": "/cache/huggingface",
+     "environment": {
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_CACHE": "/cache/huggingface/hub"
+     }
+    }
+   }
+  }
+ ],
+ "artifacts": [
+  {
+   "artifact_id": "phoenix14t-eval-dev",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/full/phoenix14t/eval_dev.json",
+   "sha256": "a0606597dfc8994c954203fb4753047f28daccae963b6c688bcaa8131c0a62d0",
+   "size_bytes": 254,
+   "deleted_at_utc": "2026-09-29T11:34:16Z",
+   "deletion_note": "Deleted from the Volume on the assigning user's instruction together with all first-attempt outputs (full/, preflight/, resume-check/, repack-probe/; 66 files, 8.12 GiB). The SHA-256 remains as the record of what the superseded result was computed from."
+  },
+  {
+   "artifact_id": "phoenix14t-eval-test",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/full/phoenix14t/eval_test.json",
+   "sha256": "2451793bd11dbe73584e7175115006c51885c3746c0ccef4aef31bc2d4a07492",
+   "size_bytes": 256,
+   "deleted_at_utc": "2026-09-29T11:34:16Z",
+   "deletion_note": "Deleted from the Volume on the assigning user's instruction together with all first-attempt outputs (full/, preflight/, resume-check/, repack-probe/; 66 files, 8.12 GiB). The SHA-256 remains as the record of what the superseded result was computed from."
+  },
+  {
+   "artifact_id": "phoenix14t-history",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/full/phoenix14t/history.jsonl",
+   "sha256": "d01ebb2080a39c312ce3116a52090eef687a10849c5e74d876301b61b39b445e",
+   "size_bytes": 29081,
+   "deleted_at_utc": "2026-09-29T11:34:16Z",
+   "deletion_note": "Deleted from the Volume on the assigning user's instruction together with all first-attempt outputs (full/, preflight/, resume-check/, repack-probe/; 66 files, 8.12 GiB). The SHA-256 remains as the record of what the superseded result was computed from."
+  },
+  {
+   "artifact_id": "phoenix14t-frames-256-tar",
+   "kind": "dataset_derivative",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/data/phoenix2014-T-fullFrame-256x256px.tar",
+   "sha256": "18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd",
+   "size_bytes": 68060743680
+  },
+  {
+   "artifact_id": "phoenix14t-frames-256-manifest",
+   "kind": "manifest",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/data/phoenix2014-T-fullFrame-256x256px.tar.json",
+   "sha256": "67dbffa1285425f0715b9b3b2198b8f8c0f36c1c39731cfe18eb58c6730b9169",
+   "size_bytes": 1286
+  },
+  {
+   "artifact_id": "corrnet-phoenix14t-checkpoint",
+   "kind": "weights",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/weights/corrnet-phoenix2014-T-resnet18.pt",
+   "sha256": "e0e7e5678b4dec791a1d5681110666f91c88bb6dccf620d383ad8029a7af0162"
+  },
+  {
+   "artifact_id": "corrnet-check-dev-sys",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/corrnet-checkpoint-check-001/epoch_6667_result/out.output-hypothesis-dev.ctm.sys",
+   "sha256": "a6c1c8adc2ff98b5290395f231dc6f72f6c5e9936cf23033619d5455766ce580"
+  },
+  {
+   "artifact_id": "corrnet-check-test-sys",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/corrnet-checkpoint-check-001/epoch_6667_result/out.output-hypothesis-test.ctm.sys",
+   "sha256": "8b9a37755e995b06b5a8f76e3f1fb501cd2b6f6b090540c43b66b76541bdf500"
+  },
+  {
+   "artifact_id": "preflight-003-log",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/preflight-phoenix14t-003/log.txt",
+   "sha256": "e210cfb4545be8ab1a0fef6f88c8742d134f5bdc4890a4d9319c4cd879f3b078",
+   "size_bytes": 3981
+  },
+  {
+   "artifact_id": "preflight-004-log",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/preflight-phoenix14t-004/log.txt",
+   "sha256": "dabd879e5d699d448ce4aafa634a387b160eb92d9425af98d2647059463b7498",
+   "size_bytes": 3979
+  },
+  {
+   "artifact_id": "preflight-004-dirty-patch",
+   "kind": "source_diff",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/preflight-phoenix14t-004/dirty.patch",
+   "sha256": "827ff9f6428dec813a5ae114fe04849d1ae837e66e7aa63f47c9860413a618b2",
+   "size_bytes": 17396
+  },
+  {
+   "artifact_id": "diagnose-loss-002-gates-frozen",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-loss-002/gates_frozen.jsonl",
+   "sha256": "50542704efde9e0407c1fe8f2c543c53d9eedc2264eee88c41ba8e7c6df7a077"
+  },
+  {
+   "artifact_id": "diagnose-loss-003-corrnet",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-loss-003/corrnet_pristine.jsonl",
+   "sha256": "2a4eb576c5cc529cfbb02b8e91ff761fa3813746d1ebdf39d27c609ee60c8a5b"
+  },
+  {
+   "artifact_id": "diagnose-loss-004-corrnet",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-loss-004/corrnet_pristine.jsonl",
+   "sha256": "bc5b51f7d908b8d46382c2768d62f920f815853f2315d7aa0d2e6c1d90b36451"
+  },
+  {
+   "artifact_id": "diagnose-einsum-001-fp32",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-einsum-001/fp32_einsum.jsonl",
+   "sha256": "a6ce9f5ee42dc1eea14cffd8f174326460513cb53e60977cfecaa245adbcb93a"
+  },
+  {
+   "artifact_id": "diagnose-nan-001-cudnn-off",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-nan-001/cudnn_off.jsonl",
+   "sha256": "1b1bdcbaea2e9cc64e804538921afd6e22daf033358ba868c4ed9f1e402cb937"
+  },
+  {
+   "artifact_id": "diagnose-nan-001-fp32",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-nan-001/fp32.jsonl",
+   "sha256": "2062847b66af7a5a529f3019557ef4719f9521a8155aa3e24112b16d54e18ac4"
+  },
+  {
+   "artifact_id": "diagnose-nan-002-lstm",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-nan-002/cudnn_off_lstm.jsonl",
+   "sha256": "d0602075b30b6c5bc418c89db035451a9f5a5dcbd1067241c8bc46a18bc3e925"
+  },
+  {
+   "artifact_id": "diagnose-nan-003-ctc",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-nan-003/cudnn_off_ctc.jsonl",
+   "sha256": "23706caa202a43a404ede384df08f84dfaed2b445e148cc323c28f7a6dedbdcb"
+  },
+  {
+   "artifact_id": "diagnose-loss-005-cvsign",
+   "kind": "diagnostic_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/diagnose-loss-005/as_configured.jsonl",
+   "sha256": "405ad418ca60ad97da48dfeb0431b794979deb8244041246d36f5cac90d94c56"
+  },
+  {
+   "artifact_id": "full-002-dev-history",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/full-phoenix14t-002/dev.txt",
+   "sha256": "23d0a29aec6cd8eabcda6736d5d39e2b70dc08596d17cfdabebc7c1cc0a5f52e",
+   "size_bytes": 3203
+  },
+  {
+   "artifact_id": "full-002-log",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/full-phoenix14t-002/log.txt",
+   "sha256": "050be0258c0f930b2e34f927faa9c9f5fa46fc5aa787e3e43a71cb68f610817f",
+   "size_bytes": 29500
+  },
+  {
+   "artifact_id": "full-002-stdout",
+   "kind": "training_log",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/full-phoenix14t-002/stdout.log",
+   "sha256": "ca50196de7544edc9c6afb99e3d42af031d81bb22245404bb05dc8d1afdd8913",
+   "size_bytes": 15901697
+  },
+  {
+   "artifact_id": "full-002-checkpoint-epoch42",
+   "kind": "checkpoint",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/full-phoenix14t-002/dev_17.50_epoch42_model.pt",
+   "sha256": "efa064bac48410b7497d1a0f3651c067e37647ad65421ec8b7def9948dde5fd7"
+  },
+  {
+   "artifact_id": "eval-002-dev-sys",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/eval-phoenix14t-002/epoch_6667_result/out.output-hypothesis-dev.ctm.sys",
+   "sha256": "9bc1a2d8031e1b697c6ffca1cf472f07dcff6cffc998805846513115a57a1146",
+   "size_bytes": 2260
+  },
+  {
+   "artifact_id": "eval-002-test-sys",
+   "kind": "metrics",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/eval-phoenix14t-002/epoch_6667_result/out.output-hypothesis-test.ctm.sys",
+   "sha256": "fc861e22f49e95b6456406fc0cf285cc3a1f43c97f1010a5617f0881ba5613e5",
+   "size_bytes": 2260
+  },
+  {
+   "artifact_id": "eval-002-dev-ctm",
+   "kind": "predictions",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/eval-phoenix14t-002/out.output-hypothesis-dev.ctm",
+   "sha256": "3294cc25d7cb7fba235ba1ecc1ea4d9353d220b371099149e9fc8d6c239e815b",
+   "size_bytes": 202211
+  },
+  {
+   "artifact_id": "eval-002-test-ctm",
+   "kind": "predictions",
+   "uri": "modal://repro-sign/yu-2025-cvsign-results/runs/eval-phoenix14t-002/out.output-hypothesis-test.ctm",
+   "sha256": "129f1eb6f583de042cb0b186b12431477767524e87156c8df12e1b4efb89a8f3",
+   "size_bytes": 233038
+  }
+ ],
+ "gates": [
+  {
+   "gate_id": "compute-full-run-estimate",
+   "type": "compute",
+   "status": "resolved",
+   "reason": "REPLACED 2026-09-27 for the upstream-based attempt. The first attempt's estimates and its A10 plan no longer apply: the model now peaks at ~44 GB, so it runs on one L40S (48 GB class, like the paper's A6000). Measured in preflight-phoenix14t-004, the PHOENIX14-T full run needs 55.0 L40S GPU-hours (70 x (827354 train frames x 3.24 ms + 519 dev clips x 0.26 s) = 47.0 min/epoch, plus three 24 h windows of ~3.5 min staging and a final test pass), about USD 177 at USD 3.22/h (L40S + cpu=16 + 64 GiB, modal.com/pricing accessed 2026-09-27). That exceeds the 24 GPU-hour threshold in AGENTS.md, so the run needs the Team R discussion and the assigning user's go-ahead before launch. PHOENIX14 would cost about the same again (799006 train frames) and remains out of this launch.",
+   "evidence": [
+    "preflight-phoenix14t-004 (ap-vFCzYLD3GJfm81ATAPZ1ko): 100 train steps / 27451 frames in 89 s; dev 25 batches in 12-14 s; peak 44172 MiB",
+    "prepare-frames-001: PHOENIX14-T train 827354 frames, dev 519 clips",
+    "Paper Implementation Details: 70 epochs, batch size 2, single NVIDIA A6000",
+    "Modal pricing accessed 2026-09-27: L40S $0.000542/s, CPU $0.0000131/core/s, memory $0.00000222/GiB/s",
+    "preflight-phoenix14-002 (Modal ap-oHnO9QTndxRmwu1Oo6PADk): steady_seconds_per_frame 0.0041205345861042774, eval_seconds_per_sequence 1.6378875446759258, peak_gpu_memory_bytes 11581716480, preflight_wall_seconds 1021.24"
+   ],
+   "required_action": "Approve or decline one PHOENIX14-T training run of CVSign on one L40S: launch_train --run-id full-phoenix14t-002 (70 epochs, resumes itself across Modal's 24 h limit with up to 3 retries), then launch_evaluate. Proposed ceilings: 70 GPU-hours, CHF 200, 4 days wall time. Post in #repro-sign-team-r as AGENTS.md requires for >24 GPU-hours.",
+   "resolution": "Approved by the assigning user in chat on 2026-09-27T18:51Z for one PHOENIX14-T run full-phoenix14t-002 plus eval-phoenix14t-002 within 70 GPU-hours, CHF 200 and 4 days wall time. The #repro-sign-team-r post is the assigning user's; the agent has no Slack access. PHOENIX14 stays unlaunched. Launched 2026-09-27T18:51Z: Modal app ap-PG7hCkzAj58L1TNd4leNqJ, function call fc-01M3J3AD1SCXE1TVWMRPABM06D (train, run full-phoenix14t-002); container scheduled 19:09Z after L40S queueing. Epoch 0: mean training loss 82.23, dev WER 83.40; ~32 min/epoch, so ~40 GPU-hours projected. Call 1 hit CUDA OOM three times during fp32 dev evaluation (22:31Z, 02:57Z, 05:43Z; each a 10.41 GiB CCA affinity allocation with ~11 GiB reserved-but-unallocated, i.e. fragmentation) and resumed each time from the last epoch checkpoint via Modal retries, using all 3. It was stopped at 2026-09-28T09:36Z right after the complete epoch-22 checkpoint (dev 20.90) and relaunched with PYTORCH_ALLOC_CONF=expandable_segments:True (allocator only, no change to computation) as app ap-UMUATyo0fxwEHXrbIeT0Tb, call fc-01M3KNZER76EW56MVVS39M65B3, resuming at epoch 23 (09:41Z). Each OOM cost ~35 min of recomputed epoch. Measured outcome: 36.8 GPU-hours, ~USD 118, for 63 epochs (run full-phoenix14t-002)."
+  },
+  {
+   "gate_id": "csl-daily-license",
+   "type": "data",
+   "status": "resolved",
+   "reason": "CSL-Daily is released only after a Dataset Release Agreement signed by a full-time staff member is emailed to the dataset authors. This reproduction could not establish from the repository that such an agreement covers this project, nor that it permits processing on third-party cloud infrastructure; the copy already present in the shared Modal Volume carried no provenance record anywhere in papers/*/reproduction.json. Resolved 2026-09-05 by the assigning user, who stated that the project is permitted to use the data for research purposes. That determination is recorded as a project-member attestation, not as an independently verified agreement document.",
+   "evidence": [
+    "https://ustc-slr.github.io/datasets/ (CSL dataset release-agreement process, accessed 2026-09-05)",
+    "Modal Volume 'datasets' already contains csl-daily/videos (20654 mp4 files) and csl-daily/sentence_label (csl2020ct_v2.pkl, split_1.txt with 18401/1077/1176 train/dev/test rows) as of 2026-09-05, with no accompanying license/provenance record in any papers/*/reproduction.json",
+    "Verified 2026-09-05: no file in this repository outside papers/yu-2025-cvsign references CSL-Daily (grep over papers/*/reproduction.json and all *.md, *.sh, *.py), so the Volume copy had no recorded provenance before this determination",
+    "Assigning user, chat, 2026-09-05: stated that the project is allowed to use the data for research purposes"
+   ],
+   "required_action": "Resolved: research use is authorized by the assigning user. Two items remain open for the record and should be filled in before human review, neither of which blocks work. (1) A citable reference for the permission -- the executed agreement, a ticket, or a Team S record -- so a reviewer can trace it beyond a chat statement. (2) Explicit confirmation that the permission covers processing on Modal, a third-party cloud platform. The user's statement addressed research use; processing location was not separately named. Proceeding on the reading that it covers this study's normal Modal-based workflow, which is how every other dataset in this repository is processed. Correct this entry if that reading is wrong."
+  },
+  {
+   "gate_id": "encoder-frame-scheduling",
+   "type": "protocol",
+   "status": "resolved",
+   "reason": "Run scheduling-audit-001 changed how scripts/model.py schedules frames through the visual encoder, before any full run. The change is behaviour-affecting and therefore gated: the committed code's training-mode output depended on frame_chunk_size, a parameter its own docstring described as a pure memory knob, because chunk boundaries redefined the BatchNorm batch of every ResNet stage and of CVA's Conv_Block; and the encoder computed the zero frames that batch size 2 forces on unequal-length clips, letting them into those same normalization statistics. The fix removes both dependences rather than introducing a new choice: ResNet stages run once over all real frames of the batch, CVA runs unchunked per clip, CCA chunks only its affinity matrix (it has no normalization layer, so this is exact at any chunk size), and padded timesteps are not computed. It is compatible with the paper's own equations and makes the implementation less dependent on unstated choices than before.",
+   "evidence": [
+    "Paper PDF sha256 d9f9946bbae293bf26e998d5b34eaf6628d5566738bf8cd6dfc47f68b69a228f, Eq. 1: sliding window with stride=1 over X_in in R^{Cin x T x H x W}, i.e. one window per frame of the whole video",
+    "Same PDF, Eq. 8: Conv_Block is 'three CNNs with a kernel size of 1 x 3 x 3' (temporal kernel 1); Eqs. 6 and 9 use Conv_1x1x1 -- every operation downstream of the window is temporally pointwise, so computing a sub-range of output positions is exactly equivalent",
+    "Same PDF, Fig. 2 and Section II: 'Visual Encoder (2D CNN)' -- the backbone is applied per frame, so one stage call over all frames is exact",
+    "Same PDF, Section II: a video is V = {v_t} with exactly T frames; no padding frame is defined anywhere, and Implementation Details states only 'we set the batch size as 2'",
+    "Measured on the committed code: frame_chunk_size 4 vs 16 changed the training-mode encoder output by 1.47 absolute on a feature scale of 107; the fixed code is bit-identical (0.0) across the same two values in both eval and training mode",
+    "Measured eval-mode equivalence between committed and fixed code: 6.3e-4 max absolute on feature scale 107 (6e-6 relative, float accumulation order only)",
+    "BatchNorm inside CVA's Conv_Block remains an inferred detail: the paper says only 'three CNNs with a kernel size of 1 x 3 x 3' and does not mention normalization. It is what couples CVA's output to frame grouping, which is why CVA is now evaluated over a whole clip in one call."
+   ],
+   "required_action": "Resolved 2026-09-05 by the assigning user, who reviewed the defect and the paper-compatibility analysis in chat and directed that the fix be applied. No full run had been launched, so no committed result is invalidated. A reviewer re-opening this gate should note that the alternative reading -- keeping the committed schedule -- would leave training results dependent on a memory parameter, which the paper's equations do not support."
+  },
+  {
+   "gate_id": "csl-daily-frame-source",
+   "type": "data",
+   "status": "resolved",
+   "reason": "The CSL-Daily copy on the shared Volume supplies videos/<name>.mp4, but sentence_label/README.txt documents the official distribution as extracted frames (csl-daily-frames-512x512.tar.gz) and defines the annotation field `length` as 'the number of frames in the video'. Measured on 2026-09-05, 20630 of 20653 clips disagree: the MP4s hold 37 percent more frames in aggregate than the annotations declare (train 2997359 vs 2185273), and the per-clip excess is highly non-uniform (ratios from roughly 1.3x to 6.6x in the sampled clips), which is the signature of untrimmed recordings measured against sentence-trimmed frames rather than a uniform frame-rate difference. Training on this copy would therefore feed a different temporal extent per clip than the corpus CVSign and its baselines report on, which is a fidelity problem, not only a cost one. It also changes the compute estimate materially: 2997359 train frames per epoch against 2185273.",
+   "evidence": [
+    "/datasets/csl-daily/sentence_label/README.txt, section 3: 'length: the number of frames in the video'; section 1 documents the release as csl-daily-frames-512x512.tar.gz split archives",
+    "dataset_stats --dataset csl-daily (Modal app ap-VrlLhTk4RdfJ9NXMhfJxMq): train 18400 clips / 2997359 frames measured by ffprobe packet count, mean 162.90, min 24, max 898; dev 1077 / 177733; test 1176 / 203358; declared_frame_mismatches 20630",
+    "inspect_csl_daily declared_frames_per_split: train 2185273, dev 131931, test 150248",
+    "Mismatch sample: S000000_P0000_T00 declared 52 / actual 168; S000000_P0004_T00 declared 47 / actual 108; S000001_P0000_T00 declared 37 / actual 202; S000001_P0004_T00 declared 33 / actual 217",
+    "The equivalent check passes elsewhere: PHOENIX14-T's measured train frame total (827354) matches the figure published for that corpus, so the counting method is not at fault"
+   ],
+   "required_action": "A human decision on which artifact to train from, coordinated with Team S if acquisition is needed. Either (a) obtain the official csl-daily-frames-512x512 release, which is the artifact the annotations describe and that CVSign's baselines use, or (b) establish the provenance of the MP4s already on the Volume and whether they are the sentence-trimmed videos, in which case the annotation's `length` field needs a different explanation. Until then no CSL-Daily training should start, and no CSL-Daily cost figure should be treated as settled: the two readings differ by 37 percent in frames per epoch.",
+   "resolution": "Closed by scope, not answered: the assigning user deferred Table II (CSL-Daily) on 2026-09-14 and limited the reproduction to PHOENIX14-T, so no CSL-Daily training is planned and no decision on the frame source is needed for this reproduction. The data question itself is unresolved; any future CSL-Daily run must reopen this gate before training."
+  },
+  {
+   "gate_id": "phoenix14t-training-truncated",
+   "type": "protocol",
+   "status": "resolved",
+   "reason": "The PHOENIX14-T training run was stopped at 53 of the paper's 70 epochs, by the assigning user on 2026-09-17, who asked to stop training and write up the report so far. This is a deviation from the stated recipe and is recorded as one rather than presented as a completed run. What limits its effect on the reported numbers: checkpoint selection is best-Dev-WER, the best checkpoint is epoch 26, and it was therefore chosen from inside the completed range with 27 further epochs run after it and none improving on it. Both learning-rate decays in the paper's schedule (epochs 25 and 40) had already been applied, leaving the final epochs at 4e-6, a 25x reduction from the initial rate; dev WER over epochs 27-52 stayed in the 31.6-33.0 band against the 31.48 of epoch 26. Seventeen more epochs at that learning rate could still in principle have found a new best, so the truncation cannot be called immaterial, only unlikely to have changed the reported value, and nowhere near enough to close a 14-point gap. A reviewer weighing the gap between 31.48 and the published 17.4 should weigh the many other candidate causes recorded under Guesses and deviations well ahead of this one.",
+   "evidence": [
+    "Assigning user, chat, 2026-09-17: asked to stop training and write up the report so far",
+    "history.jsonl (sha256 d01ebb2080a39c312ce3116a52090eef687a10849c5e74d876301b61b39b445e): 53 contiguous epoch records, 0-52, best dev_wer 31.4835 at epoch 26",
+    "eval_dev.json and eval_test.json both report checkpoint_epoch 26",
+    "Paper PDF sha256 d9f9946bbae293bf26e998d5b34eaf6628d5566738bf8cd6dfc47f68b69a228f, Implementation Details: 70 epochs, learning rate reduced by 80 percent at epochs 25 and 40"
+   ],
+   "required_action": "None outstanding. Recorded so that the reported PHOENIX14-T numbers are read as coming from a 53/70-epoch run. Completing epochs 53-69 would cost about 15 further GPU-hours on one A10 and can be resumed at any time from /outputs/full/phoenix14t/checkpoint.pt, since resume was verified end to end in resume-check-002."
+  },
+  {
+   "gate_id": "phoenix14t-rerun-stopped-epoch-63",
+   "type": "protocol",
+   "status": "resolved",
+   "reason": "full-phoenix14t-002 was stopped after 63 of the paper's 70 epochs (epochs 0-62 complete, epoch 63 in progress) on the assigning user's instruction on 2026-09-29T07:55Z, given because training appeared to have converged. This is a deviation from the stated 70-epoch recipe. What limits its effect: both learning-rate decays (epochs 25 and 40) had been applied, so epochs 40-69 all run at the final rate 4e-6; dev WER had stayed within 17.5-18.2 from epoch 35 to 62; and the selected checkpoint (epoch 42) lies well inside the completed range. Epochs 63-69 could still have produced a lower dev WER, which is not known.",
+   "evidence": [
+    "dev.txt sha256 23d0a29aec6cd8eabcda6736d5d39e2b70dc08596d17cfdabebc7c1cc0a5f52e: per-epoch dev WER {0: 83.4, 1: 46.4, 2: 37.8, 3: 30.4, 4: 28.1, 5: 26.7, 6: 25.8, 7: 24.4, 8: 22.9, 9: 22.6, 10: 21.9, 11: 21.7, 12: 21.3, 13: 21.3, 14: 21.3, 15: 20.6, 16: 20.7, 17: 20.8, 18: 20.9, 19: 19.8, 20: 20.3, 21: 20.9, 22: 20.9, 23: 20.1, 24: 20.0, 25: 18.7, 26: 18.2, 27: 18.1, 28: 17.8, 29: 18.1, 30: 18.0, 31: 18.1, 32: 18.3, 33: 18.0, 34: 18.0, 35: 17.8, 36: 18.1, 37: 17.8, 38: 18.0, 39: 17.6, 40: 17.8, 41: 17.8, 42: 17.5, 43: 17.7, 44: 17.5, 45: 17.8, 46: 17.6, 47: 18.0, 48: 17.8, 49: 17.8, 50: 17.7, 51: 17.5, 52: 17.9, 53: 17.8, 54: 17.6, 55: 17.7, 56: 17.8, 57: 17.6, 58: 17.9, 59: 18.2, 60: 17.7, 61: 17.6, 62: 17.6}"
+   ],
+   "required_action": "None; recorded as a deviation.",
+   "resolution": "Stopped as instructed; evaluation used the lowest-dev-WER epoch among the 63 completed."
+  }
+ ],
+ "patches": [
+  {
+   "patch_id": "ctcdecode-cxx17",
+   "path": "patches/ctcdecode-cxx17.patch",
+   "sha256": "783d81207ea1b14650388e59b380196e95f2dccf862d26dc82fb34ec0e455335",
+   "applies_to": "ctcdecode c90ad94",
+   "behavior_changing": false,
+   "why": "Build fix: C++17 required by PyTorch headers; five KenLM dynamic exception specifications removed."
+  },
+  {
+   "patch_id": "corrnet-ctc-without-cudnn",
+   "path": "patches/corrnet-ctc-without-cudnn.patch",
+   "sha256": "217f4eea7fd3d336e4f3efd0b17194c20a693d1607b9fc68eb0cf4daf25f47ef",
+   "applies_to": "CorrNet 5a361cc",
+   "behavior_changing": false,
+   "why": "cuDNN's CTC kernel returns NaN gradients in this stack (diagnose-nan-003); native CTC kernel, same loss."
+  },
+  {
+   "patch_id": "cvsign-1-tlp-decoder-losses",
+   "path": "patches/cvsign-1-tlp-decoder-losses.patch",
+   "sha256": "d509f20d195baa8d7f4f8698963aa467c518206b2ca26a2f74720691c4ac46d6",
+   "applies_to": "CorrNet 5a361cc + TLP tconv.py",
+   "behavior_changing": false,
+   "why": "Forwards TLP's lift-pool regularisers into the loss, as TLP's own criterion does."
+  },
+  {
+   "patch_id": "cvsign-2-cca-cva-modules",
+   "path": "patches/cvsign-2-cca-cva-modules.patch",
+   "sha256": "b06e9582d9054418a44a87d267138062bf45d391a851c8a1c9bd79949e7c0585",
+   "applies_to": "CorrNet 5a361cc",
+   "behavior_changing": true,
+   "why": "The paper's CCA/CVA (the reimplemented contribution) replace CorrNet's correlation; ResNet34 ImageNet loading."
+  },
+  {
+   "patch_id": "cvsign-3-config",
+   "path": "patches/cvsign-3-config.patch",
+   "sha256": "f9ee3e5803dd9fba255ea8f1038860b9a0accd5431fc1e225cab239d7536e7d4",
+   "applies_to": "CorrNet 5a361cc",
+   "behavior_changing": true,
+   "why": "configs/cvsign.yaml: the paper's ResNet34, 70 epochs, decay at 25/40, PHOENIX14-T."
+  }
+ ],
+ "environment": {
+  "dockerfile_sha256": "4a1e8efd1e3407a989b875d37996c72e39b057f3dffafb4c5601c6fa5a073d39",
+  "modal_app_sha256": "ee4463b3ca3d14eb560b267156c199fed79f2175d14aaf43545604fb6cc77dbb",
+  "base_image": "ghcr.io/sign-language-processing/reproduction:latest (NGC PyTorch 26.02: PyTorch 2.11.0a0+eb65b36914, CUDA 13.1, cuDNN 9.19, Python 3.12.3, NumPy 2.1.0)",
+  "pins": "SCTK 9688a26; ctcdecode c90ad94 + patch; opencv-python-headless 4.10.0.84; scipy 1.13.1; gdown 5.2.0; CorrNet 5a361cc; TLP 21be215",
+  "built_images": {
+   "before CTC patch": "im-aWcR4UO7PVU4pJ0XbvV4K9",
+   "current": "im-3vxFvOHbWDafqSfkDLYxu2"
+  },
+  "gpu": "Modal L40S (48 GB class, the memory of the paper's single A6000)"
+ }
+}

@@ -1,0 +1,34 @@
+CVSign 1/3: pass TLP's lift-pooling regularisers through to the loss
+
+Why: CVSign adopts "the Temporal Decoder from TLP" (Sec. III, Implementation
+Details). The Dockerfile replaces CorrNet's modules/tconv.py with TLP's pinned
+tconv.py, whose Temporal_LiftPool returns the predictor/updater regularisers
+loss_LiftPool_u/p. CorrNet's SLRModel drops them; this forwards them and adds
+the Cu/Cp loss terms exactly as TLP's slr_network.py criterion_calculation
+does (weights set in configs/cvsign.yaml, from TLP's configs/baseline.yaml).
+Applies to: CorrNet @ 5a361cc709ae8f697f4c9e23760e64c2daa8f744 after TLP tconv.py copy
+---
+diff --git a/slr_network.py b/slr_network.py
+index 9d49a0d..6d71a8d 100644
+--- a/slr_network.py
++++ b/slr_network.py
+@@ -109,6 +109,8 @@ class SLRModel(nn.Module):
+             "sequence_logits": outputs,
+             "conv_sents": conv_pred,
+             "recognized_sents": pred,
++            "loss_LiftPool_u": conv1d_outputs['loss_LiftPool_u'],
++            "loss_LiftPool_p": conv1d_outputs['loss_LiftPool_p'],
+         }
+ 
+     def criterion_calculation(self, ret_dict, label, label_lgt):
+@@ -126,6 +128,10 @@ class SLRModel(nn.Module):
+                 loss += weight * self.loss['distillation'](ret_dict["conv_logits"],
+                                                            ret_dict["sequence_logits"].detach(),
+                                                            use_blank=False)
++            elif k == 'Cu':
++                loss += weight * ret_dict["loss_LiftPool_u"]
++            elif k == 'Cp':
++                loss += weight * ret_dict["loss_LiftPool_p"]
+         return loss
+ 
+     def criterion_init(self):
