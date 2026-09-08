@@ -3223,6 +3223,149 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "cache-build-trial-001",
+      "purpose": "Build a 120-clip trial cache to exercise the cache-writing path and verify fidelity before committing to the multi-hour full build.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache --limit 40",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T18:35:00Z",
+      "finished_at_utc": "2026-09-08T18:44:04Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-zdLUvn6Qcy8Dio1ScFY7Fo",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-zdLUvn6Qcy8Dio1ScFY7Fo",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Wrote 40 utterances per split, 120 total, 0.17 GiB, in 543.6 s with 16 workers -- about 4.49 s per clip wall. Fidelity verified against the PNG path through the real preprocessing with the deterministic centre crop: frame counts match exactly and the maximum absolute pixel delta is 0.2196 in [-1, 1] units, about 28 levels of 255.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The trial caught a real defect before the full build. np.savez appends '.npz' unless the name already ends in it, so writing to '<name>.npz.partial' produced '<name>.npz.partial.npz' and the atomic rename targeted a nonexistent path: every entry failed with FileNotFoundError. Had this gone straight to the full 6841-clip build it would have read every PNG directory off the Volume, hours of I/O, and written nothing. Fixed by carrying the marker in the stem as '<name>.partial-<pid>.npz'.",
+        "The same fix removed a latent race: the original staging name was shared across workers, so two threads building the same clip could clobber each other's partial file. The pid makes it unique.",
+        "The 28-level maximum pixel delta is normal JPEG q90 behaviour, not a defect: ringing concentrates at high-contrast edges while the mean stays near 1 level, which cache-probe-phoenix14-001 measured at 1.028. The fidelity report now emits both mean and max in pixel levels so the claim is not resting on the max alone.",
+        "Revised full-build estimate from this trial, which is more trustworthy than the earlier 6-clip probe whose Volume cache was warm: about 8.5 wall-hours and $6.42 for PHOENIX14 at 16 cores, and about 10.3 hours and $7.75 for PHOENIX14-T. Cache size is 1.53 MB per clip, so about 9.7 GiB and 11.8 GiB respectively."
+      ],
+      "measurements": {
+        "clips_written": 120,
+        "gib_written": 0.17,
+        "wall_seconds": 543.6,
+        "workers": 16,
+        "seconds_per_clip": 4.49,
+        "bytes_per_clip": 1528703,
+        "fidelity_frame_counts_match": true,
+        "fidelity_max_abs_pixel_delta_scaled": 0.2196,
+        "fidelity_max_abs_pixel_levels": 28.0
+      },
+      "artifact_ids": [
+        "cache-build-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-trial",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T18:33:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": null,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Trial cache written and fidelity verified after fixing the staging-name defect that attempt 1 exposed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "cache-build-trial-000",
+      "purpose": "First trial cache build, which exposed the staging-filename defect.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache --limit 60",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T18:20:00Z",
+      "finished_at_utc": "2026-09-08T18:30:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-unrecorded",
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Every cache write raised FileNotFoundError renaming '<name>.npz.partial' to '<name>.npz', because np.savez had written '<name>.npz.partial.npz'. No cache entries were produced.",
+      "hypothesis_supported": false,
+      "findings": [
+        "Deterministic code defect in the staging filename, fixed in cache-build-trial-001. Retained because it changed the implementation and justifies running a trial before the full build."
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-trial",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T18:18:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": null,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "np.savez appends '.npz' unless the name already ends in it, so the atomic rename targeted a path that did not exist.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "cache-build-trial-001",
+        "gate_ids": []
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -3273,6 +3416,14 @@
       "sha256": "52508ae812f84302c4863a84f65324fc83bd720186a6aad8a6126745779f40f6",
       "size_bytes": 2623,
       "description": "TLP preflight: separated load and GPU timings, per-step loss components (ctc, distill, lift), checkpoint verification, parsed WER, and the measured estimate."
+    },
+    {
+      "artifact_id": "cache-build-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/cache-build/phoenix14-cache.json",
+      "sha256": "82a8d8e0907efecd44c5982390ddcaa011b8296af8be67491c022bb4a22e0a5c",
+      "size_bytes": 775,
+      "description": "Trial cache build: per-split counts, sizes, timings, and the fidelity check."
     }
   ],
   "gates": [

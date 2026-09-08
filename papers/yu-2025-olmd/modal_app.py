@@ -644,7 +644,13 @@ def build_cache(
     check_samples = data.LOADERS[dataset](root, check_split)
     if limit:
         check_samples = check_samples[:limit]
-    fidelity = {"checked": 0, "frame_counts_match": True, "max_abs_pixel_delta": 0.0}
+    fidelity = {
+        "checked": 0,
+        "frame_counts_match": True,
+        "max_abs_pixel_delta": 0.0,
+        "mean_abs_pixel_delta": 0.0,
+    }
+    mean_deltas = []
     for sample in check_samples[:3]:
         from_png = data.preprocess(
             data.load_frames(root, sample), train=False, already_resized=False
@@ -658,12 +664,24 @@ def build_cache(
         if from_png.shape != from_cache.shape:
             fidelity["frame_counts_match"] = False
             continue
-        delta = float(np.abs(from_png - from_cache).max())
-        fidelity["max_abs_pixel_delta"] = max(fidelity["max_abs_pixel_delta"], delta)
+        difference = np.abs(from_png - from_cache)
+        fidelity["max_abs_pixel_delta"] = max(
+            fidelity["max_abs_pixel_delta"], float(difference.max())
+        )
+        mean_deltas.append(float(difference.mean()))
     fidelity["max_abs_pixel_delta"] = round(fidelity["max_abs_pixel_delta"], 4)
+    fidelity["mean_abs_pixel_delta"] = round(
+        float(np.mean(mean_deltas)) if mean_deltas else 0.0, 6
+    )
+    fidelity["pixel_levels"] = {
+        "max": round(fidelity["max_abs_pixel_delta"] / (2 / 255), 1),
+        "mean": round(fidelity["mean_abs_pixel_delta"] / (2 / 255), 3),
+    }
     fidelity["note"] = (
         "Deterministic centre-crop path on both sides, so any difference is JPEG q90 "
-        "loss alone. Inputs are scaled to [-1, 1], so 1 pixel level is about 0.0078."
+        "loss alone. Inputs are scaled to [-1, 1], so 1 pixel level is about 0.0078. "
+        "A max of roughly 20-30 levels with a mean near 1 is normal q90 behaviour: "
+        "ringing concentrates at high-contrast edges while most pixels are near-exact."
     )
 
     total_bytes = sum(entry["bytes"] for entry in report.values())
@@ -684,7 +702,9 @@ def build_cache(
 
 
 @app.function(image=image, volumes=VOLUMES, gpu="A100-40GB", cpu=16.0, timeout=60 * 60)
-def benchmark_loader(dataset: str = "phoenix14", steps: int = 40, workers: int = 8) -> dict:
+def benchmark_loader(
+    dataset: str = "phoenix14", steps: int = 40, workers: int = 8, limit: int = 0
+) -> dict:
     """Measure whether the prefetching DataLoader actually hides loading latency.
 
     preflight-phoenix14-002 measured a 0.422 s GPU step against 5.326 s of
@@ -719,6 +739,10 @@ def benchmark_loader(dataset: str = "phoenix14", steps: int = 40, workers: int =
     inner = data.OLMDDataset(
         root, dataset, "train", vocabulary, cache_root=cache_root, train=True, seed=0
     )
+    if limit:
+        # Restrict to a cached prefix so the benchmark measures the cached path
+        # rather than silently falling back to PNG reads for uncached clips.
+        inner.samples = inner.samples[:limit]
     cached = sum(
         1
         for sample in inner.samples[:200]
@@ -744,9 +768,19 @@ def benchmark_loader(dataset: str = "phoenix14", steps: int = 40, workers: int =
 
     wall_times, gpu_times = [], []
     iterator = iter(loader)
+    epochs_consumed = 0
     for index in range(steps):
         step_started = time.time()
-        video, lengths, targets, target_lengths, _ = next(iterator)
+        try:
+            batch = next(iterator)
+        except StopIteration:
+            # A short cached subset holds fewer batches than the requested step
+            # count, so cycle epochs rather than crashing. Note this reuses the
+            # same clips; on the full dataset each step sees fresh ones.
+            epochs_consumed += 1
+            iterator = iter(loader)
+            batch = next(iterator)
+        video, lengths, targets, target_lengths, _ = batch
         video = video.to("cuda", non_blocking=True)
 
         torch.cuda.synchronize()
@@ -774,6 +808,8 @@ def benchmark_loader(dataset: str = "phoenix14", steps: int = 40, workers: int =
         "dataset": dataset,
         "workers": workers,
         "steps": steps,
+        "epochs_consumed": epochs_consumed,
+        "dataset_batches": len(inner) // 2,
         "cache_hits_in_first_200": cached,
         "seconds_per_step_wall_median": round(wall, 4),
         "seconds_per_step_gpu_median": round(gpu, 4),
@@ -822,7 +858,7 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     elif action == "build-cache":
         result = build_cache.remote(limit=limit)
     elif action == "benchmark-loader":
-        result = benchmark_loader.remote()
+        result = benchmark_loader.remote(limit=limit)
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))
