@@ -2750,9 +2750,9 @@
       "kind": "preflight",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action preflight",
       "working_directory": "/gpfs/home/mgranero/code/repro-sign",
-      "exit_code": null,
+      "exit_code": 0,
       "started_at_utc": "2026-09-08T16:30:00Z",
-      "finished_at_utc": null,
+      "finished_at_utc": "2026-09-08T16:51:36Z",
       "config": {
         "dataset": "phoenix14",
         "context": 9,
@@ -2811,14 +2811,35 @@
         "max_cost_chf": 8.0
       },
       "terminal": {
-        "state": "stopped",
-        "reason_code": "invalid_run",
-        "detail": "PLACEHOLDER: run in flight at the time this entry was written; the terminal classification is replaced with the observed outcome when it reaches a terminal state.",
-        "failure_class": "invalid_run",
-        "retry_decision": "stop",
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The preflight reached evaluation and emitted a parsed metric with exit code 0. All required elements -- real data, intended weights, optimizer steps, checkpoint save and verified reload, real evaluation on a subset -- completed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [
+        "preflight-json",
+        "preflight-checkpoint"
+      ],
+      "observed": "Every AGENTS.md preflight requirement was met on PHOENIX14. Real PNG frames loaded through the real loader and preprocessing; ImageNet-pretrained ResNet34 weights loaded; 12 real optimizer steps ran with Adam lr=0.001 wd=0.001 at batch size 2; a 703 MiB checkpoint was saved and reloaded with every tensor verified equal (reload_verified true, no mismatched tensors); the real evaluation code ran on 8 dev utterances and emitted a parsed corpus WER; the process exited 0. Training loss fell from 69.186 to 34.280 over 12 steps, a 50.5% reduction, so optimization is working. Peak memory 23.32 GiB on an A100-SXM4-40GB. Wall time 1296.2 s.",
+      "findings": [
+        "WER was 100.0 with 94 deletions and zero insertions or substitutions, meaning the model emitted empty hypotheses for all 8 clips. This is the expected CTC early-training regime after only 12 steps from initialization -- blank dominates before alignments sharpen -- and is consistent with the falling loss. It is NOT a reproduction result and must never be compared with the paper's 17.1/17.2; it demonstrates only that the metric path executes end to end.",
+        "The in-function compute estimate of 21.4 GPU-hours for 70 epochs is WRONG and must not be used. It counted training steps only, and its seconds_per_step timer wrapped just the optimizer step, excluding frame loading. The evaluation loop separately measured 50.4 s per clip, about 260x the per-clip training compute; since inference cannot cost more than training, that figure is serial PNG I/O from a network Volume with no parallel loading, not computation. End to end the run averaged roughly 40 s per clip across 32 clips.",
+        "Naively extrapolating the measured evaluation cost with a best-dev checkpoint rule (a dev pass every epoch) gives roughly 560 GPU-hours for PHOENIX14 and 1100 for both Table 1 datasets. Those figures are dominated by the I/O defect rather than by the protocol, so run throughput-phoenix14-001 measures loading and GPU cost separately before any compute gate is opened. Quoting either 21.4 or 1100 as the requirement would be misleading."
+      ],
+      "hypothesis_supported": true,
+      "measurements": {
+        "seconds_per_optimizer_step_median": 0.388,
+        "seconds_per_optimizer_step_excludes": "frame loading and preprocessing",
+        "evaluation_seconds_per_clip": 50.42,
+        "peak_memory_gib": 23.32,
+        "wall_seconds": 1296.2,
+        "loss_first": 69.1858,
+        "loss_last": 34.2804,
+        "steps_per_epoch_batch2": 2836,
+        "checkpoint_size_bytes": 736918259
+      }
     }
   ],
   "artifacts": [
@@ -2829,6 +2850,22 @@
       "sha256": "ee7df43504a078cb22a7d1cebe5752c873a90b7be0ef92209799779b26310621",
       "description": "Parameter counts, logit shapes, output lengths, loss components, gradient norm and peak memory from run gpu-smoke-003.",
       "size_bytes": 897
+    },
+    {
+      "artifact_id": "preflight-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/preflight/phoenix14-preflight.json",
+      "sha256": "26d3c7d53dc4e9d3011e9f126da68fa6741827a50f369f7d1d544ead749c67fb",
+      "size_bytes": 1315,
+      "description": "Preflight measurements: loss trajectory, throughput, checkpoint verification, parsed WER with error breakdown, and the (superseded) in-function estimate."
+    },
+    {
+      "artifact_id": "preflight-checkpoint",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/preflight/phoenix14-preflight.pt",
+      "sha256": "4b8e7a67bbc2fb339ba14600fb95ef2bdee5ec9b252e5592ea2b3c94b2cfcf1d",
+      "size_bytes": 736918259,
+      "description": "12-step preflight checkpoint, saved and reloaded with every tensor verified equal. Disposable evidence of checkpoint/resume, not a trained model."
     }
   ],
   "gates": [],

@@ -342,8 +342,107 @@ def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int
     return result
 
 
+@app.function(image=image, volumes=VOLUMES, gpu="A100-40GB", timeout=60 * 60)
+def throughput(dataset: str = "phoenix14", clips: int = 24, workers: int = 8) -> dict:
+    """Separate data-loading cost from GPU cost, which the preflight conflated.
+
+    preflight-phoenix14-001 timed only the optimizer step, so its
+    seconds_per_step excluded frame loading; its evaluation loop then showed
+    50.4 s per clip, roughly 260x the per-clip training compute. Inference
+    cannot cost more than training, so that figure is serial PNG I/O from a
+    network Volume, not computation. This measures the two separately and tests
+    whether parallel loading removes the bottleneck.
+    """
+    import json
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+
+    import numpy as np
+    import torch
+
+    import data
+    import olmd
+
+    root = pathlib.Path("/datasets")
+    samples = data.LOADERS[dataset](root, "dev")[:clips]
+    rng = np.random.default_rng(0)
+
+    def fetch(sample):
+        frames = data.load_frames(root, sample)
+        return data.preprocess(frames, False), len(frames)
+
+    # Serial loading, as the preflight did.
+    serial_started = time.time()
+    serial = [fetch(sample) for sample in samples[: min(4, clips)]]
+    serial_seconds = (time.time() - serial_started) / len(serial)
+    frame_counts = [count for _, count in serial]
+
+    # Parallel loading with a thread pool: PNG decode releases the GIL and the
+    # bottleneck is network I/O, so threads should help substantially.
+    parallel_started = time.time()
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        loaded = list(pool.map(fetch, samples))
+    parallel_seconds = (time.time() - parallel_started) / len(loaded)
+
+    # Pure GPU cost, data already resident.
+    vocabulary = data.build_vocabulary(root, dataset)
+    model = olmd.OLMD(num_classes=len(vocabulary) + 1, context=9).to("cuda")
+    model.eval()
+    gpu_times = []
+    with torch.no_grad():
+        for clip, count in loaded[:8]:
+            video = torch.from_numpy(clip).unsqueeze(0).permute(0, 2, 1, 3, 4).to("cuda")
+            lengths = torch.tensor([clip.shape[0]], dtype=torch.long)
+            torch.cuda.synchronize()
+            started = time.time()
+            model(video, lengths)
+            torch.cuda.synchronize()
+            gpu_times.append(time.time() - started)
+
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "clips_measured": len(loaded),
+        "frames_per_clip": {
+            "min": int(min(frame_counts)),
+            "max": int(max(frame_counts)),
+            "mean": round(float(np.mean(frame_counts)), 1),
+        },
+        "load_seconds_per_clip_serial": round(serial_seconds, 2),
+        "load_seconds_per_clip_parallel": round(parallel_seconds, 2),
+        "parallel_workers": workers,
+        "speedup": round(serial_seconds / parallel_seconds, 2) if parallel_seconds else None,
+        "gpu_inference_seconds_per_clip": round(float(np.median(gpu_times)), 4),
+        "gpu": str(torch.cuda.get_device_name(0)),
+    }
+    output = pathlib.Path("/outputs/throughput")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / f"{dataset}-throughput.json").write_text(
+        json.dumps(result, indent=2), encoding="utf-8"
+    )
+    results.commit()
+    return result
+
+
+@app.function(image=image, volumes=VOLUMES, timeout=60 * 20)
+def hash_output(relative_path: str) -> dict:
+    """SHA-256 a file on the results Volume without downloading it."""
+    import hashlib
+
+    target = pathlib.Path("/outputs") / relative_path
+    digest = hashlib.sha256()
+    with target.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return {
+        "path": str(target),
+        "sha256": digest.hexdigest(),
+        "size_bytes": target.stat().st_size,
+    }
+
+
 @app.local_entrypoint()
-def main(action: str = "inspect") -> None:
+def main(action: str = "inspect", path: str = "") -> None:
     """Print a function's result locally so runs leave readable evidence.
 
         modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action inspect
@@ -359,6 +458,10 @@ def main(action: str = "inspect") -> None:
         result = diagnose_csl.remote()
     elif action == "preflight":
         result = preflight.remote()
+    elif action == "throughput":
+        result = throughput.remote()
+    elif action == "hash":
+        result = hash_output.remote(path)
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

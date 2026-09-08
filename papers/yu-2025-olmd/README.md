@@ -14,18 +14,19 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `None` — not yet set; no run has been executed. Modal access and the
-data gate are cleared; the reimplementation has not started.
+**Pipeline status:** `None` — not yet set. Modal access and the data gate are cleared, the
+reimplementation runs, and the AGENTS.md preflight passed; no full run has been launched.
 
 **Numerical agreement:** `None` — not yet set; no in-scope target has produced a value.
 
 **Attempt date:** 2026-09-08 (in progress)
 
-> **Status: in progress.** This report covers repository setup, the assignment record,
-> the target ledger, Modal access, and the **data gate (cleared for all three datasets)**.
-> The reimplementation, preflight, and full runs are not done. `reproduction.json` fails
-> validation only on items that require an executed run; see
-> [Open validation items](#open-validation-items).
+> **Status: in progress.** Repository setup, assignment record, target ledger, Modal
+> access, data gate, the level-3 reimplementation, and the **AGENTS.md preflight** are all
+> complete. No full training run has been launched: the measured compute requirement needs
+> an I/O fix and then a `#repro-sign-team-r` discussion, because it exceeds the 24-hour
+> autonomous gate. `reproduction.json` fails validation only on the four in-scope targets,
+> which require a trained model.
 
 ## Scope and target contract
 
@@ -115,6 +116,47 @@ No target has produced a value yet. The four in-scope targets have no terminal r
 | `table1-p14t-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / test | WER | 18.4 | — | — | pending — no run executed |
 | 60 copied rows | Table 1, prior methods | prior work | both datasets | WER | see `reproduction.json` | n/a | n/a | `copied_baseline` — transcribed, not rerun |
 
+## Preflight
+
+`preflight-phoenix14-001` (Modal app `ap-TVFOSUn1KEXWFZsHp9C3pJ`, A100-SXM4-40GB, exit 0,
+1296 s) met every AGENTS.md preflight requirement on PHOENIX14:
+
+| Requirement | Result |
+| --- | --- |
+| Real data through the real loader | 24 train + 8 dev utterances, real PNG frames, real preprocessing |
+| Intended weights | ImageNet-pretrained ResNet34 loaded |
+| Real optimizer steps | 12 steps, Adam lr 0.001 wd 0.001, batch size 2 |
+| Checkpoint save **and reload** | 703 MiB saved, reloaded, **every tensor verified equal** |
+| Real evaluation on a subset | 8 dev utterances decoded and scored |
+| Parsed metric + terminal status | corpus WER emitted, exit code 0 |
+
+Training loss fell **69.186 → 34.280** over 12 steps (50.5%), so optimization works. Peak
+memory **23.32 GiB**.
+
+### The preflight WER is not a result
+
+The evaluation scored **WER 100.0** with **94 deletions, 0 insertions, 0 substitutions** —
+the model emitted *empty* hypotheses for all 8 clips. That is the expected CTC
+early-training regime after 12 steps from initialization: the blank class dominates before
+alignments sharpen, which is consistent with the falling loss. It demonstrates that the
+metric path executes end to end and **must never be compared with the paper's 17.1/17.2**.
+
+### The in-function compute estimate is wrong
+
+The preflight's own JSON reports `hours_70_epochs: 21.4`. **Do not use that figure.** It
+counts training steps only, and its `seconds_per_step` timer wrapped just the optimizer
+step, excluding frame loading. The evaluation loop separately measured **50.4 s per clip**
+— roughly 260× the per-clip training compute. Since inference cannot cost more than
+training, that is serial PNG I/O from a network Volume with no parallel loading, not
+computation.
+
+Extrapolating the measured evaluation cost with a best-dev checkpoint rule (a dev pass
+every epoch) gives roughly **560 GPU-hours** for PHOENIX14 and **1100** for both Table 1
+datasets. Both 21.4 and 1100 would be misleading to quote: the first ignores I/O, the
+second is dominated by an I/O defect rather than by the paper's protocol. Run
+`throughput-phoenix14-001` therefore measures loading and GPU cost separately before any
+compute gate is opened.
+
 ## How to repeat this
 
 ```bash
@@ -198,7 +240,16 @@ happen on Modal. Recorded as an environment limitation, not patched.
 
 ## Execution evidence
 
-No runs. `reproduction.json.runs` is empty.
+| Run ID | Kind | Platform | Terminal state | Key outcome |
+| --- | --- | --- | --- | --- |
+| `data-inspect-001` | data check | Modal CPU | succeeded / completed | All nine splits match; vocabularies 1295 / 1115 / 2000 confirm the paper |
+| `diagnose-csl-001` | data check | Modal CPU | succeeded / completed | CSL-Daily corpus defect isolated to `S000005_P0004_T00` |
+| `gpu-smoke-003` | smoke test | Modal A10 | succeeded / completed | 61.365 M params; finite loss; gradients flow |
+| `preflight-phoenix14-001` | preflight | Modal A100-40GB | succeeded / completed | Full preflight passed; checkpoint reload verified; parsed WER |
+
+Full provenance for each — commands, Modal app IDs, dashboards, mounts, cache environment,
+declared stop ceilings, and terminal classifications — is in `reproduction.json.runs`.
+Modal profile `repro-sign` throughout.
 
 ## Guesses and deviations
 
