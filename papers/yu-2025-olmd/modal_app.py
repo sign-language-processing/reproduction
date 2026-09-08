@@ -251,20 +251,34 @@ def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int
 
     # --- real optimizer steps -------------------------------------------
     model.train()
-    losses, step_times = [], []
+    losses, step_times, load_times = [], [], []
+    components = []
     order = rng.permutation(len(train_samples))
     for step in range(train_steps):
         picks = order[step * 2 : step * 2 + 2]  # batch size 2, per the paper
+        # Time data loading and the GPU step separately: conflating them is what
+        # made the first preflight's estimate unusable.
+        load_started = time.time()
         video, lengths, targets, target_lengths, _ = batch_of(train_samples, picks, True)
+        load_times.append(time.time() - load_started)
+
+        torch.cuda.synchronize()
         step_started = time.time()
         optimizer.zero_grad(set_to_none=True)
         outputs = model(video, lengths)
-        loss = criterion(outputs, targets, target_lengths)["loss"]
-        loss.backward()
+        parts = criterion(outputs, targets, target_lengths)
+        parts["loss"].backward()
         optimizer.step()
         torch.cuda.synchronize()
         step_times.append(time.time() - step_started)
-        losses.append(float(loss))
+        losses.append(float(parts["loss"]))
+        components.append(
+            {
+                "ctc": round(float(parts["ctc"]), 4),
+                "distill": round(float(parts["distill"]), 6),
+                "lift": round(float(parts.get("lift", 0.0)), 4),
+            }
+        )
     scheduler.step()
 
     # --- checkpoint save and reload -------------------------------------
@@ -314,8 +328,12 @@ def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int
 
     # --- compute estimate for the full run ------------------------------
     seconds_per_step = float(np.median(step_times))
+    seconds_per_load = float(np.median(load_times))
     steps_per_epoch = len(train_samples) // 2  # batch size 2
-    epoch_hours = seconds_per_step * steps_per_epoch / 3600
+    # A step needs both its GPU work and its two clips loaded. Serial today, so
+    # additive; a prefetching DataLoader would overlap them.
+    epoch_hours = (seconds_per_step + seconds_per_load) * steps_per_epoch / 3600
+    dev_hours = len(dev_samples) * (eval_seconds / max(len(references), 1)) / 3600
     result = {
         "paper_id": PAPER_ID,
         "dataset": dataset,
@@ -327,7 +345,9 @@ def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int
         "losses": [round(value, 4) for value in losses],
         "loss_first": round(losses[0], 4),
         "loss_last": round(losses[-1], 4),
-        "seconds_per_step_median": round(seconds_per_step, 3),
+        "seconds_per_gpu_step_median": round(seconds_per_step, 3),
+        "seconds_per_batch_load_median": round(seconds_per_load, 3),
+        "loss_components": components,
         "checkpoint": {
             "path": str(checkpoint_path),
             "size_bytes": checkpoint_path.stat().st_size,
@@ -341,12 +361,16 @@ def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int
         },
         "estimate": {
             "steps_per_epoch": steps_per_epoch,
-            "hours_per_epoch": round(epoch_hours, 3),
-            "hours_70_epochs": round(epoch_hours * 70, 1),
-            "gpu_hours_70_epochs": round(epoch_hours * 70, 1),
+            "train_hours_per_epoch": round(epoch_hours, 3),
+            "dev_hours_per_epoch": round(dev_hours, 3),
+            "hours_per_epoch_total": round(epoch_hours + dev_hours, 3),
+            "gpu_hours_70_epochs": round((epoch_hours + dev_hours) * 70, 1),
             "note": (
-                "Single GPU, batch size 2, 70 epochs per the paper. Excludes "
-                "evaluation passes and assumes throughput measured here holds."
+                "Single GPU, batch size 2, 70 epochs per the paper, INCLUDING a "
+                "dev pass every epoch for best-dev checkpoint selection. Data "
+                "loading is timed separately and added, since loading is serial "
+                "here; a prefetching DataLoader would overlap it with GPU work. "
+                "Measured with TLP pooling active."
             ),
         },
         "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
