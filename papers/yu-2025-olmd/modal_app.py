@@ -855,6 +855,214 @@ def _benchmark(
     return result
 
 
+@app.function(
+    image=image,
+    volumes=VOLUMES,
+    gpu="A100-40GB",
+    cpu=16.0,
+    timeout=60 * 60 * 24,  # per-attempt ceiling; resume continues across attempts
+)
+def train(
+    dataset: str = "phoenix14",
+    epochs: int = 70,
+    workers: int = 8,
+    resume: bool = True,
+    seed: int = 0,
+) -> dict:
+    """Full training run: the paper's protocol, checkpointed and resumable.
+
+    Protocol, all stated by the paper: 70 epochs, batch size 2, Adam with weight
+    decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40, random
+    224x224 crop from 256x256 with 50% horizontal flip and a 20% probability of
+    temporal rescaling, and a central 224x224 crop at inference.
+
+    Checkpoint selection follows the lineage convention recorded as guess
+    checkpoint-rule: the epoch with the best dev WER is kept, and the test split
+    is scored once at the end from that checkpoint.
+
+    Resumable by design. A 24-hour Modal timeout is shorter than the expected
+    24.5 GPU-hours on A100, so this writes a checkpoint every epoch and reloads
+    the latest on restart. Re-invoking the function continues rather than
+    restarting.
+    """
+    import json
+    import time
+
+    import numpy as np
+    import torch
+    from torch.utils.data import DataLoader, Dataset
+
+    import data
+    import evaluate
+    import olmd
+
+    device = torch.device("cuda")
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    output = pathlib.Path("/outputs/train") / dataset
+    output.mkdir(parents=True, exist_ok=True)
+
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+
+    vocabulary = data.build_vocabulary(root, dataset)
+    inverse = {index: gloss for gloss, index in vocabulary.items()}
+    num_classes = len(vocabulary) + 1
+
+    class TorchDataset(Dataset):
+        def __init__(self, inner):
+            self.inner = inner
+
+        def __len__(self):
+            return len(self.inner)
+
+        def __getitem__(self, index):
+            return self.inner[index]
+
+    def make_loader(split: str, train_mode: bool, epoch_seed: int) -> DataLoader:
+        inner = data.OLMDDataset(
+            root, dataset, split, vocabulary,
+            cache_root=cache_root, train=train_mode, seed=epoch_seed,
+        )
+        return DataLoader(
+            TorchDataset(inner),
+            batch_size=2,  # the paper's batch size
+            shuffle=train_mode,
+            num_workers=workers,
+            collate_fn=data.collate,
+            pin_memory=True,
+            persistent_workers=False,
+            prefetch_factor=4,
+            drop_last=train_mode,
+        )
+
+    model = olmd.OLMD(num_classes=num_classes, context=9).to(device)
+    criterion = olmd.OLMDLoss().to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(
+        optimizer, milestones=[25, 40], gamma=0.3
+    )
+
+    latest = output / "latest.pt"
+    best = output / "best.pt"
+    history_path = output / "history.json"
+    start_epoch = 0
+    best_dev = float("inf")
+    best_epoch = -1
+    history = []
+
+    if resume and latest.exists():
+        state = torch.load(latest, map_location=device, weights_only=False)
+        model.load_state_dict(state["model"])
+        optimizer.load_state_dict(state["optimizer"])
+        scheduler.load_state_dict(state["scheduler"])
+        start_epoch = state["epoch"] + 1
+        best_dev = state["best_dev"]
+        best_epoch = state["best_epoch"]
+        history = state.get("history", [])
+
+    # Reference glosses by utterance name, built once per split rather than
+    # per batch: this runs every epoch for 70 epochs.
+    references_by_split = {
+        split: {
+            sample.name: sample.glosses
+            for sample in data.LOADERS[dataset](root, split)
+        }
+        for split in ("dev", "test")
+    }
+
+    def score(split: str) -> dict:
+        model.eval()
+        by_name = references_by_split[split]
+        references, hypotheses = [], []
+        with torch.no_grad():
+            for video, lengths, _, _, names in make_loader(split, False, seed):
+                video = video.to(device, non_blocking=True)
+                outputs = model(video, lengths)
+                decoded = evaluate.greedy_ctc_decode(
+                    outputs["global_logits"], outputs["global_lengths"]
+                )
+                for name, ids in zip(names, decoded):
+                    references.append(evaluate.strip_phoenix_markers(by_name[name]))
+                    hypotheses.append([inverse[i] for i in ids if i in inverse])
+        return evaluate.corpus_wer(references, hypotheses).as_dict()
+
+    started = time.time()
+    for epoch in range(start_epoch, epochs):
+        model.train()
+        epoch_started = time.time()
+        losses = []
+        # Re-seed per epoch so augmentation varies while staying reproducible.
+        for video, lengths, targets, target_lengths, _ in make_loader(
+            "train", True, seed * 1000 + epoch
+        ):
+            video = video.to(device, non_blocking=True)
+            optimizer.zero_grad(set_to_none=True)
+            parts = criterion(model(video, lengths), targets, target_lengths)
+            parts["loss"].backward()
+            optimizer.step()
+            losses.append(float(parts["loss"]))
+        scheduler.step()
+
+        dev = score("dev")
+        entry = {
+            "epoch": epoch,
+            "loss_mean": round(float(np.mean(losses)), 4),
+            "dev_wer": dev["wer"],
+            "dev_del": dev["del"],
+            "dev_ins": dev["ins"],
+            "lr": optimizer.param_groups[0]["lr"],
+            "seconds": round(time.time() - epoch_started, 1),
+        }
+        history.append(entry)
+
+        # Best-dev checkpoint selection (guess checkpoint-rule).
+        if dev["wer"] < best_dev:
+            best_dev = dev["wer"]
+            best_epoch = epoch
+            torch.save({"model": model.state_dict(), "epoch": epoch, "dev": dev}, best)
+
+        torch.save(
+            {
+                "model": model.state_dict(),
+                "optimizer": optimizer.state_dict(),
+                "scheduler": scheduler.state_dict(),
+                "epoch": epoch,
+                "best_dev": best_dev,
+                "best_epoch": best_epoch,
+                "history": history,
+            },
+            latest,
+        )
+        history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
+        results.commit()
+
+    # Final scoring from the best-dev checkpoint, per the checkpoint rule.
+    state = torch.load(best, map_location=device, weights_only=False)
+    model.load_state_dict(state["model"])
+    final_dev = score("dev")
+    final_test = score("test")
+
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "epochs": epochs,
+        "seed": seed,
+        "num_classes": num_classes,
+        "best_epoch": best_epoch,
+        "best_dev_wer": best_dev,
+        "final": {"dev": final_dev, "test": final_test},
+        "published": {"dev": 17.1, "test": 17.2} if dataset == "phoenix14" else None,
+        "history": history,
+        "wall_seconds": round(time.time() - started, 1),
+        "gpu": str(torch.cuda.get_device_name(0)),
+        "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
+    }
+    (output / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    results.commit()
+    return result
+
+
 @app.local_entrypoint()
 def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     """Print a function's result locally so runs leave readable evidence.
@@ -884,6 +1092,8 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
         result = benchmark_loader.remote(limit=limit)
     elif action == "benchmark-loader-h100":
         result = benchmark_loader_h100.remote(limit=limit)
+    elif action == "train":
+        result = train.remote()
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

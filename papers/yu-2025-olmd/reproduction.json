@@ -3740,7 +3740,7 @@
         "note": "Staging does not change the protocol: each dataset still runs the paper's full 70 epochs with best-dev checkpoint selection. It only sequences the two experiments.",
         "phoenix14_gpu_hours_without_prefetch": 57.8
       },
-      "awaiting": "A launch decision from the assignee. The compute obstacle is measured away; nothing has been launched and no cache has been built.",
+      "awaiting": "Nothing. Authorized 2026-09-08 for PHOENIX14 on A100; cache build and training proceeding.",
       "cost_estimate": {
         "status": "measured, with TLP, JPEG cache and prefetching DataLoader",
         "basis": "preflight-phoenix14-002 on A100-40GB measured a 0.422 s GPU step at batch size 2 on real clips and 5.326 s of serial batch loading. cache-probe-phoenix14-001 measured the JPEG cache at 0.267 s per clip. Protocol is 70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch, plus one test pass.",
@@ -3879,7 +3879,39 @@
         }
       },
       "resolution": "The compute question is resolved for the staged PHOENIX14 run: at a measured 14.4 GPU-hours on H100 it is single-GPU, expected to finish well within 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate, which is exactly the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours also clears the gate individually. The pair together, 32.1 GPU-hours, does not, so they must be run as separate staged jobs rather than one combined job. This gate remains recorded because the assignee was asked to authorize the spend and declined to decide; the measurement removes the compute obstacle but not that outstanding instruction.",
-      "resolution_note": "The COMPUTE OBSTACLE is resolved by measurement: on H100, PHOENIX14 needs about 14.4 GPU-hours, which is single-GPU, well inside 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate -- precisely the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours clears it too; the pair at 32.1 does not, so they must run as separate staged jobs.\n\nThe gate nevertheless remains OPEN, because the technical obstacle is not the only one. On 2026-09-08 the assignee was asked to authorize the GPU spend, or to route it to #repro-sign-team-r first, and declined to decide. That instruction stands until answered. Marking this resolved while no authorization exists and no run has launched would misrepresent the state, and the four in-scope targets cite this gate as the evidence for their compute_budget_blocked results."
+      "resolution_note": "The COMPUTE OBSTACLE is resolved by measurement: on H100, PHOENIX14 needs about 14.4 GPU-hours, which is single-GPU, well inside 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate -- precisely the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours clears it too; the pair at 32.1 does not, so they must run as separate staged jobs.\n\nThe gate nevertheless remains OPEN, because the technical obstacle is not the only one. On 2026-09-08 the assignee was asked to authorize the GPU spend, or to route it to #repro-sign-team-r first, and declined to decide. That instruction stands until answered. Marking this resolved while no authorization exists and no run has launched would misrepresent the state, and the four in-scope targets cite this gate as the evidence for their compute_budget_blocked results.",
+      "authorization": {
+        "granted_at_utc": "2026-09-08T20:15:00Z",
+        "granted_by": "marcel.granero@upf.edu (assignee)",
+        "instruction": "go, launch the PHOENIX14 run on A100",
+        "scope": "PHOENIX14 only, on A100. Covers the one-time CPU cache build and the single 70-epoch training run with per-epoch dev evaluation and a final test pass.",
+        "gpu_choice_note": "The assignee selected A100 despite the H100 measurement showing 14.4 GPU-hours versus 24.5. On A100 the run therefore EXCEEDS the AGENTS.md 24-hour single-GPU autonomous threshold by about 2%, so it proceeds on explicit assignee authorization rather than autonomously. The H100 option and its measured figures were presented before this decision; the assignee's choice is recorded as made.",
+        "not_authorized": "PHOENIX14-T, which stays deferred; and any combined job running both datasets together, which would be 32.1 GPU-hours on H100 or about 54.6 on A100."
+      },
+      "declared_stop_policy_for_training": {
+        "declared_at_utc": "2026-09-08T20:18:00Z",
+        "run_id_when_launched": "train-phoenix14-seed0-attempt1",
+        "attempt_group": "train-phoenix14-seed0",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": 70.0,
+        "rationale": "Measured estimate is 24.5 GPU-hours on A100-40GB at about $52. The GPU-hour ceiling is 30 and the cost ceiling CHF 70, to absorb throughput variance without permitting an open-ended run. Modal's per-attempt timeout is 24 hours, shorter than the expected duration, so the run checkpoints every epoch and resumes; each resume is a new attempt in the same group. Declared before launch per AGENTS.md."
+      },
+      "in_flight": {
+        "note": "The reproduction.json contract requires a terminal exit code and finish timestamp on every retained run, so in-flight work is tracked here and promoted to reproduction.json.runs only once terminal. Nothing below is a result.",
+        "cache_build": {
+          "run_id_when_recorded": "cache-build-phoenix14-full",
+          "started_at_utc": "2026-09-08T20:20:00Z",
+          "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache",
+          "expectation": "About 8.5 wall-hours and 9.7 GiB across 6841 utterances, extrapolated from cache-build-trial-001's measured 4.49 s per clip at 16 workers.",
+          "declared_stop_policy": {
+            "declared_at_utc": "2026-09-08T20:18:00Z",
+            "max_wall_time_seconds": 43200,
+            "max_cost_chf": 15.0
+          }
+        },
+        "training": "Not launched; waits on the cache build."
+      }
     }
   ],
   "guesses": [
