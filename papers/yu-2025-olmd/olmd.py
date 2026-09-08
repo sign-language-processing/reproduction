@@ -325,6 +325,76 @@ class OLMDBackbone(nn.Module):
         return frame_features, x_cs
 
 
+class LocalWeighting(nn.Module):
+    """TLP's local weighting: x + x * (sigmoid(InstanceNorm(conv(x))) - 0.5).
+
+    Zero-initialized so it starts as the identity, matching TLP's released code.
+    """
+
+    def __init__(self, channels: int):
+        super().__init__()
+        self.conv = nn.Conv1d(channels, channels, kernel_size=5, padding=2)
+        self.norm = nn.InstanceNorm1d(channels, affine=True)
+        nn.init.zeros_(self.conv.weight)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return x + x * (torch.sigmoid(self.norm(self.conv(x))) - 0.5)
+
+
+class TemporalLiftPool(nn.Module):
+    """Temporal Lift Pooling (TLP, Hu et al. 2022b), which the paper adopts by name.
+
+    "We adopt the pooling method from TLP" is an explicit instruction, so the P2
+    operator is TLP's learned lifting scheme rather than max pooling. Splitting
+    the sequence into even and odd samples:
+
+        d = X_odd - predictor(X_even)      the detail signal
+        s = X_even + updater(d)            the approximation signal
+        out = weight1(s) + weight2(d)
+
+    The two auxiliary regularizers ||s - X_odd||_2 and ||d||_2 are returned and
+    added to the objective with weight 0.001 each, matching TLP's released
+    configuration (Cu, Cp). Both predictor/updater output convolutions are
+    zero-initialized so pooling begins near a plain even-sample decimation.
+
+    Note the detail branch is kept, not discarded: TLP's output sums a weighted
+    approximation and a weighted detail signal.
+    """
+
+    def __init__(self, channels: int, kernel_size: int = 2):
+        super().__init__()
+        self.kernel_size = kernel_size
+        self.predictor = self._branch(channels)
+        self.updater = self._branch(channels)
+        nn.init.zeros_(self.predictor[2].weight)
+        nn.init.zeros_(self.updater[2].weight)
+        self.weight1 = LocalWeighting(channels)
+        self.weight2 = LocalWeighting(channels)
+
+    @staticmethod
+    def _branch(channels: int) -> nn.Sequential:
+        # Depthwise k=3, ReLU, pointwise k=1, Tanh -- TLP's released structure.
+        return nn.Sequential(
+            nn.Conv1d(channels, channels, kernel_size=3, padding=1, groups=channels),
+            nn.ReLU(inplace=True),
+            nn.Conv1d(channels, channels, kernel_size=1),
+            nn.Tanh(),
+        )
+
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        length = x.shape[2]
+        even = x[:, :, 0:length:self.kernel_size]
+        odd = x[:, :, 1:length:self.kernel_size]
+        # An odd-length sequence leaves `even` one sample longer; align them.
+        if even.shape[2] != odd.shape[2]:
+            even = even[:, :, : odd.shape[2]]
+        detail = odd - self.predictor(even)
+        approximation = even + self.updater(detail)
+        loss_u = torch.norm(approximation - odd, p=2)
+        loss_p = torch.norm(detail, p=2)
+        return self.weight1(approximation) + self.weight2(detail), loss_u, loss_p
+
+
 class TemporalHead(nn.Module):
     """Two 1D-CNN branches {K5,P2,K5,P2} plus a BiLSTM, with shared classifiers.
 
@@ -350,10 +420,10 @@ class TemporalHead(nn.Module):
     direction with a 1024-wide output, and the convention is 2 layers. Fig. 2's
     "xN" annotation on the 1D-CNN blocks is never defined; N = 1 is used.
 
-    INFERRED: TLP pooling is cited but not defined in this paper. MaxPool1d is
-    used here as the P2 operator, which is the lineage's own released behaviour;
-    substituting true TLP is a separate, testable change. Recorded as a
-    deviation.
+    The P2 operator is Temporal Lift Pooling, which the paper adopts by name
+    ("We adopt the pooling method from TLP"), not max pooling. Its two auxiliary
+    regularizers are returned and enter the objective with weight 0.001 each,
+    matching TLP's released configuration.
     """
 
     def __init__(self, input_size: int, hidden_size: int, num_classes: int):
@@ -371,31 +441,55 @@ class TemporalHead(nn.Module):
         self.classifier = nn.Linear(hidden_size, num_classes)
 
     @staticmethod
-    def _make_branch(input_size: int, hidden_size: int) -> nn.Sequential:
-        # {K5, P2, K5, P2}. padding=0, matching the lineage, so each K5 shortens
-        # the sequence by 4; the dataloader compensates with replicate padding.
-        return nn.Sequential(
-            nn.Conv1d(input_size, hidden_size, kernel_size=5),
-            nn.BatchNorm1d(hidden_size),
-            nn.ReLU(inplace=True),
-            nn.MaxPool1d(2, ceil_mode=False),
-            nn.Conv1d(hidden_size, hidden_size, kernel_size=5),
-            nn.BatchNorm1d(hidden_size),
-            nn.ReLU(inplace=True),
-            nn.MaxPool1d(2, ceil_mode=False),
+    def _make_branch(input_size: int, hidden_size: int) -> nn.ModuleList:
+        # {K5, P2, K5, P2} with TLP as P2. padding=0 on the convolutions,
+        # matching the lineage, so each K5 shortens the sequence by 4; the
+        # dataloader compensates with replicate padding.
+        return nn.ModuleList(
+            [
+                nn.Sequential(
+                    nn.Conv1d(input_size, hidden_size, kernel_size=5),
+                    nn.BatchNorm1d(hidden_size),
+                    nn.ReLU(inplace=True),
+                ),
+                TemporalLiftPool(hidden_size),
+                nn.Sequential(
+                    nn.Conv1d(hidden_size, hidden_size, kernel_size=5),
+                    nn.BatchNorm1d(hidden_size),
+                    nn.ReLU(inplace=True),
+                ),
+                TemporalLiftPool(hidden_size),
+            ]
         )
 
     @staticmethod
+    def _run_branch(branch: nn.ModuleList, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Run one {K5,P2,K5,P2} branch, accumulating TLP's auxiliary losses."""
+        auxiliary = x.new_zeros(())
+        for module in branch:
+            if isinstance(module, TemporalLiftPool):
+                x, loss_u, loss_p = module(x)
+                auxiliary = auxiliary + loss_u + loss_p
+            else:
+                x = module(x)
+        return x, auxiliary
+
+    @staticmethod
     def update_lengths(lengths: torch.Tensor) -> torch.Tensor:
-        """Sequence-length bookkeeping for one {K5,P2,K5,P2} branch."""
+        """Sequence-length bookkeeping for one {K5,P2,K5,P2} branch.
+
+        Each K5 has padding=0 and so removes 4 samples. TLP splits into even and
+        odd samples and aligns them to the shorter, so it emits floor(L/2) --
+        the same as MaxPool1d(2, ceil_mode=False).
+        """
         for _ in range(2):
             lengths = lengths - 4
             lengths = torch.div(lengths, 2, rounding_mode="floor")
         return lengths
 
     def forward(self, features: torch.Tensor, lengths: torch.Tensor) -> dict:
-        local1 = self.branch1(features)
-        local2 = self.branch2(features)
+        local1, auxiliary1 = self._run_branch(self.branch1, features)
+        local2, auxiliary2 = self._run_branch(self.branch2, features)
         lengths1 = self.update_lengths(lengths)
         lengths2 = lengths1  # parallel peers, so both share the reduced length
 
@@ -414,6 +508,8 @@ class TemporalHead(nn.Module):
             "local1_lengths": lengths1,
             "local2_lengths": lengths2,
             "global_lengths": lengths2,
+            # TLP's regularizers, weighted 0.001 each in the objective.
+            "lift_pool_loss": auxiliary1 + auxiliary2,
         }
 
 
@@ -445,6 +541,12 @@ class OLMD(nn.Module):
 # rather than a tuned pair.
 GAMMA_CTC = 1.0
 GAMMA_DISTILL = 25.0
+
+# TLP's auxiliary lifting regularizers. The OLMD paper adopts TLP's pooling by
+# name but never restates these weights; TLP's released configuration uses
+# Cu = Cp = 0.001, applied to the update and prediction norms respectively.
+# Recorded as guess tlp-auxiliary-weights.
+GAMMA_LIFT = 0.001
 
 
 class OLMDLoss(nn.Module):
@@ -490,8 +592,16 @@ class OLMDLoss(nn.Module):
             outputs["local2_logits"], teacher
         )
 
+        lift = outputs.get("lift_pool_loss")
+        lift_term = lift if lift is not None else targets.new_zeros((), dtype=torch.float32)
+
         return {
-            "loss": GAMMA_CTC * ctc_total + GAMMA_DISTILL * distill,
+            "loss": (
+                GAMMA_CTC * ctc_total
+                + GAMMA_DISTILL * distill
+                + GAMMA_LIFT * lift_term
+            ),
             "ctc": ctc_total,
             "distill": distill,
+            "lift": lift_term,
         }

@@ -79,6 +79,7 @@ def smoke() -> dict:
         "cross_stage": sum(p.numel() for p in model.backbone.cross_stage.parameters()),
     }
 
+    # Time a few training steps so the compute estimate reflects the real model.
     # Batch size 2 as the paper specifies. T=128 is a realistic PHOENIX clip
     # length; a 32-frame probe is too short for the {K5,P2,K5,P2} head and
     # crashes in max_pool1d, which is how the branch topology was settled.
@@ -93,6 +94,23 @@ def smoke() -> dict:
     outputs = model(video, lengths)
     losses = criterion(outputs, targets, target_lengths)
     losses["loss"].backward()
+
+    # Median wall time of a full training step at T=128, for the compute estimate.
+    import time as _time
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+    step_times = []
+    for _ in range(6):
+        optimizer.zero_grad(set_to_none=True)
+        torch.cuda.synchronize()
+        started = _time.time()
+        step_losses = criterion(model(video, lengths), targets, target_lengths)
+        step_losses["loss"].backward()
+        optimizer.step()
+        torch.cuda.synchronize()
+        step_times.append(_time.time() - started)
+    step_times.sort()
+    median_step = step_times[len(step_times) // 2]
 
     grad_norm = sum(
         p.grad.pow(2).sum().item() for p in model.parameters() if p.grad is not None
@@ -118,6 +136,8 @@ def smoke() -> dict:
         "ctc": float(losses["ctc"]),
         "distill": float(losses["distill"]),
         "grad_norm": float(grad_norm),
+        "seconds_per_train_step_t128": round(float(median_step), 4),
+        "lift": float(losses.get("lift", 0.0)),
         "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
         "gpu": str(torch.cuda.get_device_name(0)),
         "torch": str(torch.__version__),

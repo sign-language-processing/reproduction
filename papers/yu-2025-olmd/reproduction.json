@@ -3173,7 +3173,8 @@
         "Pure GPU compute alone, with loading entirely free, would still be about 22.4 and 27.7 GPU-hours, so no further I/O optimization brings the assignment under the gate.",
         "One-time CPU-only cache construction adds roughly 12.6 h and 15.3 h per dataset and is reusable across epochs and seeds.",
         "The paper reports a single value per cell and states no seed policy, so this estimate assumes one run per dataset; any seed replication multiplies it.",
-        "Corrected per-step estimate: PHOENIX14 44.0 GPU-hours (0.628 h/epoch over 2836 steps), PHOENIX14-T 53.9 GPU-hours (0.770 h/epoch over 3548 steps), 97.9 for both. On A100-40GB at the confirmed $2.10/GPU-hour that is $92, $113 and $206, plus about $5 per dataset for the one-time CPU cache build. Both datasets still exceed the 24-hour single-GPU gate."
+        "Corrected per-step estimate: PHOENIX14 44.0 GPU-hours (0.628 h/epoch over 2836 steps), PHOENIX14-T 53.9 GPU-hours (0.770 h/epoch over 3548 steps), 97.9 for both. On A100-40GB at the confirmed $2.10/GPU-hour that is $92, $113 and $206, plus about $5 per dataset for the one-time CPU cache build. Both datasets still exceed the 24-hour single-GPU gate.",
+        "TLP implementation (2026-09-08) supersedes the earlier estimate: model parameters rose from 61.365 M to 111.762 M and the T=128 training step from 0.388 s to 0.777 s on an A10, so the requirement rises to a provisional 70-79 GPU-hours for PHOENIX14. Re-measurement on the A100 preflight path is required before authorizing."
       ],
       "required_action": "Discuss the full-run budget in Slack #repro-sign-team-r and confirm before launching. AGENTS.md requires this for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.\n\nOn 2026-09-08 the assignee directed starting with PHOENIX14 only, which reduces the ask from about 122 GPU-hours for both Table 1 datasets to about 54.7 GPU-hours for PHOENIX14 plus a one-time, reusable, CPU-only cache build of about 12.6 hours. That is still above the 24-hour autonomous threshold, so the gate remains open. When asked to authorize the spend directly or route it to the channel first, the assignee declined to decide and the agent stopped without launching. No cache build and no training run have been started.",
       "opened_at_utc": "2026-09-08T17:25:00Z",
@@ -3193,7 +3194,7 @@
         ],
         "note": "Staging does not change the protocol: each dataset still runs the paper's full 70 epochs with best-dev checkpoint selection. It only sequences the two experiments."
       },
-      "awaiting": "Assignee or team authorization of the PHOENIX14 GPU spend. Nothing launched.",
+      "awaiting": "Re-run the preflight with the TLP model to replace the scaled estimate with a measured one, then obtain assignee or team authorization. Nothing launched.",
       "cost_estimate": {
         "basis": "Per-step accounting from measured values: cache read 0.267 s/clip, training forward+backward 0.194 s/clip-equivalent, inference 0.0941 s/clip. A training step loads 2 clips, so a step costs 2*0.267 + 0.194 s. Protocol is 70 epochs at batch size 2 with best-dev checkpoint selection, which requires a dev pass every epoch, plus one test pass at the end.",
         "corrects": "An earlier figure of 54.7 GPU-hours for PHOENIX14 and 122 for both charged cache reads per clip during training rather than per step, double-counting loading. The figures below supersede it.",
@@ -3242,7 +3243,9 @@
           "both": 216
         },
         "share_of_study_budget": "About 0.5% of the study's CHF 20,000 for PHOENIX14 alone and about 1.1% for both, so cost is not the constraint; the 24-hour single-GPU wall-clock gate is.",
-        "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset. Any seed replication multiplies it."
+        "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset. Any seed replication multiplies it.",
+        "superseded_by_tlp": "The 44.0 and 53.9 GPU-hour figures below were measured BEFORE Temporal Lift Pooling was implemented. TLP is a named component of the paper's stated architecture that an earlier version of this reproduction had substituted with MaxPool. Adding it took the model from 61.762 M to 111.762 M parameters and roughly doubled the training step time (0.388 s to 0.777 s at T=128, measured on an A10). Scaling that to the A100 path gives a provisional 70-79 GPU-hours for PHOENIX14 and 86-97 for PHOENIX14-T, about $147-166 and $180-204 on A100-40GB. These are SCALED, not measured on the real A100 clip path, so the preflight must be re-run with the TLP model before the gate decision is finalized.",
+        "status": "provisional pending TLP re-measurement"
       }
     }
   ],
@@ -3395,12 +3398,14 @@
     {
       "guess_id": "temporal-scale-range",
       "severity": "open",
-      "status": "open",
-      "detail": "The paper states 'a 20% probability of temporal scale adjustment' but never gives the scale factor range, so the augmentation magnitude is unknown.",
+      "status": "constrained",
+      "detail": "The paper says 'a 20% probability of temporal scale adjustment', which gives a PROBABILITY and no magnitude. The lineage instead treats temp_scaling=0.2 as a RANGE applied to every clip with no probability gate. An earlier version of this reproduction followed the lineage and rescaled every clip, which is roughly five times as much temporal augmentation as the paper describes; it now gates at p=0.2 per the paper and borrows only the magnitude.",
       "planned_resolution": "Adopt the lineage's temporal augmentation range and record it as a deviation.",
       "evidence": [
-        "arXiv:2503.08205v1 Implementation Details."
-      ]
+        "arXiv:2503.08205v1 Implementation Details.",
+        "Temporal-Lift-Pooling / CorrNet utils/video_augmentation.py class TemporalRescale: temp_scaling=0.2 sets L=0.8, U=1.2 and is applied unconditionally."
+      ],
+      "resolution": "Applied with probability 0.2, following the paper's stated '20% probability'. The magnitude comes from TLP/CorrNet's TemporalRescale, which samples a length factor uniformly from [0.8, 1.2] clamped to [32, 230] frames, since the paper omits it."
     },
     {
       "guess_id": "unstated-training-hyperparameters",
@@ -3458,7 +3463,7 @@
       "guess_id": "table5-baseline-param-discrepancy",
       "severity": "informational",
       "status": "open",
-      "detail": "OLMD's Table 5 'None' column reports 78.95 M parameters, which does not reconcile with either BiLSTM reading. Computed from the standard specs: ResNet34 body 21.285 M + TemporalConv 7.866 M each + classifier 1.327 M, with a 2-layer BiLSTM of 12.599 M at 512 per direction or 41.976 M at 1024 per direction. That gives 43.08 M (512/dir, one temporal branch), 50.94 M (512/dir, two branches), 72.45 M (1024/dir, one) or 80.32 M (1024/dir, two). Only the last is near 78.95 M and it overshoots, implying a negative module budget. The 'None' column also is not the Tables 3/4 baseline: it reads 18.9/19.4, matching Table 4's LMA-free row, so it retains OMP and coupling.",
+      "detail": "OLMD's Table 5 'None' column reports 78.95 M parameters, which does not reconcile with either BiLSTM reading. Computed from the standard specs: ResNet34 body 21.285 M + TemporalConv 7.866 M each + classifier 1.327 M, with a 2-layer BiLSTM of 12.599 M at 512 per direction or 41.976 M at 1024 per direction. That gives 43.08 M (512/dir, one temporal branch), 50.94 M (512/dir, two branches), 72.45 M (1024/dir, one) or 80.32 M (1024/dir, two). Only the last is near 78.95 M and it overshoots, implying a negative module budget. The 'None' column also is not the Tables 3/4 baseline: it reads 18.9/19.4, matching Table 4's LMA-free row, so it retains OMP and coupling.  UPDATE after implementing TLP: with TLP as the P2 operator and two parallel 1D-CNN branches the model measures 111.762 M parameters, and the configuration arithmetic gives 86.55 M when the inferred LMA/OMP/coupling modules are counted at their measured 10.41 M. That is within about 7% of the paper's 80.74 M, and the residual sits inside the MP-Block's uncertainty. By contrast the earlier MaxPool version measured 61.365 M, 24% BELOW the paper. The parameter column therefore now corroborates both that TLP belongs in the head and that two local branches exist, rather than being unexplainable. The gap between the arithmetic (86.55 M) and the built model (111.762 M) is the LocalWeighting k=5 full convolutions at 1024 channels, 5.246 M each and eight of them.",
       "planned_resolution": "Do not treat 78.95 M as a target to tune toward. Use the Table 5 slope (reliable, and the basis for r=2) rather than the absolute column. Report the reproduction's own parameter count beside the paper's and record the discrepancy.",
       "evidence": [
         "arXiv:2503.08205v1 Table 5 params column and Table 4 LMA-free row (18.9/19.4).",
@@ -3487,6 +3492,30 @@
         "arXiv:2503.08205v1 Figure 2 caption and Equation 12.",
         "Gloss-count statistics computed from PHOENIX14 train.corpus.csv: mean 11.5, median 11, p95 18, max 28.",
         "Run gpu-smoke-003 emits 29 timesteps per head for a 128-frame clip with parallel branches."
+      ]
+    },
+    {
+      "guess_id": "tlp-pooling",
+      "severity": "open",
+      "status": "resolved",
+      "detail": "The paper states 'We adopt the pooling method from TLP (Hu et al. 2022b)', so the P2 operator is Temporal Lift Pooling, not max pooling. An earlier version of this reproduction substituted MaxPool1d, which silently dropped a named component of the stated architecture.",
+      "resolution": "Implemented TLP faithfully from its released source (github.com/hulianyuyy/Temporal-Lift-Pooling, commit 21be215c): even/odd split, a depthwise-k3 + ReLU + pointwise-k1 + Tanh predictor and updater with zero-initialized output convolutions, detail d = X_odd - predictor(X_even), approximation s = X_even + updater(d), output weight1(s) + weight2(d) where LocalWeighting is x + x*(sigmoid(InstanceNorm(conv_k5(x))) - 0.5) with a zero-initialized conv. The two lifting regularizers ||s - X_odd||_2 and ||d||_2 enter the objective at 0.001 each, matching TLP's released Cu and Cp.",
+      "evidence": [
+        "arXiv:2503.08205v1 Implementation Details: 'We adopt the pooling method from TLP'.",
+        "Temporal-Lift-Pooling modules/tconv.py class Temporal_LiftPool and Local_Weighting.",
+        "Temporal-Lift-Pooling configs/baseline.yaml: Cu 0.001, Cp 0.001.",
+        "Adding TLP changed the model from 61.365 M to 111.762 M parameters and the gradient norm from 101.6 to 871.4 in the smoke test, confirming it is a substantial component rather than a formality."
+      ]
+    },
+    {
+      "guess_id": "tlp-auxiliary-weights",
+      "severity": "open",
+      "status": "constrained",
+      "detail": "The OLMD paper adopts TLP's pooling by name but never restates TLP's two auxiliary lifting regularizers or their weights, and its Eq. 14 total loss lists only the CTC and distillation terms.",
+      "resolution": "Included at 0.001 each, TLP's released Cu and Cp. Recorded as a deviation because Eq. 14 does not mention them; omitting them entirely is the alternative reading and would change optimization.",
+      "evidence": [
+        "arXiv:2503.08205v1 Equation 14 lists only gamma_1*L_CTC + gamma_2*L_Distill.",
+        "Temporal-Lift-Pooling configs/baseline.yaml Cu 0.001, Cp 0.001."
       ]
     }
   ],

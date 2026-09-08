@@ -199,20 +199,31 @@ def inspect_all(mount: str = "/datasets") -> dict:
 # flip, "a 20% probability of temporal scale adjustment", and a central
 # 224x224 crop at inference.
 #
-# INFERRED (guess_id: temporal-scale-range). The paper's "20%" is ambiguous:
-# the lineage's TemporalRescale takes temp_scaling=0.2 as a *range*, sampling a
-# length factor uniformly from [0.8, 1.2] on every training clip, with no
-# probability gate. The paper's wording instead reads as a 20% chance of
-# applying the augmentation, leaving its magnitude unstated. The lineage
-# reading is used because it is the only one with a defined magnitude, and the
-# difference is recorded as a deviation.
+# INFERRED (guess_id: temporal-scale-range). The paper says "a 20% probability
+# of temporal scale adjustment", which states a PROBABILITY and leaves the
+# magnitude unstated. The lineage's TemporalRescale instead reads
+# temp_scaling=0.2 as a RANGE, sampling a length factor uniformly from
+# [0.8, 1.2] on every clip with no probability gate.
+#
+# The paper's wording is followed for the gate -- the augmentation is applied
+# with probability 0.2 -- and the lineage supplies the magnitude the paper omits,
+# since it is the only defined source for it. Both halves are deviations and are
+# recorded as such: a reproduction that always rescales sees roughly five times
+# as much temporal augmentation as this one.
+TEMPORAL_SCALE_PROBABILITY = 0.2
 TEMPORAL_SCALE_RANGE = (0.8, 1.2)
 TEMPORAL_MIN_LEN = 32
 TEMPORAL_MAX_LEN = 230
 
 
 def temporal_rescale(num_frames: int, rng: np.random.Generator) -> np.ndarray:
-    """Resample frame indices to a rescaled length, clamped like the lineage."""
+    """Resample frame indices to a rescaled length, clamped like the lineage.
+
+    Applied with probability TEMPORAL_SCALE_PROBABILITY, per the paper's "20%
+    probability"; otherwise the clip is returned unchanged.
+    """
+    if rng.random() >= TEMPORAL_SCALE_PROBABILITY:
+        return np.arange(num_frames)
     low, high = TEMPORAL_SCALE_RANGE
     new_len = int(num_frames * (low + (high - low) * rng.random()))
     new_len = max(TEMPORAL_MIN_LEN, min(TEMPORAL_MAX_LEN, new_len))
