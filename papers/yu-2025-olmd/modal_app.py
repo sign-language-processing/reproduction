@@ -441,6 +441,109 @@ def hash_output(relative_path: str) -> dict:
     }
 
 
+@app.function(image=image, volumes=VOLUMES, gpu=None, cpu=8.0, timeout=60 * 40)
+def test_consolidation(dataset: str = "phoenix14", clips: int = 6) -> dict:
+    """Test the hypothesis that per-file latency, not bandwidth, causes the I/O cost.
+
+    throughput-phoenix14-001 measured 15.48 s per clip with 8 threads and only a
+    1.79x thread speedup, which points at per-request latency across the ~179
+    PNG files per utterance rather than at bytes moved. If that is right,
+    consolidating each clip into ONE compressed file should recover most of the
+    cost even on the same Volume. Writes to the results Volume, never to
+    `datasets`, which stays read-only.
+    """
+    import io
+    import json
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+
+    import numpy as np
+    from PIL import Image
+
+    import data
+
+    root = pathlib.Path("/datasets")
+    cache = pathlib.Path("/outputs/cache-probe") / dataset
+    cache.mkdir(parents=True, exist_ok=True)
+    samples = data.LOADERS[dataset](root, "dev")[:clips]
+
+    # Baseline: read the PNG directory as the training loop currently does.
+    read_started = time.time()
+    originals = []
+    for sample in samples:
+        frames = data.load_frames(root, sample)
+        originals.append(frames)
+    png_seconds = (time.time() - read_started) / len(samples)
+
+    # Consolidate: resize to 256 once, JPEG-encode each frame, one .npz per clip.
+    def write_one(pair):
+        sample, frames = pair
+        encoded = []
+        for frame in frames:
+            buffer = io.BytesIO()
+            Image.fromarray(frame).resize((256, 256), Image.BILINEAR).save(
+                buffer, format="JPEG", quality=90
+            )
+            encoded.append(np.frombuffer(buffer.getvalue(), dtype=np.uint8))
+        path = cache / f"{sample.name}.npz"
+        np.savez(path, **{str(i): item for i, item in enumerate(encoded)})
+        return path.stat().st_size, len(frames)
+
+    write_started = time.time()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        written = list(pool.map(write_one, zip(samples, originals)))
+    write_seconds = (time.time() - write_started) / len(samples)
+    results.commit()
+
+    # Read back the consolidated form, which is what training would do each epoch.
+    def read_one(sample):
+        with np.load(cache / f"{sample.name}.npz") as bundle:
+            keys = sorted(bundle.files, key=int)
+            return np.stack(
+                [np.asarray(Image.open(io.BytesIO(bundle[key].tobytes()))) for key in keys]
+            )
+
+    cached_started = time.time()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        restored = list(pool.map(read_one, samples))
+    cached_seconds = (time.time() - cached_started) / len(samples)
+
+    # The cache must be faithful: same shape, and JPEG q90 close to the original.
+    shapes_match = all(
+        original.shape[0] == item.shape[0] for original, item in zip(originals, restored)
+    )
+    deltas = []
+    for original, item in zip(originals, restored):
+        reference = np.stack(
+            [
+                np.asarray(Image.fromarray(frame).resize((256, 256), Image.BILINEAR))
+                for frame in original
+            ]
+        )
+        deltas.append(float(np.abs(reference.astype(np.int16) - item.astype(np.int16)).mean()))
+
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "clips": len(samples),
+        "png_read_seconds_per_clip": round(png_seconds, 2),
+        "cache_write_seconds_per_clip": round(write_seconds, 2),
+        "cache_read_seconds_per_clip": round(cached_seconds, 3),
+        "speedup_vs_png": round(png_seconds / cached_seconds, 1) if cached_seconds else None,
+        "cache_bytes_per_clip_mean": int(np.mean([size for size, _ in written])),
+        "frames_per_clip_mean": round(float(np.mean([count for _, count in written])), 1),
+        "fidelity": {
+            "frame_counts_match": shapes_match,
+            "mean_abs_pixel_delta": round(float(np.mean(deltas)), 3),
+            "note": "Delta is JPEG q90 loss against the same bilinear 256x256 resize.",
+        },
+    }
+    output = pathlib.Path("/outputs/cache-probe")
+    (output / f"{dataset}-probe.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    results.commit()
+    return result
+
+
 @app.local_entrypoint()
 def main(action: str = "inspect", path: str = "") -> None:
     """Print a function's result locally so runs leave readable evidence.
@@ -462,6 +565,8 @@ def main(action: str = "inspect", path: str = "") -> None:
         result = throughput.remote()
     elif action == "hash":
         result = hash_output.remote(path)
+    elif action == "cache-probe":
+        result = test_consolidation.remote()
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

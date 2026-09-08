@@ -2840,6 +2840,84 @@
         "steps_per_epoch_batch2": 2836,
         "checkpoint_size_bytes": 736918259
       }
+    },
+    {
+      "run_id": "throughput-phoenix14-001",
+      "purpose": "Separate data-loading cost from GPU cost, which preflight-phoenix14-001 conflated, so the compute estimate rests on measurement rather than inference.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action throughput",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T16:40:00Z",
+      "finished_at_utc": "2026-09-08T16:52:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-smczrOkJnE6p0gTDEUF2we",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-smczrOkJnE6p0gTDEUF2we",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "PHOENIX14 dev clips average 179 frames (range 147-215). Pure GPU inference is 0.0941 s per clip and training forward+backward about 0.194 s per clip. Loading the same clip from the shared datasets Volume costs 27.78 s serially and 15.48 s with an 8-thread pool, so I/O is 165-295x the GPU cost. The thread pool gained only 1.79x, which means the bottleneck is Volume network throughput rather than CPU-bound PNG decoding.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The compute requirement is dominated by frame I/O, not by the paper's protocol. With frames read from the Volume every epoch and a best-dev checkpoint rule, 70 epochs cost about 1895 GPU-hours for PHOENIX14 and 2323 for PHOENIX14-T, roughly 4218 GPU-hours (176 GPU-days) for both Table 1 datasets.",
+        "With frames materialized locally so loading is not the bottleneck, the same protocol costs about 22.4 GPU-hours for PHOENIX14 and 27.7 for PHOENIX14-T, roughly 50 GPU-hours for both. The I/O defect therefore inflates the requirement about 84x.",
+        "Fixing this is ordinary engineering, not a protocol change: preprocess each utterance once into a compact local tensor cache instead of re-reading hundreds of PNGs per epoch. AGENTS.md directs that ordinary I/O and retry problems be investigated rather than escalated, so no compute gate is opened on the inflated figure.",
+        "Even the compute-bound figure of about 50 GPU-hours for both datasets exceeds the 24-hour autonomous gate, and PHOENIX14 alone at about 22.4 GPU-hours sits just inside it. A #repro-sign-team-r discussion is therefore required before any full run, and the estimate brought to it must be the post-fix measurement."
+      ],
+      "measurements": {
+        "frames_per_clip_mean": 179.0,
+        "frames_per_clip_min": 147,
+        "frames_per_clip_max": 215,
+        "gpu_inference_seconds_per_clip": 0.0941,
+        "gpu_train_seconds_per_clip_estimated": 0.194,
+        "load_seconds_per_clip_serial": 27.78,
+        "load_seconds_per_clip_parallel_8_threads": 15.48,
+        "parallel_speedup": 1.79,
+        "io_to_compute_ratio": "165x (parallel) to 295x (serial)"
+      },
+      "artifact_ids": [
+        "throughput-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "throughput-phoenix14",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T16:38:00Z",
+        "max_wall_time_seconds": 3000,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Measured loading and GPU cost separately and quantified the I/O bottleneck.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -2866,6 +2944,14 @@
       "sha256": "4b8e7a67bbc2fb339ba14600fb95ef2bdee5ec9b252e5592ea2b3c94b2cfcf1d",
       "size_bytes": 736918259,
       "description": "12-step preflight checkpoint, saved and reloaded with every tensor verified equal. Disposable evidence of checkpoint/resume, not a trained model."
+    },
+    {
+      "artifact_id": "throughput-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/throughput/phoenix14-throughput.json",
+      "sha256": "0fa76421ec3267b2a4ff3c4ae130f7574cfefb253ed4dabfe3f13078c05628f0",
+      "size_bytes": 394,
+      "description": "Serial and parallel load cost, pure GPU inference cost, and clip frame statistics."
     }
   ],
   "gates": [],
