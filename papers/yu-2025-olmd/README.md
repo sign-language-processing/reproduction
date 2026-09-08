@@ -29,11 +29,18 @@ data gate are cleared; the reimplementation has not started.
 
 ## Scope and target contract
 
-The queue export's `what_to_reproduce` is **"Table 1"**. Table 1 covers **PHOENIX14 and
-PHOENIX14-T only**; CSL-Daily appears in **Table 2**. The export nevertheless lists
-CSL-Daily among the paper's datasets. On 2026-09-08 the assignee resolved this by
-authorizing OLMD's own rows in **both Table 1 and Table 2**, to be attempted **Table 1
-first**. That widening is recorded in `reproduction.json.assignment.scope_decision`.
+The queue export's `what_to_reproduce` is **"Table 1"**, and on 2026-09-08 the assignee
+confirmed **Table 1 only**. Table 1 covers **PHOENIX14 and PHOENIX14-T**; CSL-Daily
+appears only in **Table 2** and is **out of scope**, despite the export listing it among
+the paper's datasets. (An earlier instruction the same day had briefly widened scope to
+Table 2; that is superseded.)
+
+Table 2's rows were removed from the target ledger rather than carried as not-produced
+targets. Every controlled not-produced reason code asserts a *blocker*, and none would be
+truthful here — Table 2 is simply not requested, and CSL-Daily presented no data or
+compute obstacle. CSL-Daily's verified data-gate evidence is retained under
+`reproduction.json.datasets`, because it was genuinely obtained and the corpus defect
+found there is worth preserving.
 
 ### In-scope targets — OLMD's own rows, extracted verbatim
 
@@ -43,8 +50,6 @@ first**. That widening is recorded in `reproduction.json.assignment.scope_decisi
 | `table1-p14-test-wer` | 1 | PHOENIX14 | test | 17.2 |
 | `table1-p14t-dev-wer` | 1 | PHOENIX14-T | dev | 17.1 |
 | `table1-p14t-test-wer` | 1 | PHOENIX14-T | test | 18.4 |
-| `table2-cslday-dev-wer` | 2 | CSL-Daily | dev | 25.8 |
-| `table2-cslday-test-wer` | 2 | CSL-Daily | test | 24.7 |
 
 Table 1 also reports del/ins for PHOENIX14 (4.8/2.4 dev, 4.7/2.3 test) but not for
 PHOENIX14-T. The assignment's metric is WER, so del/ins is recorded as context, not as a
@@ -52,10 +57,10 @@ target.
 
 ### Out-of-scope targets — copied comparison rows
 
-The other 76 cells (15 prior methods × 4 cells in Table 1, 8 prior methods × 2 cells in
-Table 2) are in the ledger with `in_scope: false`, `copied_baseline: true`, and a terminal
-`not_produced` result with reason code `copied_baseline`. They account for the table's
-comparison without re-executing previously published systems.
+The other 60 cells (15 prior methods × 4 dataset/split columns) are in the ledger with
+`in_scope: false`, `copied_baseline: true`, and a terminal `not_produced` result with
+reason code `copied_baseline`. They account for Table 1's comparison without re-executing
+previously published systems.
 
 **Basis for the copied determination:** the paper carries no "results are taken from the
 original papers" disclaimer, but the del/ins column is empty exactly for those methods
@@ -99,8 +104,8 @@ is **level 3 — reimplementation from the paper**.
 
 ## Results
 
-No target has produced a value yet. The six in-scope targets have no terminal result; the
-76 copied baselines are closed as `not_produced` / `copied_baseline`.
+No target has produced a value yet. The four in-scope targets have no terminal result; the
+60 copied baselines are closed as `not_produced` / `copied_baseline`.
 
 | Target ID | Paper location | System | Dataset/split | Metric | Original | Reproduced | Difference | Terminal reason / evidence |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
@@ -108,9 +113,7 @@ No target has produced a value yet. The six in-scope targets have no terminal re
 | `table1-p14-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14 / test | WER | 17.2 | — | — | pending — no run executed |
 | `table1-p14t-dev-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / dev | WER | 17.1 | — | — | pending — no run executed |
 | `table1-p14t-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / test | WER | 18.4 | — | — | pending — no run executed |
-| `table2-cslday-dev-wer` | Table 2, OLMD row | OLMD | CSL-Daily / dev | WER | 25.8 | — | — | pending — no run executed |
-| `table2-cslday-test-wer` | Table 2, OLMD row | OLMD | CSL-Daily / test | WER | 24.7 | — | — | pending — no run executed |
-| 76 copied rows | Tables 1–2, prior methods | prior work | all three | WER | see `reproduction.json` | n/a | n/a | `copied_baseline` — transcribed, not rerun |
+| 60 copied rows | Table 1, prior methods | prior work | both datasets | WER | see `reproduction.json` | n/a | n/a | `copied_baseline` — transcribed, not rerun |
 
 ## How to repeat this
 
@@ -152,7 +155,13 @@ Nothing verified yet; the data gate requires Modal access.
 | --- | --- | --- | --- | --- | --- | --- |
 | PHOENIX14 | `phoenix-2014.v3`, multisigner, `features/fullFrame-210x260px` | RWTH i6 FTP `phoenix-2014.v3.tar.gz`; 2026-09-08 | CC BY-SA 3.0 per export (not independently re-verified); already in the project Volume | `rwth-phoenix-2014/` | **5672 / 540 / 629** train/dev/test — canonical; annotation CSVs SHA-256 recorded in `reproduction.json` | none |
 | PHOENIX14-T | `PHOENIX-2014-T`, manual gloss (`orth`), per-split mp4 | RWTH i6; 2026-09-08 | CC BY-SA 3.0 per export (not independently re-verified); already in the project Volume | `rwth-phoenix-2014-t/` | **7096 / 519 / 642** — canonical; annotation CSVs SHA-256 recorded | none |
-| CSL-Daily | `csl2020ct_v2`, `split_1`, mp4 videos | USTC-SLR project page; 2026-09-08 | Custom **research-only**; academic reproduction only, **no redistribution assumed** | `csl-daily/` | **18401 / 1077 / 1176** — canonical; `split_1.txt` SHA-256 recorded | none |
+| CSL-Daily *(out of scope)* | `csl2020ct_v2`, `split_1`, mp4 videos | USTC-SLR project page; 2026-09-08 | Custom **research-only**; academic reproduction only, **no redistribution assumed** | `csl-daily/` | **18400 / 1077 / 1176** usable — see corpus defect below | not used by any in-scope target |
+
+**CSL-Daily corpus defect:** `split_1.txt` lists 18401 unique training names, but
+`S000005_P0004_T00` has no entry in `csl2020ct_v2.pkl` at all, so only 18400 training
+utterances are usable. This is a defect in the published corpus, not in this
+reproduction's loader; it was diagnosed by run `diagnose-csl-001` rather than accepted as
+a silent off-by-one. CSL-Daily is now out of scope, but the finding is preserved.
 
 All three passed `check_modal_dataset.sh` on 2026-09-08 and are mounted **read-only** at
 their `/datasets/` paths. Split sizes were counted from the shipped annotation files and match
@@ -229,10 +238,10 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
 
 ## Open validation items
 
-`validate_reproduction.py` reports 10 issues, down from 171 at the start. Every remaining
+`validate_reproduction.py` reports 8 issues, down from 171 at the start. Every remaining
 one requires an executed run:
 
-- 6 × `target needs a terminal result` — the six in-scope OLMD targets.
+- 4 × `target needs a terminal result` — the four in-scope OLMD targets.
 - `invalid pipeline status` / `invalid numerical_agreement` / `zero-produced status needs
   blocker` — both status axes stay unset until a run produces a value or a blocker is
   actually established. Setting a blocker now would assert a terminal outcome that has not
