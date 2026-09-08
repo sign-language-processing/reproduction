@@ -636,6 +636,36 @@ def build_cache(
             "seconds": round(time.time() - split_started, 1),
         }
 
+    # Verify a cached entry reproduces the PNG path through the real
+    # preprocessing, rather than trusting that files merely appeared.
+    import numpy as np
+
+    check_split = splits[0]
+    check_samples = data.LOADERS[dataset](root, check_split)
+    if limit:
+        check_samples = check_samples[:limit]
+    fidelity = {"checked": 0, "frame_counts_match": True, "max_abs_pixel_delta": 0.0}
+    for sample in check_samples[:3]:
+        from_png = data.preprocess(
+            data.load_frames(root, sample), train=False, already_resized=False
+        )
+        from_cache = data.preprocess(
+            data.read_cache_entry(cache_root, dataset, sample),
+            train=False,
+            already_resized=True,
+        )
+        fidelity["checked"] += 1
+        if from_png.shape != from_cache.shape:
+            fidelity["frame_counts_match"] = False
+            continue
+        delta = float(np.abs(from_png - from_cache).max())
+        fidelity["max_abs_pixel_delta"] = max(fidelity["max_abs_pixel_delta"], delta)
+    fidelity["max_abs_pixel_delta"] = round(fidelity["max_abs_pixel_delta"], 4)
+    fidelity["note"] = (
+        "Deterministic centre-crop path on both sides, so any difference is JPEG q90 "
+        "loss alone. Inputs are scaled to [-1, 1], so 1 pixel level is about 0.0078."
+    )
+
     total_bytes = sum(entry["bytes"] for entry in report.values())
     result = {
         "paper_id": PAPER_ID,
@@ -644,6 +674,7 @@ def build_cache(
         "total_gib": round(total_bytes / 2**30, 2),
         "wall_seconds": round(time.time() - started, 1),
         "workers": workers,
+        "fidelity": fidelity,
     }
     output = pathlib.Path("/outputs/cache-build")
     output.mkdir(parents=True, exist_ok=True)

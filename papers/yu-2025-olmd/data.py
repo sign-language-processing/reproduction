@@ -19,6 +19,7 @@ a812814f) and each is recorded as a deviation in reproduction.json.
 from __future__ import annotations
 
 import csv
+import os
 import pickle
 from dataclasses import dataclass
 from pathlib import Path
@@ -407,8 +408,12 @@ def write_cache_entry(root: Path, cache_root: Path, dataset: str, sample: Sample
         encoded[str(index)] = np.frombuffer(buffer.getvalue(), dtype=np.uint8)
 
     # Write to a temporary name first so an interrupted build cannot leave a
-    # truncated entry that later reads would treat as valid.
-    staging = destination.with_suffix(".npz.partial")
+    # truncated entry that later reads would treat as valid. np.savez appends
+    # ".npz" unless the name already ends in it, so the staging name must end in
+    # ".npz" and carry its marker in the stem.
+    # The staging name includes the process id so two workers building the same
+    # clip cannot clobber each other's partial file.
+    staging = destination.with_name(f"{destination.stem}.partial-{os.getpid()}.npz")
     np.savez(staging, **encoded)
     staging.replace(destination)
     return destination.stat().st_size
