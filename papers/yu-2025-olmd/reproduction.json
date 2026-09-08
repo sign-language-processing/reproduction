@@ -3535,6 +3535,98 @@
         "gate_ids": []
       },
       "artifact_ids": []
+    },
+    {
+      "run_id": "loader-benchmark-h100-001",
+      "purpose": "Measure the H100's actual speedup on this workload rather than assuming a nominal ratio, since batch size 2, residual loading overhead and LMA's bandwidth-bound frame differencing all suggested the real gain would be smaller than nominal.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action benchmark-loader-h100 --limit 40",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T19:55:00Z",
+      "finished_at_utc": "2026-09-08T19:59:00Z",
+      "config": {
+        "batch_size": 2,
+        "num_workers": 8,
+        "prefetch_factor": 4,
+        "pin_memory": true,
+        "persistent_workers": true,
+        "steps": 40,
+        "cached_clips": 40,
+        "gpu_request": "H100! (bang form, to prevent an H200 substitution)"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "H100",
+        "gpu_count": 1,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        },
+        "device_reported": "NVIDIA H100 80GB HBM3"
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-HGGckc8i2trq0RzlYBZrih",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-HGGckc8i2trq0RzlYBZrih",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Median wall step 0.2384 s and median GPU step 0.2347 s on a real H100 80GB HBM3, with only 3.7 ms of loading exposed, so 98.5% of latency is hidden. Peak memory 24.006 GiB. The device string confirms an H100 rather than an H200 substitution.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The measured speedup over A100-40GB is 1.66x on GPU step time and 1.71x on wall step time (0.390 to 0.2347 s, 0.4073 to 0.2384 s). My prior estimate of 1.2-1.5x was too pessimistic; the nominal 1.9x was too optimistic. Measuring settled it.",
+        "PHOENIX14 therefore costs about 14.4 GPU-hours on H100 (roughly $57, 0.6 days) against 24.5 GPU-hours on A100-40GB (roughly $52, 1.0 day). At 14.4 hours PHOENIX14 CLEARS the AGENTS.md 24-hour single-GPU autonomous threshold, whereas on A100 it did not.",
+        "PHOENIX14-T costs about 17.7 GPU-hours on H100 (roughly $70), which also clears the gate individually. Both datasets together are about 32.1 GPU-hours and $127, which exceeds 24 hours in aggregate, so the staged PHOENIX14-first plan matters: each dataset clears the gate on its own but the pair does not.",
+        "Prefetching is even more effective on the faster card: exposed loading fell from 17.4 ms on A100 to 3.7 ms on H100, so the run is now almost purely GPU-bound.",
+        "Cost is nearly indifferent between the two cards, $57 against $52, because Modal's hourly rate scales with throughput. The H100's advantage here is wall-clock and gate compliance, not budget."
+      ],
+      "measurements": {
+        "seconds_per_step_wall_median": 0.2384,
+        "seconds_per_step_gpu_median": 0.2347,
+        "overhead_seconds": 0.0037,
+        "loading_hidden_fraction": 0.9846,
+        "first_step_seconds": 6.401,
+        "peak_memory_gib": 24.006,
+        "speedup_vs_a100_gpu": 1.66,
+        "speedup_vs_a100_wall": 1.71,
+        "phoenix14_gpu_hours_extrapolated": 14.4,
+        "phoenix14t_gpu_hours_extrapolated": 17.7
+      },
+      "artifact_ids": [
+        "loader-benchmark-h100-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "loader-benchmark-h100",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T19:53:00Z",
+        "max_wall_time_seconds": 2400,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Measured a 1.66x GPU speedup, bringing PHOENIX14 under the 24-hour gate.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -3601,6 +3693,14 @@
       "sha256": "c6853289288cc76b7f4a085c6030adcf16dd0be93c48024c1c45743eaf6e8b5c",
       "size_bytes": 644,
       "description": "Prefetching DataLoader benchmark: wall vs GPU step time, hidden-latency fraction, per-step warmup, and peak memory."
+    },
+    {
+      "artifact_id": "loader-benchmark-h100-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/loader-benchmark/phoenix14-loader-H100.json",
+      "sha256": "d85ae29d50848ee0c69112a3ef5d5bbbf8d939cf3938f46bf98691f9fdaa4470",
+      "size_bytes": 672,
+      "description": "H100 benchmark: wall vs GPU step time, hidden-latency fraction, peak memory."
     }
   ],
   "gates": [
@@ -3621,7 +3721,7 @@
         "preflight-phoenix14-002 measured GPU step 0.422 s and serial batch load 5.326 s on A100-40GB with TLP active, so the pipeline is 12.6x I/O-bound as written. With the verified JPEG cache PHOENIX14 costs about 57.8 GPU-hours (~$121); with cache plus prefetching about 25.5 GPU-hours (~$54, 1.1 days), which still marginally exceeds the 24-hour gate.",
         "loader-benchmark-001 measured wall step 0.4073 s against GPU step 0.390 s, hiding 95.7% of loading latency, giving a measured 24.5 GPU-hours for PHOENIX14 and 30.1 for PHOENIX14-T."
       ],
-      "required_action": "Discuss the full-run budget in Slack #repro-sign-team-r and confirm before launching. AGENTS.md requires this for runs expected to exceed 24 GPU-hours and forbids marking blocked_on_compute before it happens. Do NOT reduce epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate; that would be a protocol change requiring its own decision.\n\nOn 2026-09-08 the assignee directed starting with PHOENIX14 only, which reduces the ask from about 122 GPU-hours for both Table 1 datasets to about 54.7 GPU-hours for PHOENIX14 plus a one-time, reusable, CPU-only cache build of about 12.6 hours. That is still above the 24-hour autonomous threshold, so the gate remains open. When asked to authorize the spend directly or route it to the channel first, the assignee declined to decide and the agent stopped without launching. No cache build and no training run have been started.",
+      "required_action": "Confirm whether to launch the staged PHOENIX14 run on H100 at a measured 14.4 GPU-hours, about $57, roughly 0.6 days, preceded by an 8.5-hour CPU cache build costing about $6.42. Because 14.4 GPU-hours is inside the AGENTS.md autonomous threshold, the #repro-sign-team-r discussion that the earlier 24.5-hour A100 estimate would have required is no longer mandatory for PHOENIX14 alone. Do NOT combine the two datasets into one job: individually each clears the gate, together they do not.",
       "opened_at_utc": "2026-09-08T17:25:00Z",
       "owner": "human",
       "staging": {
@@ -3640,7 +3740,7 @@
         "note": "Staging does not change the protocol: each dataset still runs the paper's full 70 epochs with best-dev checkpoint selection. It only sequences the two experiments.",
         "phoenix14_gpu_hours_without_prefetch": 57.8
       },
-      "awaiting": "Assignee or team authorization. The estimate is now measured rather than scaled. Nothing launched, and no cache has been built.",
+      "awaiting": "A launch decision from the assignee. The compute obstacle is measured away; nothing has been launched and no cache has been built.",
       "cost_estimate": {
         "status": "measured, with TLP, JPEG cache and prefetching DataLoader",
         "basis": "preflight-phoenix14-002 on A100-40GB measured a 0.422 s GPU step at batch size 2 on real clips and 5.326 s of serial batch loading. cache-probe-phoenix14-001 measured the JPEG cache at 0.267 s per clip. Protocol is 70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch, plus one test pass.",
@@ -3760,9 +3860,26 @@
             "note": "Fastest, similar total cost, most likely to be queue-limited."
           }
         },
-        "recommendation": "Since the reproduction is not time-critical, A100-40GB is the sensible default: it is the only card whose throughput on this workload is actually measured, it is the cheapest viable option per hour, and the total is about $51. Its 24.5 hours misses the autonomous gate by roughly 2%, so it needs authorization -- but authorizing a measured 24.5 hours is sounder than choosing an H100 on an unmeasured 1.9x assumption purely to slip under a threshold. If clearing the gate without authorization is preferred, benchmark an H100 first rather than assuming its speedup.",
-        "recommendation_if_gate_must_be_cleared": "Run loader-benchmark on H100 to measure the real step time, then decide. That costs a few dollars and minutes and replaces an assumption with a measurement."
-      }
+        "recommendation": "H100, measured. PHOENIX14 costs about 14.4 GPU-hours and $57 there against 24.5 GPU-hours and $52 on A100-40GB, so for roughly $5 more the run finishes in 0.6 days instead of 1.0 and, decisively, falls inside the AGENTS.md 24-hour single-GPU autonomous threshold that A100 misses by about 2%. Both throughputs are now measured on this workload rather than assumed. Cost is effectively indifferent between the cards because Modal's rates scale with throughput.",
+        "recommendation_if_gate_must_be_cleared": "Run loader-benchmark on H100 to measure the real step time, then decide. That costs a few dollars and minutes and replaces an assumption with a measurement.",
+        "measured_h100": {
+          "measured_by": "loader-benchmark-h100-001",
+          "device": "NVIDIA H100 80GB HBM3",
+          "gpu_step_seconds": 0.2347,
+          "wall_step_seconds": 0.2384,
+          "speedup_vs_a100": 1.66,
+          "phoenix14_gpu_hours": 14.4,
+          "phoenix14_usd": 57,
+          "phoenix14_days": 0.6,
+          "phoenix14t_gpu_hours": 17.7,
+          "phoenix14t_usd": 70,
+          "both_gpu_hours": 32.1,
+          "both_usd": 127,
+          "note": "Replaces the earlier unmeasured 1.9x nominal and my own too-pessimistic 1.2-1.5x estimate. Each dataset individually clears the 24-hour gate on H100; the pair does not, so the staged PHOENIX14-first plan is what keeps the work inside it."
+        }
+      },
+      "resolution": "The compute question is resolved for the staged PHOENIX14 run: at a measured 14.4 GPU-hours on H100 it is single-GPU, expected to finish well within 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate, which is exactly the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours also clears the gate individually. The pair together, 32.1 GPU-hours, does not, so they must be run as separate staged jobs rather than one combined job. This gate remains recorded because the assignee was asked to authorize the spend and declined to decide; the measurement removes the compute obstacle but not that outstanding instruction.",
+      "resolution_note": "The COMPUTE OBSTACLE is resolved by measurement: on H100, PHOENIX14 needs about 14.4 GPU-hours, which is single-GPU, well inside 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate -- precisely the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours clears it too; the pair at 32.1 does not, so they must run as separate staged jobs.\n\nThe gate nevertheless remains OPEN, because the technical obstacle is not the only one. On 2026-09-08 the assignee was asked to authorize the GPU spend, or to route it to #repro-sign-team-r first, and declined to decide. That instruction stands until answered. Marking this resolved while no authorization exists and no run has launched would misrepresent the state, and the four in-scope targets cite this gate as the evidence for their compute_budget_blocked results."
     }
   ],
   "guesses": [

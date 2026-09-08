@@ -16,8 +16,8 @@ Level 3 means reimplementation from the paper: no published code exists.
 
 **Pipeline status:** `blocked_on_compute` — the pipeline is implemented and verified end to
 end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run
-requirement (**24.5 GPU-hours** for PHOENIX14) exceeds the 24-hour single-GPU autonomous
-gate by about 2%. Awaiting authorization; see gate `compute-full-run-table1`.
+requirement is **14.4 GPU-hours for PHOENIX14 on H100** — inside the 24-hour single-GPU
+autonomous gate. Awaiting a launch decision; see gate `compute-full-run-table1`.
 
 **Numerical agreement:** `not_assessed` — no in-scope target produced a comparable value.
 
@@ -217,17 +217,49 @@ step is consistent, but not identical hardware); and with only 20 batches cached
 benchmark cycled one epoch, so later steps re-read page-cached clips. Real full-dataset
 throughput could be slightly worse. The full run should pin the GPU type.
 
-### The gate still applies
+### GPU choice, measured on both cards
 
-At a measured **24.5 GPU-hours, PHOENIX14 exceeds the 24-hour threshold by about 2%** —
-close, but over. The run is now GPU-bound (only 4.3% of step time is exposed loading), so
-no further engineering closes a 2% gap: the only remaining levers would be trimming epochs
-or evaluation scope, and AGENTS.md forbids doing that silently. Gate
-`compute-full-run-table1` therefore remains open for authorization of ~24.5 GPU-hours,
-about $52, and roughly one day of wall-clock, plus the 8.5-hour CPU cache build.
+| | A100-40GB | **H100** |
+| --- | ---: | ---: |
+| GPU step | 0.390 s | **0.2347 s** |
+| Wall step | 0.4073 s | **0.2384 s** |
+| Loading exposed | 17.4 ms (4.3%) | **3.7 ms (1.5%)** |
+| PHOENIX14 | 24.5 GPU-h, $52, 1.0 d | **14.4 GPU-h, $57, 0.6 d** |
+| PHOENIX14-T | 30.1 GPU-h, $63 | 17.7 GPU-h, $70 |
+| Clears 24 h gate? | **no** (by ~2%) | **yes** |
 
-Cost is not the constraint: ~$52 for PHOENIX14 is about 0.25% of the study's CHF 20,000.
-Wall-clock is.
+The H100's measured speedup is **1.66×** on GPU step time. Both my own 1.2–1.5× estimate
+and the nominal 1.9× were wrong; measuring settled it. Requested as `gpu="H100!"` so Modal
+could not substitute an H200 — the run reported `NVIDIA H100 80GB HBM3`.
+
+Cost is nearly indifferent between the cards (~$5) because Modal's hourly rates scale with
+throughput. The H100's real advantage is wall-clock and **gate compliance**.
+
+Memory rules out the cheap cards outright: measured peak is 24.47 GiB at the paper's batch
+size 2, so T4 (16 GiB), L4 (24 GiB) and A10 (24 GiB) cannot run this configuration without
+a batch-size or precision change — a protocol deviation, not an optimization.
+
+### Each dataset clears the gate; the pair does not
+
+PHOENIX14 at 14.4 and PHOENIX14-T at 17.7 GPU-hours each fall inside the 24-hour threshold,
+but together they are **32.1 GPU-hours**. They must therefore run as **separate staged
+jobs**, which is what the assignee's PHOENIX14-first instruction already implies.
+
+### Status of the gate
+
+The **compute obstacle is resolved by measurement**: 14.4 GPU-hours on H100 is single-GPU,
+well within 24 hours, fits the study infrastructure, and has no unresolved data or
+behaviour-changing patch gate — exactly the AGENTS.md condition for proceeding
+autonomously. The `#repro-sign-team-r` discussion that the 24.5-hour A100 estimate would
+have required is no longer mandatory for PHOENIX14 alone.
+
+The gate is nevertheless still recorded as **open**, because the technical obstacle was not
+the only one: the assignee was asked to authorize the spend and declined to decide, and
+that instruction stands until answered. Nothing has been launched and no cache has been
+built. Marking it resolved while no authorization exists and no run has happened would
+misrepresent the state.
+
+Cost is not the constraint: ~$57 for PHOENIX14 is about 0.28% of the study's CHF 20,000.
 
 **Reducing epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate is
 not on the table** — that would be a protocol change requiring its own decision, and
