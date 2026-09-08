@@ -63,6 +63,15 @@
       "revision_or_sha256": "10.1609/aaai.v39i9.33052",
       "role": "Camera-ready version of record (AAAI Vol. 39 No. 9, pp. 9707-9715). Checked for supplementary code: the entry offers a PDF and a poster only.",
       "accessed_at": "2026-09-08"
+    },
+    {
+      "source_id": "lineage-corrnet",
+      "kind": "code",
+      "url": "https://github.com/hulianyuyy/CorrNet",
+      "revision_or_sha256": "to be pinned to a commit before use",
+      "role": "Not OLMD's code. OLMD's immediate methodological ancestor, used only to recover conventions the OLMD paper leaves unstated (module attach points, zero-initialized fusion scalars, loss weights, BiLSTM per-direction convention, SeqKD distillation, CSLR training and evaluation defaults). Every borrowed convention is recorded as a deviation.",
+      "accessed_at": "2026-09-08",
+      "notes": "CorrNet (github.com/hulianyuyy/CorrNet, verified in source 2026-09-08) is OLMD's immediate ancestor: it inserts modules after ResNet layer2/3/4 only and fuses them as x = x + module(x) * alpha[i] with self.alpha = nn.Parameter(torch.zeros(3)), which is exactly OLMD's Equation 5 stage coupling with zero-initialized alpha/beta. Its configs/baseline.yaml sets ConvCTC 1.0, SeqCTC 1.0, Dist 25.0 -- identical to OLMD's stated gamma_1=1, gamma_2=25. Its modules/BiLSTM.py line 17 computes hidden_size = int(hidden_size / num_directions), so 'hidden layers to 1024' means 512 per direction. Its modules/criterions.py SeqKD uses KLDivLoss(reduction='batchmean') with logits divided by T and the loss scaled by T*T, and an optional use_blank flag."
     }
   ],
   "source_search": {
@@ -3159,24 +3168,35 @@
     {
       "guess_id": "mp-block-internals",
       "severity": "blocking",
-      "status": "open",
-      "detail": "The MP-Block is the core of the paper's headline HMP/VMP contribution, but the paper describes it only as '(2D CNNs, detailed in the supplementary materials)'. Number of convolutions, kernel sizes, dilation, channel widths, normalization, activation, and whether it is a residual bottleneck are all unavailable.",
-      "planned_resolution": "No public supplementary material exists to consult (verified). The design must be inferred and constrained by the Table 5 parameter/FLOP budget; every choice recorded as a deviation.",
+      "status": "constrained-not-determined",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement.",
+      "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
-        "arXiv:2503.08205v1, HMP/VMP paragraph: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
-        "arXiv abs page lists only [v1] with no ancillary files; the 9-page PDF contains no /EmbeddedFile and no appendix; the AAAI proceedings entry exposes no supplementary galley. Verified 2026-09-08."
+        "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
+        "No supplementary material exists: arXiv lists only [v1] with no ancillary files, the 9-page PDF has no /EmbeddedFile and no appendix, and the AAAI proceedings entry exposes no supplementary galley. Verified 2026-09-08.",
+        "CorrNet (github.com/hulianyuyy/CorrNet, verified in source 2026-09-08) is OLMD's immediate ancestor: it inserts modules after ResNet layer2/3/4 only and fuses them as x = x + module(x) * alpha[i] with self.alpha = nn.Parameter(torch.zeros(3)), which is exactly OLMD's Equation 5 stage coupling with zero-initialized alpha/beta. Its configs/baseline.yaml sets ConvCTC 1.0, SeqCTC 1.0, Dist 25.0 -- identical to OLMD's stated gamma_1=1, gamma_2=25. Its modules/BiLSTM.py line 17 computes hidden_size = int(hidden_size / num_directions), so 'hidden layers to 1024' means 512 per direction. Its modules/criterions.py SeqKD uses KLDivLoss(reduction='batchmean') with logits divided by T and the loss scaled by T*T, and an optional use_blank flag."
+      ],
+      "constraints_from_related_work": [
+        "Equations 2-3 match the MetaFormer/PoolFormer macro-block, not ConvNeXt, which uses a single residual and a mid-block norm.",
+        "The conventional FFN expansion ratio in Vaswani, PoolFormer, ConvNeXt, ViT and Swin is 4.",
+        "C_out = C_in = C is forced, because Equation 5 adds US(X_h) back into a C-channel trunk.",
+        "The lineage uses anisotropic kernels with a long temporal extent: CorrNet's spatial_aggregation convs are (9,3,3) depthwise with dilations 1/2/3. A square 7x7 is geometrically implausible on OLMD's plane, which is only 7 wide at stage 4.",
+        "Treating a (channels, time, one-spatial-axis) tensor as a 2D image is established practice: the skeleton-image line (Du 2015, Ke CVPR 2017, TSSI, HCN IJCAI 2018, Ta-CNN AAAI 2022), audio spectrogram CNNs, and in sign language SL-TSSI-DenseNet (CVPRW 2023) and SAM-SLR's SSTCN (CVPRW 2021). The R(2+1)D/P3D/S3D/TSM family is NOT precedent: it factorizes into per-frame spatial plus pure-temporal ops and never convolves a mixed time-space plane.",
+        "OLMD's Equation 3 places LayerNorm between W_1 and W_2, which matches none of the reference architectures (all normalize before the FFN). Either sloppy notation or a real deviation; Equation 2 also shows no norm before the mixer."
       ]
     },
     {
       "guess_id": "lma-reduction-ratio",
-      "severity": "blocking",
-      "status": "open",
-      "detail": "LMA compresses channels to C/r 'by a CNN', but the value of r is never given. It directly determines LMA's parameter and FLOP cost.",
-      "planned_resolution": "Constrain r from Table 5: the no-LMA column is 78.95M params / 363.4G FLOPs and context 9 is 80.74M / 474.9G, so all three LMA instances cost 1.79M params / 111.5G FLOPs. Select the r consistent with that budget and record it as a deviation.",
+      "severity": "open",
+      "status": "constrained",
+      "detail": "LMA compresses channels to C/r 'by a CNN' and r is never stated. However r is recoverable from Table 5 because the LMA concatenation convolution is the only k-dependent weight in the network.",
       "evidence": [
-        "arXiv:2503.08205v1 LMA paragraph: 'the channel dimension is compressed to C/r by a CNN'.",
-        "Table 5 params/FLOPs columns provide the only numerical constraint on r."
-      ]
+        "arXiv:2503.08205v1 Table 5 parameter column.",
+        "arXiv:2503.08205v1 Equations 7-11 fully specify LMA apart from r.",
+        "CorrNet modules/resnet.py line 21 uses reduction_channel = channels//16, which the Table 5 slope excludes for OLMD."
+      ],
+      "resolution": "r = 2 (derived, not stated)",
+      "derivation": "Table 5 params rise almost perfectly linearly with context: +0.22, +0.22, +0.22, +0.23 M per +2 context. Equation 10's Conv_1x1x1 over the concatenated difference maps contributes 2*(C/r)^2 params per +2 context summed over stages 2/3/4 (C = 128/256/512). That predicts +0.688 M for r=1, +0.172 M for r=2, +0.043 M for r=4, and +0.0027 M for r=16. The observed +0.220 M is closest to r=2 and decisively excludes the lineage's house r=16 (off by roughly 80x). r=2 is therefore adopted, with the residual gap between 0.172 and 0.220 M attributed to the unstated ConvBlock and compression-CNN details."
     },
     {
       "guess_id": "cross-stage-injection-point",
@@ -3192,12 +3212,14 @@
     {
       "guess_id": "ffn-and-ds-widths",
       "severity": "open",
-      "status": "open",
-      "detail": "The FFN widths C_in, C_hid, C_out (Equation 3) are symbolic only; the expansion ratio is not stated. The DS convolution (Equation 4) is given only as '2D CNN with a stride of 2 in the last dimension' with no kernel size, padding, norm, or channel mapping. Equation 4 also writes both operands as R^{C x ...} even though ResNet34 stages differ in channel count, so a projection is required that the paper does not describe.",
-      "planned_resolution": "Choose minimal consistent widths, constrain against Table 5's budget, record as deviations.",
+      "status": "constrained",
+      "detail": "FFN widths remain symbolic, but C_out = C_in = C is forced by Equation 5, and ratio 4 is the universal convention. The DS convolution is well constrained by the named inspiration: LGD (Qiu et al. 2019). The author's own LGD implementation (ZhaofanQiu/Optimization-Planning-for-3D-ConvNets, model/lgd_p3d_resnet.py) downsamples between stages with Conv3d(kernel_size=1, stride=[1,stride,stride], bias=False) followed by BatchNorm, matching OLMD's wording '2D CNN with a stride of 2 in the last dimension'. LGD also zero-initializes its diffusion output projection for the same stated reason OLMD gives for alpha/beta = 0.",
       "evidence": [
-        "arXiv:2503.08205v1 Equations 3 and 4."
-      ]
+        "arXiv:2503.08205v1 Equations 3-5.",
+        "LGD author implementation model/lgd_p3d_resnet.py stage-transition downsample.",
+        "Stride-2 on the width axis maps 28 -> 14 -> 7 across ResNet34 stages 2/3/4, consistent with three attach points."
+      ],
+      "resolution": "DS = Conv2d(C_prev, C_cur, kernel_size=1, stride=(1,2), bias=False) + BatchNorm, which also supplies the channel projection Equation 4 needs but does not describe. FFN ratio 4, C_out = C_in = C."
     },
     {
       "guess_id": "ctc-decoding",
@@ -3273,22 +3295,24 @@
     {
       "guess_id": "bilstm-layer-count",
       "severity": "open",
-      "status": "open",
-      "detail": "The paper states BiLSTM 'hidden layers ... to 1024' but not the number of layers, nor whether 1024 is per-direction or total. Figure 2 also annotates the 1D-CNN blocks 'xN' without defining N.",
-      "planned_resolution": "Adopt the lineage's 2-layer BiLSTM convention and N=1; record as deviations.",
+      "status": "constrained",
+      "detail": "The paper states BiLSTM 'hidden layers ... to 1024' without a layer count or a per-direction convention. In the lineage's code, hidden_size is divided by the number of directions, so 1024 means 512 per direction with a 1024-wide output, and the convention is 2 layers.",
       "evidence": [
-        "arXiv:2503.08205v1 Implementation Details and Figure 2."
-      ]
+        "CorrNet modules/BiLSTM.py line 17: hidden_size = int(hidden_size / num_directions).",
+        "Independent corroboration: published CSLR parameter tables (e.g. TCNet Table 1) list VAC 22.3M, SMKD 20.3M, CorrNet 20.5M, SEN 23.1M for ResNet18 variants, far below what a 1024-per-direction BiLSTM would imply."
+      ],
+      "resolution": "2-layer BiLSTM, 1024 total width (512 per direction), classifier Linear(1024, num_glosses)."
     },
     {
       "guess_id": "distillation-temperature",
       "severity": "open",
-      "status": "open",
-      "detail": "Equation 13 defines the self-distillation loss as a sum of KL divergences but gives no temperature, and does not state whether the global-branch teacher targets are detached.",
-      "planned_resolution": "Follow the VAC formulation this loss is derived from; record the temperature and detachment choice as deviations.",
+      "status": "constrained",
+      "detail": "Equation 13 gives no temperature. The VAC/CorrNet implementation this loss is derived from uses SeqKD: KLDivLoss(reduction='batchmean') on log_softmax(student/T) against softmax(teacher/T), scaled by T*T, with the teacher being the detached sequence-branch logits and an option to exclude the CTC blank class.",
       "evidence": [
-        "arXiv:2503.08205v1 Equations 12 and 13; the paper credits SMKD for shared classifiers and VAC-style distillation."
-      ]
+        "arXiv:2503.08205v1 Equations 12-13; the paper credits SMKD for shared classifiers.",
+        "CorrNet modules/criterions.py class SeqKD."
+      ],
+      "resolution": "Adopt the lineage SeqKD formulation; record T and the blank-exclusion setting actually used."
     },
     {
       "guess_id": "eq10-concat-inconsistency",
@@ -3308,6 +3332,18 @@
       "planned_resolution": "Implement HMP on X_h per Equation 2 and Figure 3; record the paper's inconsistent sentence.",
       "evidence": [
         "arXiv:2503.08205v1 OMP paragraph versus Equation 2, Figure 3 and the Figure 2 caption."
+      ]
+    },
+    {
+      "guess_id": "table5-baseline-param-discrepancy",
+      "severity": "informational",
+      "status": "open",
+      "detail": "OLMD's Table 5 'None' column reports 78.95 M parameters, which does not reconcile with either BiLSTM reading. Computed from the standard specs: ResNet34 body 21.285 M + TemporalConv 7.866 M each + classifier 1.327 M, with a 2-layer BiLSTM of 12.599 M at 512 per direction or 41.976 M at 1024 per direction. That gives 43.08 M (512/dir, one temporal branch), 50.94 M (512/dir, two branches), 72.45 M (1024/dir, one) or 80.32 M (1024/dir, two). Only the last is near 78.95 M and it overshoots, implying a negative module budget. The 'None' column also is not the Tables 3/4 baseline: it reads 18.9/19.4, matching Table 4's LMA-free row, so it retains OMP and coupling.",
+      "planned_resolution": "Do not treat 78.95 M as a target to tune toward. Use the Table 5 slope (reliable, and the basis for r=2) rather than the absolute column. Report the reproduction's own parameter count beside the paper's and record the discrepancy.",
+      "evidence": [
+        "arXiv:2503.08205v1 Table 5 params column and Table 4 LMA-free row (18.9/19.4).",
+        "Parameter arithmetic recomputed from standard ResNet34/LSTM specifications 2026-09-08.",
+        "The FLOPs column is also internally inconsistent: ResNet34 alone at 224x224 is roughly 3.66 GMAC per frame, so 100 frames already exceeds the reported 363.4 G total. The params column is the more trustworthy of the two."
       ]
     }
   ],
