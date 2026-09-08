@@ -315,7 +315,10 @@ def _load_video(path: Path) -> np.ndarray:
 
 
 def preprocess(
-    frames: np.ndarray, train: bool, rng: "np.random.Generator | None" = None
+    frames: np.ndarray,
+    train: bool,
+    rng: "np.random.Generator | None" = None,
+    already_resized: bool = False,
 ) -> np.ndarray:
     """Resize to 256x256, then crop (random + flip when training, else central).
 
@@ -323,15 +326,22 @@ def preprocess(
     cropped to 224x224 during training, with a 50% chance of horizontal
     flipping ... For inference, we simply use a central crop of 224x224."
     Returns float32 (T, 3, 224, 224).
+
+    `already_resized` skips the resize for cache reads, which store frames at
+    256x256 already. The crop and flip still happen here, per epoch, so the
+    paper's augmentation is unaffected by caching.
     """
     from PIL import Image
 
-    resized = np.stack(
-        [
-            np.asarray(Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR))
-            for frame in frames
-        ]
-    )
+    if already_resized:
+        resized = frames
+    else:
+        resized = np.stack(
+            [
+                np.asarray(Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR))
+                for frame in frames
+            ]
+        )
 
     if train:
         if rng is None:
@@ -353,3 +363,143 @@ def preprocess(
     # backbone. That convention is followed and recorded as a deviation.
     scaled = cropped.astype(np.float32) / 127.5 - 1.0
     return np.ascontiguousarray(scaled.transpose(0, 3, 1, 2))
+
+
+# --- Frame cache -------------------------------------------------------------
+# throughput-phoenix14-001 and preflight-phoenix14-002 measured serial PNG
+# loading at 2.66 s per clip against 0.211 s of GPU work, so the pipeline is
+# 12.6x I/O-bound as written. The cost is per-request latency across the ~179
+# separate PNG files per utterance, not bandwidth: an 8-thread pool gained only
+# 1.79x. cache-probe-phoenix14-001 confirmed that consolidating each utterance
+# into ONE JPEG-encoded .npz cuts the read to 0.267 s, a 24.1x speedup, with
+# frame counts preserved exactly and JPEG q90 costing 1.028 mean absolute pixel
+# levels out of 255.
+#
+# The cache stores frames at 256x256 BEFORE cropping, so the paper's random
+# 224x224 crop and 50% horizontal flip still vary every epoch. Caching
+# post-crop would be smaller and faster but would silently remove the stated
+# augmentation, which is a protocol change rather than an optimization.
+CACHE_JPEG_QUALITY = 90
+
+
+def cache_path(cache_root: Path, dataset: str, sample: Sample) -> Path:
+    return cache_root / dataset / f"{sample.name}.npz"
+
+
+def write_cache_entry(root: Path, cache_root: Path, dataset: str, sample: Sample) -> int:
+    """Encode one utterance into the cache. Idempotent: skips existing entries."""
+    import io
+
+    from PIL import Image
+
+    destination = cache_path(cache_root, dataset, sample)
+    if destination.exists():
+        return destination.stat().st_size
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    frames = load_frames(root, sample)
+    encoded = {}
+    for index, frame in enumerate(frames):
+        buffer = io.BytesIO()
+        Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR).save(
+            buffer, format="JPEG", quality=CACHE_JPEG_QUALITY
+        )
+        encoded[str(index)] = np.frombuffer(buffer.getvalue(), dtype=np.uint8)
+
+    # Write to a temporary name first so an interrupted build cannot leave a
+    # truncated entry that later reads would treat as valid.
+    staging = destination.with_suffix(".npz.partial")
+    np.savez(staging, **encoded)
+    staging.replace(destination)
+    return destination.stat().st_size
+
+
+def read_cache_entry(cache_root: Path, dataset: str, sample: Sample) -> np.ndarray:
+    """Decode one cached utterance back to uint8 (T, 256, 256, 3)."""
+    import io
+
+    from PIL import Image
+
+    with np.load(cache_path(cache_root, dataset, sample)) as bundle:
+        keys = sorted(bundle.files, key=int)
+        return np.stack(
+            [np.asarray(Image.open(io.BytesIO(bundle[key].tobytes()))) for key in keys]
+        )
+
+
+class OLMDDataset:
+    """Utterances as (video, gloss ids), read from the cache when available.
+
+    Deliberately a plain class rather than a torch.utils.data.Dataset subclass so
+    this module imports without torch; modal_app.py wraps it for the DataLoader.
+    """
+
+    def __init__(
+        self,
+        root: Path,
+        dataset: str,
+        split: str,
+        vocabulary: dict[str, int],
+        cache_root: "Path | None" = None,
+        train: bool = True,
+        seed: int = 0,
+    ):
+        self.root = root
+        self.dataset = dataset
+        self.split = split
+        self.vocabulary = vocabulary
+        self.cache_root = cache_root
+        self.train = train
+        self.samples = LOADERS[dataset](root, split)
+        self.seed = seed
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, index: int):
+        sample = self.samples[index]
+        # Each item gets its own generator seeded by (seed, index) so worker
+        # processes do not share augmentation state and runs stay repeatable.
+        rng = np.random.default_rng((self.seed, index))
+
+        if self.cache_root is not None and cache_path(
+            self.cache_root, self.dataset, sample
+        ).exists():
+            frames = read_cache_entry(self.cache_root, self.dataset, sample)
+            already_resized = True
+        else:
+            frames = load_frames(self.root, sample)
+            already_resized = False
+
+        if self.train:
+            frames = frames[temporal_rescale(len(frames), rng)]
+
+        video = preprocess(frames, self.train, rng, already_resized=already_resized)
+        ids = [self.vocabulary[g] for g in sample.glosses if g in self.vocabulary]
+        return video, ids, sample.name
+
+
+def collate(batch):
+    """Pad a batch by REPLICATING the last frame, never with zeros.
+
+    Frame replication is the lineage's convention and it matters here: zero
+    padding would make LMA's frame differences at clip boundaries spuriously
+    large, since LMA differences each frame against its neighbours.
+    """
+    import torch
+
+    videos, id_lists, names = zip(*batch)
+    longest = max(video.shape[0] for video in videos)
+    padded = []
+    for video in videos:
+        tensor = torch.from_numpy(video)
+        if tensor.shape[0] < longest:
+            tail = tensor[-1:].expand(longest - tensor.shape[0], -1, -1, -1)
+            tensor = torch.cat([tensor, tail], dim=0)
+        padded.append(tensor)
+
+    video_batch = torch.stack(padded).permute(0, 2, 1, 3, 4)  # (N, C, T, H, W)
+    lengths = torch.tensor([longest] * len(videos), dtype=torch.long)
+    targets = torch.tensor([i for ids in id_lists for i in ids], dtype=torch.long)
+    target_lengths = torch.tensor([len(ids) for ids in id_lists], dtype=torch.long)
+    return video_batch, lengths, targets, target_lengths, list(names)

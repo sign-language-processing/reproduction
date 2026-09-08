@@ -588,8 +588,185 @@ def test_consolidation(dataset: str = "phoenix14", clips: int = 6) -> dict:
     return result
 
 
+# Cache and outputs both live on the paper-specific Volume; `datasets` stays
+# read-only, per AGENTS.md.
+CACHE_ROOT = "/outputs/cache"
+
+
+@app.function(image=image, volumes=VOLUMES, cpu=16.0, timeout=60 * 60 * 6)
+def build_cache(
+    dataset: str = "phoenix14", split: str = "all", workers: int = 16, limit: int = 0
+) -> dict:
+    """Build the JPEG frame cache. CPU-only, idempotent, resumable.
+
+    One-time cost, reusable across every epoch, seed and both experiments. Safe
+    to re-run: existing entries are skipped and each entry is written to a
+    .partial name first, so an interrupted build cannot leave a truncated file
+    that later reads would accept.
+    """
+    import json
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+
+    import data
+
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    splits = ("train", "dev", "test") if split == "all" else (split,)
+
+    started = time.time()
+    report = {}
+    for name in splits:
+        samples = data.LOADERS[dataset](root, name)
+        if limit:
+            samples = samples[:limit]
+        split_started = time.time()
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            sizes = list(
+                pool.map(
+                    lambda sample: data.write_cache_entry(root, cache_root, dataset, sample),
+                    samples,
+                )
+            )
+        results.commit()
+        report[name] = {
+            "utterances": len(samples),
+            "bytes": int(sum(sizes)),
+            "gib": round(sum(sizes) / 2**30, 2),
+            "seconds": round(time.time() - split_started, 1),
+        }
+
+    total_bytes = sum(entry["bytes"] for entry in report.values())
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "splits": report,
+        "total_gib": round(total_bytes / 2**30, 2),
+        "wall_seconds": round(time.time() - started, 1),
+        "workers": workers,
+    }
+    output = pathlib.Path("/outputs/cache-build")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / f"{dataset}-cache.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    results.commit()
+    return result
+
+
+@app.function(image=image, volumes=VOLUMES, gpu="A100-40GB", cpu=16.0, timeout=60 * 60)
+def benchmark_loader(dataset: str = "phoenix14", steps: int = 40, workers: int = 8) -> dict:
+    """Measure whether the prefetching DataLoader actually hides loading latency.
+
+    preflight-phoenix14-002 measured a 0.422 s GPU step against 5.326 s of
+    serial batch loading, so the pipeline was 12.6x I/O-bound. If prefetching
+    works, wall time per step should approach the GPU step time rather than the
+    sum, and the estimate drops from about 57.8 to about 25.5 GPU-hours.
+    """
+    import json
+    import time
+
+    import numpy as np
+    import torch
+    from torch.utils.data import DataLoader, Dataset
+
+    import data
+    import olmd
+
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    vocabulary = data.build_vocabulary(root, dataset)
+
+    class TorchDataset(Dataset):
+        def __init__(self, inner):
+            self.inner = inner
+
+        def __len__(self):
+            return len(self.inner)
+
+        def __getitem__(self, index):
+            return self.inner[index]
+
+    inner = data.OLMDDataset(
+        root, dataset, "train", vocabulary, cache_root=cache_root, train=True, seed=0
+    )
+    cached = sum(
+        1
+        for sample in inner.samples[:200]
+        if data.cache_path(cache_root, dataset, sample).exists()
+    )
+
+    loader = DataLoader(
+        TorchDataset(inner),
+        batch_size=2,  # the paper's batch size
+        shuffle=True,
+        num_workers=workers,
+        collate_fn=data.collate,
+        pin_memory=True,
+        persistent_workers=workers > 0,
+        prefetch_factor=4 if workers > 0 else None,
+        drop_last=True,
+    )
+
+    model = olmd.OLMD(num_classes=len(vocabulary) + 1, context=9).to("cuda")
+    criterion = olmd.OLMDLoss().to("cuda")
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+    model.train()
+
+    wall_times, gpu_times = [], []
+    iterator = iter(loader)
+    for index in range(steps):
+        step_started = time.time()
+        video, lengths, targets, target_lengths, _ = next(iterator)
+        video = video.to("cuda", non_blocking=True)
+
+        torch.cuda.synchronize()
+        gpu_started = time.time()
+        optimizer.zero_grad(set_to_none=True)
+        losses = criterion(model(video, lengths), targets, target_lengths)
+        losses["loss"].backward()
+        optimizer.step()
+        torch.cuda.synchronize()
+        gpu_times.append(time.time() - gpu_started)
+        wall_times.append(time.time() - step_started)
+
+    # Discard the first few steps: worker startup and cuDNN autotuning inflate them.
+    warm = max(5, steps // 4)
+    wall = float(np.median(wall_times[warm:]))
+    gpu = float(np.median(gpu_times[warm:]))
+
+    steps_per_epoch = len(inner) // 2
+    dev_count = len(data.LOADERS[dataset](root, "dev"))
+    epoch_hours = wall * steps_per_epoch / 3600
+    dev_hours = dev_count * (gpu / 2) / 3600  # inference only, prefetched
+
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "workers": workers,
+        "steps": steps,
+        "cache_hits_in_first_200": cached,
+        "seconds_per_step_wall_median": round(wall, 4),
+        "seconds_per_step_gpu_median": round(gpu, 4),
+        "loading_hidden_fraction": round(max(0.0, 1.0 - (wall - gpu) / wall), 4),
+        "overhead_seconds": round(wall - gpu, 4),
+        "first_steps_wall": [round(value, 3) for value in wall_times[:5]],
+        "estimate": {
+            "steps_per_epoch": steps_per_epoch,
+            "train_hours_per_epoch": round(epoch_hours, 4),
+            "dev_hours_per_epoch": round(dev_hours, 4),
+            "gpu_hours_70_epochs": round((epoch_hours + dev_hours) * 70, 1),
+        },
+        "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
+        "gpu": str(torch.cuda.get_device_name(0)),
+    }
+    output = pathlib.Path("/outputs/loader-benchmark")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / f"{dataset}-loader.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    results.commit()
+    return result
+
+
 @app.local_entrypoint()
-def main(action: str = "inspect", path: str = "") -> None:
+def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     """Print a function's result locally so runs leave readable evidence.
 
         modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action inspect
@@ -611,6 +788,10 @@ def main(action: str = "inspect", path: str = "") -> None:
         result = hash_output.remote(path)
     elif action == "cache-probe":
         result = test_consolidation.remote()
+    elif action == "build-cache":
+        result = build_cache.remote(limit=limit)
+    elif action == "benchmark-loader":
+        result = benchmark_loader.remote()
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

@@ -3615,6 +3615,18 @@
         "arXiv:2503.08205v1 Equation 14 lists only gamma_1*L_CTC + gamma_2*L_Distill.",
         "Temporal-Lift-Pooling configs/baseline.yaml Cu 0.001, Cp 0.001."
       ]
+    },
+    {
+      "guess_id": "dataloader-and-cache",
+      "severity": "informational",
+      "status": "resolved",
+      "detail": "The paper says nothing about data loading, which is an implementation concern rather than a protocol one. This reproduction's initial serial PNG reader made the pipeline 12.6x I/O-bound (5.326 s batch load against a 0.422 s GPU step), inflating the compute requirement roughly 12x above the paper's actual protocol cost.",
+      "resolution": "Two changes, both ordinary engineering with no effect on the trained model: a JPEG-encoded per-utterance frame cache on the paper's own results Volume, and a torch DataLoader with worker processes, pinned memory, persistent workers and prefetch_factor 4 so loading overlaps GPU compute. The cache stores frames at 256x256 BEFORE cropping, so the paper's random 224x224 crop and 50% horizontal flip still vary every epoch; per-item RNG is seeded by (seed, index) so worker processes do not share augmentation state and runs stay repeatable. Padding replicates the last frame rather than using zeros, because LMA differences each frame against its neighbours and zero padding would make boundary differences spuriously large.",
+      "evidence": [
+        "preflight-phoenix14-002 measured GPU step 0.422 s against serial batch load 5.326 s.",
+        "cache-probe-phoenix14-001 measured the cache at 0.267 s per clip, 24.1x faster, with frame counts preserved and JPEG q90 costing 1.028 mean absolute pixel levels of 255.",
+        "The `datasets` Volume stays read-only; the cache is written to the paper-specific results Volume."
+      ]
     }
   ],
   "deviations": [],
