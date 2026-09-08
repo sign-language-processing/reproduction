@@ -3759,9 +3759,9 @@
         "unknown_fields": []
       },
       "attempt": {
-        "group_id": "cache-build-sharded",
+        "group_id": "cache-build-sharded-scaling-test",
         "number": 1,
-        "max_attempts": 4
+        "max_attempts": 3
       },
       "stop_policy": {
         "declared_at_utc": "2026-09-08T21:43:00Z",
@@ -3773,6 +3773,95 @@
         "state": "succeeded",
         "reason_code": "completed",
         "detail": "Measured a 14.2x speedup from container fan-out and cached the dev split.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "cache-build-sharded-full-001",
+      "purpose": "Build the complete PHOENIX14 frame cache across all three splits using container fan-out, the prerequisite for the authorized training run.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py::build_cache_sharded --dataset phoenix14 --shards 40 --split all",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T22:10:00Z",
+      "finished_at_utc": "2026-09-08T22:45:36Z",
+      "config": {
+        "shards_per_split": 40,
+        "containers_launched": 120,
+        "cpu_per_container": 4.0,
+        "threads_per_container": 8,
+        "jpeg_quality": 90,
+        "resolution": "256x256 pre-crop"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 4.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-sharded-full",
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Cached all 6841 PHOENIX14 utterances -- 5672 train, 540 dev, 629 test -- totalling 9.58 GiB in 2136.1 s (35.6 minutes) across 120 containers, an effective 11529 clips per hour against the single-container baseline of 160, a 72x speedup. Per-shard median cost fell to 8.21 s per clip (range 0 to 28.07), so wider fan-out reduced per-shard latency as well as adding concurrency. Verified afterwards: exactly 6841 genuine .npz entries present.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The build finished in 35.6 minutes against a predicted 1.5 hours, because 40 shards per split across three splits launched 120 containers rather than the 40 assumed. The prediction was conservative in the right direction this time.",
+        "Contention did not worsen with scale as feared: per-shard median cost improved from 16.47 s per clip at 20 containers to 8.21 s at 120, so the Volume tolerated the wider fan-out.",
+        "Cleanup: 28 orphaned files named '<clip>.npz.partial.npz' were removed. They were produced by the ORIGINAL buggy staging name from cache-build-trial-000, before the fix; they end in .npz so they inflated a naive file count, but they could never be read because cache lookups use exact clip names. Post-cleanup the directory holds exactly 6841 entries and no partials.",
+        "The cache is the prerequisite that was blocking the authorized training run, which launched immediately after this completed."
+      ],
+      "measurements": {
+        "total_clips": 6841,
+        "train": 5672,
+        "dev": 540,
+        "test": 629,
+        "total_gib": 9.58,
+        "wall_seconds": 2136.1,
+        "effective_clips_per_hour": 11529.0,
+        "speedup_vs_single_container": 72.1,
+        "per_shard_seconds_per_clip_median": 8.21,
+        "containers": 120,
+        "orphans_removed": 28
+      },
+      "artifact_ids": [
+        "cache-sharded-full-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-sharded-full",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T22:08:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 20.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 6841 PHOENIX14 utterances cached and verified.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -3859,6 +3948,14 @@
       "sha256": "68680a1b8d64f5d4a76f07a65ef0b8120ffa8a274663926c10e6f9a317457d0e",
       "size_bytes": 452,
       "description": "Sharded cache build scaling: effective throughput and per-shard cost spread."
+    },
+    {
+      "artifact_id": "cache-sharded-full-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/cache-build/phoenix14-cache-sharded.json",
+      "sha256": "dfdbe9f8ba1ac60995f413067fe3a10c0e619208753123926f1bb44e33f46e47",
+      "size_bytes": 489,
+      "description": "Completed full PHOENIX14 sharded cache build: counts, size, timing, scaling."
     }
   ],
   "gates": [
@@ -4056,19 +4153,20 @@
         "rationale": "Measured estimate is 24.5 GPU-hours on A100-40GB at about $52. The GPU-hour ceiling is 30 and the cost ceiling CHF 70, to absorb throughput variance without permitting an open-ended run. Modal's per-attempt timeout is 24 hours, shorter than the expected duration, so the run checkpoints every epoch and resumes; each resume is a new attempt in the same group. Declared before launch per AGENTS.md."
       },
       "in_flight": {
-        "note": "The reproduction.json contract requires a terminal exit code and finish timestamp on every retained run, so in-flight work is tracked here and promoted to reproduction.json.runs only once terminal. Nothing below is a result.",
-        "cache_build": {
-          "run_id_when_recorded": "cache-build-phoenix14-full",
-          "started_at_utc": "2026-09-08T20:20:00Z",
-          "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache",
-          "expectation": "About 8.5 wall-hours and 9.7 GiB across 6841 utterances, extrapolated from cache-build-trial-001's measured 4.49 s per clip at 16 workers.",
+        "note": "The contract requires a terminal exit code and finish timestamp on every retained run, so in-flight work is tracked here and promoted to reproduction.json.runs only once terminal. Nothing below is a result.",
+        "cache_build": "COMPLETE. See run cache-build-sharded-full-001.",
+        "training": {
+          "run_id_when_recorded": "train-phoenix14-seed0-attempt1",
+          "started_at_utc": "2026-09-09T00:05:00Z",
+          "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action train",
+          "expectation": "70 epochs on A100-40GB at a measured 0.4073 s per step over 2836 steps per epoch, plus a per-epoch dev pass: about 24.5 GPU-hours and $52. Checkpoints every epoch and resumes, since Modal's 24-hour per-attempt timeout is shorter than the expected duration.",
           "declared_stop_policy": {
             "declared_at_utc": "2026-09-08T20:18:00Z",
-            "max_wall_time_seconds": 43200,
-            "max_cost_chf": 15.0
+            "max_wall_time_seconds": 86400,
+            "max_gpu_hours": 30.0,
+            "max_cost_chf": 70.0
           }
-        },
-        "training": "Not launched; waits on the cache build."
+        }
       }
     }
   ],
