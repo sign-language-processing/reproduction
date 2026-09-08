@@ -34,6 +34,7 @@ image = (
     )
     .add_local_file(HERE / "olmd.py", "/root/olmd.py")
     .add_local_file(HERE / "data.py", "/root/data.py")
+    .add_local_file(HERE / "evaluate.py", "/root/evaluate.py")
 )
 
 datasets = modal.Volume.from_name("datasets")
@@ -151,6 +152,196 @@ def diagnose_csl() -> dict:
     return data.diagnose_csl_daily(Path("/datasets"))
 
 
+@app.function(image=image, volumes=VOLUMES, gpu="A100-40GB", timeout=60 * 90)
+def preflight(dataset: str = "phoenix14", train_steps: int = 12, eval_clips: int = 8) -> dict:
+    """The AGENTS.md representative preflight.
+
+    Exercises the real path at the cheapest representative scale:
+      * loads the exact data format through the real loader and preprocessing;
+      * loads the intended ImageNet-pretrained weights;
+      * runs real optimizer steps with the paper's optimizer and schedule;
+      * saves a checkpoint and reloads it, verifying parameters match;
+      * runs the real evaluation code on a small subset and parses a WER;
+      * measures throughput and peak memory for the compute estimate.
+
+    Deliberately NOT a score: `eval_clips` utterances from an almost-untrained
+    model cannot approximate the paper's numbers. The point is that the
+    pipeline reaches a parsed metric with a terminal exit status.
+    """
+    import json
+    import time
+
+    import numpy as np
+    import torch
+
+    import data
+    import evaluate
+    import olmd
+
+    device = torch.device("cuda")
+    root = pathlib.Path("/datasets")
+    started = time.time()
+
+    # --- real data through the real loader -------------------------------
+    vocabulary = data.build_vocabulary(root, dataset)
+    num_classes = len(vocabulary) + 1  # index 0 is the CTC blank
+    train_samples = data.LOADERS[dataset](root, "train")
+    dev_samples = data.LOADERS[dataset](root, "dev")
+
+    rng = np.random.default_rng(0)  # the paper states no seed; fixed for repeatability
+
+    def batch_of(samples, indices, train):
+        clips, lengths, targets, target_lengths, references = [], [], [], [], []
+        for index in indices:
+            sample = samples[index]
+            frames = data.load_frames(root, sample)
+            if train:
+                keep = data.temporal_rescale(len(frames), rng)
+                frames = frames[keep]
+            clips.append(torch.from_numpy(data.preprocess(frames, train, rng)))
+            lengths.append(len(frames))
+            ids = [vocabulary[gloss] for gloss in sample.glosses if gloss in vocabulary]
+            targets.extend(ids)
+            target_lengths.append(len(ids))
+            references.append(sample.glosses)
+
+        # Replicate padding, matching the lineage: never zeros.
+        longest = max(clip.shape[0] for clip in clips)
+        padded = []
+        for clip in clips:
+            if clip.shape[0] < longest:
+                tail = clip[-1:].expand(longest - clip.shape[0], -1, -1, -1)
+                clip = torch.cat([clip, tail], dim=0)
+            padded.append(clip)
+        video = torch.stack(padded).permute(0, 2, 1, 3, 4)  # (N, C, T, H, W)
+        return (
+            video.to(device),
+            torch.tensor([longest] * len(clips), dtype=torch.long),
+            torch.tensor(targets, dtype=torch.long),
+            torch.tensor(target_lengths, dtype=torch.long),
+            references,
+        )
+
+    # --- intended weights ------------------------------------------------
+    model = olmd.OLMD(num_classes=num_classes, context=9).to(device)
+    criterion = olmd.OLMDLoss().to(device)
+    # The paper: Adam, weight decay 0.001, initial LR 0.001, x0.3 at epochs 25/40.
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[25, 40], gamma=0.3)
+
+    # --- real optimizer steps -------------------------------------------
+    model.train()
+    losses, step_times = [], []
+    order = rng.permutation(len(train_samples))
+    for step in range(train_steps):
+        picks = order[step * 2 : step * 2 + 2]  # batch size 2, per the paper
+        video, lengths, targets, target_lengths, _ = batch_of(train_samples, picks, True)
+        step_started = time.time()
+        optimizer.zero_grad(set_to_none=True)
+        outputs = model(video, lengths)
+        loss = criterion(outputs, targets, target_lengths)["loss"]
+        loss.backward()
+        optimizer.step()
+        torch.cuda.synchronize()
+        step_times.append(time.time() - step_started)
+        losses.append(float(loss))
+    scheduler.step()
+
+    # --- checkpoint save and reload -------------------------------------
+    output = pathlib.Path("/outputs/preflight")
+    output.mkdir(parents=True, exist_ok=True)
+    checkpoint_path = output / f"{dataset}-preflight.pt"
+    torch.save(
+        {
+            "model": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+            "scheduler": scheduler.state_dict(),
+            "num_classes": num_classes,
+            "context": 9,
+        },
+        checkpoint_path,
+    )
+    reloaded = olmd.OLMD(num_classes=num_classes, context=9).to(device)
+    state = torch.load(checkpoint_path, map_location=device, weights_only=False)
+    reloaded.load_state_dict(state["model"])
+    mismatched = [
+        name
+        for (name, before), (_, after) in zip(
+            model.state_dict().items(), reloaded.state_dict().items()
+        )
+        if not torch.equal(before.float(), after.float())
+    ]
+
+    # --- real evaluation on a small subset ------------------------------
+    reloaded.eval()
+    references, hypotheses = [], []
+    inverse = {index: gloss for gloss, index in vocabulary.items()}
+    eval_started = time.time()
+    with torch.no_grad():
+        for index in range(0, min(eval_clips, len(dev_samples)), 2):
+            picks = list(range(index, min(index + 2, eval_clips, len(dev_samples))))
+            video, lengths, _, _, batch_references = batch_of(dev_samples, picks, False)
+            outputs = reloaded(video, lengths)
+            decoded = evaluate.greedy_ctc_decode(
+                outputs["global_logits"], outputs["global_lengths"]
+            )
+            for reference, ids in zip(batch_references, decoded):
+                references.append(evaluate.strip_phoenix_markers(reference))
+                hypotheses.append([inverse[i] for i in ids if i in inverse])
+    eval_seconds = time.time() - eval_started
+
+    scored = evaluate.corpus_wer(references, hypotheses).as_dict()
+
+    # --- compute estimate for the full run ------------------------------
+    seconds_per_step = float(np.median(step_times))
+    steps_per_epoch = len(train_samples) // 2  # batch size 2
+    epoch_hours = seconds_per_step * steps_per_epoch / 3600
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "num_classes": num_classes,
+        "vocabulary": len(vocabulary),
+        "train_utterances": len(train_samples),
+        "dev_utterances": len(dev_samples),
+        "train_steps": train_steps,
+        "losses": [round(value, 4) for value in losses],
+        "loss_first": round(losses[0], 4),
+        "loss_last": round(losses[-1], 4),
+        "seconds_per_step_median": round(seconds_per_step, 3),
+        "checkpoint": {
+            "path": str(checkpoint_path),
+            "size_bytes": checkpoint_path.stat().st_size,
+            "reload_verified": not mismatched,
+            "mismatched_tensors": mismatched[:5],
+        },
+        "evaluation": {
+            "clips": len(references),
+            "seconds": round(eval_seconds, 2),
+            **scored,
+        },
+        "estimate": {
+            "steps_per_epoch": steps_per_epoch,
+            "hours_per_epoch": round(epoch_hours, 3),
+            "hours_70_epochs": round(epoch_hours * 70, 1),
+            "gpu_hours_70_epochs": round(epoch_hours * 70, 1),
+            "note": (
+                "Single GPU, batch size 2, 70 epochs per the paper. Excludes "
+                "evaluation passes and assumes throughput measured here holds."
+            ),
+        },
+        "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
+        "gpu": str(torch.cuda.get_device_name(0)),
+        "torch": str(torch.__version__),
+        "wall_seconds": round(time.time() - started, 1),
+    }
+
+    (output / f"{dataset}-preflight.json").write_text(
+        json.dumps(result, indent=2), encoding="utf-8"
+    )
+    results.commit()
+    return result
+
+
 @app.local_entrypoint()
 def main(action: str = "inspect") -> None:
     """Print a function's result locally so runs leave readable evidence.
@@ -166,6 +357,8 @@ def main(action: str = "inspect") -> None:
         result = smoke.remote()
     elif action == "diagnose-csl":
         result = diagnose_csl.remote()
+    elif action == "preflight":
+        result = preflight.remote()
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

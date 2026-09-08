@@ -2743,6 +2743,82 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "preflight-phoenix14-001",
+      "purpose": "The AGENTS.md representative preflight on PHOENIX14: load the exact data format through the real loader and preprocessing, load the intended ImageNet weights, run real optimizer steps with the paper's optimizer and schedule, save and reload a checkpoint, run the real evaluation code on a small dev subset to a parsed WER, and measure throughput and peak memory for the compute estimate.",
+      "kind": "preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action preflight",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": null,
+      "started_at_utc": "2026-09-08T16:30:00Z",
+      "finished_at_utc": null,
+      "config": {
+        "dataset": "phoenix14",
+        "context": 9,
+        "train_steps": 12,
+        "eval_clips": 8,
+        "batch_size": 2,
+        "optimizer": "Adam lr=0.001 weight_decay=0.001",
+        "scheduler": "MultiStepLR milestones=[25,40] gamma=0.3",
+        "seed": 0,
+        "gamma_ctc": 1.0,
+        "gamma_distill": 25.0,
+        "decoding": "greedy best-path",
+        "metric": "Eq. 15 WER via Levenshtein alignment"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-TVFOSUn1KEXWFZsHp9C3pJ",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-TVFOSUn1KEXWFZsHp9C3pJ",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "volumes": {
+          "datasets": "/datasets (read-only)",
+          "huggingface-cache": "/cache/huggingface (read-write)",
+          "olmd-yu-2025-results": "/outputs (read-write)"
+        }
+      },
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-phoenix14",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T16:28:00Z",
+        "max_wall_time_seconds": 5400,
+        "max_gpu_hours": 1.5,
+        "max_cost_chf": 8.0
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "PLACEHOLDER: run in flight at the time this entry was written; the terminal classification is replaced with the observed outcome when it reaches a terminal state.",
+        "failure_class": "invalid_run",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -2847,32 +2923,39 @@
     {
       "guess_id": "ctc-decoding",
       "severity": "open",
-      "status": "open",
+      "status": "constrained",
       "detail": "The paper never states how CTC outputs are decoded. Full-text search finds zero occurrences of 'beam', 'greedy', or 'best path', and no beam width or language model is mentioned.",
       "planned_resolution": "Adopt the decoding used by the VAC/SMKD/CorrNet lineage this work builds on; record as a deviation.",
       "evidence": [
-        "arXiv:2503.08205v1 full text: 0 hits for 'beam'; Equation 15 gives only the generic WER definition."
-      ]
+        "arXiv:2503.08205v1 full text: no mention of beam search, greedy decoding, beam width, or a language model.",
+        "CorrNet utils/decode.py uses CTCBeamDecoder(beam_width=10, blank_id=0) with no language model."
+      ],
+      "resolution": "Greedy best-path decoding (argmax per frame, collapse repeats, drop blanks). It needs no external ctcdecode extension and is the strict width-1 case of beam search. The lineage's released code uses beam width 10 with no language model; beam decoding must be compared before any target value is reported as produced."
     },
     {
       "guess_id": "gloss-post-processing",
       "severity": "open",
-      "status": "open",
+      "status": "constrained",
       "detail": "Standard PHOENIX evaluation removes tokens such as __ON__, __OFF__ and si-markers before scoring, which materially shifts WER. The paper does not mention any gloss post-processing.",
       "planned_resolution": "Apply the official PHOENIX evaluation package's own post-processing and record exactly what it does.",
       "evidence": [
-        "arXiv:2503.08205v1 full text: no mention of gloss post-processing or __ON__/__OFF__ handling."
-      ]
+        "arXiv:2503.08205v1 full text: no mention of gloss post-processing.",
+        "The official PHOENIX evaluation package applies preprocess.sh before scoring."
+      ],
+      "resolution": "PHOENIX marker tokens (__ON__, __OFF__, __EMOTION__, __PU__, __LEFTHAND__ and any other __...__ form) are stripped, plus loc-/cl- prefixes, mirroring the official PHOENIX preprocessing. The lineage applies that preprocessing to the hypothesis only; here it is applied to the reference as well, which is recorded as a deviation to re-examine before reporting a produced value."
     },
     {
       "guess_id": "metric-script",
       "severity": "open",
-      "status": "open",
-      "detail": "The paper gives the WER formula but never names the scoring implementation; there is no mention of sclite, mergectm, the evaluatePHOENIX14 scripts, or the CSL-Daily evaluation.",
+      "status": "constrained",
+      "detail": "The paper gives the WER formula (Eq. 15) but never names a scoring implementation; no mention of sclite, mergectm or the evaluatePHOENIX14 scripts appears in the full text.",
       "planned_resolution": "Pin each dataset's official evaluation script and record its version and hash.",
       "evidence": [
-        "arXiv:2503.08205v1 full text: 0 hits for 'sclite' and 'mergectm'."
-      ]
+        "arXiv:2503.08205v1 Equation 15.",
+        "Unit checks in this reproduction: identical, substitution, deletion, insertion, all-deleted, all-inserted, and combined cases all match, and a 3-utterance corpus with 3 errors over 9 reference tokens scores 33.3333%.",
+        "Table 1 quotes del/ins for PHOENIX14 (4.8/2.4 dev, 4.7/2.3 test), so the error breakdown is an independent cross-check on any reproduced WER."
+      ],
+      "resolution": "WER is implemented directly from Eq. 15 by Levenshtein alignment in evaluate.py, so a reproduced number never depends on an unavailable external binary. Verified against seven hand-checked alignment cases and a corpus-level case. Aggregated corpus-wide (total errors over total reference length), which is the only reading consistent with del/ins being quoted as corpus percentages. Where the official sclite toolchain is available its score should be reported alongside."
     },
     {
       "guess_id": "checkpoint-selection",
@@ -2967,6 +3050,29 @@
         "arXiv:2503.08205v1 Table 5 params column and Table 4 LMA-free row (18.9/19.4).",
         "Parameter arithmetic recomputed from standard ResNet34/LSTM specifications 2026-09-08.",
         "The FLOPs column is also internally inconsistent: ResNet34 alone at 224x224 is roughly 3.66 GMAC per frame, so 100 frames already exceeds the reported 363.4 G total. The params column is the more trustworthy of the two."
+      ]
+    },
+    {
+      "guess_id": "input-normalization",
+      "severity": "open",
+      "status": "constrained",
+      "detail": "The paper specifies resizing, cropping, flipping and temporal augmentation but never states how pixel values are normalized, despite using an ImageNet-pretrained backbone.",
+      "resolution": "Scaled to [-1, 1] as x/127.5 - 1, the lineage's released convention, rather than ImageNet channel statistics. Recorded as a deviation because the pretrained backbone was trained under ImageNet normalization.",
+      "evidence": [
+        "arXiv:2503.08205v1 Implementation Details states no normalization.",
+        "The lineage's video augmentation normalizes to [-1, 1] rather than with ImageNet means and standard deviations."
+      ]
+    },
+    {
+      "guess_id": "temporal-branch-topology",
+      "severity": "open",
+      "status": "resolved",
+      "detail": "The paper does not say whether the two 1D-CNN branches are sequential or parallel. Fig. 2 annotates them 'xN' and says they 'share architecture'; Eq. 12 supervises both with peer local CTC losses.",
+      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips.",
+      "evidence": [
+        "arXiv:2503.08205v1 Figure 2 caption and Equation 12.",
+        "Gloss-count statistics computed from PHOENIX14 train.corpus.csv: mean 11.5, median 11, p95 18, max 28.",
+        "Run gpu-smoke-003 emits 29 timesteps per head for a 128-frame clip with parallel branches."
       ]
     }
   ],

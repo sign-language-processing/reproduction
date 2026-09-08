@@ -267,3 +267,78 @@ def diagnose_csl_daily(root: Path) -> dict:
         "absent_from_pickle": missing,
         "present_but_empty_glosses": empty,
     }
+
+
+# --- Frame loading -------------------------------------------------------
+# PHOENIX14 ships extracted PNG directories; PHOENIX14-T and CSL-Daily ship
+# mp4. Video files are decoded with simple-video-utils per AGENTS.md; PHOENIX14
+# needs no decoder.
+RESIZE = 256
+CROP = 224
+
+
+def load_frames(root: Path, sample: Sample) -> np.ndarray:
+    """Return an utterance's frames as uint8 (T, H, W, 3) in RGB."""
+    source = root / sample.source
+    if source.is_dir():
+        return _load_png_directory(source)
+    return _load_video(source)
+
+
+def _load_png_directory(directory: Path) -> np.ndarray:
+    from PIL import Image
+
+    paths = sorted(directory.glob("*.png"))
+    if not paths:
+        raise FileNotFoundError(f"no PNG frames in {directory}")
+    return np.stack([np.asarray(Image.open(path).convert("RGB")) for path in paths])
+
+
+def _load_video(path: Path) -> np.ndarray:
+    if not path.exists():
+        raise FileNotFoundError(f"missing video {path}")
+    # simple-video-utils is the decoder AGENTS.md requires for video paths.
+    from simple_video_utils import read_video
+
+    return np.asarray(read_video(str(path)))
+
+
+def preprocess(
+    frames: np.ndarray, train: bool, rng: "np.random.Generator | None" = None
+) -> np.ndarray:
+    """Resize to 256x256, then crop (random + flip when training, else central).
+
+    The paper: "All input frames are first resized to 256x256 and then randomly
+    cropped to 224x224 during training, with a 50% chance of horizontal
+    flipping ... For inference, we simply use a central crop of 224x224."
+    Returns float32 (T, 3, 224, 224).
+    """
+    from PIL import Image
+
+    resized = np.stack(
+        [
+            np.asarray(Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR))
+            for frame in frames
+        ]
+    )
+
+    if train:
+        if rng is None:
+            rng = np.random.default_rng()
+        top = int(rng.integers(0, RESIZE - CROP + 1))
+        left = int(rng.integers(0, RESIZE - CROP + 1))
+        flip = rng.random() < 0.5
+    else:
+        top = left = (RESIZE - CROP) // 2
+        flip = False
+
+    cropped = resized[:, top : top + CROP, left : left + CROP, :]
+    if flip:
+        cropped = cropped[:, :, ::-1, :]
+
+    # INFERRED (guess_id: unstated-training-hyperparameters): the paper states
+    # no normalization. The lineage scales to [-1, 1] as x/127.5 - 1 rather
+    # than using ImageNet channel statistics, despite the ImageNet-pretrained
+    # backbone. That convention is followed and recorded as a deviation.
+    scaled = cropped.astype(np.float32) / 127.5 - 1.0
+    return np.ascontiguousarray(scaled.transpose(0, 3, 1, 2))
