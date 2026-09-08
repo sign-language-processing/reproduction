@@ -1,0 +1,2968 @@
+{
+  "paper_id": "fa37313bf1a4558af1462085e70b884b1418fd50",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "/gpfs/home/mgranero/code/repro-sign/reproductions-fa37313bf1a4558af1462085e70b884b1418fd50-2026-09-08.json",
+      "sha256": "60363d93cd84123859c5051ab060ae413f9c6359b3c495bf3dac62c1059186e2"
+    },
+    "requested_by": "marcel.granero@upf.edu",
+    "requested_at_utc": "2026-09-08T00:00:00Z",
+    "request": "Reproduce OLMD (paper_id fa37313bf1a4558af1462085e70b884b1418fd50) as the first REPRO-SIGN reproduction, following AGENTS.md and the reproduce-paper skill. The user confirmed the paper ID and widened the scope from the export's literal 'Table 1' to OLMD's own rows in Table 1 and Table 2, to be attempted Table 1 first.",
+    "why_not_queue_record": "The supplied export is a single 'reproductions' collection object, not the top-level array that ingest_candidate.py requires. It has no top-level paper_id, no 'confirmation' field anywhere, and its top-level status is 'in_progress' (only the nested expand.paper.status is 'final'). references/candidate-record.md forbids fabricating confirmation or other queue-review fields, so this is recorded as a direct assignment with the export preserved as supporting evidence rather than as a synthesized queue record. The export's fields are read as research leads only.",
+    "scope_decision": "The export's what_to_reproduce is 'Table 1', which covers PHOENIX14 and PHOENIX14-T only; CSL-Daily appears in Table 2. The export nonetheless lists CSL-Daily as a dataset. On 2026-09-08 the user authorized reproducing OLMD's own rows in both Table 1 and Table 2, starting with Table 1. All six OLMD WER cells are therefore in scope.",
+    "export_leads": {
+      "code_repos": "N/A",
+      "compute_requirements": "\"all the training and testing are completed on 1 NVIDIA A6000 GPU\"",
+      "copied_scores": "yes",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "datasets": [
+        "PHOENIX-2014",
+        "PHOENIX-2014-T",
+        "CSL-Daily"
+      ],
+      "note": "Treated as unverified leads per AGENTS.md, not as established facts."
+    }
+  },
+  "paper": {
+    "title": "OLMD: Orientation-aware Long-term Motion Decoupling for Continuous Sign Language Recognition",
+    "citation": "Yiheng Yu, Sheng Liu, Yuan Feng, Min Xu, Zhelun Jin, and Xuhua Yang. 2025. OLMD: Orientation-aware Long-term Motion Decoupling for Continuous Sign Language Recognition. In Proceedings of the Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI-25), 39(9), 9707-9715. https://doi.org/10.1609/aaai.v39i9.33052",
+    "url": "https://arxiv.org/abs/2503.08205",
+    "pdf_url": "https://arxiv.org/pdf/2503.08205v1",
+    "pdf_sha256": "8063662fcaae5d7374451721b94e1e03c706573ebd90378759469587a8963d70",
+    "accessed_at": "2026-09-08",
+    "venue": "Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI-25)",
+    "year": 2025,
+    "doi": "10.1609/aaai.v39i9.33052",
+    "notes": [
+      "The abstract claims an absolute 1.6% WER improvement on PHOENIX14, but the body text states 1.0% (Dev) and 1.7% (Test) relative to TCNet's 18.1/18.9, and neither equals 1.6%. Recorded as a paper-internal inconsistency; not resolved by this reproduction."
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "paper-arxiv-pdf",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2503.08205v1",
+      "revision_or_sha256": "8063662fcaae5d7374451721b94e1e03c706573ebd90378759469587a8963d70",
+      "role": "Authoritative target values and training protocol.",
+      "accessed_at": "2026-09-08"
+    },
+    {
+      "source_id": "paper-arxiv-html",
+      "kind": "paper",
+      "url": "https://arxiv.org/html/2503.08205v1",
+      "revision_or_sha256": "arXiv:2503.08205v1",
+      "role": "Machine-readable full text used to extract Table 1 and Table 2 verbatim.",
+      "accessed_at": "2026-09-08"
+    },
+    {
+      "source_id": "paper-aaai-proceedings",
+      "kind": "paper",
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/view/33052",
+      "revision_or_sha256": "10.1609/aaai.v39i9.33052",
+      "role": "Camera-ready version of record (AAAI Vol. 39 No. 9, pp. 9707-9715). Checked for supplementary code: the entry offers a PDF and a poster only.",
+      "accessed_at": "2026-09-08"
+    }
+  ],
+  "source_search": {
+    "conclusion": "No public code implementation of OLMD exists, official or unofficial. This forces preference level 3 (reimplementation from the paper).",
+    "completed_at": "2026-09-08",
+    "checks": [
+      {
+        "location": "arXiv abstract page https://arxiv.org/abs/2503.08205",
+        "result": "No code-availability statement, no repository link.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "arXiv HTML full text https://arxiv.org/html/2503.08205v1",
+        "result": "Downloaded and grepped. The only github.com strings are arXiv's own LaTeXML/html_feedback boilerplate. No 'code is available' statement, no footnote URL, no gitee link.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "AAAI-25 proceedings entry ojs.aaai.org article/view/33052",
+        "result": "Downloads are the PDF and a poster only; no supplementary code archive.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "GitHub code search: 'OLMD sign language', 'OLMD CSLR'",
+        "result": "Zero matching repositories.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "GitHub search: bare 'OLMD'",
+        "result": "22 repositories, all unrelated (LMDB wrapper, markdown editor, profile configs).",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "GitHub author accounts (Yiheng Yu -> github.com/yuyiheng-eu; Zhelun Jin; Xuhua Yang)",
+        "result": "The first author's account exists and publishes code for a different paper (FGDM), but hosts no OLMD repository. The authors do release code for other work, so the absence appears deliberate rather than accidental.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "Papers With Code / paperswithcode.com",
+        "result": "Redirects (302) to huggingface.co/papers/2503.08205, which lists no associated repository.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "Author and lab homepages (Zhejiang University of Technology)",
+        "result": "No personal or lab page located via search.",
+        "accessed_at": "2026-09-08"
+      },
+      {
+        "location": "Semantic Scholar paper fa37313bf1a4558af1462085e70b884b1418fd50",
+        "result": "NOT VERIFIED. The Graph API returned HTTP 429 on five attempts and the web page returned HTTP 202 with an empty body (bot protection). External code links could not be read. Low residual risk because PWC/HuggingFace, Semantic Scholar's usual code-link source, lists none.",
+        "accessed_at": "2026-09-08"
+      }
+    ]
+  },
+  "status": {
+    "pipeline": null,
+    "numerical_agreement": null,
+    "numerical_agreement_basis": "Not yet assessed: no run has been executed. Agreement will be assessed only on in-scope OLMD targets that produce a comparable WER from the declared checkpoint, split, and metric implementation.",
+    "preference_level": 3,
+    "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
+    "blocker": null
+  },
+  "metric_definitions": [
+    {
+      "metric_id": "wer",
+      "name": "WER",
+      "full_name": "Word Error Rate",
+      "direction": "lower_is_better",
+      "unit": "percent",
+      "definition": "WER = (#sub + #ins + #del) / #ref, as stated in the paper's Equation 15, computed over the recognized gloss sequence against the reference gloss annotation.",
+      "implementation": "To be pinned: the official evaluation script shipped with each dataset (the sclite-based scoring used by the PHOENIX14/PHOENIX14-T evaluation package, and the CSL-Daily official evaluation). The paper does not name its scoring tool explicitly; this is recorded as a guess pending confirmation against the datasets on the Modal Volume.",
+      "version": "Not stated by the paper. To be pinned to the official evaluation script version shipped with each dataset; see guess 'metric-implementation'.",
+      "unit_or_scale": "percent (0-100), corpus-level",
+      "aggregation": "Single corpus-level WER per split; the paper reports one value per cell.",
+      "evidence": [
+        "arXiv:2503.08205v1, Equation 15 and the sentence 'note that the lower WER, the better accuracy.'"
+      ]
+    }
+  ],
+  "datasets": [],
+  "experiments": [
+    {
+      "experiment_id": "olmd-phoenix14",
+      "system": "OLMD",
+      "dataset_id": "phoenix14",
+      "checkpoint_rule": "The paper does not state a checkpoint-selection rule. The CSLR convention this work follows (VAC/SMKD/CorrNet lineage) selects the epoch with the best dev WER and reports that checkpoint's dev and test WER. Recorded as guess 'checkpoint-rule'.",
+      "paper_evidence": "arXiv:2503.08205v1 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% horizontal flip, 20% temporal scale adjustment, central 224x224 crop at inference, 1 NVIDIA A6000 GPU.",
+      "training": {
+        "backbone": "ResNet34, ImageNet-pretrained",
+        "temporal_1dcnn": "{K5,P2,K5,P2}",
+        "sequence_model": "BiLSTM, hidden size 1024",
+        "pooling": "TLP (Hu et al. 2022b)",
+        "optimizer": "Adam, weight decay 0.001",
+        "learning_rate": "0.001, reduced to 30% at epochs 25 and 40",
+        "epochs": 70,
+        "batch_size": 2,
+        "augmentation": "resize 256x256 -> random crop 224x224; 50% horizontal flip; 20% probability temporal scale adjustment",
+        "inference": "central 224x224 crop",
+        "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
+        "reported_hardware": "1 NVIDIA A6000 GPU"
+      }
+    },
+    {
+      "experiment_id": "olmd-phoenix14t",
+      "system": "OLMD",
+      "dataset_id": "phoenix14t",
+      "checkpoint_rule": "The paper does not state a checkpoint-selection rule. The CSLR convention this work follows (VAC/SMKD/CorrNet lineage) selects the epoch with the best dev WER and reports that checkpoint's dev and test WER. Recorded as guess 'checkpoint-rule'.",
+      "paper_evidence": "arXiv:2503.08205v1 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% horizontal flip, 20% temporal scale adjustment, central 224x224 crop at inference, 1 NVIDIA A6000 GPU.",
+      "training": {
+        "backbone": "ResNet34, ImageNet-pretrained",
+        "temporal_1dcnn": "{K5,P2,K5,P2}",
+        "sequence_model": "BiLSTM, hidden size 1024",
+        "pooling": "TLP (Hu et al. 2022b)",
+        "optimizer": "Adam, weight decay 0.001",
+        "learning_rate": "0.001, reduced to 30% at epochs 25 and 40",
+        "epochs": 70,
+        "batch_size": 2,
+        "augmentation": "resize 256x256 -> random crop 224x224; 50% horizontal flip; 20% probability temporal scale adjustment",
+        "inference": "central 224x224 crop",
+        "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
+        "reported_hardware": "1 NVIDIA A6000 GPU"
+      }
+    },
+    {
+      "experiment_id": "olmd-csl-daily",
+      "system": "OLMD",
+      "dataset_id": "csl-daily",
+      "checkpoint_rule": "The paper does not state a checkpoint-selection rule. The CSLR convention this work follows (VAC/SMKD/CorrNet lineage) selects the epoch with the best dev WER and reports that checkpoint's dev and test WER. Recorded as guess 'checkpoint-rule'.",
+      "paper_evidence": "arXiv:2503.08205v1 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% horizontal flip, 20% temporal scale adjustment, central 224x224 crop at inference, 1 NVIDIA A6000 GPU.",
+      "training": {
+        "backbone": "ResNet34, ImageNet-pretrained",
+        "temporal_1dcnn": "{K5,P2,K5,P2}",
+        "sequence_model": "BiLSTM, hidden size 1024",
+        "pooling": "TLP (Hu et al. 2022b)",
+        "optimizer": "Adam, weight decay 0.001",
+        "learning_rate": "0.001, reduced to 30% at epochs 25 and 40",
+        "epochs": 70,
+        "batch_size": 2,
+        "augmentation": "resize 256x256 -> random crop 224x224; 50% horizontal flip; 20% probability temporal scale adjustment",
+        "inference": "central 224x224 crop",
+        "loss": "L = gamma_1 * L_CTC + gamma_2 * L_Distill, where L_CTC = L_CTC^local1 + L_CTC^local2 + L_CTC^global and L_Distill = L_KL^g2l1 + L_KL^g2l2 (VAC-style self-distillation). The gamma weights are not stated numerically; see guess 'loss-weights'.",
+        "reported_hardware": "1 NVIDIA A6000 GPU"
+      }
+    },
+    {
+      "experiment_id": "copied-baselines-phoenix14",
+      "system": "Prior published systems as transcribed by the OLMD authors",
+      "dataset_id": "phoenix14",
+      "checkpoint_rule": "Not applicable: these rows are transcribed from prior publications and are not re-executed by this reproduction.",
+      "paper_evidence": "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+    },
+    {
+      "experiment_id": "copied-baselines-phoenix14t",
+      "system": "Prior published systems as transcribed by the OLMD authors",
+      "dataset_id": "phoenix14t",
+      "checkpoint_rule": "Not applicable: these rows are transcribed from prior publications and are not re-executed by this reproduction.",
+      "paper_evidence": "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+    },
+    {
+      "experiment_id": "copied-baselines-csl-daily",
+      "system": "Prior published systems as transcribed by the OLMD authors",
+      "dataset_id": "csl-daily",
+      "checkpoint_rule": "Not applicable: these rows are transcribed from prior publications and are not re-executed by this reproduction.",
+      "paper_evidence": "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table1-p14-dev-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-phoenix14",
+      "paper_location": "Table 1, row 'OLMD (ours)', PHOENIX14 Dev(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 17.1,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the PHOENIX14 training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the dev split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.1 for PHOENIX14 dev.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-phoenix14",
+      "paper_location": "Table 1, row 'OLMD (ours)', PHOENIX14 Test(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 17.2,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the PHOENIX14 training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the test split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.2 for PHOENIX14 test.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-phoenix14t",
+      "paper_location": "Table 1, row 'OLMD (ours)', PHOENIX14-T Dev(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 17.1,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the PHOENIX14-T training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the dev split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 17.1 for PHOENIX14-T dev.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-phoenix14t",
+      "paper_location": "Table 1, row 'OLMD (ours)', PHOENIX14-T Test(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 18.4,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the PHOENIX14-T training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the test split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'OLMD (ours)': 18.4 for PHOENIX14-T test.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-csl-daily",
+      "paper_location": "Table 2, row 'OLMD (ours)', CSL-Daily Dev(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 25.8,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the CSL-Daily training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the dev split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'OLMD (ours)': 25.8 for CSL-Daily dev.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer",
+      "in_scope": true,
+      "experiment_id": "olmd-csl-daily",
+      "paper_location": "Table 2, row 'OLMD (ours)', CSL-Daily Test(%) WER column",
+      "system": "OLMD (ours)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 24.7,
+      "unit": "percent",
+      "copied_baseline": false,
+      "copied_baseline_source": null,
+      "reproduction_plan": "Train OLMD from scratch on the CSL-Daily training split for 70 epochs (batch size 2, Adam, weight decay 0.001, initial LR 0.001 reduced to 30% at epochs 25 and 40), then decode the test split and score WER with the dataset's official evaluation script. The paper states no seed and reports a single value per cell, so a single run is the declared protocol; the absence of a seed policy is recorded as a guess.",
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'OLMD (ours)': 24.7 for CSL-Daily test.",
+        "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-sfl",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SFL (Niu and Mak 2020)', PHOENIX14 Dev(%) WER column",
+      "system": "SFL (Niu and Mak 2020)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 26.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SFL, Niu and Mak 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SFL': 26.2 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-sfl",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SFL (Niu and Mak 2020)', PHOENIX14 Test(%) WER column",
+      "system": "SFL (Niu and Mak 2020)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SFL, Niu and Mak 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SFL': 26.8 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-sfl",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SFL (Niu and Mak 2020)', PHOENIX14-T Dev(%) WER column",
+      "system": "SFL (Niu and Mak 2020)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 25.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SFL, Niu and Mak 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SFL': 25.1 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-sfl",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SFL (Niu and Mak 2020)', PHOENIX14-T Test(%) WER column",
+      "system": "SFL (Niu and Mak 2020)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SFL, Niu and Mak 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SFL': 26.1 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-vac",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'VAC (Min et al. 2021)', PHOENIX14 Dev(%) WER column",
+      "system": "VAC (Min et al. 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "VAC, Min et al. 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'VAC': 21.2 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-vac",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'VAC (Min et al. 2021)', PHOENIX14 Test(%) WER column",
+      "system": "VAC (Min et al. 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 22.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "VAC, Min et al. 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'VAC': 22.3 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-vac",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'VAC (Min et al. 2021)', PHOENIX14-T Dev(%) WER column",
+      "system": "VAC (Min et al. 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "VAC, Min et al. 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'VAC': 21.4 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-vac",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'VAC (Min et al. 2021)', PHOENIX14-T Test(%) WER column",
+      "system": "VAC (Min et al. 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 23.9,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "VAC, Min et al. 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'VAC': 23.9 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-smkd",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SMKD (Hao, Min, and Chen 2021)', PHOENIX14 Dev(%) WER column",
+      "system": "SMKD (Hao, Min, and Chen 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SMKD, Hao, Min, and Chen 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SMKD': 20.8 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-smkd",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SMKD (Hao, Min, and Chen 2021)', PHOENIX14 Test(%) WER column",
+      "system": "SMKD (Hao, Min, and Chen 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SMKD, Hao, Min, and Chen 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SMKD': 21.0 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-smkd",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SMKD (Hao, Min, and Chen 2021)', PHOENIX14-T Dev(%) WER column",
+      "system": "SMKD (Hao, Min, and Chen 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SMKD, Hao, Min, and Chen 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SMKD': 20.8 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-smkd",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SMKD (Hao, Min, and Chen 2021)', PHOENIX14-T Test(%) WER column",
+      "system": "SMKD (Hao, Min, and Chen 2021)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 22.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SMKD, Hao, Min, and Chen 2021",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SMKD': 22.4 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-tlp",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TLP (Hu et al. 2022b)', PHOENIX14 Dev(%) WER column",
+      "system": "TLP (Hu et al. 2022b)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TLP, Hu et al. 2022b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TLP': 19.7 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-tlp",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TLP (Hu et al. 2022b)', PHOENIX14 Test(%) WER column",
+      "system": "TLP (Hu et al. 2022b)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TLP, Hu et al. 2022b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TLP': 20.8 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-tlp",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TLP (Hu et al. 2022b)', PHOENIX14-T Dev(%) WER column",
+      "system": "TLP (Hu et al. 2022b)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TLP, Hu et al. 2022b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TLP': 19.4 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-tlp",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TLP (Hu et al. 2022b)', PHOENIX14-T Test(%) WER column",
+      "system": "TLP (Hu et al. 2022b)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TLP, Hu et al. 2022b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TLP': 21.2 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SEN (Hu et al. 2022a)', PHOENIX14 Dev(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.5,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SEN': 19.5 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SEN (Hu et al. 2022a)', PHOENIX14 Test(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SEN': 21.0 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SEN (Hu et al. 2022a)', PHOENIX14-T Dev(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SEN': 19.3 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SEN (Hu et al. 2022a)', PHOENIX14-T Test(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SEN': 20.7 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'AdaBrowse+ (Hu et al. 2023b)', PHOENIX14 Dev(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.6,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'AdaBrowse+': 19.6 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'AdaBrowse+ (Hu et al. 2023b)', PHOENIX14 Test(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'AdaBrowse+': 20.7 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'AdaBrowse+ (Hu et al. 2023b)', PHOENIX14-T Dev(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.5,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'AdaBrowse+': 19.5 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'AdaBrowse+ (Hu et al. 2023b)', PHOENIX14-T Test(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.6,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'AdaBrowse+': 20.6 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CorrNet (Hu et al. 2023a)', PHOENIX14 Dev(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CorrNet': 18.8 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CorrNet (Hu et al. 2023a)', PHOENIX14 Test(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 19.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CorrNet': 19.4 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CorrNet (Hu et al. 2023a)', PHOENIX14-T Dev(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.9,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CorrNet': 18.9 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CorrNet (Hu et al. 2023a)', PHOENIX14-T Test(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.5,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CorrNet': 20.5 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CoSign (Jiao et al. 2023)', PHOENIX14 Dev(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "keypoints",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CoSign': 19.7 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CoSign (Jiao et al. 2023)', PHOENIX14 Test(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "keypoints",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CoSign': 20.1 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CoSign (Jiao et al. 2023)', PHOENIX14-T Dev(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.5,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CoSign': 19.5 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CoSign (Jiao et al. 2023)', PHOENIX14-T Test(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CoSign': 20.1 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SignGraph (Gan et al. 2024)', PHOENIX14 Dev(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SignGraph': 18.2 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'SignGraph (Gan et al. 2024)', PHOENIX14 Test(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 19.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SignGraph': 19.1 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SignGraph (Gan et al. 2024)', PHOENIX14-T Dev(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 17.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SignGraph': 17.8 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'SignGraph (Gan et al. 2024)', PHOENIX14-T Test(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 19.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'SignGraph': 19.1 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TCNet (Lu, Salah, and Poppe 2024)', PHOENIX14 Dev(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TCNet': 18.1 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TCNet (Lu, Salah, and Poppe 2024)', PHOENIX14 Test(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 18.9,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TCNet': 18.9 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TCNet (Lu, Salah, and Poppe 2024)', PHOENIX14-T Dev(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TCNet': 18.3 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TCNet (Lu, Salah, and Poppe 2024)', PHOENIX14-T Test(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 19.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TCNet': 19.4 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-cnnpluslstmplushmm-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CNN+LSTM+HMM* (Koller et al. 2020)', PHOENIX14 Dev(%) WER column",
+      "system": "CNN+LSTM+HMM* (Koller et al. 2020)",
+      "cues": "video+mouth+hand",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 26.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CNN+LSTM+HMM*, Koller et al. 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CNN+LSTM+HMM*': 26.0 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-cnnpluslstmplushmm-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'CNN+LSTM+HMM* (Koller et al. 2020)', PHOENIX14 Test(%) WER column",
+      "system": "CNN+LSTM+HMM* (Koller et al. 2020)",
+      "cues": "video+mouth+hand",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CNN+LSTM+HMM*, Koller et al. 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CNN+LSTM+HMM*': 26.0 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-cnnpluslstmplushmm-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CNN+LSTM+HMM* (Koller et al. 2020)', PHOENIX14-T Dev(%) WER column",
+      "system": "CNN+LSTM+HMM* (Koller et al. 2020)",
+      "cues": "video+mouth+hand",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 22.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CNN+LSTM+HMM*, Koller et al. 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CNN+LSTM+HMM*': 22.1 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-cnnpluslstmplushmm-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'CNN+LSTM+HMM* (Koller et al. 2020)', PHOENIX14-T Test(%) WER column",
+      "system": "CNN+LSTM+HMM* (Koller et al. 2020)",
+      "cues": "video+mouth+hand",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 24.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CNN+LSTM+HMM*, Koller et al. 2020",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'CNN+LSTM+HMM*': 24.1 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-dnf-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'DNF* (Cui, Liu, and Zhang 2019)', PHOENIX14 Dev(%) WER column",
+      "system": "DNF* (Cui, Liu, and Zhang 2019)",
+      "cues": "video+optical flow",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 23.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "DNF*, Cui, Liu, and Zhang 2019",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'DNF*': 23.1 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-dnf-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'DNF* (Cui, Liu, and Zhang 2019)', PHOENIX14 Test(%) WER column",
+      "system": "DNF* (Cui, Liu, and Zhang 2019)",
+      "cues": "video+optical flow",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 22.9,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "DNF*, Cui, Liu, and Zhang 2019",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'DNF*': 22.9 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-dnf-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'DNF* (Cui, Liu, and Zhang 2019)', PHOENIX14-T Dev(%) WER column",
+      "system": "DNF* (Cui, Liu, and Zhang 2019)",
+      "cues": "video+optical flow",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 22.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "DNF*, Cui, Liu, and Zhang 2019",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'DNF*': 22.7 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-dnf-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'DNF* (Cui, Liu, and Zhang 2019)', PHOENIX14-T Test(%) WER column",
+      "system": "DNF* (Cui, Liu, and Zhang 2019)",
+      "cues": "video+optical flow",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 24.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "DNF*, Cui, Liu, and Zhang 2019",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'DNF*': 24.0 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-stmc-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'STMC* (Zhou et al. 2022)', PHOENIX14 Dev(%) WER column",
+      "system": "STMC* (Zhou et al. 2022)",
+      "cues": "video+hand+face+pose",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "STMC*, Zhou et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'STMC*': 21.1 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-stmc-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'STMC* (Zhou et al. 2022)', PHOENIX14 Test(%) WER column",
+      "system": "STMC* (Zhou et al. 2022)",
+      "cues": "video+hand+face+pose",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "STMC*, Zhou et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'STMC*': 20.7 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-stmc-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'STMC* (Zhou et al. 2022)', PHOENIX14-T Dev(%) WER column",
+      "system": "STMC* (Zhou et al. 2022)",
+      "cues": "video+hand+face+pose",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.6,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "STMC*, Zhou et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'STMC*': 19.6 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-stmc-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'STMC* (Zhou et al. 2022)', PHOENIX14-T Test(%) WER column",
+      "system": "STMC* (Zhou et al. 2022)",
+      "cues": "video+hand+face+pose",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "STMC*, Zhou et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'STMC*': 21.0 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-c2slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'C2SLR* (Zuo and Mak 2022)', PHOENIX14 Dev(%) WER column",
+      "system": "C2SLR* (Zuo and Mak 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.5,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "C2SLR*, Zuo and Mak 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'C2SLR*': 20.5 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-c2slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'C2SLR* (Zuo and Mak 2022)', PHOENIX14 Test(%) WER column",
+      "system": "C2SLR* (Zuo and Mak 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "C2SLR*, Zuo and Mak 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'C2SLR*': 20.4 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-c2slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'C2SLR* (Zuo and Mak 2022)', PHOENIX14-T Dev(%) WER column",
+      "system": "C2SLR* (Zuo and Mak 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "C2SLR*, Zuo and Mak 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'C2SLR*': 20.2 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-c2slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'C2SLR* (Zuo and Mak 2022)', PHOENIX14-T Test(%) WER column",
+      "system": "C2SLR* (Zuo and Mak 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "C2SLR*, Zuo and Mak 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'C2SLR*': 20.4 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-dev-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TwoStream-SLR* (Chen et al. 2022)', PHOENIX14 Dev(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 18.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TwoStream-SLR*': 18.4 for PHOENIX14 dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14-test-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14",
+      "paper_location": "Table 1, row 'TwoStream-SLR* (Chen et al. 2022)', PHOENIX14 Test(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 18.8,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TwoStream-SLR*': 18.8 for PHOENIX14 test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-dev-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TwoStream-SLR* (Chen et al. 2022)', PHOENIX14-T Dev(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 17.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TwoStream-SLR*': 17.7 for PHOENIX14-T dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table1-p14t-test-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-phoenix14t",
+      "paper_location": "Table 1, row 'TwoStream-SLR* (Chen et al. 2022)', PHOENIX14-T Test(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "phoenix14t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 19.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. This is a prior-work comparison row transcribed into the table; the assignment requires accounting for the table, not re-executing previously published systems.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 1, row 'TwoStream-SLR*': 19.3 for PHOENIX14-T test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-ls-han",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'LS-HAN (Huang et al. 2018)', Dev(%) WER column",
+      "system": "LS-HAN (Huang et al. 2018)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 39.0,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "LS-HAN, Huang et al. 2018",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'LS-HAN': 39.0 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-ls-han",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'LS-HAN (Huang et al. 2018)', Test(%) WER column",
+      "system": "LS-HAN (Huang et al. 2018)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 39.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "LS-HAN, Huang et al. 2018",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'LS-HAN': 39.4 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'SEN (Hu et al. 2022a)', Dev(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 31.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'SEN': 31.1 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-sen",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'SEN (Hu et al. 2022a)', Test(%) WER column",
+      "system": "SEN (Hu et al. 2022a)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 30.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SEN, Hu et al. 2022a",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'SEN': 30.7 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'AdaBrowse+ (Hu et al. 2023b)', Dev(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 31.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'AdaBrowse+': 31.2 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-adabrowseplus",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'AdaBrowse+ (Hu et al. 2023b)', Test(%) WER column",
+      "system": "AdaBrowse+ (Hu et al. 2023b)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 30.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "AdaBrowse+, Hu et al. 2023b",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'AdaBrowse+': 30.7 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'CorrNet (Hu et al. 2023a)', Dev(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 30.6,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'CorrNet': 30.6 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-corrnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'CorrNet (Hu et al. 2023a)', Test(%) WER column",
+      "system": "CorrNet (Hu et al. 2023a)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 30.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CorrNet, Hu et al. 2023a",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'CorrNet': 30.1 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'CoSign (Jiao et al. 2023)', Dev(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 28.1,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'CoSign': 28.1 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-cosign",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'CoSign (Jiao et al. 2023)', Test(%) WER column",
+      "system": "CoSign (Jiao et al. 2023)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 27.2,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "CoSign, Jiao et al. 2023",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'CoSign': 27.2 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'TCNet (Lu, Salah, and Poppe 2024)', Dev(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 29.7,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'TCNet': 29.7 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-tcnet",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'TCNet (Lu, Salah, and Poppe 2024)', Test(%) WER column",
+      "system": "TCNet (Lu, Salah, and Poppe 2024)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 29.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TCNet, Lu, Salah, and Poppe 2024",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'TCNet': 29.3 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'SignGraph (Gan et al. 2024)', Dev(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 27.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'SignGraph': 27.3 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-signgraph",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'SignGraph (Gan et al. 2024)', Test(%) WER column",
+      "system": "SignGraph (Gan et al. 2024)",
+      "cues": "video",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "SignGraph, Gan et al. 2024",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'SignGraph': 26.4 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-dev-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'TwoStream-SLR* (Chen et al. 2022)', Dev(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "csl-daily",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 25.4,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'TwoStream-SLR*': 25.4 for CSL-Daily dev.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    },
+    {
+      "target_id": "table2-cslday-test-wer-twostream-slr-star",
+      "in_scope": false,
+      "experiment_id": "copied-baselines-csl-daily",
+      "paper_location": "Table 2, row 'TwoStream-SLR* (Chen et al. 2022)', Test(%) WER column",
+      "system": "TwoStream-SLR* (Chen et al. 2022)",
+      "cues": "video+keypoints",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 25.3,
+      "unit": "percent",
+      "copied_baseline": true,
+      "copied_baseline_source": "TwoStream-SLR*, Chen et al. 2022",
+      "reproduction_plan": "Not rerun. Prior-work comparison row transcribed into the table.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison row transcribed by the OLMD authors into their table. Out of scope for re-execution: the assignment requires accounting for the table's comparison, not rerunning previously published systems."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors.",
+          "AGENTS.md: copied comparison rows may remain in the ledger with in_scope false when the assignment requires accounting for the whole table but does not require rerunning prior work."
+        ]
+      },
+      "evidence": [
+        "arXiv:2503.08205v1 HTML Table 2, row 'TwoStream-SLR*': 25.3 for CSL-Daily test.",
+        "Table rows for prior methods carry no 'results taken from the original papers' disclaimer, but the del/ins column is empty exactly for those methods whose own papers did not report del/ins (CoSign, C2SLR*, TwoStream-SLR*, CNN+LSTM+HMM*), which indicates transcription rather than re-evaluation by the OLMD authors."
+      ]
+    }
+  ],
+  "runs": [],
+  "artifacts": [],
+  "gates": [],
+  "guesses": [
+    {
+      "guess_id": "loss-weights",
+      "detail": "The loss weights gamma_1 (CTC) and gamma_2 (distillation) are not stated numerically in the paper text.",
+      "planned_resolution": "Search the full PDF including any appendix; if still absent, adopt the VAC convention the paper's loss is derived from and record the choice as a deviation.",
+      "status": "open"
+    },
+    {
+      "guess_id": "lma-context-length",
+      "detail": "The LMA context length used for the Table 1/Table 2 headline results is not stated in the Implementation Details; Table 5 ablates it.",
+      "planned_resolution": "Read the optimum from the paper's Table 5 ablation and record which value was selected and why.",
+      "status": "open"
+    },
+    {
+      "guess_id": "seed-policy",
+      "detail": "The paper states no random seed and reports a single value per table cell, so no seed policy or repeat count is defined.",
+      "planned_resolution": "Run the declared single run per target and record the absence of a seed policy as a limitation on comparability.",
+      "status": "open"
+    },
+    {
+      "guess_id": "metric-implementation",
+      "detail": "The paper gives the WER formula but does not name the scoring implementation.",
+      "planned_resolution": "Pin the official evaluation script distributed with each dataset and record its version.",
+      "status": "open"
+    }
+  ],
+  "deviations": [],
+  "contacts": []
+}

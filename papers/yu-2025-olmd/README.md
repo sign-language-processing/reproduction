@@ -1,0 +1,246 @@
+# OLMD reproduction
+
+**Paper ID:** `fa37313bf1a4558af1462085e70b884b1418fd50`
+
+**Citation:** Yiheng Yu, Sheng Liu, Yuan Feng, Min Xu, Zhelun Jin, and Xuhua Yang. 2025.
+OLMD: Orientation-aware Long-term Motion Decoupling for Continuous Sign Language
+Recognition. In *Proceedings of the Thirty-Ninth AAAI Conference on Artificial
+Intelligence (AAAI-25)*, 39(9), 9707–9715. https://doi.org/10.1609/aaai.v39i9.33052
+
+**Paper:** https://arxiv.org/abs/2503.08205 · **Code/artifacts:** none found after a
+documented search (see [Source provenance](#source-provenance))
+
+**Preference level:** 3
+
+Level 3 means reimplementation from the paper: no published code exists.
+
+**Pipeline status:** `None` — not yet set; no run has been executed and the attempt is
+paused at the Modal authentication gate.
+
+**Numerical agreement:** `None` — not yet set; no in-scope target has produced a value.
+
+**Attempt date:** 2026-09-08 (in progress)
+
+> **Status: in progress.** This report covers Phases 0–2 (repository setup, assignment
+> record, target ledger). The data gate, reimplementation, preflight, and full runs are
+> not done. `reproduction.json` still fails validation on exactly the items that require
+> a run or the Modal `datasets` Volume; see [Open validation items](#open-validation-items).
+
+## Scope and target contract
+
+The queue export's `what_to_reproduce` is **"Table 1"**. Table 1 covers **PHOENIX14 and
+PHOENIX14-T only**; CSL-Daily appears in **Table 2**. The export nevertheless lists
+CSL-Daily among the paper's datasets. On 2026-09-08 the assignee resolved this by
+authorizing OLMD's own rows in **both Table 1 and Table 2**, to be attempted **Table 1
+first**. That widening is recorded in `reproduction.json.assignment.scope_decision`.
+
+### In-scope targets — OLMD's own rows, extracted verbatim
+
+| Target ID | Table | Dataset | Split | Published WER |
+| --- | --- | --- | --- | ---: |
+| `table1-p14-dev-wer` | 1 | PHOENIX14 | dev | 17.1 |
+| `table1-p14-test-wer` | 1 | PHOENIX14 | test | 17.2 |
+| `table1-p14t-dev-wer` | 1 | PHOENIX14-T | dev | 17.1 |
+| `table1-p14t-test-wer` | 1 | PHOENIX14-T | test | 18.4 |
+| `table2-cslday-dev-wer` | 2 | CSL-Daily | dev | 25.8 |
+| `table2-cslday-test-wer` | 2 | CSL-Daily | test | 24.7 |
+
+Table 1 also reports del/ins for PHOENIX14 (4.8/2.4 dev, 4.7/2.3 test) but not for
+PHOENIX14-T. The assignment's metric is WER, so del/ins is recorded as context, not as a
+target.
+
+### Out-of-scope targets — copied comparison rows
+
+The other 76 cells (15 prior methods × 4 cells in Table 1, 8 prior methods × 2 cells in
+Table 2) are in the ledger with `in_scope: false`, `copied_baseline: true`, and a terminal
+`not_produced` result with reason code `copied_baseline`. They account for the table's
+comparison without re-executing previously published systems.
+
+**Basis for the copied determination:** the paper carries no "results are taken from the
+original papers" disclaimer, but the del/ins column is empty exactly for those methods
+whose own papers did not report del/ins (CoSign, C2SLR\*, TwoStream-SLR\*,
+CNN+LSTM+HMM\*). Had the OLMD authors re-evaluated those systems they could have computed
+del/ins themselves. This indicates transcription. The export's `copied_scores: "yes"`
+flag is consistent with that reading.
+
+### Metric
+
+WER = (#sub + #ins + #del) / #ref, the paper's Equation 15, lower is better, reported as a
+corpus-level percentage, one value per cell. The paper does **not** name its scoring
+implementation; pinning it to each dataset's official evaluation script is an open guess.
+
+## Source provenance
+
+| Artifact | Canonical source | Pinned revision / SHA-256 | Role |
+| --- | --- | --- | --- |
+| Paper PDF | https://arxiv.org/pdf/2503.08205v1 | `8063662fcaae5d7374451721b94e1e03c706573ebd90378759469587a8963d70` | Target values and protocol |
+| Paper HTML | https://arxiv.org/html/2503.08205v1 | arXiv:2503.08205v1 | Verbatim Table 1 / Table 2 extraction |
+| Version of record | https://ojs.aaai.org/index.php/AAAI/article/view/33052 | DOI 10.1609/aaai.v39i9.33052 | AAAI camera-ready; checked for supplements |
+| Published code | — | — | **None found** |
+
+### Source-search checklist (completed 2026-09-08)
+
+| Location checked | Result |
+| --- | --- |
+| arXiv abstract page | No code-availability statement, no repository link |
+| arXiv HTML full text (downloaded, grepped) | Only `github.com` strings are arXiv's own LaTeXML/`html_feedback` boilerplate. No "code is available", no footnote URL, no gitee link |
+| AAAI-25 proceedings entry | Downloads are the PDF and a poster only; no supplementary code archive |
+| GitHub code search: "OLMD sign language", "OLMD CSLR" | Zero matching repositories |
+| GitHub search: bare "OLMD" | 22 repositories, all unrelated (LMDB wrapper, markdown editor, profile configs) |
+| GitHub author accounts (first author: `yuyiheng-eu`) | Account exists and publishes code for a *different* paper (FGDM), but hosts no OLMD repository. These authors do release code for other work, so the absence appears deliberate |
+| Papers With Code | 302-redirects to `huggingface.co/papers/2503.08205`, which lists no associated repository |
+| Author / lab homepages (Zhejiang University of Technology) | None located via search |
+| Semantic Scholar `fa37313bf…` | **NOT VERIFIED** — Graph API returned HTTP 429 on five attempts; web page returned HTTP 202 with an empty body (bot protection). External code links could not be read. Low residual risk because PWC/HuggingFace, its usual code-link source, lists none |
+
+**Conclusion:** no public code implementation of OLMD exists, official or unofficial.
+Preference levels 1 and 2 require an executable published artifact, so this reproduction
+is **level 3 — reimplementation from the paper**.
+
+## Results
+
+No target has produced a value yet. The six in-scope targets have no terminal result; the
+76 copied baselines are closed as `not_produced` / `copied_baseline`.
+
+| Target ID | Paper location | System | Dataset/split | Metric | Original | Reproduced | Difference | Terminal reason / evidence |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
+| `table1-p14-dev-wer` | Table 1, OLMD row | OLMD | PHOENIX14 / dev | WER | 17.1 | — | — | pending — no run executed |
+| `table1-p14-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14 / test | WER | 17.2 | — | — | pending — no run executed |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / dev | WER | 17.1 | — | — | pending — no run executed |
+| `table1-p14t-test-wer` | Table 1, OLMD row | OLMD | PHOENIX14-T / test | WER | 18.4 | — | — | pending — no run executed |
+| `table2-cslday-dev-wer` | Table 2, OLMD row | OLMD | CSL-Daily / dev | WER | 25.8 | — | — | pending — no run executed |
+| `table2-cslday-test-wer` | Table 2, OLMD row | OLMD | CSL-Daily / test | WER | 24.7 | — | — | pending — no run executed |
+| 76 copied rows | Tables 1–2, prior methods | prior work | all three | WER | see `reproduction.json` | n/a | n/a | `copied_baseline` — transcribed, not rerun |
+
+## How to repeat this
+
+```bash
+git clone https://github.com/sign-language-processing/reproduction.git
+cd reproduction && git checkout repro/yu-2025-olmd
+```
+
+Modal authentication (interactive, human-run — the wrapper refuses to do this itself):
+
+```bash
+python3.9 -m pip install --user modal
+```
+
+```bash
+modal setup
+```
+
+Select workspace **`repro-sign`**, then verify through the wrapper only:
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh
+```
+
+Validate the record:
+
+```bash
+python3.9 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/yu-2025-olmd
+```
+
+Data, build, train, and evaluation commands are **not yet written** — they follow the data
+gate and the reimplementation.
+
+## Data provenance and permissions
+
+Nothing verified yet; the data gate requires Modal access.
+
+| Dataset | Version/subset/splits | Source and access date | License / cloud-use basis | Path in Volume `datasets` | Counts / checksum | Deviations |
+| --- | --- | --- | --- | --- | --- | --- |
+| PHOENIX14 | RWTH-PHOENIX-Weather 2014, continuous SLR | https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/ | Export says CC BY-SA 3.0 — unverified | pending | pending | — |
+| PHOENIX14-T | RWTH-PHOENIX-Weather 2014 T | https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/ | Export says CC BY-SA 3.0 — unverified | pending | pending | — |
+| CSL-Daily | CSL-Daily continuous SLR | https://ustc-slr.github.io/datasets/2021_csl_daily/ | Export says "Custom (research only)" — author-gated, unverified | pending | pending | — |
+
+The export marks PHOENIX-2014-T and CSL-Daily `on_modal: yes` but leaves **PHOENIX-2014
+blank**. Per AGENTS.md these are leads, not facts: each path must pass
+`check_modal_dataset.sh` before use. CSL-Daily's research-only licence is author-gated; if
+it needs a click-through, agreement, or identity judgment, the attempt stops at the data
+gate and routes to Team S.
+
+## Environment and patches
+
+Planned base image `ghcr.io/sign-language-processing/reproduction:latest`; no container
+built yet and no patches applied. At level 3 there is no upstream code to patch — any
+prior-work module reused (TLP pooling, VAC distillation) will be pinned to an upstream
+commit and recorded here.
+
+Host used for setup: Linux 4.18 login node, no GPU, no Docker, system `python3` 3.6.8 with
+`python3.9` available. Modal CLI 1.2.6 installed to `~/.local/bin` via
+`python3.9 -m pip install --user modal`.
+
+**`setup.sh` does not complete in this environment.** It blocks indefinitely on its first
+step, `claude plugin marketplace add DietrichGebert/ponytail`, which needs an interactive
+terminal. That step is the optional simplicity plugin, so the script never reaches its
+Modal-install or `docker pull` steps. Modal was therefore installed directly. `docker` is
+absent from this login node, so the base image cannot be pulled locally; image builds must
+happen on Modal. Recorded as an environment limitation, not patched.
+
+## Execution evidence
+
+No runs. `reproduction.json.runs` is empty.
+
+## Guesses and deviations
+
+| Detail | Paper/evidence says | This attempt will use | Rationale | Effect on interpretation |
+| --- | --- | --- | --- | --- |
+| Loss weights γ₁, γ₂ | Formula given; **no numeric values** | open | Search the full PDF/appendix; else adopt the VAC convention the loss derives from | Directly affects the CTC/distillation balance; a material unknown |
+| LMA context length | Ablated in Table 5; **not stated** for the headline results | open | Read the optimum from Table 5 and record the selection | Central to the paper's own contribution |
+| Seed policy | **None stated**; one value per cell | single run per target | No repeat count is defined by the paper | No variance estimate; limits comparability |
+| Metric implementation | Formula given; **tool not named** | official per-dataset evaluation script | Standard for these benchmarks | Small WER differences can come from scoring details |
+| Checkpoint rule | **Not stated** | best dev WER epoch | The VAC/SMKD/CorrNet lineage convention this work follows | Affects which epoch's test WER is reported |
+
+No deviations yet — nothing has been run.
+
+### Paper-internal inconsistency (recorded, not resolved)
+
+The abstract claims an absolute **1.6%** WER improvement on PHOENIX14. The body text says
+**1.0% (Dev) and 1.7% (Test)** against TCNet's 18.1/18.9. Neither equals 1.6%. This is the
+paper's own inconsistency; this reproduction records it rather than choosing a reading.
+
+## Attempts, failures, and dead ends
+
+1. **Queue ingestion — failed, by design.** *Hypothesis:* the export can be ingested with
+   `ingest_candidate.py`. *Test:* inspected the file against the script's contract.
+   *Result:* the export is a single `reproductions` object, not the required top-level
+   array; it has no top-level `paper_id`, **no `confirmation` field anywhere**, and its
+   top-level `status` is `in_progress` (only the nested `expand.paper.status` is `final`).
+   *Kept:* recorded the assignment as `direct_user_request` instead. Synthesizing a queue
+   record would have meant fabricating a `confirmation` value the export never contained,
+   which `references/candidate-record.md` forbids. The export is preserved as evidence by
+   path and SHA-256. **Worth reporting to the REPRO-SIGN maintainers as a queue-exporter
+   observation.**
+2. **`setup.sh` — hangs.** *Hypothesis:* the script runs unattended. *Test:* ran it;
+   timed out at 2 minutes. *Result:* blocks on the interactive `claude plugin marketplace
+   add`. *Kept:* installed Modal directly; recorded the limitation rather than patching a
+   repository-level script.
+3. **Source search — no code.** Recorded above; drives preference level 3.
+
+## Open validation items
+
+`validate_reproduction.py` currently reports 17 issues, all of which require work that is
+gated:
+
+- 6 × `experiment references unknown dataset` — `datasets` is empty until the Modal data
+  gate can confirm each dataset's directory path on the Volume.
+- 6 × `target needs a terminal result` — the six in-scope OLMD targets, pending runs.
+- `invalid pipeline status` / `invalid numerical_agreement` / `zero-produced status needs
+  blocker` — the two status axes stay unset until either a run produces a value or a
+  blocker is established. Setting a blocker now would assert a terminal outcome that has
+  not been demonstrated.
+
+## Candidate flags, ethics, and human evaluation
+
+The export reports `includes_human_evaluation: "no"` and `potential_ethical_concerns:
+"no"`. The reproduction adds no participants and no human raters: it trains on
+already-collected, published sign language corpora and scores WER automatically. No
+ethics gate is opened. CSL-Daily's research-only terms are a **licence/access** question
+for the data gate, not an ethics question. All three corpora contain identifiable signers,
+so any redistribution of data or predictions must be checked against each licence before
+publication.
+
+## Author and team contact
+
+None. AGENTS.md permits author contact only after an independent attempt, and no attempt
+has been made yet.
