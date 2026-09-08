@@ -701,6 +701,19 @@ def build_cache(
     return result
 
 
+@app.function(image=image, volumes=VOLUMES, gpu="H100!", cpu=16.0, timeout=60 * 60)
+def benchmark_loader_h100(
+    dataset: str = "phoenix14", steps: int = 40, workers: int = 8, limit: int = 0
+) -> dict:
+    """Same benchmark on an H100, to measure rather than assume its speedup.
+
+    The "H100!" form pins a real H100: a bare "H100" lets Modal substitute an
+    H200, which would silently measure different hardware than the one being
+    priced.
+    """
+    return _benchmark(dataset, steps, workers, limit, "H100")
+
+
 @app.function(image=image, volumes=VOLUMES, gpu="A100-40GB", cpu=16.0, timeout=60 * 60)
 def benchmark_loader(
     dataset: str = "phoenix14", steps: int = 40, workers: int = 8, limit: int = 0
@@ -712,6 +725,13 @@ def benchmark_loader(
     works, wall time per step should approach the GPU step time rather than the
     sum, and the estimate drops from about 57.8 to about 25.5 GPU-hours.
     """
+    return _benchmark(dataset, steps, workers, limit, "A100-40GB")
+
+
+def _benchmark(
+    dataset: str, steps: int, workers: int, limit: int, label: str
+) -> dict:
+    """Shared benchmark body, so both GPU variants measure identically."""
     import json
     import time
 
@@ -806,6 +826,7 @@ def benchmark_loader(
     result = {
         "paper_id": PAPER_ID,
         "dataset": dataset,
+        "requested_gpu": label,
         "workers": workers,
         "steps": steps,
         "epochs_consumed": epochs_consumed,
@@ -827,7 +848,9 @@ def benchmark_loader(
     }
     output = pathlib.Path("/outputs/loader-benchmark")
     output.mkdir(parents=True, exist_ok=True)
-    (output / f"{dataset}-loader.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    (output / f"{dataset}-loader-{label}.json").write_text(
+        json.dumps(result, indent=2), encoding="utf-8"
+    )
     results.commit()
     return result
 
@@ -859,6 +882,8 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
         result = build_cache.remote(limit=limit)
     elif action == "benchmark-loader":
         result = benchmark_loader.remote(limit=limit)
+    elif action == "benchmark-loader-h100":
+        result = benchmark_loader_h100.remote(limit=limit)
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))
