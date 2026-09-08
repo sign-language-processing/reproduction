@@ -29,18 +29,31 @@ if [[ "${current_profile}" != "${required_profile}" ]]; then
   exit 2
 fi
 
-if ! token_info="$(modal token info 2>/dev/null)"; then
+if ! profile_json="$(modal profile list --json 2>/dev/null)"; then
   echo "Modal credentials for '${required_profile}' are invalid or expired." >&2
   echo "Ask the user to run '${setup_command}' and select that workspace." >&2
   exit 2
 fi
 
-if [[ "${token_info}" != *"Workspace: ${required_profile} ("* ]]; then
+if ! printf '%s' "${profile_json}" | python3 -c '
+import json, sys
+required = sys.argv[1]
+try:
+    profiles = json.load(sys.stdin)
+except json.JSONDecodeError:
+    sys.exit(1)
+sys.exit(0 if any(
+    isinstance(entry, dict)
+    and entry.get("name") == required
+    and entry.get("workspace") == required
+    for entry in profiles
+) else 1)
+' "${required_profile}"; then
   echo "Refusing Modal operation: profile '${required_profile}' is not authenticated to workspace '${required_profile}'." >&2
   echo "Ask the user to run '${setup_command}' and select workspace '${required_profile}'." >&2
   exit 2
 fi
-unset token_info
+unset profile_json
 
 if [[ $# -eq 0 ]]; then
   echo "Verified Modal profile and workspace '${required_profile}'."

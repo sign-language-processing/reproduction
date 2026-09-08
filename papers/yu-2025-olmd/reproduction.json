@@ -141,7 +141,152 @@
       ]
     }
   ],
-  "datasets": [],
+  "datasets": [
+    {
+      "dataset_id": "phoenix14",
+      "name": "RWTH-PHOENIX-Weather 2014 (multisigner)",
+      "version_or_subset": "phoenix-2014.v3, phoenix-2014-multisigner, features/fullFrame-210x260px",
+      "license_or_permission": "CC BY-SA 3.0 (per queue export; not independently re-verified against the distribution terms)",
+      "cloud_processing_allowed": true,
+      "cloud_processing_basis": "Verified present in the shared Modal Volume 'datasets' in the repro-sign workspace, which the study operates for exactly this purpose; the corpus was placed there by the project, not by this reproduction.",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014",
+      "mount": "/datasets/rwth-phoenix-2014 (read-only)",
+      "source_url": "https://www-i6.informatik.rwth-aachen.de/ftp/pub/rwth-phoenix/2016/phoenix-2014.v3.tar.gz",
+      "accessed_at": "2026-09-08",
+      "provenance": "The volume's raw/extraction_manifest.json records source_url phoenix-2014.v3.tar.gz and extracted_file_count 963673. Frames are per-utterance PNG directories under features/fullFrame-210x260px/{train,dev,test}.",
+      "gate_check": "check_modal_dataset.sh rwth-phoenix-2014 -> confirmed 2026-09-08",
+      "identity_confirmation": "Split sizes 5672/540/629 match the canonical PHOENIX14 multisigner counts reported throughout the CSLR literature.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 5672,
+          "files": [
+            {
+              "path": "raw/phoenix2014-release/phoenix-2014-multisigner/annotations/manual/train.corpus.csv",
+              "sha256": "ebd3a83d0bb81b153e4c2acf2e6fcbc1ba6aa8211176017154a7213629a19947"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 540,
+          "files": [
+            {
+              "path": "raw/phoenix2014-release/phoenix-2014-multisigner/annotations/manual/dev.corpus.csv",
+              "sha256": "42ba319d167b96c90832bb90cf5da9059042ebc826e400bba4f6674a5d840cef"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 629,
+          "files": [
+            {
+              "path": "raw/phoenix2014-release/phoenix-2014-multisigner/annotations/manual/test.corpus.csv",
+              "sha256": "e8f05c6573d9546cd9f5b8528663b4924930800bc34b7f2fcc15708316166990"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset_id": "phoenix14t",
+      "name": "RWTH-PHOENIX-Weather 2014 T",
+      "version_or_subset": "PHOENIX-2014-T, manual gloss annotations (orth column), per-split videos",
+      "license_or_permission": "CC BY-SA 3.0 (per queue export; not independently re-verified against the distribution terms)",
+      "cloud_processing_allowed": true,
+      "cloud_processing_basis": "Verified present in the shared Modal Volume 'datasets' in the repro-sign workspace, which the study operates for exactly this purpose; the corpus was placed there by the project, not by this reproduction.",
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t",
+      "mount": "/datasets/rwth-phoenix-2014-t (read-only)",
+      "source_url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+      "accessed_at": "2026-09-08",
+      "provenance": "annotations/ holds the official PHOENIX-2014-T.{train,dev,test}.corpus.csv with header name|video|start|end|speaker|orth|translation. videos/{train,dev,test} hold per-utterance mp4. features/ additionally holds the PAMI feature archives, which OLMD does not use because it trains a ResNet34 on images.",
+      "gate_check": "check_modal_dataset.sh rwth-phoenix-2014-t -> confirmed 2026-09-08",
+      "identity_confirmation": "Split sizes 7096/519/642 match the canonical PHOENIX14-T counts.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 7096,
+          "files": [
+            {
+              "path": "annotations/PHOENIX-2014-T.train.corpus.csv",
+              "sha256": "cc3dc2461f0a222b92f3927c24ac21c1467f3e5428b406ee7fe40bca1b0b8d44"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 519,
+          "files": [
+            {
+              "path": "annotations/PHOENIX-2014-T.dev.corpus.csv",
+              "sha256": "1085141d0ed6f28c6de6196a271b72c07366ed3fe5470c9717bd44640737f00b"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 642,
+          "files": [
+            {
+              "path": "annotations/PHOENIX-2014-T.test.corpus.csv",
+              "sha256": "632b19c9a87fb9c98b0821e04861750565348bce20a069c6dea1bba5bda27879"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset_id": "csl-daily",
+      "name": "CSL-Daily",
+      "version_or_subset": "csl2020ct_v2, split_1, videos (mp4)",
+      "license_or_permission": "Custom research-only terms (per queue export). Present in the project's shared Volume; redistribution of data or frame-level predictions is NOT assumed and must be checked before any publication.",
+      "cloud_processing_allowed": true,
+      "cloud_processing_basis": "Verified present in the shared Modal Volume 'datasets' in the repro-sign workspace, which the study operates for exactly this purpose; the corpus was placed there by the project, not by this reproduction. The research-only terms cover the planned academic reproduction; no redistribution is planned.",
+      "modal_volume": "datasets",
+      "modal_path": "csl-daily",
+      "mount": "/datasets/csl-daily (read-only)",
+      "source_url": "https://ustc-slr.github.io/datasets/2021_csl_daily/",
+      "accessed_at": "2026-09-08",
+      "provenance": "sentence_label/ holds csl2020ct_v2.pkl (keys per the shipped README: info with name/length/label_gloss/label_char/label_word/signer/time, plus gloss_map/char_map/word_map/postag_map) and split_1.txt. videos/ holds per-utterance mp4, so video decoding here uses simple-video-utils.",
+      "gate_check": "check_modal_dataset.sh csl-daily -> confirmed 2026-09-08",
+      "identity_confirmation": "split_1.txt yields 18401/1077/1176 train/dev/test, matching the canonical CSL-Daily counts.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 18401,
+          "files": [
+            {
+              "path": "sentence_label/split_1.txt",
+              "sha256": "45960c86eaeb2e27bf14f81321aab711b67a144ce931383f8b2ff0cc7c144bdf"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 1077,
+          "files": [
+            {
+              "path": "sentence_label/split_1.txt",
+              "sha256": "45960c86eaeb2e27bf14f81321aab711b67a144ce931383f8b2ff0cc7c144bdf"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 1176,
+          "files": [
+            {
+              "path": "sentence_label/split_1.txt",
+              "sha256": "45960c86eaeb2e27bf14f81321aab711b67a144ce931383f8b2ff0cc7c144bdf"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "experiments": [
     {
       "experiment_id": "olmd-phoenix14",

@@ -14,17 +14,18 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `None` — not yet set; no run has been executed and the attempt is
-paused at the Modal authentication gate.
+**Pipeline status:** `None` — not yet set; no run has been executed. Modal access and the
+data gate are cleared; the reimplementation has not started.
 
 **Numerical agreement:** `None` — not yet set; no in-scope target has produced a value.
 
 **Attempt date:** 2026-09-08 (in progress)
 
-> **Status: in progress.** This report covers Phases 0–2 (repository setup, assignment
-> record, target ledger). The data gate, reimplementation, preflight, and full runs are
-> not done. `reproduction.json` still fails validation on exactly the items that require
-> a run or the Modal `datasets` Volume; see [Open validation items](#open-validation-items).
+> **Status: in progress.** This report covers repository setup, the assignment record,
+> the target ledger, Modal access, and the **data gate (cleared for all three datasets)**.
+> The reimplementation, preflight, and full runs are not done. `reproduction.json` fails
+> validation only on items that require an executed run; see
+> [Open validation items](#open-validation-items).
 
 ## Scope and target contract
 
@@ -149,15 +150,24 @@ Nothing verified yet; the data gate requires Modal access.
 
 | Dataset | Version/subset/splits | Source and access date | License / cloud-use basis | Path in Volume `datasets` | Counts / checksum | Deviations |
 | --- | --- | --- | --- | --- | --- | --- |
-| PHOENIX14 | RWTH-PHOENIX-Weather 2014, continuous SLR | https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/ | Export says CC BY-SA 3.0 — unverified | pending | pending | — |
-| PHOENIX14-T | RWTH-PHOENIX-Weather 2014 T | https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/ | Export says CC BY-SA 3.0 — unverified | pending | pending | — |
-| CSL-Daily | CSL-Daily continuous SLR | https://ustc-slr.github.io/datasets/2021_csl_daily/ | Export says "Custom (research only)" — author-gated, unverified | pending | pending | — |
+| PHOENIX14 | `phoenix-2014.v3`, multisigner, `features/fullFrame-210x260px` | RWTH i6 FTP `phoenix-2014.v3.tar.gz`; 2026-09-08 | CC BY-SA 3.0 per export (not independently re-verified); already in the project Volume | `rwth-phoenix-2014/` | **5672 / 540 / 629** train/dev/test — canonical; annotation CSVs SHA-256 recorded in `reproduction.json` | none |
+| PHOENIX14-T | `PHOENIX-2014-T`, manual gloss (`orth`), per-split mp4 | RWTH i6; 2026-09-08 | CC BY-SA 3.0 per export (not independently re-verified); already in the project Volume | `rwth-phoenix-2014-t/` | **7096 / 519 / 642** — canonical; annotation CSVs SHA-256 recorded | none |
+| CSL-Daily | `csl2020ct_v2`, `split_1`, mp4 videos | USTC-SLR project page; 2026-09-08 | Custom **research-only**; academic reproduction only, **no redistribution assumed** | `csl-daily/` | **18401 / 1077 / 1176** — canonical; `split_1.txt` SHA-256 recorded | none |
 
-The export marks PHOENIX-2014-T and CSL-Daily `on_modal: yes` but leaves **PHOENIX-2014
-blank**. Per AGENTS.md these are leads, not facts: each path must pass
-`check_modal_dataset.sh` before use. CSL-Daily's research-only licence is author-gated; if
-it needs a click-through, agreement, or identity judgment, the attempt stops at the data
-gate and routes to Team S.
+All three passed `check_modal_dataset.sh` on 2026-09-08 and are mounted **read-only** at
+their `/datasets/` paths. Split sizes were counted from the shipped annotation files and match
+the canonical figures in the CSLR literature, which is the dataset-identity evidence.
+
+**Data formats differ per corpus**, which the reimplementation must handle: PHOENIX14 ships
+extracted per-utterance **PNG frame directories**; PHOENIX14-T ships per-split **mp4**
+(plus PAMI feature archives that OLMD does not use, since it trains a ResNet34 on images);
+CSL-Daily ships per-utterance **mp4**. Per AGENTS.md, `simple-video-utils` is used wherever
+video files are decoded.
+
+The export marked PHOENIX-2014-T and CSL-Daily `on_modal: yes` but left **PHOENIX-2014
+blank**. Treating that as a lead rather than a fact was correct in both directions:
+PHOENIX14 **is** present and complete. No data acquisition, `data.sh`, or Team S
+coordination was needed, and no data gate was opened.
 
 ## Environment and patches
 
@@ -219,16 +229,16 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
 
 ## Open validation items
 
-`validate_reproduction.py` currently reports 17 issues, all of which require work that is
-gated:
+`validate_reproduction.py` reports 10 issues, down from 171 at the start. Every remaining
+one requires an executed run:
 
-- 6 × `experiment references unknown dataset` — `datasets` is empty until the Modal data
-  gate can confirm each dataset's directory path on the Volume.
-- 6 × `target needs a terminal result` — the six in-scope OLMD targets, pending runs.
+- 6 × `target needs a terminal result` — the six in-scope OLMD targets.
 - `invalid pipeline status` / `invalid numerical_agreement` / `zero-produced status needs
-  blocker` — the two status axes stay unset until either a run produces a value or a
-  blocker is established. Setting a blocker now would assert a terminal outcome that has
-  not been demonstrated.
+  blocker` — both status axes stay unset until a run produces a value or a blocker is
+  actually established. Setting a blocker now would assert a terminal outcome that has not
+  been demonstrated.
+
+The dataset and experiment errors are resolved.
 
 ## Candidate flags, ethics, and human evaluation
 
