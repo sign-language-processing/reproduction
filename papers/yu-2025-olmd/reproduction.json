@@ -3682,6 +3682,86 @@
         },
         "gate_assessment": "PHOENIX14 is now a measured 24.5 GPU-hours, which still exceeds the AGENTS.md 24-hour single-GPU autonomous threshold by about 2%. The estimate has fallen 13x from 317 GPU-hours through data plumbing alone, with no change to the model, protocol or augmentation, and no further engineering will close a 2% gap: the run is now GPU-bound, so only trimming epochs or evaluation scope would fit it under the gate, and AGENTS.md forbids doing that silently. Authorization is therefore required for about 24.5 GPU-hours, roughly $52 and one day of wall-clock, plus an 8.5-hour CPU cache build.",
         "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset."
+      },
+      "gpu_selection": {
+        "recorded_at_utc": "2026-09-08T19:40:00Z",
+        "modal_catalogue_2026_09_08": {
+          "T4": {
+            "vram_gib": 16,
+            "usd_per_hour": 0.59
+          },
+          "L4": {
+            "vram_gib": 24,
+            "usd_per_hour": 0.799
+          },
+          "A10": {
+            "vram_gib": 24,
+            "usd_per_hour": 1.102
+          },
+          "L40S": {
+            "vram_gib": 48,
+            "usd_per_hour": 1.951
+          },
+          "A100-40GB": {
+            "vram_gib": 40,
+            "usd_per_hour": 2.099
+          },
+          "A100-80GB": {
+            "vram_gib": 80,
+            "usd_per_hour": 2.498
+          },
+          "RTX-PRO-6000": {
+            "vram_gib": 96,
+            "usd_per_hour": 3.031
+          },
+          "H100": {
+            "vram_gib": 80,
+            "usd_per_hour": 3.949
+          },
+          "H200": {
+            "vram_gib": 141,
+            "usd_per_hour": 4.54
+          },
+          "B200": {
+            "vram_gib": 180,
+            "usd_per_hour": 6.25
+          },
+          "B300": {
+            "vram_gib": 192,
+            "usd_per_hour": 7.099
+          }
+        },
+        "hard_memory_constraint": "Measured peak memory is 24.47 GiB with TLP active at the paper's batch size 2. T4 (16 GiB), L4 (24 GiB) and A10 (24 GiB) therefore cannot run this configuration. Fitting them would require reducing batch size or precision, which is a protocol deviation rather than an optimization, so they are excluded.",
+        "cost_is_flat": "Across every viable card the total cost lands between roughly $50 and $65 for PHOENIX14, because Modal's hourly rates scale with throughput. Budget therefore does not discriminate between them; wall-clock and the 24-hour gate do.",
+        "throughput_caveat": "Only the A100 figure is measured, at 0.390-0.422 s per step. Ratios for other cards are literature-typical and are likely optimistic here for three reasons: the paper's batch size of 2 badly underutilizes large GPUs, so an H100 is more likely to give 1.2-1.5x than its nominal 1.9x; 4.3% of each step is residual data-loading overhead that does not shrink on a faster card; and LMA's eight frame-difference passes with 1x3x3 convolutions are memory-bandwidth bound rather than compute bound, and bandwidth scales far less than FLOPs across generations. A realistic H100 estimate is nearer 15-19 hours than 13.",
+        "options": {
+          "A100-40GB": {
+            "estimated_hours": 24.5,
+            "estimated_usd": 51,
+            "clears_24h_gate": false,
+            "note": "The measured baseline. Cheapest per hour among viable cards."
+          },
+          "L40S": {
+            "estimated_hours": 25.8,
+            "estimated_usd": 50,
+            "clears_24h_gate": false,
+            "note": "Lowest estimated total cost, but slightly slower than A100 so still over the gate."
+          },
+          "H100": {
+            "estimated_hours": "13-19 (unmeasured)",
+            "estimated_usd": "51-75",
+            "clears_24h_gate": "probably, if measured",
+            "note": "The only realistic way to bring PHOENIX14 under the gate without touching the protocol."
+          },
+          "B200": {
+            "estimated_hours": "9-14 (unmeasured)",
+            "estimated_usd": "55-88",
+            "clears_24h_gate": "probably",
+            "note": "Fastest, similar total cost, most likely to be queue-limited."
+          }
+        },
+        "recommendation": "Since the reproduction is not time-critical, A100-40GB is the sensible default: it is the only card whose throughput on this workload is actually measured, it is the cheapest viable option per hour, and the total is about $51. Its 24.5 hours misses the autonomous gate by roughly 2%, so it needs authorization -- but authorizing a measured 24.5 hours is sounder than choosing an H100 on an unmeasured 1.9x assumption purely to slip under a threshold. If clearing the gate without authorization is preferred, benchmark an H100 first rather than assuming its speedup.",
+        "recommendation_if_gate_must_be_cleared": "Run loader-benchmark on H100 to measure the real step time, then decide. That costs a few dollars and minutes and replaces an assumption with a measurement."
       }
     }
   ],
