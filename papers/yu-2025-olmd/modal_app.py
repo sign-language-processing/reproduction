@@ -1063,6 +1063,96 @@ def train(
     return result
 
 
+@app.function(image=image, volumes=VOLUMES, cpu=4.0, timeout=60 * 60 * 2)
+def build_cache_shard(spec: tuple) -> dict:
+    """Cache one shard of one split. Runs as one container among many.
+
+    A single container with 16 threads measured only 160 clips/hour, because
+    the cost is per-request latency across the ~179 PNG files per utterance and
+    threads inside one container cannot hide it (cache-probe measured just
+    1.79x from 8 threads). Fanning out across containers multiplies the
+    concurrent network paths to the Volume, which threads did not.
+    """
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+
+    import data
+
+    dataset, split, shard_index, shard_count = spec
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    samples = data.LOADERS[dataset](root, split)[shard_index::shard_count]
+
+    started = time.time()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        sizes = list(
+            pool.map(
+                lambda sample: data.write_cache_entry(root, cache_root, dataset, sample),
+                samples,
+            )
+        )
+    results.commit()
+    elapsed = time.time() - started
+    return {
+        "split": split,
+        "shard": shard_index,
+        "clips": len(samples),
+        "bytes": int(sum(sizes)),
+        "seconds": round(elapsed, 1),
+        "seconds_per_clip": round(elapsed / max(len(samples), 1), 2),
+    }
+
+
+@app.function(image=image, volumes=VOLUMES, timeout=60 * 60 * 6)
+def build_cache_sharded(
+    dataset: str = "phoenix14", shards: int = 40, split: str = "all"
+) -> dict:
+    """Fan the cache build across containers and report measured scaling."""
+    import json
+    import time
+
+    splits = ("train", "dev", "test") if split == "all" else (split,)
+    specs = [
+        (dataset, name, index, shards) for name in splits for index in range(shards)
+    ]
+
+    started = time.time()
+    shard_results = list(build_cache_shard.map(specs))
+    wall = time.time() - started
+
+    total_clips = sum(entry["clips"] for entry in shard_results)
+    total_bytes = sum(entry["bytes"] for entry in shard_results)
+    per_clip = [entry["seconds_per_clip"] for entry in shard_results if entry["clips"]]
+    result = {
+        "paper_id": PAPER_ID,
+        "dataset": dataset,
+        "shards_per_split": shards,
+        "containers_launched": len(specs),
+        "total_clips": total_clips,
+        "total_gib": round(total_bytes / 2**30, 2),
+        "wall_seconds": round(wall, 1),
+        "wall_hours": round(wall / 3600, 3),
+        "effective_clips_per_hour": round(total_clips / (wall / 3600), 1),
+        "per_shard_seconds_per_clip": {
+            "min": min(per_clip) if per_clip else None,
+            "median": sorted(per_clip)[len(per_clip) // 2] if per_clip else None,
+            "max": max(per_clip) if per_clip else None,
+        },
+        "single_container_baseline_clips_per_hour": 160,
+        "by_split": {
+            name: sum(e["clips"] for e in shard_results if e["split"] == name)
+            for name in splits
+        },
+    }
+    output = pathlib.Path("/outputs/cache-build")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / f"{dataset}-cache-sharded.json").write_text(
+        json.dumps(result, indent=2), encoding="utf-8"
+    )
+    results.commit()
+    return result
+
+
 @app.local_entrypoint()
 def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     """Print a function's result locally so runs leave readable evidence.
@@ -1094,6 +1184,8 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
         result = benchmark_loader_h100.remote(limit=limit)
     elif action == "train":
         result = train.remote()
+    elif action == "build-cache-sharded":
+        result = build_cache_sharded.remote(shards=limit or 40)
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

@@ -3627,6 +3627,156 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "cache-build-single-container-001",
+      "purpose": "First attempt at the full PHOENIX14 cache build, using one container with 16 threads.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-08T20:20:00Z",
+      "finished_at_utc": "2026-09-08T21:35:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-daIfQ7QeUBF6rhxMdifBEH",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-daIfQ7QeUBF6rhxMdifBEH",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Stopped deliberately after about 75 minutes. Live measurement over a 180-second window showed 160 clips per hour, about 22.5 s per clip, implying roughly 42 hours for 6841 utterances against a predicted 8.5. That exceeds the declared 12-hour wall ceiling, so the run was cancelled rather than allowed to continue. 156 valid cache entries were produced and retained; the builder is idempotent so they are reused.",
+      "hypothesis_supported": false,
+      "findings": [
+        "The 8.5-hour prediction was invalid because it came from cache-build-trial-001, which cached the FIRST 40 clips of each split -- precisely the clips that data-inspect, preflight, throughput and cache-probe had already read, so the Modal Volume's read cache was warm. It measured 4.49 s per clip. The full build walks 6841 mostly-cold clips and measured 22.5 s per clip, which matches the 27.78 s that throughput-phoenix14-001 recorded for cold serial reads.",
+        "This is the same methodology error twice. cache-probe-phoenix14-001's 6-clip probe was also warm, giving 6.45 s against the cold 27.78 s, and that caveat was recorded at the time -- then a warm 120-clip trial was still allowed to set the full-build estimate. Any future throughput figure must state whether the sample was warm or cold before it is extrapolated.",
+        "More threads cannot fix it: cache-probe measured only 1.79x from 8 threads because the cost is per-request latency across the roughly 179 PNG files per utterance, not bandwidth or CPU."
+      ],
+      "measurements": {
+        "clips_per_hour": 160,
+        "seconds_per_clip": 22.5,
+        "predicted_hours": 8.5,
+        "implied_hours": 42.8,
+        "clips_written_before_stop": 156
+      },
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-single-container",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T20:18:00Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "wall_time_ceiling_reached",
+        "detail": "Measured throughput implied about 42 hours against a declared 12-hour ceiling, so the run was cancelled. The single-container approach was abandoned rather than retried: the cause was per-request latency that threads cannot hide, so the follow-up cache-build-sharded-dev-002 used container fan-out, a different mechanism.",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "cache-build-sharded-dev-002",
+      "purpose": "Measure whether fanning the cache build across Modal containers overcomes the per-request latency that threads inside one container could not.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py::build_cache_sharded --dataset phoenix14 --shards 20 --split dev",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T21:45:00Z",
+      "finished_at_utc": "2026-09-08T21:59:14Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 4.0,
+        "gpu_count_note": "20 concurrent containers, 4 cores each",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-aQzKwnDwxEmKaTjMXfTnrA",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-aQzKwnDwxEmKaTjMXfTnrA",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "All 540 dev utterances cached in 854.3 s across 20 containers, 0.75 GiB, an effective 2275.6 clips per hour against the single-container baseline of 160 -- a 14.2x speedup. Per-shard cost stayed at a median 16.47 s per clip (range 12.64 to 31.32), so the work is still latency-bound and the gain comes entirely from concurrency across containers rather than from any per-clip improvement.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Container-level fan-out is the right lever, and the record now has a measured scaling figure rather than an assumption. Total CPU cost is essentially unchanged, since core-hours are the same; only wall-clock improves.",
+        "The widening per-shard spread, 12.64 to 31.32 s per clip, indicates Volume contention is already appearing at 20 containers, so scaling beyond that is sublinear. The 40-shard full build therefore assumes 1.8x rather than 2x and expects roughly 1.5 hours."
+      ],
+      "measurements": {
+        "shards": 20,
+        "clips": 540,
+        "gib": 0.75,
+        "wall_seconds": 854.3,
+        "effective_clips_per_hour": 2275.6,
+        "speedup_vs_single_container": 14.2,
+        "per_shard_seconds_per_clip_median": 16.47,
+        "per_shard_seconds_per_clip_min": 12.64,
+        "per_shard_seconds_per_clip_max": 31.32
+      },
+      "artifact_ids": [
+        "cache-sharded-json"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-sharded",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T21:43:00Z",
+        "max_wall_time_seconds": 3000,
+        "max_gpu_hours": null,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Measured a 14.2x speedup from container fan-out and cached the dev split.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -3701,6 +3851,14 @@
       "sha256": "d85ae29d50848ee0c69112a3ef5d5bbbf8d939cf3938f46bf98691f9fdaa4470",
       "size_bytes": 672,
       "description": "H100 benchmark: wall vs GPU step time, hidden-latency fraction, peak memory."
+    },
+    {
+      "artifact_id": "cache-sharded-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/cache-build/phoenix14-cache-sharded.json",
+      "sha256": "68680a1b8d64f5d4a76f07a65ef0b8120ffa8a274663926c10e6f9a317457d0e",
+      "size_bytes": 452,
+      "description": "Sharded cache build scaling: effective throughput and per-shard cost spread."
     }
   ],
   "gates": [
@@ -4193,6 +4351,19 @@
         "preflight-phoenix14-002 measured GPU step 0.422 s against serial batch load 5.326 s.",
         "cache-probe-phoenix14-001 measured the cache at 0.267 s per clip, 24.1x faster, with frame counts preserved and JPEG q90 costing 1.028 mean absolute pixel levels of 255.",
         "The `datasets` Volume stays read-only; the cache is written to the paper-specific results Volume."
+      ]
+    },
+    {
+      "guess_id": "warm-vs-cold-throughput",
+      "severity": "informational",
+      "status": "resolved",
+      "detail": "Three separate throughput estimates in this reproduction were derived from samples whose Volume read cache was warm, and each understated the real cost: cache-probe's 6-clip probe gave 6.45 s per clip against a cold 27.78 s, and cache-build-trial-001's 120-clip trial gave 4.49 s and produced an 8.5-hour full-build prediction that the live run showed to be about 42 hours.",
+      "resolution": "Any throughput measurement must state whether its sample was warm or cold before being extrapolated, and full-scale predictions must come from cold or representative samples. The cache build now fans out across containers, with its scaling measured at 20 shards rather than assumed.",
+      "evidence": [
+        "throughput-phoenix14-001: cold serial reads 27.78 s per clip.",
+        "cache-probe-phoenix14-001: warm 6-clip probe 6.45 s per clip.",
+        "cache-build-trial-001: warm 120-clip trial 4.49 s per clip.",
+        "cache-build-single-container-001: live full build 22.5 s per clip."
       ]
     }
   ],
