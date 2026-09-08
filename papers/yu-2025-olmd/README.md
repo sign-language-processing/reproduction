@@ -145,17 +145,49 @@ metric path executes end to end and **must never be compared with the paper's 17
 
 The preflight's own JSON reports `hours_70_epochs: 21.4`. **Do not use that figure.** It
 counts training steps only, and its `seconds_per_step` timer wrapped just the optimizer
-step, excluding frame loading. The evaluation loop separately measured **50.4 s per clip**
-— roughly 260× the per-clip training compute. Since inference cannot cost more than
-training, that is serial PNG I/O from a network Volume with no parallel loading, not
-computation.
+step, excluding frame loading.
 
-Extrapolating the measured evaluation cost with a best-dev checkpoint rule (a dev pass
-every epoch) gives roughly **560 GPU-hours** for PHOENIX14 and **1100** for both Table 1
-datasets. Both 21.4 and 1100 would be misleading to quote: the first ignores I/O, the
-second is dominated by an I/O defect rather than by the paper's protocol. Run
-`throughput-phoenix14-001` therefore measures loading and GPU cost separately before any
-compute gate is opened.
+## Compute requirement (measured)
+
+`throughput-phoenix14-001` separated the two costs the preflight conflated, on PHOENIX14
+dev clips averaging 179 frames (range 147–215):
+
+| Cost | Measured | Ratio to GPU inference |
+| --- | ---: | ---: |
+| GPU inference | 0.0941 s/clip | 1× |
+| GPU train (fwd+bwd) | ~0.194 s/clip | 2× |
+| Frame load, 8 threads | 15.48 s/clip | **165×** |
+| Frame load, serial | 27.78 s/clip | **295×** |
+
+The thread pool gained only **1.79×**, so the bottleneck is Volume network throughput —
+specifically per-request latency across the ~179 separate PNG files per utterance — not
+CPU-bound decoding and not bandwidth.
+
+For 70 epochs with a best-dev checkpoint rule (a dev pass every epoch):
+
+| Scenario | PHOENIX14 | PHOENIX14-T | Both |
+| --- | ---: | ---: | ---: |
+| Frames read from the Volume each epoch | ~1895 GPU-h | ~2323 GPU-h | **~4218 GPU-h** |
+| Frames not I/O-bound | ~22.4 GPU-h | ~27.7 GPU-h | **~50 GPU-h** |
+
+**The I/O defect inflates the requirement about 84×.** Per AGENTS.md, ordinary I/O and
+retry problems are to be investigated rather than escalated, so **no compute gate is
+opened on the inflated figure** — bringing 4218 GPU-hours to `#repro-sign-team-r` would
+misrepresent this reproduction's data plumbing as the paper's protocol.
+
+The fix under test is consolidating each utterance into one JPEG-encoded `.npz` (about
+19 GiB per dataset, against 224 GiB for raw `uint8`), written to the paper's results
+Volume while `datasets` stays read-only. Caching at 256×256 **pre-crop** deliberately
+preserves the paper's random-crop and horizontal-flip augmentation; caching at 224×224
+would have silently removed it, which would be a protocol change rather than an
+optimization.
+
+### The compute gate still applies
+
+Even the compute-bound figure of **~50 GPU-hours for both datasets** exceeds AGENTS.md's
+24-hour single-GPU autonomous threshold, and PHOENIX14 alone at **~22.4 GPU-hours** sits
+just inside it. A `#repro-sign-team-r` discussion is therefore required before any full
+run — carrying the post-fix measurement, not either superseded figure.
 
 ## How to repeat this
 
