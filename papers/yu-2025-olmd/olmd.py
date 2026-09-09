@@ -443,8 +443,12 @@ class TemporalHead(nn.Module):
     @staticmethod
     def _make_branch(input_size: int, hidden_size: int) -> nn.ModuleList:
         # {K5, P2, K5, P2} with TLP as P2. padding=0 on the convolutions,
-        # matching the lineage, so each K5 shortens the sequence by 4; the
-        # dataloader compensates with replicate padding.
+        # matching the lineage, so each K5 shortens the sequence by 4 and the
+        # head emits roughly (L - 8) / 4 steps. Unlike the lineage, which
+        # replicate-pads every clip by 6 frames per side so the convolutions
+        # consume padding, our dataloader only pads to the batch maximum: the
+        # batch-longest clip loses 8 real frames of temporal extent. Recorded
+        # under guess batching-and-padding.
         return nn.ModuleList(
             [
                 nn.Sequential(
