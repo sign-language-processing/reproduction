@@ -372,7 +372,14 @@ Modal profile `repro-sign` throughout.
 | Metric implementation | Formula given; **tool not named** | official per-dataset evaluation script | Standard for these benchmarks | Small WER differences can come from scoring details |
 | Checkpoint rule | **Not stated** | best dev WER epoch | The VAC/SMKD/CorrNet lineage convention this work follows | Affects which epoch's test WER is reported |
 
-No deviations yet — nothing has been run.
+One deviation recorded so far (`reproduction.json.deviations[uniform-batch-lengths]`):
+batch collation pads clips to the batch maximum with replicated last frames and reports
+that maximum as every sample's length, instead of the lineage's per-sample lengths with
+6 replicated frames of explicit padding per side. The shorter clip in each batch-of-2
+therefore has replicated tail frames counted as real CTC/BiLSTM input, and the two
+padding=0 K5 convolutions consume 8 real frames of the batch-longest clip. The paper
+never specifies batching, padding or length masking, so this diverges from the lineage
+convention, not from the paper. Adopted before the full run launched.
 
 ### Paper-internal inconsistency (recorded, not resolved)
 

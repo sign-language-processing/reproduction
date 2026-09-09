@@ -3866,6 +3866,175 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "train-phoenix14-seed0-attempt1",
+      "purpose": "First authorized full training run on PHOENIX14.",
+      "kind": "full_train",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action train",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-09T00:05:00Z",
+      "finished_at_utc": "2026-09-09T09:00:00Z",
+      "config": {
+        "dataset": "phoenix14",
+        "epochs_completed": 29,
+        "epochs_target": 70,
+        "batch_size": 2,
+        "seed": 0,
+        "ctc_reduction": "mean (DEFECTIVE)",
+        "gamma_distill": 25.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-gXs5sOAUSe9xFhUdj4RviD",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-gXs5sOAUSe9xFhUdj4RviD",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Ran 29 of 70 epochs in about 8.7 GPU-hours, roughly $18, then was stopped deliberately. The model never learned: dev WER stayed at 100.0198 at every epoch with about 78.6% deletions and 0.02% insertions, meaning it emitted almost nothing. Total loss moved 17.08 to 15.48 but was flat between 15.76 and 16.17 from epoch 5 to 24; the only real drop came at epoch 25, which is the learning-rate schedule step rather than learning. Roughly 82000 optimizer steps produced no usable model.",
+      "hypothesis_supported": false,
+      "findings": [
+        "Root cause is a defect in this reproduction, not in the paper's protocol. The loss used nn.CTCLoss(reduction='mean'), and PyTorch's 'mean' divides each sample's loss by its TARGET LENGTH. With PHOENIX14's mean of 11.5 glosses that shrank the CTC gradient about 11.5x, while the distillation term carries gamma_2 = 25 and T*T = 64 and is not length-normalised. Distillation therefore dominated, and its cheapest early solution is for the two local branches to agree with the equally untrained global branch: all three collapsed to blank together and agreed perfectly, a self-consistent minimum with near-zero distillation loss and CTC effectively ignored.",
+        "Verified against the lineage rather than reasoned about: CorrNet slr_network.py line 132 uses CTCLoss(reduction='none') and then .mean() over the batch, so its loss is per-utterance and never divided by target length. Its gamma of 25 is calibrated to that scale.",
+        "The 12-step preflight structurally could not catch this. It showed CTC falling 57.7 to 20.9, which looked healthy, because blank collapse needs a few hundred steps to establish. A representative preflight validates the pipeline, not the optimization trajectory.",
+        "A second defect, also mine, made diagnosis far slower: only the TOTAL loss was logged per epoch, so a flat 15.8 could not be attributed to CTC versus distillation. Per-epoch components are now recorded."
+      ],
+      "measurements": {
+        "epochs_completed": 29,
+        "gpu_hours": 8.7,
+        "usd": 18,
+        "dev_wer_every_epoch": 100.0198,
+        "dev_del_typical": 78.6,
+        "loss_first": 17.0753,
+        "loss_last": 15.4833,
+        "loss_flat_range_epochs_5_24": "15.76 to 16.17"
+      },
+      "artifact_ids": [
+        "train-attempt1-history"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-phoenix14-seed0",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T20:18:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": 70.0
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Stopped after 29 epochs once the run was diagnosed as structurally unable to learn, rather than allowed to consume the remaining ceiling. The defective loss reduction makes the run invalid as evidence for any target.",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "train-phoenix14-fixprobe-002",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "train-phoenix14-fixprobe-002",
+      "purpose": "Verify the corrected CTC reduction escapes blank collapse before committing another 24 GPU-hours.",
+      "kind": "train_probe",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action train --limit 4",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-09T09:20:00Z",
+      "finished_at_utc": "2026-09-09T10:20:00Z",
+      "config": {
+        "dataset": "phoenix14",
+        "epochs": 4,
+        "batch_size": 2,
+        "seed": 0,
+        "ctc_reduction": "none + .mean() (CORRECTED)",
+        "gamma_distill": 25.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-kwVnHMfXpYv1PEUnMMwSjV",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-kwVnHMfXpYv1PEUnMMwSjV",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "The fix works and the new component logging confirms the diagnosis quantitatively. CTC falls 182.57, 172.09, 160.07 across the first three epochs, a 12.3% reduction, while the weighted distillation term is only 2.12 to 4.05 -- so CTC now dominates by 40 to 80x, the correct balance. Dev WER moves 100.0198, 99.6626, 99.1266, escaping collapse, and insertions appear from epoch 1, meaning the model has begun emitting tokens. TLP's lifting regularizer also falls 1112 to 791 to 625, so its predictor is learning as intended.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Under the defective reduction the weighted distillation term sat on the same scale as a length-normalised CTC, which is why blank agreement won. With the fix, CTC is 40 to 80x the distillation term and training proceeds. The component logging that was missing from attempt 1 made this visible within three epochs instead of twenty-nine.",
+        "Dev WER is descending only slowly (100.02 to 99.13 over three epochs), which is expected for CTLR from scratch, but it is not yet evidence that the run will reach the paper's 17.1. That requires the full 70 epochs."
+      ],
+      "measurements": {
+        "epochs": 3,
+        "ctc_epoch0": 182.5697,
+        "ctc_epoch2": 160.0724,
+        "distill_weighted_range": "2.12 to 4.05",
+        "dev_wer_epoch0": 100.0198,
+        "dev_wer_epoch2": 99.1266,
+        "lift_epoch0": 1112.01,
+        "lift_epoch2": 625.32,
+        "seconds_per_epoch": 1178
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-phoenix14-seed0",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-09T09:18:00Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 8.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Confirmed the corrected loss escapes blank collapse and CTC is descending.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -3956,6 +4125,14 @@
       "sha256": "dfdbe9f8ba1ac60995f413067fe3a10c0e619208753123926f1bb44e33f46e47",
       "size_bytes": 489,
       "description": "Completed full PHOENIX14 sharded cache build: counts, size, timing, scaling."
+    },
+    {
+      "artifact_id": "train-attempt1-history",
+      "kind": "metrics",
+      "uri": "artifacts/train-attempt1-history.json",
+      "sha256": "168590fe4f71efd35b1a6cb6a3e4af2417ae278ce60445efe901f9f4edde45c7",
+      "size_bytes": 4691,
+      "description": "Per-epoch history of the failed attempt 1: 29 epochs of dev WER pinned at 100.0198 with a flat loss, the evidence for the blank-collapse diagnosis."
     }
   ],
   "gates": [
@@ -4308,13 +4485,16 @@
     {
       "guess_id": "batching-and-padding",
       "severity": "open",
-      "status": "open",
+      "status": "resolved",
       "detail": "Batch size 2 with variable-length video requires a padding and length-masking strategy, which the paper does not describe. This interacts with LMA's k=9 sliding window, whose sequence-boundary handling (zero / replicate / reflect padding) is also unspecified and affects 8 frames of every clip.",
       "planned_resolution": "Adopt the lineage's padding convention; record both the padding and the LMA boundary rule as deviations.",
       "evidence": [
         "arXiv:2503.08205v1 Implementation Details states only batch size 2.",
-        "Equation 7 defines the sliding window without boundary handling."
-      ]
+        "Equation 7 defines the sliding window without boundary handling.",
+        "data.py collate(): lengths = [longest] * len(videos); no side padding beyond batch max.",
+        "olmd.py TemporalHead._make_branch comment and update_lengths(): output steps ~ (L - 8) / 4."
+      ],
+      "resolution": "Clips in a batch are padded to the batch maximum by replicating the last frame (never zeros, so LMA boundary differences stay zero), and LMA's own sliding window uses replicate padding at sequence edges. DIVERGENCE from the lineage: lengths are set to the padded maximum for every sample in the batch instead of per-sample, so the shorter clip's replicated tail counts as real input for CTC, the BiLSTM and decoding; and no extra +/-6-frame replicate pad is added, so the two padding=0 K5 convolutions consume 8 real frames of the batch-longest clip (the lineage pads 6 frames per side and uses per-sample lengths ceil(L/4)*4+12 so the convolutions consume padding). The paper is silent on all of this; impact is expected to be modest because replicated frames are static and CTC mostly emits blanks over them, but it is a real protocol difference affecting WER comparability. Chosen for simplicity before the 2026-09-08 full run launched; revisit per-sample lengths only as a diagnosis hypothesis if the produced WER disagrees."
     },
     {
       "guess_id": "temporal-scale-range",
@@ -4463,8 +4643,31 @@
         "cache-build-trial-001: warm 120-clip trial 4.49 s per clip.",
         "cache-build-single-container-001: live full build 22.5 s per clip."
       ]
+    },
+    {
+      "guess_id": "ctc-loss-reduction",
+      "severity": "open",
+      "status": "resolved",
+      "detail": "The paper states the loss as L = gamma_1*L_CTC + gamma_2*L_Distill with gamma_1 = 1 and gamma_2 = 25, but never says how the CTC loss is reduced across a batch. The choice is not cosmetic: PyTorch's reduction='mean' divides by target length, which rescales CTC relative to the distillation term by roughly the mean gloss count.",
+      "resolution": "reduction='none' followed by .mean() over the batch, matching CorrNet slr_network.py. Per-utterance, never length-normalised, which is the scale gamma_2 = 25 is calibrated to. Using reduction='mean' caused a 29-epoch blank-collapse failure in train-phoenix14-seed0-attempt1.",
+      "evidence": [
+        "CorrNet slr_network.py:132 CTCLoss(reduction='none') then .mean() at lines 119-123.",
+        "train-phoenix14-seed0-attempt1: dev WER 100.0198 for 29 epochs under reduction='mean'.",
+        "train-phoenix14-fixprobe-002: CTC 182.6 to 160.1 and dev WER 100.02 to 99.13 in three epochs under the corrected reduction."
+      ]
     }
   ],
-  "deviations": [],
+  "deviations": [
+    {
+      "deviation_id": "uniform-batch-lengths",
+      "detail": "Batch collation pads clips to the batch maximum with replicated last frames and reports the padded maximum as every sample's length, rather than the lineage's per-sample lengths with 6 replicated frames of explicit padding per side. Consequences: the shorter clip in each batch-of-2 has replicated tail frames counted as real CTC/BiLSTM input, and the two padding=0 K5 convolutions consume 8 real frames of the batch-longest clip. The paper never specifies batching, padding or length masking, so this is a divergence from the lineage convention, not from the paper.",
+      "guess_id": "batching-and-padding",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "adopted_before_run": "train-phoenix14-seed0"
+    }
+  ],
   "contacts": []
 }

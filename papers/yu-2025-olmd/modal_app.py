@@ -992,6 +992,10 @@ def train(
         model.train()
         epoch_started = time.time()
         losses = []
+        # Log components, not just the total. attempt1 logged only the total, so
+        # a flat ~15.8 could not be attributed to CTC versus distillation and
+        # the blank collapse took 29 epochs to identify.
+        parts_ctc, parts_distill, parts_lift = [], [], []
         # Re-seed per epoch so augmentation varies while staying reproducible.
         for video, lengths, targets, target_lengths, _ in make_loader(
             "train", True, seed * 1000 + epoch
@@ -1002,12 +1006,19 @@ def train(
             parts["loss"].backward()
             optimizer.step()
             losses.append(float(parts["loss"]))
+            parts_ctc.append(float(parts["ctc"]))
+            parts_distill.append(float(parts["distill"]))
+            parts_lift.append(float(parts.get("lift", 0.0)))
         scheduler.step()
 
         dev = score("dev")
         entry = {
             "epoch": epoch,
             "loss_mean": round(float(np.mean(losses)), 4),
+            "ctc_mean": round(float(np.mean(parts_ctc)), 4),
+            "distill_mean": round(float(np.mean(parts_distill)), 6),
+            "distill_weighted": round(25.0 * float(np.mean(parts_distill)), 4),
+            "lift_mean": round(float(np.mean(parts_lift)), 2),
             "dev_wer": dev["wer"],
             "dev_del": dev["del"],
             "dev_ins": dev["ins"],
@@ -1183,7 +1194,7 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     elif action == "benchmark-loader-h100":
         result = benchmark_loader_h100.remote(limit=limit)
     elif action == "train":
-        result = train.remote()
+        result = train.remote(epochs=limit or 70, resume=not bool(limit))
     elif action == "build-cache-sharded":
         result = build_cache_sharded.remote(shards=limit or 40)
     else:

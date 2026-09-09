@@ -562,7 +562,15 @@ class OLMDLoss(nn.Module):
 
     def __init__(self, blank: int = 0, temperature: float = 8.0, exclude_blank: bool = True):
         super().__init__()
-        self.ctc = nn.CTCLoss(blank=blank, reduction="mean", zero_infinity=True)
+        # reduction="none" then .mean() over the batch, matching the lineage.
+        # NOT reduction="mean": torch divides each sample by its TARGET LENGTH,
+        # which for PHOENIX14's mean of 11.5 glosses shrinks the CTC gradient
+        # about 11.5x relative to the distillation term. With gamma_2 = 25 that
+        # let distillation dominate, and the three branches settled into a
+        # self-consistent all-blank minimum -- exactly what
+        # train-phoenix14-seed0-attempt1 exhibited: dev WER pinned at 100.0 with
+        # 78.6% deletions for 29 epochs while the loss sat flat near 15.8.
+        self.ctc = nn.CTCLoss(blank=blank, reduction="none", zero_infinity=True)
         self.kl = nn.KLDivLoss(reduction="batchmean")
         self.temperature = temperature
         self.exclude_blank = exclude_blank
@@ -584,7 +592,7 @@ class OLMDLoss(nn.Module):
                 targets,
                 outputs[f"{key}_lengths"],
                 target_lengths,
-            )
+            ).mean()
 
         # Eq. 13: the global branch teaches both local branches.
         teacher = outputs["global_logits"]
