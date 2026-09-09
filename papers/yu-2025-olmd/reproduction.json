@@ -4030,10 +4030,69 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "Confirmed the corrected loss escapes blank collapse and CTC is descending.",
+        "detail": "Confirmed the corrected loss escapes blank collapse and CTC is descending. The full run resumes from this probe's epoch-3 checkpoint (same seed, config and optimizer state), so its 4 epochs are not discarded.",
         "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
+        "retry_decision": "resume",
+        "gate_ids": [],
+        "next_run_id": "train-phoenix14-seed0-attempt3"
+      }
+    },
+    {
+      "run_id": "train-phoenix14-seed0-attempt3",
+      "purpose": "Full 70-epoch PHOENIX14 training with the corrected CTC reduction, resuming from the verified fixprobe-002 checkpoint at epoch 4.",
+      "kind": "train_full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-09T13:05:00Z",
+      "config": {
+        "dataset": "phoenix14",
+        "epochs": 70,
+        "resume": true,
+        "resume_from": "olmd-yu-2025-results:/train/phoenix14/latest.pt (epoch 3, dev WER 89.4403)",
+        "batch_size": 2,
+        "seed": 0,
+        "ctc_reduction": "none + .mean() (corrected in commit 231a877)",
+        "gamma_distill": 25.0
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-09T13:05:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 26.0,
+        "max_cost_chf": 70.0
+      },
+      "attempt": {
+        "group_id": "train-phoenix14-seed0",
+        "number": 3,
+        "max_attempts": 4
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-40GB",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-UKhAwiji3qd5MbzazJsyPG",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-UKhAwiji3qd5MbzazJsyPG",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "IN PROGRESS at recording time. Projected 66 remaining epochs at ~1178 s/epoch (~21.6 GPU-hours plus dev passes), inside the 24-hour function timeout; the function checkpoints every epoch and resumes on re-invocation if the timeout is hit. Terminal block to be filled at completion.",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
       }
     }
   ],
