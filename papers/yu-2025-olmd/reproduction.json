@@ -128,7 +128,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint: 35.0 dev / 34.2 test vs published 17.1 / 17.2 -- an ~18-point gap, so does_not_agree stands. Diagnosis so far: of the originally reported 34-point gap, ~16.5 points were evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3) and ~0.3 decoding; the remaining ~18 points are model/protocol-side, with the unpublished MP-Block internals (blocking guess) the leading candidate. PHOENIX14-T targets remain unproduced, hence pipeline=partial.",
+    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint: 35.0 dev / 34.2 test vs published 17.1 / 17.2 -- an ~18-point gap, so does_not_agree stands. Diagnosis so far: of the originally reported 34-point gap, ~16.5 points were evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3) and ~0.3 decoding; the remaining ~18 points are model/protocol-side, with the unpublished MP-Block internals (blocking guess) the leading candidate. PHOENIX14-T targets remain unproduced, hence pipeline=partial. POST-RUN AUDIT (2026-09-10): full-resolution inspection of Figures 2 and 3 found two wiring deviations adopted before the run under then-open guesses -- the temporal head (deviation head-wiring-vs-figure2) and LMA's trunk routing (deviation lma-in-trunk-vs-figures). Both are training-side candidate contributors to the residual ~18-point gap, alongside the unpublished MP-Block internals; correcting either requires a gated retrain. The figures also POSITIVELY verified the FFN residual, cascade order and content, alpha/beta mapping, HMP/VMP orientation assignment, and the LMA difference/concat structure as implemented.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": null
@@ -4753,7 +4753,7 @@
       "guess_id": "mp-block-internals",
       "severity": "blocking",
       "status": "constrained-not-determined",
-      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement.",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished.",
       "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
         "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
@@ -4785,13 +4785,15 @@
     {
       "guess_id": "cross-stage-injection-point",
       "severity": "blocking",
-      "status": "open",
+      "status": "resolved",
       "detail": "Equation 6 produces the cross-stage coupling output X_CS in R^{C x T}, but no equation or sentence states where X_CS enters the network (added before the 1D-CNN? concatenated? injected after the first 1D-CNN?). Table 8 attributes 1.2 Dev / 1.3 Test WER to coupling, so the choice is material.",
       "planned_resolution": "Infer from Figure 2's data flow; record the selected injection point as a deviation.",
       "evidence": [
         "arXiv:2503.08205v1 Equation 6 and the cross-stage coupling paragraph.",
-        "Table 8: stage+cross-stage 17.1/17.2 vs coupling-free 18.3/18.5."
-      ]
+        "Table 8: stage+cross-stage 17.1/17.2 vs coupling-free 18.3/18.5.",
+        "arXiv:2503.08205v1 HTML asset image_2.png (Figure 2): trunk->1D-CNN, Cross-stage Coupling->1D-CNN, outputs summed -> BiLSTM & Classifier."
+      ],
+      "resolution": "RESOLVED BY FIGURE 2 (inspected 2026-09-10 from the arXiv HTML figure assets), and the resolution CONTRADICTS this reproduction's implementation. Figure 2 shows the trunk features feeding one 1D-CNN and the cross-stage coupling output X_CS feeding its OWN separate 1D-CNN; the two 1D-CNN outputs are element-wise added and the sum feeds the BiLSTM and classifier. This implementation instead added X_CS to the frame features and ran two identical parallel 1D-CNN branches over that same sum. Recorded as deviation head-wiring-vs-figure2; correcting it requires a retrain and is gated."
     },
     {
       "guess_id": "ffn-and-ds-widths",
@@ -4958,7 +4960,7 @@
       "severity": "open",
       "status": "resolved",
       "detail": "The paper does not say whether the two 1D-CNN branches are sequential or parallel. Fig. 2 annotates them 'xN' and says they 'share architecture'; Eq. 12 supervises both with peer local CTC losses.",
-      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips.",
+      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips. REVISED 2026-09-10 after inspecting Figure 2 at full resolution: the two 1D-CNNs are parallel but take DIFFERENT inputs (trunk features vs X_CS), with outputs summed before the BiLSTM; and the 'xN' annotations sit on the Feature-Extractor stage block and the OMP block (N = 3 stages), not on the 1D-CNNs as earlier recorded. The parallel-over-identical-input topology used by the completed run is a deviation (head-wiring-vs-figure2). The sequential-is-impossible argument stands.",
       "evidence": [
         "arXiv:2503.08205v1 Figure 2 caption and Equation 12.",
         "Gloss-count statistics computed from PHOENIX14 train.corpus.csv: mean 11.5, median 11, p95 18, max 28.",
@@ -5037,6 +5039,37 @@
         "evaluate"
       ],
       "adopted_before_run": "train-phoenix14-seed0"
+    },
+    {
+      "deviation_id": "head-wiring-vs-figure2",
+      "detail": "Figure 2 wires the temporal head as: trunk frame features -> 1D-CNN #1, cross-stage coupling output X_CS -> 1D-CNN #2, element-wise sum of the two 1D-CNN outputs -> BiLSTM -> shared classifier (so local CTC #2 directly supervises the coupling path). The completed run instead computed head(frame_features + X_CS) with two identical parallel 1D-CNN branches over the same input and the BiLSTM reading branch 2. The prose never states the wiring (the cross-stage-injection-point guess was open at training time); the figure was only inspected at full resolution after the run. Affects gradient flow into OMP/coupling and head capacity; a correction requires retraining.",
+      "guess_id": "cross-stage-injection-point",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "adopted_before_run": "train-phoenix14-seed0-attempt3",
+      "discovered_after_run": true
+    },
+    {
+      "deviation_id": "lma-in-trunk-vs-figures",
+      "detail": "Figures 2 and 3 both draw LMA on a side branch: the trunk continues from the RAW stage output, receives alpha/beta-scaled upsampled OMP outputs (stage coupling), and proceeds to the next stage; LMA's output feeds ONLY the Decoupling->HMP/VMP path. The completed run instead assigned the trunk to LMA's residual output (volume = lma(volume)) before coupling and the next stage. The prose ('frame-wise features first aggregate long-term motion information via LMA, which is then decoupled') is compatible with either reading; the figures disambiguate against the implementation. Consequence: LMA's expand convolution (not zero-initialized) perturbs the ImageNet-pretrained trunk from step 0, whereas the figures' wiring leaves the trunk near-pretrained early in training (alpha=beta=0). A correction requires retraining.",
+      "guess_id": "mp-block-internals",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "adopted_before_run": "train-phoenix14-seed0-attempt3",
+      "discovered_after_run": true
+    },
+    {
+      "deviation_id": "ctc-zero-infinity",
+      "detail": "nn.CTCLoss is constructed with zero_infinity=True while the lineage (VAC) uses zero_infinity=False. Only affects batches where the reduced input length falls below the target length; with uniform batch-max lengths this is rare. Recorded for completeness; expected impact negligible.",
+      "guess_id": "unstated-training-hyperparameters",
+      "affects": [
+        "train"
+      ],
+      "adopted_before_run": "train-phoenix14-seed0-attempt1"
     }
   ],
   "contacts": []

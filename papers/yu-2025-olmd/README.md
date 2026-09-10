@@ -152,6 +152,33 @@ sharpens the diagnosis: the paper's own no-modules ablation baseline (Table 5, "
 reaches 18.9 dev — our 35.0 is far worse than even that, so the shortfall points at the
 **inferred parts of the recipe**, not at the marginal value of OLMD's novel modules.
 
+**Post-run figure audit (2026-09-10) found two wiring deviations.** A full-resolution
+inspection of the paper's figure assets (the prose never states either detail, and both
+were adopted under then-open guesses before training) found:
+
+1. **Temporal head** (deviation `head-wiring-vs-figure2`): Figure 2 feeds the trunk
+   features to one 1D-CNN and the cross-stage output X_CS to its *own* 1D-CNN, sums the
+   two outputs, and runs the BiLSTM on the sum — so one local CTC loss directly
+   supervises the coupling path. The run instead computed `head(trunk + X_CS)` with two
+   identical parallel branches over the same input.
+2. **LMA routing** (deviation `lma-in-trunk-vs-figures`): Figures 2 and 3 draw LMA on a
+   side branch — the trunk continues from the *raw* stage output plus the α/β-scaled
+   coupling, so with α=β=0 at init the ImageNet-pretrained trunk starts undisturbed. The
+   run instead routed LMA's residual output (whose expand convolution is not
+   zero-initialized) into the trunk.
+
+Both are training-side candidate contributors to the residual gap; correcting either
+requires a gated retrain. The same audit *positively verified* the rest of the
+architecture against the figures: FFN residual, cascade order and content (DS of the
+previous post-FFN output, fused before the MP-Block), α/β mapping, HMP/VMP orientation
+assignment, and the LMA difference/concat structure. It also confirmed Figure 2's "×N"
+annotations mark the three stages, not repeated 1D-CNNs. Pipeline-side, the audit found
+only minor items: dead lineage-padding helpers in `data.py` (`padded_length`, unused —
+consistent with the recorded `uniform-batch-lengths` deviation), and
+`zero_infinity=True` on the CTC loss where the lineage uses `False` (deviation
+`ctc-zero-infinity`, negligible). The image path is clean: PIL/RGB end to end, cache
+JPEG roundtrip verified, per-clip crop/flip, lineage [-1, 1] scaling (recorded guess).
+
 **The MP-Block fidelity caveat is central.** The MP-Block, the core of the paper's
 headline HMP/VMP contribution, is inferred: the paper defers it to supplementary material
 that does not exist publicly (arXiv has no ancillary files; the AAAI entry ships PDF and

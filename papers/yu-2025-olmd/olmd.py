@@ -305,6 +305,12 @@ class OLMDBackbone(nn.Module):
             c, h, w = flat.shape[1:]
             volume = flat.reshape(n, t, c, h, w).transpose(1, 2)
 
+            # DEVIATION (lma-in-trunk-vs-figures, found in the post-run figure
+            # audit): Figures 2 and 3 draw LMA on a side branch -- the trunk
+            # continues from the RAW stage output plus the alpha/beta coupling,
+            # and LMA feeds only Decoupling->HMP/VMP. Here LMA's residual output
+            # replaces the trunk instead. Kept as-executed for the recorded run;
+            # correcting it is a retrain decision.
             volume = lma(volume)  # Eqs. 7-11
             x_h, x_v = omp(volume, previous)  # Eqs. 1-4
             previous = (x_h, x_v)
@@ -417,8 +423,15 @@ class TemporalHead(nn.Module):
 
     INFERRED (guess_id: bilstm-layer-count): the lineage's BiLSTM divides the
     given hidden size by the number of directions, so 1024 means 512 per
-    direction with a 1024-wide output, and the convention is 2 layers. Fig. 2's
-    "xN" annotation on the 1D-CNN blocks is never defined; N = 1 is used.
+    direction with a 1024-wide output, and the convention is 2 layers. (Fig. 2's
+    "xN" annotations mark the three backbone/OMP stages, not the 1D-CNNs; an
+    earlier reading of this docstring got that wrong.)
+
+    DEVIATION (head-wiring-vs-figure2, found in the post-run figure audit):
+    Figure 2 feeds the trunk to one 1D-CNN and X_CS to the other, then sums the
+    two branch outputs before the BiLSTM. This class instead runs both branches
+    over the same (trunk + X_CS) input and gives the BiLSTM branch 2's output.
+    Kept as-executed for the recorded run; correcting it is a retrain decision.
 
     The P2 operator is Temporal Lift Pooling, which the paper adopts by name
     ("We adopt the pooling method from TLP"), not max pooling. Its two auxiliary
