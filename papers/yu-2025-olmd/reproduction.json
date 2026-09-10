@@ -4099,6 +4099,98 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "rescore-phoenix14-001",
+      "purpose": "Metric-mismatch diagnosis, inference side: re-decode the attempt-3 best-dev checkpoint with greedy and beam-10 (lineage decoding) and score both under symmetric scoring variants, without touching training.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-10T10:40:00Z",
+      "config": {
+        "checkpoint": "olmd-yu-2025-results:/train/phoenix14/best.pt (epoch 57)",
+        "decodings": [
+          "greedy",
+          "beam width 10, prune 50, no LM"
+        ],
+        "scoring_variants": [
+          "raw (markers kept both sides)",
+          "stripped_both",
+          "train_reported (asymmetric, for continuity)"
+        ]
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T10:40:00Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.0
+      },
+      "attempt": {
+        "group_id": "rescore-phoenix14",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A10G",
+        "gpu_count": 1
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": null,
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      }
+    },
+    {
+      "run_id": "sclite-phoenix14-001",
+      "purpose": "Metric-mismatch diagnosis, scoring side: run the official PHOENIX sclite chain (preprocess.sh, mergectmstm.py, sclite -f 0 -o dtl; SCTK v2.4.12, pinned) on the rescore CTM hypotheses, against the lineage's pinned ground-truth STM files.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "config": {
+        "sctk": "github.com/usnistgov/SCTK @ 62aabfa95938bfea284f8b68a374c7ddcb0fce52 (v2.4.12)",
+        "slr_eval": "github.com/hulianyuyy/CorrNet @ a812814f4deefda0b75ab1dcc90b106c62912263 evaluation/slr_eval, files sha256-pinned",
+        "inputs": "hyp-{greedy,beam10}-{dev,test}.ctm from rescore-phoenix14-001"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T10:40:00Z",
+        "max_wall_time_seconds": 2700,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "attempt": {
+        "group_id": "sclite-phoenix14",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": null,
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      }
     }
   ],
   "artifacts": [

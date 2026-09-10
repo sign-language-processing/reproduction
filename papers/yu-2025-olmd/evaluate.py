@@ -164,6 +164,72 @@ def greedy_ctc_decode(
     return sequences
 
 
+def beam_ctc_decode(
+    logits, lengths, blank: int = 0, beam_width: int = 10, prune: int = 50
+) -> list[list[int]]:
+    """CTC prefix beam search, no language model.
+
+    The lineage (VAC/CorrNet) decodes with ctcdecode BeamCTCDecoder at
+    beam_width=10 and no LM; this is the same algorithm in pure NumPy so it
+    needs no compiled extension. Per frame, expansion is limited to the
+    `prune` highest-probability labels; with CTC's peaked distributions the
+    labels beyond the top 50 carry negligible mass, and prune=50 on a 1296
+    vocabulary reproduces full-vocabulary search results in practice (recorded
+    under guess ctc-decoding).
+    """
+    import numpy as np
+    import torch
+
+    with torch.no_grad():
+        all_logp = torch.log_softmax(logits.float(), dim=-1).cpu().numpy()  # (T, N, C)
+
+    neg_inf = float("-inf")
+    sequences = []
+    for index in range(all_logp.shape[1]):
+        length = int(lengths[index])
+        logp = all_logp[:length, index]
+        # prefix -> (log P(prefix ending in blank), log P(prefix ending in non-blank))
+        beams = {(): (0.0, neg_inf)}
+        for t in range(length):
+            frame = logp[t]
+            k = min(prune, frame.shape[0] - 1)
+            candidates = np.argpartition(-frame, k)[:k]
+            next_beams: dict[tuple, tuple[float, float]] = {}
+
+            def add(prefix, p_blank=neg_inf, p_nonblank=neg_inf):
+                old_b, old_nb = next_beams.get(prefix, (neg_inf, neg_inf))
+                next_beams[prefix] = (
+                    np.logaddexp(old_b, p_blank),
+                    np.logaddexp(old_nb, p_nonblank),
+                )
+
+            for prefix, (p_b, p_nb) in beams.items():
+                p_total = np.logaddexp(p_b, p_nb)
+                add(prefix, p_blank=p_total + frame[blank])
+                last = prefix[-1] if prefix else None
+                for c in candidates:
+                    c = int(c)
+                    if c == blank:
+                        continue
+                    if c == last:
+                        # Repeating the last label without a blank collapses into
+                        # the same prefix; extending requires the blank path.
+                        add(prefix, p_nonblank=p_nb + frame[c])
+                        add(prefix + (c,), p_nonblank=p_b + frame[c])
+                    else:
+                        add(prefix + (c,), p_nonblank=p_total + frame[c])
+
+            beams = dict(
+                sorted(
+                    next_beams.items(),
+                    key=lambda item: -np.logaddexp(item[1][0], item[1][1]),
+                )[:beam_width]
+            )
+        best = max(beams.items(), key=lambda item: np.logaddexp(item[1][0], item[1][1]))[0]
+        sequences.append(list(best))
+    return sequences
+
+
 # INFERRED (guess_id: gloss-post-processing). The official PHOENIX evaluation
 # strips a set of markers from the hypothesis before scoring. The OLMD paper
 # never mentions any post-processing, and applying it or not shifts WER by real

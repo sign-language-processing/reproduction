@@ -1074,6 +1074,239 @@ def train(
     return result
 
 
+@app.function(image=image, volumes=VOLUMES, gpu="A10G", cpu=8.0, timeout=60 * 60 * 3)
+def rescore(dataset: str = "phoenix14") -> dict:
+    """Re-decode the best-dev checkpoint with greedy AND beam search, no retraining.
+
+    Metric-mismatch diagnosis, inference side only. The paper never states its
+    decoding (guess ctc-decoding); the lineage uses beam width 10 with no LM,
+    while the full run's 51.47/51.98 used greedy. This scores both decodings
+    under three symmetric scoring variants of our Levenshtein metric:
+
+      * raw            -- no marker stripping on either side (matches the
+                          official STM ground truth, which keeps __ON__/__OFF__);
+      * stripped_both  -- markers stripped from references AND hypotheses;
+      * train_reported -- references stripped, hypotheses raw: the ASYMMETRIC
+                          variant train() reported, kept for continuity. The
+                          asymmetry penalizes every emitted marker as an
+                          insertion and is itself a candidate explanation for
+                          part of the gap.
+
+    Raw hypotheses are also written as CTM files for the official sclite chain
+    (see sclite_score).
+    """
+    import json
+    import time
+
+    import torch
+    from torch.utils.data import DataLoader, Dataset
+
+    import data
+    import evaluate
+    import olmd
+
+    device = torch.device("cuda")
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    output = pathlib.Path("/outputs/rescore") / dataset
+    output.mkdir(parents=True, exist_ok=True)
+
+    vocabulary = data.build_vocabulary(root, dataset)
+    inverse = {index: gloss for gloss, index in vocabulary.items()}
+    model = olmd.OLMD(num_classes=len(vocabulary) + 1, context=9).to(device)
+    checkpoint = pathlib.Path("/outputs/train") / dataset / "best.pt"
+    state = torch.load(checkpoint, map_location=device, weights_only=False)
+    model.load_state_dict(state["model"])
+    model.eval()
+
+    class TorchDataset(Dataset):
+        def __init__(self, inner):
+            self.inner = inner
+
+        def __len__(self):
+            return len(self.inner)
+
+        def __getitem__(self, index):
+            return self.inner[index]
+
+    started = time.time()
+    summary = {
+        "checkpoint": str(checkpoint),
+        "checkpoint_epoch": state.get("epoch"),
+        "beam_width": 10,
+        "beam_prune": 50,
+        "splits": {},
+    }
+    for split in ("dev", "test"):
+        inner = data.OLMDDataset(
+            root, dataset, split, vocabulary, cache_root=cache_root, train=False, seed=0
+        )
+        loader = DataLoader(
+            TorchDataset(inner), batch_size=2, shuffle=False, num_workers=8,
+            collate_fn=data.collate, pin_memory=True, prefetch_factor=4,
+        )
+        by_name = {
+            sample.name: sample.glosses for sample in data.LOADERS[dataset](root, split)
+        }
+        names_all, greedy_all, beam_all = [], [], []
+        with torch.no_grad():
+            for video, lengths, _, _, names in loader:
+                video = video.to(device, non_blocking=True)
+                outputs = model(video, lengths)
+                logits, out_lengths = outputs["global_logits"], outputs["global_lengths"]
+                greedy = evaluate.greedy_ctc_decode(logits, out_lengths)
+                beam = evaluate.beam_ctc_decode(logits, out_lengths, beam_width=10, prune=50)
+                for name, g_ids, b_ids in zip(names, greedy, beam):
+                    names_all.append(name)
+                    greedy_all.append([inverse[i] for i in g_ids if i in inverse])
+                    beam_all.append([inverse[i] for i in b_ids if i in inverse])
+
+        references = [by_name[name] for name in names_all]
+        split_result = {"utterances": len(names_all)}
+        for decode_name, hypotheses in (("greedy", greedy_all), ("beam10", beam_all)):
+            strip = evaluate.strip_phoenix_markers
+            split_result[decode_name] = {
+                "raw": evaluate.corpus_wer(references, hypotheses).as_dict(),
+                "stripped_both": evaluate.corpus_wer(
+                    [strip(r) for r in references], [strip(h) for h in hypotheses]
+                ).as_dict(),
+                "train_reported": evaluate.corpus_wer(
+                    [strip(r) for r in references], hypotheses
+                ).as_dict(),
+            }
+            # CTM for the official sclite chain: one word per line, sequential
+            # times so preprocess.sh's sort keeps the emission order.
+            ctm_lines = []
+            for name, hypothesis in zip(names_all, hypotheses):
+                for position, gloss in enumerate(hypothesis):
+                    ctm_lines.append(f"{name} 1 {position * 0.1:.2f} 0.10 {gloss}")
+            (output / f"hyp-{decode_name}-{split}.ctm").write_text(
+                "\n".join(ctm_lines) + "\n", encoding="utf-8"
+            )
+        summary["splits"][split] = split_result
+        (output / f"hypotheses-{split}.json").write_text(
+            json.dumps(
+                [
+                    {"id": n, "greedy": g, "beam10": b}
+                    for n, g, b in zip(names_all, greedy_all, beam_all)
+                ],
+                indent=1,
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+    summary["wall_seconds"] = round(time.time() - started, 1)
+    (output / "rescore-summary.json").write_text(
+        json.dumps(summary, indent=2), encoding="utf-8"
+    )
+    results.commit()
+    return summary
+
+
+# The official PHOENIX evaluation chain, pinned. preprocess.sh + mergectmstm.py
+# + the ground-truth STM files are the RWTH corpus evaluation as shipped in the
+# lineage's repository (CorrNet), and SCTK provides sclite itself.
+SLR_EVAL_COMMIT = "a812814f4deefda0b75ab1dcc90b106c62912263"
+SLR_EVAL_BASE = (
+    f"https://raw.githubusercontent.com/hulianyuyy/CorrNet/{SLR_EVAL_COMMIT}/evaluation/slr_eval"
+)
+SLR_EVAL_SHA256 = {
+    "preprocess.sh": "4c30c72e26890a7ea4dcb7c88756eec563cbe78caf76ae2405fc2e4b38af4377",
+    "mergectmstm.py": "990d06d6a068fbe7664f60b44d5209099226393485665f213e3df2651f6e60fc",
+    "phoenix2014-groundtruth-dev.stm": "bf1a66987031b5f014e0284821dbcab606a34e66b2e0268762339ff31200858d",
+    "phoenix2014-groundtruth-test.stm": "143db224d571c9dd078a054cd27533dfdd91a5514812bb071f03ee6056d6279e",
+}
+SCTK_REPO = "https://github.com/usnistgov/SCTK"
+SCTK_COMMIT = "62aabfa95938bfea284f8b68a374c7ddcb0fce52"  # tag v2.4.12
+
+
+@app.function(image=image, volumes=VOLUMES, cpu=8.0, timeout=60 * 45)
+def sclite_score(dataset: str = "phoenix14") -> dict:
+    """Score the rescore CTM files with the official sclite evaluation chain.
+
+    Builds NIST SCTK from a pinned revision, fetches the pinned preprocessing
+    and ground-truth STM files (sha256-verified), then runs the exact lineage
+    chain: preprocess.sh -> mergectmstm.py -> sclite -f 0 -o dtl. This answers
+    guess metric-script: how far our Levenshtein implementation sits from the
+    official scoring on identical hypotheses.
+    """
+    import hashlib
+    import json
+    import re
+    import subprocess
+    import urllib.request
+
+    work = pathlib.Path("/tmp/sclite-eval")
+    work.mkdir(parents=True, exist_ok=True)
+
+    for name, expected in SLR_EVAL_SHA256.items():
+        target = work / name
+        urllib.request.urlretrieve(f"{SLR_EVAL_BASE}/{name}", target)
+        digest = hashlib.sha256(target.read_bytes()).hexdigest()
+        if digest != expected:
+            raise RuntimeError(f"{name}: sha256 {digest} != pinned {expected}")
+
+    sctk = work / "SCTK"
+    if not (sctk / "bin/sclite").exists():
+        subprocess.run(["git", "clone", SCTK_REPO, str(sctk)], check=True, capture_output=True)
+        subprocess.run(["git", "checkout", SCTK_COMMIT], cwd=sctk, check=True, capture_output=True)
+        subprocess.run(["make", "config"], cwd=sctk, check=True, capture_output=True)
+        subprocess.run(["make", "all"], cwd=sctk, check=True, capture_output=True)
+    sclite = sctk / "bin/sclite"
+
+    rescore_dir = pathlib.Path("/outputs/rescore") / dataset
+    scores = {}
+    for split in ("dev", "test"):
+        stm_src = work / f"phoenix2014-groundtruth-{split}.stm"
+        stm = work / f"ref-{split}.stm"
+        subprocess.run(
+            f"sort -k1,1 {stm_src} > {stm}", shell=True, check=True
+        )
+        for decode_name in ("greedy", "beam10"):
+            ctm = rescore_dir / f"hyp-{decode_name}-{split}.ctm"
+            processed = work / f"out-{decode_name}-{split}.ctm"
+            subprocess.run(
+                ["bash", str(work / "preprocess.sh"), str(ctm),
+                 str(work / "tmp.ctm"), str(processed)],
+                check=True, capture_output=True,
+            )
+            subprocess.run(
+                ["python3", str(work / "mergectmstm.py"), str(processed), str(stm)],
+                check=True, capture_output=True,
+            )
+            report = subprocess.run(
+                [str(sclite), "-h", str(processed), "ctm", "-r", str(stm), "stm",
+                 "-f", "0", "-o", "dtl", "stdout"],
+                check=True, capture_output=True, text=True,
+            ).stdout
+            match = re.search(r"Percent Total Error\s*=\s*([0-9.]+)%", report)
+            if match is None:
+                raise RuntimeError(f"sclite output had no error line for {decode_name}-{split}")
+            detail = {}
+            for key, pattern in (
+                ("sub", r"Percent Substitution\s*=\s*([0-9.]+)%"),
+                ("del", r"Percent Deletions\s*=\s*([0-9.]+)%"),
+                ("ins", r"Percent Insertions\s*=\s*([0-9.]+)%"),
+            ):
+                found = re.search(pattern, report)
+                if found:
+                    detail[key] = float(found.group(1))
+            scores[f"{decode_name}-{split}"] = {"wer": float(match.group(1)), **detail}
+            (rescore_dir / f"sclite-dtl-{decode_name}-{split}.txt").write_text(
+                report, encoding="utf-8"
+            )
+
+    result = {
+        "sctk_commit": SCTK_COMMIT,
+        "slr_eval_commit": SLR_EVAL_COMMIT,
+        "scores": scores,
+    }
+    (rescore_dir / "sclite-summary.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    results.commit()
+    return result
+
+
 @app.function(image=image, volumes=VOLUMES, cpu=4.0, timeout=60 * 60 * 2)
 def build_cache_shard(spec: tuple) -> dict:
     """Cache one shard of one split. Runs as one container among many.
@@ -1195,6 +1428,10 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
         result = benchmark_loader_h100.remote(limit=limit)
     elif action == "train":
         result = train.remote(epochs=limit or 70, resume=not bool(limit))
+    elif action == "rescore":
+        result = rescore.remote()
+    elif action == "sclite":
+        result = sclite_score.remote()
     elif action == "build-cache-sharded":
         result = build_cache_sharded.remote(shards=limit or 40)
     else:
