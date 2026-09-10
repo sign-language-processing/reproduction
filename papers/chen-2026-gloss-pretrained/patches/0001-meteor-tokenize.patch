@@ -1,0 +1,29 @@
+From b2a2e1dab7df090d2b6bd467e6638fddbb5e57d1 Mon Sep 17 00:00:00 2001
+From: Codex <codex@example.invalid>
+Date: Mon, 31 Aug 2026 15:01:21 +0200
+Subject: [PATCH] Pre-tokenize inputs for nltk.meteor()
+
+Modern nltk (>=3.7) requires nltk.meteor()'s hypothesis/reference
+arguments to already be tokenized (Iterable[str]); this script was
+written against an older nltk that accepted raw strings and
+tokenized internally. Split on whitespace after lowercasing, matching
+this same repo's bleu.py convention, so meteor.py keeps working under
+the nltk version this reproduction's container pins.
+---
+ tools/meteor.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/meteor.py b/tools/meteor.py
+index 2c727c4..9da6ce6 100644
+--- a/tools/meteor.py
++++ b/tools/meteor.py
+@@ -11,5 +11,5 @@ if __name__ == "__main__":
+     with open(data_path, "r") as file:
+         target = file.readlines()
+ 
+-    scores = [nltk.meteor([t.lower()], p.lower()) for t,p in zip(target, pred)]
++    scores = [nltk.meteor([t.lower().split()], p.lower().split()) for t,p in zip(target, pred)]
+     print(sum(scores)/len(scores))
+-- 
+2.50.1 (Apple Git-155)
+
