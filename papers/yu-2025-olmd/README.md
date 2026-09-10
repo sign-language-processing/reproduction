@@ -14,20 +14,22 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `blocked_on_compute` — the pipeline is implemented and verified end to
-end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run
-requirement is **14.4 GPU-hours for PHOENIX14 on H100** — inside the 24-hour single-GPU
-autonomous gate. Awaiting a launch decision; see gate `compute-full-run-table1`.
+**Pipeline status:** `partial` — both PHOENIX14 targets are produced from a completed
+70-epoch full run; the two PHOENIX14-T targets await their own training run.
 
-**Numerical agreement:** `not_assessed` — no in-scope target produced a comparable value.
+**Numerical agreement:** `does_not_agree` — reproduced **35.0 dev / 34.2 test** WER
+(official sclite chain, beam-10) against the published **17.1 / 17.2**.
 
-**Attempt date:** 2026-09-08 (in progress)
+**Attempt dates:** 2026-09-08 → 2026-09-10 (PHOENIX14 complete; PHOENIX14-T pending)
 
-> **Status: blocked on compute, awaiting a human budget decision.** Everything up to the
-> full run is complete and verified: assignment record, target ledger, Modal access, data
-> gate, the level-3 reimplementation, the metric, and the AGENTS.md preflight. The four
-> requested numbers were not produced because the reviewed requirement exceeds the
-> autonomous compute gate — not because of any data, code, or specification obstacle.
+> **Status: PHOENIX14 reproduced end to end; the numbers disagree with the paper.** The
+> full stated protocol ran to completion (70 epochs, batch 2, best-dev checkpoint
+> selection) and was evaluated with the official PHOENIX sclite chain. The reproduced WER
+> is roughly twice the published value. Of the raw 34-point gap first observed, ~16.5
+> points were traced to this reproduction's own evaluation methodology and corrected
+> (see [Results](#results)); the remaining ~18-point gap is model/protocol-side, with the
+> paper's unpublished MP-Block architecture the leading candidate. A reviewer decides the
+> scientific conclusion; every variant, guess, and dead end is recorded.
 
 ## Scope and target contract
 
@@ -106,29 +108,58 @@ is **level 3 — reimplementation from the paper**.
 
 ## Results
 
-No in-scope target produced a comparable value. The pipeline is complete and verified;
-the four requested numbers await the compute-gate decision.
-
-| Target ID | Paper location | Dataset/split | Original | Reproduced | Terminal reason |
+| Target ID | Paper location | Dataset/split | Original | Reproduced | Status |
 | --- | --- | --- | ---: | ---: | --- |
-| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | — | `compute_budget_blocked` |
-| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | — | `compute_budget_blocked` |
-| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | `compute_budget_blocked` |
-| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | `compute_budget_blocked` |
+| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **35.0** | produced (`sclite-phoenix14-002`) |
+| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **34.2** | produced (`sclite-phoenix14-002`) |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | not yet attempted (separate run) |
+| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | not yet attempted (separate run) |
 | 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
-Each in-scope target cites the three measurement runs, four artifacts, and gate
-`compute-full-run-table1` as evidence.
+The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
++ `mergectmstm.py` + SCTK v2.4.12 `sclite`, all sha256-pinned) applied to **beam-10**
+(no LM) decoding of the best-dev checkpoint (epoch 57 of 70). This is the evaluation the
+field's published numbers use, so it is the comparable value. Error breakdown at that
+setting: dev 18.3 sub / 12.3 del / 4.4 ins; test 18.1 / 11.9 / 4.2 (paper reports
+4.8 del / 2.4 ins dev, 4.7 / 2.3 test).
 
-**`compute_budget_blocked` is the earliest blocker that independently prevents the
-requested pipeline.** The assignment, targets, data, environment, implementation, metric,
-and preflight are all resolved and verified — nothing else stands in the way of launching.
+### How the reported number depends on scoring — measured, same checkpoint
 
-**One fidelity caveat on any future produced value.** The MP-Block, the core of the
-paper's headline HMP/VMP contribution, is inferred: the paper defers it to supplementary
-material that does not exist publicly. A number from this implementation is therefore
-conditional evidence about an inferred architecture, and a reviewer should weigh that
-before treating agreement or disagreement as a statement about the paper.
+| Scoring | Decoding | Dev WER | Test WER |
+| --- | --- | ---: | ---: |
+| Asymmetric marker stripping (this repo's original scorer — **a bug**) | greedy | 51.47 | 51.98 |
+| Symmetric Levenshtein, markers kept (as official STM refs) | greedy | 40.45 | 40.13 |
+| Symmetric Levenshtein, markers stripped both sides | beam-10 | 38.19 | 37.43 |
+| **Official sclite chain** | **beam-10** | **35.00** | **34.20** |
+| Published (Table 1) | unstated | 17.1 | 17.2 |
+
+Two findings from the diagnosis runs (`rescore-phoenix14-001`, `sclite-phoenix14-002`):
+
+- **~16.5 of the raw 34-point gap was this reproduction's own evaluation methodology.**
+  The training-time scorer stripped `__ON__`/`__OFF__`-class markers from references but
+  not hypotheses (~13 points — every emitted marker counted as an insertion), and did not
+  apply the official RWTH normalizations (letter merging, compound joins, `-PLUSPLUS`
+  removal, repeat dedup; ~3.3 points). Both corrected; the scorer bug is fixed for future
+  runs in `modal_app.py`.
+- **Decoding is immaterial (~0.3 points).** Beam width 10, the lineage's setting, improves
+  on greedy by 0.25 dev / 0.23 test. The paper's unstated decoding cannot explain the gap.
+
+### The remaining ~18-point gap is model/protocol-side
+
+The training run itself was healthy: loss fell monotonically, both LR cuts (epochs 25/40)
+produced visible improvements, and errors are substitution-dominated. Context that
+sharpens the diagnosis: the paper's own no-modules ablation baseline (Table 5, "None")
+reaches 18.9 dev — our 35.0 is far worse than even that, so the shortfall points at the
+**inferred parts of the recipe**, not at the marginal value of OLMD's novel modules.
+
+**The MP-Block fidelity caveat is central.** The MP-Block, the core of the paper's
+headline HMP/VMP contribution, is inferred: the paper defers it to supplementary material
+that does not exist publicly (arXiv has no ancillary files; the AAAI entry ships PDF and
+poster only). These numbers are therefore conditional evidence about an inferred
+architecture, and a reviewer should weigh that before treating the disagreement as a
+statement about the paper. Other open training-side guesses (cross-stage injection point,
+uniform batch lengths, unstated hyperparameters) are recorded in
+`reproduction.json.guesses` with their expected leverage.
 
 ## Preflight
 
@@ -245,25 +276,33 @@ PHOENIX14 at 14.4 and PHOENIX14-T at 17.7 GPU-hours each fall inside the 24-hour
 but together they are **32.1 GPU-hours**. They must therefore run as **separate staged
 jobs**, which is what the assignee's PHOENIX14-first instruction already implies.
 
-### Status of the gate
+### Status of the gate — closed by explicit authorization
 
-The **compute obstacle is resolved by measurement**: 14.4 GPU-hours on H100 is single-GPU,
-well within 24 hours, fits the study infrastructure, and has no unresolved data or
-behaviour-changing patch gate — exactly the AGENTS.md condition for proceeding
-autonomously. The `#repro-sign-team-r` discussion that the 24.5-hour A100 estimate would
-have required is no longer mandatory for PHOENIX14 alone.
+The assignee authorized the PHOENIX14 launch on 2026-09-08 (gate
+`compute-full-run-table1`, commit `569cf83`) and re-authorized the post-fix launch
+directly on 2026-09-09. The run executed on **A100-40GB** (not H100): the training
+function checkpoints every epoch and resumes across invocations, so the 24-hour function
+timeout was not a constraint, and the attempt-3 invocation (66 epochs, ~22.1 GPU-hours)
+fit inside it. Total training spend across all attempts (collapsed attempt 1, fix probe,
+completed attempt 3, diagnostics) is roughly 33 GPU-hours / ~USD 75 — about 0.35% of the
+study budget.
 
-The gate is nevertheless still recorded as **open**, because the technical obstacle was not
-the only one: the assignee was asked to authorize the spend and declined to decide, and
-that instruction stands until answered. Nothing has been launched and no cache has been
-built. Marking it resolved while no authorization exists and no run has happened would
-misrepresent the state.
+### The full run as executed
 
-Cost is not the constraint: ~$57 for PHOENIX14 is about 0.28% of the study's CHF 20,000.
-
-**Reducing epochs, evaluation scope, or checkpoint-selection fidelity to fit the gate is
-not on the table** — that would be a protocol change requiring its own decision, and
-AGENTS.md forbids shrinking the experiment silently.
+1. **`train-phoenix14-seed0-attempt1`** (2026-09-08) — stopped after 29 epochs, dev WER
+   pinned at 100.0: an agent-introduced loss bug (`nn.CTCLoss(reduction="mean")`
+   length-normalizes per sample, letting the γ₂=25 distillation term dominate; all three
+   branches collapsed to blank). Terminal `stopped/invalid_run`; retained as evidence.
+2. **`train-phoenix14-fixprobe-002`** (2026-09-09) — 4-epoch probe of the corrected
+   reduction (`none` + batch `.mean()`, verified against the lineage). CTC fell 182.6 →
+   141.3, dev WER left the collapse point. Terminal `succeeded`, `retry_decision: resume`.
+3. **`train-phoenix14-seed0-attempt3`** (2026-09-09 → 09-10) — resumed the probe's
+   epoch-3 checkpoint (identical seed, config, optimizer/scheduler state; the probe was
+   the first 4 epochs of the full protocol) and trained through epoch 69. Best dev WER
+   51.47 at epoch 57 under the then-current (asymmetric) scorer; terminal `succeeded`.
+4. **`rescore-phoenix14-001` / `sclite-phoenix14-001..002`** (2026-09-10) — inference-side
+   diagnosis; see [Results](#results). sclite attempt 1 failed on a missing
+   `make install` (deterministic, one scoped fix, retried).
 
 ## How to repeat this
 
@@ -294,12 +333,40 @@ Validate the record:
 python3.9 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/yu-2025-olmd
 ```
 
-Data, build, train, and evaluation commands are **not yet written** — they follow the data
-gate and the reimplementation.
+All entry points run through the wrapper and are idempotent:
+
+```bash
+# One-time JPEG frame cache (CPU fan-out; resumable)
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache-sharded
+```
+
+```bash
+# Representative preflight (AGENTS.md): real data, steps, checkpoint reload, tiny eval
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action preflight
+```
+
+```bash
+# Full 70-epoch training (resumes from latest.pt if present; pass --limit N for a probe)
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train
+```
+
+```bash
+# Re-decode the best-dev checkpoint (greedy + beam-10) under all scoring variants
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore
+```
+
+```bash
+# Official sclite chain (pinned RWTH preprocessing + SCTK v2.4.12) on the rescore CTMs
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite
+```
+
+Training state, per-epoch history, final results, hypotheses, and sclite reports live on
+the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
+`/rescore/phoenix14/`, hashed in `reproduction.json.artifacts`.
 
 ## Data provenance and permissions
 
-Nothing verified yet; the data gate requires Modal access.
+All datasets verified on the shared `datasets` Volume before training (2026-09-08).
 
 | Dataset | Version/subset/splits | Source and access date | License / cloud-use basis | Path in Volume `datasets` | Counts / checksum | Deviations |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -330,10 +397,17 @@ coordination was needed, and no data gate was opened.
 
 ## Environment and patches
 
-Planned base image `ghcr.io/sign-language-processing/reproduction:latest`; no container
-built yet and no patches applied. At level 3 there is no upstream code to patch — any
-prior-work module reused (TLP pooling, VAC distillation) will be pinned to an upstream
-commit and recorded here.
+All runs use base image `ghcr.io/sign-language-processing/reproduction:latest` on Modal
+(profile `repro-sign`), with the shared `huggingface-cache` Volume mounted at
+`/cache/huggingface` (`HF_HOME`, `HF_HUB_CACHE`, `TORCH_HOME`). At level 3 there is no
+upstream code to patch. External pins used by the reimplementation and evaluation:
+
+| Pinned artifact | Revision | Role |
+| --- | --- | --- |
+| TLP released code (`hulianyuyy/Temporal-Lift-Pooling`) | structure verified against `modules/tconv.py` | TLP pooling reimplemented to match exactly (split, branches, losses, LocalWeighting, zero-inits) |
+| CorrNet `evaluation/slr_eval` (`hulianyuyy/CorrNet`) | `a812814f…2263`, files sha256-pinned | Official PHOENIX preprocessing + ground-truth STMs (downloaded at runtime, hash-verified, **not committed** — corpus-derived data) |
+| NIST SCTK | `62aabfa9…ce52` (tag v2.4.12) | `sclite` scorer, built in-container |
+| torchvision ResNet34 | `IMAGENET1K_V1` weights | Paper-stated ImageNet-pretrained backbone |
 
 Host used for setup: Linux 4.18 login node, no GPU, no Docker, system `python3` 3.6.8 with
 `python3.9` available. Modal CLI 1.2.6 installed to `~/.local/bin` via
@@ -357,6 +431,14 @@ happen on Modal. Recorded as an environment limitation, not patched.
 | `throughput-phoenix14-001` | measurement | Modal A100-40GB | succeeded / completed | I/O is 165–295× GPU cost; bottleneck is per-request latency |
 | `cache-probe-phoenix14-001` | measurement | Modal CPU | succeeded / completed | JPEG cache gives 24.1× with verified fidelity |
 | `preflight-phoenix14-002` | preflight | Modal A100-40GB | succeeded / completed | Preflight passed with TLP; measured 0.422 s GPU step |
+| `loader-benchmark-001` (+H100) | measurement | Modal A100/H100 | succeeded / completed | Prefetching hides 95.7% of load latency; H100 1.66× |
+| `cache-build-sharded-*` | data prep | Modal CPU ×40 | succeeded / completed | Full JPEG cache, 6841 clips, all three splits |
+| `train-phoenix14-seed0-attempt1` | full train | Modal A100-40GB | stopped / invalid_run | Blank collapse from `reduction="mean"` CTC bug; diagnosed, fixed |
+| `train-phoenix14-fixprobe-002` | train probe | Modal A100-40GB | succeeded / completed | Corrected loss escapes collapse; resume chain to attempt 3 |
+| `train-phoenix14-seed0-attempt3` | full train | Modal A100-40GB | succeeded / completed | 70 epochs complete; best dev epoch 57; targets produced |
+| `rescore-phoenix14-001` | evaluate | Modal A10G | succeeded / completed | Beam-10 ≈ greedy (+0.3); scorer asymmetry worth ~13 WER |
+| `sclite-phoenix14-001` | evaluate | Modal CPU | failed / command_failed | SCTK build missing `make install`; one scoped fix |
+| `sclite-phoenix14-002` | evaluate | Modal CPU | succeeded / completed | Official-chain WER 35.0 dev / 34.2 test (beam-10) |
 
 Full provenance for each — commands, Modal app IDs, dashboards, mounts, cache environment,
 declared stop ceilings, and terminal classifications — is in `reproduction.json.runs`.
@@ -364,13 +446,22 @@ Modal profile `repro-sign` throughout.
 
 ## Guesses and deviations
 
-| Detail | Paper/evidence says | This attempt will use | Rationale | Effect on interpretation |
-| --- | --- | --- | --- | --- |
-| Loss weights γ₁, γ₂ | Formula given; **no numeric values** | open | Search the full PDF/appendix; else adopt the VAC convention the loss derives from | Directly affects the CTC/distillation balance; a material unknown |
-| LMA context length | Ablated in Table 5; **not stated** for the headline results | open | Read the optimum from Table 5 and record the selection | Central to the paper's own contribution |
-| Seed policy | **None stated**; one value per cell | single run per target | No repeat count is defined by the paper | No variance estimate; limits comparability |
-| Metric implementation | Formula given; **tool not named** | official per-dataset evaluation script | Standard for these benchmarks | Small WER differences can come from scoring details |
-| Checkpoint rule | **Not stated** | best dev WER epoch | The VAC/SMKD/CorrNet lineage convention this work follows | Affects which epoch's test WER is reported |
+The full ledger is `reproduction.json.guesses` (26 entries, each with evidence). The
+material ones for interpreting the result:
+
+| Detail | Paper says | This attempt used | Status |
+| --- | --- | --- | --- |
+| **MP-Block internals** | "detailed in the supplementary materials" — **which do not exist publicly** | MetaFormer macro-block, depthwise (9,3) mixer + BN/ReLU + pointwise | **blocking inference**; leading candidate for the residual gap |
+| Loss weights γ₁, γ₂ | stated after Eq. 14 | 1 and 25 | resolved (stated, not a guess) |
+| LMA context length | ablated in Table 5 | 9 (the table's optimum, matches Table 1) | resolved |
+| LMA reduction ratio r | "compressed to C/r"; r unstated | r=2, recovered from Table 5's +0.22M/context parameter deltas | constrained by measurement |
+| Cross-stage injection point | Eq. 6 output destination unstated | added to frame features feeding the temporal head | open, material (Table 8: 1.2 WER) |
+| Decoding | unstated | beam-10 vs greedy both measured: Δ ≈ 0.3 WER | **resolved by measurement** |
+| Metric implementation | Eq. 15 formula only | official sclite chain (pinned) as the comparable value; Levenshtein variants preserved | **resolved by measurement** |
+| Gloss post-processing | unstated | official RWTH normalizations worth ~3.3 WER; an asymmetric-stripping bug in this repo's scorer worth ~13 WER found and fixed | **resolved by measurement** |
+| Checkpoint rule | unstated | best dev WER epoch (57), lineage convention | adopted, recorded |
+| Seed policy | none stated | single run, seed 0 | no variance estimate |
+| Batching/lengths | unstated | batch-max replicate padding, uniform lengths (diverges from lineage per-sample lengths) | deviation `uniform-batch-lengths` |
 
 One deviation recorded so far (`reproduction.json.deviations[uniform-batch-lengths]`):
 batch collation pads clips to the batch maximum with replicated last frames and reports
@@ -404,19 +495,36 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
    add`. *Kept:* installed Modal directly; recorded the limitation rather than patching a
    repository-level script.
 3. **Source search — no code.** Recorded above; drives preference level 3.
+4. **First full run — blank collapse (agent-introduced bug).** *Hypothesis:* torch's
+   default CTC reduction is equivalent to the lineage's. *Result:* false —
+   `reduction="mean"` divides by target length, shrinking CTC gradients ~11.5× against
+   the γ₂=25 distillation term; all three branches collapsed to mutual blank agreement
+   for 29 epochs (~8.7 GPU-hours). *Kept:* corrected to the lineage's `none` + batch
+   mean (verified in CorrNet source), verified by a 4-epoch probe, resumed. Two process
+   lessons recorded: a 12-step preflight structurally cannot catch slow collapse, and
+   per-component loss logging (added after) turns a 29-epoch diagnosis into a 3-epoch one.
+5. **Asymmetric WER scoring (agent-introduced bug).** The training scorer stripped
+   PHOENIX markers from references but not hypotheses, inflating every reported WER by
+   ~13 points and understating the model for the entire first analysis. Found during the
+   metric-mismatch diagnosis, quantified by `rescore-phoenix14-001`, fixed for future
+   runs. The paper is not implicated; the official chain keeps `__ON__`/`__OFF__` on
+   both sides.
+6. **SCTK build — missing `make install`.** `sclite-phoenix14-001` failed
+   deterministically; one scoped change, retried, succeeded.
 
 ## Open validation items
 
-`validate_reproduction.py` reports 8 issues, down from 171 at the start. Every remaining
-one requires an executed run:
+`validate_reproduction.py` passes with **zero issues** as of 2026-09-10 (down from 171 at
+the start). What remains open is scope, not validity:
 
-- 4 × `target needs a terminal result` — the four in-scope OLMD targets.
-- `invalid pipeline status` / `invalid numerical_agreement` / `zero-produced status needs
-  blocker` — both status axes stay unset until a run produces a value or a blocker is
-  actually established. Setting a blocker now would assert a terminal outcome that has not
-  been demonstrated.
-
-The dataset and experiment errors are resolved.
+- The two PHOENIX14-T targets (`table1-p14t-dev-wer`, `table1-p14t-test-wer`) have no
+  training run yet. Estimated ~30 GPU-hours on A100 (17.7 on H100) plus a one-time cache
+  build; the compute gate for that launch is a separate authorization.
+- The residual ~18-point gap on PHOENIX14 is undiagnosed beyond the recorded guesses.
+  The cheapest next probes, if pursued: per-sample batch lengths (deviation
+  `uniform-batch-lengths`), alternative cross-stage injection points, and MP-Block
+  variants — each a behavior-changing protocol experiment requiring its own decision,
+  never silent tuning toward the published score.
 
 ## Candidate flags, ethics, and human evaluation
 

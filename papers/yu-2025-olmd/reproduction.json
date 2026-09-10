@@ -410,14 +410,12 @@
       ],
       "result": {
         "status": "produced",
-        "value": 35.0,
         "unit": "percent",
         "error_breakdown": {
           "del": 8.5748,
           "ins": 11.6316,
           "sub": 31.2624
         },
-        "run_id": "sclite-phoenix14-002",
         "artifact_ids": [
           "sclite-summary",
           "rescore-summary",
@@ -426,8 +424,14 @@
         ],
         "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
         "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "difference_absolute": 17.9,
-        "detail": "Reproduced 35.0 vs published 17.1 under the official chain. All scoring/decoding variants: beam-10 official-chain 35.0; greedy official-chain 35.3; symmetric Levenshtein stripped-both 38.19 (beam)/38.55 (greedy); raw symmetric 40.20/40.45; original asymmetric report 51.47. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training."
+        "detail": "Reproduced 35.0 vs published 17.1 under the official chain. All scoring/decoding variants: beam-10 official-chain 35.0; greedy official-chain 35.3; symmetric Levenshtein stripped-both 38.19 (beam)/38.55 (greedy); raw symmetric 40.20/40.45; original asymmetric report 51.47. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training.",
+        "difference": 17.9,
+        "run_ids": [
+          "sclite-phoenix14-002",
+          "rescore-phoenix14-001",
+          "train-phoenix14-seed0-attempt3"
+        ],
+        "reproduced_value": 35.0
       }
     },
     {
@@ -451,14 +455,12 @@
       ],
       "result": {
         "status": "produced",
-        "value": 34.2,
         "unit": "percent",
         "error_breakdown": {
           "del": 7.6595,
           "ins": 12.5213,
           "sub": 31.798
         },
-        "run_id": "sclite-phoenix14-002",
         "artifact_ids": [
           "sclite-summary",
           "rescore-summary",
@@ -467,8 +469,14 @@
         ],
         "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
         "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "difference_absolute": 17.0,
-        "detail": "Reproduced 34.2 vs published 17.2 under the official chain. All scoring/decoding variants: beam-10 official-chain 34.2; greedy official-chain 34.4; symmetric Levenshtein stripped-both 37.43 (beam)/37.63 (greedy); raw symmetric 39.90/40.13; original asymmetric report 51.98. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training."
+        "detail": "Reproduced 34.2 vs published 17.2 under the official chain. All scoring/decoding variants: beam-10 official-chain 34.2; greedy official-chain 34.4; symmetric Levenshtein stripped-both 37.43 (beam)/37.63 (greedy); raw symmetric 39.90/40.13; original asymmetric report 51.98. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training.",
+        "difference": 17.0,
+        "run_ids": [
+          "sclite-phoenix14-002",
+          "rescore-phoenix14-001",
+          "train-phoenix14-seed0-attempt3"
+        ],
+        "reproduced_value": 34.2
       }
     },
     {
@@ -3999,9 +4007,8 @@
         "reason_code": "completed",
         "detail": "Confirmed the corrected loss escapes blank collapse and CTC is descending. The full run resumes from this probe's epoch-3 checkpoint (same seed, config and optimizer state), so its 4 epochs are not discarded.",
         "failure_class": null,
-        "retry_decision": "resume",
-        "gate_ids": [],
-        "next_run_id": "train-phoenix14-seed0-attempt3"
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -4028,9 +4035,9 @@
         "max_cost_chf": 70.0
       },
       "attempt": {
-        "group_id": "train-phoenix14-seed0",
-        "number": 3,
-        "max_attempts": 4
+        "group_id": "train-phoenix14-seed0-full",
+        "number": 1,
+        "max_attempts": 2
       },
       "compute": {
         "platform": "modal",
@@ -4136,7 +4143,16 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "gpu": "A10G",
-        "gpu_count": 1
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
       },
       "modal": {
         "profile": "repro-sign",
@@ -4225,7 +4241,16 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "gpu": null,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
       },
       "modal": {
         "profile": "repro-sign",
@@ -4280,7 +4305,16 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "gpu": null,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
       },
       "modal": {
         "profile": "repro-sign",
@@ -4416,59 +4450,59 @@
     },
     {
       "artifact_id": "train-p14-result-json",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/train/phoenix14/result.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14/result.json",
       "sha256": "6fd3bcf9f2a1926e5c50625c30d2190a1af4265a1fe611a04805e7c3dbdbe2da",
       "size_bytes": 22443,
       "description": "Final result: best-dev checkpoint selection (epoch 57), corpus WER with del/ins/sub breakdown for dev and test, and the full 70-epoch history.",
-      "run_id": "train-phoenix14-seed0-attempt3"
+      "kind": "metrics"
     },
     {
       "artifact_id": "train-p14-history-json",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/train/phoenix14/history.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14/history.json",
       "sha256": "a10b924500cc3e5480be16485dafa9343f159b5647d08fec7536162afb47be76",
       "size_bytes": 19704,
       "description": "Per-epoch training history: loss components (ctc/distill/lift), dev WER/del/ins, LR, wall seconds for epochs 0-69.",
-      "run_id": "train-phoenix14-seed0-attempt3"
+      "kind": "metrics"
     },
     {
       "artifact_id": "train-p14-best-pt",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/train/phoenix14/best.pt",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14/best.pt",
       "sha256": "0fd1d7c1d8e7eab3cb05184ff5de68a2d3dc0f3a3b3207d719624ee1b24bbf8d",
       "size_bytes": 447350623,
       "description": "Best-dev model checkpoint (epoch 57, dev WER 51.4688) used for the final dev and test scoring.",
-      "run_id": "train-phoenix14-seed0-attempt3"
+      "kind": "checkpoint"
     },
     {
       "artifact_id": "rescore-summary",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/rescore-summary.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14/rescore-summary.json",
       "sha256": "1955274521ea5e447751c520b45e333a89c7d7a01ea311c38a1a9a106c2d8045",
       "size_bytes": 4382,
       "description": "Greedy and beam-10 WER for dev/test under three scoring variants (raw, stripped_both, train_reported).",
-      "run_id": "rescore-phoenix14-001"
+      "kind": "metrics"
     },
     {
       "artifact_id": "sclite-summary",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/sclite-summary.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14/sclite-summary.json",
       "sha256": "f3202d1440fe7a4c5c48ff580ec8fed9bd5ab4282ad1054ffb5b2870cbe76296",
       "size_bytes": 552,
       "description": "Official-chain sclite WER (preprocess.sh + mergectmstm + sclite dtl) for greedy/beam-10 on dev/test.",
-      "run_id": "sclite-phoenix14-002"
+      "kind": "metrics"
     },
     {
       "artifact_id": "rescore-hyp-dev",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/hypotheses-dev.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14/hypotheses-dev.json",
       "sha256": "f2f73fe3b6d4a1116cbb0a188b4be78164057d30d5d8b2799a95c1d2cdb0d5cb",
       "size_bytes": 188063,
       "description": "Per-utterance greedy and beam-10 gloss hypotheses, dev split, epoch-57 checkpoint.",
-      "run_id": "rescore-phoenix14-001"
+      "kind": "predictions"
     },
     {
       "artifact_id": "rescore-hyp-test",
-      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/hypotheses-test.json",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14/hypotheses-test.json",
       "sha256": "729035d2c1514982cd7b7ab165b28f61005e2c43d720dcb1d6eaea417a5ff168",
       "size_bytes": 222982,
       "description": "Per-utterance greedy and beam-10 gloss hypotheses, test split, epoch-57 checkpoint.",
-      "run_id": "rescore-phoenix14-001"
+      "kind": "predictions"
     }
   ],
   "gates": [
