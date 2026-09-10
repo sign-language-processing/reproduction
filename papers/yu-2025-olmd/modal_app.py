@@ -983,8 +983,16 @@ def train(
                     outputs["global_logits"], outputs["global_lengths"]
                 )
                 for name, ids in zip(names, decoded):
+                    # Strip markers from BOTH sides. The earlier reference-only
+                    # stripping counted every emitted __ON__/__OFF__ as an
+                    # insertion and inflated reported WER by ~13 points
+                    # (measured by rescore-phoenix14-001).
                     references.append(evaluate.strip_phoenix_markers(by_name[name]))
-                    hypotheses.append([inverse[i] for i in ids if i in inverse])
+                    hypotheses.append(
+                        evaluate.strip_phoenix_markers(
+                            [inverse[i] for i in ids if i in inverse]
+                        )
+                    )
         return evaluate.corpus_wer(references, hypotheses).as_dict()
 
     started = time.time()
