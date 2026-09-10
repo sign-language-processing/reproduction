@@ -128,7 +128,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "The two produced in-scope targets (PHOENIX14 dev and test WER) are comparable: the full stated protocol ran to completion with best-dev checkpoint selection, and no behavior-changing substitution was made to the published protocol (all inferred choices are recorded guesses). Reproduced 51.4688 dev / 51.9788 test vs published 17.1 / 17.2 -- a ~34-point absolute gap, far beyond any plausible seed or scoring variance, so the values do not agree. Likely contributors are the recorded open guesses, above all the unpublished MP-Block internals (a blocking inference), greedy-vs-beam decoding, and gloss post-processing details. PHOENIX14-T targets remain unproduced (separate training not yet run), hence pipeline=partial.",
+    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint: 35.0 dev / 34.2 test vs published 17.1 / 17.2 -- an ~18-point gap, so does_not_agree stands. Diagnosis so far: of the originally reported 34-point gap, ~16.5 points were evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3) and ~0.3 decoding; the remaining ~18 points are model/protocol-side, with the unpublished MP-Block internals (blocking guess) the leading candidate. PHOENIX14-T targets remain unproduced, hence pipeline=partial.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": null
@@ -410,23 +410,24 @@
       ],
       "result": {
         "status": "produced",
-        "value": 51.4688,
+        "value": 35.0,
         "unit": "percent",
         "error_breakdown": {
           "del": 8.5748,
           "ins": 11.6316,
           "sub": 31.2624
         },
-        "run_id": "train-phoenix14-seed0-attempt3",
+        "run_id": "sclite-phoenix14-002",
         "artifact_ids": [
+          "sclite-summary",
+          "rescore-summary",
           "train-p14-result-json",
-          "train-p14-history-json",
           "train-p14-best-pt"
         ],
-        "metric_implementation": "papers/yu-2025-olmd/evaluate.py corpus_wer (Levenshtein, Eq. 15) on greedy CTC decoding with PHOENIX marker stripping; sclite comparison still pending (guess metric-script).",
+        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
         "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "difference_absolute": 34.3688,
-        "detail": "Reproduced dev WER 51.4688 vs published 17.1. Single run, seed 0, per the declared protocol."
+        "difference_absolute": 17.9,
+        "detail": "Reproduced 35.0 vs published 17.1 under the official chain. All scoring/decoding variants: beam-10 official-chain 35.0; greedy official-chain 35.3; symmetric Levenshtein stripped-both 38.19 (beam)/38.55 (greedy); raw symmetric 40.20/40.45; original asymmetric report 51.47. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training."
       }
     },
     {
@@ -450,23 +451,24 @@
       ],
       "result": {
         "status": "produced",
-        "value": 51.9788,
+        "value": 34.2,
         "unit": "percent",
         "error_breakdown": {
           "del": 7.6595,
           "ins": 12.5213,
           "sub": 31.798
         },
-        "run_id": "train-phoenix14-seed0-attempt3",
+        "run_id": "sclite-phoenix14-002",
         "artifact_ids": [
+          "sclite-summary",
+          "rescore-summary",
           "train-p14-result-json",
-          "train-p14-history-json",
           "train-p14-best-pt"
         ],
-        "metric_implementation": "papers/yu-2025-olmd/evaluate.py corpus_wer (Levenshtein, Eq. 15) on greedy CTC decoding with PHOENIX marker stripping; sclite comparison still pending (guess metric-script).",
+        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
         "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "difference_absolute": 34.7788,
-        "detail": "Reproduced test WER 51.9788 vs published 17.2. Single run, seed 0, per the declared protocol."
+        "difference_absolute": 17.0,
+        "detail": "Reproduced 34.2 vs published 17.2 under the official chain. All scoring/decoding variants: beam-10 official-chain 34.2; greedy official-chain 34.4; symmetric Levenshtein stripped-both 37.43 (beam)/37.63 (greedy); raw symmetric 39.90/40.13; original asymmetric report 51.98. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training."
       }
     },
     {
@@ -4143,11 +4145,58 @@
         "dashboard": null,
         "image": "ghcr.io/sign-language-processing/reproduction:latest"
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "rescore-summary",
+        "rescore-hyp-dev",
+        "rescore-hyp-test"
+      ],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
+      },
+      "finished_at_utc": "2026-09-10T10:50:00Z",
+      "exit_code": 0,
+      "observed": "298.9 s wall on A10G for both splits and both decodings. Beam-10 vs greedy is 0.25/0.23 WER (dev/test) -- decoding is a non-factor. The scoring variants expose a large evaluation artifact: the training-time scorer stripped markers from references but not hypotheses, inflating dev WER from 38.55 (symmetric stripped_both) to the reported 51.47; symmetric raw (markers kept both sides, as the official STM does) gives 40.45/40.13.",
+      "measurements": {
+        "wall_seconds": 298.9,
+        "dev": {
+          "greedy": {
+            "raw": 40.4506,
+            "stripped_both": 38.5471,
+            "train_reported": 51.4688
+          },
+          "beam10": {
+            "raw": 40.2005,
+            "stripped_both": 38.1946,
+            "train_reported": 51.1314
+          }
+        },
+        "test": {
+          "greedy": {
+            "raw": 40.1327,
+            "stripped_both": 37.6339,
+            "train_reported": 51.9788
+          },
+          "beam10": {
+            "raw": 39.9007,
+            "stripped_both": 37.4319,
+            "train_reported": 51.8082
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "findings": [
+        "Decoding (guess ctc-decoding) contributes at most ~0.3 WER; greedy was not masking performance.",
+        "The asymmetric reference-only marker stripping in train()'s scorer accounted for ~13 WER points of the reported 51.47/51.98."
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both splits re-decoded and scored; CTM files emitted for the official chain.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -4190,6 +4239,81 @@
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
+      },
+      "started_at_utc": "2026-09-10T11:05:00Z",
+      "finished_at_utc": "2026-09-10T11:12:00Z",
+      "exit_code": 1,
+      "observed": "SCTK built but /tmp/sclite-eval/SCTK/bin/sclite was absent: the build script ran make config and make all but omitted make install, which is the step that copies the built tools into bin/.",
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Deterministic build omission (missing make install); fixed with one scoped change and retried.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "sclite-phoenix14-002",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "sclite-phoenix14-002",
+      "purpose": "Metric-mismatch diagnosis, scoring side: run the official PHOENIX sclite chain (preprocess.sh, mergectmstm.py, sclite -f 0 -o dtl; SCTK v2.4.12, pinned) on the rescore CTM hypotheses, against the lineage's pinned ground-truth STM files.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "config": {
+        "sctk": "github.com/usnistgov/SCTK @ 62aabfa95938bfea284f8b68a374c7ddcb0fce52 (v2.4.12)",
+        "slr_eval": "github.com/hulianyuyy/CorrNet @ a812814f4deefda0b75ab1dcc90b106c62912263 evaluation/slr_eval, files sha256-pinned",
+        "inputs": "hyp-{greedy,beam10}-{dev,test}.ctm from rescore-phoenix14-001"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T10:40:00Z",
+        "max_wall_time_seconds": 2700,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "attempt": {
+        "group_id": "sclite-phoenix14",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": null,
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "artifact_ids": [
+        "sclite-summary"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "started_at_utc": "2026-09-10T11:15:00Z",
+      "finished_at_utc": "2026-09-10T11:25:00Z",
+      "exit_code": 0,
+      "observed": "Official chain completed: sclite WER dev 35.3 greedy / 35.0 beam-10, test 34.4 greedy / 34.2 beam-10 (sub ~18, del ~12, ins ~4). The official normalizations (letter merging, compound joining, repeat dedup, prefix removal) account for a further ~3.2-3.5 WER relative to our symmetric Levenshtein scoring.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All four CTM files scored through the pinned official chain.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "measurements": {
+        "greedy-dev": 35.3,
+        "beam10-dev": 35.0,
+        "greedy-test": 34.4,
+        "beam10-test": 34.2
       }
     }
   ],
@@ -4313,6 +4437,38 @@
       "size_bytes": 447350623,
       "description": "Best-dev model checkpoint (epoch 57, dev WER 51.4688) used for the final dev and test scoring.",
       "run_id": "train-phoenix14-seed0-attempt3"
+    },
+    {
+      "artifact_id": "rescore-summary",
+      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/rescore-summary.json",
+      "sha256": "1955274521ea5e447751c520b45e333a89c7d7a01ea311c38a1a9a106c2d8045",
+      "size_bytes": 4382,
+      "description": "Greedy and beam-10 WER for dev/test under three scoring variants (raw, stripped_both, train_reported).",
+      "run_id": "rescore-phoenix14-001"
+    },
+    {
+      "artifact_id": "sclite-summary",
+      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/sclite-summary.json",
+      "sha256": "f3202d1440fe7a4c5c48ff580ec8fed9bd5ab4282ad1054ffb5b2870cbe76296",
+      "size_bytes": 552,
+      "description": "Official-chain sclite WER (preprocess.sh + mergectmstm + sclite dtl) for greedy/beam-10 on dev/test.",
+      "run_id": "sclite-phoenix14-002"
+    },
+    {
+      "artifact_id": "rescore-hyp-dev",
+      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/hypotheses-dev.json",
+      "sha256": "f2f73fe3b6d4a1116cbb0a188b4be78164057d30d5d8b2799a95c1d2cdb0d5cb",
+      "size_bytes": 188063,
+      "description": "Per-utterance greedy and beam-10 gloss hypotheses, dev split, epoch-57 checkpoint.",
+      "run_id": "rescore-phoenix14-001"
+    },
+    {
+      "artifact_id": "rescore-hyp-test",
+      "uri": "modal-volume://repro-sign/olmd-yu-2025-results/rescore/phoenix14/hypotheses-test.json",
+      "sha256": "729035d2c1514982cd7b7ab165b28f61005e2c43d720dcb1d6eaea417a5ff168",
+      "size_bytes": 222982,
+      "description": "Per-utterance greedy and beam-10 gloss hypotheses, test split, epoch-57 checkpoint.",
+      "run_id": "rescore-phoenix14-001"
     }
   ],
   "gates": [
@@ -4618,31 +4774,31 @@
     {
       "guess_id": "ctc-decoding",
       "severity": "open",
-      "status": "constrained",
+      "status": "resolved",
       "detail": "The paper never states how CTC outputs are decoded. Full-text search finds zero occurrences of 'beam', 'greedy', or 'best path', and no beam width or language model is mentioned.",
       "planned_resolution": "Adopt the decoding used by the VAC/SMKD/CorrNet lineage this work builds on; record as a deviation.",
       "evidence": [
         "arXiv:2503.08205v1 full text: no mention of beam search, greedy decoding, beam width, or a language model.",
         "CorrNet utils/decode.py uses CTCBeamDecoder(beam_width=10, blank_id=0) with no language model."
       ],
-      "resolution": "Greedy best-path decoding (argmax per frame, collapse repeats, drop blanks). It needs no external ctcdecode extension and is the strict width-1 case of beam search. The lineage's released code uses beam width 10 with no language model; beam decoding must be compared before any target value is reported as produced."
+      "resolution": "Resolved by measurement (rescore-phoenix14-001): beam width 10 (no LM, lineage settings, pure-NumPy prefix beam search with per-frame top-50 pruning) improves on greedy by only 0.25 dev / 0.23 test WER. Decoding choice is immaterial to the gap."
     },
     {
       "guess_id": "gloss-post-processing",
       "severity": "open",
-      "status": "constrained",
+      "status": "resolved",
       "detail": "Standard PHOENIX evaluation removes tokens such as __ON__, __OFF__ and si-markers before scoring, which materially shifts WER. The paper does not mention any gloss post-processing.",
       "planned_resolution": "Apply the official PHOENIX evaluation package's own post-processing and record exactly what it does.",
       "evidence": [
         "arXiv:2503.08205v1 full text: no mention of gloss post-processing.",
         "The official PHOENIX evaluation package applies preprocess.sh before scoring."
       ],
-      "resolution": "PHOENIX marker tokens (__ON__, __OFF__, __EMOTION__, __PU__, __LEFTHAND__ and any other __...__ form) are stripped, plus loc-/cl- prefixes, mirroring the official PHOENIX preprocessing. The lineage applies that preprocessing to the hypothesis only; here it is applied to the reference as well, which is recorded as a deviation to re-examine before reporting a produced value."
+      "resolution": "Resolved by measurement: the official STM ground truth keeps __ON__/__OFF__; preprocess.sh strips only __EMOTION__/__PU__/__LEFTHAND__ and applies letter merging, compound joins (WIE AUSSEHEN, ZEIGEN-BILDSCHIRM), -PLUSPLUS removal and repeat dedup. Our earlier scorer's asymmetric stripping (refs only) was a bug worth ~13 WER; the remaining official normalizations are worth ~3.3."
     },
     {
       "guess_id": "metric-script",
       "severity": "open",
-      "status": "constrained",
+      "status": "resolved",
       "detail": "The paper gives the WER formula (Eq. 15) but never names a scoring implementation; no mention of sclite, mergectm or the evaluatePHOENIX14 scripts appears in the full text.",
       "planned_resolution": "Pin each dataset's official evaluation script and record its version and hash.",
       "evidence": [
@@ -4650,7 +4806,7 @@
         "Unit checks in this reproduction: identical, substitution, deletion, insertion, all-deleted, all-inserted, and combined cases all match, and a 3-utterance corpus with 3 errors over 9 reference tokens scores 33.3333%.",
         "Table 1 quotes del/ins for PHOENIX14 (4.8/2.4 dev, 4.7/2.3 test), so the error breakdown is an independent cross-check on any reproduced WER."
       ],
-      "resolution": "WER is implemented directly from Eq. 15 by Levenshtein alignment in evaluate.py, so a reproduced number never depends on an unavailable external binary. Verified against seven hand-checked alignment cases and a corpus-level case. Aggregated corpus-wide (total errors over total reference length), which is the only reading consistent with del/ins being quoted as corpus percentages. Where the official sclite toolchain is available its score should be reported alongside."
+      "resolution": "Resolved by measurement (sclite-phoenix14-002): the official chain (preprocess.sh + mergectmstm + sclite, pinned) scores the same hypotheses ~3.2-3.5 WER better than our symmetric Levenshtein implementation, and ~16.5 better than the asymmetric variant train() originally reported. Official-chain values are the comparable ones."
     },
     {
       "guess_id": "checkpoint-selection",

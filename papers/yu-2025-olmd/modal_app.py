@@ -1253,6 +1253,8 @@ def sclite_score(dataset: str = "phoenix14") -> dict:
         subprocess.run(["git", "checkout", SCTK_COMMIT], cwd=sctk, check=True, capture_output=True)
         subprocess.run(["make", "config"], cwd=sctk, check=True, capture_output=True)
         subprocess.run(["make", "all"], cwd=sctk, check=True, capture_output=True)
+        # SCTK only copies the built tools into bin/ at install time.
+        subprocess.run(["make", "install"], cwd=sctk, check=True, capture_output=True)
     sclite = sctk / "bin/sclite"
 
     rescore_dir = pathlib.Path("/outputs/rescore") / dataset
