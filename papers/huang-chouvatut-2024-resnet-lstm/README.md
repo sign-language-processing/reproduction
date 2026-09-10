@@ -9,6 +9,12 @@ Clean-room implementation; no author code was found.
 **Pipeline status:** `insufficient_information`
 **Numerical agreement:** `not_assessed` — no comparable target value exists because the paper's signer split is unresolved.
 
+## Reproduction agents
+
+**Original reproduction agent:** model unknown; application unknown. A 2026-09-10 audit of the [introducing commit](https://github.com/sign-language-processing/reproduction/commit/03f4581a4c9b252e410c714c153e578a35e7e2e4) and [PR #34](https://github.com/sign-language-processing/reproduction/pull/34) (including commits, comments, and reviews) found no execution attribution.
+
+`reproduction.json.agents` preserves the evidence and its limits. Each historical run has `agent_ids: []` and an `agent_attribution_note`; no model or executor has been inferred from the human author or branch name.
+
 ## Target
 
 The requested Table 4 contribution is the paper's ResNet-LSTM row: 86.25% accuracy. Table 3 identifies the same epoch-30, batch-16 result and also reports 84.98% F1 and 87.77% precision. These are the three targets. The other Table 4 rows are cited baselines and are out of scope.

@@ -14,6 +14,14 @@
 
 **Attempt date:** <date>
 
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+Mirror `reproduction.json.agents`; include exact model IDs and application versions when known. Link each run through its `agent_ids`. Distinguish execution from implementation and later editing. State unknowns explicitly, including historical runs whose executor cannot be recovered from commit/PR evidence.
+
 ## Scope and target contract
 
 Exact assignment text and how it was resolved into `reproduction.json.targets`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution. Keep this README as the complete human-readable report; do not create a second report or model-card file.
@@ -68,7 +76,7 @@ If no patches were needed, say so.
 
 ## Execution evidence
 
-| Run ID | Attempt / max | Kind / targets | Platform / hardware | Seed/config | Start/end | Exit / terminal state / reason | Failure class | Stop ceilings | Logs/artifacts |
+| Run ID / agent IDs | Attempt / max | Kind / targets | Platform / hardware | Seed/config | Start/end | Exit / terminal state / reason | Failure class | Stop ceilings | Logs/artifacts |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |  |  |  |
 

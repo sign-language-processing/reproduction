@@ -1,4 +1,25 @@
 {
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Original reproduction attempt; model and executing agent application were not recorded in the inspected commit/PR evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c — introducing commit contains no model or agent-application attribution.",
+        "https://github.com/sign-language-processing/reproduction/pull/33 — audited 2026-09-10: PR body, commits, comments, and reviews do not identify the execution model or application. Human authors and branch names do not establish agent identity."
+      ]
+    },
+    {
+      "agent_id": "codex-patch-author",
+      "model": null,
+      "harness": "Codex",
+      "scope": "Authorship claimed by the four retained upstream patch headers; exact model unknown. This does not establish execution attribution.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/blob/b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c/papers/camgoz-2018-nslt/patches/0001-compatibility.patch#L2 — all four patch headers state: From: Codex <codex@example.invalid>. No model/version is recorded."
+      ]
+    }
+  ],
   "paper_id": "camgoz-2018-nslt",
   "assignment": {
     "kind": "direct_user_request",
@@ -148,6 +169,8 @@
   ],
   "runs": [
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c and PR #33 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "full-luong-first-segment",
       "kind": "full_reproduction_segment",
       "hypothesis": "The pinned author recipe and minimal compatibility/correctness patches can train directly from the validated PHOENIX MP4 data while preserving the declared protocol.",
@@ -215,6 +238,8 @@
       "observation": "Modal's 24-hour function limit ended this segment at the next safe boundary. Checkpoint 91000 and matching hparams were verified before resuming; this is a controlled segmentation, not a restart."
     },
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c and PR #33 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "full-luong-resumed",
       "kind": "full_reproduction_terminal_segment",
       "hypothesis": "Resuming upstream checkpoint 91000 with the paired hparams and persisted epoch step will preserve the author recipe's data order and reach terminal selected-checkpoint evaluation.",

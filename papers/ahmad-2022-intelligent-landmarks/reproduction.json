@@ -1,4 +1,16 @@
 {
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Original reproduction attempt; model and executing agent application were not recorded in the inspected commit/PR evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/10ae21dc1a85743e0677146d2aaf072b1e03ce45 — introducing commit contains no model or agent-application attribution.",
+        "https://github.com/sign-language-processing/reproduction/pull/35 — audited 2026-09-10: PR body, commits, comments, and reviews do not identify the execution model or application. Human authors and branch names do not establish agent identity."
+      ]
+    }
+  ],
   "paper_id": "8526aecd1407305d815883725a864405e31a54c1",
   "assignment": {
     "kind": "queue_record",
@@ -290,6 +302,8 @@
   ],
   "runs": [
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 10ae21dc1a85743e0677146d2aaf072b1e03ce45 and PR #35 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "isl-hs-preflight-unshuffled",
       "kind": "representative_preflight",
       "exit_code": 0,
@@ -310,6 +324,8 @@
       "outcome": "All 3,120 sampled frames were detected. The unshuffled frame and grouped folds were identical because input ordering is contiguous by video; this run diagnosed the split issue."
     },
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 10ae21dc1a85743e0677146d2aaf072b1e03ce45 and PR #35 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "isl-hs-preflight-frame-shuffled",
       "kind": "representative_preflight",
       "exit_code": 0,
@@ -330,6 +346,8 @@
       "outcome": "All 3,120 sampled frames were detected. Frame-stratified accuracy was 99.96794871794872% and video-grouped accuracy was 87.11538461538461%; the contrast confirms that the two conditional protocols are materially different."
     },
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 10ae21dc1a85743e0677146d2aaf072b1e03ce45 and PR #35 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "isl-hs-conditional",
       "kind": "conditional_full_evaluation",
       "exit_code": 0,
@@ -351,8 +369,14 @@
       "compute": {"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-lJNFft0jeNJaEp5qGW3E0g","modal_function_call_id":"fc-01M0VSFT8XTC04A012ABDWXW5A","container_id":"ta-01M0VSFVK3SJKJG7W76R8QJWWR","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},
       "outcome": "Decoded all 468 videos and processed 28,071 of 28,080 requested frames. Shuffled frame-stratified 10-fold accuracy was 99.86818667616673% (SD 0.07134933564089702); video-grouped 10-fold accuracy was 97.95804720803116% (SD 0.9443523979078399)."
     },
-    {"run_id":"asl-alphabet-preflight","kind":"representative_preflight","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-preflight --images-per-class 10 --folds 2","artifact_ids":["asl-alphabet-preflight-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-preflight","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":7200,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The ASL preflight completed and emitted its conditional accuracy artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"238 of 280 selected images were detected; two-fold conditional accuracy was 94.53781512605042% with SD 1.7826221374450815%."},
-    {"run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","artifact_ids":["asl-alphabet-conditional-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-conditional","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":28800,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The conditional ASL evaluation completed and emitted its target metric artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-5urNHhjWI9XM0mCt1BRPq5","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
+    {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 10ae21dc1a85743e0677146d2aaf072b1e03ce45 and PR #35 do not identify which model/application executed this run; see agents[].evidence.",
+      "run_id":"asl-alphabet-preflight","kind":"representative_preflight","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-preflight --images-per-class 10 --folds 2","artifact_ids":["asl-alphabet-preflight-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-preflight","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":7200,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The ASL preflight completed and emitted its conditional accuracy artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"238 of 280 selected images were detected; two-fold conditional accuracy was 94.53781512605042% with SD 1.7826221374450815%."},
+    {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 10ae21dc1a85743e0677146d2aaf072b1e03ce45 and PR #35 do not identify which model/application executed this run; see agents[].evidence.",
+      "run_id":"asl-alphabet-conditional","kind":"conditional_full_evaluation","exit_code":0,"started_at_utc":null,"finished_at_utc":null,"command":"python /app/evaluate_asl.py --data-root /datasets/asl-alphabet --output-dir /results/asl-alphabet-conditional --images-per-class 3000 --folds 10","artifact_ids":["asl-alphabet-conditional-run-json"],"recording":{"mode":"retrospective","source_record_sha256":"6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6","unknown_fields":["started_at_utc","finished_at_utc","attempt.max_attempts","stop_policy.declared_at_utc"],"detail":"Backfilled from the already-committed report when the unified run contract was introduced."},"attempt":{"group_id":"asl-alphabet-conditional","number":1,"max_attempts":null},"stop_policy":{"declared_at_utc":null,"max_wall_time_seconds":28800,"max_gpu_hours":null,"max_cost_chf":null},"terminal":{"state":"succeeded","reason_code":"completed","detail":"The conditional ASL evaluation completed and emitted its target metric artifact.","failure_class":null,"retry_decision":"not_needed","gate_ids":[]},"compute":{"platform":"modal","modal_profile":"repro-sign","modal_app_id":"ap-5urNHhjWI9XM0mCt1BRPq5","gpu_count":0,"shared_cache":{"modal_volume":"huggingface-cache","mount_path":"/cache/huggingface","environment":{"HF_HOME":"/cache/huggingface","HF_HUB_CACHE":"/cache/huggingface/hub"}}},"outcome":"63,673 of 84,000 selected images detected; mean accuracy 99.16918822359007%, SD 0.09612736462292178%."}
   ],
   "artifacts": [
     {"artifact_id":"isl-hs-preflight-unshuffled-run-json","kind":"raw_metric_output","uri":"modal://volume/8526aecd-landmark-results/preflight/run.json","sha256":"7bc22018a206e17cefb3354be62866a5f65ec9c33e76519dc872abfea7eedcaa"},

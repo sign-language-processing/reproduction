@@ -21,6 +21,12 @@ datasets:
 
 **Attempt date:** 2026-08-20
 
+## Reproduction agents
+
+**Original reproduction agent:** model unknown; application unknown. A 2026-09-10 audit of the [introducing commit](https://github.com/sign-language-processing/reproduction/commit/7d3fc032e401d7c543dade45e1f236d678122b18) and [PR #31](https://github.com/sign-language-processing/reproduction/pull/31) (including commits, comments, and reviews) found no execution attribution.
+
+`reproduction.json.agents` preserves the evidence and its limits. Each historical run has `agent_ids: []` and an `agent_attribution_note`; no model or executor has been inferred from the human author or branch name.
+
 ## Scope and target contract
 
 This reproduces the authors' supplied joint Sign2(Gloss+Text) configuration, with recognition and translation loss weights both equal to 1. It corresponds to the lambda_R=1, lambda_T=1 row of Table 4: dev WER/BLEU-4 35.13/21.73 and test WER/BLEU-4 33.75/21.22. The published config's seed 42 and development-set checkpoint/search selection are used.

@@ -19,6 +19,12 @@ This is a faithful run of the authors' published `neccam/nslt` Luong recipe for 
 
 The authors' full 150,000-step run completed. Its terminal best-model loop selected checkpoint 118,000 on development BLEU-4 and evaluated that fixed checkpoint on both splits.
 
+## Reproduction agents
+
+**Original reproduction agent:** model unknown; application unknown. A 2026-09-10 audit of the [introducing commit](https://github.com/sign-language-processing/reproduction/commit/b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c) and [PR #33](https://github.com/sign-language-processing/reproduction/pull/33) (including commits, comments, and reviews) found no execution attribution. The four retained patch headers credit [Codex](https://github.com/sign-language-processing/reproduction/blob/b4a9ba109b37ccc97e6fa4a0fe9eec2c2800c63c/papers/camgoz-2018-nslt/patches/0001-compatibility.patch#L2); the model is unknown, and patch authorship does not establish who executed the runs.
+
+`reproduction.json.agents` preserves the evidence and its limits. Each historical run has `agent_ids: []` and an `agent_attribution_note`; no model or executor has been inferred from the human author or branch name.
+
 ## Target
 
 | Split | Metric | Paper | Reproduced | Difference |

@@ -1,4 +1,16 @@
 {
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Original reproduction attempt; model and executing agent application were not recorded in the inspected commit/PR evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/7d3fc032e401d7c543dade45e1f236d678122b18 — introducing commit contains no model or agent-application attribution.",
+        "https://github.com/sign-language-processing/reproduction/pull/31 — audited 2026-09-10: PR body, commits, comments, and reviews do not identify the execution model or application. Human authors and branch names do not establish agent identity."
+      ]
+    }
+  ],
   "paper_id": "camgoz-2020-slt",
   "assignment": {
     "kind": "direct_user_request",
@@ -197,6 +209,8 @@
   ],
   "runs": [
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 7d3fc032e401d7c543dade45e1f236d678122b18 and PR #31 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "full-seed-42",
       "kind": "full_reproduction",
       "hypothesis": "The authors' restored pami0 features, pinned code, published config, and legacy PyTorch 1.4 environment will reproduce the complete pipeline without a source patch.",
