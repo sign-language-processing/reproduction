@@ -391,6 +391,43 @@ Training state, per-epoch history, final results, hypotheses, and sclite reports
 the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
 `/rescore/phoenix14/`, hashed in `reproduction.json.artifacts`.
 
+## CINECA wiring-fix retrain (this branch)
+
+This branch (`repro/yu-2025-olmd-wiring-fix`) corrects the two figure-audit deviations —
+`head-wiring-vs-figure2` and `lma-in-trunk-vs-figures` — in one combined
+figure-conformance hypothesis, and retrains on CINECA instead of Modal to conserve the
+Modal budget. Structural validity of the new wiring was confirmed by `gpu-smoke-004`
+(finite loss/gradients, correct branch lengths, 14.95 GiB peak on A10).
+
+**One-time staging** (run where the Modal CLI is authenticated; login nodes have
+internet, CINECA compute nodes do not):
+
+```bash
+# 1. Annotations (~3 MB) and the JPEG frame cache (6841 files, 9.6 GiB)
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get datasets rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner/annotations staging/data/rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner/annotations
+```
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get olmd-yu-2025-results /cache/phoenix14 staging/cache/phoenix14
+```
+
+```bash
+# 2. ImageNet ResNet34 weights for offline TORCH_HOME
+mkdir -p staging/torch/hub/checkpoints && curl -L -o staging/torch/hub/checkpoints/resnet34-b627a593.pth https://download.pytorch.org/models/resnet34-b627a593.pth
+```
+
+```bash
+# 3. Transfer to CINECA (adjust user/host), then build the venv there
+rsync -av staging/ USER@login.leonardo.cineca.it:'$WORK/olmd/'
+```
+
+On CINECA: create `$WORK/olmd/venv` with `torch torchvision numpy pillow`, edit the
+`#SBATCH --account` line in [cineca.sbatch](cineca.sbatch), optionally run the smoke
+first (`python train_cineca.py ... --smoke`), then `sbatch cineca.sbatch`. The trainer
+checkpoints every epoch; if the 24 h walltime ends, resubmitting resumes from
+`latest.pt`. Evaluation of the finished checkpoint (beam-10 + official sclite chain)
+can run back on Modal for cents, or the CTMs can be scored anywhere SCTK builds.
+
 ## Data provenance and permissions
 
 All datasets verified on the shared `datasets` Volume before training (2026-09-08).

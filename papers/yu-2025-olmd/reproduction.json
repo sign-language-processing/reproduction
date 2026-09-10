@@ -4349,6 +4349,80 @@
         "greedy-test": 34.4,
         "beam10-test": 34.2
       }
+    },
+    {
+      "run_id": "gpu-smoke-004",
+      "purpose": "Structural validation of the figure-conformant wiring (head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected) before the CINECA retrain: model constructs, forward and backward run, loss finite, branch lengths correct.",
+      "kind": "smoke",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action smoke",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-10T12:20:00Z",
+      "finished_at_utc": "2026-09-10T12:25:00Z",
+      "exit_code": 0,
+      "config": {
+        "wiring": "figure2-conformant (branch repro/yu-2025-olmd-wiring-fix)",
+        "frames": 128,
+        "num_classes": 1296
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T12:20:00Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 1.0
+      },
+      "attempt": {
+        "group_id": "gpu-smoke-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A10",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-ByR4gQQsh9B8tRX92fbmGZ",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-ByR4gQQsh9B8tRX92fbmGZ",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Loss 565.11 (ctc 552.25, distill 0.441, lift 1831.8), grad norm 190.2, 0.765 s per train step at T=128, peak 14.954 GiB on A10, local/global lengths 29 for 128 frames. Both wiring corrections construct and train structurally.",
+      "measurements": {
+        "loss": 565.1143,
+        "ctc": 552.2455,
+        "grad_norm": 190.2032,
+        "seconds_per_train_step_t128": 0.7651,
+        "peak_memory_GiB": 14.954
+      },
+      "hypothesis_supported": true,
+      "findings": [
+        "The figure-conformant wiring is structurally sound; ready for the CINECA retrain."
+      ],
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Smoke completed with finite loss and correct shapes.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -5049,7 +5123,8 @@
         "evaluate"
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
-      "discovered_after_run": true
+      "discovered_after_run": true,
+      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix (combined figure-conformance hypothesis) for a retrain on CINECA institutional compute; structural validity confirmed by gpu-smoke-004."
     },
     {
       "deviation_id": "lma-in-trunk-vs-figures",
@@ -5060,7 +5135,8 @@
         "evaluate"
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
-      "discovered_after_run": true
+      "discovered_after_run": true,
+      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix (combined figure-conformance hypothesis) for a retrain on CINECA institutional compute; structural validity confirmed by gpu-smoke-004."
     },
     {
       "deviation_id": "ctc-zero-infinity",

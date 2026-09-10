@@ -274,14 +274,14 @@ class OLMDBackbone(nn.Module):
 
         # Eq. 6, cross-stage coupling: X_CS = sum_i W_i (P_W(X_h^i) + P_H(X_v^i)),
         # where W_i is "the i-th fully connected layer".
-        # INFERRED (guess_id: cross-stage-injection-point): the summands have
+        # INFERRED (guess_id: ffn-and-ds-widths family): the summands have
         # different channel counts per stage, so each W_i must project to a
         # shared width that the paper never states; `coupling_width` is that
-        # width, set to the trunk's output width so X_CS can be added to the
-        # frame features. Where X_CS enters the network is likewise never
-        # stated, though Table 8 attributes 1.2 Dev / 1.3 Test WER to coupling.
-        # It is added to the frame-level features feeding the temporal head,
-        # which is the only place a (C, T) tensor fits Fig. 2's data flow.
+        # width, set to the trunk's output width so X_CS matches the head's
+        # branch input. Figure 2 resolves WHERE X_CS goes (guess
+        # cross-stage-injection-point): into its own 1D-CNN branch of the
+        # temporal head, whose output is summed with the trunk branch before
+        # the BiLSTM. Table 8 attributes 1.2 Dev / 1.3 Test WER to coupling.
         self.cross_stage = nn.ModuleList(
             [nn.Linear(c, coupling_width) for c in STAGE_CHANNELS]
         )
@@ -305,17 +305,19 @@ class OLMDBackbone(nn.Module):
             c, h, w = flat.shape[1:]
             volume = flat.reshape(n, t, c, h, w).transpose(1, 2)
 
-            # DEVIATION (lma-in-trunk-vs-figures, found in the post-run figure
-            # audit): Figures 2 and 3 draw LMA on a side branch -- the trunk
-            # continues from the RAW stage output plus the alpha/beta coupling,
-            # and LMA feeds only Decoupling->HMP/VMP. Here LMA's residual output
-            # replaces the trunk instead. Kept as-executed for the recorded run;
-            # correcting it is a retrain decision.
-            volume = lma(volume)  # Eqs. 7-11
-            x_h, x_v = omp(volume, previous)  # Eqs. 1-4
+            # Figures 2 and 3 draw LMA on a SIDE BRANCH: the trunk continues
+            # from the raw stage output plus the alpha/beta coupling, and LMA's
+            # output feeds only Decoupling->HMP/VMP. With alpha = beta = 0 at
+            # init, the ImageNet-pretrained trunk therefore starts undisturbed.
+            # (The completed main-branch run instead routed LMA's residual
+            # output into the trunk -- deviation lma-in-trunk-vs-figures; this
+            # branch corrects it to the figures' wiring.)
+            enhanced = lma(volume)  # Eqs. 7-11, side branch
+            x_h, x_v = omp(enhanced, previous)  # Eqs. 1-4
             previous = (x_h, x_v)
 
-            # Eq. 5: upsample by repeating features at each position, then fuse.
+            # Eq. 5: upsample by repeating features at each position, then fuse
+            # into the RAW trunk.
             up_h = x_h.unsqueeze(3).expand(-1, -1, -1, h, -1)
             up_v = x_v.unsqueeze(4).expand(-1, -1, -1, -1, w)
             volume = volume + self.alpha[index] * up_h + self.beta[index] * up_v
@@ -424,14 +426,14 @@ class TemporalHead(nn.Module):
     INFERRED (guess_id: bilstm-layer-count): the lineage's BiLSTM divides the
     given hidden size by the number of directions, so 1024 means 512 per
     direction with a 1024-wide output, and the convention is 2 layers. (Fig. 2's
-    "xN" annotations mark the three backbone/OMP stages, not the 1D-CNNs; an
-    earlier reading of this docstring got that wrong.)
+    "xN" annotations mark the three backbone/OMP stages, not the 1D-CNNs.)
 
-    DEVIATION (head-wiring-vs-figure2, found in the post-run figure audit):
-    Figure 2 feeds the trunk to one 1D-CNN and X_CS to the other, then sums the
-    two branch outputs before the BiLSTM. This class instead runs both branches
-    over the same (trunk + X_CS) input and gives the BiLSTM branch 2's output.
-    Kept as-executed for the recorded run; correcting it is a retrain decision.
+    WIRING (per Figure 2, correcting deviation head-wiring-vs-figure2): the
+    trunk frame features feed branch 1 and the cross-stage coupling output X_CS
+    feeds branch 2; the two branch outputs are element-wise summed and the
+    BiLSTM runs on the sum. Local CTC #2 therefore directly supervises the
+    coupling path. (The completed main-branch run instead ran both branches
+    over the same trunk + X_CS sum.)
 
     The P2 operator is Temporal Lift Pooling, which the paper adopts by name
     ("We adopt the pooling method from TLP"), not max pooling. Its two auxiliary
@@ -504,14 +506,18 @@ class TemporalHead(nn.Module):
             lengths = torch.div(lengths, 2, rounding_mode="floor")
         return lengths
 
-    def forward(self, features: torch.Tensor, lengths: torch.Tensor) -> dict:
+    def forward(
+        self, features: torch.Tensor, coupling: torch.Tensor, lengths: torch.Tensor
+    ) -> dict:
+        # Figure 2: trunk -> branch 1, X_CS -> branch 2, outputs summed.
         local1, auxiliary1 = self._run_branch(self.branch1, features)
-        local2, auxiliary2 = self._run_branch(self.branch2, features)
+        local2, auxiliary2 = self._run_branch(self.branch2, coupling)
         lengths1 = self.update_lengths(lengths)
-        lengths2 = lengths1  # parallel peers, so both share the reduced length
+        lengths2 = lengths1  # identical branch architecture, identical reduction
 
-        # The BiLSTM does global temporal modelling over the local features.
-        sequence = local2.permute(2, 0, 1)  # (T, N, C) for the LSTM
+        # The BiLSTM does global temporal modelling over the SUM of the two
+        # branch outputs (the element-wise addition drawn in Figure 2).
+        sequence = (local1 + local2).permute(2, 0, 1)  # (T, N, C) for the LSTM
         packed = nn.utils.rnn.pack_padded_sequence(
             sequence, lengths2.cpu(), enforce_sorted=False
         )
@@ -546,9 +552,9 @@ class OLMD(nn.Module):
 
     def forward(self, video: torch.Tensor, lengths: torch.Tensor) -> dict:
         frame_features, x_cs = self.backbone(video)
-        # Cross-stage coupling injected into the frame features (see the
-        # cross-stage-injection-point note in OLMDBackbone).
-        return self.head(frame_features + x_cs, lengths)
+        # Figure 2: the trunk features and X_CS feed separate 1D-CNN branches
+        # inside the head, whose outputs are summed before the BiLSTM.
+        return self.head(frame_features, x_cs, lengths)
 
 
 # Eq. 14 loss weights, stated in the paper: "gamma_1 and gamma_2 are two
