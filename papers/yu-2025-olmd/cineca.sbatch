@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=olmd-wiring-fix
 #SBATCH --partition=boost_usr_prod
-#SBATCH --account=CHANGE_ME            # your CINECA project account (saldo -b)
+#SBATCH --account=EUHPC_D33_168
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
@@ -10,24 +10,29 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=olmd-wiring-fix-%j.out
 
-# CINECA Leonardo booster defaults (A100 64GB). Adjust partition/account for
-# other CINECA machines. The trainer checkpoints every epoch and resumes from
-# latest.pt, so if the 24 h walltime ends first, simply resubmit this script.
+# CINECA Leonardo booster (A100 64GB). The trainer checkpoints every epoch and
+# resumes from latest.pt, so if the 24 h walltime ends first, simply resubmit.
 #
-# One-time staging (login node, has internet -- see README "CINECA retrain"):
-#   $WORK/olmd/data      annotations under rwth-phoenix-2014/raw/...
-#   $WORK/olmd/cache     phoenix14/*.npz (6841 files, 9.6 GiB)
-#   $WORK/olmd/torch     hub/checkpoints/resnet34-b627a593.pth
-#   $WORK/olmd/venv      python -m venv + pip install torch torchvision numpy pillow
+# Environment: cineca-ai/4.3.0 supplies python 3.11 + torch 2.2 (CUDA 12.1) +
+# torchvision 0.17 + numpy + pillow. No venv or pip needed.
+#
+# One-time staging under $BASE (login node, has internet -- see README):
+#   $BASE/data    annotations under rwth-phoenix-2014/raw/...
+#   $BASE/cache   phoenix14/*.npz (6841 files, 9.7 GiB)
+#   $BASE/torch   hub/checkpoints/resnet34-b627a593.pth
+#   $BASE/code    olmd.py data.py evaluate.py train_cineca.py (pinned commit
+#                 in PROVENANCE.txt)
 
 set -euo pipefail
 
-BASE="${WORK:?}/olmd"
+BASE="/leonardo_work/EUHPC_D33_168/olmd"
 export TORCH_HOME="$BASE/torch"
-source "$BASE/venv/bin/activate"
 
-cd "$SLURM_SUBMIT_DIR"
-srun python train_cineca.py \
+module purge
+module load profile/deeplrn cineca-ai/4.3.0
+
+cd "$BASE/code"
+srun python3 train_cineca.py \
     --data-root "$BASE/data" \
     --cache-root "$BASE/cache" \
     --output "$BASE/output/phoenix14-wiring-fix" \

@@ -4423,6 +4423,109 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "cineca-smoke-001",
+      "purpose": "End-to-end offline validation on CINECA Leonardo before the full wiring-fix run: staged annotations/cache/weights load, model constructs on A100, two real optimizer steps, tiny dev eval.",
+      "kind": "smoke",
+      "command": "sbatch --qos=boost_qos_dbg ... train_cineca.py --smoke (Leonardo job 57186724; job 57186624 failed on a doubly-nested annotations directory from the volume download, fixed by moving the directory up)",
+      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
+      "started_at_utc": "2026-09-10T13:05:00Z",
+      "finished_at_utc": "2026-09-10T13:10:00Z",
+      "exit_code": 0,
+      "config": {
+        "code_commit": "9dad93a",
+        "environment": "cineca-ai/4.3.0 (python 3.11, torch 2.2.0 cuda 12.1, torchvision 0.17)"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T13:00:00Z",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": null
+      },
+      "attempt": {
+        "group_id": "cineca-smoke",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "cineca-leonardo",
+        "account": "EUHPC_D33_168",
+        "partition": "boost_usr_prod",
+        "gpu": "A100-64GB",
+        "gpu_count": 1
+      },
+      "observed": "Job 57186724 COMPLETED in 26 s: smoke steps loss 558.4/657.3 (finite CTC), 4-clip dev eval WER 100 all-deletions (expected untrained regime), exit 0. Torch version differs from the Modal image (2.2.0 vs 2.11.0) -- recorded as an environment difference between the original and wiring-fix runs.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The offline CINECA path (staged cache + annotations + TORCH_HOME weights, cineca-ai module) works end to end with the figure-conformant wiring."
+      ],
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Smoke completed, exit 0.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "train-phoenix14-wiring-fix-001",
+      "purpose": "Full 70-epoch PHOENIX14 training with the figure-conformant wiring (deviations head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected as one combined hypothesis), on CINECA Leonardo institutional compute.",
+      "kind": "train_full",
+      "command": "cd /leonardo_work/EUHPC_D33_168/olmd/code && sbatch cineca.sbatch",
+      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
+      "started_at_utc": "2026-09-10T13:15:00Z",
+      "config": {
+        "code_commit": "9dad93a (branch repro/yu-2025-olmd-wiring-fix)",
+        "dataset": "phoenix14",
+        "epochs": 70,
+        "batch_size": 2,
+        "seed": 0,
+        "wiring": "figure2-conformant",
+        "environment": "cineca-ai/4.3.0: python 3.11.6, torch 2.2.0+cu121, torchvision 0.17.0, numpy 1.26.4",
+        "data": "staged JPEG cache (6841 npz, 9.7 GiB) + annotation CSVs from the Modal datasets/results volumes; resnet34-b627a593.pth (sha-prefix-verified) in TORCH_HOME"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-10T13:15:00Z",
+        "max_wall_time_seconds": 172800,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": null,
+        "note": "Institutional allocation EUHPC_D33_168 (144k local-hours, 10.7% consumed); no CHF cost. 24 h SLURM walltime per submission; per-epoch checkpointing resumes across resubmissions, wall ceiling covers two submissions."
+      },
+      "attempt": {
+        "group_id": "train-phoenix14-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "cineca-leonardo",
+        "account": "EUHPC_D33_168",
+        "partition": "boost_usr_prod",
+        "gpu": "A100-64GB",
+        "gpu_count": 1
+      },
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion.",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "slurm": {
+        "cluster": "leonardo",
+        "job_id": "57186814",
+        "smoke_job_ids": [
+          "57186624",
+          "57186724"
+        ]
+      }
     }
   ],
   "artifacts": [
