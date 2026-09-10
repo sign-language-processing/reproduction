@@ -1083,7 +1083,7 @@ def train(
 
 
 @app.function(image=image, volumes=VOLUMES, gpu="A10G", cpu=8.0, timeout=60 * 60 * 3)
-def rescore(dataset: str = "phoenix14") -> dict:
+def rescore(dataset: str = "phoenix14", variant: str = "") -> dict:
     """Re-decode the best-dev checkpoint with greedy AND beam search, no retraining.
 
     Metric-mismatch diagnosis, inference side only. The paper never states its
@@ -1116,13 +1116,17 @@ def rescore(dataset: str = "phoenix14") -> dict:
     device = torch.device("cuda")
     root = pathlib.Path("/datasets")
     cache_root = pathlib.Path(CACHE_ROOT)
-    output = pathlib.Path("/outputs/rescore") / dataset
+    # `variant` selects an alternative checkpoint/output pair, e.g.
+    # "phoenix14-wiring-fix" for the CINECA-trained figure-conformant model
+    # whose best.pt is uploaded to /outputs/train/<variant>/best.pt.
+    slug = variant or dataset
+    output = pathlib.Path("/outputs/rescore") / slug
     output.mkdir(parents=True, exist_ok=True)
 
     vocabulary = data.build_vocabulary(root, dataset)
     inverse = {index: gloss for gloss, index in vocabulary.items()}
     model = olmd.OLMD(num_classes=len(vocabulary) + 1, context=9).to(device)
-    checkpoint = pathlib.Path("/outputs/train") / dataset / "best.pt"
+    checkpoint = pathlib.Path("/outputs/train") / slug / "best.pt"
     state = torch.load(checkpoint, map_location=device, weights_only=False)
     model.load_state_dict(state["model"])
     model.eval()
@@ -1230,7 +1234,7 @@ SCTK_COMMIT = "62aabfa95938bfea284f8b68a374c7ddcb0fce52"  # tag v2.4.12
 
 
 @app.function(image=image, volumes=VOLUMES, cpu=8.0, timeout=60 * 45)
-def sclite_score(dataset: str = "phoenix14") -> dict:
+def sclite_score(dataset: str = "phoenix14", variant: str = "") -> dict:
     """Score the rescore CTM files with the official sclite evaluation chain.
 
     Builds NIST SCTK from a pinned revision, fetches the pinned preprocessing
@@ -1265,7 +1269,7 @@ def sclite_score(dataset: str = "phoenix14") -> dict:
         subprocess.run(["make", "install"], cwd=sctk, check=True, capture_output=True)
     sclite = sctk / "bin/sclite"
 
-    rescore_dir = pathlib.Path("/outputs/rescore") / dataset
+    rescore_dir = pathlib.Path("/outputs/rescore") / (variant or dataset)
     scores = {}
     for split in ("dev", "test"):
         stm_src = work / f"phoenix2014-groundtruth-{split}.stm"
@@ -1439,9 +1443,10 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     elif action == "train":
         result = train.remote(epochs=limit or 70, resume=not bool(limit))
     elif action == "rescore":
-        result = rescore.remote()
+        # `path` doubles as the optional variant slug, e.g. phoenix14-wiring-fix
+        result = rescore.remote(variant=path)
     elif action == "sclite":
-        result = sclite_score.remote()
+        result = sclite_score.remote(variant=path)
     elif action == "build-cache-sharded":
         result = build_cache_sharded.remote(shards=limit or 40)
     else:
