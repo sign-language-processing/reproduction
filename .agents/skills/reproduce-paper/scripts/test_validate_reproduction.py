@@ -21,6 +21,15 @@ HISTORICAL_SHA = "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc1
 def valid_document() -> dict:
     return {
         "paper_id": "test-paper",
+        "agents": [
+            {
+                "agent_id": "executor",
+                "model": "Test model 1.0",
+                "harness": "Test application",
+                "scope": "Implementation and execution of the fixture experiment.",
+                "evidence": ["Fixture session explicitly records both identities."],
+            }
+        ],
         "assignment": {
             "kind": "direct_user_request",
             "source": {"sha256": SHA},
@@ -29,7 +38,8 @@ def valid_document() -> dict:
         "sources": [{"source_id": "paper"}],
         "status": {
             "pipeline": "complete",
-            "numerical_agreement": "not_fully_reproduced",
+            "numerical_agreement": "does_not_agree",
+            "numerical_agreement_basis": "The fixture values differ by 0.1.",
             "preference_level": 1,
             "blocker": None,
         },
@@ -74,6 +84,7 @@ def valid_document() -> dict:
         "targets": [
             {
                 "target_id": "accuracy",
+                "in_scope": True,
                 "paper_location": "Table 1",
                 "split": "test",
                 "experiment_id": "experiment",
@@ -91,6 +102,7 @@ def valid_document() -> dict:
         "runs": [
             {
                 "run_id": "run-1",
+                "agent_ids": ["executor"],
                 "command": "python evaluate.py",
                 "exit_code": 0,
                 "started_at_utc": "2026-08-28T10:00:00Z",
@@ -148,8 +160,10 @@ class ValidatorTest(unittest.TestCase):
                 json.dumps(document), encoding="utf-8"
             )
             (root / "README.md").write_text(
-                "**Preference level:** 1\n\n**Status:** `"
+                "**Preference level:** 1\n\n**Pipeline status:** `"
                 + document["status"]["pipeline"]
+                + "`\n\n**Numerical agreement:** `"
+                + document["status"]["numerical_agreement"]
                 + "`\n",
                 encoding="utf-8",
             )
@@ -162,6 +176,55 @@ class ValidatorTest(unittest.TestCase):
 
     def test_valid_record(self) -> None:
         result = self.validate(valid_document())
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_agent_attribution_is_required(self) -> None:
+        for value in (None, [], [{"agent_id": "executor"}]):
+            with self.subTest(agents=value):
+                document = valid_document()
+                document["agents"] = value
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("agent", result.stderr)
+
+    def test_run_agent_references_are_checked(self) -> None:
+        for value in (None, ["missing"], ["executor", "executor"], []):
+            with self.subTest(agent_ids=value):
+                document = valid_document()
+                document["runs"][0]["agent_ids"] = value
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("agent", result.stderr)
+
+    def test_explicit_unknown_attribution_is_valid(self) -> None:
+        document = valid_document()
+        document["agents"][0].update({
+            "model": None,
+            "harness": None,
+            "scope": "Historical reproduction; model and application unknown.",
+            "evidence": ["Original commit and PR do not record agent identity."],
+        })
+        document["runs"][0].update({
+            "agent_ids": [],
+            "agent_attribution_note": "Historical commit/PR evidence does not identify the executor.",
+        })
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_attribution_requires_evidence(self) -> None:
+        document = valid_document()
+        document["agents"][0]["evidence"] = []
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("evidence must be", result.stderr)
+
+    def test_multiple_execution_agents_are_valid(self) -> None:
+        document = valid_document()
+        other = copy.deepcopy(document["agents"][0])
+        other.update({"agent_id": "supervisor", "model": "Another model 2.0"})
+        document["agents"].append(other)
+        document["runs"][0]["agent_ids"].append("supervisor")
+        result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_valid_resume_chain(self) -> None:
@@ -203,6 +266,7 @@ class ValidatorTest(unittest.TestCase):
         document["status"] = {
             "pipeline": "insufficient_information",
             "numerical_agreement": "not_assessed",
+            "numerical_agreement_basis": "No target was produced.",
             "preference_level": 1,
             "blocker": {
                 "reason_code": "target_ambiguous",
@@ -280,6 +344,7 @@ class ValidatorTest(unittest.TestCase):
         document["status"] = {
             "pipeline": "insufficient_information",
             "numerical_agreement": "not_assessed",
+            "numerical_agreement_basis": "No target was produced.",
             "preference_level": 1,
             "blocker": {
                 "reason_code": "target_ambiguous",
@@ -389,6 +454,7 @@ class ValidatorTest(unittest.TestCase):
         document["status"] = {
             "pipeline": "blocked_on_code",
             "numerical_agreement": "not_assessed",
+            "numerical_agreement_basis": "No target was produced.",
             "preference_level": 1,
             "blocker": {
                 "reason_code": "code_not_executable",

@@ -39,6 +39,7 @@ Keep the attempt moving until each stage has an artifact or a documented gate. R
 - Find or create the per-paper directory using the root layout rules.
 - Preserve unrelated work; use one branch per paper when starting a new attempt.
 - Create a stable descriptive `papers/<paper-slug>/` directory from `templates/reproduction.json` and `templates/README.md`; preserve the immutable paper ID in `reproduction.json`; and record current repository revision/state. The record uses the single current contract without a version selector. Do not create `scripts/`, `patches/`, or `artifacts/` until multiple real files justify them.
+- Record the current model and agent application in `reproduction.json.agents`, with a stable `agent_id`, contribution scope, and session evidence, following `AGENTS.md`. Preserve exact model IDs/application versions when exposed; use explained nulls when unavailable. Keep previous agents when resuming work.
 - Read queue comments, dataset expansions, copied-score, human-evaluation, ethics, and compute fields as warnings to investigate—not facts to repeat.
 
 ### 2. Resolve the target contract
@@ -92,6 +93,8 @@ Every Modal reproduction function mounts shared Volume `huggingface-cache` at `/
 
 ### 7. Prove the real path cheaply
 
+Before launching a retained run, set its `agent_ids` to the executing agents; distinguish execution from code authorship and later report editing.
+
 Before recording the first retained run, read [references/stopping-criteria.md](references/stopping-criteria.md). Declare its attempt identity, wall-time ceiling, and applicable GPU-hour and cost ceilings before launch; use the controlled terminal state, reason code, and failure class after it ends.
 
 Exercise the full path at the cheapest representative scale:
@@ -122,6 +125,8 @@ When within the gate, launch autonomously. Before launch, confirm both `datasets
 ### 10. Close every target
 
 Read [references/evidence-and-retries.md](references/evidence-and-retries.md) for the evidence bundle and target eligibility rules, and [references/stopping-criteria.md](references/stopping-criteria.md) for the terminal contract. Set each target's `in_scope` field before running it. For every target, embed exactly one result marked `produced` or `not_produced`; use a predefined reason code, specific detail, and internal evidence references when no value was produced. A materially under-specified conditional run remains evidence and cannot become a produced target because its score is close. Derive `status.pipeline` from in-scope target coverage, record the selected structured `status.blocker` when none produced, assess `status.numerical_agreement` only on comparable produced values, record `status.numerical_agreement_basis`, and use the same statuses in `README.md`.
+
+Summarize each agent’s model, application, contribution, attribution evidence, and unknowns in the README. Historical run attribution that cannot be recovered uses `agent_ids: []` with an `agent_attribution_note`; never infer an executor from a commit coauthor alone.
 
 Remove examples and placeholders. Include every applicable guess, deviation, dead end, copied baseline, contact, source/data provenance item, exact command, environment, hardware, run ID, runtime/GPU-hours/cost, raw metric reference, and artifact hash/link. Omit inapplicable null boilerplate. Normalize genuine shared entities by ID, but do not add abstractions with one consumer or small parsed-result files when exact target values and native artifact hashes already live in `reproduction.json`.
 

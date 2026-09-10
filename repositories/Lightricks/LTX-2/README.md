@@ -2,6 +2,10 @@
 
 GitHub: https://github.com/Lightricks/LTX-2
 
+## Agent attribution
+
+**Recorded contributor:** Claude Opus 4.6 (1M context) using Claude Code. The [introducing commit](https://github.com/sign-language-processing/reproduction/commit/0ee35a241417a58329f47dbd0c8776e3fd7139a9) credits `Claude Opus 4.6 (1M context)` in its coauthor trailer, and [PR #3](https://github.com/sign-language-processing/reproduction/pull/3) includes the “Generated with Claude Code” footer. The PR reports verified PSNR results, but does not independently identify the agent that executed those runs. Exact model ID and application version were not recorded. Attribution recovered from commit/PR evidence on 2026-09-10.
+
 ## Goal
 
 Round-trip a real video through the **LTX-2.3 video VAE**:

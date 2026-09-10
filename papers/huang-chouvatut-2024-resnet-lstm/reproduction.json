@@ -1,4 +1,16 @@
 {
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Original reproduction attempt; model and executing agent application were not recorded in the inspected commit/PR evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/03f4581a4c9b252e410c714c153e578a35e7e2e4 — introducing commit contains no model or agent-application attribution.",
+        "https://github.com/sign-language-processing/reproduction/pull/34 — audited 2026-09-10: PR body, commits, comments, and reviews do not identify the execution model or application. Human authors and branch names do not establish agent identity."
+      ]
+    }
+  ],
   "paper_id": "990030f8dfefb06e99c05218741e11ccf7b08fdb",
   "assignment": {
     "kind": "queue_record",
@@ -290,6 +302,8 @@
   ],
   "runs": [
     {
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The original reproduction commit 03f4581a4c9b252e410c714c153e578a35e7e2e4 and PR #34 do not identify which model/application executed this run; see agents[].evidence.",
       "run_id": "frozen-inferred-split-epoch30",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/huang-chouvatut-2024-resnet-lstm/modal_app.py::train",
       "exit_code": 0,

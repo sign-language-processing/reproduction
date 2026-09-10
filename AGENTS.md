@@ -50,6 +50,35 @@ Search the paper, supplements, author/project pages, and likely official reposit
 
 Do not start a costly build or training run until every requested target is either concrete or explicitly unresolved. If diligent source inspection cannot determine which experiment or number was requested, use the human gate rather than silently changing scope.
 
+## Agent attribution
+
+Every paper reproduction records the agents that performed it in
+`reproduction.json.agents` and summarizes them in `README.md`, including attempts
+that stop at a gate. Record the model name and version separately from the agent
+application (`harness`), for example `GPT 6 Astra` using `Codex`. Use the identity
+exposed by the actual session, not an example, a default setting, or a guess.
+
+Each agent entry has a stable `agent_id`, `model`, `harness`, `scope` describing
+its contribution, and a non-empty `evidence` array with session metadata,
+explicit attestations, or commit/PR links and relevant excerpts. Preserve an
+exact `model_id` and `harness_version` when available. If either identity is
+unavailable, use `null` for that field and explain the gap in `scope` and
+`evidence`; do not block an otherwise permitted reproduction on missing metadata.
+
+Before launching each retained run, record `runs[].agent_ids` referencing the
+agents responsible for executing it. Add entries when models/applications
+change or another agent contributes; preserve earlier attributions. Distinguish
+implementation, execution, review, and later report maintenance. A report editor
+or commit coauthor is not automatically the agent that ran the experiment.
+Attribution-only bookkeeping records the audit date and sources without adding
+its editor to the reproduction's agent list.
+
+For existing papers, recover only what the commits, PRs, or retained session/run
+evidence establish. A branch name, human account, or generic bot footer cannot
+identify an exact model. Preserve unsupported fields as `null` with the searched
+sources and limits of the evidence. If a historical run cannot be attributed,
+use `agent_ids: []` and a specific `agent_attribution_note` explaining why.
+
 ## Per-paper layout
 
 The paper is the unit of study. Use a stable, descriptive paper slug such as `papers/{first-author}-{year}-{short-title}/` regardless of where its code lives; record the immutable `paper_id` inside `reproduction.json`. This avoids opaque paths, coupling one paper to one repository, or duplicating a paper that uses several artifacts.
@@ -66,7 +95,7 @@ papers/<paper-slug>/
 └── artifacts/               # optional; multiple small raw files kept in Git
 ```
 
-Keep one machine-readable truth: assignment provenance, paper/source pins, datasets, metric definitions, targets and results, runs, artifacts, guesses, deviations, contacts, gates, and status all live in `reproduction.json` with stable internal IDs. Do not create parallel candidate/target/metric/run JSON files. `README.md` is both the complete human report and, when weights are published, the Hugging Face model card.
+Keep one machine-readable truth: assignment provenance, agent attribution, paper/source pins, datasets, metric definitions, targets and results, runs, artifacts, guesses, deviations, contacts, gates, and status all live in `reproduction.json` with stable internal IDs. Do not create parallel candidate/target/metric/run JSON files. `README.md` is both the complete human report and, when weights are published, the Hugging Face model card.
 
 Do not create empty directories or a directory for one file. A lone executable, patch, or small raw artifact stays at the paper root with a descriptive name; create `scripts/`, `patches/`, or `artifacts/` only when there are multiple related files. Large logs, predictions, checkpoints, native result objects, and datasets stay on Modal or another permitted store and are recorded by immutable URI and hash in `reproduction.json`.
 
@@ -207,6 +236,7 @@ Every reported score must point to a run and raw metric artifact. Preserve exact
 A reproduction is ready for review only when:
 
 - `reproduction.json.assignment` preserves one final/confirmed queue record or direct assignment provenance and its source hash;
+- `reproduction.json.agents` and each run’s `agent_ids` preserve model/application attribution, contribution scope, evidence, and explicit unknowns;
 - `reproduction.json.targets` accounts for every requested number;
 - `reproduction.json.datasets` identifies every dataset used, and `reproduction.json.runs` records every meaningful retained attempt;
 - setup, data, train, and evaluation entry points are idempotent and documented;
@@ -220,7 +250,7 @@ A reproduction is ready for review only when:
 
 Never reproduce your own work. Contact original authors only after an independent attempt, except for Team S-coordinated data-access requests, and always report what the contact changed.
 
-`README.md` is the complete human-readable report. It must include citation and target scope, all source artifacts and pins, data provenance and permission basis, exact commands and environment, evidence and run IDs, hardware/runtime/GPU-hours/cost when available, target-by-target original and reproduced metrics, copied baselines, every guess and deviation, failed attempts, and author contact.
+`README.md` is the complete human-readable report. It must include agent model/application attribution and its evidence or limits, citation and target scope, all source artifacts and pins, data provenance and permission basis, exact commands and environment, evidence and run IDs, hardware/runtime/GPU-hours/cost when available, target-by-target original and reproduced metrics, copied baselines, every guess and deviation, failed attempts, and author contact.
 
 ## Repository tooling
 

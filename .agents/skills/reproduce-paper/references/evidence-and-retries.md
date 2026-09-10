@@ -6,6 +6,7 @@ Every meaningful retained attempt that changes the reproduction's state or infor
 
 Capture:
 
+- executing `agent_ids`, linked to model/application identity and evidence in `agents`; explicit attribution gaps for historical runs;
 - purpose/hypothesis and run kind;
 - exact command, working directory, UTC timestamps, duration, and exit code;
 - repository commit plus dirty-diff hash, upstream revision, patch hashes;

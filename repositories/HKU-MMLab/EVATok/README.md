@@ -3,6 +3,10 @@
 GitHub: https://github.com/HKU-MMLab/EVATok
 Models: https://huggingface.co/YuuTennYi/EVATok
 
+## Agent attribution
+
+**Recorded contributor:** Claude Opus 4.6 (1M context) using Claude Code. The [introducing commit](https://github.com/sign-language-processing/reproduction/commit/b058b10f849a46352214e4e9b2c0a3f168e80a39) credits `Claude Opus 4.6 (1M context)` in its coauthor trailer, and [PR #4](https://github.com/sign-language-processing/reproduction/pull/4) includes the “Generated with Claude Code” footer. The PR execution checklist is unchecked; this attribution does not establish that this agent ran an experiment. Exact model ID and application version were not recorded. Attribution recovered from commit/PR evidence on 2026-09-10.
+
 ## Build
 
 ```bash

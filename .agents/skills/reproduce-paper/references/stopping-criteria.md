@@ -13,6 +13,7 @@ terminal classification:
 ```json
 {
   "run_id": "full-seed-42-attempt-1",
+  "agent_ids": ["reproduction-agent"],
   "command": "exact command",
   "exit_code": 0,
   "started_at_utc": "2026-08-28T10:00:00Z",
@@ -43,6 +44,10 @@ terminal classification:
   }
 }
 ```
+
+`agent_ids` references the executing entries in `reproduction.json.agents` (see
+`AGENTS.md`). An unattributable historical run uses an empty array and a specific
+`agent_attribution_note`; this does not change its stop-policy recording mode.
 
 All fields shown in `recording`, `attempt`, `stop_policy`, and `terminal` are
 required; use explicit `null` only where this contract permits it.

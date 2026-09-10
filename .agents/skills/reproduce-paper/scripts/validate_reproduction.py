@@ -233,6 +233,32 @@ def validate_assignment(document: dict[str, Any], issues: list[str]) -> None:
             issues.append("queue record is not final/confirmed or has inconsistent IDs")
 
 
+def validate_agents(document: dict[str, Any], issues: list[str]) -> dict[str, Any]:
+    agents = keyed(document.get("agents"), "agent_id", "agents", issues)
+    if not agents:
+        issues.append("agents must contain at least one attribution record")
+    for agent_id, agent in agents.items():
+        label = f"agent {agent_id!r}"
+        for field in ("model", "harness"):
+            if field not in agent or (
+                agent[field] is not None and not nonempty(agent[field])
+            ):
+                issues.append(f"{label}.{field} must be a non-empty string or null")
+        for field in ("model_id", "harness_version"):
+            if field in agent and not nonempty(agent[field]):
+                issues.append(f"{label}.{field} must be a non-empty string when present")
+        if not nonempty(agent.get("scope")):
+            issues.append(f"{label}.scope must explain the contribution and unknowns")
+        evidence = agent.get("evidence")
+        if (
+            not isinstance(evidence, list)
+            or not evidence
+            or not all(nonempty(item) for item in evidence)
+        ):
+            issues.append(f"{label}.evidence must be an array of non-empty strings")
+    return agents
+
+
 def validate_datasets(document: dict[str, Any], issues: list[str]) -> dict[str, Any]:
     datasets = keyed(document.get("datasets"), "dataset_id", "datasets", issues)
     for dataset_id, dataset in datasets.items():
@@ -300,6 +326,7 @@ def validate_runs(
     document: dict[str, Any],
     artifacts: dict[str, Any],
     gates: dict[str, Any],
+    agents: dict[str, Any],
     issues: list[str],
 ) -> dict[str, Any]:
     runs = keyed(document.get("runs"), "run_id", "runs", issues)
@@ -310,6 +337,15 @@ def validate_runs(
     )
     for run_id, run in runs.items():
         label = f"run {run_id!r}"
+        checked_references(
+            run.get("agent_ids"), agents, f"{label}.agent_ids", "agent", issues
+        )
+        if run.get("agent_ids") == [] and not nonempty(
+            run.get("agent_attribution_note")
+        ):
+            issues.append(
+                f"{label} needs agent_attribution_note for unknown execution attribution"
+            )
         if not nonempty(run.get("command")):
             issues.append(f"{label} needs an exact command")
         if isinstance(run.get("exit_code"), bool) or not isinstance(
@@ -1142,6 +1178,7 @@ def main() -> int:
         issues.append("reproduction.json needs paper_id")
         paper_id = ""
     validate_assignment(document, issues)
+    agents = validate_agents(document, issues)
     if not isinstance(document.get("paper"), dict):
         issues.append("paper must be an object")
     sources = keyed(document.get("sources"), "source_id", "sources", issues)
@@ -1150,7 +1187,7 @@ def main() -> int:
     datasets = validate_datasets(document, issues)
     artifacts = validate_artifacts(root, document, issues)
     gates, open_gate = validate_gates(document, issues)
-    runs = validate_runs(document, artifacts, gates, issues)
+    runs = validate_runs(document, artifacts, gates, agents, issues)
     produced, target_count, targets = validate_targets(
         document,
         datasets,

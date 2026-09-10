@@ -9,6 +9,12 @@ No author implementation was found after a documented source search.
 **Pipeline status:** `insufficient_information`
 **Numerical agreement:** `not_assessed` — Table III's evaluation protocol is unresolved, so neither conditional value is a comparable target result.
 
+## Reproduction agents
+
+**Original reproduction agent:** model unknown; application unknown. A 2026-09-10 audit of the [introducing commit](https://github.com/sign-language-processing/reproduction/commit/10ae21dc1a85743e0677146d2aaf072b1e03ce45) and [PR #35](https://github.com/sign-language-processing/reproduction/pull/35) (including commits, comments, and reviews) found no execution attribution.
+
+`reproduction.json.agents` preserves the evidence and its limits. Each historical run has `agent_ids: []` and an `agent_attribution_note`; no model or executor has been inferred from the human author or branch name.
+
 ## Scope and target contract
 
 The confirmed assignment says “TABLE III.” Table III is a comparison table with one `Accuracy (%)` column. Nine rows are copied comparisons, so they are retained in [`reproduction.json`](reproduction.json) but are not reimplemented as part of this paper. The two paper-owned rows are the proposed MediaPipe-landmark + Random Forest method:
