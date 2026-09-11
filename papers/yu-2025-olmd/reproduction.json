@@ -5166,7 +5166,7 @@
       "guess_id": "mp-block-internals",
       "severity": "blocking",
       "status": "constrained-not-determined",
-      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished.",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint.",
       "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
         "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
@@ -5348,14 +5348,15 @@
     {
       "guess_id": "table5-baseline-param-discrepancy",
       "severity": "informational",
-      "status": "open",
+      "status": "resolved",
       "detail": "OLMD's Table 5 'None' column reports 78.95 M parameters, which does not reconcile with either BiLSTM reading. Computed from the standard specs: ResNet34 body 21.285 M + TemporalConv 7.866 M each + classifier 1.327 M, with a 2-layer BiLSTM of 12.599 M at 512 per direction or 41.976 M at 1024 per direction. That gives 43.08 M (512/dir, one temporal branch), 50.94 M (512/dir, two branches), 72.45 M (1024/dir, one) or 80.32 M (1024/dir, two). Only the last is near 78.95 M and it overshoots, implying a negative module budget. The 'None' column also is not the Tables 3/4 baseline: it reads 18.9/19.4, matching Table 4's LMA-free row, so it retains OMP and coupling.  UPDATE after implementing TLP: with TLP as the P2 operator and two parallel 1D-CNN branches the model measures 111.762 M parameters, and the configuration arithmetic gives 86.55 M when the inferred LMA/OMP/coupling modules are counted at their measured 10.41 M. That is within about 7% of the paper's 80.74 M, and the residual sits inside the MP-Block's uncertainty. By contrast the earlier MaxPool version measured 61.365 M, 24% BELOW the paper. The parameter column therefore now corroborates both that TLP belongs in the head and that two local branches exist, rather than being unexplainable. The gap between the arithmetic (86.55 M) and the built model (111.762 M) is the LocalWeighting k=5 full convolutions at 1024 channels, 5.246 M each and eight of them.",
       "planned_resolution": "Do not treat 78.95 M as a target to tune toward. Use the Table 5 slope (reliable, and the basis for r=2) rather than the absolute column. Report the reproduction's own parameter count beside the paper's and record the discrepancy.",
       "evidence": [
         "arXiv:2503.08205v1 Table 5 params column and Table 4 LMA-free row (18.9/19.4).",
         "Parameter arithmetic recomputed from standard ResNet34/LSTM specifications 2026-09-08.",
         "The FLOPs column is also internally inconsistent: ResNet34 alone at 224x224 is roughly 3.66 GMAC per frame, so 100 frames already exceeds the reported 363.4 G total. The params column is the more trustworthy of the two."
-      ]
+      ],
+      "resolution": "Resolved 2026-09-11 by the weight-shared-branches reading plus TLP's true cost. The earlier reconciliation attempts omitted that each TemporalLiftPool instance costs ~12.6M at 1024 channels (two k=5 full-channel LocalWeighting convs dominate), i.e. 25.2M per branch pair of poolings. With ONE shared 1024-wide branch (7.87M + 25.20M), BiLSTM at 512/direction (12.60M), shared classifier (1.33M), ResNet34 (21.29M) and the OMP/coupling modules, the predicted no-LMA total is ~75.3M vs Table 5's 78.95M 'None', the difference being the MP-Block/LMA internals budget. The 111.76M measured for this reproduction's unshared head explains the original 30M+ discrepancy."
     },
     {
       "guess_id": "input-normalization",
@@ -5373,7 +5374,7 @@
       "severity": "open",
       "status": "resolved",
       "detail": "The paper does not say whether the two 1D-CNN branches are sequential or parallel. Fig. 2 annotates them 'xN' and says they 'share architecture'; Eq. 12 supervises both with peer local CTC losses.",
-      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips. REVISED 2026-09-10 after inspecting Figure 2 at full resolution: the two 1D-CNNs are parallel but take DIFFERENT inputs (trunk features vs X_CS), with outputs summed before the BiLSTM; and the 'xN' annotations sit on the Feature-Extractor stage block and the OMP block (N = 3 stages), not on the 1D-CNNs as earlier recorded. The parallel-over-identical-input topology used by the completed run is a deviation (head-wiring-vs-figure2). The sequential-is-impossible argument stands.",
+      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips. REVISED 2026-09-10 after inspecting Figure 2 at full resolution: the two 1D-CNNs are parallel but take DIFFERENT inputs (trunk features vs X_CS), with outputs summed before the BiLSTM; and the 'xN' annotations sit on the Feature-Extractor stage block and the OMP block (N = 3 stages), not on the 1D-CNNs as earlier recorded. The parallel-over-identical-input topology used by the completed run is a deviation (head-wiring-vs-figure2). The sequential-is-impossible argument stands. PARAMETER-RECONCILIATION UPDATE (2026-09-11): 'two 1D-CNNs share architecture' most likely means shared WEIGHTS, not merely identical structure. Measured head cost of two independent 1024-wide branches is 80.07M (2 x (7.87M convs + 25.20M TLPs) + 12.60M BiLSTM + 1.33M classifier) -- as large as the paper's entire 80.74M model. With shared branch weights the predicted total is 78.69M vs the paper's 80.74M (within 2.05M, the MP-Block budget); unshared-1024 gives 111.76M and unshared-512 about 58.6M, neither close. Both completed runs used unshared branches (deviation unshared-branch-weights).",
       "evidence": [
         "arXiv:2503.08205v1 Figure 2 caption and Equation 12.",
         "Gloss-count statistics computed from PHOENIX14 train.corpus.csv: mean 11.5, median 11, p95 18, max 28.",
@@ -5485,6 +5486,17 @@
         "train"
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt1"
+    },
+    {
+      "deviation_id": "unshared-branch-weights",
+      "detail": "Both completed training runs instantiated the two temporal-head 1D-CNN branches (including their TLP poolings) as INDEPENDENT parameter sets, 66.1M total, whereas 'two 1D-CNNs share architecture' read together with Table 5's parameter column implies a single shared 33.1M branch applied to both inputs (see guess temporal-branch-topology). This makes our model 111.76M vs the paper's 80.74M and changes the role of the two local CTC losses (independent branches vs a consistency signal on shared weights). Discovered 2026-09-11 by parameter reconciliation, after both runs; correcting it requires a retrain.",
+      "guess_id": "temporal-branch-topology",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "adopted_before_run": "train-phoenix14-seed0-attempt3",
+      "discovered_after_run": true
     }
   ],
   "contacts": []
