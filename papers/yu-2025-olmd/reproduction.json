@@ -4706,6 +4706,56 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "train-phoenix14-params-fix-001",
+      "purpose": "Full 70-epoch PHOENIX14 training testing the parameter-reconciliation hypothesis: weight-shared temporal branch plus dense factorized MP-Block, bringing the model from 111.76M to 82.09M vs the paper's 80.74M. Third and final planned PHOENIX14 variant.",
+      "kind": "train_full",
+      "command": "cd /leonardo_work/EUHPC_D33_168/olmd/code && sbatch cineca.sbatch",
+      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
+      "started_at_utc": "2026-09-11T15:35:00Z",
+      "config": {
+        "code_commit": "ac2512e (branch repro/yu-2025-olmd-wiring-fix)",
+        "dataset": "phoenix14",
+        "epochs": 70,
+        "batch_size": 2,
+        "seed": 0,
+        "wiring": "params-conformant: figure2 wiring + weight-shared temporal branch + dense (3x1)+(1x3) MP-Block",
+        "params_total": 82085078,
+        "environment": "cineca-ai/4.3.0: python 3.11.6, torch 2.2.0+cu121, torchvision 0.17.0",
+        "data": "same staged cache/annotations/weights as train-phoenix14-wiring-fix-001",
+        "output": "/leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-11T15:30:00Z",
+        "max_wall_time_seconds": 172800,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": null,
+        "note": "Institutional allocation EUHPC_D33_168; 24 h SLURM walltime per submission, per-epoch checkpointing resumes across resubmissions."
+      },
+      "attempt": {
+        "group_id": "train-phoenix14-params-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "cineca-leonardo",
+        "account": "EUHPC_D33_168",
+        "partition": "boost_usr_prod",
+        "gpu": "A100-64GB",
+        "gpu_count": 1
+      },
+      "slurm": {
+        "cluster": "leonardo",
+        "job_id": "57329434"
+      },
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Structural validation by Modal smoke (gpu-smoke series, commit ac2512e): total 82,085,078 params (predicted 82.08M), shared head 47.00M, finite loss, correct branch lengths.",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      }
     }
   ],
   "artifacts": [
@@ -5166,7 +5216,7 @@
       "guess_id": "mp-block-internals",
       "severity": "blocking",
       "status": "constrained-not-determined",
-      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint.",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint. DESIGN UNDER TEST (commit ac2512e, run train-phoenix14-params-fix-001): dense factorized Conv(3x1)-BN-ReLU-Conv(1x3)-BN, 4.13M across six instances; corrected model totals 82.085M vs the paper's 80.74M.",
       "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
         "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
@@ -5496,7 +5546,8 @@
         "evaluate"
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
-      "discovered_after_run": true
+      "discovered_after_run": true,
+      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix commit ac2512e together with the budget-conformant MP-Block, as the single hypothesis 'match Table 5's parameter column'; under test in run train-phoenix14-params-fix-001. Modal smoke verified the corrected model at 82,085,078 params vs the paper's 80.74M."
     }
   ],
   "contacts": []
