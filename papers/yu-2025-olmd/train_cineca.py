@@ -6,8 +6,9 @@ paper's augmentation, best-dev checkpoint selection, and a checkpoint every
 epoch so a SLURM walltime limit only pauses the run -- resubmitting resumes
 from latest.pt. Scoring strips PHOENIX markers from BOTH sides (symmetric).
 
-This runs the wiring-fix branch: LMA on a side branch and the Figure-2 head
-(trunk -> 1D-CNN #1, X_CS -> 1D-CNN #2, outputs summed -> BiLSTM).
+This branch's model: LMA on a side branch, the Figure-2 head (trunk and X_CS
+through ONE weight-shared 1D-CNN branch, outputs summed -> BiLSTM), and the
+parameter-budget MP-Block (dense (3x1)+(1x3) pair).
 
 Offline by design: compute nodes need no internet. Before submitting, stage
 (1) the annotation CSVs, (2) the complete JPEG frame cache, and (3) the
@@ -255,7 +256,7 @@ def main() -> int:
         "wall_seconds": round(time.time() - started, 1),
         "gpu": str(torch.cuda.get_device_name(0)),
         "peak_memory_GiB": round(torch.cuda.max_memory_allocated() / 2**30, 3),
-        "wiring": "figure2-conformant (head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected)",
+        "wiring": "params-conformant (figure2 wiring + weight-shared temporal branch + dense factorized MP-Block per the Table 5 parameter budget)",
     }
     (args.output / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result["final"], indent=2))

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=olmd-wiring-fix
+#SBATCH --job-name=olmd-params-fix
 #SBATCH --partition=boost_usr_prod
 #SBATCH --account=EUHPC_D33_168
 #SBATCH --nodes=1
@@ -8,7 +8,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=64G
 #SBATCH --time=24:00:00
-#SBATCH --output=olmd-wiring-fix-%j.out
+#SBATCH --output=olmd-params-fix-%j.out
 
 # CINECA Leonardo booster (A100 64GB). The trainer checkpoints every epoch and
 # resumes from latest.pt, so if the 24 h walltime ends first, simply resubmit.
@@ -35,5 +35,5 @@ cd "$BASE/code"
 srun python3 train_cineca.py \
     --data-root "$BASE/data" \
     --cache-root "$BASE/cache" \
-    --output "$BASE/output/phoenix14-wiring-fix" \
+    --output "$BASE/output/phoenix14-params-fix" \
     --epochs 70 --workers 8 --seed 0

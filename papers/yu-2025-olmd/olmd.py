@@ -129,26 +129,26 @@ class MPBlock(nn.Module):
         long temporal extent (CorrNet's mixers are (9,3,3) depthwise), so a
         (9,3) kernel over (T, spatial) follows that convention.
 
-    Depth, dense-vs-depthwise, and the exact kernel remain free choices.
+    Depth and exact kernels were free choices until the 2026-09-11 parameter
+    reconciliation (see __init__); the two completed runs used a depthwise
+    (9,3) mixer, superseded by the budget-conformant dense pair below.
     """
 
-    def __init__(self, channels: int, temporal_kernel: int = 9, spatial_kernel: int = 3):
+    def __init__(self, channels: int):
         super().__init__()
-        padding = (temporal_kernel // 2, spatial_kernel // 2)
-        # INFERRED: depthwise, mirroring the lineage's depthwise mixers, which
-        # also keeps the parameter cost within the Table 5 budget.
+        # PARAMETER-BUDGET DESIGN (2026-09-11, guess mp-block-internals):
+        # reconciling Table 5 under the weight-shared temporal head leaves
+        # ~2.0-3.5M for all six MP-Block instances, implying FULL-channel
+        # convolutions of total kernel area ~3-5 -- not the earlier depthwise
+        # (9,3) guess (0.74M, no textual basis). Design under test: a dense
+        # factorized pair, Conv(3x1) over time then Conv(1x3) over the spatial
+        # axis ("2D CNNs", plural; both plane axes covered), 4.13M across the
+        # six instances; predicted model total 82.1M vs the paper's 80.74M.
         self.mixer = nn.Sequential(
-            nn.Conv2d(
-                channels,
-                channels,
-                kernel_size=(temporal_kernel, spatial_kernel),
-                padding=padding,
-                groups=channels,
-                bias=False,
-            ),
+            nn.Conv2d(channels, channels, kernel_size=(3, 1), padding=(1, 0), bias=False),
             nn.BatchNorm2d(channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(channels, channels, kernel_size=1, bias=False),
+            nn.Conv2d(channels, channels, kernel_size=(1, 3), padding=(0, 1), bias=False),
             nn.BatchNorm2d(channels),
         )
 
@@ -443,9 +443,13 @@ class TemporalHead(nn.Module):
 
     def __init__(self, input_size: int, hidden_size: int, num_classes: int):
         super().__init__()
-        # Parallel peers over the same input, not a cascade (see the class docstring).
-        self.branch1 = self._make_branch(input_size, hidden_size)
-        self.branch2 = self._make_branch(input_size, hidden_size)
+        # ONE branch, applied to both inputs. "Two 1D-CNNs share architecture"
+        # read as shared WEIGHTS: the 2026-09-11 parameter reconciliation shows
+        # Table 5's totals only balance with a single shared 33.1M branch
+        # (unshared-1024 gives 111.8M, unshared-512 about 58.6M, vs the paper's
+        # 80.74M). The two completed runs used independent branches (deviation
+        # unshared-branch-weights); this shared design is under test.
+        self.branch = self._make_branch(input_size, hidden_size)
         self.rnn = nn.LSTM(
             input_size=hidden_size,
             hidden_size=hidden_size // 2,  # per-direction, so output stays 1024
@@ -509,9 +513,11 @@ class TemporalHead(nn.Module):
     def forward(
         self, features: torch.Tensor, coupling: torch.Tensor, lengths: torch.Tensor
     ) -> dict:
-        # Figure 2: trunk -> branch 1, X_CS -> branch 2, outputs summed.
-        local1, auxiliary1 = self._run_branch(self.branch1, features)
-        local2, auxiliary2 = self._run_branch(self.branch2, coupling)
+        # Figure 2: trunk -> shared branch, X_CS -> the SAME shared branch,
+        # outputs summed. With shared weights the two local CTC losses act as
+        # a consistency signal on one parameter set.
+        local1, auxiliary1 = self._run_branch(self.branch, features)
+        local2, auxiliary2 = self._run_branch(self.branch, coupling)
         lengths1 = self.update_lengths(lengths)
         lengths2 = lengths1  # identical branch architecture, identical reduction
 
