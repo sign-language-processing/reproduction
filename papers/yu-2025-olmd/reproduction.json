@@ -128,7 +128,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint: 35.0 dev / 34.2 test vs published 17.1 / 17.2 -- an ~18-point gap, so does_not_agree stands. Diagnosis so far: of the originally reported 34-point gap, ~16.5 points were evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3) and ~0.3 decoding; the remaining ~18 points are model/protocol-side, with the unpublished MP-Block internals (blocking guess) the leading candidate. PHOENIX14-T targets remain unproduced, hence pipeline=partial. POST-RUN AUDIT (2026-09-10): full-resolution inspection of Figures 2 and 3 found two wiring deviations adopted before the run under then-open guesses -- the temporal head (deviation head-wiring-vs-figure2) and LMA's trunk routing (deviation lma-in-trunk-vs-figures). Both are training-side candidate contributors to the residual ~18-point gap, alongside the unpublished MP-Block internals; correcting either requires a gated retrain. The figures also POSITIVELY verified the FFN residual, cascade order and content, alpha/beta mapping, HMP/VMP orientation assignment, and the LMA difference/concat structure as implemented.",
+    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint from the figure-conformant wiring run: 33.9 dev / 33.0 test vs published 17.1 / 17.2, so does_not_agree stands. Diagnosis across two full runs: of the 34-point gap first observed, about 16.5 points were this reproduction's own evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3), ~0.3 decoding, and ~1.1-1.2 the two figure-audit wiring deviations (head-wiring-vs-figure2 and lma-in-trunk-vs-figures, corrected and retrained on CINECA). The residual ~16-17 points remain unexplained. Both wirings plateau near 33-35, worse than the paper's own no-modules ablation baseline (18.9 dev), so the shortfall is not about the marginal value of OLMD's modules. The leading remaining candidate is the unpublished MP-Block architecture (blocking guess mp-block-internals), whose supplementary material does not exist publicly. PHOENIX14-T targets remain unproduced, hence pipeline=partial.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": null
@@ -417,21 +417,21 @@
           "sub": 31.2624
         },
         "artifact_ids": [
-          "sclite-summary",
-          "rescore-summary",
-          "train-p14-result-json",
-          "train-p14-best-pt"
+          "wf-sclite-summary",
+          "wf-rescore-summary",
+          "wf-train-result-json",
+          "wf-train-best-pt"
         ],
-        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
-        "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "detail": "Reproduced 35.0 vs published 17.1 under the official chain. All scoring/decoding variants: beam-10 official-chain 35.0; greedy official-chain 35.3; symmetric Levenshtein stripped-both 38.19 (beam)/38.55 (greedy); raw symmetric 40.20/40.45; original asymmetric report 51.47. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training.",
-        "difference": 17.9,
+        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-40 best-dev checkpoint from the figure-conformant wiring run.",
+        "checkpoint_selection": "best dev WER epoch (40), per guess checkpoint-rule",
+        "detail": "Reproduced 33.9 vs published 17.1 under the official chain, from the figure-conformant wiring run (train-phoenix14-wiring-fix-001). The earlier original-wiring run gave 35.0 under the identical chain; the two figure-audit wiring corrections improved the result by about 1.1-1.2 WER, so they do not explain the gap. Superseded value retained in that run's record and in the README comparison table.",
+        "difference": 16.8,
         "run_ids": [
-          "sclite-phoenix14-002",
-          "rescore-phoenix14-001",
-          "train-phoenix14-seed0-attempt3"
+          "sclite-phoenix14-wiring-fix-001",
+          "rescore-phoenix14-wiring-fix-001",
+          "train-phoenix14-wiring-fix-001"
         ],
-        "reproduced_value": 35.0
+        "reproduced_value": 33.9
       }
     },
     {
@@ -462,21 +462,21 @@
           "sub": 31.798
         },
         "artifact_ids": [
-          "sclite-summary",
-          "rescore-summary",
-          "train-p14-result-json",
-          "train-p14-best-pt"
+          "wf-sclite-summary",
+          "wf-rescore-summary",
+          "wf-train-result-json",
+          "wf-train-best-pt"
         ],
-        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
-        "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
-        "detail": "Reproduced 34.2 vs published 17.2 under the official chain. All scoring/decoding variants: beam-10 official-chain 34.2; greedy official-chain 34.4; symmetric Levenshtein stripped-both 37.43 (beam)/37.63 (greedy); raw symmetric 39.90/40.13; original asymmetric report 51.98. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training.",
-        "difference": 17.0,
+        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-40 best-dev checkpoint from the figure-conformant wiring run.",
+        "checkpoint_selection": "best dev WER epoch (40), per guess checkpoint-rule",
+        "detail": "Reproduced 33.0 vs published 17.2 under the official chain, from the figure-conformant wiring run (train-phoenix14-wiring-fix-001). The earlier original-wiring run gave 34.2 under the identical chain; the two figure-audit wiring corrections improved the result by about 1.1-1.2 WER, so they do not explain the gap. Superseded value retained in that run's record and in the README comparison table.",
+        "difference": 15.8,
         "run_ids": [
-          "sclite-phoenix14-002",
-          "rescore-phoenix14-001",
-          "train-phoenix14-seed0-attempt3"
+          "sclite-phoenix14-wiring-fix-001",
+          "rescore-phoenix14-wiring-fix-001",
+          "train-phoenix14-wiring-fix-001"
         ],
-        "reproduced_value": 34.2
+        "reproduced_value": 33.0
       }
     },
     {
@@ -4511,8 +4511,12 @@
         "gpu": "A100-64GB",
         "gpu_count": 1
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion.",
-      "artifact_ids": [],
+      "observed": "COMPLETED all 70 epochs in 22:31:06 on one A100-SXM-64GB (peak 32.15 GiB, ~1155 s/epoch), inside the 24 h walltime, so no resubmission was needed. Best dev WER 37.7729 at epoch 40 (the second LR cut); dev/test at that checkpoint 37.7729 / 37.2228 on the per-epoch symmetric greedy metric. The figure-conformant wiring learns MUCH faster than the original wiring -- it reached 52 dev WER by epoch 12, a level the original needed ~50 epochs to reach -- but converges to essentially the same place. Official-chain beam-10 scores are 33.9 dev / 33.0 test, against the original wiring's 35.0 / 34.2: an improvement of 1.1 / 1.2 WER, within or near seed-noise range and nowhere near the paper's 17.1 / 17.2.",
+      "artifact_ids": [
+        "wf-train-result-json",
+        "wf-train-history-json",
+        "wf-train-best-pt"
+      ],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -4525,6 +4529,182 @@
           "57186624",
           "57186724"
         ]
+      },
+      "finished_at_utc": "2026-09-11T11:11:00Z",
+      "exit_code": 0,
+      "measurements": {
+        "epochs_total": 70,
+        "best_epoch": 40,
+        "best_dev_wer_symmetric_greedy": 37.7729,
+        "final_dev_symmetric_greedy": 37.7729,
+        "final_test_symmetric_greedy": 37.2228,
+        "sclite_beam10_dev": 33.9,
+        "sclite_beam10_test": 33.0,
+        "sclite_greedy_dev": 34.1,
+        "sclite_greedy_test": 33.3,
+        "wall_seconds": 81045.9,
+        "seconds_per_epoch_mean": 1157.8,
+        "gpu_hours": 22.52,
+        "peak_memory_GiB": 32.152
+      },
+      "hypothesis_supported": false,
+      "findings": [
+        "The combined figure-conformance correction improves the official-chain result by only 1.1 dev / 1.2 test WER (35.0/34.2 -> 33.9/33.0). The two wiring deviations are therefore NOT the explanation for the ~18-point gap to the published 17.1/17.2.",
+        "Convergence speed changed dramatically even though the endpoint did not: the corrected wiring reached dev WER 52 by epoch 12 versus ~epoch 50 for the original, consistent with the zero-initialized alpha/beta leaving the pretrained trunk undisturbed early and with the coupling path receiving direct CTC supervision.",
+        "Both runs plateau near 33-35 official-chain WER, roughly twice the published value and worse than the paper's own no-modules ablation baseline (18.9 dev). The remaining suspicion concentrates on the unpublished MP-Block internals (blocking guess mp-block-internals), with the open cross-stage/LMA questions now resolved against the figures and tested."
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 70 epochs completed inside the declared ceilings (22.5 of 30 GPU-hours) and evaluation emitted traceable dev and test WER from the best-dev checkpoint.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "rescore-phoenix14-wiring-fix-001",
+      "purpose": "Decode the CINECA wiring-fix best-dev checkpoint with greedy and beam-10 under the same scoring variants as the original run.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore --path phoenix14-wiring-fix",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-11T13:40:00Z",
+      "finished_at_utc": "2026-09-11T13:55:00Z",
+      "exit_code": 0,
+      "config": {
+        "checkpoint": "olmd-yu-2025-results:/train/phoenix14-wiring-fix/best.pt (epoch 40)",
+        "variant": "phoenix14-wiring-fix"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-11T13:35:00Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.0
+      },
+      "attempt": {
+        "group_id": "rescore-phoenix14-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A10G",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": null,
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "326.1 s on A10G. Beam-10 vs greedy again immaterial (0.18 dev / 0.31 test). Symmetric stripped-both: 37.59 dev / 36.90 test beam-10.",
+      "measurements": {
+        "wall_seconds": 326.1,
+        "dev_beam10_stripped": 37.5943,
+        "test_beam10_stripped": 36.8994,
+        "dev_greedy_stripped": 37.7729,
+        "test_greedy_stripped": 37.2228
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "wf-rescore-summary",
+        "wf-rescore-hyp-dev",
+        "wf-rescore-hyp-test"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Evaluation completed and emitted the requested values.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "sclite-phoenix14-wiring-fix-001",
+      "purpose": "Score the wiring-fix CTM hypotheses with the pinned official PHOENIX sclite chain, identical to sclite-phoenix14-002.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite --path phoenix14-wiring-fix",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-11T13:40:00Z",
+      "finished_at_utc": "2026-09-11T13:55:00Z",
+      "exit_code": 0,
+      "config": {
+        "checkpoint": "olmd-yu-2025-results:/train/phoenix14-wiring-fix/best.pt (epoch 40)",
+        "variant": "phoenix14-wiring-fix"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-11T13:35:00Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.0
+      },
+      "attempt": {
+        "group_id": "sclite-phoenix14-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": null,
+        "dashboard": null,
+        "image": "ghcr.io/sign-language-processing/reproduction:latest"
+      },
+      "observed": "Official chain: dev 34.1 greedy / 33.9 beam-10; test 33.3 greedy / 33.0 beam-10. Versus the original wiring's 35.3/35.0 dev and 34.4/34.2 test.",
+      "measurements": {
+        "greedy_dev": 34.1,
+        "beam10_dev": 33.9,
+        "greedy_test": 33.3,
+        "beam10_test": 33.0
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "wf-sclite-summary"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Evaluation completed and emitted the requested values.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     }
   ],
@@ -4680,6 +4860,62 @@
       "size_bytes": 222982,
       "description": "Per-utterance greedy and beam-10 gloss hypotheses, test split, epoch-57 checkpoint.",
       "kind": "predictions"
+    },
+    {
+      "artifact_id": "wf-train-result-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/result.json",
+      "sha256": "2b5ac9d02930944581843fb44b248cbe4fa19fcec336b899d36d86de9610b9c1",
+      "size_bytes": 22437,
+      "description": "CINECA wiring-fix final result: best epoch 40, dev/test WER with breakdown, 70-epoch history (copied from Leonardo $WORK/olmd/output/phoenix14-wiring-fix)."
+    },
+    {
+      "artifact_id": "wf-train-history-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/history.json",
+      "sha256": "6231e476578c9e152ada25a9e1f91d4a8f810fcdd393b7596f740f38a5250bf4",
+      "size_bytes": 19660,
+      "description": "CINECA wiring-fix per-epoch history: loss components, dev WER/del/ins, LR, seconds for epochs 0-69."
+    },
+    {
+      "artifact_id": "wf-train-best-pt",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/best.pt",
+      "sha256": "1159a1cde41ae9adb93b606b4fceba3e58285e5bf4e37ea0272fb60d3567f393",
+      "size_bytes": 447350232,
+      "description": "CINECA wiring-fix best-dev checkpoint (epoch 40); uploaded from Leonardo for evaluation."
+    },
+    {
+      "artifact_id": "wf-rescore-summary",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/rescore-summary.json",
+      "sha256": "d4b921c15369159a228bb133bfcb3d14497b39a6a7922c8f4959ef1aaace1bde",
+      "size_bytes": 4398,
+      "description": "Wiring-fix greedy and beam-10 WER under the three scoring variants."
+    },
+    {
+      "artifact_id": "wf-sclite-summary",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/sclite-summary.json",
+      "sha256": "fea470802bd04bf1fbca24f1e2f72baebb99c8f7f4b23d1f0cb4868052bc61ad",
+      "size_bytes": 552,
+      "description": "Wiring-fix official-chain sclite WER for greedy/beam-10 on dev/test."
+    },
+    {
+      "artifact_id": "wf-rescore-hyp-dev",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/hypotheses-dev.json",
+      "sha256": "6ab4782ddf15585284232c87654f16db3af6cff91c32614136968b9e137b6a92",
+      "size_bytes": 182897,
+      "description": "Wiring-fix per-utterance greedy and beam-10 hypotheses, dev split."
+    },
+    {
+      "artifact_id": "wf-rescore-hyp-test",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/hypotheses-test.json",
+      "sha256": "0a78f17cc47edd06bd23dd69ce43653db025d6137c32a7e7cc13cf11344ff1a8",
+      "size_bytes": 218380,
+      "description": "Wiring-fix per-utterance greedy and beam-10 hypotheses, test split."
     }
   ],
   "gates": [

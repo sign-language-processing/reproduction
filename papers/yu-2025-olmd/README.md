@@ -14,20 +14,22 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `partial` — both PHOENIX14 targets are produced from a completed
-70-epoch full run; the two PHOENIX14-T targets await their own training run.
+**Pipeline status:** `partial` — both PHOENIX14 targets are produced from two completed
+70-epoch full runs; the two PHOENIX14-T targets await their own training run.
 
-**Numerical agreement:** `does_not_agree` — reproduced **35.0 dev / 34.2 test** WER
-(official sclite chain, beam-10) against the published **17.1 / 17.2**.
+**Numerical agreement:** `does_not_agree` — reproduced **33.9 dev / 33.0 test** WER
+(official sclite chain, beam-10, figure-conformant wiring) against the published
+**17.1 / 17.2**.
 
-**Attempt dates:** 2026-09-08 → 2026-09-10 (PHOENIX14 complete; PHOENIX14-T pending)
+**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14 complete; PHOENIX14-T pending)
 
 > **Status: PHOENIX14 reproduced end to end; the numbers disagree with the paper.** The
 > full stated protocol ran to completion (70 epochs, batch 2, best-dev checkpoint
 > selection) and was evaluated with the official PHOENIX sclite chain. The reproduced WER
 > is roughly twice the published value. Of the raw 34-point gap first observed, ~16.5
-> points were traced to this reproduction's own evaluation methodology and corrected
-> (see [Results](#results)); the remaining ~18-point gap is model/protocol-side, with the
+> points were traced to this reproduction's own evaluation methodology and corrected, and
+> a further ~1.2 to two wiring deviations found in a post-run figure audit and fixed in a
+> second full run on CINECA. The residual **~16 points remain unexplained**, with the
 > paper's unpublished MP-Block architecture the leading candidate. A reviewer decides the
 > scientific conclusion; every variant, guess, and dead end is recorded.
 
@@ -110,18 +112,34 @@ is **level 3 — reimplementation from the paper**.
 
 | Target ID | Paper location | Dataset/split | Original | Reproduced | Status |
 | --- | --- | --- | ---: | ---: | --- |
-| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **35.0** | produced (`sclite-phoenix14-002`) |
-| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **34.2** | produced (`sclite-phoenix14-002`) |
+| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **33.9** | produced (`sclite-phoenix14-wiring-fix-001`) |
+| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **33.0** | produced (`sclite-phoenix14-wiring-fix-001`) |
 | `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | not yet attempted (separate run) |
 | `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | not yet attempted (separate run) |
 | 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
 The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
 + `mergectmstm.py` + SCTK v2.4.12 `sclite`, all sha256-pinned) applied to **beam-10**
-(no LM) decoding of the best-dev checkpoint (epoch 57 of 70). This is the evaluation the
-field's published numbers use, so it is the comparable value. Error breakdown at that
-setting: dev 18.3 sub / 12.3 del / 4.4 ins; test 18.1 / 11.9 / 4.2 (paper reports
-4.8 del / 2.4 ins dev, 4.7 / 2.3 test).
+(no LM) decoding of the best-dev checkpoint of the **figure-conformant wiring run**
+(epoch 40 of 70, trained on CINECA). This is the evaluation the field's published numbers
+use, so it is the comparable value. Error breakdown: dev 14.8 sub / 15.3 del / 3.8 ins;
+test 15.6 / 13.8 / 3.6 (paper reports 4.8 del / 2.4 ins dev, 4.7 / 2.3 test — our
+deletion rate is 3x the paper's, the clearest signature of the remaining gap).
+
+### Two full runs, same conclusion
+
+| Run | Wiring | Best epoch | sclite beam-10 dev | sclite beam-10 test |
+| --- | --- | ---: | ---: | ---: |
+| `train-phoenix14-seed0-attempt3` (Modal) | as-implemented | 57 | 35.0 | 34.2 |
+| `train-phoenix14-wiring-fix-001` (CINECA) | **figure-conformant** | 40 | **33.9** | **33.0** |
+| Published | — | — | 17.1 | 17.2 |
+
+The figure-conformance correction (both deviations fixed together) is worth **1.1 dev /
+1.2 test WER** — real but small, and within or near seed-noise range. It did, however,
+change convergence dramatically: the corrected wiring reached dev WER 52 by **epoch 12**,
+a level the original needed roughly 50 epochs to reach, consistent with the
+zero-initialized α/β leaving the pretrained trunk undisturbed early and with the coupling
+path receiving its own CTC supervision. Both runs nonetheless plateau near 33–35.
 
 ### How the reported number depends on scoring — measured, same checkpoint
 
@@ -144,13 +162,14 @@ Two findings from the diagnosis runs (`rescore-phoenix14-001`, `sclite-phoenix14
 - **Decoding is immaterial (~0.3 points).** Beam width 10, the lineage's setting, improves
   on greedy by 0.25 dev / 0.23 test. The paper's unstated decoding cannot explain the gap.
 
-### The remaining ~18-point gap is model/protocol-side
+### The remaining ~16-point gap is unexplained
 
-The training run itself was healthy: loss fell monotonically, both LR cuts (epochs 25/40)
-produced visible improvements, and errors are substitution-dominated. Context that
-sharpens the diagnosis: the paper's own no-modules ablation baseline (Table 5, "None")
-reaches 18.9 dev — our 35.0 is far worse than even that, so the shortfall points at the
-**inferred parts of the recipe**, not at the marginal value of OLMD's novel modules.
+Both training runs were healthy: loss fell monotonically, both LR cuts (epochs 25/40)
+produced visible improvements, and errors are dominated by substitutions and deletions.
+Context that sharpens the diagnosis: the paper's own no-modules ablation baseline
+(Table 5, "None") reaches 18.9 dev — our 33.9 is far worse than even that, so the
+shortfall points at the **inferred parts of the recipe**, not at the marginal value of
+OLMD's novel modules. The wiring hypothesis has now been tested and largely ruled out.
 
 **Post-run figure audit (2026-09-10) found two wiring deviations.** A full-resolution
 inspection of the paper's figure assets (the prose never states either detail, and both
