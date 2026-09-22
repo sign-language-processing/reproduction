@@ -501,16 +501,13 @@
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14-T is about 30.1 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
+          "code": "in_progress",
+          "detail": "Stage two is running. The compute block that deferred this target is lifted: PHOENIX14-T measures 17.7 GPU-hours on H100 (loader-benchmark-h100-001), inside the AGENTS.md 24-hour single-GPU autonomous threshold, rather than the 30.1 GPU-hours the A100 figure implied. Cache built and verified (cache-build-phoenix14t-001: 8257/8257 entries, 8.83 GiB, 2.8 minutes), the full path preflighted (preflight-phoenix14t-001), and the 70-epoch run launched as train-phoenix14t-wiring-fix-001 with the figure-conformant wiring that produced the reported PHOENIX14 33.9/33.0. No value is recorded until that run reaches evaluation and the official sclite chain scores it."
         },
         "run_ids": [
-          "preflight-phoenix14-001",
-          "preflight-phoenix14-002",
-          "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001",
-          "cache-build-trial-001",
-          "loader-benchmark-001"
+          "cache-build-phoenix14t-001",
+          "preflight-phoenix14t-001",
+          "train-phoenix14t-wiring-fix-001"
         ],
         "artifact_ids": [
           "preflight-json",
@@ -554,16 +551,13 @@
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "compute_budget_blocked",
-          "detail": "The pipeline is implemented and verified end to end with TLP, a JPEG frame cache and a prefetching DataLoader, but the measured full-run requirement for PHOENIX14-T is about 30.1 GPU-hours, which exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours. Awaiting the authorization recorded in gate compute-full-run-table1. No value was produced because the full run has not been launched, not because of any data, code or specification obstacle.  Staging: deferred to the second stage, after PHOENIX14 completes."
+          "code": "in_progress",
+          "detail": "Stage two is running. The compute block that deferred this target is lifted: PHOENIX14-T measures 17.7 GPU-hours on H100 (loader-benchmark-h100-001), inside the AGENTS.md 24-hour single-GPU autonomous threshold, rather than the 30.1 GPU-hours the A100 figure implied. Cache built and verified (cache-build-phoenix14t-001: 8257/8257 entries, 8.83 GiB, 2.8 minutes), the full path preflighted (preflight-phoenix14t-001), and the 70-epoch run launched as train-phoenix14t-wiring-fix-001 with the figure-conformant wiring that produced the reported PHOENIX14 33.9/33.0. No value is recorded until that run reaches evaluation and the official sclite chain scores it."
         },
         "run_ids": [
-          "preflight-phoenix14-001",
-          "preflight-phoenix14-002",
-          "throughput-phoenix14-001",
-          "cache-probe-phoenix14-001",
-          "cache-build-trial-001",
-          "loader-benchmark-001"
+          "cache-build-phoenix14t-001",
+          "preflight-phoenix14t-001",
+          "train-phoenix14t-wiring-fix-001"
         ],
         "artifact_ids": [
           "preflight-json",
@@ -4840,6 +4834,247 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "cache-build-phoenix14t-001",
+      "purpose": "Build the complete PHOENIX14-T JPEG frame cache, the prerequisite for the stage-two training run.",
+      "kind": "data_preparation",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache-sharded --dataset phoenix14t --limit 40",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-22T15:00:00Z",
+      "finished_at_utc": "2026-09-22T15:03:00Z",
+      "config": {
+        "shards_per_split": 40,
+        "containers_launched": 120,
+        "cpu_per_container": 4.0,
+        "threads_per_container": 8,
+        "jpeg_quality": 90,
+        "resolution": "256x256 pre-crop",
+        "code_commit": "5fe7e2f (branch repro/yu-2025-olmd-phoenix14t)",
+        "decoder": "simple-video-utils 0.9.1 (PyAV), read_frames_batched"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 4.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-Qjvy0QfeoFAIsaenr3OKVu",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-Qjvy0QfeoFAIsaenr3OKVu",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "Cached all 8257 PHOENIX14-T utterances -- 7096 train, 519 dev, 642 test, exactly the official split counts -- totalling 8.83 GiB in 167.2 s across 120 containers. Verified afterwards: exactly 8257 .npz entries and zero .partial orphans.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The build took 2.8 minutes against the 10.3 hours projected in the compute gate. That projection extrapolated PHOENIX14's PNG cost; PHOENIX14-T ships mp4, so each clip is one file read instead of ~179 separate PNG requests.",
+        "PHOENIX14-T's cache is SMALLER than PHOENIX14's (8.83 vs 9.58 GiB) despite 1416 more utterances, because its clips are shorter on average.",
+        "Effective throughput 177792 clips/hour against the 160 clips/hour single-container baseline."
+      ],
+      "measurements": {
+        "total_clips": 8257,
+        "train": 7096,
+        "dev": 519,
+        "test": 642,
+        "total_gib": 8.83,
+        "wall_seconds": 167.2,
+        "effective_clips_per_hour": 177791.9,
+        "per_shard_seconds_per_clip_median": 0.83,
+        "per_shard_seconds_per_clip_min": 0.39,
+        "per_shard_seconds_per_clip_max": 3.77,
+        "containers": 120,
+        "verified_npz_entries": 8257,
+        "orphans": 0
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-build-phoenix14t",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-22T14:58:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 20.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 8257 PHOENIX14-T utterances cached and verified against the official split counts.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "preflight-phoenix14t-001",
+      "purpose": "The AGENTS.md representative preflight on PHOENIX14-T: real data through the real loader, several real training steps, a checkpoint save/reload, and a tiny real evaluation, before the full run.",
+      "kind": "preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action preflight --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-22T15:08:00Z",
+      "finished_at_utc": "2026-09-22T15:09:00Z",
+      "config": {
+        "train_steps": 12,
+        "eval_clips": 8,
+        "batch_size": 2,
+        "code_commit": "c05d9ae (branch repro/yu-2025-olmd-phoenix14t)",
+        "wiring": "figure2-conformant (wiring-fix variant, olmd.py from 9dad93a)"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A100-SXM4-40GB",
+        "gpu_count": 1,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-iEoJ6priFAWhDMEvkCmECF",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-iEoJ6priFAWhDMEvkCmECF",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1",
+        "torch": "2.11.0a0+eb65b36914.nv26.02"
+      },
+      "observed": "Vocabulary 1115 glosses (num_classes 1116 with blank), 7096 train and 519 dev utterances, all matching the dataset record. Loss fell from 609.58 to 157.22 over 12 steps with all three components (CTC, distillation, lift) finite throughout. The 1.34 GiB checkpoint reloaded with zero mismatched tensors. The 8-clip evaluation returned WER 100.0, all deletions, which is expected CTC blank-dominant behaviour after 12 steps and matches what preflight-phoenix14-001 showed at the same point. Peak memory 25.28 GiB, GPU step 0.44 s.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The whole PHOENIX14-T path -- mp4 decode, cache read, augmentation, model, loss, checkpointing, evaluation -- executes end to end on real data.",
+        "Peak memory 25.28 GiB fits any of the A100-40GB, A100-80GB or H100 options.",
+        "The function's own 115.8 GPU-hour estimate assumes SERIAL loading, which it times separately; it is not the operative figure. loader-benchmark-h100-001 measured prefetching hiding 98.5% of load latency, giving 17.7 GPU-hours on H100, which is what the full run uses."
+      ],
+      "measurements": {
+        "num_classes": 1116,
+        "vocabulary": 1115,
+        "train_utterances": 7096,
+        "dev_utterances": 519,
+        "loss_first": 609.5838,
+        "loss_last": 157.2235,
+        "seconds_per_gpu_step_median": 0.44,
+        "seconds_per_batch_load_median": 1.363,
+        "checkpoint_bytes": 1339553525,
+        "checkpoint_reload_verified": true,
+        "mismatched_tensors": 0,
+        "peak_memory_GiB": 25.283,
+        "steps_per_epoch": 3548
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-phoenix14t",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-22T15:06:00Z",
+        "max_wall_time_seconds": 5400,
+        "max_gpu_hours": 1.5,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Every element AGENTS.md requires of a representative preflight executed on real PHOENIX14-T data, including checkpoint reload verification and a real evaluation pass.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "train-phoenix14t-wiring-fix-001",
+      "purpose": "Full 70-epoch PHOENIX14-T training with the figure-conformant wiring: the same experiment, same code and same protocol that produced the reported PHOENIX14 33.9/33.0, so the two Table 1 datasets are directly comparable. Stage two of the compute gate's staging decision.",
+      "kind": "train_full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-22T15:10:00Z",
+      "config": {
+        "code_commit": "c05d9ae (branch repro/yu-2025-olmd-phoenix14t)",
+        "dataset": "phoenix14t",
+        "epochs": 70,
+        "batch_size": 2,
+        "seed": 0,
+        "workers": 8,
+        "wiring": "figure2-conformant (olmd.py restored from 9dad93a, the variant behind the reported PHOENIX14 33.9/33.0)",
+        "optimizer": "Adam, lr 0.001, weight decay 0.001, x0.3 at epochs 25 and 40",
+        "checkpoint_selection": "best dev WER epoch, per guess checkpoint-rule",
+        "data": "JPEG frame cache from cache-build-phoenix14t-001 (8257 npz, 8.83 GiB) + official PHOENIX-2014-T annotation CSVs from the shared datasets Volume",
+        "output": "/outputs/train/phoenix14t"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-22T15:09:00Z",
+        "max_wall_time_seconds": 172800,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": 90.0,
+        "note": "Measured expectation is 17.7 GPU-hours on H100. The ceiling allows one resumption; the function checkpoints every epoch and resumes from latest.pt, so a 24-hour per-attempt timeout only pauses the run."
+      },
+      "attempt": {
+        "group_id": "train-phoenix14t-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "H100",
+        "gpu_count": 1,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-N9nd0gh2omqMKl56wCTNNH",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-N9nd0gh2omqMKl56wCTNNH",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Launched detached after preflight-phoenix14t-001 verified the full path and cache-build-phoenix14t-001 verified all 8257 cache entries.",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      }
     }
   ],
   "artifacts": [
@@ -5068,7 +5303,8 @@
         "Corrected per-step estimate: PHOENIX14 44.0 GPU-hours (0.628 h/epoch over 2836 steps), PHOENIX14-T 53.9 GPU-hours (0.770 h/epoch over 3548 steps), 97.9 for both. On A100-40GB at the confirmed $2.10/GPU-hour that is $92, $113 and $206, plus about $5 per dataset for the one-time CPU cache build. Both datasets still exceed the 24-hour single-GPU gate.",
         "TLP implementation (2026-09-08) supersedes the earlier estimate: model parameters rose from 61.365 M to 111.762 M and the T=128 training step from 0.388 s to 0.777 s on an A10, so the requirement rises to a provisional 70-79 GPU-hours for PHOENIX14. Re-measurement on the A100 preflight path is required before authorizing.",
         "preflight-phoenix14-002 measured GPU step 0.422 s and serial batch load 5.326 s on A100-40GB with TLP active, so the pipeline is 12.6x I/O-bound as written. With the verified JPEG cache PHOENIX14 costs about 57.8 GPU-hours (~$121); with cache plus prefetching about 25.5 GPU-hours (~$54, 1.1 days), which still marginally exceeds the 24-hour gate.",
-        "loader-benchmark-001 measured wall step 0.4073 s against GPU step 0.390 s, hiding 95.7% of loading latency, giving a measured 24.5 GPU-hours for PHOENIX14 and 30.1 for PHOENIX14-T."
+        "loader-benchmark-001 measured wall step 0.4073 s against GPU step 0.390 s, hiding 95.7% of loading latency, giving a measured 24.5 GPU-hours for PHOENIX14 and 30.1 for PHOENIX14-T.",
+        "Stage two (2026-09-22): PHOENIX14-T is measured at 17.7 GPU-hours on H100 (loader-benchmark-h100-001: 0.2384 s/step vs the A100's 0.4073), not the 30.1 GPU-hours the A100 figure implied. That is inside the AGENTS.md 24-hour single-GPU autonomous threshold. cache-probe-phoenix14t-001 further measured mp4 decoding at 0.39 s per clip against PHOENIX14's 6.45 s warm PNG read, so the cache build is far cheaper than the 10.3 h projected from PHOENIX14."
       ],
       "required_action": "Confirm whether to launch the staged PHOENIX14 run on H100 at a measured 14.4 GPU-hours, about $57, roughly 0.6 days, preceded by an 8.5-hour CPU cache build costing about $6.42. Because 14.4 GPU-hours is inside the AGENTS.md autonomous threshold, the #repro-sign-team-r discussion that the earlier 24.5-hour A100 estimate would have required is no longer mandatory for PHOENIX14 alone. Do NOT combine the two datasets into one job: individually each clears the gate, together they do not.",
       "opened_at_utc": "2026-09-08T17:25:00Z",
@@ -5087,9 +5323,21 @@
           "table1-p14t-test-wer"
         ],
         "note": "Staging does not change the protocol: each dataset still runs the paper's full 70 epochs with best-dev checkpoint selection. It only sequences the two experiments.",
-        "phoenix14_gpu_hours_without_prefetch": 57.8
+        "phoenix14_gpu_hours_without_prefetch": 57.8,
+        "stage_two": {
+          "decision": "PHOENIX14-T authorized by the assignee on 2026-09-22, PHOENIX14 having completed",
+          "phoenix14t_gpu_hours_h100": 17.7,
+          "phoenix14t_gpu_hours_a100": 30.1,
+          "threshold_basis": "Inside the AGENTS.md autonomous threshold (single GPU, under 24 hours), so no #repro-sign-team-r discussion is required for this dataset alone.",
+          "model_variant": "wiring-fix (figure-conformant, commit 9dad93a), matching the variant that produced the reported PHOENIX14 33.9/33.0 so the two experiments are directly comparable",
+          "targets_reachable": [
+            "table1-p14t-dev-wer",
+            "table1-p14t-test-wer"
+          ],
+          "note": "The params-conformant variant stays on branch repro/yu-2025-olmd-wiring-fix, where its PHOENIX14 result (CINECA 57329434) is still in flight."
+        }
       },
-      "awaiting": "Nothing. Authorized 2026-09-08 for PHOENIX14 on A100; cache build and training proceeding.",
+      "awaiting": "Nothing. PHOENIX14 authorized 2026-09-08 and complete; PHOENIX14-T authorized 2026-09-22 and proceeding on Modal H100 at a measured 17.7 GPU-hours.",
       "cost_estimate": {
         "status": "measured, with TLP, JPEG cache and prefetching DataLoader",
         "basis": "preflight-phoenix14-002 on A100-40GB measured a 0.422 s GPU step at batch size 2 on real clips and 5.326 s of serial batch loading. cache-probe-phoenix14-001 measured the JPEG cache at 0.267 s per clip. Protocol is 70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch, plus one test pass.",
@@ -5127,7 +5375,8 @@
           "phoenix14t_usd": 7.75,
           "phoenix14t_gib": 11.8,
           "measured_by": "cache-build-trial-001",
-          "note": "CPU only at 16 workers, one-time, idempotent, resumable, reusable across seeds."
+          "note": "CPU only at 16 workers, one-time, idempotent, resumable, reusable across seeds.",
+          "phoenix14t_note_2026_09_22": "The 10.3 h / $7.75 projection extrapolated PHOENIX14's PNG cost. PHOENIX14-T is mp4: one file read per clip instead of ~179, measured 0.39 s per clip."
         },
         "gate_assessment": "PHOENIX14 is now a measured 24.5 GPU-hours, which still exceeds the AGENTS.md 24-hour single-GPU autonomous threshold by about 2%. The estimate has fallen 13x from 317 GPU-hours through data plumbing alone, with no change to the model, protocol or augmentation, and no further engineering will close a 2% gap: the run is now GPU-bound, so only trimming epochs or evaluation scope would fit it under the gate, and AGENTS.md forbids doing that silently. Authorization is therefore required for about 24.5 GPU-hours, roughly $52 and one day of wall-clock, plus an 8.5-hour CPU cache build.",
         "seed_caveat": "The paper reports one value per cell and states no seed policy, so this assumes a single run per dataset."
