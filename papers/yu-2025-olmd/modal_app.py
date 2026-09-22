@@ -20,8 +20,14 @@ APP_NAME = "olmd-yu-2025"
 
 HERE = pathlib.Path(__file__).parent
 
+# PHOENIX14-T and CSL-Daily ship mp4, so those experiments need the decoder
+# AGENTS.md mandates for video paths. PHOENIX14 ships extracted PNG and does
+# not use it; the pin keeps the image reproducible for both experiments.
+SIMPLE_VIDEO_UTILS_VERSION = "0.9.1"
+
 image = (
     modal.Image.from_registry("ghcr.io/sign-language-processing/reproduction:latest")
+    .pip_install(f"simple-video-utils=={SIMPLE_VIDEO_UTILS_VERSION}")
     .env(
         {
             # Shared Hugging Face cache, per AGENTS.md. It is an optimization,
@@ -1228,6 +1234,17 @@ SLR_EVAL_SHA256 = {
     "mergectmstm.py": "990d06d6a068fbe7664f60b44d5209099226393485665f213e3df2651f6e60fc",
     "phoenix2014-groundtruth-dev.stm": "bf1a66987031b5f014e0284821dbcab606a34e66b2e0268762339ff31200858d",
     "phoenix2014-groundtruth-test.stm": "143db224d571c9dd078a054cd27533dfdd91a5514812bb071f03ee6056d6279e",
+    "phoenix2014-T-groundtruth-dev.stm": "b181eee0ded03554e353ed6ee1d05736e03c38f529dd96a7a2e983deb7e1a1b6",
+    "phoenix2014-T-groundtruth-test.stm": "c83022394ca64c7a0b1bc00bd5abbe1ddeec0ad6775179df8a70cf538641c9ed",
+}
+
+# The official ground-truth STM shipped by the same pinned slr_eval directory,
+# per dataset. PHOENIX14-T has its own re-segmented references (519 dev / 642
+# test lines, matching the split counts), so it must not be scored against the
+# PHOENIX14 STM.
+GROUNDTRUTH_STM = {
+    "phoenix14": "phoenix2014-groundtruth-{split}.stm",
+    "phoenix14t": "phoenix2014-T-groundtruth-{split}.stm",
 }
 SCTK_REPO = "https://github.com/usnistgov/SCTK"
 SCTK_COMMIT = "62aabfa95938bfea284f8b68a374c7ddcb0fce52"  # tag v2.4.12
@@ -1272,7 +1289,7 @@ def sclite_score(dataset: str = "phoenix14", variant: str = "") -> dict:
     rescore_dir = pathlib.Path("/outputs/rescore") / (variant or dataset)
     scores = {}
     for split in ("dev", "test"):
-        stm_src = work / f"phoenix2014-groundtruth-{split}.stm"
+        stm_src = work / GROUNDTRUTH_STM[dataset].format(split=split)
         stm = work / f"ref-{split}.stm"
         subprocess.run(
             f"sort -k1,1 {stm_src} > {stm}", shell=True, check=True
@@ -1412,11 +1429,16 @@ def build_cache_sharded(
 
 
 @app.local_entrypoint()
-def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
+def main(
+    action: str = "inspect", path: str = "", limit: int = 0, dataset: str = "phoenix14"
+) -> None:
     """Print a function's result locally so runs leave readable evidence.
 
         modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action inspect
         modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action smoke
+
+    `--dataset` selects the experiment; it defaults to phoenix14 so every
+    command recorded for the first experiment keeps its exact meaning.
     """
     import json
 
@@ -1427,28 +1449,30 @@ def main(action: str = "inspect", path: str = "", limit: int = 0) -> None:
     elif action == "diagnose-csl":
         result = diagnose_csl.remote()
     elif action == "preflight":
-        result = preflight.remote()
+        result = preflight.remote(dataset=dataset)
     elif action == "throughput":
-        result = throughput.remote()
+        result = throughput.remote(dataset=dataset)
     elif action == "hash":
         result = hash_output.remote(path)
     elif action == "cache-probe":
-        result = test_consolidation.remote()
+        result = test_consolidation.remote(dataset=dataset)
     elif action == "build-cache":
-        result = build_cache.remote(limit=limit)
+        result = build_cache.remote(dataset=dataset, limit=limit)
     elif action == "benchmark-loader":
-        result = benchmark_loader.remote(limit=limit)
+        result = benchmark_loader.remote(dataset=dataset, limit=limit)
     elif action == "benchmark-loader-h100":
-        result = benchmark_loader_h100.remote(limit=limit)
+        result = benchmark_loader_h100.remote(dataset=dataset, limit=limit)
     elif action == "train":
-        result = train.remote(epochs=limit or 70, resume=not bool(limit))
+        result = train.remote(
+            dataset=dataset, epochs=limit or 70, resume=not bool(limit)
+        )
     elif action == "rescore":
         # `path` doubles as the optional variant slug, e.g. phoenix14-wiring-fix
-        result = rescore.remote(variant=path)
+        result = rescore.remote(dataset=dataset, variant=path)
     elif action == "sclite":
-        result = sclite_score.remote(variant=path)
+        result = sclite_score.remote(dataset=dataset, variant=path)
     elif action == "build-cache-sharded":
-        result = build_cache_sharded.remote(shards=limit or 40)
+        result = build_cache_sharded.remote(dataset=dataset, shards=limit or 40)
     else:
         raise SystemExit(f"unknown action {action!r}; use 'inspect' or 'smoke'")
     print(json.dumps(result, indent=2, ensure_ascii=False, default=str))

@@ -310,9 +310,12 @@ def _load_video(path: Path) -> np.ndarray:
     if not path.exists():
         raise FileNotFoundError(f"missing video {path}")
     # simple-video-utils is the decoder AGENTS.md requires for video paths.
-    from simple_video_utils import read_video
+    # read_frames_batched returns the whole clip as one (T, H, W, 3) uint8 RGB
+    # array, which is exactly this function's contract; no range or fps
+    # arguments, so every stored frame is kept, matching the PNG path.
+    from simple_video_utils.frames import read_frames_batched
 
-    return np.asarray(read_video(str(path)))
+    return np.asarray(read_frames_batched(str(path)))
 
 
 def preprocess(
