@@ -5068,12 +5068,18 @@
         "dashboard": "https://modal.com/apps/repro-sign/main/ap-N9nd0gh2omqMKl56wCTNNH",
         "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Launched detached after preflight-phoenix14t-001 verified the full path and cache-build-phoenix14t-001 verified all 8257 cache entries.",
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Epoch 0 completed in 828.3 s including its dev pass, which extrapolates to about 16.1 GPU-hours for the 70-epoch protocol -- close to the 17.7 predicted by loader-benchmark-h100-001 and inside the AGENTS.md 24-hour single-GPU threshold. Epoch 0: loss 128.55 (ctc 125.61, distill weighted 2.11), dev WER 96.08 with 86.34 deletions, so the model is already emitting non-blank output after one epoch. Launched detached after preflight-phoenix14t-001 verified the full path and cache-build-phoenix14t-001 verified all 8257 cache entries.",
       "artifact_ids": [],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
+      },
+      "measurements": {
+        "seconds_per_epoch_first": 828.3,
+        "gpu_hours_extrapolated_70_epochs": 16.1,
+        "epoch0_loss_mean": 128.5518,
+        "epoch0_dev_wer": 96.0779
       }
     }
   ],
