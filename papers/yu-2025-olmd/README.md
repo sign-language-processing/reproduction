@@ -15,13 +15,14 @@ documented search (see [Source provenance](#source-provenance))
 Level 3 means reimplementation from the paper: no published code exists.
 
 **Pipeline status:** `partial` — both PHOENIX14 targets are produced from two completed
-70-epoch full runs; the two PHOENIX14-T targets await their own training run.
+70-epoch full runs; the two PHOENIX14-T targets are in progress on Modal
+(`train-phoenix14t-wiring-fix-001`, launched 2026-09-22).
 
 **Numerical agreement:** `does_not_agree` — reproduced **33.9 dev / 33.0 test** WER
 (official sclite chain, beam-10, figure-conformant wiring) against the published
 **17.1 / 17.2**.
 
-**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14 complete; PHOENIX14-T pending)
+**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14 complete); 2026-09-22 → (PHOENIX14-T running)
 
 > **Status: PHOENIX14 reproduced end to end; the numbers disagree with the paper.** The
 > full stated protocol ran to completion (70 epochs, batch 2, best-dev checkpoint
@@ -114,8 +115,8 @@ is **level 3 — reimplementation from the paper**.
 | --- | --- | --- | ---: | ---: | --- |
 | `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **33.9** | produced (`sclite-phoenix14-wiring-fix-001`) |
 | `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **33.0** | produced (`sclite-phoenix14-wiring-fix-001`) |
-| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | not yet attempted (separate run) |
-| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | not yet attempted (separate run) |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | in progress (`train-phoenix14t-wiring-fix-001`) |
+| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | in progress (`train-phoenix14t-wiring-fix-001`) |
 | 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
 The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
@@ -410,6 +411,60 @@ Training state, per-epoch history, final results, hypotheses, and sclite reports
 the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
 `/rescore/phoenix14/`, hashed in `reproduction.json.artifacts`.
 
+## PHOENIX14-T experiment (stage two)
+
+Branch `repro/yu-2025-olmd-phoenix14t` runs **the same experiment as PHOENIX14, on
+PHOENIX14-T, on the Modal path**, with the **figure-conformant wiring** (`olmd.py`
+restored from `9dad93a`) that produced the reported 33.9/33.0 — so the two Table 1
+datasets are directly comparable. The params-conformant variant stays on the other
+branch, where its PHOENIX14 result is still in flight.
+
+Four changes were needed to reach a dataset the pipeline had never executed:
+
+1. **`_load_video` was broken.** It called `simple_video_utils.read_video`, which does
+   not exist. The function was written alongside the PNG path and its video branch had
+   never run, so the error surfaced only when a video dataset was first used. The real
+   API is `read_frames_batched`.
+2. **`simple-video-utils` is not in the base image**; pinned at `0.9.1`.
+3. **The sclite chain hardcoded PHOENIX14's ground truth.** PHOENIX14-T is re-segmented
+   and has its own references, so `GROUNDTRUTH_STM` maps dataset → STM. The two
+   `phoenix2014-T-groundtruth-{dev,test}.stm` files are sha256-pinned at the same
+   `slr_eval` commit (`a812814`); their 519 and 642 lines match the official counts.
+4. **`published` in `result.json`** only ever held PHOENIX14's pair; `PUBLISHED_TABLE1`
+   now carries both rows (PHOENIX14-T is 17.1 / 18.4, verified against Table 1).
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache-sharded --dataset phoenix14t --limit 40
+```
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action preflight --dataset phoenix14t
+```
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train --dataset phoenix14t
+```
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore --dataset phoenix14t
+```
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite --dataset phoenix14t
+```
+
+Measured, against the estimates the compute gate carried:
+
+| Stage | Projected (from PHOENIX14) | Measured on PHOENIX14-T |
+| --- | --- | --- |
+| Cache build | 10.3 h CPU, $7.75, 11.8 GiB | **2.8 min**, 8.83 GiB, 8257/8257 entries |
+| Per-clip load | 6.45 s warm PNG | **0.39 s** mp4 decode |
+| Training | 30.1 GPU-h (A100) | **17.7 GPU-h** (H100), inside the 24 h gate |
+
+The cache build collapsed because PHOENIX14 stores ~179 separate PNG files per
+utterance while PHOENIX14-T stores one mp4, and the cost was always per-request latency
+rather than bandwidth.
+
 ## CINECA wiring-fix retrain (this branch)
 
 This branch (`repro/yu-2025-olmd-wiring-fix`) corrects the two figure-audit deviations —
@@ -600,9 +655,13 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
 `validate_reproduction.py` passes with **zero issues** as of 2026-09-10 (down from 171 at
 the start). What remains open is scope, not validity:
 
-- The two PHOENIX14-T targets (`table1-p14t-dev-wer`, `table1-p14t-test-wer`) have no
-  training run yet. Estimated ~30 GPU-hours on A100 (17.7 on H100) plus a one-time cache
-  build; the compute gate for that launch is a separate authorization.
+- The two PHOENIX14-T targets (`table1-p14t-dev-wer`, `table1-p14t-test-wer`) are
+  **running** as `train-phoenix14t-wiring-fix-001` (Modal `ap-N9nd0gh2omqMKl56wCTNNH`,
+  launched 2026-09-22), using the same figure-conformant wiring as the reported
+  PHOENIX14 result so the two datasets stay comparable. The compute block is lifted: the
+  measured requirement is **17.7 GPU-hours on H100**, inside the AGENTS.md 24-hour
+  single-GPU autonomous threshold. The cache build cost **2.8 minutes**, not the 10.3
+  hours projected from PHOENIX14's PNG cost, because PHOENIX14-T ships mp4.
 - The residual ~18-point gap on PHOENIX14 is undiagnosed beyond the recorded guesses.
   The cheapest next probes, if pursued: per-sample batch lengths (deviation
   `uniform-batch-lengths`), alternative cross-stage injection points, and MP-Block
