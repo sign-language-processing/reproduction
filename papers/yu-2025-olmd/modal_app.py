@@ -598,6 +598,13 @@ def test_consolidation(dataset: str = "phoenix14", clips: int = 6) -> dict:
 # read-only, per AGENTS.md.
 CACHE_ROOT = "/outputs/cache"
 
+# Table 1, row "OLMD (ours)". PHOENIX14 and PHOENIX14-T coincidentally share
+# the dev value; the test values differ.
+PUBLISHED_TABLE1 = {
+    "phoenix14": {"dev": 17.1, "test": 17.2},
+    "phoenix14t": {"dev": 17.1, "test": 18.4},
+}
+
 
 @app.function(image=image, volumes=VOLUMES, cpu=16.0, timeout=60 * 60 * 6)
 def build_cache(
@@ -864,7 +871,10 @@ def _benchmark(
 @app.function(
     image=image,
     volumes=VOLUMES,
-    gpu="A100-40GB",
+    # loader-benchmark-h100-001 measured 0.2384 s/step against the A100's
+    # 0.4073 s, putting PHOENIX14-T at 17.7 GPU-hours rather than 30.1 --
+    # inside the AGENTS.md 24-hour single-GPU autonomous threshold.
+    gpu="H100!",
     cpu=16.0,
     timeout=60 * 60 * 24,  # per-attempt ceiling; resume continues across attempts
 )
@@ -1077,7 +1087,7 @@ def train(
         "best_epoch": best_epoch,
         "best_dev_wer": best_dev,
         "final": {"dev": final_dev, "test": final_test},
-        "published": {"dev": 17.1, "test": 17.2} if dataset == "phoenix14" else None,
+        "published": PUBLISHED_TABLE1.get(dataset),
         "history": history,
         "wall_seconds": round(time.time() - started, 1),
         "gpu": str(torch.cuda.get_device_name(0)),

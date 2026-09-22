@@ -4756,6 +4756,90 @@
         "source_record_sha256": null,
         "unknown_fields": []
       }
+    },
+    {
+      "run_id": "cache-probe-phoenix14t-001",
+      "purpose": "Verify the mp4 decoding path end to end on PHOENIX14-T before committing to a full cache build. PHOENIX14 ships extracted PNG, so data.py's video branch had never executed against real data.",
+      "kind": "measurement",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action cache-probe --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-22T14:55:00Z",
+      "finished_at_utc": "2026-09-22T15:02:00Z",
+      "config": {
+        "clips": 6,
+        "jpeg_quality": 90,
+        "resolution": "256x256 pre-crop",
+        "code_commit": "5fe7e2f (branch repro/yu-2025-olmd-phoenix14t)",
+        "decoder": "simple-video-utils 0.9.1 (PyAV), read_frames_batched"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 8.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-OAXgyaHuYIrh6EcL8Db3XE",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-OAXgyaHuYIrh6EcL8Db3XE",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "Decoded and cached 6 PHOENIX14-T clips (mean 100.2 frames). Frame counts match between the decoded and cached paths, and the mean absolute JPEG q90 delta is 0.972 pixel levels out of 255, matching the 1.028 measured for PHOENIX14. mp4 reads cost 0.39 s per clip against PHOENIX14's 6.45 s warm PNG read, because one mp4 is a single file request rather than ~179 separate PNG requests.",
+      "hypothesis_supported": true,
+      "findings": [
+        "data.py's _load_video called simple_video_utils.read_video, which does not exist in the package. The function had been written alongside the PNG path and never executed, so the error surfaced only when a video dataset was first run. The real API is read_frames_batched, returning the (T, H, W, 3) uint8 RGB array the function already promised.",
+        "The base reproduction image does not ship simple-video-utils; it is now pinned at 0.9.1 in the Modal image.",
+        "PHOENIX14-T's per-clip loading is roughly 16x cheaper than PHOENIX14's, so the cache build and the I/O side of training are both cheaper than the PHOENIX14-derived estimates assumed.",
+        "Cache fidelity on the video path matches the PNG path, so the JPEG q90 cache decision carries over unchanged."
+      ],
+      "measurements": {
+        "clips": 6,
+        "frames_per_clip_mean": 100.2,
+        "decode_seconds_per_clip": 0.39,
+        "cache_write_seconds_per_clip": 0.1,
+        "cache_read_seconds_per_clip": 0.12,
+        "speedup_vs_decode": 3.2,
+        "cache_bytes_per_clip_mean": 1000130,
+        "frame_counts_match": true,
+        "mean_abs_pixel_delta_levels": 0.972
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cache-probe-phoenix14t",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-22T14:50:00Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The video decoding path is verified against real PHOENIX14-T clips with matching frame counts and PHOENIX14-equivalent cache fidelity.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
