@@ -5250,12 +5250,24 @@
         "dashboard": "https://modal.com/apps/repro-sign/main/ap-YzOOkmKvZh6KzNQHPZEUj0",
         "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Started from scratch: the crashed run's latest.pt/best.pt were deleted first, so no weights trained under the broken padding carry over. The collate fix was unit-tested before launch: a 16-frame clip now yields 4 head steps instead of 1, lengths are per-clip, and the front padding replicates frame 0.",
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Started from scratch: the crashed run's latest.pt/best.pt were deleted first, so no weights trained under the broken padding carry over. The collate fix was unit-tested before launch (a 16-frame clip yields 4 head steps instead of 1, lengths are per-clip, front padding replicates frame 0). CLEARED EPOCH 4, where attempt 1 crashed, and continues normally: dev WER 97.71 -> 93.54 -> 96.34 -> 91.97 -> 88.93 with loss 128.85 -> 110.07. Epochs cost about 785 s against attempt 1's 736 s, the expected consequence of the lineage padding adding ~12 frames per clip, so the projection is about 15.3 GPU-hours.",
       "artifact_ids": [],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
+      },
+      "measurements": {
+        "seconds_per_epoch_mean_first5": 788.3,
+        "gpu_hours_projected_70_epochs": 15.3,
+        "cleared_crash_point_epoch": 4,
+        "dev_wer_trajectory_first5": [
+          97.7054,
+          93.5432,
+          96.3447,
+          91.9691,
+          88.9274
+        ]
       }
     }
   ],
