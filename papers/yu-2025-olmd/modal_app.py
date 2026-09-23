@@ -157,6 +157,63 @@ def smoke() -> dict:
     return result
 
 
+@app.function(image=image, volumes=VOLUMES, cpu=8.0, timeout=60 * 30)
+def clip_lengths(dataset: str = "phoenix14t") -> dict:
+    """Frame-count distribution per split, and how many clips the head cannot take.
+
+    The temporal head is {K5,P2,K5,P2}: two TLP halvings, so an input of T
+    frames reaches T//4. InstanceNorm1d inside TLP's LocalWeighting rejects a
+    length-1 sequence in training mode ("Expected more than 1 spatial
+    element"), so any clip with fewer than 8 frames crashes the step.
+    """
+    import json
+
+    import numpy as np
+
+    import data
+
+    root = pathlib.Path("/datasets")
+    cache_root = pathlib.Path(CACHE_ROOT)
+    report = {}
+    for split in ("train", "dev", "test"):
+        samples = data.LOADERS[dataset](root, split)
+        lengths = []
+        for sample in samples:
+            path = data.cache_path(cache_root, dataset, sample)
+            # Cache keys are the frame indices, one per frame.
+            with np.load(path) as bundle:
+                lengths.append(len(bundle.files))
+        # CTC feasibility: with the lineage padding the head emits ceil(L/4)
+        # steps, and a gloss sequence of G needs at least G (2G-1 if it has
+        # adjacent repeats). An infeasible clip yields infinite CTC loss.
+        infeasible = [
+            {"name": sample.name, "frames": length, "steps": -(-length // 4),
+             "glosses": len(sample.glosses)}
+            for sample, length in zip(samples, lengths)
+            if -(-length // 4) < len(sample.glosses)
+        ]
+        lengths.sort()
+        report[split] = {
+            "ctc_infeasible": len(infeasible),
+            "ctc_infeasible_examples": infeasible[:5],
+            "utterances": len(lengths),
+            "min": lengths[0],
+            "p01": lengths[max(0, len(lengths) // 100)],
+            "median": lengths[len(lengths) // 2],
+            "max": lengths[-1],
+            "under_8_frames": sum(1 for v in lengths if v < 8),
+            "under_16_frames": sum(1 for v in lengths if v < 16),
+            "shortest_10": lengths[:10],
+        }
+    output = pathlib.Path("/outputs/diagnostics")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / f"{dataset}-clip-lengths.json").write_text(
+        json.dumps(report, indent=2), encoding="utf-8"
+    )
+    results.commit()
+    return report
+
+
 @app.function(image=image, volumes=VOLUMES, timeout=60 * 20)
 def inspect_data() -> dict:
     """Confirm the mounted corpora match what the data gate recorded.
@@ -1456,6 +1513,8 @@ def main(
         result = inspect_data.remote()
     elif action == "smoke":
         result = smoke.remote()
+    elif action == "clip-lengths":
+        result = clip_lengths.remote(dataset=dataset)
     elif action == "diagnose-csl":
         result = diagnose_csl.remote()
     elif action == "preflight":

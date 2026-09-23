@@ -487,27 +487,65 @@ class OLMDDataset:
         return video, ids, sample.name
 
 
-def collate(batch):
-    """Pad a batch by REPLICATING the last frame, never with zeros.
+# The temporal head is {K5,P2,K5,P2}. The lineage's collate (CorrNet
+# dataset/dataloader_video.py::collate_fn @ a812814, the same revision this
+# reproduction pins for evaluation) derives its padding from that kernel spec:
+# each K accumulates (k-1)/2 into left_pad after scaling by the running stride,
+# and each P multiplies the total stride. For {K5,P2,K5,P2} that is
+# left_pad = 6 and total_stride = 4.
+#
+# The padding is what makes short clips work. With 6 replicated frames on each
+# side and lengths rounded up to a multiple of 4, the convolutions consume
+# padding instead of real frames and a clip of length L emits ceil(L/4) steps
+# rather than (L-8)/4. Without it, PHOENIX14-T's shortest clips (16 frames,
+# against PHOENIX14's ~147 minimum) collapse to a single temporal element and
+# crash InstanceNorm1d inside TLP's LocalWeighting.
+HEAD_LEFT_PAD = 6
+HEAD_TOTAL_STRIDE = 4
 
-    Frame replication is the lineage's convention and it matters here: zero
-    padding would make LMA's frame differences at clip boundaries spuriously
-    large, since LMA differences each frame against its neighbours.
+
+def collate(batch):
+    """Pad a batch the way the lineage does: replicate frames, never zeros.
+
+    Frame replication (rather than zero padding) matters here because LMA
+    differences each frame against its neighbours, so zeros would make the
+    boundary differences spuriously large.
+
+    Two paddings are applied, both from the lineage's collate_fn:
+
+    * `HEAD_LEFT_PAD` frames of the first frame at the front and enough of the
+      last frame at the back that the convolutions consume padding rather than
+      real frames;
+    * a round-up of every length to a multiple of `HEAD_TOTAL_STRIDE`, so the
+      two poolings divide evenly.
+
+    `lengths` reports each clip's OWN padded length, not the batch maximum, so
+    the head's length bookkeeping and the CTC input lengths follow the real
+    content of each clip.
     """
     import torch
 
     videos, id_lists, names = zip(*batch)
-    longest = max(video.shape[0] for video in videos)
+    # Each clip's own length, rounded up to the stride, then padded both sides.
+    content = [video.shape[0] for video in videos]
+    rounded = [
+        -(-length // HEAD_TOTAL_STRIDE) * HEAD_TOTAL_STRIDE for length in content
+    ]
+    padded_lengths = [length + 2 * HEAD_LEFT_PAD for length in rounded]
+    longest = max(padded_lengths)
+
     padded = []
-    for video in videos:
+    for video, own_length in zip(videos, padded_lengths):
         tensor = torch.from_numpy(video)
-        if tensor.shape[0] < longest:
-            tail = tensor[-1:].expand(longest - tensor.shape[0], -1, -1, -1)
-            tensor = torch.cat([tensor, tail], dim=0)
-        padded.append(tensor)
+        head = tensor[:1].expand(HEAD_LEFT_PAD, -1, -1, -1)
+        # Pad this clip out to the batch maximum; everything past its own
+        # padded length is surplus that `lengths` already excludes.
+        tail_frames = longest - tensor.shape[0] - HEAD_LEFT_PAD
+        tail = tensor[-1:].expand(tail_frames, -1, -1, -1)
+        padded.append(torch.cat([head, tensor, tail], dim=0))
 
     video_batch = torch.stack(padded).permute(0, 2, 1, 3, 4)  # (N, C, T, H, W)
-    lengths = torch.tensor([longest] * len(videos), dtype=torch.long)
+    lengths = torch.tensor(padded_lengths, dtype=torch.long)
     targets = torch.tensor([i for ids in id_lists for i in ids], dtype=torch.long)
     target_lengths = torch.tensor([len(ids) for ids in id_lists], dtype=torch.long)
     return video_batch, lengths, targets, target_lengths, list(names)
