@@ -5043,7 +5043,8 @@
       "attempt": {
         "group_id": "train-phoenix14t-wiring-fix",
         "number": 1,
-        "max_attempts": 3
+        "max_attempts": 3,
+        "next_run_id": "train-phoenix14t-wiring-fix-002"
       },
       "compute": {
         "platform": "modal",
@@ -5068,18 +5069,193 @@
         "dashboard": "https://modal.com/apps/repro-sign/main/ap-N9nd0gh2omqMKl56wCTNNH",
         "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Epoch 0 completed in 828.3 s including its dev pass, which extrapolates to about 16.1 GPU-hours for the 70-epoch protocol -- close to the 17.7 predicted by loader-benchmark-h100-001 and inside the AGENTS.md 24-hour single-GPU threshold. Epoch 0: loss 128.55 (ctc 125.61, distill weighted 2.11), dev WER 96.08 with 86.34 deletions, so the model is already emitting non-blank output after one epoch. Launched detached after preflight-phoenix14t-001 verified the full path and cache-build-phoenix14t-001 verified all 8257 cache entries.",
-      "artifact_ids": [],
+      "observed": "CRASHED during epoch 4 after 4 completed epochs (828.3, 738.3, 734.3, 736.0 s; dev WER 96.08 -> 94.05 -> 92.93 -> 84.71), with ValueError: Expected more than 1 spatial element when training, got input size torch.Size([2, 1024, 1]) raised by InstanceNorm1d inside TemporalLiftPool's LocalWeighting. Steady-state throughput was 736 s per epoch including the dev pass, which projected to about 14.3 GPU-hours for the full protocol, better than the 17.7 predicted.",
+      "artifact_ids": [
+        "p14t-crashed-attempt1-history"
+      ],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
       },
       "measurements": {
-        "seconds_per_epoch_first": 828.3,
-        "gpu_hours_extrapolated_70_epochs": 16.1,
-        "epoch0_loss_mean": 128.5518,
-        "epoch0_dev_wer": 96.0779
+        "epochs_completed": 4,
+        "seconds_per_epoch_steady": 736.0,
+        "gpu_hours_projected_70_epochs": 14.3,
+        "gpu_hours_consumed": 0.97,
+        "epoch3_dev_wer": 84.7118,
+        "dev_wer_trajectory": [
+          96.0779,
+          94.0502,
+          92.9296,
+          84.7118
+        ]
+      },
+      "finished_at_utc": "2026-09-22T16:08:00Z",
+      "exit_code": 1,
+      "hypothesis_supported": false,
+      "findings": [
+        "The collate padded only to the batch maximum, so the {K5,P2,K5,P2} head's padding-free convolutions consumed real frames and a clip of length L emitted (L-8)/4 steps. clip-lengths-phoenix14t-001 measured PHOENIX14-T's shortest clips at 16 frames (train min 16, dev 16, test 17); a 16-18 frame clip reduces to exactly one temporal element, which InstanceNorm1d rejects in training mode.",
+        "PHOENIX14 never exposed this: its clips run about 179 frames (dev range 147-215), roughly 9x the failure threshold of 20 frames. The defect was latent in every PHOENIX14 run and became reachable only on a dataset with short clips.",
+        "The crash is therefore a defect in this reproduction's batching, not a property of PHOENIX14-T or of the paper's method.",
+        "Cost of the failure: about 58 minutes of H100 time, plus roughly 14 hours of wall-clock before the dead run was noticed. A watchdog now checks that the app is still running rather than only waiting for its output."
+      ],
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "InstanceNorm1d rejected a length-1 temporal sequence produced by a 16-frame clip under the pre-fix collate. Superseded by train-phoenix14t-wiring-fix-002 on the corrected lineage padding.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "train-phoenix14t-wiring-fix-002"
+      }
+    },
+    {
+      "run_id": "clip-lengths-phoenix14t-001",
+      "purpose": "Measure PHOENIX14-T's clip-length distribution to confirm the crash hypothesis: that the shortest clips collapse to a single temporal element in the temporal head.",
+      "kind": "data_check",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action clip-lengths --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-23T09:20:00Z",
+      "finished_at_utc": "2026-09-23T09:45:00Z",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 8.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main"
+      },
+      "observed": "PHOENIX14-T frame counts: train 7096 clips, min 16, p01 29, median 112, max 475; dev 519 clips, min 16, p01 26, median 105, max 272; test 642 clips, min 17, p01 26, median 100, max 242. Against PHOENIX14's ~179-frame average (dev range 147-215), PHOENIX14-T reaches an order of magnitude shorter.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Under the pre-fix collate the head emitted (L-8)/4 steps, so clips of 16-18 frames produced exactly one temporal element and crashed InstanceNorm1d. The failure threshold was 20 frames, and PHOENIX14-T's minimum is 16.",
+        "Under the lineage padding the head emits ceil(L/4), so the shortest 16-frame clip yields 4 steps and no clip collapses."
+      ],
+      "measurements": {
+        "train": {
+          "utterances": 7096,
+          "min": 16,
+          "p01": 29,
+          "median": 112,
+          "max": 475
+        },
+        "dev": {
+          "utterances": 519,
+          "min": 16,
+          "p01": 26,
+          "median": 105,
+          "max": 272
+        },
+        "test": {
+          "utterances": 642,
+          "min": 17,
+          "p01": 26,
+          "median": 100,
+          "max": 242
+        },
+        "crash_threshold_frames": 20
+      },
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "clip-lengths-phoenix14t",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-23T09:18:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Length distribution measured across all three splits and the crash hypothesis confirmed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "train-phoenix14t-wiring-fix-002",
+      "purpose": "Full 70-epoch PHOENIX14-T training, relaunched from scratch on the corrected lineage padding after train-phoenix14t-wiring-fix-001 crashed on short clips.",
+      "kind": "train_full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "started_at_utc": "2026-09-23T10:05:00Z",
+      "config": {
+        "code_commit": "211a47c (branch repro/yu-2025-olmd-phoenix14t)",
+        "dataset": "phoenix14t",
+        "epochs": 70,
+        "batch_size": 2,
+        "seed": 0,
+        "workers": 8,
+        "wiring": "figure2-conformant (olmd.py from 9dad93a)",
+        "collate": "lineage padding: 6 replicated frames each side, lengths rounded up to a multiple of 4, per-clip lengths (CorrNet collate_fn @ a812814)",
+        "optimizer": "Adam, lr 0.001, weight decay 0.001, x0.3 at epochs 25 and 40",
+        "checkpoint_selection": "best dev WER epoch, per guess checkpoint-rule",
+        "output": "/outputs/train/phoenix14t (cleared of the crashed run's checkpoints before launch, so no weights carry over)"
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-23T10:03:00Z",
+        "max_wall_time_seconds": 172800,
+        "max_gpu_hours": 30.0,
+        "max_cost_chf": 90.0,
+        "note": "Measured 736 s/epoch in the crashed run projects about 14.3 GPU-hours."
+      },
+      "attempt": {
+        "group_id": "train-phoenix14t-wiring-fix",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "H100",
+        "gpu_count": 1,
+        "cpu": 16.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-YzOOkmKvZh6KzNQHPZEUj0",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-YzOOkmKvZh6KzNQHPZEUj0",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Started from scratch: the crashed run's latest.pt/best.pt were deleted first, so no weights trained under the broken padding carry over. The collate fix was unit-tested before launch: a 16-frame clip now yields 4 head steps instead of 1, lengths are per-clip, and the front padding replicates frame 0.",
+      "artifact_ids": [],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
       }
     }
   ],
@@ -5291,6 +5467,14 @@
       "sha256": "0a78f17cc47edd06bd23dd69ce43653db025d6137c32a7e7cc13cf11344ff1a8",
       "size_bytes": 218380,
       "description": "Wiring-fix per-utterance greedy and beam-10 hypotheses, test split."
+    },
+    {
+      "artifact_id": "p14t-crashed-attempt1-history",
+      "kind": "metrics",
+      "description": "Per-epoch history of the four epochs completed by train-phoenix14t-wiring-fix-001 before the short-clip crash. Retained as evidence of the pre-fix trajectory and throughput.",
+      "uri": "artifacts/train-phoenix14t-crashed-attempt1-history.json",
+      "sha256": "e94ead12fe9bf0a5ff98e5cafcfdfa0c706642ef6f9c66e65b9ce7727c13cfc0",
+      "size_bytes": 1084
     }
   ],
   "gates": [

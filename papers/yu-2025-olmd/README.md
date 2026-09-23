@@ -419,7 +419,7 @@ restored from `9dad93a`) that produced the reported 33.9/33.0 — so the two Tab
 datasets are directly comparable. The params-conformant variant stays on the other
 branch, where its PHOENIX14 result is still in flight.
 
-Four changes were needed to reach a dataset the pipeline had never executed:
+Five changes were needed to reach a dataset the pipeline had never executed:
 
 1. **`_load_video` was broken.** It called `simple_video_utils.read_video`, which does
    not exist. The function was written alongside the PNG path and its video branch had
@@ -432,6 +432,22 @@ Four changes were needed to reach a dataset the pipeline had never executed:
    `slr_eval` commit (`a812814`); their 519 and 642 lines match the official counts.
 4. **`published` in `result.json`** only ever held PHOENIX14's pair; `PUBLISHED_TABLE1`
    now carries both rows (PHOENIX14-T is 17.1 / 18.4, verified against Table 1).
+5. **The collate crashed on short clips.** The first attempt died in epoch 4 with
+   `Expected more than 1 spatial element when training, got input size [2, 1024, 1]`
+   from `InstanceNorm1d` inside TLP's `LocalWeighting`. Our collate padded only to the
+   batch maximum, so the padding-free `{K5,P2,K5,P2}` convolutions consumed **real**
+   frames and a clip of length L emitted `(L-8)/4` steps — meaning anything under 20
+   frames collapsed to a single temporal element. PHOENIX14-T's shortest clips are **16
+   frames**; PHOENIX14's minimum is ~147, roughly 9× the threshold, which is why the
+   defect stayed latent through every PHOENIX14 run. The fix adopts the lineage's own
+   scheme (CorrNet `collate_fn` @ `a812814`): replicate 6 frames each side, round lengths
+   up to a multiple of 4, and report per-clip lengths. The head then emits `ceil(L/4)`,
+   so a 16-frame clip yields 4 steps. This also retires the `uniform-batch-lengths`
+   deviation.
+
+   **Comparability note:** this padding change also affects PHOENIX14, so the PHOENIX14-T
+   result carries one correction the reported PHOENIX14 33.9/33.0 does not. PHOENIX14 was
+   not re-run; the difference is recorded rather than silently absorbed.
 
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action build-cache-sharded --dataset phoenix14t --limit 40
