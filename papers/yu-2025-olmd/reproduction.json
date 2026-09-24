@@ -126,9 +126,9 @@
     ]
   },
   "status": {
-    "pipeline": "partial",
+    "pipeline": "complete",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Comparable values are the official-chain sclite scores on beam-10 decoding of the best-dev checkpoint from the figure-conformant wiring run: 33.9 dev / 33.0 test vs published 17.1 / 17.2, so does_not_agree stands. Diagnosis across two full runs: of the 34-point gap first observed, about 16.5 points were this reproduction's own evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3), ~0.3 decoding, and ~1.1-1.2 the two figure-audit wiring deviations (head-wiring-vs-figure2 and lma-in-trunk-vs-figures, corrected and retrained on CINECA). The residual ~16-17 points remain unexplained. Both wirings plateau near 33-35, worse than the paper's own no-modules ablation baseline (18.9 dev), so the shortfall is not about the marginal value of OLMD's modules. The leading remaining candidate is the unpublished MP-Block architecture (blocking guess mp-block-internals), whose supplementary material does not exist publicly. PHOENIX14-T targets remain unproduced, hence pipeline=partial.",
+    "numerical_agreement_basis": "All four in-scope Table 1 targets now have comparable official-chain values from beam-10 decoding of each experiment's best-dev checkpoint: PHOENIX14 33.9 dev / 33.0 test against published 17.1 / 17.2, and PHOENIX14-T 34.5 dev / 32.6 test against published 17.1 / 18.4. Every value is roughly double its published counterpart, so does_not_agree stands across both datasets.\n\nDiagnosis. On PHOENIX14, of the 34-point gap first observed, about 16.5 points were this reproduction's own evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3), ~0.3 decoding, and ~1.1-1.2 two figure-audit wiring deviations that were corrected and retrained. PHOENIX14-T independently corroborates that the remaining gap is not evaluation error: its annotations carry no PHOENIX markers, so the stripping bug cannot arise, and its internal metric agrees with the official chain to within 0.13 WER, yet it lands at essentially the same distance from its published value.\n\nTwo independent datasets, run through identical code and protocol, landing within about 0.6 WER of each other (33.9/33.0 and 34.5/32.6) while their published values differ, points at a systematic property of this reimplementation rather than a dataset-specific fault. Both results also sit worse than the paper's own no-modules ablation baseline (18.9 dev on PHOENIX14), so the shortfall is not about the marginal value of OLMD's modules. The leading remaining candidate is the unpublished MP-Block architecture (blocking guess mp-block-internals), whose supplementary material does not exist publicly. A reviewer decides the scientific conclusion.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": null
@@ -499,33 +499,28 @@
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
       ],
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "compute_budget_blocked",
-          "detail": "Retained as the controlled code because no value is produced yet; the substance has changed and the block is being lifted, not asserted. Stage two is RUNNING as train-phoenix14t-wiring-fix-001 (Modal app ap-N9nd0gh2omqMKl56wCTNNH, launched 2026-09-22) with the figure-conformant wiring that produced the reported PHOENIX14 33.9/33.0. The original deferral cited 30.1 GPU-hours against the AGENTS.md 24-hour single-GPU threshold; loader-benchmark-h100-001 measures 17.7 GPU-hours on H100, which is inside it. Cache built and verified (cache-build-phoenix14t-001: 8257/8257 entries, 8.83 GiB, 2.8 minutes rather than the projected 10.3 hours, because PHOENIX14-T ships mp4) and the full path preflighted (preflight-phoenix14t-001). This reason code is replaced by a produced result once the run reaches evaluation and the official sclite chain scores it."
+        "status": "produced",
+        "unit": "percent",
+        "reproduced_value": 34.5,
+        "difference": 17.4,
+        "error_breakdown": {
+          "sub": 17.9,
+          "del": 15.0,
+          "ins": 1.6
         },
+        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, with the PHOENIX14-T ground-truth STM, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-69 best-dev checkpoint.",
+        "checkpoint_selection": "best dev WER epoch (69), per guess checkpoint-rule",
+        "detail": "Reproduced 34.5 vs published 17.1 under the official chain. Greedy decoding gives 34.7, so decoding accounts for 0.2 WER. The internal symmetric metric agrees with the official chain to within 0.13 WER here, unlike on PHOENIX14, because PHOENIX14-T annotations carry no PHOENIX markers for stripping to mishandle. Caveat recorded in the training run: the best epoch is the last one and the final 30 epochs oscillate in a 34.63-38.26 dev band, so this value sits at the optimistic edge of roughly a 3.6 WER spread.",
         "run_ids": [
-          "cache-build-phoenix14t-001",
-          "preflight-phoenix14t-001",
-          "train-phoenix14t-wiring-fix-001"
+          "train-phoenix14t-wiring-fix-002",
+          "rescore-phoenix14t-wiring-fix-001",
+          "sclite-phoenix14t-wiring-fix-001"
         ],
         "artifact_ids": [
-          "preflight-json",
-          "preflight2-json",
-          "preflight-checkpoint",
-          "throughput-json",
-          "cache-probe-json",
-          "cache-build-json",
-          "loader-benchmark-json"
-        ],
-        "gate_ids": [
-          "compute-full-run-table1"
-        ],
-        "evidence": [
-          "preflight-phoenix14-002 passed every AGENTS.md preflight requirement with TLP active: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0. CTC loss fell 57.72 to 20.89.",
-          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is CTC early-training blank collapse after 12 steps and is explicitly NOT a comparable value for this target.",
-          "Measured requirement for PHOENIX14-T: about 31.9 GPU-hours GPU-bound, about 72.3 with the cache alone, from a 0.422 s GPU step and a 0.267 s per-clip cached read.",
-          "Gate compute-full-run-table1 is open and requires authorization before launch."
+          "p14t-sclite-summary",
+          "p14t-rescore-summary",
+          "p14t-train-result-json",
+          "p14t-train-best-pt"
         ]
       }
     },
@@ -549,33 +544,28 @@
         "Paper 'Implementation Details': ResNet34 ImageNet backbone, 1D-CNN {K5,P2,K5,P2}, BiLSTM hidden 1024, TLP pooling, Adam wd 0.001, LR 0.001 x0.3 at epochs 25/40, 70 epochs, batch size 2, resize 256x256 -> random crop 224x224, 50% hflip, 20% temporal scale, central 224x224 crop at inference, 1 NVIDIA A6000 GPU."
       ],
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "compute_budget_blocked",
-          "detail": "Retained as the controlled code because no value is produced yet; the substance has changed and the block is being lifted, not asserted. Stage two is RUNNING as train-phoenix14t-wiring-fix-001 (Modal app ap-N9nd0gh2omqMKl56wCTNNH, launched 2026-09-22) with the figure-conformant wiring that produced the reported PHOENIX14 33.9/33.0. The original deferral cited 30.1 GPU-hours against the AGENTS.md 24-hour single-GPU threshold; loader-benchmark-h100-001 measures 17.7 GPU-hours on H100, which is inside it. Cache built and verified (cache-build-phoenix14t-001: 8257/8257 entries, 8.83 GiB, 2.8 minutes rather than the projected 10.3 hours, because PHOENIX14-T ships mp4) and the full path preflighted (preflight-phoenix14t-001). This reason code is replaced by a produced result once the run reaches evaluation and the official sclite chain scores it."
+        "status": "produced",
+        "unit": "percent",
+        "reproduced_value": 32.6,
+        "difference": 14.2,
+        "error_breakdown": {
+          "sub": 16.0,
+          "del": 14.6,
+          "ins": 2.0
         },
+        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, with the PHOENIX14-T ground-truth STM, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-69 best-dev checkpoint.",
+        "checkpoint_selection": "best dev WER epoch (69), per guess checkpoint-rule",
+        "detail": "Reproduced 32.6 vs published 18.4 under the official chain. Greedy decoding gives 32.8, so decoding accounts for 0.2 WER. The internal symmetric metric agrees with the official chain to within 0.13 WER here, unlike on PHOENIX14, because PHOENIX14-T annotations carry no PHOENIX markers for stripping to mishandle. Caveat recorded in the training run: the best epoch is the last one and the final 30 epochs oscillate in a 34.63-38.26 dev band, so this value sits at the optimistic edge of roughly a 3.6 WER spread.",
         "run_ids": [
-          "cache-build-phoenix14t-001",
-          "preflight-phoenix14t-001",
-          "train-phoenix14t-wiring-fix-001"
+          "train-phoenix14t-wiring-fix-002",
+          "rescore-phoenix14t-wiring-fix-001",
+          "sclite-phoenix14t-wiring-fix-001"
         ],
         "artifact_ids": [
-          "preflight-json",
-          "preflight2-json",
-          "preflight-checkpoint",
-          "throughput-json",
-          "cache-probe-json",
-          "cache-build-json",
-          "loader-benchmark-json"
-        ],
-        "gate_ids": [
-          "compute-full-run-table1"
-        ],
-        "evidence": [
-          "preflight-phoenix14-002 passed every AGENTS.md preflight requirement with TLP active: real frames through the real loader, ImageNet weights, 12 real optimizer steps, checkpoint save and verified reload, real evaluation to a parsed WER, exit code 0. CTC loss fell 57.72 to 20.89.",
-          "Its WER of 100.0 (94 deletions, 0 insertions, 0 substitutions) is CTC early-training blank collapse after 12 steps and is explicitly NOT a comparable value for this target.",
-          "Measured requirement for PHOENIX14-T: about 31.9 GPU-hours GPU-bound, about 72.3 with the cache alone, from a 0.422 s GPU step and a 0.267 s per-clip cached read.",
-          "Gate compute-full-run-table1 is open and requires authorization before launch."
+          "p14t-sclite-summary",
+          "p14t-rescore-summary",
+          "p14t-train-result-json",
+          "p14t-train-best-pt"
         ]
       }
     },
@@ -5251,7 +5241,11 @@
         "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
       },
       "observed": "COMPLETED all 70 epochs on one H100 80GB HBM3 in 57232.1 s (15.90 GPU-hours, 788.7 s/epoch mean), peak memory 51.50 GiB, inside the declared 30 GPU-hour ceiling. Started from scratch after the crashed attempt's checkpoints were deleted, so no weights trained under the broken padding carried over, and it cleared epoch 4 where attempt 1 died. Best dev WER 34.6318 at epoch 69 on the per-epoch symmetric greedy metric; dev/test at that checkpoint 34.6318 / 32.7861. Dev WER fell 97.71 -> 52.11 by epoch 20, stepped down at both LR cuts (41.12 after epoch 25, 35.78 after epoch 40), then oscillated in a 34.63-38.26 band for the last 30 epochs while training loss flattened at 34.4.",
-      "artifact_ids": [],
+      "artifact_ids": [
+        "p14t-train-result-json",
+        "p14t-train-history-json",
+        "p14t-train-best-pt"
+      ],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -5291,6 +5285,172 @@
         "state": "succeeded",
         "reason_code": "completed",
         "detail": "All 70 epochs completed inside the declared ceilings (15.90 of 30 GPU-hours) and evaluation emitted dev and test WER from the best-dev checkpoint. Official sclite scoring of the beam-10 decoding follows as separate runs.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "rescore-phoenix14t-wiring-fix-001",
+      "purpose": "Re-decode the PHOENIX14-T best-dev checkpoint with greedy AND beam-10 search and emit CTM files for the official scoring chain.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-24T05:20:00Z",
+      "finished_at_utc": "2026-09-24T06:05:00Z",
+      "config": {
+        "checkpoint": "/outputs/train/phoenix14t/best.pt",
+        "checkpoint_epoch": 69,
+        "beam_width": 10,
+        "beam_prune": 50,
+        "language_model": null,
+        "code_commit": "2584388 (branch repro/yu-2025-olmd-phoenix14t)"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": "A10G",
+        "gpu_count": 1,
+        "cpu": 8.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-N2mdnLpR26zGLAgnh2fjm8",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-N2mdnLpR26zGLAgnh2fjm8",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "Decoded all 519 dev and 642 test utterances from the epoch-69 best-dev checkpoint under greedy and beam-10, and wrote the CTM files the official chain consumes. The internal symmetric metric reproduced the training run's numbers exactly (dev 34.6318), confirming the checkpoint and decoding path are the same ones training scored.",
+      "hypothesis_supported": true,
+      "findings": [
+        "Marker stripping is a no-op on PHOENIX14-T: raw and stripped_both agree to four decimals. PHOENIX14 needed it because its annotations carry __ON__/__OFF__/__EMOTION__ markers; the PHOENIX14-T orth column does not, so the asymmetric-stripping error that cost ~13 WER on PHOENIX14 cannot arise here."
+      ],
+      "measurements": {
+        "dev_greedy_wer": 34.6318,
+        "dev_utterances": 519,
+        "test_utterances": 642
+      },
+      "artifact_ids": [
+        "p14t-rescore-summary"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "rescore-phoenix14t-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-24T05:18:00Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 10.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both splits decoded under both decodings and CTM files written for the official chain.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "sclite-phoenix14t-wiring-fix-001",
+      "purpose": "Score the PHOENIX14-T CTM files with the official PHOENIX evaluation chain, producing the comparable values for both targets.",
+      "kind": "evaluate",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite --dataset phoenix14t",
+      "working_directory": "/gpfs/home/mgranero/code/repro-sign",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-24T06:05:00Z",
+      "finished_at_utc": "2026-09-24T06:25:00Z",
+      "config": {
+        "sctk_commit": "62aabfa95938bfea284f8b68a374c7ddcb0fce52",
+        "sctk_version": "v2.4.12",
+        "slr_eval_commit": "a812814f4deefda0b75ab1dcc90b106c62912263",
+        "ground_truth_stm": "phoenix2014-T-groundtruth-{dev,test}.stm, sha256-pinned",
+        "sclite_flags": "-f 0 -o dtl",
+        "code_commit": "2584388 (branch repro/yu-2025-olmd-phoenix14t)"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 8.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub",
+            "TORCH_HOME": "/cache/huggingface/torch"
+          }
+        }
+      },
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-Z7R8OBhQC3YCrRyEaGVzwj",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-Z7R8OBhQC3YCrRyEaGVzwj",
+        "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
+      },
+      "observed": "Official chain scores: beam-10 dev 34.5 (17.9 sub / 15.0 del / 1.6 ins), beam-10 test 32.6 (16.0 / 14.6 / 2.0); greedy dev 34.7, greedy test 32.8. These are the comparable values for both PHOENIX14-T targets, against published 17.1 dev / 18.4 test.",
+      "hypothesis_supported": true,
+      "findings": [
+        "The official chain and this reproduction's internal symmetric metric agree to within 0.13 WER on PHOENIX14-T (34.5 vs 34.6318 dev beam-10 vs greedy-internal). On PHOENIX14 the same comparison differed by ~16.5 WER before the evaluation methodology was corrected. The agreement here is evidence the corrected metric path is sound, and it is expected: PHOENIX14-T carries no PHOENIX markers for stripping to mishandle.",
+        "Beam-10 beats greedy by only 0.2 WER on both splits, matching the ~0.3 seen on PHOENIX14. Decoding is not a material part of the gap.",
+        "Deletions dominate the error profile on both splits (15.0 dev / 14.6 test against 1.6 / 2.0 insertions), the same imbalance PHOENIX14 showed. The model under-emits glosses rather than hallucinating them.",
+        "The PHOENIX14-T result (34.5 / 32.6) sits within about 0.6 WER of the PHOENIX14 result (33.9 / 33.0) from the identical code and protocol. Two independent datasets landing at nearly the same distance from their published values points at a systematic property of this reimplementation rather than a dataset-specific fault."
+      ],
+      "measurements": {
+        "beam10_dev_wer": 34.5,
+        "beam10_dev_sub": 17.9,
+        "beam10_dev_del": 15.0,
+        "beam10_dev_ins": 1.6,
+        "beam10_test_wer": 32.6,
+        "beam10_test_sub": 16.0,
+        "beam10_test_del": 14.6,
+        "beam10_test_ins": 2.0,
+        "greedy_dev_wer": 34.7,
+        "greedy_test_wer": 32.8
+      },
+      "artifact_ids": [
+        "p14t-sclite-summary"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "sclite-phoenix14t-wiring-fix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-24T06:03:00Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both splits scored under both decodings by the pinned official chain; dtl reports retained.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -5513,13 +5673,48 @@
       "uri": "artifacts/train-phoenix14t-crashed-attempt1-history.json",
       "sha256": "e94ead12fe9bf0a5ff98e5cafcfdfa0c706642ef6f9c66e65b9ce7727c13cfc0",
       "size_bytes": 1084
+    },
+    {
+      "artifact_id": "p14t-train-result-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14t/result.json",
+      "sha256": "ea8ee76e06ee60f9d487377ba19a8975b037f80b0895c73042778b338bb56c8c",
+      "description": "Final PHOENIX14-T training result from train-phoenix14t-wiring-fix-002: 70 epochs, best epoch 69, dev/test 34.6318 / 32.7861 on the internal symmetric greedy metric, plus wall time, GPU and peak memory."
+    },
+    {
+      "artifact_id": "p14t-train-history-json",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14t/history.json",
+      "sha256": "d362d54d051ae7885260fd94305680d7569628a949235930d9bcaebf066a7ea0",
+      "description": "Per-epoch PHOENIX14-T training history: loss components, dev WER, learning rate and seconds for all 70 epochs. The basis for the convergence-noise finding."
+    },
+    {
+      "artifact_id": "p14t-train-best-pt",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14t/best.pt",
+      "sha256": "12144915ea621a2f02b7cf837e59ca0ea2bbf680f70977c470ec555e065d3fb4",
+      "description": "Best-dev PHOENIX14-T checkpoint (epoch 69), the checkpoint both reported target values are decoded from."
+    },
+    {
+      "artifact_id": "p14t-rescore-summary",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14t/rescore-summary.json",
+      "sha256": "9d9260475c37764cd4ecb264ae02485f09bad1e809f853de9aebb6f2b3bbacf7",
+      "description": "Greedy and beam-10 decoding of the epoch-69 checkpoint under three symmetric scoring variants, for both splits."
+    },
+    {
+      "artifact_id": "p14t-sclite-summary",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14t/sclite-summary.json",
+      "sha256": "31a8b1f81257feaee718266f3340116546c0baf06041546f01953130379dd5ab",
+      "description": "Official-chain sclite scores for PHOENIX14-T: beam-10 dev 34.5 and test 32.6, greedy dev 34.7 and test 32.8, with sub/del/ins breakdowns. The source of both reported target values."
     }
   ],
   "gates": [
     {
       "gate_id": "compute-full-run-table1",
       "type": "compute",
-      "status": "open",
+      "status": "resolved",
       "reason": "The reviewed compute requirement for the assigned Table 1 full runs exceeds the AGENTS.md autonomous threshold of a single GPU finishing within 24 hours.",
       "evidence": [
         "throughput-phoenix14-001 measured GPU inference at 0.0941 s per clip and training forward+backward at about 0.194 s per clip on an A100-40GB.",
@@ -5565,7 +5760,7 @@
           "note": "The params-conformant variant stays on branch repro/yu-2025-olmd-wiring-fix, where its PHOENIX14 result (CINECA 57329434) is still in flight."
         }
       },
-      "awaiting": "Nothing. PHOENIX14 authorized 2026-09-08 and complete; PHOENIX14-T authorized 2026-09-22 and proceeding on Modal H100 at a measured 17.7 GPU-hours.",
+      "awaiting": "Nothing. Both experiments complete.",
       "cost_estimate": {
         "status": "measured, with TLP, JPEG cache and prefetching DataLoader",
         "basis": "preflight-phoenix14-002 on A100-40GB measured a 0.422 s GPU step at batch size 2 on real clips and 5.326 s of serial batch loading. cache-probe-phoenix14-001 measured the JPEG cache at 0.267 s per clip. Protocol is 70 epochs, batch size 2, best-dev checkpoint selection requiring a dev pass each epoch, plus one test pass.",
@@ -5704,7 +5899,7 @@
           "note": "Replaces the earlier unmeasured 1.9x nominal and my own too-pessimistic 1.2-1.5x estimate. Each dataset individually clears the 24-hour gate on H100; the pair does not, so the staged PHOENIX14-first plan is what keeps the work inside it."
         }
       },
-      "resolution": "The compute question is resolved for the staged PHOENIX14 run: at a measured 14.4 GPU-hours on H100 it is single-GPU, expected to finish well within 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate, which is exactly the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours also clears the gate individually. The pair together, 32.1 GPU-hours, does not, so they must be run as separate staged jobs rather than one combined job. This gate remains recorded because the assignee was asked to authorize the spend and declined to decide; the measurement removes the compute obstacle but not that outstanding instruction.",
+      "resolution": "Both staged experiments are complete and every in-scope Table 1 target has a terminal full-run result. PHOENIX14 ran on CINECA (22.5 GPU-hours) and PHOENIX14-T on Modal H100 (15.9 GPU-hours), each inside its declared ceiling and each within the AGENTS.md autonomous threshold as a single-GPU job. No compute authorization remains outstanding for the assigned scope.",
       "resolution_note": "The COMPUTE OBSTACLE is resolved by measurement: on H100, PHOENIX14 needs about 14.4 GPU-hours, which is single-GPU, well inside 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate -- precisely the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours clears it too; the pair at 32.1 does not, so they must run as separate staged jobs.\n\nThe gate nevertheless remains OPEN, because the technical obstacle is not the only one. On 2026-09-08 the assignee was asked to authorize the GPU spend, or to route it to #repro-sign-team-r first, and declined to decide. That instruction stands until answered. Marking this resolved while no authorization exists and no run has launched would misrepresent the state, and the four in-scope targets cite this gate as the evidence for their compute_budget_blocked results.",
       "authorization": {
         "granted_at_utc": "2026-09-08T20:15:00Z",
@@ -5738,7 +5933,8 @@
             "max_cost_chf": 70.0
           }
         }
-      }
+      },
+      "closed_at_utc": "2026-09-24T06:30:00Z"
     }
   ],
   "guesses": [

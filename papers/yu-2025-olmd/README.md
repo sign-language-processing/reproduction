@@ -14,25 +14,35 @@ documented search (see [Source provenance](#source-provenance))
 
 Level 3 means reimplementation from the paper: no published code exists.
 
-**Pipeline status:** `partial` — both PHOENIX14 targets are produced from two completed
-70-epoch full runs; the two PHOENIX14-T targets are in progress on Modal
-(`train-phoenix14t-wiring-fix-001`, launched 2026-09-22).
+**Pipeline status:** `complete` — all four in-scope Table 1 targets are produced from
+completed 70-epoch full runs: PHOENIX14 on CINECA, PHOENIX14-T on Modal H100.
 
-**Numerical agreement:** `does_not_agree` — reproduced **33.9 dev / 33.0 test** WER
-(official sclite chain, beam-10, figure-conformant wiring) against the published
-**17.1 / 17.2**.
+**Numerical agreement:** `does_not_agree` — official sclite chain, beam-10,
+figure-conformant wiring: PHOENIX14 **33.9 dev / 33.0 test** against published
+**17.1 / 17.2**, PHOENIX14-T **34.5 dev / 32.6 test** against published **17.1 / 18.4**.
 
-**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14 complete); 2026-09-22 → (PHOENIX14-T running)
+**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14); 2026-09-22 → 2026-09-24 (PHOENIX14-T)
 
-> **Status: PHOENIX14 reproduced end to end; the numbers disagree with the paper.** The
-> full stated protocol ran to completion (70 epochs, batch 2, best-dev checkpoint
-> selection) and was evaluated with the official PHOENIX sclite chain. The reproduced WER
-> is roughly twice the published value. Of the raw 34-point gap first observed, ~16.5
-> points were traced to this reproduction's own evaluation methodology and corrected, and
-> a further ~1.2 to two wiring deviations found in a post-run figure audit and fixed in a
-> second full run on CINECA. The residual **~16 points remain unexplained**, with the
-> paper's unpublished MP-Block architecture the leading candidate. A reviewer decides the
-> scientific conclusion; every variant, guess, and dead end is recorded.
+> **Status: both datasets reproduced end to end; the numbers disagree with the paper.**
+> The full stated protocol ran to completion on each (70 epochs, batch 2, best-dev
+> checkpoint selection) and both were evaluated with the official PHOENIX sclite chain.
+> Every reproduced WER is roughly twice its published counterpart. On PHOENIX14, of the
+> raw 34-point gap first observed, ~16.5 points were traced to this reproduction's own
+> evaluation methodology and corrected, and a further ~1.2 to two wiring deviations found
+> in a post-run figure audit and fixed in a second full run.
+>
+> **PHOENIX14-T independently corroborates that the residual gap is not evaluation
+> error.** Its annotations carry no PHOENIX markers, so the asymmetric-stripping bug that
+> cost ~13 WER on PHOENIX14 cannot arise, and its internal metric agrees with the official
+> chain to within 0.13 WER — yet it lands at essentially the same distance from its
+> published value. Two datasets, identical code and protocol, finishing within ~0.6 WER of
+> each other (33.9/33.0 and 34.5/32.6) while their published values differ points at a
+> systematic property of this reimplementation rather than a dataset-specific fault. Both
+> also sit worse than the paper's own no-modules ablation baseline (18.9 dev), so the
+> shortfall is not about the marginal value of OLMD's modules. The residual **~15-17
+> points remain unexplained**, with the unpublished MP-Block the leading candidate. A
+> reviewer decides the scientific conclusion; every variant, guess, and dead end is
+> recorded.
 
 ## Scope and target contract
 
@@ -115,8 +125,8 @@ is **level 3 — reimplementation from the paper**.
 | --- | --- | --- | ---: | ---: | --- |
 | `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **33.9** | produced (`sclite-phoenix14-wiring-fix-001`) |
 | `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **33.0** | produced (`sclite-phoenix14-wiring-fix-001`) |
-| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | — | in progress (`train-phoenix14t-wiring-fix-001`) |
-| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | — | in progress (`train-phoenix14t-wiring-fix-001`) |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | **34.5** | produced (`sclite-phoenix14t-wiring-fix-001`) |
+| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | **32.6** | produced (`sclite-phoenix14t-wiring-fix-001`) |
 | 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
 The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
@@ -481,6 +491,45 @@ The cache build collapsed because PHOENIX14 stores ~179 separate PNG files per
 utterance while PHOENIX14-T stores one mp4, and the cost was always per-request latency
 rather than bandwidth.
 
+### Result
+
+`train-phoenix14t-wiring-fix-002` completed all 70 epochs on one H100 80GB in **15.90
+GPU-hours** (788.7 s/epoch, peak 51.50 GiB), against the 17.7 predicted. Official chain,
+beam-10, epoch-69 best-dev checkpoint:
+
+| Split | Published | Reproduced | Sub | Del | Ins | Greedy |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| dev | 17.1 | **34.5** | 17.9 | 15.0 | 1.6 | 34.7 |
+| test | 18.4 | **32.6** | 16.0 | 14.6 | 2.0 | 32.8 |
+
+Three observations, none of which close the gap:
+
+- **The evaluation path is clean here.** The internal symmetric metric and the official
+  chain agree to within 0.13 WER. On PHOENIX14 the same comparison differed by ~16.5 WER
+  before correction — the difference is that PHOENIX14-T carries no PHOENIX markers for
+  stripping to mishandle, so that entire class of error is absent by construction.
+- **Decoding is not material.** Beam-10 beats greedy by 0.2 WER on both splits, matching
+  the ~0.3 seen on PHOENIX14.
+- **Deletions dominate** (15.0 dev / 14.6 test against 1.6 / 2.0 insertions), the same
+  imbalance PHOENIX14 showed: the model under-emits glosses rather than hallucinating.
+
+**Convergence caveat, recorded rather than smoothed over.** The best dev epoch is the
+*last* one (69), and the final 30 epochs oscillate in a 34.63–38.26 dev band with 6
+epochs within 1.0 WER of the best, while training loss sits flat at 34.4. The epoch-69
+minimum is better read as the low end of a noise band than as a converged optimum, so the
+reported value sits at the optimistic edge of roughly a 3.6 WER spread. The protocol is
+unchanged — 70 epochs and best-dev selection were both fixed in advance — but a reviewer
+comparing against a single published figure should know the run had not settled.
+
+### A crash worth recording
+
+The first PHOENIX14-T attempt died at epoch 4 on a 9-frame clip. PHOENIX14's shortest
+utterance is 16 frames, so the pipeline had never met a clip short enough for the
+temporal stack to reduce to zero length. The fix adopts the lineage's padding convention
+in `collate`; it is a behaviour-changing change, recorded as a deviation, and it cost
+~50 s/epoch because it pads ~12 extra frames per clip. The crashed run's checkpoints were
+deleted before relaunching, so no weights trained under the broken padding carried over.
+
 ## CINECA wiring-fix retrain (this branch)
 
 This branch (`repro/yu-2025-olmd-wiring-fix`) corrects the two figure-audit deviations —
@@ -671,14 +720,12 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
 `validate_reproduction.py` passes with **zero issues** as of 2026-09-10 (down from 171 at
 the start). What remains open is scope, not validity:
 
-- The two PHOENIX14-T targets (`table1-p14t-dev-wer`, `table1-p14t-test-wer`) are
-  **running** as `train-phoenix14t-wiring-fix-001` (Modal `ap-N9nd0gh2omqMKl56wCTNNH`,
-  launched 2026-09-22), using the same figure-conformant wiring as the reported
-  PHOENIX14 result so the two datasets stay comparable. The compute block is lifted: the
-  measured requirement is **17.7 GPU-hours on H100**, inside the AGENTS.md 24-hour
-  single-GPU autonomous threshold. The cache build cost **2.8 minutes**, not the 10.3
-  hours projected from PHOENIX14's PNG cost, because PHOENIX14-T ships mp4.
-- The residual ~18-point gap on PHOENIX14 is undiagnosed beyond the recorded guesses.
+- All four in-scope targets are produced; the compute gate is resolved. What remains
+  open is diagnosis, not scope.
+- The residual ~15-17 point gap, now confirmed on **both** datasets, is undiagnosed
+  beyond the recorded guesses. PHOENIX14-T narrows the search usefully: it rules out
+  evaluation methodology as the explanation, since that dataset's clean metric path
+  produces the same shortfall.
   The cheapest next probes, if pursued: per-sample batch lengths (deviation
   `uniform-batch-lengths`), alternative cross-stage injection points, and MP-Block
   variants — each a behavior-changing protocol experiment requiring its own decision,
