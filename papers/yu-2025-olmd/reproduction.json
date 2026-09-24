@@ -5250,7 +5250,7 @@
         "dashboard": "https://modal.com/apps/repro-sign/main/ap-YzOOkmKvZh6KzNQHPZEUj0",
         "image": "ghcr.io/sign-language-processing/reproduction:latest + simple-video-utils==0.9.1"
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Started from scratch: the crashed run's latest.pt/best.pt were deleted first, so no weights trained under the broken padding carry over. The collate fix was unit-tested before launch (a 16-frame clip yields 4 head steps instead of 1, lengths are per-clip, front padding replicates frame 0). CLEARED EPOCH 4, where attempt 1 crashed, and continues normally: dev WER 97.71 -> 93.54 -> 96.34 -> 91.97 -> 88.93 with loss 128.85 -> 110.07. Epochs cost about 785 s against attempt 1's 736 s, the expected consequence of the lineage padding adding ~12 frames per clip, so the projection is about 15.3 GPU-hours.",
+      "observed": "COMPLETED all 70 epochs on one H100 80GB HBM3 in 57232.1 s (15.90 GPU-hours, 788.7 s/epoch mean), peak memory 51.50 GiB, inside the declared 30 GPU-hour ceiling. Started from scratch after the crashed attempt's checkpoints were deleted, so no weights trained under the broken padding carried over, and it cleared epoch 4 where attempt 1 died. Best dev WER 34.6318 at epoch 69 on the per-epoch symmetric greedy metric; dev/test at that checkpoint 34.6318 / 32.7861. Dev WER fell 97.71 -> 52.11 by epoch 20, stepped down at both LR cuts (41.12 after epoch 25, 35.78 after epoch 40), then oscillated in a 34.63-38.26 band for the last 30 epochs while training loss flattened at 34.4.",
       "artifact_ids": [],
       "recording": {
         "mode": "contemporaneous",
@@ -5258,16 +5258,42 @@
         "unknown_fields": []
       },
       "measurements": {
-        "seconds_per_epoch_mean_first5": 788.3,
-        "gpu_hours_projected_70_epochs": 15.3,
-        "cleared_crash_point_epoch": 4,
-        "dev_wer_trajectory_first5": [
-          97.7054,
-          93.5432,
-          96.3447,
-          91.9691,
-          88.9274
-        ]
+        "epochs_total": 70,
+        "best_epoch": 69,
+        "best_dev_wer_symmetric_greedy": 34.6318,
+        "final_dev_symmetric_greedy": 34.6318,
+        "final_test_symmetric_greedy": 32.7861,
+        "final_dev_del": 14.7012,
+        "final_dev_ins": 1.0939,
+        "final_dev_sub": 18.8367,
+        "final_test_del": 14.2355,
+        "final_test_ins": 1.454,
+        "final_test_sub": 17.0966,
+        "wall_seconds": 57232.1,
+        "seconds_per_epoch_mean": 788.7,
+        "gpu_hours": 15.9,
+        "peak_memory_GiB": 51.496,
+        "gpu": "NVIDIA H100 80GB HBM3",
+        "dev_wer_min_epochs_40_69": 34.63,
+        "dev_wer_max_epochs_40_69": 38.26,
+        "epochs_within_1_wer_of_best": 6
+      },
+      "finished_at_utc": "2026-09-24T04:00:00Z",
+      "exit_code": 0,
+      "findings": [
+        "The lineage-padding fix is validated by a full 70-epoch run: the pipeline that previously died at epoch 4 on a 9-frame clip trained to completion.",
+        "Best dev WER lands on the LAST epoch (69), and the final 30 epochs oscillate in a 34.63-38.26 band with 6 epochs within 1.0 WER of the best while training loss is flat at 34.4. The epoch-69 minimum is therefore better read as the low end of that noise band than as a converged optimum, so best-dev selection on the last epoch is partly luck of the draw. This does not change the protocol, which fixes 70 epochs and best-dev selection in advance, but it means the reported value sits at the optimistic edge of roughly a 3.6 WER spread.",
+        "Measured cost 15.90 GPU-hours against the 17.7 predicted by loader-benchmark-h100-001 and the 15.3 projected from this run's own first five epochs, so the H100 estimate that lifted the compute block was sound.",
+        "Peak memory 51.50 GiB is roughly double the 25.28 GiB the A100 preflight measured, consistent with the larger H100 letting cuDNN pick more memory-hungry kernels; it still fits the 80 GiB card."
+      ],
+      "hypothesis_supported": true,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 70 epochs completed inside the declared ceilings (15.90 of 30 GPU-hours) and evaluation emitted dev and test WER from the best-dev checkpoint. Official sclite scoring of the beam-10 decoding follows as separate runs.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     }
   ],
