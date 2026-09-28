@@ -1,0 +1,21 @@
+Load SPOTER's own full-model checkpoints with weights_only=False (correctness: API compatibility).
+
+Demonstrated failure (run training-preflight attempt 2, torch 2.11): after training, the test loop's
+torch.load raised _pickle.UnpicklingError: Weights only load failed. torch >= 2.6 defaults to
+weights_only=True, but train.py saves whole nn.Module objects with torch.save(slrt_model, ...).
+The files are the checkpoints this same run just wrote, so unpickling them is the pre-2.6 behaviour
+the code was written for. Nothing else changes.
+
+diff --git a/train.py b/train.py
+index 560728d..746e59a 100644
+--- a/train.py
++++ b/train.py
+@@ -220,7 +220,7 @@ def train(args):
+         for i in range(checkpoint_index):
+             for checkpoint_id in ["t", "v"]:
+                 # tested_model = VisionTransformer(dim=2, mlp_dim=108, num_classes=100, depth=12, heads=8)
+-                tested_model = torch.load("out-checkpoints/" + args.experiment_name + "/checkpoint_" + checkpoint_id + "_" + str(i) + ".pth")
++                tested_model = torch.load("out-checkpoints/" + args.experiment_name + "/checkpoint_" + checkpoint_id + "_" + str(i) + ".pth", weights_only=False)
+                 tested_model.train(False)
+                 _, _, eval_acc = evaluate(tested_model, eval_loader, device, print_stats=True)
+ 

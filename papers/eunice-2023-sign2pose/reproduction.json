@@ -1,0 +1,1323 @@
+{
+  "paper_id": "559de08af0b4679a571ac2bd26cacd15728811aa",
+  "agents": [
+    {
+      "agent_id": "opus-5-5-claude-code",
+      "model": "Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.283",
+      "scope": "Opened the attempt on 2026-09-27: created the branch and paper directory, preserved the queue record, acquired the paper, resolved the Table 5 target ledger, completed the source search, inspected the cited SPOTER basis and the shared WLASL dataset, and opened the protocol and data gates. No training or evaluation run has been executed. Second session (same model and harness, 2026-09-27): recovered the previous session after the laptop crash, diagnosed the Apple Vision memory leak, switched pose extraction to MediaPipe on Modal at the user's decision, ran the MediaPipe preflight and full extraction, recorded the earlier SPOTER upstream checks, and executed later runs.",
+      "evidence": [
+        "Interactive Claude Code session on 2026-09-27; the environment declares model name 'Opus 5.5' and exact model ID 'claude-opus-5-5'.",
+        "`claude --version` in the session printed '2.1.283 (Claude Code)'.",
+        "Second interactive Claude Code session on 2026-09-27; environment declares 'Opus 5.5' / 'claude-opus-5-5'; `claude --version` printed '2.1.283 (Claude Code)'. Earlier runs recovered from the first session's transcript (session 8291b24d-f51a-4f6f-9002-a728b87bed9e)."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "queue_record",
+    "source": {
+      "path": "papers/eunice-2023-sign2pose/papers-559de08af0b4679a571ac2bd26cacd15728811aa-2026-09-27.json",
+      "sha256": "207721a9e8625cc61089cdf74d61f46c89a4403d83346cedef9002690c99b1d7",
+      "discovered_at": "2026-09-27",
+      "note": "Local queue export supplied by the user. At the user's instruction it is never committed or pushed; it is excluded locally via .git/info/exclude. Its full record is preserved below."
+    },
+    "ingestion": {
+      "script_accepted": false,
+      "detail": "ingest_candidate.py rejected the export with 'candidate export must be a top-level JSON array': the file is a single record object. The record was not reshaped to satisfy the script; it is preserved verbatim instead, following the zhang-2023-sltunet precedent."
+    },
+    "confirmation_status": {
+      "confirmation_field_present": false,
+      "paper_status": "final",
+      "finalized_by_present": true,
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "sophia.conrad@uzh.ch",
+          "when": "2026-09-07T14:51:47.959Z"
+        }
+      ],
+      "assessment": "AGENTS.md requires confirmation 'confirmed' and status 'final'. The record has status 'final' (human needs_review -> final transition on 2026-09-07) but no confirmation field. The record is preserved verbatim, so the validator still reports this; the human decision below is the confirmation.",
+      "human_confirmation": {
+        "confirmed_by": "assigned reproducer (michelle.wastl@uzh.ch)",
+        "date": "2026-09-27",
+        "statement": "The user stated in the session that the record is approved."
+      },
+      "user_confirmation": {
+        "at_utc": "2026-09-27T14:34:53Z",
+        "by": "the assigning user (repository user miwytt)",
+        "statement": "2. it's approved; 3. that's fine withouth redaction",
+        "detail": "In the attempt's session the user confirmed the queue record as approved (question 2: record has status 'final' but no 'confirmation' field) and approved committing the queue record including the finalizer's email without redaction (question 3)."
+      }
+    },
+    "normalized": {
+      "title": "Sign2Pose: A Pose-Based Approach for Gloss Prediction Using a Transformer Model",
+      "year": 2023,
+      "venue": "Sensors (MDPI)",
+      "pdf_url": "https://www.mdpi.com/1424-8220/23/5/2853/pdf?version=1678096475",
+      "code_repos": [],
+      "what_to_reproduce": "Table 5, bottom line",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "lghx3dbi6y6y4j2"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "lghx3dbi6y6y4j2",
+          "name": "top-1 accuracy",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "j3969iwym0kepl7",
+          "name": "WLASL",
+          "available": "yes",
+          "license": "Custom (research only)",
+          "urls": [
+            "https://dxli94.github.io/WLASL/"
+          ],
+          "comments": "Word-Level American Sign Language, 2000 glosses"
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": "Video-to-gloss",
+      "flag_reason": ""
+    },
+    "record": {
+      "area_of_slp": [
+        "Translation"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "Video-to-gloss",
+      "compute_requirements": "N/A",
+      "copied_scores": "yes",
+      "datasets": [
+        "j3969iwym0kepl7"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "Word-Level American Sign Language, 2000 glosses",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "j3969iwym0kepl7",
+            "license": "Custom (research only)",
+            "name": "WLASL",
+            "on_modal": "yes",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "url": [
+              "https://dxli94.github.io/WLASL/"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "wzc6kxyuhls6lut",
+            "name": "Accuracy",
+            "url": []
+          },
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "lghx3dbi6y6y4j2",
+            "name": "top-1 accuracy",
+            "url": null
+          }
+        ]
+      },
+      "finalized_by": "sophia.conrad@uzh.ch",
+      "flag_reason": "",
+      "id": "bptucp2h0smni4x",
+      "includes_human_evaluation": "no",
+      "main_experiment_has_ranking": "no",
+      "metrics": [
+        "wzc6kxyuhls6lut",
+        "lghx3dbi6y6y4j2"
+      ],
+      "paper_id": "559de08af0b4679a571ac2bd26cacd15728811aa",
+      "pdf_url": "https://www.mdpi.com/1424-8220/23/5/2853/pdf?version=1678096475",
+      "peer_reviewed": "yes",
+      "potential_ethical_concerns": "no",
+      "rejection_reason": "",
+      "status": "final",
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "sophia.conrad@uzh.ch",
+          "when": "2026-09-07T14:51:47.959Z"
+        }
+      ],
+      "sub_area_of_slp": [
+        "Video-to-text"
+      ],
+      "textual_conclusion": "Overall, the proposed model showed\n17% improved performance in the WLASL 100 dataset.",
+      "title": "Sign2Pose: A Pose-Based Approach for Gloss Prediction Using a Transformer Model",
+      "venue": "Sensors (MDPI)",
+      "what_to_reproduce": "Table 5, bottom line",
+      "year": 2023
+    },
+    "record_redaction": {
+      "redacted": false,
+      "decision": "The user confirmed on 2026-09-27 that the verbatim record, including the reviewer email in finalized_by/status_history, may be committed without redaction."
+    }
+  },
+  "paper": {
+    "title": "Sign2Pose: A Pose-Based Approach for Gloss Prediction Using a Transformer Model",
+    "citation": "Eunice, J.; J, A.; Sei, Y.; Hemanth, D.J. Sign2Pose: A Pose-Based Approach for Gloss Prediction Using a Transformer Model. Sensors 2023, 23(5), 2853. https://doi.org/10.3390/s23052853",
+    "url": "https://doi.org/10.3390/s23052853",
+    "landing_page": "https://www.mdpi.com/1424-8220/23/5/2853",
+    "pmcid": "PMC10007493",
+    "fulltext_artifact": {
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10007493/fullTextXML",
+      "sha256": "cf6fc433b7cf8584d71b4f062af25bbc598be0905df204f6a32b28dea3470c67",
+      "size_bytes": 191537,
+      "format": "JATS XML (Europe PMC, CC BY 4.0)"
+    },
+    "pdf_sha256": null,
+    "pdf_note": "No PDF bytes could be obtained: the MDPI PDF (queue pdf_url) and landing page return HTTP 403 to non-browser clients, Europe PMC's PDF render returns 403, and the PMC PDF link returns an HTML proof-of-work page. The Europe PMC JATS full text of the same article is used as the hashed paper artifact; its tables match the text the user pasted.",
+    "accessed_at": "2026-09-27"
+  },
+  "repository_state": {
+    "branch": "eunice-2023-sign2pose",
+    "base_commit": "8d069b13fddbfe786eb5cc1c87ae54fd0de21fc9"
+  },
+  "sources": [
+    {
+      "source_id": "paper-fulltext",
+      "kind": "paper",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10007493/fullTextXML",
+      "revision_or_sha256": "cf6fc433b7cf8584d71b4f062af25bbc598be0905df204f6a32b28dea3470c67",
+      "role": "Target values (Table 5) and protocol (Sections 3-6, Table 3)."
+    },
+    {
+      "source_id": "spoter-code",
+      "kind": "code",
+      "url": "https://github.com/maty-bohacek/spoter",
+      "revision_or_sha256": "0f909bf92690772f43f0062be41860ed85b461ad",
+      "license": "Apache-2.0",
+      "role": "Cited basis (paper ref. 48), not the authors' artifact. The paper's Table 3 and Sections 3.3-5 (54 Apple Vision landmarks / 108-dim vectors, 6+6 layers, 9 heads, FF 2048, SGD lr 0.001 momentum 0, uniform init, rotation/squeeze/perspective/arm-joint augmentation, 7x8 head-unit signing-space normalisation, single class query decoder) match SPOTER's model.py, train.py, augmentations and normalization. Candidate base for a preference-level-3 reimplementation."
+    },
+    {
+      "source_id": "spoter-wlasl100-poses",
+      "kind": "data",
+      "url": "https://github.com/maty-bohacek/spoter/releases/tag/supplementary-data",
+      "revision_or_sha256": "release asset sizes: WLASL100_train_25fps.csv 59940576, WLASL100_val_25fps.csv 14230738, WLASL100_test_25fps.csv 10879886 bytes; GitHub exposes no digest, SHA-256 to be recorded on download",
+      "license": "CC BY-NC 4.0",
+      "role": "Apple Vision pose sequences for WLASL100 only (official WLASL splits). Would supply the paper's pose estimator for one of four subsets if a conditional run is authorised; not downloaded yet."
+    }
+  ],
+  "source_search": {
+    "accessed_at": "2026-09-27",
+    "result": "No code, weights, supplementary files or project page from the authors were found.",
+    "locations": [
+      "Paper full text: only external link is the Data Availability Statement (https://dxli94.github.io/WLASL/); no code availability statement, no supplementary-material element.",
+      "MDPI landing page: HTTP 403 to automated clients; PMC/Europe PMC records list no supplements.",
+      "GitHub repository search: 'Sign2Pose', 'sign2pose gloss', 'Sign2Pose transformer', 'gloss prediction transformer WLASL pose' -> 0 results.",
+      "GitHub code search 'Sign2Pose': only a thesis bibliography (fransandooo/TFG-SignLanguageToText) and Chinh-de/Sign_Language_Recognition, a 2025 third-party MediaPipe model named Sign2PoseTransformer with input_dim 171, d_model 256, 8 heads, 3+3 layers; unaffiliated and inconsistent with the paper, rejected.",
+      "GitHub user jennifereunice (10 repos): web/Spring/React projects only, no sign-language code; identity with the first author unconfirmed.",
+      "Web search: exact title, 'Sign2Pose' + WLASL/80.9/code, first author + Karunya + github/zenodo/papers with code -> only paper indexes (PMC, PubMed, Manipal research portal, encyclopedia.pub, ResearchGate figures).",
+      "Zenodo API q='Sign2Pose' -> 0; Hugging Face models/datasets/spaces search 'sign2pose' -> 0; OSF search -> no results.",
+      "Cited experimental basis SPOTER (ref. 48) located and pinned; distinguished from this paper's own artifact."
+    ]
+  },
+  "status": {
+    "pipeline": null,
+    "numerical_agreement": null,
+    "numerical_agreement_basis": "Not yet assessed: the conditional reconstruction authorised at gate 'sign2pose-private-split' is in progress; by that gate's decision its numbers are conditional evidence and no target can be marked produced.",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "wlasl-v0.3",
+      "name": "WLASL (Word-Level American Sign Language)",
+      "version_or_subset": "WLASL_v0.3.json; subsets WLASL100/300/1000/2000 = first K glosses of the JSON",
+      "source_url": "https://dxli94.github.io/WLASL/",
+      "license_or_permission": "Custom research-only terms (queue record: 'Custom (research only)'); the dataset is already stored in the project's shared Modal Volume. Missing videos are available only via the authors' Google-form request, which requires agreeing to terms of use.",
+      "cloud_processing_allowed": true,
+      "cloud_processing_basis": "Existing project copy in the shared 'datasets' Volume, populated by another study attempt; the queue record marks on_modal 'yes'. Terms of that population are not re-verified here.",
+      "modal_volume": "datasets",
+      "modal_path": "WLASL",
+      "checked_at_utc": "2026-09-27T14:21:00Z",
+      "splits": [
+        {
+          "name": "WLASL100 (all official splits pooled; paper re-splits)",
+          "sample_count": 1443,
+          "expected_instances": 2038,
+          "coverage": 0.708,
+          "files": [
+            {
+              "path": "WLASL/WLASL_v0.3.json",
+              "sha256": "31ba5a5c421bdbff87494ee22ca6d4e276a8dfac44f43cc9a58b76ed1c4cd684",
+              "role": "Gloss/instance metadata; instance totals match paper Table 2 exactly."
+            },
+            {
+              "path": "WLASL/index.csv",
+              "sha256": "fba4a2c0b9b545577b5a60532d24eaef9af8f175ad371b3222cfd3182d487ddc",
+              "role": "Index of instances with a stored video (15,146 rows, 12,255 distinct files)."
+            }
+          ]
+        },
+        {
+          "name": "WLASL300 (all official splits pooled; paper re-splits)",
+          "sample_count": 3671,
+          "expected_instances": 5117,
+          "coverage": 0.7174,
+          "files": [
+            {
+              "path": "WLASL/WLASL_v0.3.json",
+              "sha256": "31ba5a5c421bdbff87494ee22ca6d4e276a8dfac44f43cc9a58b76ed1c4cd684",
+              "role": "Gloss/instance metadata; instance totals match paper Table 2 exactly."
+            },
+            {
+              "path": "WLASL/index.csv",
+              "sha256": "fba4a2c0b9b545577b5a60532d24eaef9af8f175ad371b3222cfd3182d487ddc",
+              "role": "Index of instances with a stored video (15,146 rows, 12,255 distinct files)."
+            }
+          ]
+        },
+        {
+          "name": "WLASL1000 (all official splits pooled; paper re-splits)",
+          "sample_count": 9633,
+          "expected_instances": 13168,
+          "coverage": 0.7315,
+          "files": [
+            {
+              "path": "WLASL/WLASL_v0.3.json",
+              "sha256": "31ba5a5c421bdbff87494ee22ca6d4e276a8dfac44f43cc9a58b76ed1c4cd684",
+              "role": "Gloss/instance metadata; instance totals match paper Table 2 exactly."
+            },
+            {
+              "path": "WLASL/index.csv",
+              "sha256": "fba4a2c0b9b545577b5a60532d24eaef9af8f175ad371b3222cfd3182d487ddc",
+              "role": "Index of instances with a stored video (15,146 rows, 12,255 distinct files)."
+            }
+          ]
+        },
+        {
+          "name": "WLASL2000 (all official splits pooled; paper re-splits)",
+          "sample_count": 15146,
+          "expected_instances": 21083,
+          "coverage": 0.7184,
+          "files": [
+            {
+              "path": "WLASL/WLASL_v0.3.json",
+              "sha256": "31ba5a5c421bdbff87494ee22ca6d4e276a8dfac44f43cc9a58b76ed1c4cd684",
+              "role": "Gloss/instance metadata; instance totals match paper Table 2 exactly."
+            },
+            {
+              "path": "WLASL/index.csv",
+              "sha256": "fba4a2c0b9b545577b5a60532d24eaef9af8f175ad371b3222cfd3182d487ddc",
+              "role": "Index of instances with a stored video (15,146 rows, 12,255 distinct files)."
+            }
+          ]
+        }
+      ],
+      "known_mismatch": "Only ~72% of each subset's instances have a stored video (WLASL100 1443/2038, WLASL300 3671/5117, WLASL1000 9633/13168, WLASL2000 15146/21083), consistent with expired YouTube links. The paper reports the full Table 2 counts."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "top1-accuracy-percent",
+      "name": "Top-1 recognition accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Not published. Table 5 caption says 'top 1% macro recognition accuracy'; the text says 'top 1% accuracy' and 'top 1 class accuracy'. SPOTER's code computes per-instance top-1 accuracy; the copied WLASL-paper rows are per-instance.",
+      "version": "unspecified",
+      "aggregation": "Ambiguous: per-class macro average (caption) vs per-instance (copied comparison rows, SPOTER). Recorded in gate sign2pose-private-split.",
+      "unit_or_scale": "percent, 0-100"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table5-ours-wlasl100",
+      "dataset_id": "wlasl-v0.3",
+      "system": "Sign2Pose Gloss prediction transformer (key-frame extraction + Apple Vision pose + augmentation + YOLOv3 normalisation + SPOTER-style transformer)",
+      "checkpoint_rule": "Not stated. Figure 7 shows validation accuracy peaking by epoch 220 and stable after 240 of 300 epochs; test-time checkpoint (final vs best-validation) is unspecified.",
+      "paper_evidence": "Section 5 (split, Table 3, optimizer), Section 6 and Figure 7 (training curve), Table 5 bottom row.",
+      "conditional_reconstruction": "MediaPipe Holistic 0.10.21 poses (mapped to SPOTER's 54 Apple Vision joints) for every frame of the stored instances; official WLASL split; key frames per poses.keyframe_mask; pinned SPOTER train.py with patches/."
+    },
+    {
+      "experiment_id": "table5-ours-wlasl300",
+      "dataset_id": "wlasl-v0.3",
+      "system": "Sign2Pose Gloss prediction transformer (key-frame extraction + Apple Vision pose + augmentation + YOLOv3 normalisation + SPOTER-style transformer)",
+      "checkpoint_rule": "Not stated. Figure 7 shows validation accuracy peaking by epoch 220 and stable after 240 of 300 epochs; test-time checkpoint (final vs best-validation) is unspecified.",
+      "paper_evidence": "Section 5 (split, Table 3, optimizer), Section 6 and Figure 7 (training curve), Table 5 bottom row.",
+      "conditional_reconstruction": "MediaPipe Holistic 0.10.21 poses (mapped to SPOTER's 54 Apple Vision joints) for every frame of the stored instances; official WLASL split; key frames per poses.keyframe_mask; pinned SPOTER train.py with patches/."
+    },
+    {
+      "experiment_id": "table5-ours-wlasl1000",
+      "dataset_id": "wlasl-v0.3",
+      "system": "Sign2Pose Gloss prediction transformer (key-frame extraction + Apple Vision pose + augmentation + YOLOv3 normalisation + SPOTER-style transformer)",
+      "checkpoint_rule": "Not stated. Figure 7 shows validation accuracy peaking by epoch 220 and stable after 240 of 300 epochs; test-time checkpoint (final vs best-validation) is unspecified.",
+      "paper_evidence": "Section 5 (split, Table 3, optimizer), Section 6 and Figure 7 (training curve), Table 5 bottom row.",
+      "conditional_reconstruction": "MediaPipe Holistic 0.10.21 poses (mapped to SPOTER's 54 Apple Vision joints) for every frame of the stored instances; official WLASL split; key frames per poses.keyframe_mask; pinned SPOTER train.py with patches/."
+    },
+    {
+      "experiment_id": "table5-ours-wlasl2000",
+      "dataset_id": "wlasl-v0.3",
+      "system": "Sign2Pose Gloss prediction transformer (key-frame extraction + Apple Vision pose + augmentation + YOLOv3 normalisation + SPOTER-style transformer)",
+      "checkpoint_rule": "Not stated. Figure 7 shows validation accuracy peaking by epoch 220 and stable after 240 of 300 epochs; test-time checkpoint (final vs best-validation) is unspecified.",
+      "paper_evidence": "Section 5 (split, Table 3, optimizer), Section 6 and Figure 7 (training curve), Table 5 bottom row.",
+      "conditional_reconstruction": "MediaPipe Holistic 0.10.21 poses (mapped to SPOTER's 54 Apple Vision joints) for every frame of the stored instances; official WLASL split; key frames per poses.keyframe_mask; pinned SPOTER train.py with patches/."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table5-ours-wlasl100",
+      "in_scope": true,
+      "paper_location": "Table 5, bottom row 'Our’s', column WLASL100 Top-1% Accuracy",
+      "system": "Sign2Pose (Our’s)",
+      "experiment_id": "table5-ours-wlasl100",
+      "dataset": "WLASL100",
+      "split": "Authors' private random split: '85:15 ... 70% training, 15% validating, 15% testing' (Section 5); no split files, seed or stratification published. Not the official WLASL split.",
+      "metric_id": "top1-accuracy-percent",
+      "original_value": 80.9,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "Table 5 labels this row as the proposed model; the Abstract and Section 6 report the same values as the authors' own results. The other four Table 5 rows are copied baselines and are outside the 'bottom line' assignment.",
+      "seed_policy": "Not stated; single value reported, no seeds or variance.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper's private random re-split, unspecified key-frame distance and YOLOv3 normalisation cannot be recovered; by the decision at gate 'sign2pose-private-split' the conditional reconstruction's numbers are evidence only."
+        },
+        "run_ids": [
+          "full-wlasl100"
+        ],
+        "artifact_ids": [
+          "full-wlasl100-spoter-log"
+        ],
+        "gate_ids": [
+          "sign2pose-private-split"
+        ],
+        "evidence": [
+          "Section 5 describes an unpublished 85:15 / 70/15/15 random split with no split files or seed; Algorithm 1 leaves the Euclidean-distance operands undefined; Section 3.5 gives no YOLOv3 weights or training data."
+        ],
+        "conditional_values": {
+          "per_instance_top1_spoter_max_over_test": 47.5,
+          "per_instance_top1_validation_selected": 47.5,
+          "macro_top1_validation_selected": 49.31,
+          "validation_selection": "checkpoint_v_12, validation 43.80 at epoch 121 (same checkpoint as SPOTER's pick)",
+          "conditions": "MediaPipe Holistic 0.10.21 poses; official WLASL split; stored videos only (~71-72% of instances); key frames per poses.keyframe_mask; SPOTER signing-space normalisation instead of YOLOv3; SPOTER train.py defaults; seed 379; single run.",
+          "scoring": "Computed from the final attempt's SPOTER log. SPOTER's own report is the maximum test accuracy over all saved checkpoints (test-set selection); validation-selected = the checkpoint_v with the highest validation accuracy (earliest on ties); macro = mean of SPOTER's per-label test accuracies over labels present in test."
+        }
+      }
+    },
+    {
+      "target_id": "table5-ours-wlasl300",
+      "in_scope": true,
+      "paper_location": "Table 5, bottom row 'Our’s', column WLASL300 Top-1% Accuracy",
+      "system": "Sign2Pose (Our’s)",
+      "experiment_id": "table5-ours-wlasl300",
+      "dataset": "WLASL300",
+      "split": "Authors' private random split: '85:15 ... 70% training, 15% validating, 15% testing' (Section 5); no split files, seed or stratification published. Not the official WLASL split.",
+      "metric_id": "top1-accuracy-percent",
+      "original_value": 64.21,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "Table 5 labels this row as the proposed model; the Abstract and Section 6 report the same values as the authors' own results. The other four Table 5 rows are copied baselines and are outside the 'bottom line' assignment.",
+      "seed_policy": "Not stated; single value reported, no seeds or variance.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper's private random re-split, unspecified key-frame distance and YOLOv3 normalisation cannot be recovered; by the decision at gate 'sign2pose-private-split' the conditional reconstruction's numbers are evidence only."
+        },
+        "run_ids": [
+          "full-wlasl300"
+        ],
+        "artifact_ids": [
+          "full-wlasl300-spoter-log"
+        ],
+        "gate_ids": [
+          "sign2pose-private-split"
+        ],
+        "evidence": [
+          "Section 5 describes an unpublished 85:15 / 70/15/15 random split with no split files or seed; Algorithm 1 leaves the Euclidean-distance operands undefined; Section 3.5 gives no YOLOv3 weights or training data."
+        ],
+        "conditional_values": {
+          "per_instance_top1_spoter_max_over_test": 27.36,
+          "per_instance_top1_validation_selected": 23.58,
+          "macro_top1_validation_selected": 24.09,
+          "validation_selection": "checkpoint_v_9, validation 32.92 at epoch 86; SPOTER's pick is checkpoint_t_16 (macro 28.17)",
+          "conditions": "MediaPipe Holistic 0.10.21 poses; official WLASL split; stored videos only (~71-72% of instances); key frames per poses.keyframe_mask; SPOTER signing-space normalisation instead of YOLOv3; SPOTER train.py defaults; seed 379; single run.",
+          "scoring": "Computed from the final attempt's SPOTER log. SPOTER's own report is the maximum test accuracy over all saved checkpoints (test-set selection); validation-selected = the checkpoint_v with the highest validation accuracy (earliest on ties); macro = mean of SPOTER's per-label test accuracies over labels present in test."
+        }
+      }
+    },
+    {
+      "target_id": "table5-ours-wlasl1000",
+      "in_scope": true,
+      "paper_location": "Table 5, bottom row 'Our’s', column WLASL1000 Top-1% Accuracy",
+      "system": "Sign2Pose (Our’s)",
+      "experiment_id": "table5-ours-wlasl1000",
+      "dataset": "WLASL1000",
+      "split": "Authors' private random split: '85:15 ... 70% training, 15% validating, 15% testing' (Section 5); no split files, seed or stratification published. Not the official WLASL split.",
+      "metric_id": "top1-accuracy-percent",
+      "original_value": 49.46,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "Table 5 labels this row as the proposed model; the Abstract and Section 6 report the same values as the authors' own results. The other four Table 5 rows are copied baselines and are outside the 'bottom line' assignment.",
+      "seed_policy": "Not stated; single value reported, no seeds or variance."
+    },
+    {
+      "target_id": "table5-ours-wlasl2000",
+      "in_scope": true,
+      "paper_location": "Table 5, bottom row 'Our’s', column WLASL2000 Top-1% Accuracy",
+      "system": "Sign2Pose (Our’s)",
+      "experiment_id": "table5-ours-wlasl2000",
+      "dataset": "WLASL2000",
+      "split": "Authors' private random split: '85:15 ... 70% training, 15% validating, 15% testing' (Section 5); no split files, seed or stratification published. Not the official WLASL split.",
+      "metric_id": "top1-accuracy-percent",
+      "original_value": 38.65,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "Table 5 labels this row as the proposed model; the Abstract and Section 6 report the same values as the authors' own results. The other four Table 5 rows are copied baselines and are outside the 'bottom line' assignment.",
+      "seed_policy": "Not stated; single value reported, no seeds or variance."
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "upstream-check-attempt-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Upstream check: pinned SPOTER train.py for one epoch on SPOTER's published WLASL100 Apple Vision CSVs.",
+      "command": "ATTEMPT_UNPATCHED=1 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py --subset 100 --variant spoter --epochs 1 --tag upstream-check",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T14:46:28Z",
+      "finished_at_utc": "2026-09-27T14:47:39Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "upstream-check",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T14:46:28Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 24.0,
+        "max_cost_chf": 20.0,
+        "detail": "Ceilings are the train() Modal timeout (24 h on one L4) in the launched modal_app.py; the GPU-hour and cost ceilings follow from that timeout (24 L4-hours, about CHF 20). max_attempts=3 was written down during bookkeeping after the session crash, not before launch."
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "train.py exit 1: ModuleNotFoundError: No module named 'datasets.czech_slr_dataset'. The NGC base image's Hugging Face 'datasets' package shadows SPOTER's __init__-less datasets/ directory. Fixed in the image (pip uninstall -y datasets), not in SPOTER.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "upstream-check-attempt-2"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-FhGmdmRVFITAeq8YoktPe1",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-FhGmdmRVFITAeq8YoktPe1",
+        "gpu": "NVIDIA L4",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": []
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "upstream-check-attempt-2",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Upstream check: pinned SPOTER train.py for one epoch on SPOTER's published WLASL100 Apple Vision CSVs.",
+      "command": "ATTEMPT_UNPATCHED=1 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py --subset 100 --variant spoter --epochs 1 --tag upstream-check",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T14:48:25Z",
+      "finished_at_utc": "2026-09-27T14:49:50Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "upstream-check",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T14:48:25Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 24.0,
+        "max_cost_chf": 20.0,
+        "detail": "Ceilings are the train() Modal timeout (24 h on one L4) in the launched modal_app.py; the GPU-hour and cost ceilings follow from that timeout (24 L4-hours, about CHF 20). max_attempts=3 was written down during bookkeeping after the session crash, not before launch."
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "function call fc-01M3HNE34RX75XGGRN9FECANPZ; train.py exit 1: AttributeError: 'SPOTERTransformerDecoderLayer' object has no attribute 'self_attn' (torch 2.11 nn.TransformerDecoder reads layers[0].self_attn). Fixed by patches/0001-torch2-decoder-layer-compat.patch.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "upstream-check-attempt-3"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-RhfaHMASKoY4K0tuv7Od1p",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-RhfaHMASKoY4K0tuv7Od1p",
+        "gpu": "NVIDIA L4",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": []
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "upstream-check-attempt-3",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Upstream check: pinned SPOTER train.py for one epoch on SPOTER's published WLASL100 Apple Vision CSVs.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py --subset 100 --variant spoter --epochs 1 --tag upstream-check",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T14:50:29Z",
+      "finished_at_utc": "2026-09-27T14:55:05Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "upstream-check",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T14:50:29Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 24.0,
+        "max_cost_chf": 20.0,
+        "detail": "Ceilings are the train() Modal timeout (24 h on one L4) in the launched modal_app.py; the GPU-hour and cost ceilings follow from that timeout (24 L4-hours, about CHF 20). max_attempts=3 was written down during bookkeeping after the session crash, not before launch."
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "train.py exit 1 in the first training step: CUDA device-side assert 't >= 0 && t < n_classes' in nll_loss. SPOTER's pinned loader (datasets/czech_slr_dataset.py:104) subtracts 1 from every label while its published WLASL100 CSVs use 0-based labels (0..99), so label 0 becomes -1: an inconsistency between SPOTER's released code and data. The torch 2 patch itself worked (the model built and ran forward). Result read from /runs/upstream-check-wlasl100-spoter-seed379/stdout.log after the session crash. Not retried: at the user's decision the reconstruction uses its own MediaPipe CSVs, which poses.py writes 1-based.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-t2tWh04fSneAAneGmAZ3b0",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-t2tWh04fSneAAneGmAZ3b0",
+        "gpu": "NVIDIA L4",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          }
+        ]
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "training-preflight-attempt-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Representative training preflight: real MediaPipe CSVs, 2 epochs of pinned SPOTER train.py, checkpoint save, reload and test evaluation.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::main --subset 2000 --variant keyframes --epochs 2 --tag preflight",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T15:48:34Z",
+      "finished_at_utc": "2026-09-27T15:55:43Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-preflight",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:48:15Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Epoch 1 trained, then validation crashed: spoter/utils.py:52 evaluate() KeyError: 1158; stats dict hardcoded to range(101). Fixed by patches/0002-evaluate-stats-num-classes.patch. (An earlier launch at 15:48:15Z under `timeout` never reached Modal: the wrapper's profile check fails under timeout.)",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "training-preflight-attempt-2"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-4esqsFAFbej5LaxkcR4Lmw",
+        "function_call_id": "fc-01M3HRVNTZN9CTMCTZ9AWSKR5B",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-4esqsFAFbej5LaxkcR4Lmw",
+        "gpu": "NVIDIA L4 (driver 580.95.05)",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          }
+        ]
+      },
+      "outputs": "modal://eunice-2023-sign2pose-results/runs/preflight-*-seed379/ (stdout.log, SPOTER log, pip-freeze.txt; overwritten by later attempts of the same run name)",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "training-preflight-attempt-2",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Representative training preflight: real MediaPipe CSVs, 2 epochs of pinned SPOTER train.py, checkpoint save, reload and test evaluation.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::main --subset 2000 --variant keyframes --epochs 2 --tag preflight",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T15:56:27Z",
+      "finished_at_utc": "2026-09-27T16:10:57Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-preflight",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:48:15Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Both epochs trained and validated (SPOTER log: epoch 1 16:04:17, epoch 2 16:10:48 -> ~6.4 min per WLASL2000 epoch incl. validation). Test loop then failed: torch.load UnpicklingError (weights_only default in torch >= 2.6). Fixed by patches/0003-torch-load-full-model.patch.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "training-preflight-attempt-3"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-8QRGlFFdBGdWu2dKaNu1IJ",
+        "function_call_id": "fc-01M3HSAHGWQ3J44CEQS9G8HVBK",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-8QRGlFFdBGdWu2dKaNu1IJ",
+        "gpu": "NVIDIA L4 (driver 580.95.05)",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          },
+          {
+            "path": "patches/0002-evaluate-stats-num-classes.patch",
+            "sha256": "e88a5c017f602587bbebdec6dfbb94620549569f2427550c4b058d71c1299019"
+          }
+        ]
+      },
+      "outputs": "modal://eunice-2023-sign2pose-results/runs/preflight-*-seed379/ (stdout.log, SPOTER log, pip-freeze.txt; overwritten by later attempts of the same run name)",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "training-preflight-attempt-3",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Representative training preflight: real MediaPipe CSVs, 2 epochs of pinned SPOTER train.py, checkpoint save, reload and test evaluation.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::main --subset 100 --variant keyframes --epochs 2 --tag preflight",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-27T16:12:14Z",
+      "finished_at_utc": "2026-09-27T16:14:01Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-preflight",
+        "number": 3,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:48:15Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "WLASL100 key frames, 2 epochs: trained, saved checkpoint_t_0/checkpoint_v_0, reloaded both and evaluated on test (0.015 each). 75.8 s wall. Switched to WLASL100 only to exercise the reload path quickly; the WLASL2000 train/validation path was already exercised by attempt 2.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-7Xf83KxL168cZQfdsy8kjj",
+        "function_call_id": "fc-01M3HT7ED5QW8PFXVYJ7J2W98T",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-7Xf83KxL168cZQfdsy8kjj",
+        "gpu": "NVIDIA L4 (driver 580.95.05)",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          },
+          {
+            "path": "patches/0002-evaluate-stats-num-classes.patch",
+            "sha256": "e88a5c017f602587bbebdec6dfbb94620549569f2427550c4b058d71c1299019"
+          },
+          {
+            "path": "patches/0003-torch-load-full-model.patch",
+            "sha256": "acdfba9934c4c5edab85495dbf4e8175199596f419c46a5b33d7257a57166e8f"
+          }
+        ]
+      },
+      "outputs": "modal://eunice-2023-sign2pose-results/runs/preflight-*-seed379/ (stdout.log, SPOTER log, pip-freeze.txt; overwritten by later attempts of the same run name)",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "full-wlasl100",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Conditional reconstruction, WLASL100: 300 epochs of pinned SPOTER train.py on MediaPipe key-frame CSVs (official split, stored videos only), then SPOTER's checkpoint test loop.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/eunice-2023-sign2pose/modal_app.py::main --subset 100 --variant keyframes --epochs 300 --tag full",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-27T16:14:56Z",
+      "finished_at_utc": "2026-09-27T21:09:56Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-wlasl100",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T16:14:37Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 6.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Completed 300 epochs and tested 60 checkpoints; train.py exit 0 (function return: wall 8203.2 s for the final container). Modal restarted the container once: the SPOTER log shows a second 'Starting' at 2026-09-27 18:53:31 after ~244 epochs (no resume support then), and the restarted attempt ran all 300 epochs from scratch with an identical epoch-1 result. Scores below come from the final attempt only.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-2dwYmHHGVBfIpWnsnaLGLD",
+        "function_call_id": "fc-01M3HTBZ55F2MPK3TS7YF6V651",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-2dwYmHHGVBfIpWnsnaLGLD",
+        "gpu": "NVIDIA L4 (driver 580.95.05)",
+        "gpu_count": 1,
+        "gpu_hours_approx": 4.9,
+        "cost_usd_approx": 3.9,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          },
+          {
+            "path": "patches/0002-evaluate-stats-num-classes.patch",
+            "sha256": "e88a5c017f602587bbebdec6dfbb94620549569f2427550c4b058d71c1299019"
+          },
+          {
+            "path": "patches/0003-torch-load-full-model.patch",
+            "sha256": "acdfba9934c4c5edab85495dbf4e8175199596f419c46a5b33d7257a57166e8f"
+          }
+        ],
+        "seed": 379,
+        "config": "--hidden_dim 108 --lr 0.001 --epochs 300 --seed 379; all other train.py defaults (SGD, batch size 1, augmentations on, Gaussian noise std 0.001)"
+      },
+      "artifact_ids": [
+        "full-wlasl100-spoter-log",
+        "full-wlasl100-stdout",
+        "full-wlasl100-pip-freeze"
+      ]
+    },
+    {
+      "run_id": "full-wlasl300",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Conditional reconstruction, WLASL300: 300 epochs of pinned SPOTER train.py on MediaPipe key-frame CSVs (official split, stored videos only), then SPOTER's checkpoint test loop.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/eunice-2023-sign2pose/modal_app.py::main --subset 300 --variant keyframes --epochs 300 --tag full",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-27T16:15:16Z",
+      "finished_at_utc": "2026-09-27T22:03:43Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-wlasl300",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T16:14:37Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 12.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Completed 300 epochs without restarts and tested 60 checkpoints; train.py exit 0 (wall 20893.5 s).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-4hYUEjm8RhrJoTx1d7sznu",
+        "function_call_id": "fc-01M3HTCJRNYCJEKXC3SXW8GW1V",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-4hYUEjm8RhrJoTx1d7sznu",
+        "gpu": "NVIDIA L4 (driver 580.95.05)",
+        "gpu_count": 1,
+        "gpu_hours_approx": 5.8,
+        "cost_usd_approx": 4.7,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          },
+          {
+            "path": "patches/0002-evaluate-stats-num-classes.patch",
+            "sha256": "e88a5c017f602587bbebdec6dfbb94620549569f2427550c4b058d71c1299019"
+          },
+          {
+            "path": "patches/0003-torch-load-full-model.patch",
+            "sha256": "acdfba9934c4c5edab85495dbf4e8175199596f419c46a5b33d7257a57166e8f"
+          }
+        ],
+        "seed": 379,
+        "config": "--hidden_dim 108 --lr 0.001 --epochs 300 --seed 379; all other train.py defaults (SGD, batch size 1, augmentations on, Gaussian noise std 0.001)"
+      },
+      "artifact_ids": [
+        "full-wlasl300-spoter-log",
+        "full-wlasl300-stdout",
+        "full-wlasl300-pip-freeze"
+      ]
+    },
+    {
+      "run_id": "resume-check",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Verify patches/0004 resume: WLASL100 key frames, run A 4 epochs uninterrupted vs run B 2 epochs then relaunched with --epochs 4.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::main --subset 100 --variant keyframes --epochs 4 --tag resumecheck-a  (parallel with)  ... --epochs 2 --tag resumecheck-b ; ... --epochs 4 --tag resumecheck-b",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-28T07:45:53Z",
+      "finished_at_utc": "2026-09-28T07:51:55Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "resume-check",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-28T07:45:52Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Run B logged 'Resumed after epoch 2' and its epochs 3-4 matched run A exactly (loss 4.4929626038024475 / 4.371339110108641; train acc 0.025974025974025976 / 0.030969030969030968; validation acc 0.01652892561983471 / 0.04132231404958678); test results identical. Apps ap-CiDGm8W3UyeR2AxtBPZtCA (A), ap-u6BGCI0XJwsorsGxKb71el and ap-3pfhvgehli9n1S8ATTaNSo (B).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-CiDGm8W3UyeR2AxtBPZtCA",
+        "function_call_id": "fc-01M3KFN16Z26DJ01K1JKCQMC9V",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-CiDGm8W3UyeR2AxtBPZtCA",
+        "gpu": "NVIDIA L4",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "source": {
+        "spoter_commit": "0f909bf92690772f43f0062be41860ed85b461ad",
+        "patches": [
+          {
+            "path": "patches/0001-torch2-decoder-layer-compat.patch",
+            "sha256": "dcc7a567e1c8a8cf48224dc442a2752e53cda43aae6c5d2e2ae7aff63fa7aadf"
+          },
+          {
+            "path": "patches/0002-evaluate-stats-num-classes.patch",
+            "sha256": "e88a5c017f602587bbebdec6dfbb94620549569f2427550c4b058d71c1299019"
+          },
+          {
+            "path": "patches/0003-torch-load-full-model.patch",
+            "sha256": "acdfba9934c4c5edab85495dbf4e8175199596f419c46a5b33d7257a57166e8f"
+          },
+          {
+            "path": "patches/0004-resume-from-last-epoch.patch",
+            "sha256": "803a1364dca0ca48b8bf73c05aab7f4115d53c22120bedbf2f80acce91c62199"
+          }
+        ]
+      },
+      "artifact_ids": []
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "full-wlasl100-spoter-log",
+      "kind": "raw_metric_log",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl100-keyframes-seed379/full-wlasl100-keyframes-seed379_None.log",
+      "sha256": "b17b8b3b5645a8c3441d4e6402755a11215c61ef605fc6120592d8b0b7fdf943",
+      "size_bytes": 1019521
+    },
+    {
+      "artifact_id": "full-wlasl100-stdout",
+      "kind": "log",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl100-keyframes-seed379/stdout.log",
+      "sha256": "dec0e0efe644df9d08a6f04e8f2d16cdc71a251919da572b6f5acbaef35ba9b2",
+      "size_bytes": 101476
+    },
+    {
+      "artifact_id": "full-wlasl100-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl100-keyframes-seed379/pip-freeze.txt",
+      "sha256": "f417f70c95da8eaa0ffd1da6f7b6cb4b6a98f990edbb53f8be828b758a2bdb60",
+      "size_bytes": 6851
+    },
+    {
+      "artifact_id": "full-wlasl300-spoter-log",
+      "kind": "raw_metric_log",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl300-keyframes-seed379/full-wlasl300-keyframes-seed379_None.log",
+      "sha256": "6969ca717cf7264f663305443f554541b5ddd3e4955c1646a4fc42f79066db94",
+      "size_bytes": 1410336
+    },
+    {
+      "artifact_id": "full-wlasl300-stdout",
+      "kind": "log",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl300-keyframes-seed379/stdout.log",
+      "sha256": "a7c3d273b267f61e88ded6e5510cb0a2cfbca3f8f0f8b8ca39f0806297841a56",
+      "size_bytes": 219659
+    },
+    {
+      "artifact_id": "full-wlasl300-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl300-keyframes-seed379/pip-freeze.txt",
+      "sha256": "f417f70c95da8eaa0ffd1da6f7b6cb4b6a98f990edbb53f8be828b758a2bdb60",
+      "size_bytes": 6851
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "sign2pose-private-split",
+      "type": "protocol",
+      "status": "resolved",
+      "opened_at_utc": "2026-09-27T14:25:00Z",
+      "reason": "The paper's Table 5 numbers come from an unpublished random re-split of WLASL, with no split files, seed or stratification rule, and with self-contradictory proportions ('85:15' and '70/15/15'). Several model components are also under-specified: which frames the key-frame Euclidean-distance threshold compares (Algorithm 1), the YOLOv3 normalisation (weights, training data for the two hand anchor boxes, how boxes transform coordinates), macro vs per-instance aggregation, and checkpoint selection. Pose extraction uses the proprietary macOS Apple Vision API, and Apple Vision poses are published (by SPOTER) only for WLASL100. Any run would use invented choices for all four targets, so it cannot yield a comparable produced value.",
+      "evidence": [
+        "Section 5: 'The datasets were split in the ratio of 85:15, out of which 15% of the dataset was used for testing and from 85%, 70% was used for training, 15% for validating, and the remaining 15% for testing.'",
+        "Section 6: 'We tested the model after training it using a fixed dataset split of 15%.'",
+        "Section 3.2 / Algorithm 1: threshold Th = mu + sigma of histogram differences, compared with an Euclidean distance Ed whose operands are not defined.",
+        "Section 3.5: YOLOv3 anchor-box normalisation with no weights, training data or detector configuration.",
+        "Section 6: 'standard pose estimation algorithm from apple vision API'.",
+        "Table 5 caption 'macro' vs Section 6 'top 1 class accuracy'.",
+        "Source search found no code, splits or supplements."
+      ],
+      "required_action": "Decide whether to close the four targets as not produced (protocol_ambiguous, pipeline insufficient_information), or to authorise a separately labelled conditional reconstruction whose numbers remain evidence and not target results.",
+      "alternatives": [
+        {
+          "alternative_id": "close-insufficient-information",
+          "description": "Record all four targets as not_produced / protocol_ambiguous with pipeline insufficient_information and no compute spent.",
+          "paper_evidence": "The split, key-frame rule and YOLOv3 normalisation are unpublished; the source search found no code.",
+          "decision_needed": "Accept stopping without a conditional run."
+        },
+        {
+          "alternative_id": "conditional-spoter-reconstruction",
+          "description": "Reimplement Sign2Pose on pinned SPOTER code (preference level 3): official WLASL splits in place of the private split, a documented key-frame reading of Algorithm 1, SPOTER signing-space normalisation in place of the unspecified YOLOv3 step, per-instance and macro top-1 both reported, and a Linux pose estimator for the subsets without Apple Vision poses. Single GPU, well inside the compute gate. Every number labelled conditional.",
+          "paper_evidence": "Table 3 and Sections 3.4-5 match SPOTER; SPOTER releases Apple Vision WLASL100 poses under CC BY-NC 4.0.",
+          "decision_needed": "Approve these behaviour-changing substitutions as conditional, non-target evidence, and choose whether to limit it to WLASL100, where Apple Vision poses exist."
+        },
+        {
+          "alternative_id": "author-protocol",
+          "description": "Obtain the original split, key-frame and YOLOv3 details from the authors, then run faithfully.",
+          "paper_evidence": "The corresponding author is listed (Hemanth); AGENTS.md allows author contact only after an independent attempt and through the human gate.",
+          "decision_needed": "Authorise author contact, which is outside this agent's authority."
+        }
+      ],
+      "resolution": {
+        "decision": "conditional-spoter-reconstruction",
+        "decided_by": "the assigning user",
+        "decisions": [
+          {
+            "at_utc": "2026-09-27T14:37:23Z",
+            "statement": "go with (b), Apple Vision on my Mac",
+            "detail": "Authorised the conditional SPOTER-based reconstruction for all four subsets, with Apple Vision poses extracted locally on the user's Mac (Apple M3 Pro, 18 GB RAM)."
+          },
+          {
+            "at_utc": "2026-09-27T15:07:28Z",
+            "statement": "not locally, since it makes my laptop crash",
+            "detail": "The local Apple Vision extraction crashed the user's laptop (see 'local_extraction_dead_end'); the user ruled out further local extraction."
+          },
+          {
+            "at_utc": "2026-09-27T15:18:21Z",
+            "statement": "MediaPipe for all subsets",
+            "detail": "Offered: SPOTER's Apple Vision poses for WLASL100 plus MediaPipe for the rest (recommended), MediaPipe for all subsets, or a rented cloud Mac. The user chose MediaPipe Holistic for all four subsets, run on Modal."
+          }
+        ],
+        "consequence": "All four targets remain not produced (protocol_ambiguous): the private split alone prevents comparability. Reconstruction numbers are recorded only as conditional evidence.",
+        "local_extraction_dead_end": {
+          "started_at_utc": "2026-09-27T14:48:12Z",
+          "command": "caffeinate -i ./venv-vision/bin/python papers/eunice-2023-sign2pose/poses.py extract --index wlasl/index.csv --wlasl-json wlasl/WLASL_v0.3.json --videos-root wlasl --out poses-apple-vision.jsonl --workers 4",
+          "outcome": "The laptop crashed; no exit code, log or partial output survived (the scratchpad under /private/tmp was cleared).",
+          "diagnosis": "PyObjC/Vision objects created per frame were never released without an autorelease pool. Measured in the follow-up session on a WLASL clip: peak RSS 606 -> 749 MB over 2000 frames without a pool vs flat 209-213 MB with objc.autorelease_pool(). At ~250k frames per worker and 4 workers this exceeds the 18 GB RAM, while the 5.7 GB video download had left the disk 98% full (no swap headroom).",
+          "not_a_retained_run": "No stop policy was declared and no exit code exists, so it is recorded here as a dead end, not as a run."
+        }
+      }
+    },
+    {
+      "gate_id": "wlasl-missing-videos",
+      "type": "data",
+      "status": "open",
+      "opened_at_utc": "2026-09-27T14:25:00Z",
+      "reason": "The shared WLASL copy holds videos for only ~72% of each subset's instances. The paper reports the full Table 2 counts. The missing videos are available only through the WLASL authors' request form, which requires agreeing to terms of use.",
+      "evidence": [
+        "WLASL/index.csv (sha256 fba4a2c0...) vs WLASL_v0.3.json (sha256 31ba5a5c...): WLASL100 1443/2038, WLASL300 3671/5117, WLASL1000 9633/13168, WLASL2000 15146/21083.",
+        "WLASL README: 'Submit a video request by agreeing to terms of use at [Google form]'."
+      ],
+      "required_action": "Team S decides whether to request the missing WLASL videos. Otherwise any run is explicitly labelled as using the ~72% available subset.",
+      "note": "Still open. The authorised conditional reconstruction proceeds on the stored ~72% of instances (15,146 of 21,083) with the official WLASL split labels, labelled as such."
+    },
+    {
+      "gate_id": "wlasl2000-compute",
+      "type": "compute",
+      "status": "resolved",
+      "opened_at_utc": "2026-09-27T16:14:37Z",
+      "reason": "The WLASL2000 300-epoch run is estimated at ~32 GPU-hours on one L4 (preflight timing), above the 24 GPU-hour threshold that AGENTS.md requires discussing in #repro-sign-team-r, and above Modal's 24 h per-function limit; SPOTER's train.py cannot resume from a checkpoint.",
+      "evidence": [
+        "training-preflight-attempt-2: SPOTER log epoch timestamps 16:04:17 and 16:10:48 UTC for WLASL2000 key frames (10,089 train / 2,905 validation instances)."
+      ],
+      "required_action": "Discuss in #repro-sign-team-r whether to run WLASL2000 (options: a >24 h run needing a resume patch or a faster/other runner, or leaving WLASL2000 without conditional evidence).",
+      "resolution": {
+        "decided_by": "the assigning user",
+        "at_utc": "2026-09-28T07:43:50Z",
+        "statement": "let wlasl1000 finish and start with wlasl2000 now",
+        "detail": "After seeing the WLASL100/300 conditional results the user authorised the ~32 GPU-hour WLASL2000 run (the user had earlier asked to decide WLASL2000 based on WLASL100: 'sorry, i meant wlasl2000', 2026-09-27T16:39:08Z). Run with patches/0004 resume support and Modal retries to cross the 24 h per-attempt limit."
+      }
+    },
+    {
+      "gate_id": "wlasl1000-ceiling",
+      "type": "compute",
+      "status": "resolved",
+      "opened_at_utc": "2026-09-28T07:05:00Z",
+      "reason": "A Modal container restart at 2026-09-28 01:04 UTC discarded 125 WLASL1000 epochs (no resume support at launch); finishing the restarted run brings total use to ~29 GPU-hours, above the declared 24 GPU-hour / CHF 22 ceiling.",
+      "evidence": [
+        "SPOTER log full-wlasl1000-keyframes-seed379_None.log: second 'Starting' at 2026-09-28 01:04:35; first attempt reached epoch 125 at 01:01:25."
+      ],
+      "required_action": "Human decision to stop at the ceiling or let the run finish.",
+      "resolution": {
+        "decided_by": "the assigning user",
+        "at_utc": "2026-09-28T07:43:50Z",
+        "statement": "let wlasl1000 finish",
+        "detail": "Ceiling for full-wlasl1000 raised to 32 GPU-hours / CHF 28 by the user."
+      }
+    }
+  ],
+  "compute_plan": {
+    "declared_at_utc": "2026-09-27T16:14:37Z",
+    "basis": "training-preflight-attempt-2 timing: ~6.4 min per WLASL2000 key-frame epoch (train + validation, batch size 1) on one L4; other subsets scaled by instance count.",
+    "estimates": {
+      "WLASL100": "~3 h",
+      "WLASL300": "~8 h",
+      "WLASL1000": "~21 h",
+      "WLASL2000": "~32 h"
+    },
+    "autonomous_runs": {
+      "full-wlasl100": {
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6.0,
+        "max_cost_chf": 6.0,
+        "max_attempts": 2
+      },
+      "full-wlasl300": {
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 12.0,
+        "max_attempts": 2
+      },
+      "full-wlasl1000": {
+        "max_wall_time_seconds": 115200,
+        "max_gpu_hours": 32.0,
+        "max_cost_chf": 28.0,
+        "max_attempts": 2,
+        "raised": "2026-09-28T07:43:50Z by the user (gate wlasl1000-ceiling); original 24 GPU-hours / CHF 22 / 86400 s."
+      }
+    },
+    "gated": {
+      "full-wlasl2000": "~32 GPU-hours on one L4: above the 24 GPU-hour discussion threshold and above Modal's 24 h function timeout; SPOTER train.py has no resume. Requires discussion in #repro-sign-team-r (gate 'wlasl2000-compute')."
+    },
+    "cost_basis": "Modal L4 at roughly USD 0.80 per GPU-hour.",
+    "authorised_runs": {
+      "full-wlasl2000": {
+        "declared_at_utc": "2026-09-28T07:52:29Z",
+        "max_wall_time_seconds": 144000,
+        "max_gpu_hours": 40.0,
+        "max_cost_chf": 35.0,
+        "max_attempts": 1,
+        "modal_retries": 3,
+        "patches": "0001-0004"
+      }
+    }
+  }
+}
