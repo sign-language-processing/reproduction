@@ -33,16 +33,12 @@ CVSign's new contribution is two modules, Contextual Correspondence Awareness (C
 
 ## Scope and target contract
 
-The paper's main results are Table I (PHOENIX14 and PHOENIX14-T Dev/Test WER, "CVSign (ours)") and Table II (CSL-Daily Dev/Test WER). All six are in the target ledger; the ablations (Tables III–VII) only fix the default configuration (modules after layers 2/3/4, CCA L=[3,5,9], CVA L=[9,9,9], full-image query area)..
+The paper's main results are Table I (PHOENIX14 and PHOENIX14-T Dev/Test WER, "CVSign (ours)") and Table II (CSL-Daily Dev/Test WER). The target ledger holds only the two PHOENIX14-T values; PHOENIX14 (17.8 / 18.0) and CSL-Daily (25.7 / 24.7) are out of scope and not recorded as targets. The ablations (Tables III–VII) only fix the default configuration (modules after layers 2/3/4, CCA L=[3,5,9], CVA L=[9,9,9], full-image query area).
 
-| Target ID | Table | Dataset / split | Published | In scope |
-| --- | --- | --- | ---: | --- |
-| table1-phoenix14-dev-wer | I | PHOENIX14 / dev | 17.8 | no |
-| table1-phoenix14-test-wer | I | PHOENIX14 / test | 18.0 | no |
-| table1-phoenix14t-dev-wer | I | PHOENIX14-T / dev | 17.4 | yes |
-| table1-phoenix14t-test-wer | I | PHOENIX14-T / test | 18.6 | yes |
-| table2-cslday-dev-wer | II | CSL-Daily / dev | 25.7 | no |
-| table2-cslday-test-wer | II | CSL-Daily / test | 24.7 | no |
+| Target ID | Table | Dataset / split | Published |
+| --- | --- | --- | ---: |
+| table1-phoenix14t-dev-wer | I | PHOENIX14-T / dev | 17.4 |
+| table1-phoenix14t-test-wer | I | PHOENIX14-T / test | 18.6 |
 
 Metric: gloss WER (Eq. 11) under the PHOENIX sign-recognition protocol as CorrNet runs it: beam search (ctcdecode, width 10, no LM), the PHOENIX `preprocess.sh` simplifications, `mergectmstm.py`, and sclite against ground truth equal gloss for gloss to the official RWTH `PHOENIX-2014-T-groundtruth-{dev,test}.stm`. Checkpoint selection: lowest dev WER over the completed epochs (earliest on ties), scored once on dev and test.
 
