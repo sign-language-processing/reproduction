@@ -21,7 +21,7 @@ The ingestion script enforces these invariants and writes:
   "assignment": {
     "kind": "queue_record",
     "source": {
-      "path": "/path/to/export.json",
+      "path": "export.json",
       "sha256": "..."
     },
     "normalized": {
@@ -38,7 +38,7 @@ The ingestion script enforces these invariants and writes:
 }
 ```
 
-`assignment.record` is the exact selected JSON object. `assignment.normalized` makes heterogeneous fields convenient but does not override the raw record. The ingestion script preserves any other completed `reproduction.json` sections.
+`assignment.source.path` is the export filename. The SHA-256 is the provenance; do not record a machine-local absolute path. `assignment.record` is the exact selected JSON object, including any reviewer emails in that official export. `assignment.normalized` makes heterogeneous fields convenient but does not override the raw record. The ingestion script preserves any other completed `reproduction.json` sections.
 
 ## Interpret fields conservatively
 
@@ -96,4 +96,4 @@ When `what_to_reproduce` names a whole table, include the rows/numbers needed to
 
 ## Direct paper assignments
 
-If no queue export exists, do not fabricate `confirmation`, reviewer, dataset-availability, or ethics-review values. Create a minimal `reproduction.json.assignment` that records the direct user request and source hash; mark queue-only fields as absent. The target and evidence requirements remain unchanged.
+If no queue export exists, do not fabricate `confirmation`, reviewer, dataset-availability, or ethics-review values. Create a minimal `reproduction.json.assignment` that records the resolved paper, the targets, and the source hash; mark queue-only fields as absent. Quote the user's initial wording only when that quote is needed for transparency. The target and evidence requirements remain unchanged.

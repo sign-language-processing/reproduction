@@ -97,7 +97,7 @@ def build_assignment(
     return {
         "kind": "queue_record",
         "source": {
-            "path": str(source.resolve()),
+            "path": source.name,
             "sha256": hashlib.sha256(source_bytes).hexdigest(),
         },
         "normalized": {
