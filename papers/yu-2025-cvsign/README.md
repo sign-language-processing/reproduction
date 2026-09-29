@@ -13,6 +13,8 @@ Reproduction of Yu, Liu, Feng, Xu, Jin, and Yang, *Improving Continuous Sign Lan
 
 The assigning user limited the reproduction to PHOENIX14-T: PHOENIX14 (Table I) and CSL-Daily (Table II) were dropped for cost.
 
+**Paper ID:** `03bb8bd3a89e1434c97b29c8dcb9ecaaa71da52c`
+
 **Preference level:** 3
 
 **Pipeline status:** `complete` — both in-scope targets (PHOENIX14-T dev and test) were produced; PHOENIX14 and CSL-Daily are out of scope.
