@@ -38,7 +38,7 @@ The ingestion script enforces these invariants and writes:
 }
 ```
 
-`assignment.source.path` is the export filename. The SHA-256 is the provenance; do not record a machine-local absolute path. `assignment.record` is the exact selected JSON object, including any reviewer emails in that official export. `assignment.normalized` makes heterogeneous fields convenient but does not override the raw record. The ingestion script preserves any other completed `reproduction.json` sections.
+`assignment.source.path` is the export filename. The SHA-256 is the provenance of the original export; do not record a machine-local absolute path. `assignment.record` is the selected JSON object with email addresses removed, including reviewer and assignee addresses in `finalized_by`, `status_history`, `assignees`, and free text. `assignment.normalized` makes heterogeneous fields convenient but does not override the raw record, and it is stored with the same email redaction. The ingestion script preserves any other completed `reproduction.json` sections.
 
 ## Interpret fields conservatively
 

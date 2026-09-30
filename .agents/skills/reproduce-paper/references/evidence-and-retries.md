@@ -20,7 +20,7 @@ Capture:
 - target results linked to the run and raw metric artifacts produced;
 - observed result and whether the hypothesis was supported.
 
-Never place credentials, private URLs with embedded tokens, dataset samples, restricted content, or operator identity in evidence. Operator identity includes local home paths, account names, and chat quotes that transparency does not require. Redact those from commands and log excerpts before recording them.
+Never place credentials, private URLs with embedded tokens, dataset samples, restricted content, operator identity, or email addresses in evidence. Operator identity includes local home paths, account names, and chat quotes that transparency does not require. Email addresses include reviewer and assignee addresses copied from a queue export. Redact those from commands, log excerpts, and the stored queue record before recording them.
 
 ## Attempt ledger
 

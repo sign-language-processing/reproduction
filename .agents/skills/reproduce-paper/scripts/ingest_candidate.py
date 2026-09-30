@@ -6,9 +6,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, NoReturn
+
+
+email_address_pattern = re.compile(
+    r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
+)
 
 
 def fail(message: str) -> NoReturn:
@@ -91,34 +97,46 @@ def select_record(records: Any, paper_id: str) -> dict[str, Any]:
     return record
 
 
+def redact_email_addresses(value: Any) -> Any:
+    if isinstance(value, str):
+        return email_address_pattern.sub("[redacted]", value)
+    if isinstance(value, list):
+        return [redact_email_addresses(item) for item in value]
+    if isinstance(value, dict):
+        return {key: redact_email_addresses(item) for key, item in value.items()}
+    return value
+
+
 def build_assignment(
     source: Path, source_bytes: bytes, record: dict[str, Any]
 ) -> dict[str, Any]:
-    return {
-        "kind": "queue_record",
-        "source": {
-            "path": source.name,
-            "sha256": hashlib.sha256(source_bytes).hexdigest(),
-        },
-        "normalized": {
-            "title": record.get("title"),
-            "year": record.get("year"),
-            "venue": record.get("venue"),
-            "pdf_url": record.get("pdf_url"),
-            "code_repos": normalize_repositories(record.get("code_repos")),
-            "what_to_reproduce": record.get("what_to_reproduce"),
-            "metric_ids": record.get("metrics", []),
-            "metric_records": normalize_metric_records(record),
-            "datasets": normalize_datasets(record),
-            "copied_scores": record.get("copied_scores"),
-            "compute_requirements": record.get("compute_requirements"),
-            "includes_human_evaluation": record.get("includes_human_evaluation"),
-            "potential_ethical_concerns": record.get("potential_ethical_concerns"),
-            "comments": record.get("comments", ""),
-            "flag_reason": record.get("flag_reason", ""),
-        },
-        "record": record,
-    }
+    return redact_email_addresses(
+        {
+            "kind": "queue_record",
+            "source": {
+                "path": source.name,
+                "sha256": hashlib.sha256(source_bytes).hexdigest(),
+            },
+            "normalized": {
+                "title": record.get("title"),
+                "year": record.get("year"),
+                "venue": record.get("venue"),
+                "pdf_url": record.get("pdf_url"),
+                "code_repos": normalize_repositories(record.get("code_repos")),
+                "what_to_reproduce": record.get("what_to_reproduce"),
+                "metric_ids": record.get("metrics", []),
+                "metric_records": normalize_metric_records(record),
+                "datasets": normalize_datasets(record),
+                "copied_scores": record.get("copied_scores"),
+                "compute_requirements": record.get("compute_requirements"),
+                "includes_human_evaluation": record.get("includes_human_evaluation"),
+                "potential_ethical_concerns": record.get("potential_ethical_concerns"),
+                "comments": record.get("comments", ""),
+                "flag_reason": record.get("flag_reason", ""),
+            },
+            "record": record,
+        }
+    )
 
 
 def parse_args() -> argparse.Namespace:
