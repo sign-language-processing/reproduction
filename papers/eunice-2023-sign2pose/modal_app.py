@@ -9,6 +9,7 @@ Usage (from the repository root, always through the workspace wrapper):
   $W run papers/eunice-2023-sign2pose/modal_app.py::extract_all --shards 64        # resumable
   $W run papers/eunice-2023-sign2pose/modal_app.py::export_csvs
   $W run papers/eunice-2023-sign2pose/modal_app.py::main --subset 100 --variant keyframes --epochs 300 --tag full
+  $W run papers/eunice-2023-sign2pose/modal_app.py::result --call-id fc-...                  # after a detached run
 """
 
 import json
@@ -154,3 +155,9 @@ def main(subset: int = 100, variant: str = "keyframes", epochs: int = 300, tag: 
     result = call.get()
     print("\n".join(result.pop("tail")))
     print(result)
+
+
+@app.local_entrypoint()
+def result(call_id: str):
+    """Print a finished train() call's return value (exit code, wall time, patches) when the client was offline."""
+    print({k: v for k, v in modal.FunctionCall.from_id(call_id).get(timeout=0).items() if k != "tail"})
