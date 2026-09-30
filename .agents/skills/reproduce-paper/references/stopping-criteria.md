@@ -49,6 +49,8 @@ terminal classification:
 `AGENTS.md`). An unattributable historical run uses an empty array and a specific
 `agent_attribution_note`; this does not change its stop-policy recording mode.
 
+`command` is the exact command as a repo-relative or container path. Remove local home paths before recording it.
+
 All fields shown in `recording`, `attempt`, `stop_policy`, and `terminal` are
 required; use explicit `null` only where this contract permits it.
 

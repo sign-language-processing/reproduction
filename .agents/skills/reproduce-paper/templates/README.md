@@ -24,7 +24,7 @@ Mirror `reproduction.json.agents`; include exact model IDs and application versi
 
 ## Scope and target contract
 
-Exact assignment text and how it was resolved into `reproduction.json.targets`. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution. Keep this README as the complete human-readable report; do not create a second report or model-card file.
+How the assignment was resolved into `reproduction.json.targets`. Quote the user only for the initial assignment when that wording is needed for transparency. Cite the table/figure/section, rows, systems, datasets/splits, metric definitions and versions, aggregation, seeds, checkpoint rules, and published values. Explain any ambiguity and its resolution. Keep this README as the complete human-readable report; do not create a second report or model-card file.
 
 ## Source provenance
 

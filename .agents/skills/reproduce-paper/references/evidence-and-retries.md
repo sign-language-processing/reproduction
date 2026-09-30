@@ -8,7 +8,7 @@ Capture:
 
 - executing `agent_ids`, linked to model/application identity and evidence in `agents`; explicit attribution gaps for historical runs;
 - purpose/hypothesis and run kind;
-- exact command, working directory, UTC timestamps, duration, and exit code;
+- exact command and working directory as a repo-relative or container path, with local home paths removed before recording; UTC timestamps, duration, and exit code;
 - repository commit plus dirty-diff hash, upstream revision, patch hashes;
 - container image reference/digest and dependency lock/freeze artifact;
 - config, seed, precision, effective batch, checkpoint input/output;
@@ -20,7 +20,7 @@ Capture:
 - target results linked to the run and raw metric artifacts produced;
 - observed result and whether the hypothesis was supported.
 
-Never place credentials, private URLs with embedded tokens, dataset samples, or restricted content in evidence.
+Never place credentials, private URLs with embedded tokens, dataset samples, restricted content, operator identity, or email addresses in evidence. Operator identity includes local home paths, account names, and chat quotes that transparency does not require. Email addresses include reviewer and assignee addresses copied from a queue export. Redact those from commands, log excerpts, and the stored queue record before recording them.
 
 ## Attempt ledger
 

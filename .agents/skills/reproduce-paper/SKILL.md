@@ -15,10 +15,29 @@ If the assignment includes a queue export, read [references/candidate-record.md]
 
 ```bash
 python3 .agents/skills/reproduce-paper/scripts/ingest_candidate.py \
-  /path/to/candidates.json PAPER_ID papers/PAPER_ID/reproduction.json
+  candidates.json PAPER_ID papers/PAPER_ID/reproduction.json
 ```
 
 The script rejects missing, duplicate, non-final, non-confirmed, or inconsistent IDs and initializes/updates `reproduction.json.assignment` with source provenance. If the assignment is only a paper URL or citation, create an equivalent direct-assignment object without inventing queue review fields.
+
+## Operator privacy
+
+Keep operator identity out of every study artifact you commit or record: `README.md`, `reproduction.json`, gates, run commands, patch headers, scripts, comments, and text copied into external evidence.
+
+Leave out the following unless the user explicitly asks for that specific item to be written into a named artifact and then confirms the exact text in a follow-up. Mentioning it in chat is not consent. Do not ask the user to include it.
+
+- Email addresses, including the operator, people named only in chat, and reviewer, assignee, or other addresses in a queue export
+- Usernames and account handles for the operator: OS user, git `user.name`, GitHub, Hugging Face, Slack, Cursor, or similar
+- The operator's real name, phone number, or other private contact detail
+- Machine-local absolute paths and home directories, including `/Users/<name>/...`, `/home/<name>/...`, Windows profile paths, and `~`
+- Environment identity that reveals the account or home directory: `USER`, `HOME`, `LOGNAME`, shell prompts, and `whoami` output
+- Secrets and tokens
+
+Quote the user only when a verbatim or lightly edited excerpt is genuinely necessary for transparency. The initial assignment is the usual case. Leave later chat, prompts, and "the user said …" exchanges unquoted.
+
+Still record what the study needs: SHA-256 provenance, filenames, repo-relative paths (`papers/<slug>/...`), container and Modal paths (`/datasets/<slug>`, `/cache/huggingface`), paraphrased scientific scope, and the model and harness identity required by `AGENTS.md`. Published author names, citations, and contact details that already appear in the paper or an official artifact stay. Redact operator material out of commands and log excerpts before they are saved.
+
+`assignment.record` keeps the selected queue object with email addresses removed. Strip reviewer, assignee, and other email addresses from `assignment.record` and `assignment.normalized` before writing them, including addresses in `finalized_by`, `status_history`, `assignees`, and free text. The source SHA-256 still identifies the original export. Published author names and contact details that the paper itself states may stay in the citation and author-contact sections.
 
 ## Modal is fail-closed
 

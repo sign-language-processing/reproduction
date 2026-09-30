@@ -627,6 +627,57 @@ class ValidatorTest(unittest.TestCase):
             self.assertEqual(written["paper_id"], "paper-1")
             self.assertEqual(written["assignment"]["kind"], "queue_record")
 
+    def test_candidate_ingestion_redacts_email_addresses(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "candidates.json"
+            output = root / "reproduction.json"
+            source.write_text(
+                json.dumps(
+                    [
+                        {
+                            "paper_id": "paper-1",
+                            "confirmation": "confirmed",
+                            "status": "final",
+                            "finalized_by": "reviewer@example.com",
+                            "comments": "See reviewer@example.com for the note.",
+                            "status_history": [
+                                {"by": "editor@example.org", "after": "final"}
+                            ],
+                            "expand": {
+                                "datasets": [
+                                    {
+                                        "id": "dataset-1",
+                                        "name": "Example",
+                                        "assignees": ["owner@example.edu"],
+                                        "comments": "",
+                                        "url": [],
+                                    }
+                                ]
+                            },
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            result = subprocess.run(
+                ["python3", str(INGESTER), str(source), "paper-1", str(output)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            written = json.loads(output.read_text())
+            stored = json.dumps(written["assignment"])
+            self.assertNotIn("@", stored)
+            self.assertEqual(written["assignment"]["record"]["status"], "final")
+            self.assertEqual(
+                written["assignment"]["record"]["finalized_by"], "[redacted]"
+            )
+            self.assertIn(
+                "[redacted]", written["assignment"]["normalized"]["comments"]
+            )
+
     def test_candidate_ingestion_preserves_existing_sections(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
