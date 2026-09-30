@@ -182,7 +182,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement. Attempt closed 2026-09-30 after the author-contact email went unanswered; no further runs are planned.",
+    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement. Attempt closed 2026-09-30 after the author-contact email (sent 2026-09-08) went unanswered for 22 days; no further runs are planned.",
     "preference_level": 3,
     "blocker": null
   },
@@ -1493,7 +1493,7 @@
         "resolved_at": "2026-09-30",
         "decided_by": "human (study author)",
         "outcome": "closed_unresolved_by_authors",
-        "detail": "The author-contact email covering every missing hyperparameter was sent ~2026-09-17 and received no reply by 2026-09-30. Per the human decision recorded in required_action, the reimplementation stands as evidence that the SB-GRU protocol is under-specified in the paper: the five non-baseline Table 1 rows stay not_produced (protocol_ambiguous) with their conditional runs retained, and no further debugging of the baseline seq2seq was authorised. Reopen only if the authors reply or code is released."
+        "detail": "The author-contact email covering every missing hyperparameter was sent 2026-09-08 and received no reply by 2026-09-30 (22 days). Per the human decision recorded in required_action, the reimplementation stands as evidence that the SB-GRU protocol is under-specified in the paper: the five non-baseline Table 1 rows stay not_produced (protocol_ambiguous) with their conditional runs retained, and no further debugging of the baseline seq2seq was authorised. Reopen only if the authors reply or code is released."
       }
     }
   ],
@@ -1508,10 +1508,9 @@
       "dkosmo@upatras.gr"
     ],
     "purpose": "Post-independent-attempt request for the unspecified training and SB-GRU hyperparameters (see gate 'sbgru-protocol') and for whether code is available. Lists every guessed value and the reproduced-vs-paper numbers.",
-    "sent_at": "2026-09-17",
-    "response": "None received as of 2026-09-30 (~13 days).",
+    "sent_at": "2026-09-08",
+    "response": "None received as of 2026-09-30 (22 days).",
     "changed": "Nothing. No author information reached this attempt, so every hyperparameter listed in guesses/deviations remains an independent inference from the paper text.",
-    "sent_at_precision": "approximate — user-reported as 'almost 2 weeks' before 2026-09-30; exact send date not recorded",
-    "sent_by": "study author, from a personal mail client outside this repository; the draft at author-contact.md is the text sent"
+    "sent_by": "Carlos Escolano, from a personal mail client outside this repository; the text at author-contact.md is the email sent"
   }
 }

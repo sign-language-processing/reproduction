@@ -23,7 +23,7 @@ LNCS 12536, pp. 251–262. Springer (2021). arXiv:2102.06143v1 [stat.ML] 11 Feb 
 > a dev-BLEU-4 plateau and all 24 numbers were computed, but every row — including the
 > well-specified Baseline — is ~4x below Table 1, and the Baseline plateaued rather than
 > merely undertrained. The author-contact email listing every missing hyperparameter was
-> sent ~2026-09-17 and went unanswered for ~2 weeks, so the unspecified variational
+> sent 2026-09-08 and went unanswered for 22 days, so the unspecified variational
 > hyperparameters could not be resolved and no further debugging was authorised. The
 > reimplementation stands as evidence that the SB-GRU protocol is under-specified; the
 > gap on the Baseline row is documented but unexplained.
@@ -245,14 +245,13 @@ gate applies.
 
 ## Author and team contact
 
-The author-contact email at `author-contact.md` was **sent ~2026-09-17** (approximate
-— reported by the study author, who sent it from a personal mail client; the exact date was
-not recorded) to c.partaourides@cut.ac.cy and sotirios.chatzis@cut.ac.cy, cc
-ai.voskou@edu.cut.ac.cy and dkosmo@upatras.gr. It listed every missing hyperparameter with
-the value this attempt used, gave the reproduced-vs-paper numbers, and asked whether code is
-available.
+The author-contact email at `author-contact.md` was **sent 2026-09-08** by Carlos Escolano,
+from a personal mail client outside this repository, to c.partaourides@cut.ac.cy and
+sotirios.chatzis@cut.ac.cy, cc ai.voskou@edu.cut.ac.cy and dkosmo@upatras.gr. It listed every
+missing hyperparameter with the value this attempt used, gave the reproduced-vs-paper
+numbers, and asked whether code is available.
 
-**No reply had been received by 2026-09-30 (~13 days), and the attempt was closed on that
+**No reply had been received by 2026-09-30 (22 days), and the attempt was closed on that
 basis.** Nothing in this report came from the authors: every hyperparameter under "Guesses
 and deviations" is an independent inference from the paper text. This was
 post-independent-attempt author help, not Team S data coordination.
