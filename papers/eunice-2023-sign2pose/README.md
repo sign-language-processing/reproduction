@@ -76,7 +76,7 @@ python3 papers/eunice-2023-sign2pose/score_log.py full-wlasl100-keyframes-seed37
 | --- | --- | --- | --- | --- | --- | --- |
 | WLASL | `WLASL_v0.3.json`; WLASL100/300/1000/2000 are the first K glosses; official train/validation/test labels from `index.csv` | https://dxli94.github.io/WLASL/, checked 2026-09-27 | Custom research-only terms. A project copy already exists (queue `on_modal: yes`). Missing videos require the authors' terms-of-use request form. | `WLASL/` | JSON `31ba5a5c…`, index `fba4a2c0…` (15,146 rows, 12,255 files). Local copies of all 12,255 videos matched their index MD5s. Instances used, train/val/test: 1001/242/200, 2491/650/530, 6509/1692/1432, 10089/2905/2152 | About 28% of instances have no stored video (gate `wlasl-missing-videos`, still open). Official split used instead of the paper's private split. |
 
-The pose extraction processed all 15,146 instances with no per-instance errors (`export_csvs` output).
+The pose extraction processed all 15,146 instances with no per-instance errors (`export_csvs` output). The 12 key-frame CSVs that the training runs read are recorded as artifacts, with SHA-256 hashes and row counts, in `reproduction.json.artifacts` (`csv-wlasl*-keyframes`).
 
 ## Guesses and deviations
 
@@ -112,6 +112,7 @@ All runs used Modal profile `repro-sign`. Run IDs, app IDs, function-call IDs, t
 | Run | Modal app | Outcome |
 | --- | --- | --- |
 | `upstream-check-attempt-1..3` | `ap-FhGm…`, `ap-RhfaH…`, `ap-t2tWh…` | SPOTER's own WLASL100 CSVs. The runs failed, in order, on a `datasets` import shadow, a torch 2 `self_attn` error, and SPOTER's code/data label mismatch. |
+| `pose-extraction`, `csv-export-attempt-1..2` | `ap-BcnURZ…`, `ap-T4qZ…`, `ap-AXrh…` | Poses for all 15,146 instances. The first export failed on the split name `validation`; the second wrote all CSVs. |
 | `training-preflight-attempt-1..3` | `ap-4esq…`, `ap-8QRG…`, `ap-7Xf8…` | Found patches 0002 and 0003. Attempt 3 passed: train, save, reload, test. |
 | `resume-check` | `ap-CiDG…` + `ap-u6BG…`/`ap-3pfh…` | Resume verified exact. |
 | `full-wlasl100` | `ap-2dwYmHHGVBfIpWnsnaLGLD` | Succeeded. One Modal restart (from scratch, before 0004). |
@@ -119,7 +120,7 @@ All runs used Modal profile `repro-sign`. Run IDs, app IDs, function-call IDs, t
 | `full-wlasl1000` | `ap-hh3G01AxdUKRyrVquWKqGp` | Succeeded. One restart from scratch; ceiling raised by the user (gate `wlasl1000-ceiling`). |
 | `full-wlasl2000` | `ap-E4SDYny7DyusEdCWvBls9T` | Succeeded. Three restarts, resumed after epochs 60, 101 and 130 (gate `wlasl2000-compute`). |
 
-Pose extraction (not a GPU run): app `ap-BcnURZwcvduyQVVs4PKbBF`, 64 shards × 8 CPUs, 11.4 min wall time and about 3 container-hours. CSV export: `ap-AXrhUciD7b36cIlcWc2hML`.
+Pose extraction ran on CPU only: 64 shards × 8 CPUs, 11.4 min wall time and about 3 container-hours.
 
 **Totals:** about 75 L4 GPU-hours (the four full runs plus about 0.5 h of checks), roughly USD 60 at about USD 0.80 per GPU-hour. CPU extraction added a few dollars.
 

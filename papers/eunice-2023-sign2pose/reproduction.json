@@ -7,7 +7,7 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.283",
-      "scope": "Opened the attempt on 2026-09-27: created the branch and paper directory, preserved the queue record, acquired the paper, resolved the Table 5 target ledger, completed the source search, inspected the cited SPOTER basis and the shared WLASL dataset, and opened the protocol and data gates. No training or evaluation run has been executed. Second session (same model and harness, 2026-09-27): recovered the previous session after the laptop crash, diagnosed the Apple Vision memory leak, switched pose extraction to MediaPipe on Modal at the user's decision, ran the MediaPipe preflight and full extraction, recorded the earlier SPOTER upstream checks, and executed later runs.",
+      "scope": "Opened the attempt on 2026-09-27: created the branch and paper directory, preserved the queue record, acquired the paper, resolved the Table 5 target ledger, completed the source search, inspected the cited SPOTER basis and the shared WLASL dataset, and opened the protocol and data gates. The first session also launched the upstream checks and the local Apple Vision extraction before the laptop crash ended it. Second session (same model and harness, 2026-09-27): recovered the previous session after the laptop crash, diagnosed the Apple Vision memory leak, switched pose extraction to MediaPipe on Modal at the user's decision, ran the MediaPipe preflight and full extraction, recorded the earlier SPOTER upstream checks, and executed later runs.",
       "evidence": [
         "Interactive Claude Code session on 2026-09-27; the environment declares model name 'Opus 5.5' and exact model ID 'claude-opus-5-5'.",
         "`claude --version` in the session printed '2.1.283 (Claude Code)'.",
@@ -745,6 +745,186 @@
       "artifact_ids": []
     },
     {
+      "run_id": "pose-extraction",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "MediaPipe Holistic poses and key-frame masks for every WLASL index row with a stored video (poses.py extract, 64 shards).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::extract_all --shards 64",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-27T15:24:57Z",
+      "finished_at_utc": "2026-09-27T15:36:21Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "pose-extraction",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:24:57Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null,
+        "detail": "CPU only; ceiling is the extract_shard Modal timeout (6 h per shard) in the launched code."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 64 shards exited 0, covering 15,146 index rows (max shard wall 668.3 s, sum 10,902 s); export_csvs later found 0 instances with errors. Preceded by a 24-instance preflight (ap-Z9qe4I6wWNIF3COndjFq1G) and a launch stopped after ~2 min (ap-FmKATiMCea1Ts036IxSqVd), both without the huggingface-cache mount; the stopped launch's partial shards were deleted (see README).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-BcnURZwcvduyQVVs4PKbBF",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-BcnURZwcvduyQVVs4PKbBF",
+        "gpu": null,
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": "8 CPUs x 64 containers",
+        "container_hours_approx": 3.0
+      },
+      "source": {
+        "poses_py_role": "extract",
+        "image": "python:3.12-slim + mediapipe==0.10.21 + simple-video-utils==0.9.1"
+      },
+      "outputs": "modal://eunice-2023-sign2pose-results/poses/shard-000-of-064.jsonl ... shard-063-of-064.jsonl",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "csv-export-attempt-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Concatenate pose shards and write SPOTER CSVs per subset, with and without key frames.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::export_csvs",
+      "exit_code": 1,
+      "started_at_utc": "2026-09-27T15:36:44Z",
+      "finished_at_utc": "2026-09-27T15:37:50Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csv-export",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:36:44Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null,
+        "detail": "CPU only; ceiling is the export_csvs Modal timeout (2 h)."
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "poses.py csv raised KeyError: 'validation': WLASL index.csv names the split 'validation', poses.py expected 'val'. Fixed in poses.py (and the train() path in modal_app.py).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "csv-export-attempt-2"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-T4qZD4OLZ9hxYIzgmEeiOC",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-T4qZD4OLZ9hxYIzgmEeiOC",
+        "gpu": null,
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "csv-export-attempt-2",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "purpose": "Concatenate pose shards and write SPOTER CSVs per subset, with and without key frames.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/eunice-2023-sign2pose/modal_app.py::export_csvs",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-27T15:38:26Z",
+      "finished_at_utc": "2026-09-27T15:47:58Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csv-export",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-27T15:38:26Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null,
+        "detail": "CPU only; ceiling is the export_csvs Modal timeout (2 h)."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "64 shards, 0 instances with errors; train/validation/test rows 1001/242/200, 2491/650/530, 6509/1692/1432, 10089/2905/2152 per subset (identical for keyframes and allframes). Key-frame CSV hashes recorded as artifacts (hashed 2026-09-30 from the results Volume; row counts re-checked).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-AXrhUciD7b36cIlcWc2hML",
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-AXrhUciD7b36cIlcWc2hML",
+        "gpu": null,
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "csv-wlasl1000-test-keyframes",
+        "csv-wlasl1000-train-keyframes",
+        "csv-wlasl1000-validation-keyframes",
+        "csv-wlasl100-test-keyframes",
+        "csv-wlasl100-train-keyframes",
+        "csv-wlasl100-validation-keyframes",
+        "csv-wlasl2000-test-keyframes",
+        "csv-wlasl2000-train-keyframes",
+        "csv-wlasl2000-validation-keyframes",
+        "csv-wlasl300-test-keyframes",
+        "csv-wlasl300-train-keyframes",
+        "csv-wlasl300-validation-keyframes"
+      ]
+    },
+    {
       "run_id": "training-preflight-attempt-1",
       "agent_ids": [
         "opus-5-5-claude-code"
@@ -1022,7 +1202,10 @@
       "artifact_ids": [
         "full-wlasl100-spoter-log",
         "full-wlasl100-stdout",
-        "full-wlasl100-pip-freeze"
+        "full-wlasl100-pip-freeze",
+        "csv-wlasl100-train-keyframes",
+        "csv-wlasl100-validation-keyframes",
+        "csv-wlasl100-test-keyframes"
       ]
     },
     {
@@ -1100,7 +1283,10 @@
       "artifact_ids": [
         "full-wlasl300-spoter-log",
         "full-wlasl300-stdout",
-        "full-wlasl300-pip-freeze"
+        "full-wlasl300-pip-freeze",
+        "csv-wlasl300-train-keyframes",
+        "csv-wlasl300-validation-keyframes",
+        "csv-wlasl300-test-keyframes"
       ]
     },
     {
@@ -1255,7 +1441,10 @@
       "artifact_ids": [
         "full-wlasl1000-spoter-log",
         "full-wlasl1000-stdout",
-        "full-wlasl1000-pip-freeze"
+        "full-wlasl1000-pip-freeze",
+        "csv-wlasl1000-train-keyframes",
+        "csv-wlasl1000-validation-keyframes",
+        "csv-wlasl1000-test-keyframes"
       ]
     },
     {
@@ -1340,7 +1529,10 @@
       "artifact_ids": [
         "full-wlasl2000-spoter-log",
         "full-wlasl2000-stdout",
-        "full-wlasl2000-pip-freeze"
+        "full-wlasl2000-pip-freeze",
+        "csv-wlasl2000-train-keyframes",
+        "csv-wlasl2000-validation-keyframes",
+        "csv-wlasl2000-test-keyframes"
       ]
     }
   ],
@@ -1428,6 +1620,102 @@
       "uri": "modal://eunice-2023-sign2pose-results/runs/full-wlasl2000-keyframes-seed379/pip-freeze.txt",
       "sha256": "f417f70c95da8eaa0ffd1da6f7b6cb4b6a98f990edbb53f8be828b758a2bdb60",
       "size_bytes": 6851
+    },
+    {
+      "artifact_id": "csv-wlasl1000-test-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL1000_test_keyframes.csv",
+      "sha256": "cee9be17b0f559c7558c5b71cc6dfbbeddb3a847f86f28ffe0d6abcc9a8546df",
+      "size_bytes": 8976478,
+      "rows": 1432
+    },
+    {
+      "artifact_id": "csv-wlasl1000-train-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL1000_train_keyframes.csv",
+      "sha256": "1254640076516f0681defc547cbe6f31250784413f65a8dd2c0b068cbfbd34fa",
+      "size_bytes": 43661701,
+      "rows": 6509
+    },
+    {
+      "artifact_id": "csv-wlasl1000-validation-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL1000_validation_keyframes.csv",
+      "sha256": "633ebb61d42fe858672fe9c57afed110379499b8592e4549b846f209b95f5c23",
+      "size_bytes": 11298255,
+      "rows": 1692
+    },
+    {
+      "artifact_id": "csv-wlasl100-test-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL100_test_keyframes.csv",
+      "sha256": "874578c7e919715152712c8daee928787ea3a449890d0ffba05c9b397f875c9e",
+      "size_bytes": 1281655,
+      "rows": 200
+    },
+    {
+      "artifact_id": "csv-wlasl100-train-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL100_train_keyframes.csv",
+      "sha256": "7be9bd53601b7fd4501fe1f6d2de0e37b69611fc4ad272c6b82d9c41c7562bcb",
+      "size_bytes": 6841968,
+      "rows": 1001
+    },
+    {
+      "artifact_id": "csv-wlasl100-validation-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL100_validation_keyframes.csv",
+      "sha256": "ebde3295c9a103956d25dbed6c037c8b8266b5ef919594361419b0636fcd5d62",
+      "size_bytes": 1742289,
+      "rows": 242
+    },
+    {
+      "artifact_id": "csv-wlasl2000-test-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL2000_test_keyframes.csv",
+      "sha256": "e42e6b4b0df3393a5da10acd901f578398fd9333108f00374217dd9c2ca593d2",
+      "size_bytes": 14802614,
+      "rows": 2152
+    },
+    {
+      "artifact_id": "csv-wlasl2000-train-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL2000_train_keyframes.csv",
+      "sha256": "f271d0f342345de906098a75156a4f2ca43e49337945de87a1b44a2fe6e868bc",
+      "size_bytes": 64693198,
+      "rows": 10089
+    },
+    {
+      "artifact_id": "csv-wlasl2000-validation-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL2000_validation_keyframes.csv",
+      "sha256": "d27427c606dddfbf99ca6a4fa63e692dfa910d74f0eccc72c5278ba33440bca2",
+      "size_bytes": 19960707,
+      "rows": 2905
+    },
+    {
+      "artifact_id": "csv-wlasl300-test-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL300_test_keyframes.csv",
+      "sha256": "2d6894be7ba10e3cd21c8747657a37fdae767d48b3983f3302725358c6a25de2",
+      "size_bytes": 3378585,
+      "rows": 530
+    },
+    {
+      "artifact_id": "csv-wlasl300-train-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL300_train_keyframes.csv",
+      "sha256": "13b669168277835a955cd76aad4c4520b5d75d112afbefedb0a088be448f19c6",
+      "size_bytes": 17420884,
+      "rows": 2491
+    },
+    {
+      "artifact_id": "csv-wlasl300-validation-keyframes",
+      "kind": "training_input",
+      "uri": "modal://eunice-2023-sign2pose-results/csv/WLASL300_validation_keyframes.csv",
+      "sha256": "e2f0455168b5e4e5e1fef7f0b3660611b923b0a9dd69804fe709043008143082",
+      "size_bytes": 4415517,
+      "rows": 650
     }
   ],
   "gates": [
