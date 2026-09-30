@@ -1,0 +1,752 @@
+{
+  "agents": [
+    {
+      "agent_id": "reproduction-agent",
+      "model": "Claude Opus 5 (1M context)",
+      "model_id": "claude-opus-5[1m]",
+      "harness": "Claude Code",
+      "harness_version": "2.1.12",
+      "scope": "Every stage of this attempt: assignment establishment, target contract, independent source search and pinning, protocol extraction from the paper and reference [19], the ArabSign data gate and RGB transfer, the clean-room implementation, both retained training runs, evaluation, and this report. Both runs reference this agent in their agent_ids; no other agent contributed.",
+      "evidence": [
+        "Live session identity reported by the running harness: model name \"Opus 5 (1M context)\", exact model id \"claude-opus-5[1m]\". Work ran from 2026-08-28 to 2026-09-21.",
+        "harness_version 2.1.12 is the Claude Code version installed on the executing machine (`claude --version`). The session ran through the Claude Code VS Code extension against that installation, so the value identifies the installation rather than a separately versioned extension build.",
+        "Every commit on branch claude/reproduce-temporal-to-spatial carries a Co-Authored-By trailer naming Claude Opus 5."
+      ]
+    }
+  ],
+  "paper_id": "8b224ecbd42da766efba45d17b34b3a1255c2345",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "/Users/zifanjiang/Downloads/8b224ecbd42da766efba45d17b34b3a1255c2345.pdf",
+      "sha256": "0afdb6457dbfe7300d6a2c883d06676527bd39ecb658e59c17f48514db9d147c"
+    },
+    "normalized": {
+      "title": "Temporal-to-Spatial Transmutation for Enhancing Arabic Sign Language Recognition via ResNet",
+      "year": 2025,
+      "venue": "7th International Conference on Pattern Analysis and Intelligent Systems (PAIS)",
+      "pdf_url": null,
+      "code_repos": [],
+      "what_to_reproduce": "Table 3",
+      "metric_ids": [],
+      "metric_records": [],
+      "datasets": [
+        {
+          "id": null,
+          "name": "ArabSign",
+          "available": null,
+          "license": null,
+          "urls": [],
+          "comments": ""
+        }
+      ],
+      "copied_scores": null,
+      "compute_requirements": "All experiments were conducted on a system equipped with an AMD Ryzen 3 4300GE processor running Windows 10 Professional, with 16 GB of RAM. The model was trained on the CPU, without utilizing the available AMD RX580 GPU (8GB VRAM)",
+      "includes_human_evaluation": null,
+      "potential_ethical_concerns": null,
+      "comments": "paper does not mention what the labels are: data used are sentences, authors mention samples of 10 frames (presumably cut out of the sentences) but nothing about gloss alignment.",
+      "flag_reason": ""
+    },
+    "transcription": {
+      "origin": "REPRO-SIGN assignment portal record for this paper, pasted into the reproduction session by the assignee on 2026-08-28.",
+      "fidelity": "Manual transcription of the rendered web form, not a machine export. No candidate export file was available, so assignment.kind remains direct_user_request and no assignment.record is claimed. Replace this block with ingest_candidate.py output if Team S supplies the export.",
+      "unreadable_fields": [
+        "peer_reviewed",
+        "potential_ethical_concerns",
+        "main_experiment_has_ranking",
+        "copied_scores",
+        "includes_human_evaluation",
+        "confirmation"
+      ],
+      "unreadable_fields_note": "Radio-button fields rendered without their selected values in the transcription and are recorded as null rather than guessed. The REPRO-SIGN dataset page for ArabSign lists this paper under \"Used in Papers\" marked \"Final\", so the record's status is final; its confirmation field has still not been observed directly.",
+      "additional_fields": {
+        "area_of_slp": [
+          "Recognition"
+        ],
+        "sub_area_of_slp": [
+          "Isolated signing videos"
+        ],
+        "textual_conclusion": "In this paper we have demonstrated the effectiveness of the ResNet architecture against LSTM for Arabic Sign Language recognition. The proposed model achieved higher accuracy while requiring fewer parameters. Its training is significantly faster, and exhibits globally a greater stability",
+        "metric_names": [
+          "Accuracy",
+          "Precision",
+          "Recall",
+          "F1"
+        ],
+        "code_repos_confirmed_absent": true
+      }
+    }
+  },
+  "paper": {
+    "title": "Temporal-to-Spatial Transmutation for Enhancing Arabic Sign Language Recognition via ResNet",
+    "citation": "Ben-Abderrahmane, H.; Oulad-Naoui, S.; Cherif, A.; Chagha, A. Temporal-to-Spatial Transmutation for Enhancing Arabic Sign Language Recognition via ResNet. In 2025 7th International Conference on Pattern Analysis and Intelligent Systems (PAIS), IEEE, 2025. doi:10.1109/PAIS66004.2025.11126496.",
+    "url": "https://doi.org/10.1109/PAIS66004.2025.11126496",
+    "ieee_record": "https://ieeexplore.ieee.org/document/11126496",
+    "pdf_sha256": "0afdb6457dbfe7300d6a2c883d06676527bd39ecb658e59c17f48514db9d147c",
+    "accessed_at": "2026-08-28",
+    "access_note": "PDF supplied by the assignee; the file carries an IEEE Xplore watermark recording download by Northeastern University on 2026-08-01. IEEE Xplore requires a subscription, so the PDF is not committed."
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://doi.org/10.1109/PAIS66004.2025.11126496",
+      "revision_or_sha256": "0afdb6457dbfe7300d6a2c883d06676527bd39ecb658e59c17f48514db9d147c",
+      "role": "Target values and disclosed protocol"
+    },
+    {
+      "source_id": "prior-lstm-paper",
+      "kind": "related_method",
+      "url": "https://doi.org/10.2991/978-94-6463-496-9_24",
+      "revision_or_sha256": "c0d48f5e3c2a1ef2c560a7dd2bf36a41f6be7c9207648904720944b1a101a95f",
+      "role": "Reference [19], the authors' prior LSTM system. Open access CC BY-NC 4.0 PDF at https://www.atlantis-press.com/article/126002698.pdf, accessed 2026-08-28. Supplies the preprocessing, split, and optimizer details the target paper omits but says it inherited, the LSTM architecture behind Table III's comparison column, and the origin of Table III's LSTM accuracy."
+    },
+    {
+      "source_id": "arabsign-paper",
+      "kind": "dataset",
+      "url": "https://arxiv.org/abs/2210.03951",
+      "revision_or_sha256": "7be6d45db9a17116201957bae100940d95b0f7fe36cf587b59b6aaa5ea94ccc8",
+      "role": "Authoritative ArabSign description (also published as doi:10.1109/FG57933.2023.10042720), accessed 2026-08-28. Establishes sample composition, recording modalities, frame statistics, and the absence of an official train/test split."
+    },
+    {
+      "source_id": "arabsign-data",
+      "kind": "dataset",
+      "url": "https://github.com/Hamzah-Luqman/ArabSign",
+      "revision_or_sha256": "8f6e127a054052228027d6da98005f991d300a7b",
+      "role": "Project page and benchmark-code archive published by the dataset author; holds no data and no licence file. Inspected on 2026-09-18. Its Download section links the three modality folders on Google Drive, from which this reproduction transferred the six RGB archives."
+    }
+  ],
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no in-scope target produced a comparable value. The paper does not state which ten frames form a sample, and the 25-point spread between the two readings shows the choice is behaviour-changing, so each run is conditional evidence rather than a reproduction of the published protocol. Comparability was decided before the differences were inspected. The conditional values are recorded against every target and in README.md: under uniform sampling all four land within 0.0113 of Table III, and under the paper's literal wording accuracy falls 25 points short.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "The unstated 10-frame window independently prevents all four in-scope targets; the two defensible readings differ by 25 accuracy points.",
+      "target_ids": [
+        "table3-resnet-accuracy",
+        "table3-resnet-f1",
+        "table3-resnet-precision",
+        "table3-resnet-recall"
+      ]
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "arabsign",
+      "name": "ArabSign",
+      "version_or_subset": "RGB modality of the full release: 50 sentences by 6 signers, at least 30 takes per sentence per signer, 9,330 mp4 files verified in the six archives. Entry paths encode signer/split/sentenceID/signer_sentence_(timestamp)_c.mp4, so sample labels come from the path. The target paper runs MediaPipe pose over these colour frames rather than using the Kinect skeleton modality, which is a different estimator (25 joints in 3D camera space versus MediaPipe's 33 landmarks in 2D).",
+      "license_or_permission": "The dataset is publicly available from direct Drive links on the author's project page; what is missing is licence information, not access. No licence is published anywhere for ArabSign. A search on 2026-09-18 found no licence, terms, copyright, permission, consent, ethics, or IRB statement in the dataset paper (arXiv:2210.03951, full text); no LICENSE, COPYING, TERMS, or agreement file among the 60 paths of github.com/Hamzah-Luqman/ArabSign (GitHub API reports \"license\": null); and no terms on the official project page or on the same author's KArSL page. The archives carry only a citation request in Readme.txt. The \"NC only\" value in the REPRO-SIGN dataset record is that record's own characterisation, not a published term. The operative basis is therefore the dataset author's direct permission: the assignee contacted Hamzah Luqman (KFUPM), who supplied the official download page https://hamzah-luqman.github.io/ArabSign/ for REPRO-SIGN project use, reported on 2026-09-18. Earlier, the author had provided Team S with the copy transferred on 2026-09-10 that supplied Skeleton and partial Depth. The RGB archives this reproduction added on 2026-09-18 came from the public download links on that same author-published page. The assignee authorised study use and project-cloud processing on that basis. The copy stays private to the repro-sign Modal workspace, no video or frame is redistributed or published, and the requested citation is recorded in reproduction.json.sources.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "arab-sign",
+      "splits": [
+        {
+          "name": "official train directories shipped inside the RGB archives",
+          "sample_count": 7489,
+          "files": [
+            {
+              "path": "_drive_imports/72178996f6c31e6c/manifest.json",
+              "sha256": "645e22dea658c24fcca5a08d7b41df6b800584a06303fda7fcb87214462ce07a",
+              "role": "Transfer manifest for the six RGB archives, recording each archive's Drive file id, exact byte size, and SHA-256. The train/test split is encoded as a directory level inside those archives rather than as separate files."
+            }
+          ]
+        },
+        {
+          "name": "official test directories shipped inside the RGB archives",
+          "sample_count": 1841,
+          "files": [
+            {
+              "path": "_drive_imports/72178996f6c31e6c/manifest.json",
+              "sha256": "645e22dea658c24fcca5a08d7b41df6b800584a06303fda7fcb87214462ce07a",
+              "role": "Transfer manifest for the six RGB archives, recording each archive's Drive file id, exact byte size, and SHA-256. The train/test split is encoded as a directory level inside those archives rather than as separate files."
+            }
+          ]
+        }
+      ],
+      "known_mismatch": "Two discrepancies. (1) The RGB modality holds 9,330 videos, five fewer than the 9,335 both papers claim. Skeleton holds exactly 9,335 .mat files and the four present Depth archives match Skeleton per signer, so 9,335 is correct for the dataset and the published RGB release is short; RGB is a strict subset of Skeleton with no extras, and every archive matched its source Content-Range byte size, so transfer integrity is not implicated. Absent: 01/test/0006/01_0006_(16_02_21_19_36_11)_c, 01/test/0044/01_0044_(20_03_21_20_09_50)_c, 01/train/0020/01_0020_(17_03_21_21_36_28)_c, 02/train/0020/02_0020_(02_03_21_21_01_08)_c, 05/train/0042/05_0042_(20_03_21_19_25_26)_c. Effective counts are 7,489 train and 1,841 test against Skeleton's 7,492 and 1,843. (2) Table II of the target paper labels 200,000 as a total frame count; ArabSign states it is for one signer. The row is copied from [19] with the same wrong label.",
+      "paper_preprocessing": "MediaPipe pose over colour frames, 33 landmarks with x and y, 10 frames per whole sentence video, giving input (10, 33, 2) and one sample per video labelled by its SentenceID. The frame-selection rule is not published by either paper."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Accuracy",
+      "direction": "higher",
+      "implementation": "Not named by the paper, which states only Keras on a TensorFlow backend (§IV).",
+      "version": "unspecified by paper",
+      "aggregation": "Mean of correct predictions over the held-out split.",
+      "unit_or_scale": "fraction in [0, 1] as printed in Table III"
+    },
+    {
+      "metric_id": "precision-weighted",
+      "name": "Precision",
+      "direction": "higher",
+      "implementation": "Not named by the paper; reproduced with scikit-learn 1.6.1 precision_recall_fscore_support(average='weighted').",
+      "version": "unspecified by paper; reproduced with scikit-learn 1.6.1",
+      "aggregation": "Support-weighted average over the 50 classes. Table III's Recall equals its Accuracy in both columns, an identity that holds for weighted but not macro or micro averaging; both retained runs reproduce it, so the convention is confirmed rather than inferred.",
+      "unit_or_scale": "fraction in [0, 1] as printed in Table III"
+    },
+    {
+      "metric_id": "recall-weighted",
+      "name": "Recall",
+      "direction": "higher",
+      "implementation": "Not named by the paper; reproduced with scikit-learn 1.6.1 precision_recall_fscore_support(average='weighted').",
+      "version": "unspecified by paper; reproduced with scikit-learn 1.6.1",
+      "aggregation": "Support-weighted average over the 50 classes. Table III's Recall equals its Accuracy in both columns, an identity that holds for weighted but not macro or micro averaging; both retained runs reproduce it, so the convention is confirmed rather than inferred.",
+      "unit_or_scale": "fraction in [0, 1] as printed in Table III"
+    },
+    {
+      "metric_id": "f1-weighted",
+      "name": "F1-Score",
+      "direction": "higher",
+      "implementation": "Not named by the paper; reproduced with scikit-learn 1.6.1 precision_recall_fscore_support(average='weighted').",
+      "version": "unspecified by paper; reproduced with scikit-learn 1.6.1",
+      "aggregation": "Support-weighted average over the 50 classes. Table III's Recall equals its Accuracy in both columns, an identity that holds for weighted but not macro or micro averaging; both retained runs reproduce it, so the convention is confirmed rather than inferred.",
+      "unit_or_scale": "fraction in [0, 1] as printed in Table III"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table-iii-resnet",
+      "system": "Task: closed-set classification of a whole sentence video into one of 50 fixed classes. This is neither isolated sign recognition, which labels individual signs, nor continuous recognition, which outputs gloss sequences; the model never segments and never produces language, so Table III is not comparable with either literature or with ArabSign's own WER benchmark. Proposed temporal-to-spatial residual CNN. MediaPipe pose keypoints for 10 frames per video, 33 landmarks with x and y, giving input shape (10, 33, 2); Conv2D with 32 filters; three residual blocks (32; 64 stride 2; 128 stride 2); flatten; Dense 128; Dense 50. 755,346 parameters. Adam, categorical cross-entropy, batch size 32, 100 epochs; learning rate 0.001 is not stated in the target paper and is carried from reference [19], which §IV says supplied the same training parameters.",
+      "dataset_id": "arabsign",
+      "checkpoint_rule": "None published. The paper describes a fixed 100-epoch run and reports final-model metrics; no best-checkpoint selection or early stopping is mentioned, and Figure 3(a) shows testing loss rising slightly after about 40 epochs without any action taken.",
+      "paper_evidence": "Table III, ResNet column; architecture in §III and Table I; training settings and hardware in §IV."
+    },
+    {
+      "experiment_id": "table-iii-lstm",
+      "system": "Task: closed-set classification of a whole sentence video into one of 50 fixed classes. This is neither isolated sign recognition, which labels individual signs, nor continuous recognition, which outputs gloss sequences; the model never segments and never produces language, so Table III is not comparable with either literature or with ArabSign's own WER benchmark. Prior LSTM system from reference [19]: two stacked LSTM layers of 512 units, then flatten and two dense layers, output 50; 3,835,954 parameters per Table III, matching the \"3.8 million parameters\" reported in [19] §4. Trained in [19] on an Intel Xeon Silver 4112 with an NVIDIA RTX 4060 GPU, unlike this paper's CPU-only runs.",
+      "dataset_id": "arabsign",
+      "checkpoint_rule": "Not applicable. The values are carried from [19] rather than produced by this reproduction.",
+      "paper_evidence": "Table III, LSTM column; [19] §4 architecture and §5 result of 88.75% test accuracy."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table3-resnet-accuracy",
+      "in_scope": true,
+      "paper_location": "Table III (Model Comparison), ResNet column, Accuracy row",
+      "system": "Proposed temporal-to-spatial residual CNN",
+      "experiment_id": "table-iii-resnet",
+      "split": "official ArabSign train/test directories; RGB 7,489/1,841",
+      "metric_id": "accuracy",
+      "original_value": 0.9777,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not state which ten frames form a sample, so no run can be a faithful reproduction of its protocol."
+        },
+        "run_ids": [
+          "train-uniform10",
+          "train-first10"
+        ],
+        "artifact_ids": [
+          "run-uniform10",
+          "run-first10"
+        ],
+        "gate_ids": [
+          "frame-window-ambiguity"
+        ],
+        "evidence": [
+          "Conditional value under uniform sampling: 0.988593 against the published 0.9777, difference +0.010893 (run train-uniform10).",
+          "Conditional value under the paper's literal \"10 consecutive frames\": 0.7230 accuracy against 0.9777, a 25-point shortfall (run train-first10). The 25-point spread between readings demonstrates that the unresolved window is behaviour-changing.",
+          "Target paper §III says \"10 consecutive frames\" and never states which; reference [19], which §IV says supplied the setup, instead describes converting a whole video into ten frames."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-resnet-precision",
+      "in_scope": true,
+      "paper_location": "Table III (Model Comparison), ResNet column, Precision row",
+      "system": "Proposed temporal-to-spatial residual CNN",
+      "experiment_id": "table-iii-resnet",
+      "split": "official ArabSign train/test directories; RGB 7,489/1,841",
+      "metric_id": "precision-weighted",
+      "original_value": 0.979,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not state which ten frames form a sample, so no run can be a faithful reproduction of its protocol."
+        },
+        "run_ids": [
+          "train-uniform10",
+          "train-first10"
+        ],
+        "artifact_ids": [
+          "run-uniform10",
+          "run-first10"
+        ],
+        "gate_ids": [
+          "frame-window-ambiguity"
+        ],
+        "evidence": [
+          "Conditional value under uniform sampling: 0.988908 against the published 0.979, difference +0.009908 (run train-uniform10).",
+          "Conditional value under the paper's literal \"10 consecutive frames\": 0.7230 accuracy against 0.9777, a 25-point shortfall (run train-first10). The 25-point spread between readings demonstrates that the unresolved window is behaviour-changing.",
+          "Target paper §III says \"10 consecutive frames\" and never states which; reference [19], which §IV says supplied the setup, instead describes converting a whole video into ten frames."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-resnet-recall",
+      "in_scope": true,
+      "paper_location": "Table III (Model Comparison), ResNet column, Recall row",
+      "system": "Proposed temporal-to-spatial residual CNN",
+      "experiment_id": "table-iii-resnet",
+      "split": "official ArabSign train/test directories; RGB 7,489/1,841",
+      "metric_id": "recall-weighted",
+      "original_value": 0.9777,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not state which ten frames form a sample, so no run can be a faithful reproduction of its protocol."
+        },
+        "run_ids": [
+          "train-uniform10",
+          "train-first10"
+        ],
+        "artifact_ids": [
+          "run-uniform10",
+          "run-first10"
+        ],
+        "gate_ids": [
+          "frame-window-ambiguity"
+        ],
+        "evidence": [
+          "Conditional value under uniform sampling: 0.988593 against the published 0.9777, difference +0.010893 (run train-uniform10).",
+          "Conditional value under the paper's literal \"10 consecutive frames\": 0.7230 accuracy against 0.9777, a 25-point shortfall (run train-first10). The 25-point spread between readings demonstrates that the unresolved window is behaviour-changing.",
+          "Target paper §III says \"10 consecutive frames\" and never states which; reference [19], which §IV says supplied the setup, instead describes converting a whole video into ten frames."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-resnet-f1",
+      "in_scope": true,
+      "paper_location": "Table III (Model Comparison), ResNet column, F1-Score row",
+      "system": "Proposed temporal-to-spatial residual CNN",
+      "experiment_id": "table-iii-resnet",
+      "split": "official ArabSign train/test directories; RGB 7,489/1,841",
+      "metric_id": "f1-weighted",
+      "original_value": 0.9773,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not state which ten frames form a sample, so no run can be a faithful reproduction of its protocol."
+        },
+        "run_ids": [
+          "train-uniform10",
+          "train-first10"
+        ],
+        "artifact_ids": [
+          "run-uniform10",
+          "run-first10"
+        ],
+        "gate_ids": [
+          "frame-window-ambiguity"
+        ],
+        "evidence": [
+          "Conditional value under uniform sampling: 0.988585 against the published 0.9773, difference +0.011285 (run train-uniform10).",
+          "Conditional value under the paper's literal \"10 consecutive frames\": 0.7230 accuracy against 0.9777, a 25-point shortfall (run train-first10). The 25-point spread between readings demonstrates that the unresolved window is behaviour-changing.",
+          "Target paper §III says \"10 consecutive frames\" and never states which; reference [19], which §IV says supplied the setup, instead describes converting a whole video into ten frames."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-lstm-accuracy",
+      "in_scope": false,
+      "paper_location": "Table III (Model Comparison), LSTM column, Accuracy row",
+      "system": "Prior LSTM system from reference [19]",
+      "experiment_id": "table-iii-lstm",
+      "split": "80/20 per [19] §5; no seed or file lists published",
+      "metric_id": "accuracy",
+      "original_value": 0.8875,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Carried from the authors' prior paper [19] rather than produced by this paper, so it is not reproduced under this assignment."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Reference [19] §5 and its conclusion both report 88.75% test accuracy, exactly Table III's 0.8875. [19]'s abstract says \"surpasses 88.5%\", the figure the target paper's §II cites, so both trace to [19]."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-lstm-precision",
+      "in_scope": false,
+      "paper_location": "Table III (Model Comparison), LSTM column, Precision row",
+      "system": "Prior LSTM system from reference [19]",
+      "experiment_id": "table-iii-lstm",
+      "split": "80/20 per [19] §5; no seed or file lists published",
+      "metric_id": "precision-weighted",
+      "original_value": 0.893,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Part of [19]'s LSTM comparison column rather than a contribution of this paper. Unlike the accuracy row, this exact value is not published in [19] and its origin cannot be recovered."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table III's LSTM column reports the reference [19] system, whose accuracy row matches [19] exactly.",
+          "[19] reports accuracy only; it publishes no precision, recall, or F1."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-lstm-recall",
+      "in_scope": false,
+      "paper_location": "Table III (Model Comparison), LSTM column, Recall row",
+      "system": "Prior LSTM system from reference [19]",
+      "experiment_id": "table-iii-lstm",
+      "split": "80/20 per [19] §5; no seed or file lists published",
+      "metric_id": "recall-weighted",
+      "original_value": 0.8875,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Part of [19]'s LSTM comparison column rather than a contribution of this paper. Unlike the accuracy row, this exact value is not published in [19] and its origin cannot be recovered."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table III's LSTM column reports the reference [19] system, whose accuracy row matches [19] exactly.",
+          "[19] reports accuracy only; it publishes no precision, recall, or F1."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-lstm-f1",
+      "in_scope": false,
+      "paper_location": "Table III (Model Comparison), LSTM column, F1-Score row",
+      "system": "Prior LSTM system from reference [19]",
+      "experiment_id": "table-iii-lstm",
+      "split": "80/20 per [19] §5; no seed or file lists published",
+      "metric_id": "f1-weighted",
+      "original_value": 0.8867,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Part of [19]'s LSTM comparison column rather than a contribution of this paper. Unlike the accuracy row, this exact value is not published in [19] and its origin cannot be recovered."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table III's LSTM column reports the reference [19] system, whose accuracy row matches [19] exactly.",
+          "[19] reports accuracy only; it publishes no precision, recall, or F1."
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "train-uniform10",
+      "kind": "full_training_and_evaluation",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "exit_code": 0,
+      "started_at_utc": "2026-09-21T03:36:40Z",
+      "finished_at_utc": "2026-09-21T03:42:11Z",
+      "command": "modal run papers/ben-abderrahmane-2025-temporal-to-spatial/modal_app.py::train --mode uniform10",
+      "artifact_ids": [
+        "run-uniform10",
+        "history-uniform10"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-uniform10",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-21T03:30:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training and evaluation completed under the selected frame-sampling alternative.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_function_call_id": "fc-01M310JMS6YZFNCFK8J4AHZM56",
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outcome": "100 epochs, batch 32, Adam lr 0.001, seed 2026, on 7,489 train and 1,841 test samples. Model built to 755,346 parameters, asserted against the paper's stated total before training. Accuracy 0.988593, weighted precision 0.988908, weighted recall 0.988593, weighted F1 0.988585. Wall time 331s on CPU. Weighted recall equals accuracy exactly, the same identity Table III shows in both its columns."
+    },
+    {
+      "run_id": "train-first10",
+      "kind": "full_training_and_evaluation",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "exit_code": 0,
+      "started_at_utc": "2026-09-21T03:36:33Z",
+      "finished_at_utc": "2026-09-21T03:47:40Z",
+      "command": "modal run papers/ben-abderrahmane-2025-temporal-to-spatial/modal_app.py::train --mode first10",
+      "artifact_ids": [
+        "run-first10",
+        "history-first10"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-first10",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-21T03:30:00Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training and evaluation completed under the rejected frame-sampling alternative; retained as evidence that the target paper's own wording does not reproduce its numbers.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_function_call_id": "fc-01M310JC95SP6Z72JB8KYDMJVT",
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outcome": "100 epochs, batch 32, Adam lr 0.001, seed 2026, on 7,489 train and 1,841 test samples. Model built to 755,346 parameters, asserted against the paper's stated total before training. Accuracy 0.722977, weighted precision 0.730843, weighted recall 0.722977, weighted F1 0.721519. Wall time 667s on CPU. Weighted recall equals accuracy exactly, the same identity Table III shows in both its columns."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "pose-first10-01",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/01.npz",
+      "sha256": "3bb2da1224f8ce5865e289c3e464d04705167c3eb761335ef7f9e1c485eca781",
+      "role": "MediaPipe pose inputs for signer 01: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1532 videos, 1225 train and 307 test."
+    },
+    {
+      "artifact_id": "pose-first10-02",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/02.npz",
+      "sha256": "799221560fc7d57d49ee929a09725ca06353e98b62b26d79a87016bf9cca6786",
+      "role": "MediaPipe pose inputs for signer 02: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1597 videos, 1277 train and 320 test."
+    },
+    {
+      "artifact_id": "pose-first10-03",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/03.npz",
+      "sha256": "494db69e89c157c55c5c23623d14e29c361fb4f4cde0fe530895ee8140775b73",
+      "role": "MediaPipe pose inputs for signer 03: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1640 videos, 1334 train and 306 test."
+    },
+    {
+      "artifact_id": "pose-first10-04",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/04.npz",
+      "sha256": "02772e87a2da8438dfaacddd2e24408199039daad2499fbd69e77230b734bdff",
+      "role": "MediaPipe pose inputs for signer 04: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1550 videos, 1242 train and 308 test."
+    },
+    {
+      "artifact_id": "pose-first10-05",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/05.npz",
+      "sha256": "e6f753c41b9d5709f10841b3df7a933d2e7f7bcfed3cdaafe956d7269f2cc3f0",
+      "role": "MediaPipe pose inputs for signer 05: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1499 videos, 1199 train and 300 test."
+    },
+    {
+      "artifact_id": "pose-first10-06",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-first10/06.npz",
+      "sha256": "03c2c7b417a3b11c8643bfd9b3ac19a5a51c0c4ba8c37e813e0c4868a16cef94",
+      "role": "MediaPipe pose inputs for signer 06: features (n, 10, 33, 2) float32, labels, official split, entry keys, and a per-video filled-frame count. 1512 videos, 1212 train and 300 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-01",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/01.npz",
+      "sha256": "16131e0dc319d04ddd25b7ebb8908ff95fd3e8ba4add2d82b90581828f437d97",
+      "role": "MediaPipe pose inputs for signer 01 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1532 videos, 1225 train and 307 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-02",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/02.npz",
+      "sha256": "328bb7635ca71a16431f4a8fdc35e6a4c03f5459dbaa1b8036b5d38c67237102",
+      "role": "MediaPipe pose inputs for signer 02 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1597 videos, 1277 train and 320 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-03",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/03.npz",
+      "sha256": "beb99837236f17c92f4671ab44bf2ef80ed7c0bb8fda5c89c28ca6300dd36c60",
+      "role": "MediaPipe pose inputs for signer 03 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1640 videos, 1334 train and 306 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-04",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/04.npz",
+      "sha256": "7903e9d935367ed06b71f9293e9bcd66cc1511ea0470324a96ea80889af861d8",
+      "role": "MediaPipe pose inputs for signer 04 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1550 videos, 1242 train and 308 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-05",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/05.npz",
+      "sha256": "a07b61fc7ce32069c6c007b8136105d270bb3072acb28a90f349e6cd6a14b5e0",
+      "role": "MediaPipe pose inputs for signer 05 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1499 videos, 1199 train and 300 test."
+    },
+    {
+      "artifact_id": "pose-uniform10-06",
+      "kind": "preprocessed_input",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/pose-uniform10/06.npz",
+      "sha256": "7b6e68fb39ad69940c021209189052bd77d756987fdf6b48d9d4e9598a3fde54",
+      "role": "MediaPipe pose inputs for signer 06 under the selected uniform sampling: features (n, 10, 33, 2) float32, labels, official split, entry keys, per-video filled-frame count. 1512 videos, 1212 train and 300 test."
+    },
+    {
+      "artifact_id": "run-uniform10",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/runs/uniform10/run.json",
+      "sha256": "aadab0ea740194a42ddf22d9548f916ade81418ce9862d91aa797d820e6119e9",
+      "role": "Run manifest and Table III metrics for the uniform10 frame-sampling alternative."
+    },
+    {
+      "artifact_id": "run-first10",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/runs/first10/run.json",
+      "sha256": "b2e7f1f44dda599e939268216d3cd10a8372dffbe9e6c0f644a66c76af8a73c9",
+      "role": "Run manifest and Table III metrics for the first10 frame-sampling alternative."
+    },
+    {
+      "artifact_id": "history-uniform10",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/runs/uniform10/history.npz",
+      "sha256": "263339ad62c6403fb65ac20645b551e17f269eb94a81559a41d93c55096b98f8",
+      "role": "Per-epoch loss and accuracy history plus raw test predictions for the uniform10 alternative."
+    },
+    {
+      "artifact_id": "history-first10",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/ben-abderrahmane-2025-results/runs/first10/history.npz",
+      "sha256": "2cb5b27d12d1677669918457a0286836ee8645e6f3d120badb276eeb9a4f69d6",
+      "role": "Per-epoch loss and accuracy history plus raw test predictions for the first10 alternative."
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "arabsign-access",
+      "type": "data",
+      "status": "resolved",
+      "reason": "Resolved. Access, permission basis, expected counts, checksums, and the sample-to-label mapping are all established. The dataset author supplied the official download page to the assignee for REPRO-SIGN project use; no licence is published anywhere for ArabSign, so that grant is the operative basis and the assignee authorised study use and project-cloud processing on 2026-09-18. The RGB archives were transferred to datasets/arab-sign/RGB on 2026-09-18 and verified.",
+      "evidence": [
+        "REPRO-SIGN dataset record for ArabSign: licence \"NC only\"; assignee vera.czehmann@dfki.de; comments \"download provided by Hamzah\"; transcribed by the assignee on 2026-09-01.",
+        "https://hamzah-luqman.github.io/ArabSign/ publishes direct Google Drive folder links for the Color, Depth, and Skeleton modalities, from which the RGB archives were downloaded without a request on 2026-09-18. The page also retains an older line offering the data by email, which is how Team S obtained its copy; both routes lead to the same author-published data.",
+        "GitHub API for Hamzah-Luqman/ArabSign at commit 8f6e127a054052228027d6da98005f991d300a7b: \"license\": null; the 9 MB repository holds only the benchmark code archive and project page, not the data.",
+        "check_modal_dataset.sh arabsign on 2026-08-28: 'Requested dataset arabsign is absent from Modal Volume datasets'.",
+        "Modal workspace repro-sign on 2026-09-01 holds 10 volumes: datasets, huggingface-cache, and eight per-paper results volumes. No ArabSign volume exists and no arabsign path exists under datasets.",
+        "Hugging Face organisation repro-sign on 2026-09-01: three models, zero datasets. A Hub search for 'arabsign' returns no public dataset.",
+        "ArabSign paper (arXiv:2210.03951) §III: six identifiable male signers aged 21-30 recorded on colour video.",
+        "populate_arabsign_rgb on 2026-09-18, Modal call fc-01M2S6VRWS8D0ZVVXQ5RF5YKW2: six archives, 19,622,200,244 bytes, each matching its source Content-Range exactly, per-archive SHA-256 recorded in the transfer manifest.",
+        "verify_arabsign_rgb read-only audit: 9,330 mp4 entries, 50 sentence ids, zero unparsed paths, official train/test directory level totalling 7,489 and 1,841.",
+        "All three ArabSignGroundTruth.txt copies (RGB, Depth, Skeleton) hash to 2b64f16bb14859cad322824dd76ce9bf9ad17a63225fcbebf15bdb6e4f3f9288, matching the copy downloaded from the public project page.",
+        "check_modal_dataset.sh arab-sign _drive_imports/72178996f6c31e6c/manifest.json on 2026-09-18: 'Confirmed dataset arab-sign in Modal Volume datasets'."
+      ],
+      "required_action": "None. For anyone reusing this directory: Depth remains incomplete, missing 01.7z and 05.7z from the earlier Team S transfer. This reproduction uses only RGB."
+    },
+    {
+      "gate_id": "arabsign-signer-consent",
+      "type": "ethics",
+      "status": "resolved",
+      "reason": "ArabSign is colour video of six identifiable signers, and no consent basis is documented anywhere. A search on 2026-09-18 found no consent, ethics, IRB, permission, or terms statement in the dataset paper, no licence or agreement file in its repository, and none on the project page. The assignee initially left this gate open on 2026-09-18 and resolved it on 2026-09-21 with the determination below.\n\nDetermination: the planned access, processing, storage, and reporting are permitted on the basis of the dataset author's direct grant. The author is the party that collected the corpus and therefore its data controller, and he supplied the official download page to the assignee for REPRO-SIGN project use. The reproduction adds no participants and no human raters. The copy remains private to the repro-sign Modal workspace and is not redistributed. Nothing derived from the imagery is published: the reproduction reports only aggregate metrics, and no video, frame, pose overlay, or trained weight is released. The residual unknown is the consent basis of the original 2021 recording, which no reproduction of this paper can establish and which applies equally to every user of the published dataset; it is recorded here rather than treated as settled.",
+      "evidence": [
+        "ArabSign paper (arXiv:2210.03951) full text: no match for licence, terms, copyright, permission, consent, ethics, or IRB.",
+        "github.com/Hamzah-Luqman/ArabSign: no LICENSE, COPYING, TERMS, or agreement file among 60 paths; GitHub API reports \"license\": null.",
+        "ArabSign paper §III.B: six male signers aged 21-30, all right-handed, one wearing eyeglasses, recorded on colour video at 1920x1080.",
+        "Assignee decision on 2026-09-18 to leave the gate open, and on 2026-09-21 to resolve it with the determination recorded above.",
+        "No imagery is published by this reproduction: reproduction.json.artifacts contains only pose coordinate arrays, run manifests, and metric histories, all held on the private repro-sign Volume ben-abderrahmane-2025-results."
+      ],
+      "required_action": "None for this reproduction. If the study later publishes trained weights, pose overlays, or any derived imagery for this dataset, or if ArabSign is reused for work involving participants or identifiable output, the original consent basis should be obtained from KFUPM first."
+    },
+    {
+      "gate_id": "frame-window-ambiguity",
+      "type": "target",
+      "status": "open",
+      "reason": "The two papers describe the 10-frame input differently and neither states which frames are taken. The target paper §III says \"Each input sample consists of 10 consecutive frames\" without saying where the window starts. Reference [19], which §IV says supplied the same setup, instead says it converts \"the input video into a sequence of ten frames\", which reads as sampling across the whole clip. ArabSign clips run 1.3 to 10.4 seconds at 30 fps, so the readings present materially different inputs: ten consecutive frames cover about 0.33 seconds of an average 4.3-second sentence. [19] lists the framing approach as future work, so neither paper resolves it.\n\nBoth alternatives were implemented and run before either was selected, with the decision rule recorded first. Uniform sampling reproduces 0.9886 accuracy against the published 0.9777; the literal consecutive reading reproduces 0.7230. The assignee selected uniform-10-across-clip on 2026-09-21 as the working reading, on [19]'s text and on the inference that a protocol which cannot produce the published numbers is not the one the authors used. That selection governs which runs are reported, but it does not resolve the published ambiguity: the 25-point spread shows the choice is behaviour-changing, so both runs are conditional evidence and no target is marked produced.",
+      "evidence": [
+        "Target paper §III: \"Each input sample consists of 10 consecutive frames, where each frame contains 33 keypoints with x and y coordinates, resulting in an input shape of (10, 33, 2).\"",
+        "Reference [19] §4: \"The mission of the first stage is to convert the input video into a sequence of ten frames\"; \"we retain 10x66 numpy vectors corresponding to ten frames per video\".",
+        "Reference [19] §6 lists the open question: \"it would be interesting to precisely evaluate the impact of the framing approach on the subsequent stages.\"",
+        "Target paper §IV: \"We adopted the same training parameters as our previous work[19]\", which is why [19]'s description is treated as evidence about this paper's setup.",
+        "ArabSign paper Table II: minimum video duration 1.3 s, maximum 10.4 s, 30 fps, average 130.3 frames per sentence.",
+        "Neither paper states a window position, a stride, or a sampling rule."
+      ],
+      "required_action": "Only the authors can state which ten frames Table III used. Until then the requested numbers cannot be reproduced faithfully, and the conditional runs stand as evidence of what each reading yields. Author contact on this point is available now that an independent attempt is complete.",
+      "alternatives": [
+        {
+          "alternative_id": "first-10-consecutive",
+          "description": "Frames 0 through 9 of each clip, contiguous, with MediaPipe temporal tracking enabled because the frames are adjacent.",
+          "paper_evidence": "Follows the target paper's explicit word \"consecutive\" in §III. The window position is not stated; frame 0 is chosen as the simplest deterministic reading, matching the first-N precedent in papers/ahmad-2022-intelligent-landmarks.",
+          "decision_needed": "Accept that the target paper's own wording governs, and that the unstated window position is a documented choice."
+        },
+        {
+          "alternative_id": "uniform-10-across-clip",
+          "description": "Ten indices spaced evenly from the first to the last frame of each clip, with MediaPipe temporal tracking disabled because the frames are not adjacent.",
+          "paper_evidence": "Follows reference [19]'s description of converting a whole video into ten frames, which §IV of the target paper says supplied its setup. Contradicts the target paper's word \"consecutive\".",
+          "decision_needed": "Accept that [19]'s description governs where the target paper's wording conflicts with the prior work it says it inherited."
+        }
+      ]
+    }
+  ]
+}
