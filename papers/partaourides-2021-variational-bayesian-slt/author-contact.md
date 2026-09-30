@@ -1,8 +1,8 @@
-# Author-contact email — DRAFT (not sent)
+# Author-contact email — SENT
 
-Status: drafted 2026-09-08 for review. Author contact is gated; send only after
-explicit approval. Log the send date, recipients, and any reply in
-`reproduction.json.author_contact` and in `README.md` once sent.
+Status: drafted 2026-09-08; sent ~2026-09-17 (approximate — sent by the study author from a
+personal mail client, exact date not recorded). No reply as of 2026-09-30; the reproduction
+was closed on that basis. See `reproduction.json.author_contact`.
 
 **To:** c.partaourides@cut.ac.cy; sotirios.chatzis@cut.ac.cy
 **Cc:** ai.voskou@edu.cut.ac.cy; dkosmo@upatras.gr

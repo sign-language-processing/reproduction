@@ -17,14 +17,16 @@ LNCS 12536, pp. 251–262. Springer (2021). arXiv:2102.06143v1 [stat.ML] 11 Feb 
 
 **Attempt date:** 2026-09-08
 
-> **Attempt paused for re-evaluation.** Per the assignment instruction ("try the full
+> **Attempt closed 2026-09-30 — final.** Per the assignment instruction ("try the full
 > reproduction, but if it requires a lot of debugging, stop and re-evaluate given the
 > results"), the attempt was stopped after one round of fixes. All four models trained to
 > a dev-BLEU-4 plateau and all 24 numbers were computed, but every row — including the
-> well-specified Baseline — is ~4× below Table 1, and the Baseline plateaued rather than
-> merely undertrained. Closing the gap needs iterative optimisation/architecture
-> debugging (LR schedule, training length, the "no-attention" bridging, decoding) plus
-> resolution of the unspecified variational hyperparameters.
+> well-specified Baseline — is ~4x below Table 1, and the Baseline plateaued rather than
+> merely undertrained. The author-contact email listing every missing hyperparameter was
+> sent ~2026-09-17 and went unanswered for ~2 weeks, so the unspecified variational
+> hyperparameters could not be resolved and no further debugging was authorised. The
+> reimplementation stands as evidence that the SB-GRU protocol is under-specified; the
+> gap on the Baseline row is documented but unexplained.
 
 ## Scope and target contract
 
@@ -50,7 +52,7 @@ here with `sacrebleu` (BLEU-4, `tok:13a`, `lc`; signature
 exact upstream implementations unknown (guess).
 
 **Ambiguity / resolution:** target *identity* is unambiguous. The *protocol* for the five
-non-baseline rows is not — see the open gate `sbgru-protocol` and "Guesses and deviations".
+non-baseline rows is not — see the resolved gate `sbgru-protocol` and "Guesses and deviations".
 Per the reproduction contract those rows are conditional evidence, not produced targets,
 independent of numerical closeness.
 
@@ -243,9 +245,14 @@ gate applies.
 
 ## Author and team contact
 
-No contact has been made yet. An author-contact email is **drafted but not sent** at
-`author-contact-draft.md` — it lists every missing hyperparameter with the value this
-attempt used and the reproduced-vs-paper numbers, and asks whether code is available.
-Sending is gated on explicit approval; when sent, record the date, recipients, and any
-reply here and in `reproduction.json.author_contact`. This is post-independent-attempt
-author help (not Team S data coordination).
+The author-contact email at `author-contact.md` was **sent ~2026-09-17** (approximate
+— reported by the study author, who sent it from a personal mail client; the exact date was
+not recorded) to c.partaourides@cut.ac.cy and sotirios.chatzis@cut.ac.cy, cc
+ai.voskou@edu.cut.ac.cy and dkosmo@upatras.gr. It listed every missing hyperparameter with
+the value this attempt used, gave the reproduced-vs-paper numbers, and asked whether code is
+available.
+
+**No reply had been received by 2026-09-30 (~13 days), and the attempt was closed on that
+basis.** Nothing in this report came from the authors: every hyperparameter under "Guesses
+and deviations" is an independent inference from the paper text. This was
+post-independent-attempt author help, not Team S data coordination.

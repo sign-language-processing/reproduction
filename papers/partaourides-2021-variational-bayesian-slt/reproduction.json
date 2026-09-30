@@ -182,7 +182,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement.",
+    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement. Attempt closed 2026-09-30 after the author-contact email went unanswered; no further runs are planned.",
     "preference_level": 3,
     "blocker": null
   },
@@ -1480,7 +1480,7 @@
     {
       "gate_id": "sbgru-protocol",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "The five non-baseline Table 1 rows depend on a variational-Bayesian SB-GRU with no published code and several behaviour-changing hyperparameters the paper never states: IBP innovation alpha, inference cutoff tau, Gumbel-Softmax anneal schedule, MC sample count, KL-term weighting/warm-up, Kumaraswamy init, and the weight-compression bit-precision rule. With the canonical defaults chosen here the IBP KL term dominates the translation loss by ~500x and the variational encoder layer stops learning.",
       "evidence": [
         "Paper Sections 3-3.3, Eqs. 1,7-15: equations given, no hyperparameter values.",
@@ -1488,13 +1488,19 @@
         "Paper Section 4: only 'ADAM [20], lr 0.00001, batch 128, dropout 0.2, until convergence'."
       ],
       "required_action": "Human decision: supply the intended alpha / tau / lambda schedule / KL weighting (or confirm the reimplementation should stand as evidence that the method is under-specified), and decide whether to invest further debugging in the baseline seq2seq, which itself reproduces only ~4.4 BLEU-4 vs 16.3.",
-      "alternatives": []
+      "alternatives": [],
+      "resolution": {
+        "resolved_at": "2026-09-30",
+        "decided_by": "human (study author)",
+        "outcome": "closed_unresolved_by_authors",
+        "detail": "The author-contact email covering every missing hyperparameter was sent ~2026-09-17 and received no reply by 2026-09-30. Per the human decision recorded in required_action, the reimplementation stands as evidence that the SB-GRU protocol is under-specified in the paper: the five non-baseline Table 1 rows stay not_produced (protocol_ambiguous) with their conditional runs retained, and no further debugging of the baseline seq2seq was authorised. Reopen only if the authors reply or code is released."
+      }
     }
   ],
   "author_contact": {
-    "status": "drafted_not_sent",
+    "status": "sent_no_response",
     "drafted_at": "2026-09-08",
-    "draft_path": "author-contact-draft.md",
+    "email_path": "author-contact.md",
     "recipients": [
       "c.partaourides@cut.ac.cy",
       "sotirios.chatzis@cut.ac.cy",
@@ -1502,8 +1508,10 @@
       "dkosmo@upatras.gr"
     ],
     "purpose": "Post-independent-attempt request for the unspecified training and SB-GRU hyperparameters (see gate 'sbgru-protocol') and for whether code is available. Lists every guessed value and the reproduced-vs-paper numbers.",
-    "sent_at": null,
-    "response": null,
-    "changed": null
+    "sent_at": "2026-09-17",
+    "response": "None received as of 2026-09-30 (~13 days).",
+    "changed": "Nothing. No author information reached this attempt, so every hyperparameter listed in guesses/deviations remains an independent inference from the paper text.",
+    "sent_at_precision": "approximate — user-reported as 'almost 2 weeks' before 2026-09-30; exact send date not recorded",
+    "sent_by": "study author, from a personal mail client outside this repository; the draft at author-contact.md is the text sent"
   }
 }
