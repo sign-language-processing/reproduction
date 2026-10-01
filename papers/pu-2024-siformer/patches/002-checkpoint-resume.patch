@@ -1,0 +1,59 @@
+# Retain recoverable epoch state and measured evidence without changing the author training loop.
+--- a/train.py
++++ b/train.py
+@@ -1,4 +1,6 @@
+ import os
++import json
++import time
+ import argparse
+ import random
+ import logging
+@@ -208,7 +210,26 @@
+ 
+     total_train_time = 0
+     avg_train_time_sec_list = []
+-    for epoch in range(args.epochs):
++    # Resume preserves model, optimizer, scheduler, RNG and loader-generator state.
++    resume_path = Path("resume.pth")
++    initial_epoch = 0
++    if resume_path.exists():
++        state = torch.load(resume_path, weights_only=False, map_location=device)
++        slr_model.load_state_dict(state["model"])
++        optimizer.load_state_dict(state["optimizer"])
++        scheduler.load_state_dict(state["scheduler"])
++        initial_epoch = state["epoch"]
++        top_train_acc, top_val_acc = state["top_train_acc"], state["top_val_acc"]
++        checkpoint_index = state["checkpoint_index"]
++        random.setstate(state["random"])
++        np.random.set_state(state["numpy"])
++        torch.set_rng_state(state["torch"].cpu())
++        torch.cuda.set_rng_state_all([x.cpu() for x in state["cuda"]])
++        g.set_state(state["generator"].cpu())
++        print("Resumed completed epoch", initial_epoch, flush=True)
++    for epoch in range(initial_epoch, args.epochs):
++        os.environ["REPRO_EPOCH"] = str(epoch + 1)
++        epoch_started = time.monotonic()
+         start_time = time.time()
+         train_loss, _, _, train_acc, avg_train_time = train_epoch(slr_model, train_loader, cel_criterion, optimizer,
+                                                                   device, scheduler=scheduler)
+@@ -272,6 +293,20 @@
+             checkpoint_index += 1
+ 
+         lr_progress.append(optimizer.param_groups[0]["lr"])
++        state = {"epoch": epoch + 1, "model": slr_model.state_dict(),
++                 "optimizer": optimizer.state_dict(), "scheduler": scheduler.state_dict(),
++                 "top_train_acc": top_train_acc, "top_val_acc": top_val_acc,
++                 "checkpoint_index": checkpoint_index, "random": random.getstate(),
++                 "numpy": np.random.get_state(), "torch": torch.get_rng_state(),
++                 "cuda": torch.cuda.get_rng_state_all(), "generator": g.get_state()}
++        torch.save(state, "resume.tmp.pth")
++        os.replace("resume.tmp.pth", resume_path)
++        with open("epoch-metrics.jsonl", "a") as record:
++            record.write(json.dumps({"epoch": epoch + 1, "train_accuracy": train_acc,
++                                    "validation_accuracy": val_acc,
++                                    "seconds": time.monotonic() - epoch_started,
++                                    "peak_gpu_bytes": torch.cuda.max_memory_allocated()}) + "\n")
++        print("REPRO_EPOCH_COMPLETED", epoch + 1, flush=True)
+ 
+     if args.record_training_time:
+         print(f"Total training time taken over {args.epochs} epochs: {str(datetime.timedelta(seconds=total_train_time))}")

@@ -8,9 +8,11 @@ image = (modal.Image.from_registry('ghcr.io/sign-language-processing/reproductio
          .pip_install('pandas==2.2.3', 'scikit-learn==1.6.1', 'matplotlib==3.10.1', 'opencv-python-headless==4.11.0.86')
          .run_commands('git clone https://github.com/mpuu00001/Siformer /opt/siformer',
                        'git -C /opt/siformer checkout 979a14ed15ed0f20afd77d447ad23c4f4107a2c3')
-         .add_local_file(Path(__file__).parent.parent / 'upstream.patch', '/opt/upstream.patch', copy=True)
-         .run_commands('cd /opt/siformer && git apply /opt/upstream.patch')
+         .add_local_dir(Path(__file__).parent.parent / 'patches', '/opt/repro-patches', copy=True)
+         .run_commands('cd /opt/siformer && git apply --ignore-space-change /opt/repro-patches/*.patch')
          .env({'HF_HOME': '/cache/huggingface', 'HF_HUB_CACHE': '/cache/huggingface/hub', 'MPLBACKEND': 'Agg'})
+         .add_local_file(Path(__file__).with_name('prepare.py'), '/opt/prepare.py')
+         .add_local_file(Path(__file__).with_name('run_training.py'), '/opt/run_training.py')
          .add_local_file(Path(__file__).with_name('preflight.py'), '/opt/preflight.py')
          .add_local_file(Path(__file__).with_name('rectification_check.py'), '/opt/rectification_check.py'))
 datasets = modal.Volume.from_name('datasets', version=2)
@@ -157,8 +159,49 @@ def rectification_check(run_id:str):
     (out/'hashes.json').write_text(json.dumps(hashes,indent=2));outputs.commit();print(json.dumps(result))
     return result
 
+@app.function(image=image, cpu=4, memory=16000, timeout=10800,
+              volumes={'/datasets':datasets,'/cache/huggingface':cache,'/outputs':outputs})
+def prepare(dataset:str, run_id:str, tiny:bool=False):
+    import subprocess,json,datetime,hashlib
+    out=Path('/outputs')/run_id;out.mkdir(parents=True,exist_ok=True)
+    data=out/'data' if tiny else Path('/datasets')/('lsa64' if dataset=='lsa64' else 'WLASL')/'siformer/resolved-seed42-aafe04'
+    meta={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'data_path':str(data)}
+    try:
+        with (out/'stdout.log').open('w') as log:
+            p=subprocess.run(['python','-u','/opt/prepare.py',dataset,str(data)]+(['--tiny'] if tiny else []),stdout=log,stderr=subprocess.STDOUT,timeout=800 if tiny else 10600)
+        meta['exit_code']=p.returncode
+    finally:
+        meta['finished_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        (out/'execution.json').write_text(json.dumps(meta,indent=2));datasets.commit();outputs.commit()
+    print(json.dumps(meta));print((out/'stdout.log').read_text()[-3000:]);return meta
+
+@app.function(image=image,gpu='A10G',cpu=8,memory=16000,timeout=21600,
+              volumes={'/datasets':datasets.with_mount_options(read_only=True),'/cache/huggingface':cache,'/outputs':outputs})
+def target_run(dataset:str, run_id:str, preflight:bool=False):
+    import subprocess,json,datetime,hashlib
+    out=Path('/outputs')/run_id;out.mkdir(parents=True,exist_ok=True)
+    data=Path('/outputs')/('prepare-'+dataset+'-tiny-002')/'data' if preflight else Path('/datasets')/('lsa64' if dataset=='lsa64' else 'WLASL')/'siformer/resolved-seed42-aafe04'
+    meta={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'data_path':str(data)}
+    (out/'freeze.txt').write_text(subprocess.check_output(['python','-m','pip','freeze'],text=True))
+    (out/'hardware.txt').write_text(subprocess.check_output(['nvidia-smi'],text=True))
+    try:
+        with (out/'stdout.log').open('a') as log:
+            p=subprocess.run(['python','-u','/opt/run_training.py',dataset,str(data),str(out)]+(['--preflight'] if preflight else []),stdout=log,stderr=subprocess.STDOUT,timeout=1700 if preflight else (28600 if dataset=="wlasl100" else 21400))
+        meta['exit_code']=p.returncode
+    finally:
+        meta['finished_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        (out/'execution.json').write_text(json.dumps(meta,indent=2));outputs.commit()
+    print(json.dumps(meta));print((out/'stdout.log').read_text()[-4000:]);return meta
+
 @app.local_entrypoint()
-def main(run_id: str = 'preflight-001', acquire: bool=False, compare_features: bool=False, compare_all: bool=False, check_rectification: bool=False):
+def main(run_id: str = 'preflight-001', dataset:str='lsa64', prepare_data:bool=False, tiny:bool=False, target:bool=False, acquire: bool=False, compare_features: bool=False, compare_all: bool=False, check_rectification: bool=False):
+    if prepare_data or target:
+        function=prepare.with_options(timeout=900 if tiny else 10800) if prepare_data else target_run.with_options(timeout=1800 if tiny else (28800 if dataset=="wlasl100" else 21600))
+        call=function.spawn(dataset,run_id,tiny)
+        print('FUNCTION_CALL_ID='+call.object_id,flush=True)
+        result=call.get()
+        if result['exit_code']:raise SystemExit(result['exit_code'])
+        return
     if check_rectification:
         result=rectification_check.remote(run_id)
         if result['exit_code']:raise SystemExit(result['exit_code'])
