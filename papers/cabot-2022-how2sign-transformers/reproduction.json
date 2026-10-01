@@ -3051,7 +3051,10 @@
         "cpu_cores": 4,
         "memory_gib": 64
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "how2sign-full-initial-recovery-pointer",
+        "how2sign-full-initial-training-log"
+      ],
       "recovery_policy": {
         "max_execution_segments": 4,
         "max_provider_resumes": 3,
@@ -3078,7 +3081,22 @@
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-9PXb7AldvQ2T0rymbnb8nC"
       },
       "aggregate_deadline_at_utc": "2026-10-02T15:28:13.999167+00:00",
-      "live_state_note": "Detached full run launched; first immutable claim and running execution record verified. This is not a terminal result."
+      "live_state_note": "Healthy detached full run: native log shows500finite optimizer updates; published recovery pointer retains steps500and250 with native SHA256. Full run remains active and has no terminal target scores.",
+      "health_snapshot": {
+        "observed_at_utc": "2026-10-01T15:36:07.464784+00:00",
+        "training_steps": 500,
+        "epoch": 1,
+        "latest_recovery": {
+          "file": "state-00000500-1790868924466038938.ckpt",
+          "sha256": "0a2068d0002ffc30e99271b648296f61d7224c9982d7898ccfe7a58e51a77e5c",
+          "steps": 500,
+          "epoch": 0,
+          "complete": false,
+          "best_backup": null
+        },
+        "losses_finite": true,
+        "evidence_scope": "Fresh remote pointer and native log read after volume publication. Checkpoint hash is native recorded; no local checkpoint download. Final collector must use closed terminal files, not this snapshot."
+      }
     }
   ],
   "artifacts": [
@@ -3610,6 +3628,22 @@
       "kind": "raw_diagnostic",
       "uri": "artifacts/how2sign-deadline-control-proof.json",
       "sha256": "7653c06856a035e25b54ef1bc798e216e95fb2aa1174284d2db3bbefb18cf208"
+    },
+    {
+      "artifact_id": "how2sign-full-initial-recovery-pointer",
+      "kind": "live_run_snapshot",
+      "uri": "artifacts/how2sign-full-initial-recovery-pointer.json",
+      "sha256": "6dafbb282ffd4e1ea7821b1e3a707301ed17f7715113f9397943b7be4c305811",
+      "observed_at_utc": "2026-10-01T15:36:07.464784+00:00",
+      "detail": "Initial live health evidence only; never use this snapshot for terminal metrics or final log hashes."
+    },
+    {
+      "artifact_id": "how2sign-full-initial-training-log",
+      "kind": "live_run_snapshot",
+      "uri": "artifacts/how2sign-full-initial-training.log",
+      "sha256": "218721449e16f14d0842a9491ad9090e3803e3b63b79950636ca5cdb6afa720c",
+      "observed_at_utc": "2026-10-01T15:36:07.464784+00:00",
+      "detail": "Initial live health evidence only; never use this snapshot for terminal metrics or final log hashes."
     }
   ],
   "gates": [
