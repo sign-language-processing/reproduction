@@ -12,14 +12,16 @@ image=(base_image
        .add_local_file(Path(__file__).with_name('prepare_how2.py'),'/opt/prepare_how2.py'))
 how2_image=(base_image
        .add_local_dir(Path(__file__).resolve().parents[1]/'patches','/opt/how2-patches',copy=True)
-       .run_commands('git -C /slt apply /opt/how2-patches/01-english-wer.patch', 'git -C /slt apply /opt/how2-patches/02-wer-integer-range.patch', 'git -C /slt apply /opt/how2-patches/03-training-recovery.patch')
+       .run_commands('git -C /slt apply /opt/how2-patches/01-english-wer.patch', 'git -C /slt apply /opt/how2-patches/02-wer-integer-range.patch', 'git -C /slt apply /opt/how2-patches/03-training-recovery.patch', 'git -C /slt apply /opt/how2-patches/04-evaluation-recovery.patch')
        .add_local_file(Path(__file__).with_name('run.py'),'/opt/cabot-run.py')
        .add_local_file(Path(__file__).with_name('collect.py'),'/opt/collect.py')
        .add_local_file(Path(__file__).with_name('evaluation.py'),'/opt/evaluation.py')
        .add_local_file(Path(__file__).with_name('check_evaluation.py'),'/opt/check_evaluation.py')
        .add_local_file(Path(__file__).with_name('parallel_ctc.py'),'/opt/parallel_ctc.py')
        .add_local_file(Path(__file__).with_name('recovery_train.py'),'/opt/recovery_train.py')
-       .add_local_file(Path(__file__).with_name('check_training_recovery.py'),'/opt/check_training_recovery.py'))
+       .add_local_file(Path(__file__).with_name('check_training_recovery.py'),'/opt/check_training_recovery.py')
+       .add_local_file(Path(__file__).with_name('recovery_eval.py'),'/opt/recovery_eval.py')
+       .add_local_file(Path(__file__).with_name('check_evaluation_recovery.py'),'/opt/check_evaluation_recovery.py'))
 app=modal.App('7f7abc3e-cabot-how2sign')
 datasets=modal.Volume.from_name('datasets',version=2)
 cache=modal.Volume.from_name('huggingface-cache',version=2)
@@ -27,6 +29,7 @@ outputs=modal.Volume.from_name('7f7abc3e-cabot-results',create_if_missing=True,v
 PYTHON='/root/miniconda3/bin/python'
 
 def run_experiment(mode:str,run_id:str):
+    if mode=='how2-full':return run_resumable_how2(run_id)
     import subprocess,os,datetime,json,threading,hashlib
     out=Path('/outputs')/run_id
     out.mkdir(parents=True,exist_ok=True)
@@ -77,6 +80,119 @@ def run_experiment(mode:str,run_id:str):
         (out/'execution.json').write_text(json.dumps(meta,indent=2));outputs.commit()
     print(json.dumps(meta));print((out/'stdout.log').read_text()[-10000:])
     return meta
+
+def run_resumable_how2(run_id:str):
+    """One logical full attempt with a durable deadline across provider replays."""
+    import subprocess,os,datetime,json,threading,hashlib,time
+    out=Path('/outputs')/run_id;out.mkdir(parents=True,exist_ok=True)
+    def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+    def atomic(path,value):
+        temporary=Path(str(path)+'.tmp')
+        with temporary.open('w') as stream:
+            json.dump(value,stream,indent=2);stream.flush();os.fsync(stream.fileno())
+        os.replace(temporary,path)
+    def digest(path):
+        h=hashlib.sha256()
+        with path.open('rb') as stream:
+            for chunk in iter(lambda:stream.read(8*1024*1024),b''):h.update(chunk)
+        return h.hexdigest()
+    metadata=out/'execution.json'
+    claim=out/'claim.json'
+    initial=dict(run_id=run_id,mode='how2-full',started_at_utc=now(),app_id=app.app_id,
+        function_call_id=modal.current_function_call_id(),exit_code=None,execution_segments=[],
+        budget=dict(max_wall_time_seconds=86400,max_gpu_hours=24,max_cost_chf=40,max_segments=4),
+        deadline_unix=time.time()+86400)
+    try:
+        # Exclusive creation prevents two new logical calls claiming the same run.
+        with claim.open('x') as stream:
+            json.dump(initial,stream,indent=2);stream.flush();os.fsync(stream.fileno())
+    except FileExistsError:pass
+    claimed=json.loads(claim.read_text())
+    assert claimed['function_call_id']==modal.current_function_call_id(),'A different logical call cannot write this run; only provider replay is allowed'
+    meta=json.loads(metadata.read_text()) if metadata.exists() else claimed
+    assert meta['run_id']==run_id and meta['mode']=='how2-full'
+    assert meta['budget']['max_wall_time_seconds']==86400
+    assert meta['deadline_unix']==claimed['deadline_unix']
+    if meta.get('exit_code') is not None:return meta
+    # Guard the entire function, including source/data checks and volume commits.
+    # This terminates only this worker process; it cannot signal a replacement.
+    # A provider replay sees the same expired claim and cannot launch more work.
+    remaining=meta['deadline_unix']-time.time()
+    watchdog=threading.Timer(max(5,remaining-5),lambda:os._exit(124))
+    watchdog.daemon=True;watchdog.start()
+    atomic(metadata,meta);outputs.commit()  # Durable before hashes, data loading or training.
+    if meta['execution_segments'] and meta['execution_segments'][-1].get('exit_code') is None:
+        previous=meta['execution_segments'][-1]
+        previous.update(state='interrupted',interruption_observed_at_utc=now(),
+            detail='Provider replay observed an unfinished segment; native exit and exact interruption time unavailable')
+        atomic(out/'segments'/previous['segment_id']/'execution.json',previous)
+    if remaining<=120 or len(meta['execution_segments'])>=meta['budget']['max_segments']:
+        meta.update(exit_code=124,finished_at_utc=now(),stop_detail='Original aggregate deadline or three-replay ceiling reached')
+        atomic(metadata,meta);outputs.commit();watchdog.cancel();return meta
+    segment_id='segment-{:04d}'.format(len(meta['execution_segments'])+1)
+    segment_dir=out/'segments'/segment_id;segment_dir.mkdir(parents=True,exist_ok=False)
+    segment=dict(segment_id=segment_id,started_at_utc=now(),app_id=app.app_id,
+        function_call_id=modal.current_function_call_id(),exit_code=None,state='running')
+    meta['execution_segments'].append(segment);atomic(metadata,meta);atomic(segment_dir/'execution.json',segment);outputs.commit()
+    try:
+        env=dict(os.environ,HF_HOME='/cache/huggingface',HF_HUB_CACHE='/cache/huggingface/hub',
+            PYTHONNOUSERSITE='1',PYTHONPATH='/opt:/slt')
+        source_dir=out/'entrypoint-source';source_dir.mkdir(exist_ok=True)
+        hashes={}
+        for name in ['cabot-run.py','collect.py','evaluation.py','parallel_ctc.py','recovery_train.py','recovery_eval.py']:
+            source=Path('/opt')/name;content=source.read_bytes();hashes[name]=hashlib.sha256(content).hexdigest()
+            target=source_dir/name
+            if target.exists():assert target.read_bytes()==content,'Source changed across replay'
+            else:target.write_bytes(content)
+        if (source_dir/'sha256.json').exists():assert json.loads((source_dir/'sha256.json').read_text())==hashes
+        else:atomic(source_dir/'sha256.json',hashes)
+        diff=subprocess.check_output(['git','-C','/slt','diff'],text=True)
+        if (out/'upstream-diff.patch').exists():assert (out/'upstream-diff.patch').read_text()==diff
+        else:(out/'upstream-diff.patch').write_text(diff)
+        freeze=subprocess.check_output([PYTHON,'-m','pip','freeze'],text=True,env=env)
+        (segment_dir/'freeze.txt').write_text(freeze)
+        if (out/'freeze.txt').exists():assert (out/'freeze.txt').read_text()==freeze,'Environment changed across replay'
+        else:(out/'freeze.txt').write_text(freeze)
+        (segment_dir/'gpu.txt').write_text(subprocess.check_output(['nvidia-smi'],text=True))
+        manifest_path=Path('/datasets/how2sign/spot-align-wicv2023/slt-format/manifest.json')
+        manifest=json.loads(manifest_path.read_text());manifest_hash=digest(manifest_path)
+        assert manifest_hash=='fe0d41ea4877a54f2be7b6601e69fa50da1ecec9f93b179d505123f8276ec48b'
+        meta['data_manifest_sha256']=manifest_hash
+        for split,record in manifest['splits'].items():assert digest(manifest_path.parent/(split+'.pkl.gz'))==record['sha256']
+        pointer=out/'recovery/latest.json'
+        if pointer.exists():
+            record=json.loads(pointer.read_text())['latest'];checkpoint=pointer.parent/record['file']
+            assert checkpoint.parent.resolve()==pointer.parent.resolve() and digest(checkpoint)==record['sha256']
+            segment['resume_checkpoint']=record
+        timeout=min(85000,int(meta['deadline_unix']-time.time()-120))
+        if timeout<=0:
+            segment.update(exit_code=124,state='stopped',finished_at_utc=now())
+            meta.update(exit_code=124,finished_at_utc=now());atomic(segment_dir/'execution.json',segment);atomic(metadata,meta);outputs.commit();watchdog.cancel();return meta
+        segment['native_timeout_seconds']=timeout
+        segment['command']=[PYTHON,'/opt/cabot-run.py','how2-full',str(out),segment_id]
+        atomic(segment_dir/'execution.json',segment);atomic(metadata,meta);outputs.commit()
+        stop=threading.Event()
+        def commit():
+            while not stop.wait(120):outputs.commit()
+        worker=threading.Thread(target=commit,daemon=True);worker.start()
+        try:
+            with (segment_dir/'stdout.log').open('w') as log:
+                process=subprocess.run(segment['command'],cwd='/slt',env=env,stdout=log,stderr=subprocess.STDOUT,timeout=timeout)
+            segment['exit_code']=process.returncode
+        except subprocess.TimeoutExpired:segment['exit_code']=124
+        finally:
+            stop.set();worker.join()
+            segment.update(finished_at_utc=now(),state='succeeded' if segment.get('exit_code')==0 else 'stopped' if segment.get('exit_code')==124 else 'failed')
+            meta.update(exit_code=segment.get('exit_code'),finished_at_utc=segment['finished_at_utc'])
+            atomic(segment_dir/'execution.json',segment);atomic(metadata,meta);outputs.commit()
+    except Exception as error:
+        segment.update(exit_code=1,state='failed',finished_at_utc=now(),exception_type=type(error).__name__,exception_detail=str(error))
+        meta.update(exit_code=1,finished_at_utc=segment['finished_at_utc'])
+        atomic(segment_dir/'execution.json',segment);atomic(metadata,meta);outputs.commit()
+        watchdog.cancel();raise
+
+    watchdog.cancel()
+    print(json.dumps(meta));print((segment_dir/'stdout.log').read_text()[-10000:] if (segment_dir/'stdout.log').exists() else 'No native subprocess log');return meta
 
 @app.function(image=image,gpu='T4',cpu=4,memory=32768,timeout=21600,
               volumes={'/datasets':datasets.with_mount_options(read_only=True),'/cache/huggingface':cache,'/outputs':outputs})
@@ -296,7 +412,7 @@ def check_evaluation(run_id:str,variant:str="cpu"):
     meta={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'app_id':app.app_id,'function_call_id':modal.current_function_call_id()}
     try:
         with (out/'stdout.log').open('w') as log:
-            q=subprocess.run([PYTHON,'/opt/check_evaluation.py',str(out),variant],cwd='/slt',env=env,stdout=log,stderr=subprocess.STDOUT,timeout=3500)
+            q=subprocess.run([PYTHON,'/opt/check_evaluation_recovery.py',str(out)] if variant=='recovery' else [PYTHON,'/opt/check_evaluation.py',str(out),variant],cwd='/slt',env=env,stdout=log,stderr=subprocess.STDOUT,timeout=3500)
         meta['exit_code']=q.returncode
     except subprocess.TimeoutExpired:meta['exit_code']=124
     meta['finished_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -314,7 +430,7 @@ def check_evaluation_gpu(run_id:str,variant:str="gpu"):
     (out/'gpu.txt').write_text(subprocess.check_output(['nvidia-smi'],text=True))
     try:
         with (out/'stdout.log').open('w') as log:
-            q=subprocess.run([PYTHON,'/opt/check_evaluation.py',str(out),variant],cwd='/slt',env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1100)
+            q=subprocess.run([PYTHON,'/opt/check_evaluation_recovery.py',str(out)] if variant=='recovery' else [PYTHON,'/opt/check_evaluation.py',str(out),variant],cwd='/slt',env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1100)
         meta['exit_code']=q.returncode
     except subprocess.TimeoutExpired:meta['exit_code']=124
     meta['finished_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -347,6 +463,8 @@ def main(mode:str='preflight',run_id:str='preflight-001',source_run_id:str=''):
         check_evaluation_gpu.remote(run_id,'capacity-normal'); return
     if mode=='check-capacity':
         check_evaluation_gpu.remote(run_id,'capacity'); return
+    if mode=='check-evaluation-recovery':
+        check_evaluation_gpu.remote(run_id,'recovery'); return
     if mode=='check-evaluation-gpu':
         check_evaluation_gpu.remote(run_id); return
     if mode=='check-evaluation-remaining':

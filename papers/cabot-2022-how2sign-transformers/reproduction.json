@@ -27,16 +27,17 @@
       "scope": "Read-only independent review of How2 data adapter, recipe, checkpoint and beam selection; found uint8 WER overflow and supplied bounded text diagnostic. No implementation or experiment execution. Exact model_id and harness_version unavailable. Also reviewed evaluator-reuse wrapper and pinned TensorFlow2.1 serial batch kernel/GIL behavior; this remains review only.",
       "evidence": [
         "Explicit session attestation from /root/arabic_vit on2026-10-01: GPT-6 using Codex, exact model/harness versions unavailable. Reviewed original split/order, no repeated sentence offset, train-only400filter, full vocabulary, paper architecture, dev-only selection; identified long-reference integer overflow before any How2 model score.",
-        "Reviewer /root/arabic_vit source inspection: tensorflow v2.1.0 ctc_decoder_ops.cc284\u2013310 serializes batch and resets per sequence; pywrap_tfe_src.cc3473\u20133475 releases GIL. Read-only wrapper review found no new correctness defect; requested GPU parity and exact decoder-edge checks, executed by cabot-agent."
+        "Reviewer /root/arabic_vit source inspection: tensorflow v2.1.0 ctc_decoder_ops.cc284–310 serializes batch and resets per sequence; pywrap_tfe_src.cc3473–3475 releases GIL. Read-only wrapper review found no new correctness defect; requested GPU parity and exact decoder-edge checks, executed by cabot-agent."
       ]
     },
     {
       "agent_id": "compute-inventory",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable.",
+      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable. Independently reviewed the immutable original-deadline launcher, atomic call claim, four-segment limit and process-scoped watchdog; no run execution.",
       "evidence": [
-        "Explicit session attestation on2026-10-01 from /root/compute_inventory: GPT-6 using Codex; exact model/harness versions unavailable. Owned recovery_eval.py and patch04; no remote/model executions. Independently confirmed all12 real CPU training trace rows match, and reviewed pinned torchtext0.5 Iterator/RNG recovery."
+        "Explicit session attestation on2026-10-01 from /root/compute_inventory: GPT-6 using Codex; exact model/harness versions unavailable. Owned recovery_eval.py and patch04; no remote/model executions. Independently confirmed all12 real CPU training trace rows match, and reviewed pinned torchtext0.5 Iterator/RNG recovery.",
+        "2026-10-01 session independent launcher re-review passed after scoped guard and atomic-claim fixes. Exact model/build versions unavailable; GPT-6 using Codex."
       ]
     }
   ],
@@ -207,7 +208,7 @@
   },
   "paper": {
     "title": "Sign Language Translation based on Transformers for the How2Sign Dataset",
-    "citation": "Patricia Cabot \u00c1lvarez, Xavier Gir\u00f3 Nieto, Laia Tarr\u00e9s Benet. 2022. Sign Language Translation based on Transformers for the How2Sign Dataset. UPC Introduction to Research project report.",
+    "citation": "Patricia Cabot Álvarez, Xavier Giró Nieto, Laia Tarrés Benet. 2022. Sign Language Translation based on Transformers for the How2Sign Dataset. UPC Introduction to Research project report.",
     "url": "https://imatge.upc.edu/web/sites/default/files/pub/xCabot22.pdf",
     "pdf_sha256": "299d9f84e320549ca0e7a6fb3c3efd1112f6a1c7d72a8d89d3b38d921a259015",
     "accessed_at": "2026-10-01"
@@ -381,7 +382,7 @@
           ]
         }
       ],
-      "preprocessing": "Archive NPY files are float32 T\u00d71024; no video decoding. Published2023labels/features retained as-is; not silently converted into2022 corpus.",
+      "preprocessing": "Archive NPY files are float32 T×1024; no video decoding. Published2023labels/features retained as-is; not silently converted into2022 corpus.",
       "feature_header_audit": {
         "train": {
           "nonempty_and_native_filter_eligible_rows": 28873,
@@ -611,7 +612,7 @@
       "dataset_id": "phoenix14t-pami0-author",
       "system": "Joint SLRT baseline (3encoder/decoderlayers,8heads)",
       "checkpoint_rule": "Originalsign.yaml: developmentBLEU earlystopping,retainbestcheckpoint; native dev recognition/translationbeamsearch then apply devchoices to test.",
-      "paper_evidence": "Sections3.1\u20133.3 andTable5 PHX row; footnote2 citedneccam/slt recipe.",
+      "paper_evidence": "Sections3.1–3.3 andTable5 PHX row; footnote2 citedneccam/slt recipe.",
       "seed": 42,
       "training": "Unmodified author config except dataset/output paths; Adam0.001betas0.9/0.998,weightdecay0.001,batch32,plateaupatience8,decrease0.7,minLR1e-7;512hidden,2048FFN,dropout0.1,3layers8heads.",
       "assumptions": [
@@ -623,7 +624,7 @@
       "dataset_id": "how2sign-spot-align",
       "system": "Joint SLRT with English text substituted as gloss,3layers4heads",
       "checkpoint_rule": "13-epoch cap from paper Table3, preserving original author development-BLEU checkpoint selection and native early stopping. Development-only translation grid, recognitionbeam10.",
-      "paper_evidence": "Sections4.2\u20134.4,5.1;Table3four-headrow matchesTable5bestH2S numbers.",
+      "paper_evidence": "Sections4.2–4.4,5.1;Table3four-headrow matchesTable5bestH2S numbers.",
       "training": "Batch16, validation1000steps, 13epoch cap, seed42, Adam0.001 with betas0.9/0.998 and weightdecay0.001, lossweights1/1, hidden512, FFN2048, dropout0.1, native translation maximum output30. English transcripts supply CTC targets without case/punctuation rewriting; translation text follows native lowercase setting.",
       "reconstruction_limits": "Historical2022 cleaned manifest/checkpoint unavailable. Published 2023 original splits supply32914 entries after native training filter and exclusion of four absent training arrays, versus reported33116. Already-sliced features are not sliced again; this was judged a reasonable available-release reconstruction before scores."
     }
@@ -1331,7 +1332,7 @@
           3
         ],
         "expected_storage_gb": 2,
-        "estimate_basis": "Real preflight measured0.11\u20130.17s steadybatch32,3.046GB peak. Native default recipe historical fullrun1.5485h in repository; allow up to3h estimate for convergence/devsearch,6h ceiling.",
+        "estimate_basis": "Real preflight measured0.11–0.17s steadybatch32,3.046GB peak. Native default recipe historical fullrun1.5485h in repository; allow up to3h estimate for convergence/devsearch,6h ceiling.",
         "checkpoint_resume": "Preflight verified optimizer/scheduler restore in fresh author CLI process; outputs committed every120seconds. No full restart permitted.",
         "estimate_updates": [
           {
@@ -1369,7 +1370,7 @@
       ],
       "training_progress": {
         "training_finished_at_utc": "2026-10-01T11:13:16.339Z",
-        "stop_basis": "Native no-improvement across a learning-rate stage at epoch 20 / step 4400; signjoey/training.py lines 575\u2013584. Full evaluation subsequently completed.",
+        "stop_basis": "Native no-improvement across a learning-rate stage at epoch 20 / step 4400; signjoey/training.py lines 575–584. Full evaluation subsequently completed.",
         "selected_checkpoint_step": 2600
       },
       "started_at_utc": "2026-10-01T10:44:07.118244+00:00",
@@ -1736,7 +1737,7 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "Inspected every NPY header, dtype and shape and cross-checked official TSV IDs. Four training TSV IDs lack published arrays; all available arrays nonempty float32 T\u00d71024. Native training filter gives 28,873 plus 1,713 development and 2,328 test =32,914. This is 202 below the paper count; user authorized a documented conditional reconstruction.",
+        "detail": "Inspected every NPY header, dtype and shape and cross-checked official TSV IDs. Four training TSV IDs lack published arrays; all available arrays nonempty float32 T×1024. Native training filter gives 28,873 plus 1,713 development and 2,328 test =32,914. This is 202 below the paper count; user authorized a documented conditional reconstruction.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -2232,7 +2233,7 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "All available arrays validated finite float32 T\u00d71024. Preserved TSV order/values and original split assignments; omitted exactly four absent training arrays. Local archive hashes and16 extracted-array parity checks per split passed. Native loader files serialized with exact hashes.",
+        "detail": "All available arrays validated finite float32 T×1024. Preserved TSV order/values and original split assignments; omitted exactly four absent training arrays. Local archive hashes and16 extracted-array parity checks per split passed. Native loader files serialized with exact hashes.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -2943,8 +2944,131 @@
         "cpu_cores": 4,
         "memory_gib": 32
       },
+      "artifact_ids": [
+        "how2sign-training-recovery-check-002-console",
+        "how2sign-training-recovery-check-002-proof"
+      ],
+      "diagnostic_protocol": "Native full model/vocabulary on eight real released feature records, discarded CPU fixture, three epochs/twelve updates. Compare uninterrupted training with forced process exit after durable step5 checkpoint followed by fresh-process exact epoch/cursor/RNG recovery. Require exact model/optimizer/scheduler, all RNG/iterator state, twelve batch IDs/losses and best checkpoint selection. No target scores or primary model reuse. Canonicalize only process-local optimizer IDs, verify selected native best checkpoint tensors too, and bind protected best backups to content SHA to reject orphan reuse.",
+      "started_at_utc": "2026-10-01T15:15:52.650645+00:00",
+      "finished_at_utc": "2026-10-01T15:17:33.567059+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-OgH97zlQvXU3LHo4efDoEQ",
+        "function_call_id": "fc-01M3W0JCJV5EC12VDA9BDKQ425",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OgH97zlQvXU3LHo4efDoEQ"
+      },
+      "wall_time_seconds": 100.916414,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real native-state/output recovery verification passed; diagnostic only, no target scores.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "how2sign-evaluation-recovery-check-001",
+      "agent_ids": [
+        "cabot-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode check-evaluation-recovery --run-id how2sign-evaluation-recovery-check-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "how2sign-evaluation-recovery",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T15:18:04.092786+00:00",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "T4",
+        "cpu_cores": 4,
+        "memory_gib": 32
+      },
+      "artifact_ids": [
+        "how2sign-evaluation-recovery-check-001-console",
+        "how2sign-evaluation-recovery-check-001-proof"
+      ],
+      "diagnostic_protocol": "Real preflight checkpoint/full vocabularies, four real development records in two batches, native joint recognitionbeam10/translationbeam2 alpha2. Compare complete native output with interruption after first durable batch, then reuse first/recompute second, then verify operational-config replay caches both. Verify unchanged modelstate and fresh-process CUDA RNG restoration exactly. No targets.",
+      "started_at_utc": "2026-10-01T15:18:30.718283+00:00",
+      "finished_at_utc": "2026-10-01T15:20:13.362322+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-nzhpKppfqQr1QRLqua8CLl",
+        "function_call_id": "fc-01M3W0PVK0Q1YC0W6FVSSDM4X9",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-nzhpKppfqQr1QRLqua8CLl"
+      },
+      "wall_time_seconds": 102.644039,
+      "gpu_hours": 0.028512233055555558,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real native-state/output recovery verification passed; diagnostic only, no target scores.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "how2sign-full-seed42-001",
+      "agent_ids": [
+        "cabot-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode how2-full --run-id how2sign-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "how2sign-full-seed42",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T15:26:54.910577+00:00",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 24,
+        "max_cost_chf": 40
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "T4",
+        "cpu_cores": 4,
+        "memory_gib": 64
+      },
       "artifact_ids": [],
-      "diagnostic_protocol": "Native full model/vocabulary on eight real released feature records, discarded CPU fixture, three epochs/twelve updates. Compare uninterrupted training with forced process exit after durable step5 checkpoint followed by fresh-process exact epoch/cursor/RNG recovery. Require exact model/optimizer/scheduler, all RNG/iterator state, twelve batch IDs/losses and best checkpoint selection. No target scores or primary model reuse. Canonicalize only process-local optimizer IDs, verify selected native best checkpoint tensors too, and bind protected best backups to content SHA to reject orphan reuse."
+      "recovery_policy": {
+        "max_execution_segments": 4,
+        "max_provider_resumes": 3,
+        "full_restarts": 0,
+        "deadline": "One exclusive immutable claim initialized before source/data/model work; original elapsed time includes interrupted segments and replay setup. Native timeout at most remaining-120s; worker watchdog at originaldeadline-5s, minimum5s cleanup if replay arrives expired. Same logical function call only; no distinct caller may reuse output.",
+        "training": "Hash-verified completed-boundary state includes epoch/nativeiterator/RNG/optimizer/postvalidation scheduler/nativebest. Initial durable snapshot precedes first optimizer update. Snapshots at step1, every250steps and completion/stop; replay recomputes only work after last verified snapshot.",
+        "evaluation": "Content-bound native per-batch cache wrapped outside recognition reuse; same full70grid/order/ties/native aggregation and dev-selected test."
+      },
+      "estimated_wall_time_hours": [
+        18,
+        22
+      ],
+      "estimated_compute_usd": [
+        23.229504,
+        28.391616
+      ],
+      "protocol": "Declared available-release reconstruction: native recipe, paper3layers/4heads/batch16/13epochs/validation1000, fixedrecognition10 and complete70translationgrid. Pre-score comparability assessment applies. No primary scores inspected before this declaration."
     }
   ],
   "artifacts": [
@@ -3446,6 +3570,36 @@
       "kind": "raw_diagnostic",
       "uri": "artifacts/how2sign-evaluation-equivalence-complete.json",
       "sha256": "9d23be4f61ee0da9842004e9be1e940a03f4ba080ac9b9f61e781eda74af32bf"
+    },
+    {
+      "artifact_id": "how2sign-training-recovery-check-002-console",
+      "kind": "raw_log",
+      "uri": "artifacts/how2sign-training-recovery-check-002.log",
+      "sha256": "f5204049bd0c46a3c3a35c2d88b9d13a036bb8ac4595cc2b03dff458ef4a2468"
+    },
+    {
+      "artifact_id": "how2sign-training-recovery-check-002-proof",
+      "kind": "raw_diagnostic",
+      "uri": "artifacts/how2sign-training-recovery-check-002-proof.json",
+      "sha256": "66a9f6f1e21a55e5d436be3a804e15fe791d8736b54807bbdcae078d9794b708"
+    },
+    {
+      "artifact_id": "how2sign-evaluation-recovery-check-001-console",
+      "kind": "raw_log",
+      "uri": "artifacts/how2sign-evaluation-recovery-check-001.log",
+      "sha256": "c18bf80f406dde16f3cf63cb1798796f5205ce49f13787562b2b0c6e96ad569c"
+    },
+    {
+      "artifact_id": "how2sign-evaluation-recovery-check-001-proof",
+      "kind": "raw_diagnostic",
+      "uri": "artifacts/how2sign-evaluation-recovery-check-001-proof.json",
+      "sha256": "3dc6d58e5c0df3d5b609e3aa49045150a20970742dc2298f389c9c2809edac92"
+    },
+    {
+      "artifact_id": "how2sign-deadline-control-proof",
+      "kind": "raw_diagnostic",
+      "uri": "artifacts/how2sign-deadline-control-proof.json",
+      "sha256": "7653c06856a035e25b54ef1bc798e216e95fb2aa1174284d2db3bbefb18cf208"
     }
   ],
   "gates": [
@@ -3456,8 +3610,8 @@
       "reason": "Exact2022processed corpus and fixed-time checkpoint identity cannot be established from available2023 artifacts.",
       "required_action": "None; declared available-author-release reconstruction is executable and eligible for targets. Exact historical corpus identity remains a reported limitation.",
       "evidence": [
-        "Thesis\u00a74.1.1 says33116total entries and\u00a74.3 removes empty/out-of-range alignments without retained IDs. Author2023TSVs contain30908train+1713val+2328test=34949. This establishes a mismatch, not which source is erroneous.",
-        "Thesis\u00a75 says24hourswithoutconvergence;Table3says13epochs for selected3layer4headmodel. Epoch count is known, but hardware/time-bound checkpoint equivalence is not.",
+        "Thesis§4.1.1 says33116total entries and§4.3 removes empty/out-of-range alignments without retained IDs. Author2023TSVs contain30908train+1713val+2328test=34949. This establishes a mismatch, not which source is erroneous.",
+        "Thesis§5 says24hourswithoutconvergence;Table3says13epochs for selected3layer4headmodel. Epoch count is known, but hardware/time-bound checkpoint equivalence is not.",
         "SPOT-ALIGNprovenance recovered fromauthorREADME; missing URL alone was resolved and is not the gate.",
         "Duarte2022 officialCVPR paper Section4.1 reports31075/1739/2348 after cleaning (35162total), also distinct from Cabot33116 and2023release34949. No exactmanifest mapping these releases recovered.",
         "UPC-linked presentation Model adjustment speaker notes fix recognition beam to 10 and retain translation search; Model optimization notes confirm 24-hour ceiling. These resolve decoding details but not exact cleaned feature identity."
@@ -3522,8 +3676,8 @@
     "dockerfile_sha256": "e630a776dd5ed9db39261b092943a1886de80b0b339f20f6ed6cd9727f68094a",
     "source_base_commit": "0ff14a251c91c7c9b92a2e6b6c2a12db35384f77",
     "base_image": "nvidia/cuda:11.4.3-devel-ubuntu20.04@sha256:5d81539e4f3fab923fac7599baaf44ac055a0e69a47d49aed7c9da1e499c9cba",
-    "runtime": "Python3.7,PyTorch1.4.0+CUDA10.1,TensorFlow2.1 CPU CTCdecoder,Modal3.11shim; pipfreeze retained eachrun.",
-    "adaptations": "Reuse reviewed legacy Dockerfile dependency fixes. How2-only evaluator patches add English normalization and widen WER distance storage; source-preserving CPU scheduling/evaluation reuse require explicit real-data equivalence before full use.",
+    "runtime": "Python 3.7, PyTorch 1.4.0+CUDA10.1, torchtext0.5.0, TensorFlow2.1 CPU CTC decoder, Modal3.11 shim; pip freeze retained for each run. Exact torchtext0.5.0 official iterator source independently reviewed and runtime verified by GPU recovery proof.",
+    "adaptations": "Reuse reviewed legacy Dockerfile dependency fixes. How2-only correctness patches preserve English WER and widen integer range; verified unchanged per-sample CTC scheduling, redundant recognition reuse, and exact training/evaluation recovery retain native protocol, losses, checkpoint and grid selection.",
     "how2_image_id": "im-yjZGvo3yFFW29Lyz1RKq2r",
     "compute_pricing": {
       "source": "https://modal.com/pricing",
@@ -3533,7 +3687,8 @@
       "cpu_core_per_second": 1.31e-05,
       "memory_gib_per_second": 2.22e-06,
       "requested_how2_resources_per_hour_estimate": 1.290528,
-      "note": "T4 +4 requested CPU cores +64 GiB RAM; estimate excludes storage/egress, billing unavailable. No unverified currency conversion."
+      "note": "T4 +4 requested CPU cores +64 GiB RAM; estimate excludes storage/egress, billing unavailable. No unverified currency conversion.",
+      "cost_reservation_basis": "At USD1.290528/hour requested T4+4CPU+64GiB, 24h is USD30.972672. Budget conservatively treats USD1 as CHF1 for planning and reserves remaining CHF9.027328 for storage/egress/uncertainty. This is a forecast, not a live billing meter or verified FX rate; hard resource/time guard remains24h including interrupted segments."
     },
     "how2_patches": [
       {
@@ -3543,13 +3698,30 @@
       {
         "path": "patches/02-wer-integer-range.patch",
         "sha256": "06a6c22864c302f0816ddcbe4481a2269895e8924e3fdc5626da8f5742798636"
+      },
+      {
+        "path": "patches/03-training-recovery.patch",
+        "sha256": "1e47b380c38e72af2f533cb2d73e6d18e4321b83f88beb42a25dbb6132a848cf"
+      },
+      {
+        "path": "patches/04-evaluation-recovery.patch",
+        "sha256": "152ced3731fe415c2082395881543f753293691d574208699c3359f7c7b028ee"
       }
-    ]
+    ],
+    "how2_recovery_image_id": "im-k72FF7MYNwtLV7pmWNiiZu"
   },
   "entrypoints": [
     {
+      "path": "scripts/check_deadline.py",
+      "sha256": "d8a7911d8182c24ab2a3091e2670f961bd587284b9bceb580b8f54e6b216f43b"
+    },
+    {
       "path": "scripts/check_evaluation.py",
       "sha256": "910def937b542de1ec87faddf5b8c7304d8f1d5c50e66f6bee5036bd4bd26866"
+    },
+    {
+      "path": "scripts/check_evaluation_recovery.py",
+      "sha256": "8bd29b9685e7ed775a57a0a192048fa02fed89d86c09f8465db63c1290ac504c"
     },
     {
       "path": "scripts/check_training_recovery.py",
@@ -3569,7 +3741,7 @@
     },
     {
       "path": "scripts/modal_app.py",
-      "sha256": "dfe2f316cb1ce2bdedcbc702637368df3b8dd4c305cd5250eaf4b596316efe86"
+      "sha256": "8b84d277d2875239a73ea7117a7801f5e3747264f07a34eef6f9a81ef7ba2502"
     },
     {
       "path": "scripts/parallel_ctc.py",
@@ -3589,7 +3761,7 @@
     },
     {
       "path": "scripts/run.py",
-      "sha256": "f239077146f83df617f99a54104ee8db30bfbd4d237df80d1dbd37da2c9da0e2"
+      "sha256": "5f945cad0f65b9a7ff08b69932dd0d439affa03041548cfd564d3e0703c4698b"
     }
   ],
   "comparability_assessments": [

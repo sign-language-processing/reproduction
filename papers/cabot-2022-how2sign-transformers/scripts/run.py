@@ -7,6 +7,7 @@ import yaml
 from signjoey.training import train
 
 mode, output = sys.argv[1], Path(sys.argv[2])
+segment_dir=output/'segments'/sys.argv[3] if len(sys.argv)>3 else output
 config = yaml.safe_load(Path('/slt/configs/sign.yaml').read_text())
 config['data']['data_path'] = '/datasets/rwth-phoenix-2014-t/features/author'
 config['training']['model_dir'] = str(output/'model')
@@ -24,8 +25,25 @@ if mode=='preflight':
         config['data'].update(dev='val-preflight.pkl.gz',test='test-preflight.pkl.gz',random_dev_subset=-1)
     config['training'].update(epochs=1,validation_freq=1,logging_freq=1)
     config['testing'].update(recognition_beam_sizes=[10] if is_how2 else [1],translation_beam_sizes=[1],translation_beam_alphas=[-1])
-config_path=output/'config.yaml'
-config_path.write_text(yaml.safe_dump(config))
+recover=is_how2 and mode=='full'
+if recover:
+    from recovery_train import selected_checkpoint
+    config['training']['repro_recovery_dir']=str(output/'recovery')
+    # Preserve the first scientific configuration; replay changes only recovery keys.
+    original_path=output/'config.yaml'
+    if original_path.exists():
+        assert yaml.safe_load(original_path.read_text())==config
+    else:original_path.write_text(yaml.safe_dump(config))
+    checkpoint=selected_checkpoint(output/'recovery')
+    if checkpoint is not None:
+        config['training'].update(load_model=str(checkpoint),repro_resume=True)
+    elif (output/'model').exists():
+        # The initial durable snapshot precedes the first optimizer update.
+        # A directory without it therefore contains initialization evidence only.
+        (output/'model').rename(segment_dir/'interrupted-initialization-model')
+config_path=segment_dir/'config.yaml'
+if config_path==output/'config.yaml' and recover:pass
+else:config_path.write_text(yaml.safe_dump(config))
 start=time.monotonic()
 if is_how2:
     import tensorflow as tf
@@ -38,6 +56,10 @@ if is_how2:
     decoder=ParallelCTC(original_decoder,workers=4)
     tf.nn.ctc_beam_search_decoder=decoder
     training.test=with_recognition_cache(original_test)
+    if recover:
+        from recovery_eval import with_evaluation_recovery
+        training.test=with_evaluation_recovery(training.test,cache_root=output/'evaluation-cache',
+            dataset_identity={'manifest_sha256':'fe0d41ea4877a54f2be7b6601e69fa50da1ecec9f93b179d505123f8276ec48b'})
     try:
         train(str(config_path))
     finally:
@@ -55,7 +77,11 @@ if mode=='preflight':
     config_path=output/'resume-config.yaml'
     config_path.write_text(yaml.safe_dump(config))
     torch.cuda.empty_cache()
-    subprocess.run([sys.executable,"-m","signjoey","train",str(config_path)],check=True)
+    subprocess.run([sys.executable,"-m","signjoey","train",str(config_path)],check=True,env=dict(os.environ,PYTHONPATH="/opt:/slt"))
 result=dict(mode=('how2-' if is_how2 else '')+mode,elapsed_seconds=time.monotonic()-start,peak_memory_bytes=torch.cuda.max_memory_allocated(),torch_version=torch.__version__,cuda_version=torch.version.cuda,device=torch.cuda.get_device_name(0),checkpoint_resume_tested=mode=='preflight')
+if recover:
+    result['segment_id']=segment_dir.name
+    result['timing_scope']='Current execution segment only; aggregate wall-time bound is execution.json original deadline.'
+    (segment_dir/'runtime.json').write_text(json.dumps(result,indent=2))
 (output/'runtime.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result))
