@@ -1,0 +1,69 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-El46Rtqqdt557moA3chyzA
+✓ Created objects.
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function execute.
+└── 🔨 Created function acquire_data.
+{'name': 'Readme.txt', 'url': 'https://dataverse.csuc.cat/api/access/datafile/53890', 'bytes': 11823, 'sha256': '39082fe3109068ab29bb5a6fb0fe9370ceb48c32341c3951aeeaaed2f563fd31', 'npy_count': None}
+{'name': 'test.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/53222?format=original', 'bytes': 549672, 'sha256': 'd404cd64997f443cc6c05154511da9571cd1b897ef24500b75f5a96568ef647b', 'npy_count': None}
+{'name': 'train.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/51923?format=original', 'bytes': 6744324, 'sha256': '9e117ae049b83de9582bf39846d4094694f376fb59f4a0e5ad8f4bd3fe4ba65c', 'npy_count': None}
+{'name': 'val.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/51537?format=original', 'bytes': 367258, 'sha256': '3fd2a7006b6a54b9843dd9649b60010a51957364095ed128d42ce818021349b9', 'npy_count': None}
+{'name': 'test.zip', 'url': 'https://dataverse.csuc.cat/api/access/datafile/51538', 'bytes': 572646623, 'sha256': '60c595b721649862d20cbc0ebccfa2b360fc87e5f564f2617f9e382d85620819', 'npy_count': 2328}
+Task's current input(s) ["in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0"] cancelled because: Task's current input in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0 hit its timeout of 3600s
+[modal-client] 2026-10-01T11:42:57+0000 Received a cancellation signal while processing input ('in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0',)
+[modal-client] 2026-10-01T11:42:57+0000 Successfully canceled input ('in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0',)
+Stopping app - uncaught exception raised locally: FunctionTimeoutError("Task's current input in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0 hit its timeout of 3600s").
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <checkout>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:74 in main                                                │
+│                                                                              │
+│    73                                                                        │
+│ ❱  74 @app.function(image=modal.Image.debian_slim(python_version='3.12'),cpu │
+│    75 │   │   │     volumes={'/datasets':datasets.with_mount_options(read_on │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:534 in _process_result                                 │
+│                                                                              │
+│   533 │   if result.status == api_pb2.GenericResult.GENERIC_STATUS_TIMEOUT:  │
+│ ❱ 534 │   │   raise FunctionTimeoutError(result.exception)                   │
+│   535 │   elif result.status == api_pb2.GenericResult.GENERIC_STATUS_INTERNA │
+╰──────────────────────────────────────────────────────────────────────────────╯
+FunctionTimeoutError: Task's current input 
+in-01M3VGYPRAMJECKHG928F96N4F:1790851373835-0 hit its timeout of 3600s

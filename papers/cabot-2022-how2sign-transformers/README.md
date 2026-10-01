@@ -1,0 +1,146 @@
+# Cabot Álvarez et al. (2022): Transformers for How2Sign
+
+**Pipeline status:** `partial`
+**Numerical agreement:** `does_not_agree`
+**Preference level:** 2
+
+This independent attempt completed training and evaluation of the cited joint recognition/translation pipeline on the recovered PHOENIX features. All ten PHOENIX values were produced; none agrees with the published two-decimal value. How2Sign is being reconstructed under an explicitly authorized data-release assumption: the recovered author features and native training filter give 32,914 eligible entries versus the report’s 33,116. Its target comparability is assessed under this disclosed available-release reconstruction before any How2Sign score.
+
+[Patricia Cabot Álvarez, Xavier Giró Nieto, Laia Tarrés Benet. *Sign Language Translation based on Transformers for the How2Sign Dataset*. UPC Introduction to Research project report, 2022.](https://imatge.upc.edu/web/sites/default/files/pub/xCabot22.pdf)
+
+GPT-6 using Codex performed source discovery, implementation, execution, and reporting. A separate GPT-6/Codex reviewer checked the How2Sign adapter, protocol and selection and identified the integer-width WER defect; that agent performed no implementation or model execution. The master agent, also identified as GPT-6 using Codex, reviewed the runner, collector, final native metrics and evidence hashes; its exit-status propagation finding is recorded separately from execution attribution. Session instructions identify the model family and application; exact model and harness versions were not exposed. The original tracker export SHA256 and redacted record are preserved in `reproduction.json`. This is a direct user assignment using the current tracker schema, which has a nested final paper and no `confirmation` field. Paper and database IDs remain distinct.
+
+## Scope and source selection
+
+All twenty Table 5 values are requested: WER and BLEU-1 through BLEU-4 for development/test on both PHOENIX and How2Sign. Both rows are this report's own experiments. The PHOENIX row repeats the report's Table 1, which is itself an attempted reproduction of Camgoz; it is not a copied Camgoz score and is independently rerun here.
+
+Although the tracker says code `N/A`, paper footnote 2 identifies [neccam/slt](https://github.com/neccam/slt/tree/90588825f6229474bc19ac7a6b30ea3116635ba3). That pinned Apache-2.0 source supplies the model, original `configs/sign.yaml`, training, checkpoint selection, decoding, and metrics. No author model or training code is copied. PHOENIX changes only dataset/output paths; How2Sign adds evaluator correctness patches and preemption-recovery hooks described below.
+
+The UPC project page, full paper, author public repositories, cited project pages, upstream forks, and title/code searches were inspected. No Cabot-specific implementation/configuration or checkpoint was found. The cited [SPOT-ALIGN project](https://github.com/imatge-upc/sl_retrieval/tree/071f1683b6169c954c95024e49235c7355c29bd9) contains a website and demos. The later [WiCV 2023 repository](https://github.com/imatge-upc/slt_how2sign_wicv2023/tree/3260d05f4804d3611a911adf3fab8cc50d8204cd) identifies its I3D features as supplied by that previous work and links the actual dataset archive. Its different Fairseq translation method is not substituted for joint SLRT.
+
+## Data and permission
+
+PHOENIX uses the restored author `pami0` 1,024-dimensional pretrained CNN features: 7,095 training, 519 development, and 642 test samples. Every run hashes all three files before loading them. Their byte sizes, SHA256 values, restoration source, and canonical location are in `reproduction.json`: `modal://datasets/rwth-phoenix-2014-t/features/author/PHOENIX2014T/`. The [official RWTH terms](https://www-i6.informatik.rwth-aachen.de/web/Software/Databases/Signlanguage/?db=rwth-phoenix-weather) state CC BY-NC-SA 4.0; this is internal noncommercial project-cloud research. Existing public recorded data is used without new participants or public redistribution.
+
+How2Sign features and manifests are published at [DOI 10.34810/DATA693, version 1.0](https://doi.org/10.34810/DATA693), under CC BY-NC-ND 4.0. The public readme confirms the retrieval-feature provenance. Public file download links work; no access control was bypassed. The idempotent CPU acquisition entry point stores original archives and extracted files at `modal://datasets/how2sign/spot-align-wicv2023/`, recording SHA256, size, and feature counts. Analysis stays in the project cloud; no modified dataset or How2Sign checkpoint is published.
+
+The released manifests contain 30,908 training, 1,713 validation, and 2,328 test rows. Inspected NPY headers confirm float32 sequences with 1,024 channels. This paper's §4.1.1 reports 33,116 total entries, and §4.3 removes unknown empty/out-of-range tensors. The archive audit found four missing training files and no empty arrays. The native 400-frame/token training filter yields 28,873 eligible training records; retaining all 1,713 validation and 2,328 test records gives 32,914 total, 202 (~0.61%) fewer than the report. The declared available-release reconstruction omits only the four unavailable files and preserves official split assignments. Video decoding is unnecessary because both recipes consume precomputed features.
+
+## Recipe, assumptions, and metrics
+
+The PHOENIX configuration remains the cited author's: three encoder and decoder layers, eight heads, hidden size 512, feed-forward size 2,048, dropout 0.1, batch 32, seed 42, Adam learning rate 0.001 with betas 0.9/0.998 and weight decay 0.001. Development BLEU controls checkpoint retention and the plateau scheduler: patience 8, factor 0.7, minimum rate 1e-7. The native loop also stops when a learning-rate stage produces no new best development score. In this run it stopped at epoch 20 / step 4,400 and selected the step 2,600 checkpoint; the subsequent native beam search is part of evaluation. The native evaluator selects recognition beam width 1–10 and translation beam width 1–10/length penalty -1,0,1,2,3,4,5 on development, then evaluates test with those choices.
+
+No Cabot-specific PHOENIX seed/config/version is released. The ordinary assumption is to follow the cited recipe and available exact author features. It is declared before looking at scores, with no tuning toward Table 5. The 2022 report notes an older server dataset and changed package versions without identifying them; this limits exact historical identity even though the cited experiment can be rerun.
+
+WER is the pinned author's corpus word-error implementation (with its alignment choices); BLEU is its vendored SacreBLEU `raw_corpus_bleu`, cumulative orders 1–4, on word-level lowercased text. Do not compare a different tokenizer/version or sentence-averaged score. Full-precision native result objects and mechanical differences are retained, while the table displays percentages.
+
+How2Sign's known changes are English transcription as the CTC/gloss target, batch 16, validation every 1,000 steps, recognition beam fixed at 10, and the selected three-layer/four-head architecture. The [author presentation](https://docs.google.com/presentation/d/e/2PACX-1vRNBRN_Sm5CRzl_Birys3RQuZH87TPhVytp9NAs2Io4Wdh08w9MHR7siyFLJM8QcXj8mjlmRElrnZ6_/pub) and its speaker notes confirm these changes and retain translation beam search; they provide no cleaned sentence manifest. Table 3 identifies 13 epochs; §5 says experiments stopped after a 24-hour server limit without convergence. Exact historical corpus/checkpoint identity remains unknown. The user authorized a declared reconstruction using the available author release and paper/default settings; the result is an available-release reproduction with explicit historical-identity limitations.
+
+## Environment, execution, and evidence
+
+The runner reuses the repository's reviewed `papers/camgoz-2020-slt/Dockerfile` rather than duplicating the legacy environment. It pins `neccam/slt`, CUDA 11.4.3 container digest, Python 3.7, PyTorch 1.4.0/CUDA 10.1, and TensorFlow 2.1 for CPU CTC decoding. Modal's control interpreter is Python 3.11. The existing Dockerfile resolves invalid/obsolete requirement entries; its SHA256 and actual dependency freezes are retained. Recent shared-base Python/CUDA cannot install this legacy recipe unchanged, so the already reviewed compatible environment is reused on a T4.
+
+The representative preflight uses 96 real training examples and 16 development examples, with three optimizer steps, checkpoint save/reload including optimizer/scheduler, three resumed steps, and native development/test evaluation. It completed in 233.41 seconds with 3,045,750,272 bytes peak memory. Steady training batches took approximately 0.11–0.17 seconds. Its zero BLEU diagnostic scores are not target values.
+
+The independent full run uses one T4, an initial estimate of 1.5–3 GPU-hours and an explicit six-hour/CHF 10 ceiling. The estimate combines measured preflight throughput with the repository's prior 1.55-hour execution of the same cited recipe; previous scores are not reused. The observed full development evaluation takes about 24 seconds per validation, updating the estimate to 3–4 GPU-hours within the same ceiling. Outputs commit every 120 seconds. The PHOENIX full-run retry ceiling is one; a costly full restart is not authorized by that run record. The full function ran from 10:44:07 to 12:09:38 UTC on 2026-10-01 (5,131.86 seconds / 1.4255 GPU-hours); native train/evaluation took 5,118.62 seconds and peaked at 4,409,112,576 allocated bytes. Actual billed cost is unavailable. Its app is `ap-6zaeUM61yJHimwN5d8azLs`, call `fc-01M3VH0Q60J7S7DHJ442H8QP6S`, with evidence at `modal://7f7abc3e-cabot-results/phoenix-full-seed42-001/`.
+
+All Modal operations use the `repro-sign` wrapper. Canonical v2 `datasets` is read-only for experiments; v2 `huggingface-cache` is mounted read-write at `/cache/huggingface`, with both required cache variables set. Evidence and checkpoints use v2 `7f7abc3e-cabot-results`, never the shared cache. Each run records exact command, timestamps, app/function IDs, dependencies, GPU information, configuration, artifact hashes, terminal state, and attribution.
+
+The retained failures are ordinary glue/environment issues: remote module flattening invalidated repository parent indexing; calling the author training function twice in one interpreter reused its logger incorrectly, so resume now uses a fresh upstream CLI process; CPU evidence reading needed CUDA tensors mapped to CPU; archive safety validation needed both root and child paths resolved consistently on Modal's symlink-mounted dataset volume. The master review also added propagation of native nonzero exit codes to the local CLI for future invocations; the running full experiment was not restarted, and its saved native exit code is authoritative. No model behavior was changed. No authors were contacted.
+
+How2Sign acquisition exceeded its initial one-hour CPU guard. Verified HTTP 206 range resume preserved the partial training ZIP and completed its SHA256 check. Validation was acquired independently; a stale long-running volume snapshot did not see it, so a fresh bounded finalization verified the complete canonical archives. A disposable aria2 probe refused a foreign partial without changing its prefix; that approach was discarded. The first data adapter detected different archive directory layouts before producing output. Its next attempt exposed slow small-file volume reads and was stopped; copying each original ZIP to ephemeral disk once, verifying its complete hash, and reading identical arrays locally completed preparation in 766.51 seconds. All source features stay unchanged.
+
+Evaluator diagnostics also retain their failures: an incorrect positional call to the native model constructor was corrected to named arguments; two Modal preemptions preserved partial evidence before automatic replay hit the no-overwrite guard; legacy torchtext did not support the attempted shallow copy, so its own Dataset constructor now builds diagnostic subsets. These failures produced no target scores. The run ledger includes each attempt, ceiling, disposition, evidence location and execution attribution.
+
+## Target results
+
+All scores are percentages. Differences are reproduced minus published in percentage points; lower WER is better and higher BLEU is better. How2Sign results are pending the declared available-release reconstruction; the draft is still in progress and is not a completed evidence bundle.
+
+| Dataset | Split | Metric | Published | Reproduced | Difference |
+| --- | --- | --- | ---: | ---: | ---: |
+| PHOENIX | dev | WER | 48.92 | 53.67 | +4.75 |
+| PHOENIX | dev | BLEU1 | 44.30 | 43.23 | -1.07 |
+| PHOENIX | dev | BLEU2 | 31.47 | 30.56 | -0.91 |
+| PHOENIX | dev | BLEU3 | 24.35 | 23.57 | -0.78 |
+| PHOENIX | dev | BLEU4 | 19.88 | 19.15 | -0.73 |
+| PHOENIX | test | WER | 48.06 | 54.00 | +5.94 |
+| PHOENIX | test | BLEU1 | 44.62 | 42.06 | -2.56 |
+| PHOENIX | test | BLEU2 | 31.80 | 29.77 | -2.03 |
+| PHOENIX | test | BLEU3 | 24.40 | 22.80 | -1.60 |
+| PHOENIX | test | BLEU4 | 19.79 | 18.49 | -1.30 |
+| How2Sign | dev | WER | 98.02 | Pending | — |
+| How2Sign | dev | BLEU1 | 17.73 | Pending | — |
+| How2Sign | dev | BLEU2 | 7.94 | Pending | — |
+| How2Sign | dev | BLEU3 | 4.13 | Pending | — |
+| How2Sign | dev | BLEU4 | 2.24 | Pending | — |
+| How2Sign | test | WER | 98.40 | Pending | — |
+| How2Sign | test | BLEU1 | 17.40 | Pending | — |
+| How2Sign | test | BLEU2 | 7.69 | Pending | — |
+| How2Sign | test | BLEU3 | 3.97 | Pending | — |
+| How2Sign | test | BLEU4 | 2.21 | Pending | — |
+
+The PHOENIX run selected checkpoint step 2,600 using development BLEU, then selected recognition beam 10 and translation beam 2 / length penalty 2 on development. Test settings were not selected using test scores. Full precision is preserved in [the raw metric artifact](artifacts/phoenix-full-raw-metrics.json), with native result-object and checkpoint hashes in `reproduction.json`. The numerical label records observed disagreement under exact two-decimal comparison; it is not a scientific success/failure judgment.
+
+## Repeat commands
+
+```bash
+./setup.sh
+# Data already present: every experiment verifies the PHOENIX file hashes.
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode acquire
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode audit-data --run-id how2sign-header-audit-001
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode prepare-how2 --run-id how2sign-data-adapter-003
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode check-how2-metric --run-id how2sign-wer-range-check-001
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode how2-preflight --run-id how2sign-preflight-001
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode preflight --run-id preflight-003
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode full --run-id phoenix-full-seed42-001
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode collect --run-id phoenix-full-seed42-001
+python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/cabot-2022-how2sign-transformers
+```
+
+Choose fresh run IDs to repeat without overwriting evidence. The native training entry point performs evaluation after training. The repeat commands preserve existing outputs and require a fresh run ID; the original preflight resume child uses the unoptimized native evaluator, while the full How2Sign entry point uses the verified scheduling adapters described below. `--mode collect` hashes the evidence and summarizes native saved results on CPU, without recomputing or tuning metrics.
+
+No human execution decision is pending. The exact historical 2022 cleaned How2Sign manifest/checkpoint remain unavailable; the authorized reconstruction documents that limitation.
+
+## Authorized How2Sign reconstruction
+
+After the initial source audit, the user explicitly authorized reasonable corpus/protocol judgments. We proceed with the coauthor release and disclose the modest remaining corpus discrepancy. The original split files, native 400-frame/text-token training filter, and exclusion of genuinely empty feature arrays are preserved. Already-sliced sentence features are not sliced again using their source-video offsets. Three layers/four heads, batch 16, validation every 1,000 steps and 13 epochs follow the report; seed 42, Adam and loss weights follow the cited recipe. Development selects translation settings; recognition beam is 10. Before any How2Sign primary or preflight score, the complete audit supported target comparability under the disclosed available-release reconstruction: four missing training files, preserved official splits/features and a 202-entry (~0.61%) eligible-count difference. No substantial unresolved model or protocol alternative remains. This is not a claim of byte-identical historical artifacts.
+
+`patches/01-english-wer.patch` adds an explicit How2Sign WER branch. It normalizes whitespace while preserving English case, punctuation and repeated words. The existing German gloss cleanup would otherwise alter English references and predictions. `patches/02-wer-integer-range.patch` widens the distance matrix from uint8 to int64: real English references exceed the 255-cost range. An exact NumPy 1.18.1 CPU check on a 115-word reference and its first 30 words as a synthetic hypothesis produced 115 errors upstream versus the correct 85 deletions after widening. Costs, tie rules, corpus aggregation and BLEU remain unchanged. Both conventions were declared before How2Sign scores. The completed PHOENIX run retains its original evaluator. A separate CPU audit of all 519 development and 642 test decoded pairs found maximum reference/hypothesis lengths of 18/10 words and exactly identical uint8/int64 WER, deletion, insertion and substitution rates. Final How2Sign decoded text is also evaluated with the legacy integer width as a labeled secondary diagnostic, without changing selection or rerunning the model.
+
+
+The How2Sign stress preflight completed six finite optimizer steps, native development/test evaluation at recognition beam 10, checkpoint reload, four resumed steps, and three resumed validations. The fixed 1,800-second native guard then stopped further repeated diagnostics; the function used 1,835.37 seconds (0.510 T4-hours). This is recorded as a bounded diagnostic stop, not a completed full run. An observed GPU-memory snapshot was 12,347 MiB; a final allocator peak was not emitted because the guard interrupted the optional second cycle. The completed first-cycle dev/test outputs and all checkpoints/logs remain under `modal://7f7abc3e-cabot-results/how2sign-preflight-001/`.
+
+The old TensorFlow beam decoder serializes independent batch entries. Its CPU cost dominates English recognition. Bounded scheduling of unchanged per-sentence decoder calls is being verified against exact native sparse outputs and log probabilities, including beam widths 1 and 10, empty paths, repeated labels, ties and uneven sequence lengths. Separately, the native translation grid redundantly recomputes the same fixed-checkpoint recognition outputs for every candidate. A test-scoped adapter is being verified to reuse only those recognition fields while the author code still evaluates all 70 translation candidates in the original order. Training validation, model weights, losses, tie handling and final test selection retain their original semantics. The retained exact decoder, GPU smoke and complete70-candidate equivalence checks passed; the full How2Sign launch now awaits exact preemption-recovery checks.
+
+
+The GPU equivalence smoke used the fixed real preflight checkpoint and complete vocabularies. Native serial/joint and parallel/cached evaluation returned exactly equal complete normalized outputs at recognition beam 10, translation settings (1, -1) and (10, 5), and the same development-selected final test. Model parameters and flags remained unchanged. The separate raw-decoder check found exact sparse indices, values, shapes and log probabilities at beams 1/10, including partial batches and edge cases. Four workers reduced ordinary 16-record recognition time from 16.12 to 4.08 seconds at beam 1 and from 158.61 to 43.96 seconds at beam 10. The first 35 translation candidates passed before Modal preempted the CPU container. A detached continuation checks the exact saved prefix order/hash, evaluates only the remaining 35, carries forward the original strict development-selection rule, and compares the final selected test. The continuation completed all70 candidate comparisons and the same development-selected final test with exact complete outputs, unchanged model state and restored flags. No full How2Sign job has been launched.
+
+For capacity, a 16-record stress batch including a 1,451-frame sequence took 6.99 seconds at translation beam 10 / alpha 5 and peaked at 2.86 GB allocated GPU memory. A separately declared 96-record random development sample (seed 42), evaluated in six native batches, took 14.77 seconds at the same setting and 2.82 seconds at beam 1; one hypothesis reached the native 30-token ceiling. The proposed full run keeps all 70 candidates and estimates 18–22 T4-hours including training, approximately 23 training validations, final recognition and the complete translation grid. Its planned ceiling is 24 GPU-hours / CHF 40, with no full restart. T4 plus four CPU cores and 64 GiB at the checked public rates is approximately USD 1.290528/hour, or USD 23–28.4 projected and USD 31 at the ceiling, excluding storage/egress. Actual billed cost is unavailable.
+
+## Durable monitoring and completion handoff
+
+The planned full run ID is `how2sign-full-seed42-001`. Launch is detached so a local client disconnect cannot cancel the remote job. The source snapshot, source hashes, upstream diff, dependency freeze, GPU information, exact configuration and source-data manifest hash are retained beside its logs. The planned first native process has at most an 85,000-second guard inside the original 86,400-second aggregate deadline, one T4, four CPU cores, 64 GiB RAM and a CHF 40 reservation. A replay must receive only the remaining original time, including all interrupted segments. No fresh full training restart is authorized. Exact checkpoint continuation after provider preemption is being implemented within the same original aggregate deadline and cost ceiling. An existing output directory is never overwritten. The current draft must not be called complete until the native execution record is terminal and the final dev/test artifacts have been checked.
+
+```bash
+# Run only after the complete equivalence evidence is recorded; use a fresh ID for a repeat.
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode how2-full --run-id how2sign-full-seed42-001
+# Read these small files while monitoring; outputs commit every 120 seconds.
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get 7f7abc3e-cabot-results how2sign-full-seed42-001/execution.json how2sign-execution.json --force
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get 7f7abc3e-cabot-results how2sign-full-seed42-001/model/train.log how2sign-train.log --force
+# After native termination, collect and hash all retained evidence on CPU.
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode collect --run-id how2sign-full-seed42-001
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get 7f7abc3e-cabot-results how2sign-full-seed42-001/evidence.json how2sign-evidence.json --force
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get 7f7abc3e-cabot-results how2sign-full-seed42-001/raw-metrics.json how2sign-raw-metrics.json --force
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get 7f7abc3e-cabot-results how2sign-full-seed42-001/legacy-wer-diagnostic.json how2sign-legacy-wer-diagnostic.json --force
+```
+
+Finalize from the native `execution.json` exit code and saved results, not the CLI submission state. Record actual app/call IDs, timestamps, elapsed GPU-hours, runtime peak memory and immutable evidence hashes. Verify the complete 70-candidate development grid, development-only checkpoint/beam selection and identical selected settings on test. The collector preserves corrected primary WER and reports legacy uint8 WER on the same decoded text as a secondary diagnostic; text and large result objects stay on Modal. Assign the ten pending How2Sign targets their full-precision primary metrics with run/artifact references and mechanical differences; the pre-score available-release assessment determines comparability, never closeness to Table 5. Preserve the ten completed PHOENIX results unchanged. Attribute any later collector execution or report maintenance separately; the original GPU run remains attributed to its actual executor. Update both report and PR TL;DR, then run the repository validator and review privacy/committed-file hashes. A timeout or interruption must instead retain its actual terminal state and only those target values that were produced by the required evaluation.
+
+
+## Preemption recovery under verification
+
+Observed Modal preemptions prompted a source-level continuation audit before the long How2Sign run. Native checkpoints restore model/optimizer/scheduler and global step counters, but omit epoch, data-iterator cursor and RNG states; they also save the best checkpoint before the subsequent scheduler decision. Reusing `load_model` alone would therefore restart the epoch loop and could change the experiment.
+
+`patches/03-training-recovery.patch` and `scripts/recovery_train.py` add separate durable snapshots after completed optimizer/validation handling, preserving epoch, the native torchtext iterator state, Python/NumPy/Torch/CUDA RNG, scheduler, stop state and best-checkpoint identity. Protected best backups are bound to their content hashes, and partial gradient accumulation is excluded by the actual batch-multiplier-one recipe. A real CPU fixture completed12 updates across3 epochs, with a forced process exit after durable step5 and continuation in a fresh process: all12 ordered samples and both loss values matched uninterrupted training exactly. Its first whole-state assertion incorrectly compared legacy process-local optimizer IDs; a read-only comparison located that bookkeeping issue. The corrected complete-state and protected-best verification is still active.
+
+A separate GPT-6/Codex agent implemented `scripts/recovery_eval.py` and `patches/04-evaluation-recovery.patch`, and reviewed the training state boundary. It performed local mocked serialization/control-flow checks and source/syntax review, with no model or GPU execution. The evaluation hooks preserve completed native loss/decoding batches, with checkpoint/config/source/dataset identity, checksums, original tensor dtypes/devices and order. Native aggregation and all grid/selection logic remain intact. Real legacy-GPU interrupted-evaluation equivalence and aggregate-deadline integration are still pending. The full run must remain unlaunched until these checks pass. No human decision is required.

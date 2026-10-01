@@ -1,0 +1,101 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-uSIceuBxDkWeTWL6l0yW0q
+Building image im-rSrd0xUGfyMeBuAWToLpUZ
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 1.07s
+
+Built image im-rSrd0xUGfyMeBuAWToLpUZ in 3.24s
+
+
+Building image im-yjZGvo3yFFW29Lyz1RKq2r
+
+=> Step 0: FROM base
+
+=> Step 1: RUN git -C /slt apply /opt/how2-patches/01-english-wer.patch
+
+=> Step 2: RUN git -C /slt apply /opt/how2-patches/02-wer-integer-range.patch
+Saving image...
+Image saved, took 1.19s
+
+Built image im-yjZGvo3yFFW29Lyz1RKq2r in 3.90s
+
+
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/pa
+│   tches
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function execute.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function collect.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function execute_how2.
+└── 🔨 Created function check_how2_metric.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{"started_at_utc": "2026-10-01T13:43:27.993022+00:00", "app_id": "ap-uSIceuBxDkWeTWL6l0yW0q", "function_call_id": "fc-01M3VV966KNGASMDNDQPMJQ0J8", "exit_code": 0, "finished_at_utc": "2026-10-01T13:43:29.318326+00:00"}
+{
+  "numpy_version": "1.18.1",
+  "source_commit": "90588825f6229474bc19ac7a6b30ea3116635ba3",
+  "fixtures": [
+    {
+      "id": "FzmL8SL6Bow_0-8-rgb_front",
+      "reference_words": 115,
+      "diagnostic_hypothesis": "First30 reference tokens; no model output",
+      "legacy_errors": 115,
+      "widened_errors": 85,
+      "expected_deletions": 85
+    },
+    {
+      "id": "g2iFC1st7zQ_2-3-rgb_front",
+      "reference_words": 104,
+      "diagnostic_hypothesis": "First30 reference tokens; no model output",
+      "legacy_errors": 115,
+      "widened_errors": 74,
+      "expected_deletions": 74
+    }
+  ]
+}
+
+Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/repro-sign/main/ap-uSIceuBxDkWeTWL6l0yW0q

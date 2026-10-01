@@ -1,0 +1,154 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-PxJhvaskhETRSP6b66sbV5
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/parallel_ctc.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/pa
+│   tches
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function execute.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function collect.
+├── 🔨 Created function check_phoenix_metric.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function execute_how2.
+├── 🔨 Created function check_how2_metric.
+└── 🔨 Created function check_evaluation.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+Container terminated due to preemption. Your Function will be restarted with the same input. For more details, see https://modal.com/docs/guide/preemption
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 292, in check_evaluation
+    out=Path('/outputs')/run_id;out.mkdir(parents=True,exist_ok=False)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/pathlib.py", line 1116, in mkdir
+    os.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/outputs/how2sign-evaluation-equivalence-004'
+Stopping app - uncaught exception raised locally: FileExistsError(17, 'File exists').
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <worktree>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:307 in main                                               │
+│                                                                              │
+│   306 │   │   │     volumes={'/datasets':datasets.with_mount_options(read_on │
+│ ❱ 307 def check_evaluation_gpu(run_id:str,variant:str="gpu"):                │
+│   308 │   import subprocess,os,json,datetime                                 │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VYSF29J81Z394XGRM2VAPR)...      │
+│                                                                              │
+│ /root/modal_app.py:292 in check_evaluation                                   │
+│                                                                              │
+│ ❱ 292 out=Path('/outputs')/run_id;out.mkdir(parents=True,exist_ok=False)     │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.11/pathlib.py:1116 in mkdir                           │
+│                                                                              │
+│ ❱ 1116 os.mkdir(self, mode)                                                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+FileExistsError: [Errno 17] File exists: 
+'/outputs/how2sign-evaluation-equivalence-004'
