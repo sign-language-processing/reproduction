@@ -19,6 +19,34 @@
         "Parent /root session message on 2026-10-01: independently rendered PDF pages 4\u20135; Figures 2\u20134 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
         "Parent /root supplied the primary (2+1)D-SLR abstract discrepancy lead; executing agent independently verified its 98.7% versus Xu Table 4 98.2%. Session identifies GPT-6 using Codex but exposes no exact model or application version."
       ]
+    },
+    {
+      "agent_id": "master-conditional-executor",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Conditional reconstruction implementation and execution after documented judgment calls were authorized. Separate from earlier review-only contribution. Exact model_id and harness_version are unavailable.",
+      "evidence": [
+        "Current session identifies GPT-6 using Codex. On 2026-10-01 the master agent declared source-based reconstruction choices before any new score; exact model and application versions are not exposed."
+      ]
+    },
+    {
+      "agent_id": "conditional-independent-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only review of conditional preprocessing, split, model, loss and resume. Identified sampler-cursor and atomic-checkpoint issues before any GPU run; reviewed fixes. No execution contribution. Exact model_id/harness_version unavailable.",
+      "evidence": [
+        "2026-10-01 sibling agent identified as GPT-6/Codex reviewed conditional.py/conditional_modal.py: per-class30/10/10 splits disjoint, consistent video flips, accumulated loss correct, validation-only checkpointselection. Found mid-epochshuffle resume and non-atomic writes; root changed saves to60-step epochboundaries, atomicreplace, and includedbestmodelinresume. Suggested RangerLookahead branch preflight and wholeloopforecast; seven optimizersteps nowexercise defaultk6."
+      ]
+    },
+    {
+      "agent_id": "conditional-report-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only source/report/ledger review of effective-batch normalization, validation checkpoint selection, epoch-boundary resume and evidence limits. No implementation edits, execution or job control. Exact model_id and harness_version are unavailable.",
+      "evidence": [
+        "2026-10-01 reviewer session explicitly identifies GPT-6 using Codex; exact model/build and application version are not exposed.",
+        "Independent review found no result-changing defect. Verified loss division across 32 microbatches of four videos, disclosed BatchNorm behavior, earliest strict validation maximum, post-selection test and atomic epoch-boundary state recovery. Any resume must respect the remaining aggregate budget; saved prediction arrays contain no logits or secondary-test predictions."
+      ]
     }
   ],
   "assignment": {
@@ -164,6 +192,53 @@
       "url": "https://openaccess.thecvf.com/content/WACV2022W/HADCV/papers/Bohacek_Sign_Pose-Based_Transformer_for_Word-Level_Sign_Language_Recognition_WACVW_2022_paper.pdf",
       "revision_or_sha256": "WACVW2022 Table5",
       "role": "Earlier I3D98.91 and MEMP99.06 accuracy evidence. Does not establish origin of all Xu comparison parameter/FLOP cells."
+    },
+    {
+      "source_id": "conditional-timm",
+      "kind": "package",
+      "name": "timm",
+      "version": "1.0.22",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/d6/14/fc04d491527b774ec7479897f5861959209de1480e4c4cd32ed098ff8bea/timm-1.0.22-py3-none-any.whl",
+          "sha256": "888981753e65cbaacfc07494370138b1700a27b1f0af587f4f9b47bc024161d0"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c5/9d/e4670765d1c033f97096c760b3b907eeb659cf80f3678640e5f060b04c6c/timm-1.0.22.tar.gz",
+          "sha256": "14fd74bcc17db3856b1a47d26fb305576c98579ab9d02b36714a5e6b25cde422"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
+    },
+    {
+      "source_id": "conditional-torch-optimizer",
+      "kind": "package",
+      "name": "torch-optimizer",
+      "version": "0.3.0",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/f6/54/bbb1b4c15afc2dac525c8359c340ade685542113394fd4c6564ee3c71da3/torch_optimizer-0.3.0-py3-none-any.whl",
+          "sha256": "7de8e57315e43561cdd0370a1b67303cc8ef1b053f9b5573de629a62390f2af9"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/18/13/c4c0a206131e978d8ceaa095ad1e3153d7daf48efad207b6057efe3491a2/torch-optimizer-0.3.0.tar.gz",
+          "sha256": "b2180629df9d6cd7a2aeabe71fa4a872bba938e8e275965092568cd9931b924c"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
+    },
+    {
+      "source_id": "conditional-fvcore",
+      "kind": "package",
+      "name": "fvcore",
+      "version": "0.1.5.post20221221",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/a5/93/d056a9c4efc6c79ba7b5159cc66bb436db93d2cc46dca18ed65c59cc8e4e/fvcore-0.1.5.post20221221.tar.gz",
+          "sha256": "f2fb0bb90572ae651c11c78e20493ed19b2240550a7e4bbb2d6de87bdd037860"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
     }
   ],
   "status": {
@@ -195,7 +270,7 @@
         "repetitions": 5
       },
       "archive_sha256": "218197acaa188583c1f06d149750af6af0d6b2bd44a627550d55773f5eefb20e",
-      "split": "Paper60/20/20 train/validation/test; exact allocation and seed absent. No invented split used.",
+      "split": "The original audit used all 3,200 videos. The later conditional extension declares a seed-42 per-class 60/20/20 split; it does not claim the historical author membership.",
       "version_or_subset": "Original3200video release",
       "cloud_processing_allowed": true,
       "modal_volume": "datasets",
@@ -217,6 +292,60 @@
       },
       "verified_sample_count": 64,
       "sample_frame_counts": 3
+    },
+    {
+      "dataset_id": "lsa64-conditional-v1",
+      "name": "LSA64: declared 32-keyframe reconstruction",
+      "source_url": "https://facundoq.github.io/datasets/lsa64/",
+      "license_or_permission": "Derived from canonical CC BY-NC-SA 4.0 LSA64 for internal noncommercial research; no redistribution.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "lsa64-skresnet-conditional-v1",
+      "version_or_subset": "conditional-v1seed42/224RGB/32frames",
+      "expected_counts": {
+        "train": 1920,
+        "validation": 640,
+        "test": 640,
+        "classes": 64
+      },
+      "manifest": {
+        "uri": "modal://datasets/lsa64-skresnet-conditional-v1/manifest.json",
+        "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+      },
+      "archive_sha256": "e5eba27c56f44d07d0d4eb432d10f5d5216ee955af891bd35c1886a97c41ca3d",
+      "source_dataset_id": "lsa64",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 1920,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        },
+        {
+          "name": "validation",
+          "sample_count": 640,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 640,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        }
+      ]
     }
   ],
   "metric_definitions": [
@@ -257,6 +386,15 @@
       "system": "Improved SKResNet-TCN",
       "checkpoint_rule": "Figure7 reports best test state at656iterations; validation selection unspecified",
       "paper_evidence": "Sections3.3\u20133.6,4.1,Table4"
+    },
+    {
+      "experiment_id": "conditional-sknet50-tcn",
+      "dataset_id": "lsa64-conditional-v1",
+      "system": "Explicit conditional SKNet-50 + TCN reconstruction",
+      "recipe": "timm 1.0.22 skresnext50_32x4d; random initialization, Mish and max pooling; cited TCN blocks with width 256, kernel 3 and dilations 1/2/5; Ranger 1e-4, 1,000 steps, effective batch 128, microbatch 4; seed 42",
+      "checkpoint_rule": "Maximum validation accuracy every 50 steps; earliest tie; test only after training.",
+      "comparability": "Conditional evidence: the author architecture is unavailable. This assessment and all configuration choices were fixed before scores.",
+      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses."
     }
   ],
   "targets": [
@@ -909,6 +1047,201 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "conditional-data-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode prepare --run-id conditional-data-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-data",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:04:49.431253+00:00",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 10
+      },
+      "compute": {
+        "gpu_count": 0,
+        "cpu_count": 16,
+        "memory_mb": 32768
+      },
+      "artifact_ids": [
+        "conditional-data-execution-json",
+        "conditional-data-runtime-json",
+        "conditional-data-freeze-txt",
+        "conditional-data-console-log",
+        "conditional-data-executed-source-py",
+        "conditional-derived-manifest"
+      ],
+      "started_at_utc": "2026-10-01T13:07:07.773090+00:00",
+      "finished_at_utc": "2026-10-01T13:12:48.147546+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-JEMJetvAmhcr5mOTlHkVLv",
+        "function_call_id": "fc-01M3VS6NHV4N2BSFCQA353JJ4N",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-JEMJetvAmhcr5mOTlHkVLv",
+        "image_id": "im-Uu4wuwsaA67VCRgY85sXbg"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Decoded all 3,200 videos, selected 32 RGB frames at 224-square resolution per video, hashed every source and output, archived derived inputs and generated disjoint seed-42 class-balanced splits of 1,920/640/640. CPU wall time: 340.37 seconds.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "conditional-preflight-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode preflight --run-id conditional-preflight-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:15:48.545582+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536
+      },
+      "artifact_ids": [
+        "conditional-preflight-best-pt",
+        "conditional-preflight-console-log",
+        "conditional-preflight-executed-source-py",
+        "conditional-preflight-freeze-txt",
+        "conditional-preflight-gpu-txt",
+        "conditional-preflight-last-pt",
+        "conditional-preflight-manifest-json",
+        "conditional-preflight-model-txt",
+        "conditional-preflight-predictions-npz",
+        "conditional-preflight-runtime-json",
+        "conditional-preflight-metrics-json",
+        "conditional-preflight-execution-json"
+      ],
+      "planned_scope": "Seven real optimizer steps at effective batch 128 exercise Ranger Lookahead synchronization; checkpoint reload and one actual resumed optimizer step; primary and secondary evaluations on 64 held-out videos; memory and whole-loop timing measurements. No claim of target comparability.",
+      "started_at_utc": "2026-10-01T13:16:18.155639+00:00",
+      "finished_at_utc": "2026-10-01T13:18:39.655731+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-f0q0RR1sqr3taTgKGauuAq",
+        "function_call_id": "fc-01M3VSQ25HF8PSQGFGKW8WQ02R",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-f0q0RR1sqr3taTgKGauuAq",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
+      },
+      "measurements": {
+        "wall_seconds": 130.36249923706055,
+        "training_seconds": 80.42017936706543,
+        "mean_warm_microbatch_seconds": 0.2645499920096633,
+        "peak_gpu_bytes": 27345091072,
+        "parameters": 28530752,
+        "flops_one_fused_multiply_add": 143947126784,
+        "accuracy": 0.0,
+        "test_count": 64,
+        "steps": 7,
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Seven real effective-batch-128 optimizer steps exercised Ranger Lookahead synchronization, checkpoint reload and an actual resumed optimizer step. Both tiny held-out evaluation paths completed. Scores are diagnostics only.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "conditional-full-seed42-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode full --run-id conditional-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-full-seed42",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:20:18.291122+00:00",
+        "max_wall_time_seconds": 18000,
+        "max_gpu_hours": 5,
+        "max_cost_chf": 20
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536,
+        "estimated_wall_hours": 3.5,
+        "estimated_gpu_hours": 3.5,
+        "estimated_cost_chf": 11,
+        "forecast_basis": "Measured seven-step whole training/evaluation phase 80.42 seconds, scaled conservatively to 1,000 optimizer steps, plus 20 full validation passes, final primary/secondary tests, staging and atomic checkpoint writes. Warm microbatch 0.26455 seconds; peak 27.345 GB. Exact same model, microbatch and precision as preflight.",
+        "aggregate_ceiling": "At most five GPU-hours / CHF20 across initial execution and one checkpoint-only resume. No full restart.",
+        "resume_enforcement": "Orchestrator polls container IDs and deadline every 60 seconds. Stop the app if any third container is observed or UTC reaches 2026-10-01T18:20:18Z, preserving the original aggregate five-hour ceiling. Only the initial container and one replay from step 480 are allowed; no full restart."
+      },
+      "artifact_ids": [
+        "conditional-preemption-platform-log",
+        "conditional-original-partial-log",
+        "conditional-resume-partial-log"
+      ],
+      "planned_scope": "1,000 optimizer steps, all 1,920 training videos, validation every 50 steps on 640 videos, earliest highest-validation checkpoint, primary fixed-seed augmented test and separate deterministic diagnostic on 640 videos. Conditional evidence only; no architecture/score tuning.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-0zyXHBpA6HkvCxedlnkv2E",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-0zyXHBpA6HkvCxedlnkv2E"
+      },
+      "execution_segments": [
+        {
+          "container_id": "ta-01M3VSZ484QQ8C9NSEFCKQKSTR",
+          "started_at_utc": "2026-10-01T13:20:34+00:00",
+          "finished_at_utc": "2026-10-01T14:45:04+00:00",
+          "end_reason": "Provider preemption; platform log explicitly says same-input automatic replay. Native process exit code was not observed.",
+          "native_exit_code": null,
+          "checkpoint_step_recovered": 480
+        },
+        {
+          "container_id": "ta-01M3VYT587185B6Y4FZA0HAY3R",
+          "started_at_utc": "2026-10-01T14:45:12+00:00",
+          "resume_step": 480,
+          "detail": "Same logical Modal invocation replayed; script restored last checkpoint. This consumes the single allowed checkpoint resume. No fresh training restart."
+        }
+      ],
+      "recovery_evidence_note": "Native wrapper overwrites console/runtime files when Modal replays the function. Original console evidence is limited to retained partial snapshots and platform preemption log; no complete original native log or native exit code is claimed. All final timing fields must distinguish the resumed process from the aggregate lifecycle. Restored optimizer/model/RNG/loader state does not establish bitwise cross-container equivalence; validation at step 500 differed after replay."
     }
   ],
   "artifacts": [
@@ -953,20 +1286,157 @@
       "sha256": "be54fe1acddb05e9edfd4fe4df88206f380ce64c2d467b08332a46600800429b",
       "size_bytes": 7991,
       "uri": "artifacts/failure-3.log"
+    },
+    {
+      "artifact_id": "conditional-data-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/execution.json",
+      "sha256": "378c21ff5fe63fca97b9050baa966020a66c513b7885e720ecf4360344a21af9",
+      "size_bytes": 398
+    },
+    {
+      "artifact_id": "conditional-data-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/runtime.json",
+      "sha256": "86a4da9be03750a0fa92b667326757043df0d0b38565ebd03c4114037679f911",
+      "size_bytes": 143
+    },
+    {
+      "artifact_id": "conditional-data-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/freeze.txt",
+      "sha256": "25d11599f2b14dd7a1ca9c39e76e7ccc0415d1d177bca67ef3049695b8a852a7",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "conditional-data-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/console.log",
+      "sha256": "dcd88115e3d86dde71cce159d249ef280d2b1cb37ded1a4e362be6afe6e92e7e",
+      "size_bytes": 693
+    },
+    {
+      "artifact_id": "conditional-data-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/executed-source.py",
+      "sha256": "244cb72a5137cbe8f7be2aa68a98d008ab31bf8ca978f1bd038b77f086f67983",
+      "size_bytes": 12734
+    },
+    {
+      "artifact_id": "conditional-derived-manifest",
+      "kind": "data_manifest",
+      "uri": "modal://datasets/lsa64-skresnet-conditional-v1/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-preflight-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/best.pt",
+      "sha256": "cec9600fbe1820730eb7ddb2b004ed33a513a1908bdb65609b97168cb9057536"
+    },
+    {
+      "artifact_id": "conditional-preflight-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/console.log",
+      "sha256": "6740e23fa30189cb7be6e81a8f02d1a66acbb845dd8006974fdab015f1354e11",
+      "note": "Hash of closed terminal log, independently collected. The embedded metrics.files console.log hash was sampled before the metrics JSON itself was printed and describes an earlier log snapshot."
+    },
+    {
+      "artifact_id": "conditional-preflight-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/executed-source.py",
+      "sha256": "d9ccc2af2aa8a858db578bc6e140bfc3bf358dcc7259c98ca16ab6169ec34ff9"
+    },
+    {
+      "artifact_id": "conditional-preflight-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5"
+    },
+    {
+      "artifact_id": "conditional-preflight-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/gpu.txt",
+      "sha256": "e78790c2d7eb65b807d5d7f048f66297ddb090c3fe3219ba10623b3c092ec2d3"
+    },
+    {
+      "artifact_id": "conditional-preflight-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/last.pt",
+      "sha256": "1b115c3d910a45612e1ffe7b6cea34dcd670124ec4b9728ce52739865e0eed7f"
+    },
+    {
+      "artifact_id": "conditional-preflight-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-preflight-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/model.txt",
+      "sha256": "1c75198c8c9f6bb98346de5740ce0161332c962bec56856c72a523ae033993f7"
+    },
+    {
+      "artifact_id": "conditional-preflight-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/predictions.npz",
+      "sha256": "746028130e0afbb2c07a5cad47a10504560be9d655cd1419c5e8699207bb8981"
+    },
+    {
+      "artifact_id": "conditional-preflight-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/runtime.json",
+      "sha256": "72d1c47a8d935d2b75664b3de822c083007bea99e840468fbb36314f3c36c76e"
+    },
+    {
+      "artifact_id": "conditional-preflight-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/metrics.json",
+      "sha256": "c33442534ccd171c39fc00a9c36f4e8c1ec5b2785d59ac88409d847c6a9d9fad"
+    },
+    {
+      "artifact_id": "conditional-preflight-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/execution.json",
+      "sha256": "bbc00af8a4bd2e3728ae063b354519f2216adaae9ce8688b63ca130231c8c5e0"
+    },
+    {
+      "artifact_id": "conditional-preemption-platform-log",
+      "kind": "execution_evidence",
+      "sha256": "04cd37c09cc9f51872e31873c71e65be995e69a04cbfeae85ca03f6848d4eb35",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-preemption-platform.log"
+    },
+    {
+      "artifact_id": "conditional-original-partial-log",
+      "kind": "execution_evidence",
+      "sha256": "1705d375a45091a834e47af8d2f17eb3781930150a320b1ae5591aa037a6fd42",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-original-partial.log"
+    },
+    {
+      "artifact_id": "conditional-resume-partial-log",
+      "kind": "execution_evidence",
+      "sha256": "52e59d423c29fc53c745d9cf9d8761c0a932be7407a9013265018f854b989d6c",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-resume-partial.log"
     }
   ],
   "gates": [
     {
       "gate_id": "architecture",
-      "status": "open",
+      "status": "resolved",
       "evidence": [
         "Sections3.3\u20133.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
         "Official article/PDF/data-availability/references examined. GitHub repository search SKResNet-TCN and9503961 both return0. Exacttitle/model/authorwebsearch yields paper/citations, no author code. GenericSKNet/TCN artifacts cannot resolve missing hybrid specification.",
-        "Independent master review rendered PDF pages 4\u20135: Figures 2\u20134 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution."
+        "Independent master review rendered PDF pages 4\u20135: Figures 2\u20134 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
+        "2026-10-01 judgment review: ordinary split/seed/iteration/default choices are declared rather than gated; missing core architecture still prevents exact target attribution. Conditional execution proceeds independently."
       ],
       "type": "protocol",
       "reason": "Architecture and evaluation protocol missing.",
-      "required_action": "Provide the architecture/config and input shape defining Table4 12.34M/62.50G and recognition run, or explicitly authorize a conditional surrogate specification."
+      "required_action": "No execution decision is pending: a documented conditional reconstruction is authorized. An exact author architecture/input/configuration would still be required to establish target comparability.",
+      "resolution": "Execution choices are resolved by the declared conditional recipe. The exact author architecture remains unknown and prevents comparable target attribution; this is a scientific limitation, not a pending execution decision."
     },
     {
       "gate_id": "comparison-provenance",
@@ -987,9 +1457,42 @@
     "Webexacttitle+code/GitHub; authorXuebinXu+SKResNet",
     "CitedLi2019officialSKNet URL404; citedBai2018TCN pinnedsource inspected"
   ],
-  "guesses": [],
+  "guesses": [
+    {
+      "guess_id": "conditional-backbone",
+      "detail": "Use timm 1.0.22 skresnext50_32x4d, the grouped model equivalent to the original SKNet-50 reference, with random initialization, 224-square input, max spatial pooling and Mish. Its size is not chosen to match 12.34M parameters or 62.50 GFLOPs. This is not the missing author architecture."
+    },
+    {
+      "guess_id": "conditional-temporal",
+      "detail": "Use the cited pinned TCN TemporalBlock three times: width 256, kernel 3, sawtooth block dilations 1/2/5 and dropout 0.2. Mish replaces ReLU as described in the paper. Temporal max pooling feeds a 64-class classifier."
+    },
+    {
+      "guess_id": "conditional-keyframes",
+      "detail": "Bilinear resize to 224-square RGB; mean absolute grayscale frame differences; three-frame moving average; select the strongest 32 local maxima in chronological order. Fill shortages uniformly, then repeat the last frame if the video has fewer than 32 frames. Smoothing, resizing and filling are declared interpretations."
+    },
+    {
+      "guess_id": "conditional-split-training",
+      "detail": "Seed 42 per-class 60/20/20 split gives 1,920/640/640 videos. Ranger at learning rate 0.0001 uses library defaults. Interpret 1,000 iterations as optimizer steps, with effective batch 128 accumulated over 32 microbatches of four videos. BatchNorm sees 128 frames per microbatch, an explicit protocol deviation. Validation every 50 steps selects the earliest best checkpoint."
+    },
+    {
+      "guess_id": "conditional-comparability",
+      "detail": "All new architecture and training outputs are conditional evidence, never comparable target values regardless of numerical closeness. Execution choices are resolved; the exact author architecture and historical comparison provenance remain unknown."
+    },
+    {
+      "guess_id": "conditional-resume",
+      "detail": "Validate every 50 steps. Atomically save training state every 60 steps (four complete training epochs), and at termination. Embed the selected best model in the resume state so an interrupted later checkpoint cannot be reused accidentally. Seven exact-effective-batch preflight steps exercise Ranger Lookahead synchronization at step six, followed by state reload and another optimizer step."
+    },
+    {
+      "guess_id": "conditional-input-augmentation",
+      "detail": "Scale RGB to [0,1] and normalize with ImageNet means (0.485,0.456,0.406) and standard deviations (0.229,0.224,0.225), without pretrained weights. Flip whole videos horizontally with probability 0.5 during training and primary test evaluation. Validation is unaugmented. Test seed 314159 was fixed before scores."
+    }
+  ],
   "deviations": [
-    "No substitute architecture or split was invented; data-only preflight does not yield a recognition metric."
+    "No substitute architecture or split was invented; data-only preflight does not yield a recognition metric.",
+    {
+      "deviation_id": "authorized-conditional-reconstruction",
+      "detail": "After independent source/dataaudit, declared reconstructionchoices are executed as conditional evidence. Noauthormodelclaim, no tuningtowardpublishedparameter/FLOP/accuracy values."
+    }
   ],
   "author_contact": {
     "contacted": false,
