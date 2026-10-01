@@ -14,7 +14,7 @@ The assignment is a direct user request using the current tracker export. Its or
 
 ## Target scope
 
-Table 4,p8 compares the proposed system with cited earlier systems. Only its own row is in scope for a new experiment. The other four rows are retained in the target ledger as cited baselines; their provenance does not establish that this paper reran them.
+Table 4,p8 compares the proposed system with cited earlier systems. All fourteen numeric cells remain in the ledger. The proposed method’s three cells have a structural gate. The comparison cells have a provenance gate: citations alone do not establish whether each number was copied or remeasured, so none is silently exempted from scope. Earlier SPOTER Table 5 contains the same I3D 98.91 and MEMP 99.06 accuracy values, but the origins of the other parameter/FLOP/accuracy cells are not fully established.
 
 | Own Table 4 target | Published | Reproduced |
 |---|---:|---|
@@ -63,3 +63,5 @@ The retained terminal evidence, timestamps, Modal app/function IDs, exact manife
 Which architecture/configuration and input shape produced Table 4, and which keyframe/split/checkpoint protocol produced its100% accuracy? An author-released implementation or explicit specification can resolve this. No author was contacted. This question requires evidence rather than an optimizer default; Ranger is already specified.
 
 Preference level: 3. No faithful reimplementation can be selected before the structural gate is resolved. The successful CPU audit took 26.15 seconds, verified all 3,200 file paths, and decoded 192 full-resolution frames across 64 class samples. Raw evidence: `modal://2be3c68e-skresnet-results/data-preflight-004/`, app `ap-Q5jTR7jRU1BbyHlNewufsy`, call `fc-01M3VGW17RQMT228VPF0C8Q3Y0`. GPU-hours: 0.
+
+Comparison-row question: which Table 4 cells were copied from which exact source locations, and which were remeasured with what input shape, split, and checkpoint? Until resolved, these cells are explicitly not produced rather than excluded as verified copied baselines.
