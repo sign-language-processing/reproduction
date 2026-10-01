@@ -1,0 +1,1516 @@
+{
+  "paper_id": "dbf0205f1d29b109ad5e29d6824ed965b511598a",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "/Users/carlos/Downloads/reproductions-dbf0205f1d29b109ad5e29d6824ed965b511598a-2026-09-08.json",
+      "sha256": "8ae0a046398834483074d4ecc083824d23aad8ba6292d8c91cb187f345cc53c4"
+    },
+    "normalized": {
+      "title": "Variational Bayesian Sequence-to-Sequence Networks for Memory-Efficient Sign Language Translation",
+      "year": 2021,
+      "venue": "arxiv",
+      "pdf_url": "https://arxiv.org/pdf/2102.06143",
+      "code_repos": [],
+      "what_to_reproduce": "Table 1 on page 9",
+      "metric_ids": [
+        "015vltbetbo3cpj",
+        "bvwp18ncscssz87"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "015vltbetbo3cpj",
+          "name": "BLEU-4",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "bvwp18ncscssz87",
+          "name": "ROUGE",
+          "url": []
+        }
+      ],
+      "datasets": [
+        {
+          "id": "wk5mci5wniesf1j",
+          "name": "PHOENIX-2014-T",
+          "available": "yes",
+          "license": "CC BY-SA 3.0",
+          "urls": [
+            "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/"
+          ],
+          "on_modal": "yes",
+          "comments": "Extension of PHOENIX-2014 with German translation annotations"
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "peer_reviewed": "no",
+      "comments": "dataset changed to PHOENIX-2014-T, used subset gloss2text\n\nIn the paper, the dataset is called RWTH-PHOENIX-Weather 2014T - I assume it's the same or a subset of RWTH-PHOENIX-Weather-T which is already in the dataset collection (?)",
+      "flag_reason": "",
+      "confirmation": null,
+      "status": "final"
+    },
+    "record": {
+      "area_of_slp": [
+        "Translation"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "dataset changed to PHOENIX-2014-T, used subset gloss2text\n\nIn the paper, the dataset is called RWTH-PHOENIX-Weather 2014T - I assume it's the same or a subset of RWTH-PHOENIX-Weather-T which is already in the dataset collection (?)",
+      "compute_requirements": "N/A",
+      "copied_scores": "no",
+      "datasets": [
+        "wk5mci5wniesf1j"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "Extension of PHOENIX-2014 with German translation annotations",
+            "correspondence": "",
+            "id": "wk5mci5wniesf1j",
+            "license": "CC BY-SA 3.0",
+            "name": "PHOENIX-2014-T",
+            "on_modal": "yes",
+            "url": [
+              "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "015vltbetbo3cpj",
+            "name": "BLEU-4",
+            "url": []
+          },
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "bvwp18ncscssz87",
+            "name": "ROUGE",
+            "url": []
+          }
+        ]
+      },
+      "finalized_by": "joni.dambre@gmail.com",
+      "flag_reason": "",
+      "id": "ytxbgh7dwocw2gx",
+      "includes_human_evaluation": "no",
+      "main_experiment_has_ranking": "yes",
+      "metrics": [
+        "015vltbetbo3cpj",
+        "bvwp18ncscssz87"
+      ],
+      "paper_id": "dbf0205f1d29b109ad5e29d6824ed965b511598a",
+      "pdf_url": "https://arxiv.org/pdf/2102.06143",
+      "peer_reviewed": "no",
+      "potential_ethical_concerns": "no",
+      "rejection_reason": "",
+      "status": "final",
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "sophia.conrad@uzh.ch",
+          "when": "2026-08-17T17:47:08.843Z"
+        }
+      ],
+      "sub_area_of_slp": [
+        "Gloss-to-text"
+      ],
+      "textual_conclusion": "we can achieve a substantial\nweight compression without diminishing modeling performance/accuracy",
+      "title": "Variational Bayesian Sequence-to-Sequence Networks for Memory-Efficient Sign Language Translation",
+      "venue": "arxiv",
+      "what_to_reproduce": "Table 1 on page 9",
+      "year": 2021
+    },
+    "reproductions_record": {
+      "assignees": [
+        "carlos.escolano@tsc.upc.edu"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "id": "iy55ljg3be0lg0w",
+      "paper": "ytxbgh7dwocw2gx",
+      "status": "in_progress",
+      "url": []
+    },
+    "request": "Reproduce Table 1 (p. 9) of Partaourides et al. 2021 (arXiv:2102.06143), Gloss2Text SLT on RWTH-PHOENIX-Weather 2014T. Assignment delivered as a PocketBase `reproductions` collection export (record id iy55ljg3be0lg0w, assigned to the user, status in_progress) with the paper row expanded under expand.paper (paper status='final', finalized_by joni.dambre@gmail.com via needs_review->final by sophia.conrad@uzh.ch). This export schema carries no `confirmation` field; not fabricated. Recorded as a direct assignment with the export file as source."
+  },
+  "paper": {
+    "title": "Variational Bayesian Sequence-to-Sequence Networks for Memory-Efficient Sign Language Translation",
+    "citation": "Partaourides, H., Voskou, A., Kosmopoulos, D., Chatzis, S., Metaxas, D.N. Variational Bayesian Sequence-to-Sequence Networks for Memory-Efficient Sign Language Translation. In: Pattern Recognition. ICPR International Workshops and Challenges 2020, LNCS 12536, pp. 251-262. Springer (2021). arXiv:2102.06143v1 [stat.ML] 11 Feb 2021.",
+    "url": "https://arxiv.org/abs/2102.06143",
+    "pdf_url": "https://arxiv.org/pdf/2102.06143",
+    "pdf_sha256": "5fe99055e474d9109e3d2b75e1b00c56380f82234cf859e6ad38c2a649436b5b",
+    "accessed_at": "2026-09-08",
+    "venue": "ICPR 2020 Workshops (arXiv preprint); not peer-reviewed per queue record"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2102.06143",
+      "revision_or_sha256": "5fe99055e474d9109e3d2b75e1b00c56380f82234cf859e6ad38c2a649436b5b",
+      "role": "Target table (Table 1) and full training/inference protocol description"
+    },
+    {
+      "source_id": "camgoz-2018-nslt",
+      "kind": "code",
+      "url": "https://github.com/neccam/nslt",
+      "revision_or_sha256": "06951580b58f04b9cd64efcf61aeca36011031d3",
+      "role": "Reference [10] whose Gloss2Text GRU-without-attention model is the paper's Baseline row and whose 4-encoder/4-decoder x 1000-unit architecture the paper reuses for all rows; also the likely source of the BLEU-4/ROUGE metric scripts. Consulted as architectural reference; not run as-is (it is a video Sign2Text pipeline)."
+    }
+  ],
+  "status": {
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Only the four in-scope Baseline targets produced comparable values. They disagree sharply with the paper: dev BLEU-4 4.66 vs 16.3 (-11.64), test BLEU-4 3.82 vs 16.3 (-12.48), dev ROUGE 19.35 vs 40.3 (-20.95), test ROUGE 16.75 vs 40.7 (-23.95). The baseline seq2seq plateaued at this level (dev BLEU-4 flat from epoch ~70). The 20 variational/weight-compression targets were not produced (protocol_ambiguous) and their conditional runs, also ~4x below the paper, are not assessed for agreement. Attempt closed 2026-09-30 after the author-contact email (sent 2026-09-08) went unanswered for 22 days; no further runs are planned.",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "phoenix-2014t-gloss2text",
+      "name": "RWTH-PHOENIX-Weather 2014T",
+      "version_or_subset": "Gloss2Text subset: manual gloss annotations (orth) -> German translation, text only; no video/features used",
+      "sources": [
+        {
+          "url": "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/",
+          "accessed_at": "2026-09-08"
+        }
+      ],
+      "license_or_permission": "Queue dataset record: CC BY-SA 3.0. The version-specific RWTH page links CC BY-NC-SA 3.0 (see camgoz-2018-nslt record). Gloss2Text uses only the released text annotation CSVs; non-commercial research processing on project cloud is permitted under either reading.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/annotations",
+      "files_used": [
+        "PHOENIX-2014-T.train.corpus.csv",
+        "PHOENIX-2014-T.dev.corpus.csv",
+        "PHOENIX-2014-T.test.corpus.csv"
+      ],
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 7096,
+          "files": [
+            {
+              "path": "rwth-phoenix-2014-t/annotations/PHOENIX-2014-T.train.corpus.csv",
+              "sha256": "cc3dc2461f0a222b92f3927c24ac21c1467f3e5428b406ee7fe40bca1b0b8d44"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 519,
+          "files": [
+            {
+              "path": "rwth-phoenix-2014-t/annotations/PHOENIX-2014-T.dev.corpus.csv",
+              "sha256": "1085141d0ed6f28c6de6196a271b72c07366ed3fe5470c9717bd44640737f00b"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 642,
+          "files": [
+            {
+              "path": "rwth-phoenix-2014-t/annotations/PHOENIX-2014-T.test.corpus.csv",
+              "sha256": "632b19c9a87fb9c98b0821e04861750565348bce20a069c6dea1bba5bda27879"
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "row_counts": "train 7096 / dev 519 / test 642 -- exact match to paper Section 4.1 (total 8257)",
+        "german_train_vocab": "2887 types, 1077 singletons -- exact match to paper Section 4.1",
+        "gloss_train_vocab": "1085 types / 355 singletons on raw whitespace-split orth vs paper's 1066 / 337; ~19-type gap attributed to unspecified gloss cleaning (e.g. dropping __ON__/__OFF__/__EMOTION__/__PU__ non-manual markers). Recorded as a preprocessing guess."
+      },
+      "deviation": "None for data identity. Gloss preprocessing detail is unspecified by the paper; see guesses."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "bleu4",
+      "name": "BLEU-4",
+      "direction": "higher_is_better",
+      "implementation": "sacrebleu corpus_bleu (guess). Paper Section 4 lists 'BLUE and ROUGE' with no citation; protocol follows Camgoz 2018 [10] whose neccam/nslt repo scores with a bundled tensor2tensor-style bleu.py. sacrebleu chosen for reproducibility; exact upstream implementation is unknown.",
+      "version": "sacrebleu 2.x; signature recorded per run (guess - paper gives none)",
+      "aggregation": "corpus-level, single run ('until convergence'); paper reports one value, no seeds/mean/std",
+      "unit_or_scale": "0-100",
+      "queue_metric_id": "015vltbetbo3cpj"
+    },
+    {
+      "metric_id": "rouge",
+      "name": "ROUGE-L",
+      "direction": "higher_is_better",
+      "implementation": "rouge_score.rouge_scorer ROUGE-L F1, corpus mean (guess). Table 1 column is just 'Rouge'; Camgoz 2018 [10] / neccam-nslt report ROUGE-L F1. Exact variant and implementation unspecified by the paper.",
+      "version": "google-research rouge-score 0.1.x",
+      "aggregation": "mean sentence-level ROUGE-L F1 over the split, single run",
+      "unit_or_scale": "0-100",
+      "queue_metric_id": "bvwp18ncscssz87"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "baseline",
+      "system": "Baseline: plain GRU seq2seq, no variational layers. Encoder-decoder GRU seq2seq, 4 encoder + 4 decoder layers, 1000 hidden units per layer, NO attention (decoder layers initialised from final encoder layer states). Architecture from Camgoz 2018 [10]. Adam, lr 1e-5, batch size 128, dropout 0.2, trained 'until convergence'. Paper implements in TensorFlow; this attempt reimplements in PyTorch (framework deviation, math-equivalent).",
+      "checkpoint_rule": "Paper: 'until convergence', no explicit rule. This attempt selects the checkpoint with the best dev BLEU-4 (standard practice and consistent with Camgoz 2018 [10]); recorded as a guess.",
+      "paper_evidence": "Paper Section 4 (Experimental Evaluation) and Section 4.2 / Table 1 (p. 9).",
+      "dataset_id": "phoenix-2014t-gloss2text"
+    },
+    {
+      "experiment_id": "gru-repar",
+      "system": "GRU_repar: last encoder layer's GRU candidate ('non-gate') weight W_y (Eq. 7) given a full Gaussian posterior q(W)=N(mu,sigma^2) with spherical prior N(0,1), trained by SGVB (ELBO = NLL - KL[q(W)||p(W)], Eq. 15). No stick-breaking / utility indicators. Encoder-decoder GRU seq2seq, 4 encoder + 4 decoder layers, 1000 hidden units per layer, NO attention (decoder layers initialised from final encoder layer states). Architecture from Camgoz 2018 [10]. Adam, lr 1e-5, batch size 128, dropout 0.2, trained 'until convergence'. Paper implements in TensorFlow; this attempt reimplements in PyTorch (framework deviation, math-equivalent).",
+      "checkpoint_rule": "Paper: 'until convergence', no explicit rule. This attempt selects the checkpoint with the best dev BLEU-4 (standard practice and consistent with Camgoz 2018 [10]); recorded as a guess.",
+      "paper_evidence": "Paper Section 4 (Experimental Evaluation) and Section 4.2 / Table 1 (p. 9). Section 3.1, Eqs. 2,7,15.",
+      "dataset_id": "phoenix-2014t-gloss2text"
+    },
+    {
+      "experiment_id": "gru-bp",
+      "system": "GRU_bp: last encoder layer's GRU candidate weight masked by binary utility indicators Z with an IBP stick-breaking prior (Kumaraswamy-reparameterised stick vars u ~ q(u|a,b), Gumbel-Softmax-relaxed Bernoulli Z), trained by SGVB (ELBO = NLL - KL[q(u)||p(u)] - KL[q(Z)||p(Z)], Eqs. 13,14). Point-estimated W (no Gaussian posterior). Encoder-decoder GRU seq2seq, 4 encoder + 4 decoder layers, 1000 hidden units per layer, NO attention (decoder layers initialised from final encoder layer states). Architecture from Camgoz 2018 [10]. Adam, lr 1e-5, batch size 128, dropout 0.2, trained 'until convergence'. Paper implements in TensorFlow; this attempt reimplements in PyTorch (framework deviation, math-equivalent).",
+      "checkpoint_rule": "Paper: 'until convergence', no explicit rule. This attempt selects the checkpoint with the best dev BLEU-4 (standard practice and consistent with Camgoz 2018 [10]); recorded as a guess.",
+      "paper_evidence": "Paper Section 4 (Experimental Evaluation) and Section 4.2 / Table 1 (p. 9). Sections 2.2, 3, Eqs. 1,7,13,14.",
+      "dataset_id": "phoenix-2014t-gloss2text"
+    },
+    {
+      "experiment_id": "sb-gru",
+      "system": "SB-GRU: full proposed model - last encoder layer's GRU candidate weight has both a Gaussian posterior q(W) AND IBP stick-breaking utility indicators Z; full ELBO with all three KL terms (Eqs. 13,14,15). Encoder-decoder GRU seq2seq, 4 encoder + 4 decoder layers, 1000 hidden units per layer, NO attention (decoder layers initialised from final encoder layer states). Architecture from Camgoz 2018 [10]. Adam, lr 1e-5, batch size 128, dropout 0.2, trained 'until convergence'. Paper implements in TensorFlow; this attempt reimplements in PyTorch (framework deviation, math-equivalent).",
+      "checkpoint_rule": "Paper: 'until convergence', no explicit rule. This attempt selects the checkpoint with the best dev BLEU-4 (standard practice and consistent with Camgoz 2018 [10]); recorded as a guess.",
+      "paper_evidence": "Paper Section 4 (Experimental Evaluation) and Section 4.2 / Table 1 (p. 9). Section 3, Eqs. 7,12-15.",
+      "dataset_id": "phoenix-2014t-gloss2text"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table1-baseline-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row baseline, column Dev Bleu-4",
+      "system": "Baseline: Gloss2Text GRU without attention from Camgoz 2018 [10], 4 enc / 4 dec layers, 1000 units",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 4.664,
+        "difference": -11.636,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
+      "experiment_id": "baseline",
+      "metric_id": "bleu4",
+      "original_value": 16.3,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-baseline-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row baseline, column Dev Rouge",
+      "system": "Baseline: Gloss2Text GRU without attention from Camgoz 2018 [10], 4 enc / 4 dec layers, 1000 units",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 19.3526,
+        "difference": -20.9474,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
+      "experiment_id": "baseline",
+      "metric_id": "rouge",
+      "original_value": 40.3,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-baseline-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row baseline, column Test Bleu-4",
+      "system": "Baseline: Gloss2Text GRU without attention from Camgoz 2018 [10], 4 enc / 4 dec layers, 1000 units",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 3.8215,
+        "difference": -12.4785,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
+      "experiment_id": "baseline",
+      "metric_id": "bleu4",
+      "original_value": 16.3,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-baseline-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row baseline, column Test Rouge",
+      "system": "Baseline: Gloss2Text GRU without attention from Camgoz 2018 [10], 4 enc / 4 dec layers, 1000 units",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 16.7469,
+        "difference": -23.9531,
+        "run_ids": [
+          "train-plain"
+        ],
+        "artifact_ids": [
+          "plain-results"
+        ],
+        "reason": null,
+        "note": "Baseline row follows the paper's stated protocol (architecture from [10], Adam lr 1e-5, batch 128, dropout 0.2, no attention, 'until convergence' operationalised as early-stop on dev BLEU-4). Comparable value produced; it disagrees with the paper."
+      },
+      "experiment_id": "baseline",
+      "metric_id": "rouge",
+      "original_value": 40.7,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-repar-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar, column Dev Bleu-4",
+      "system": "GRU_repar: baseline + Gaussian weight-posterior reparameterization on GRU non-gate weights (no stick-breaking)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test bleu4=3.6821 (paper 16.7); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "bleu4",
+      "original_value": 16.7,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-repar-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar, column Dev Rouge",
+      "system": "GRU_repar: baseline + Gaussian weight-posterior reparameterization on GRU non-gate weights (no stick-breaking)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test rouge=11.6607 (paper 41.1); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "rouge",
+      "original_value": 41.1,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-repar-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar, column Test Bleu-4",
+      "system": "GRU_repar: baseline + Gaussian weight-posterior reparameterization on GRU non-gate weights (no stick-breaking)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test bleu4=4.0604 (paper 17.0); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "bleu4",
+      "original_value": 17.0,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-repar-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar, column Test Rouge",
+      "system": "GRU_repar: baseline + Gaussian weight-posterior reparameterization on GRU non-gate weights (no stick-breaking)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-repar"
+        ],
+        "artifact_ids": [
+          "repar-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-repar produced dev/test rouge=11.2875 (paper 41.5); see artifact repar-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "rouge",
+      "original_value": 41.5,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-repar-wc-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar_wc, column Dev Bleu-4",
+      "system": "GRU_repar,wc: the trained GRU_repar model evaluated after post-hoc weight compression (bit-precision reduction from posterior variance)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test bleu4=3.6821 (paper 16.2); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "bleu4",
+      "original_value": 16.2,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-gru-repar-wc-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar_wc, column Dev Rouge",
+      "system": "GRU_repar,wc: the trained GRU_repar model evaluated after post-hoc weight compression (bit-precision reduction from posterior variance)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test rouge=11.6607 (paper 40.6); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "rouge",
+      "original_value": 40.6,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-gru-repar-wc-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar_wc, column Test Bleu-4",
+      "system": "GRU_repar,wc: the trained GRU_repar model evaluated after post-hoc weight compression (bit-precision reduction from posterior variance)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test bleu4=4.0604 (paper 16.7); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "bleu4",
+      "original_value": 16.7,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-gru-repar-wc-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_repar_wc, column Test Rouge",
+      "system": "GRU_repar,wc: the trained GRU_repar model evaluated after post-hoc weight compression (bit-precision reduction from posterior variance)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-repar-wc"
+        ],
+        "artifact_ids": [
+          "repar-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-repar-wc produced dev/test rouge=11.2875 (paper 40.7); see artifact repar-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-repar",
+      "metric_id": "rouge",
+      "original_value": 40.7,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-gru-bp-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_bp, column Dev Bleu-4",
+      "system": "GRU_bp: baseline + IBP stick-breaking prior on GRU non-gate weight utility indicators only (no Gaussian reparameterization)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test bleu4=3.3512 (paper 18.4); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-bp",
+      "metric_id": "bleu4",
+      "original_value": 18.4,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-bp-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_bp, column Dev Rouge",
+      "system": "GRU_bp: baseline + IBP stick-breaking prior on GRU non-gate weight utility indicators only (no Gaussian reparameterization)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test rouge=12.5089 (paper 43.9); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-bp",
+      "metric_id": "rouge",
+      "original_value": 43.9,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-bp-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_bp, column Test Bleu-4",
+      "system": "GRU_bp: baseline + IBP stick-breaking prior on GRU non-gate weight utility indicators only (no Gaussian reparameterization)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test bleu4=3.656 (paper 17.0); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-bp",
+      "metric_id": "bleu4",
+      "original_value": 17.0,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-gru-bp-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row gru_bp, column Test Rouge",
+      "system": "GRU_bp: baseline + IBP stick-breaking prior on GRU non-gate weight utility indicators only (no Gaussian reparameterization)",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-bp"
+        ],
+        "artifact_ids": [
+          "bp-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-bp produced dev/test rouge=11.9177 (paper 43.1); see artifact bp-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "gru-bp",
+      "metric_id": "rouge",
+      "original_value": 43.1,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-sb-gru-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru, column Dev Bleu-4",
+      "system": "SB-GRU: full proposed model, Gaussian reparameterization + IBP stick-breaking on GRU non-gate weights",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test bleu4=3.7617 (paper 17.9); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "bleu4",
+      "original_value": 17.9,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-sb-gru-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru, column Dev Rouge",
+      "system": "SB-GRU: full proposed model, Gaussian reparameterization + IBP stick-breaking on GRU non-gate weights",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test rouge=12.0865 (paper 43.0); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "rouge",
+      "original_value": 43.0,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-sb-gru-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru, column Test Bleu-4",
+      "system": "SB-GRU: full proposed model, Gaussian reparameterization + IBP stick-breaking on GRU non-gate weights",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test bleu4=3.9879 (paper 18.1); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "bleu4",
+      "original_value": 18.1,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-sb-gru-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru, column Test Rouge",
+      "system": "SB-GRU: full proposed model, Gaussian reparameterization + IBP stick-breaking on GRU non-gate weights",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "train-sb"
+        ],
+        "artifact_ids": [
+          "sb-results"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run train-sb produced dev/test rouge=11.4581 (paper 43.5); see artifact sb-results.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "rouge",
+      "original_value": 43.5,
+      "weight_compression_eval": false
+    },
+    {
+      "target_id": "table1-sb-gru-wc-dev-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru_wc, column Dev Bleu-4",
+      "system": "SB-GRU,wc: the trained SB-GRU model evaluated after post-hoc weight compression",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test bleu4=3.7617 (paper 17.7); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "bleu4",
+      "original_value": 17.7,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-sb-gru-wc-dev-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru_wc, column Dev Rouge",
+      "system": "SB-GRU,wc: the trained SB-GRU model evaluated after post-hoc weight compression",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "dev",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test rouge=12.0865 (paper 43.0); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "rouge",
+      "original_value": 43.0,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-sb-gru-wc-test-bleu4",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru_wc, column Test Bleu-4",
+      "system": "SB-GRU,wc: the trained SB-GRU model evaluated after post-hoc weight compression",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test bleu4=3.9879 (paper 17.8); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "bleu4",
+      "original_value": 17.8,
+      "weight_compression_eval": true
+    },
+    {
+      "target_id": "table1-sb-gru-wc-test-rouge",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 9), 'Performance Metrics', row sb_gru_wc, column Test Rouge",
+      "system": "SB-GRU,wc: the trained SB-GRU model evaluated after post-hoc weight compression",
+      "dataset": "phoenix-2014t-gloss2text",
+      "split": "test",
+      "metric_aggregation": "single run, 'until convergence'; paper reports one value, no seeds/mean/std stated",
+      "unit_scale": "0-100",
+      "copied_baseline": false,
+      "copied_baseline_note": "Queue copied_scores='no'. Paper says it re-evaluates the Camgoz [10] Gloss2Text-no-attention model itself ('we also evaluate ... as a baseline'), so the Baseline row is treated as an author-run number, not copied.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Materially under-specified: the SB-GRU variational hyperparameters (alpha, tau, lambda schedule, KL weighting, MC samples) and, for the ,wc rows, the bit-precision rule are behaviour-changing and absent from the paper. Run retained as conditional evidence; not a produced target regardless of closeness. See gate 'sbgru-protocol'."
+        },
+        "run_ids": [
+          "eval-sb-wc"
+        ],
+        "artifact_ids": [
+          "sb-wc-eval"
+        ],
+        "gate_ids": [
+          "sbgru-protocol"
+        ],
+        "evidence": [
+          "Conditional run eval-sb-wc produced dev/test rouge=11.4581 (paper 42.8); see artifact sb-wc-eval.",
+          "gate 'sbgru-protocol': variational hyperparameters unspecified by the paper."
+        ]
+      },
+      "experiment_id": "sb-gru",
+      "metric_id": "rouge",
+      "original_value": 42.8,
+      "weight_compression_eval": true
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "train-plain",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/plain --mode plain --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:28Z",
+      "finished_at_utc": "2026-09-08T14:55:35Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-plain",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped at dev-BLEU-4 plateau (best epoch 94/134, patience 20 evals); dev+test evaluated, all four metrics emitted. Dev BLEU-4 flat at ~4.4 from epoch ~70.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-0TID6xKjXXNhbwYMP1njUJ",
+        "function_call_id": "fc-01M20QAAJ3CRB2QTCZB4270W6V",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "plain-results"
+      ]
+    },
+    {
+      "run_id": "train-repar",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/repar --mode repar --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:10Z",
+      "finished_at_utc": "2026-09-08T14:57:21Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-repar",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 116/156). Gaussian-posterior KL well-behaved (~0.09). Dev BLEU-4 plateaued ~3.7.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-ZpAxljsKew8rsKOAT5Abhv",
+        "function_call_id": "fc-01M20QAD1JBS07PTC7KNM8KN37",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "repar-results"
+      ]
+    },
+    {
+      "run_id": "train-bp",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/bp --mode bp --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:11Z",
+      "finished_at_utc": "2026-09-08T14:49:19Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-bp",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 42/82). IBP stick-breaking KL term ~3170 (after /N) dominates NLL~5.5; dev BLEU-4 frozen ~3.4 - the variational last encoder layer stops learning.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-SRVwv8HXPaM0xtwKlrEaFN",
+        "function_call_id": "fc-01M20QAG46B32E7BBZBEF44W4P",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "bp-results"
+      ]
+    },
+    {
+      "run_id": "train-sb",
+      "command": "python -u /app/sbgru_slt.py train --data-dir /datasets/rwth-phoenix-2014-t/annotations --out-dir /outputs/sb --mode sb --max-epochs 250",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T14:39:13Z",
+      "finished_at_utc": "2026-09-08T14:55:04Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "train-sb",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T14:38:00Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Early-stopped (best epoch 94/134). Same KL domination as bp; dev BLEU-4 frozen at 3.48->3.68 for 60+ epochs.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-KcpysRyUJ9PAbuxskpyxNY",
+        "function_call_id": "fc-01M20QAK0XJTPWCXEXWABMM124",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "sb-results"
+      ]
+    },
+    {
+      "run_id": "eval-repar-wc",
+      "command": "python -u /app/sbgru_slt.py evaluate --data-dir /datasets/rwth-phoenix-2014-t/annotations --checkpoint /outputs/repar/best.pt --out-dir /outputs/repar/eval_q2 --quantize-bits 2",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:09:52Z",
+      "finished_at_utc": "2026-09-08T15:10:07Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-repar-wc",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:08:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Post-hoc uniform 2-bit quantisation of the last encoder layer's effective candidate weight; dev+test re-scored, all metrics emitted.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-DTPMdzded597fvvZWMOCu9",
+        "function_call_id": "fc-01M20S2E08Y08DAZZMR358QH7P",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "repar-wc-eval"
+      ]
+    },
+    {
+      "run_id": "eval-sb-wc",
+      "command": "python -u /app/sbgru_slt.py evaluate --data-dir /datasets/rwth-phoenix-2014-t/annotations --checkpoint /outputs/sb/best.pt --out-dir /outputs/sb/eval_q2 --quantize-bits 2",
+      "exit_code": 0,
+      "started_at_utc": "2026-09-08T15:09:45Z",
+      "finished_at_utc": "2026-09-08T15:10:00Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-sb-wc",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-09-08T15:08:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Post-hoc uniform 2-bit quantisation of the last encoder layer's effective candidate weight; dev+test re-scored, all metrics emitted.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu_type": "A10G",
+        "app_id": "ap-0uFwmdSWXHnYOJx5K8s32Y",
+        "function_call_id": "fc-01M20S2DYA246DF60KMF34FWDR",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "sb-wc-eval"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "plain-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/plain/results.json",
+      "sha256": "27c9ed5559c12042243989d688b224af2bb5eb310b89d1539670528d4c8821ee"
+    },
+    {
+      "artifact_id": "repar-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/repar/results.json",
+      "sha256": "d715607208f805ffa722a13918634c7b9b4219c5dcd9cdf1d087475c84678064"
+    },
+    {
+      "artifact_id": "bp-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/bp/results.json",
+      "sha256": "1d0f1a0434b11cca31ba0c0b6651dd7eb7dc9bafe61add80e29ea712c6f16b54"
+    },
+    {
+      "artifact_id": "sb-results",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/sb/results.json",
+      "sha256": "68ff5fa34447d8e1d1fd4666ec50d0aa67afa4a2f9bb6b62b63582f2700bfbe9"
+    },
+    {
+      "artifact_id": "repar-wc-eval",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/repar/eval_q2/eval.json",
+      "sha256": "5d40e0d5901a12297b9835cec36c646fb26b5e025dd7060f206b6e68e96bf468"
+    },
+    {
+      "artifact_id": "sb-wc-eval",
+      "kind": "metrics_json",
+      "uri": "modal://partaourides-2021-results/sb/eval_q2/eval.json",
+      "sha256": "ad4c39fba0728615abf3ef3fcfcd97454c34efe58553100ec139b3a9243388e3"
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "sbgru-protocol",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "The five non-baseline Table 1 rows depend on a variational-Bayesian SB-GRU with no published code and several behaviour-changing hyperparameters the paper never states: IBP innovation alpha, inference cutoff tau, Gumbel-Softmax anneal schedule, MC sample count, KL-term weighting/warm-up, Kumaraswamy init, and the weight-compression bit-precision rule. With the canonical defaults chosen here the IBP KL term dominates the translation loss by ~500x and the variational encoder layer stops learning.",
+      "evidence": [
+        "Paper Sections 3-3.3, Eqs. 1,7-15: equations given, no hyperparameter values.",
+        "runs train-bp / train-sb: dev BLEU-4 frozen (~3.4-3.7) for 60+ epochs; KL/N ~= 3170 vs NLL ~= 5.5.",
+        "Paper Section 4: only 'ADAM [20], lr 0.00001, batch 128, dropout 0.2, until convergence'."
+      ],
+      "required_action": "Human decision: supply the intended alpha / tau / lambda schedule / KL weighting (or confirm the reimplementation should stand as evidence that the method is under-specified), and decide whether to invest further debugging in the baseline seq2seq, which itself reproduces only ~4.4 BLEU-4 vs 16.3.",
+      "alternatives": [],
+      "resolution": {
+        "resolved_at": "2026-09-30",
+        "decided_by": "human (study author)",
+        "outcome": "closed_unresolved_by_authors",
+        "detail": "The author-contact email covering every missing hyperparameter was sent 2026-09-08 and received no reply by 2026-09-30 (22 days). Per the human decision recorded in required_action, the reimplementation stands as evidence that the SB-GRU protocol is under-specified in the paper: the five non-baseline Table 1 rows stay not_produced (protocol_ambiguous) with their conditional runs retained, and no further debugging of the baseline seq2seq was authorised. Reopen only if the authors reply or code is released."
+      }
+    }
+  ],
+  "author_contact": {
+    "status": "sent_no_response",
+    "drafted_at": "2026-09-08",
+    "email_path": "author-contact.md",
+    "recipients": [
+      "c.partaourides@cut.ac.cy",
+      "sotirios.chatzis@cut.ac.cy",
+      "ai.voskou@edu.cut.ac.cy",
+      "dkosmo@upatras.gr"
+    ],
+    "purpose": "Post-independent-attempt request for the unspecified training and SB-GRU hyperparameters (see gate 'sbgru-protocol') and for whether code is available. Lists every guessed value and the reproduced-vs-paper numbers.",
+    "sent_at": "2026-09-08",
+    "response": "None received as of 2026-09-30 (22 days).",
+    "changed": "Nothing. No author information reached this attempt, so every hyperparameter listed in guesses/deviations remains an independent inference from the paper text.",
+    "sent_by": "Carlos Escolano, from a personal mail client outside this repository; the text at author-contact.md is the email sent"
+  }
+}
