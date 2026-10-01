@@ -33,9 +33,10 @@
       "agent_id": "conditional-independent-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Read-only review of conditional preprocessing, split, model, loss and resume. Identified sampler-cursor and atomic-checkpoint issues before any GPU run; reviewed fixes. No execution contribution. Exact model_id/harness_version unavailable.",
+      "scope": "Read-only review of conditional preprocessing, split, model, loss and resume. Identified sampler-cursor and atomic-checkpoint issues before any GPU run; reviewed fixes. No execution contribution. Exact model_id/harness_version unavailable. Later took over terminal monitoring, evidence collection, independent split/prediction/history audit and report finalization. Did not launch or restart training; original run executor attribution is preserved.",
       "evidence": [
-        "2026-10-01 sibling agent identified as GPT-6/Codex reviewed conditional.py/conditional_modal.py: per-class30/10/10 splits disjoint, consistent video flips, accumulated loss correct, validation-only checkpointselection. Found mid-epochshuffle resume and non-atomic writes; root changed saves to60-step epochboundaries, atomicreplace, and includedbestmodelinresume. Suggested RangerLookahead branch preflight and wholeloopforecast; seven optimizersteps nowexercise defaultk6."
+        "2026-10-01 sibling agent identified as GPT-6/Codex reviewed conditional.py/conditional_modal.py: per-class30/10/10 splits disjoint, consistent video flips, accumulated loss correct, validation-only checkpointselection. Found mid-epochshuffle resume and non-atomic writes; root changed saves to60-step epochboundaries, atomicreplace, and includedbestmodelinresume. Suggested RangerLookahead branch preflight and wholeloopforecast; seven optimizersteps nowexercise defaultk6.",
+        "Explicit GPT-6/Codex session attestation on 2026-10-01: parent handed over monitoring after the one authorized provider replay. This agent independently audited terminal native artifacts and finalized the report. Exact model ID and harness version remain unavailable."
       ]
     },
     {
@@ -394,7 +395,36 @@
       "recipe": "timm 1.0.22 skresnext50_32x4d; random initialization, Mish and max pooling; cited TCN blocks with width 256, kernel 3 and dilations 1/2/5; Ranger 1e-4, 1,000 steps, effective batch 128, microbatch 4; seed 42",
       "checkpoint_rule": "Maximum validation accuracy every 50 steps; earliest tie; test only after training.",
       "comparability": "Conditional evidence: the author architecture is unavailable. This assessment and all configuration choices were fixed before scores.",
-      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses."
+      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
+      "conditional_result": {
+        "run_id": "conditional-full-seed42-001",
+        "artifact_ids": [
+          "conditional-full-metrics-json",
+          "conditional-full-predictions-npz"
+        ],
+        "accuracy_percent": 55.15624999999999,
+        "correct": 353,
+        "count": 640,
+        "deterministic_accuracy_percent": 54.6875,
+        "parameters": 28530752,
+        "counted_flops_one_fma": 143947126784,
+        "unsupported_ops": {
+          "aten::mul": 17,
+          "aten::mish_": 65,
+          "aten::max_pool2d": 1,
+          "aten::sum": 32,
+          "aten::mean": 16,
+          "aten::softmax": 16,
+          "aten::add_": 16,
+          "aten::adaptive_max_pool2d": 1,
+          "aten::_weight_norm": 6,
+          "aten::mish": 9,
+          "aten::add": 3,
+          "aten::amax": 1
+        },
+        "selected_step": 1000,
+        "comparability": "Not an exact-paper target result: architecture dimensions are inferred and BatchNorm uses the disclosed microbatch behavior. Predeclared before scores; no numerical agreement assessment."
+      }
     }
   ],
   "targets": [
@@ -771,18 +801,21 @@
           "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
         },
         "run_ids": [
-          "data-preflight-004"
+          "data-preflight-004",
+          "conditional-full-seed42-001"
         ],
         "artifact_ids": [
           "data-audit-freeze",
           "data-audit-audit",
-          "data-audit-execution"
+          "data-audit-execution",
+          "conditional-full-metrics-json"
         ],
         "gate_ids": [
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Table4 and Sections3\u20134;source-search audit.",
+          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
     },
@@ -807,18 +840,21 @@
           "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
         },
         "run_ids": [
-          "data-preflight-004"
+          "data-preflight-004",
+          "conditional-full-seed42-001"
         ],
         "artifact_ids": [
           "data-audit-freeze",
           "data-audit-audit",
-          "data-audit-execution"
+          "data-audit-execution",
+          "conditional-full-metrics-json"
         ],
         "gate_ids": [
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Table4 and Sections3\u20134;source-search audit.",
+          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
     },
@@ -843,18 +879,21 @@
           "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
         },
         "run_ids": [
-          "data-preflight-004"
+          "data-preflight-004",
+          "conditional-full-seed42-001"
         ],
         "artifact_ids": [
           "data-audit-freeze",
           "data-audit-audit",
-          "data-audit-execution"
+          "data-audit-execution",
+          "conditional-full-metrics-json"
         ],
         "gate_ids": [
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Table4 and Sections3\u20134;source-search audit.",
+          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
     }
@@ -1216,14 +1255,30 @@
       "artifact_ids": [
         "conditional-preemption-platform-log",
         "conditional-original-partial-log",
-        "conditional-resume-partial-log"
+        "conditional-resume-partial-log",
+        "conditional-full-best-pt",
+        "conditional-full-console-log",
+        "conditional-full-executed-source-py",
+        "conditional-full-freeze-txt",
+        "conditional-full-gpu-txt",
+        "conditional-full-last-pt",
+        "conditional-full-manifest-json",
+        "conditional-full-model-txt",
+        "conditional-full-predictions-npz",
+        "conditional-full-runtime-json",
+        "conditional-full-metrics-json",
+        "conditional-full-execution-json",
+        "conditional-original-wrapper-execution",
+        "conditional-terminal-uri-audit"
       ],
       "planned_scope": "1,000 optimizer steps, all 1,920 training videos, validation every 50 steps on 640 videos, earliest highest-validation checkpoint, primary fixed-seed augmented test and separate deterministic diagnostic on 640 videos. Conditional evidence only; no architecture/score tuning.",
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
         "app_id": "ap-0zyXHBpA6HkvCxedlnkv2E",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-0zyXHBpA6HkvCxedlnkv2E"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-0zyXHBpA6HkvCxedlnkv2E",
+        "function_call_id": "fc-01M3VSZ2HFDKYVJ06QRGDJZSJ7",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
       },
       "execution_segments": [
         {
@@ -1232,16 +1287,55 @@
           "finished_at_utc": "2026-10-01T14:45:04+00:00",
           "end_reason": "Provider preemption; platform log explicitly says same-input automatic replay. Native process exit code was not observed.",
           "native_exit_code": null,
-          "checkpoint_step_recovered": 480
+          "checkpoint_step_recovered": 480,
+          "wrapper_started_at_utc": "2026-10-01T13:20:35.885595+00:00",
+          "wrapper_finished_at_utc": "2026-10-01T14:44:56.522101+00:00",
+          "wrapper_exit_code": 1,
+          "wrapper_exit_code_note": "Initialized code 1 written by finally on interruption; child native exit status remains unobserved.",
+          "wrapper_evidence_artifact_id": "conditional-original-wrapper-execution"
         },
         {
           "container_id": "ta-01M3VYT587185B6Y4FZA0HAY3R",
           "started_at_utc": "2026-10-01T14:45:12+00:00",
           "resume_step": 480,
-          "detail": "Same logical Modal invocation replayed; script restored last checkpoint. This consumes the single allowed checkpoint resume. No fresh training restart."
+          "detail": "Same logical Modal invocation replayed; script restored last checkpoint. This consumes the single allowed checkpoint resume. No fresh training restart.",
+          "finished_at_utc": "2026-10-01T16:04:39.988034+00:00",
+          "native_exit_code": 0
         }
       ],
-      "recovery_evidence_note": "Native wrapper overwrites console/runtime files when Modal replays the function. Original console evidence is limited to retained partial snapshots and platform preemption log; no complete original native log or native exit code is claimed. All final timing fields must distinguish the resumed process from the aggregate lifecycle. Restored optimizer/model/RNG/loader state does not establish bitwise cross-container equivalence; validation at step 500 differed after replay."
+      "recovery_evidence_note": "Native wrapper overwrites console/runtime files when Modal replays the function. Original console evidence is limited to retained partial snapshots and platform preemption log; no complete original native log or native exit code is claimed. All final timing fields must distinguish the resumed process from the aggregate lifecycle. Restored optimizer/model/RNG/loader state does not establish bitwise cross-container equivalence; validation at step 500 differed after replay.",
+      "finished_at_utc": "2026-10-01T16:04:39.988034+00:00",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-01T13:20:34+00:00",
+      "measurements": {
+        "wall_seconds": 4754.533994436264,
+        "training_seconds": 4714.211061239243,
+        "mean_warm_microbatch_seconds": 0.2601888656931447,
+        "peak_gpu_bytes": 27457426944,
+        "parameters": 28530752,
+        "flops_one_fused_multiply_add": 143947126784,
+        "accuracy": 0.5515625,
+        "deterministic_test_accuracy": 0.546875,
+        "test_count": 640,
+        "steps": 1000,
+        "checkpoint_reload_verified": true,
+        "resumed_wrapper_wall_seconds": 4765.163781,
+        "aggregate_container_seconds": 9835.163781,
+        "gpu_hours": 2.7319899391666667,
+        "correct": 353,
+        "selected_step": 1000,
+        "estimated_cost_chf": 8.58625409452381,
+        "cost_basis": "Prorated from the prospective CHF 11 / 3.5 GPU-hour estimate, not a billing statement; Includes original 5,070-second container interval plus resumed wrapper time; image build and startup outside the wrappers are excluded.",
+        "accounting_note": "The first 5,070 seconds use platform container start/end, conservatively exceeding the recovered first-wrapper interval. The second segment uses its completed wrapper interval. This is aggregate container time, not native training time or billed usage."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 1,000 declared logical optimizer steps, 20 retained validation entries and both full held-out evaluation paths completed. Earliest maximum-validation checkpoint selected. Conditional evidence only; unknown author architecture prevents exact target attribution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
   "artifacts": [
@@ -1421,6 +1515,94 @@
       "sha256": "52e59d423c29fc53c745d9cf9d8761c0a932be7407a9013265018f854b989d6c",
       "note": "Partial contemporaneous evidence; not a complete original-container log.",
       "uri": "artifacts/conditional-resume-partial.log"
+    },
+    {
+      "artifact_id": "conditional-full-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/best.pt",
+      "sha256": "44386773e304f1ad6aa013eede9c9b37cdfa3a0dc8b8c3fb19cdeadf2f7a0dcc"
+    },
+    {
+      "artifact_id": "conditional-full-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/console.log",
+      "sha256": "4692639402db30704b95523ecc7ebd81b193cbef83f6b62e425d9f505a6bb85d",
+      "note": "Closed terminal log checksum. metrics.files sampled the log before printing the final metrics, so its embedded log hash describes an earlier snapshot."
+    },
+    {
+      "artifact_id": "conditional-full-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/executed-source.py",
+      "sha256": "d9ccc2af2aa8a858db578bc6e140bfc3bf358dcc7259c98ca16ab6169ec34ff9"
+    },
+    {
+      "artifact_id": "conditional-full-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5"
+    },
+    {
+      "artifact_id": "conditional-full-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/gpu.txt",
+      "sha256": "7111d436aac8c1c821958914cfde28b1c7353a0b894b10e332f5a521c936befd"
+    },
+    {
+      "artifact_id": "conditional-full-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/last.pt",
+      "sha256": "0b0a46a52b00ee0d494a1ca97f6bd71826e8b1798327e4f94b71e1479ba98390"
+    },
+    {
+      "artifact_id": "conditional-full-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-full-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/model.txt",
+      "sha256": "1c75198c8c9f6bb98346de5740ce0161332c962bec56856c72a523ae033993f7"
+    },
+    {
+      "artifact_id": "conditional-full-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/predictions.npz",
+      "sha256": "e16396a28678e4a5dbe50b4c0e69d33dacb3bb470f917770a98d67e4a07216d2"
+    },
+    {
+      "artifact_id": "conditional-full-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/runtime.json",
+      "sha256": "72d1c47a8d935d2b75664b3de822c083007bea99e840468fbb36314f3c36c76e"
+    },
+    {
+      "artifact_id": "conditional-full-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/metrics.json",
+      "sha256": "f110aca09545490e0565ccb07d74c296611fc0562dd6cb8b1a45ae12812b1bbf"
+    },
+    {
+      "artifact_id": "conditional-full-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/execution.json",
+      "sha256": "4cc1d52fb8c5efd0f0ebeaf2dcc21c104760e1ae83ee802d66d9488e982bf666",
+      "note": "Closed final-wrapper execution checksum. metrics.files contains the first-wrapper execution snapshot hash, preserved separately as a committed artifact."
+    },
+    {
+      "artifact_id": "conditional-original-wrapper-execution",
+      "kind": "execution_evidence",
+      "uri": "artifacts/conditional-original-wrapper-execution.json",
+      "sha256": "1659931f11e546e8a8976d310acaa8e746dda287c463397cf8716ed69088de66",
+      "note": "First wrapper finally record recovered before replay completion replaced the Modal execution.json. exit_code 1 is the wrapper default on interruption, not an observed native child exit code."
+    },
+    {
+      "artifact_id": "conditional-terminal-uri-audit",
+      "kind": "execution_evidence",
+      "uri": "artifacts/conditional-terminal-uri-audit.json",
+      "sha256": "8fefafa711d38aecbe29674e7cc7846801c2644edb2d4a9c8f0841db4fd0a986",
+      "note": "Independent terminal URI SHA-256 and byte-count audit; verified stdout semantics before streaming two checkpoints without large local storage."
     }
   ],
   "gates": [
