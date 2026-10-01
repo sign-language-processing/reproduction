@@ -9,6 +9,15 @@
       "evidence": [
         "Session developer instructions identify GPT-6 using Codex; no exact model version or application version exposed."
       ]
+    },
+    {
+      "agent_id": "arabic-vit-review-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent bounded source review of Table 6 protocol gates only; no experiment execution. Exact model_id and harness_version unavailable in session.",
+      "evidence": [
+        "Agent /root/arabic_vit messages on 2026-10-01 independently confirm paper six versus code nine decoder heads, explicit paper 80/20 versus README double-reduced training, and missing rectification linkage. Reviewer clarifies seed alone is not a gate and historical notebook is mixed exploratory WLASL/LSA code, not definitive target lineage. Session attribution is GPT-6 using Codex; exact versions unavailable."
+      ]
     }
   ],
   "assignment": {
@@ -167,7 +176,7 @@
       "kind": "code",
       "url": "https://github.com/mpuu00001/Siformer/tree/09a7c1c575849edbd5e245dc6d1c80ddce94188a/active_motion",
       "revision_or_sha256": "09a7c1c575849edbd5e245dc6d1c80ddce94188a",
-      "role": "Recovers AA/FE range tables deleted at current HEAD; inspected, not applied without resolving prepared-data provenance."
+      "role": "Recovered AA/FE range tables; exercised with pinned functions in four-record CPU rectification check."
     },
     {
       "source_id": "historical-recipe",
@@ -175,6 +184,21 @@
       "url": "https://github.com/mpuu00001/Siformer/tree/fd052122b6d4cd3814cecfa70fd1ecb5dc9fac3e",
       "revision_or_sha256": "fd052122b6d4cd3814cecfa70fd1ecb5dc9fac3e",
       "role": "Historical job scripts, notebook and checkpoint inspected; old checkpoint belongs to older SPOTER-named architecture and six-encoder/six-decoder job, not a verified Table 6 checkpoint."
+    },
+    {
+      "source_id": "spoter-original-features",
+      "kind": "dataset",
+      "url": "https://github.com/maty-bohacek/spoter/releases/download/supplementary-data/LSA64_60fps.csv",
+      "revision_or_sha256": "GitHub release asset 51405939; updated 2021-12-09T16:57:04Z; 194135814 bytes. Sample hashes in fingerprint run artifacts.",
+      "role": "Bounded comparison source for original skeleton coordinates. README at 0f909bf92690772f43f0062be41860ed85b461ad states accompanying skeleton features CC BY-NC 4.0; academic cloud read-only source comparison permitted.",
+      "sha256": "eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e"
+    },
+    {
+      "source_id": "combined-rectification-order",
+      "kind": "code",
+      "url": "https://github.com/mpuu00001/Siformer/commit/a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7",
+      "revision_or_sha256": "a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7",
+      "role": "Historical AA main reads FE alpha0.4 output, applies AA alpha0.4 and writes combined aafe file: settles combined order."
     }
   ],
   "status": {
@@ -184,7 +208,7 @@
     "preference_level": 2,
     "blocker": {
       "reason_code": "protocol_ambiguous",
-      "detail": "Unresolved paper/code configuration and rectification provenance independently prevent both requested full pipelines.",
+      "detail": "Paper specifies six decoder heads but released model hardcodes nine; WLASL additionally lacks verified original held-out provenance. LSA feature lineage and executable rectification recipe are resolved.",
       "target_ids": [
         "table6-wlasl100",
         "table6-lsa64"
@@ -284,7 +308,8 @@
         "62": 50,
         "63": 50
       },
-      "preprocessing": "Author-supplied 2D skeletal CSV; precise rectification provenance not supplied; do not assume Table 6 prepared data."
+      "preprocessing": "Original SPOTER coordinates preserved exactly in all3177 records, zero-padded to204 frames and zero-based labels; unrectified. Whole-corpus hash/prefix evidence in spoter-whole-corpus-001.",
+      "additional_permission_basis": "Original SPOTER skeleton release README at0f909bf92690772f43f0062be41860ed85b461ad states CC BY-NC4.0. Internal noncommercial cloud source comparison and preprocessing only; no skeleton CSV redistributed."
     },
     {
       "dataset_id": "wlasl100",
@@ -399,7 +424,7 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Material paper/code configuration and prepared-data disagreement prevents a comparable full run."
+          "detail": "Six decoder heads in paper versus nine in released model remains unresolved. WLASL original held-out/SMOTE provenance also remains unresolved."
         },
         "run_ids": [],
         "artifact_ids": [],
@@ -409,9 +434,10 @@
         ],
         "evidence": [
           "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
-          "Section 4.1 LSA64 specifies 80/20 train/test. README passes experimental_train_split=0.8 after a 20% holdout, yielding 64% training, and names the holdout validation rather than testing.",
-          "Released training entry point does not invoke rectification; no published declaration identifies released CSVs as combined AA+FE alpha=0.4 data. Range tables can be recovered from history, so missing table files alone are not a blocker.",
-          "Paper section 4.1 lists 2038 originals, 800 held out, then remaining 2400 before SMOTE: arithmetic inconsistent."
+          "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
+          "Paper section 4.1 lists 2038 originals, 800 held out, then remaining 2400 before SMOTE: arithmetic inconsistent.",
+          "Historical preparation notebook contains exploratory WLASL and LSA64 cells and combined-split oversampling operations, while historical jobs split a balanced CSV. These do not establish Table 6 ordering or data leakage.",
+          "Author release inspected: 3200 training rows (32/class), 800 validation rows (8/class). Filenames do not identify original sample IDs or rectification stage."
         ]
       }
     },
@@ -434,21 +460,25 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Material paper/code configuration and prepared-data disagreement prevents a comparable full run."
+          "detail": "Six decoder heads in paper versus nine in released model remains unresolved."
         },
         "run_ids": [
           "preflight-001",
           "preflight-002",
-          "preflight-003"
+          "preflight-003",
+          "spoter-whole-corpus-001",
+          "rectification-check-001"
         ],
-        "artifact_ids": [],
+        "artifact_ids": [
+          "spoter-whole-corpus-json",
+          "rectification-check-result-json"
+        ],
         "gate_ids": [
           "table6-protocol"
         ],
         "evidence": [
           "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
-          "Section 4.1 LSA64 specifies 80/20 train/test. README passes experimental_train_split=0.8 after a 20% holdout, yielding 64% training, and names the holdout validation rather than testing.",
-          "Released training entry point does not invoke rectification; no published declaration identifies released CSVs as combined AA+FE alpha=0.4 data. Range tables can be recovered from history, so missing table files alone are not a blocker."
+          "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output."
         ]
       }
     }
@@ -696,6 +726,290 @@
         "device": "NVIDIA A10",
         "comparable_to_table6": false
       }
+    },
+    {
+      "run_id": "spoter-fingerprint-001",
+      "agent_ids": [
+        "siformer-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/pu-2024-siformer/scripts/modal_app.py --compare-features --run-id spoter-fingerprint-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "spoter-fingerprint",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:18:32.234294+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null
+      },
+      "artifact_ids": [
+        "spoter-fingerprint-001-json"
+      ],
+      "started_at_utc": "2026-10-01T11:19:33.868683+00:00",
+      "finished_at_utc": "2026-10-01T11:19:41.708182+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-LfUYZfjZZdwik1B5ZlAxmW",
+        "function_call_id": "fc-01M3VK1QJVXTMV0YFTKCP27KGG",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-LfUYZfjZZdwik1B5ZlAxmW"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "First16 original records and first128 released records parsed and hashed. Initial string label comparison does not normalize zero padding, so no-match output is not evidence of different coordinates. A separately bounded canonical-label comparison follows.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "spoter-fingerprint-002",
+      "agent_ids": [
+        "siformer-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/pu-2024-siformer/scripts/modal_app.py --compare-features --run-id spoter-fingerprint-002",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "spoter-canonical-label-fingerprint",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:20:36.724980+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null
+      },
+      "artifact_ids": [
+        "spoter-fingerprint-002-json"
+      ],
+      "started_at_utc": "2026-10-01T11:20:47.550824+00:00",
+      "finished_at_utc": "2026-10-01T11:20:54.927216+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-KuQB427OVOGqUCraV50Twa",
+        "function_call_id": "fc-01M3VK3XKSD8EDQXXG7A6T9VVS",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-KuQB427OVOGqUCraV50Twa"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Numeric-label comparison completed; original labels24 vs released first128 labels14/22/23. Primary SPOTER loader subsequently verified label minus1 while Siformer loader leaves labels unchanged. No-match output is not a coordinate identity conclusion.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "spoter-fingerprint-003",
+      "agent_ids": [
+        "siformer-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/pu-2024-siformer/scripts/modal_app.py --compare-features --run-id spoter-fingerprint-003",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "spoter-published-label-mapping",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:22:55.953210+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null
+      },
+      "artifact_ids": [
+        "spoter-fingerprint-003-json"
+      ],
+      "started_at_utc": "2026-10-01T11:23:08.724298+00:00",
+      "finished_at_utc": "2026-10-01T11:23:16.217010+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-P9ZOHQRpGaOYYFpGm5tFxs",
+        "function_call_id": "fc-01M3VK85F6P219PXNVDX72D679",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-P9ZOHQRpGaOYYFpGm5tFxs"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All16 sampled original records match released rows0\u201315 in all110 coordinate columns over original43\u201378 frames. Released sequences extend to204 frames. Strong sample-level evidence of preserved original features, not yet whole-corpus identity.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "spoter-whole-corpus-001",
+      "agent_ids": [
+        "siformer-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/pu-2024-siformer/scripts/modal_app.py --compare-all --run-id spoter-whole-corpus-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "spoter-whole-corpus",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:25:29.849790+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null
+      },
+      "artifact_ids": [
+        "spoter-whole-corpus-json"
+      ],
+      "started_at_utc": "2026-10-01T11:25:37.095729+00:00",
+      "finished_at_utc": "2026-10-01T11:28:41.686948+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-NdxMbXA4wq6SlZvYjfbKIj",
+        "function_call_id": "fc-01M3VKCVSA8J0J28BC5AF3EDWT",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NdxMbXA4wq6SlZvYjfbKIj"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All3177 records match in order and mapped labels; all349470 coordinate columns preserve every original coordinate exactly. Every sequence is zero-padded to204. No mismatch. Released LSA64 features are unrectified original SPOTER features with padding and zero-based labels.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "rectification-check-001",
+      "agent_ids": [
+        "siformer-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/pu-2024-siformer/scripts/modal_app.py --check-rectification --run-id rectification-check-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "recovered-rectification",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:30:12.531066+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null
+      },
+      "artifact_ids": [
+        "rectification-check-aafe-csv",
+        "rectification-check-abduction_adduction_ranges-csv",
+        "rectification-check-execution-json",
+        "rectification-check-fe-csv",
+        "rectification-check-flexion_extension_ranges-csv",
+        "rectification-check-freeze-txt",
+        "rectification-check-input-csv",
+        "rectification-check-result-json",
+        "rectification-check-stdout-log"
+      ],
+      "started_at_utc": "2026-10-01T11:30:23.985290+00:00",
+      "finished_at_utc": "2026-10-01T11:30:28.724918+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-DhLWuz9AUCZpbGbVuoCJJ8",
+        "function_call_id": "fc-01M3VKNFZDFS1CW22CR56TSD62",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DhLWuz9AUCZpbGbVuoCJJ8"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Pinned author FE then AA, both alpha0.4, executed on four real records using recovered motion tables. Output shape4x110x204, all finite,4516 values changed. Rectification recipe is executable; this is not training or a target metric.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "diagnostic_result": {
+        "record_indices": [
+          0,
+          50,
+          100,
+          150
+        ],
+        "labels": [
+          "23",
+          "23",
+          "14",
+          "11"
+        ],
+        "shape": [
+          4,
+          110,
+          204
+        ],
+        "all_finite": true,
+        "changed_coordinate_values": 4516,
+        "alpha": 0.4,
+        "order": [
+          "flexion_extension",
+          "abduction_adduction"
+        ],
+        "source_commit": "979a14ed15ed0f20afd77d447ad23c4f4107a2c3",
+        "motion_table_commit": "09a7c1c575849edbd5e245dc6d1c80ddce94188a",
+        "historical_order_commit": "a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7",
+        "artifacts": {
+          "aafe.csv": "f262937ab330f90e83ea289f300c4cfd483b15f648b184c8609f2f46ba430d91",
+          "abduction_adduction_ranges.csv": "0324ed2f2cdcc823720aea331cbe5c160817997182d5e8ef52c0ac6e41030ee7",
+          "fe.csv": "8a974501150604a3c5b5b0d7741293642ed74220d6c28c7e7412e014de8333ec",
+          "flexion_extension_ranges.csv": "6ce84cea0ca0956d77fb5b2bdc1140e063bffda8bfb04173f12778f65cea49dc",
+          "input.csv": "aecf7f33bef2c6539a5b3ecee88dd5ade52116a938802151a12e28fb10d90c37"
+        }
+      }
     }
   ],
   "artifacts": [
@@ -796,6 +1110,84 @@
       "uri": "modal://d4719e6c-siformer-results/preflight-003/stdout.log",
       "sha256": "83e8531f9af8db9857a147178ca486680cd3c99267a7575783e8720bbc019442",
       "size_bytes": 1068
+    },
+    {
+      "artifact_id": "spoter-fingerprint-001-json",
+      "kind": "data_audit",
+      "uri": "modal://d4719e6c-siformer-results/spoter-fingerprint-001/fingerprint.json",
+      "sha256": "b70fb546a7e990e12576b1b3fba265f9ac781616a3f93a1cd605bd4dcac77bc4"
+    },
+    {
+      "artifact_id": "spoter-fingerprint-002-json",
+      "kind": "data_audit",
+      "uri": "modal://d4719e6c-siformer-results/spoter-fingerprint-002/fingerprint.json",
+      "sha256": "6a76d141c36a39c5b0a1f68affb15f76f7591dc32c2f9338d542e331a68f13d1"
+    },
+    {
+      "artifact_id": "spoter-fingerprint-003-json",
+      "kind": "data_audit",
+      "uri": "modal://d4719e6c-siformer-results/spoter-fingerprint-003/fingerprint.json",
+      "sha256": "bd16d6527ee2b71ec10432790459b212372080f74a42bc7ca2ffeca9048e05e5"
+    },
+    {
+      "artifact_id": "spoter-whole-corpus-json",
+      "kind": "data_audit",
+      "uri": "modal://d4719e6c-siformer-results/spoter-whole-corpus-001/fingerprint.json",
+      "sha256": "574f485abc31b3537780e9f63c899887f24eae68c2b64af266a257415132d290"
+    },
+    {
+      "artifact_id": "rectification-check-aafe-csv",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/aafe.csv",
+      "sha256": "f262937ab330f90e83ea289f300c4cfd483b15f648b184c8609f2f46ba430d91"
+    },
+    {
+      "artifact_id": "rectification-check-abduction_adduction_ranges-csv",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/abduction_adduction_ranges.csv",
+      "sha256": "0324ed2f2cdcc823720aea331cbe5c160817997182d5e8ef52c0ac6e41030ee7"
+    },
+    {
+      "artifact_id": "rectification-check-execution-json",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/execution.json",
+      "sha256": "ba0204e31a3f9d75de81b699c3d0e520be1de1b5fcb709dc9d119a5db64f53cc"
+    },
+    {
+      "artifact_id": "rectification-check-fe-csv",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/fe.csv",
+      "sha256": "8a974501150604a3c5b5b0d7741293642ed74220d6c28c7e7412e014de8333ec"
+    },
+    {
+      "artifact_id": "rectification-check-flexion_extension_ranges-csv",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/flexion_extension_ranges.csv",
+      "sha256": "6ce84cea0ca0956d77fb5b2bdc1140e063bffda8bfb04173f12778f65cea49dc"
+    },
+    {
+      "artifact_id": "rectification-check-freeze-txt",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/freeze.txt",
+      "sha256": "46a9bf5bcaaa68e56303ab2323f9d94db739e6d47070eecfacd271882ed45ce3"
+    },
+    {
+      "artifact_id": "rectification-check-input-csv",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/input.csv",
+      "sha256": "aecf7f33bef2c6539a5b3ecee88dd5ade52116a938802151a12e28fb10d90c37"
+    },
+    {
+      "artifact_id": "rectification-check-result-json",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/result.json",
+      "sha256": "e135d5d86be21357e7f5602a8dff447a1d1b1d87e314117ccdc374de13b06571"
+    },
+    {
+      "artifact_id": "rectification-check-stdout-log",
+      "kind": "raw_evidence",
+      "uri": "modal://d4719e6c-siformer-results/rectification-check-001/stdout.log",
+      "sha256": "b0cdd8bcc9cf4d49161c283bf37628eee3264275d5db62a32135f00fbc8008bd"
     }
   ],
   "gates": [
@@ -803,25 +1195,25 @@
       "gate_id": "table6-protocol",
       "type": "protocol",
       "status": "open",
-      "reason": "Paper Table 6 configuration and released recipe disagree in material choices.",
+      "reason": "The paper and released model disagree on six versus nine decoder attention heads.",
       "evidence": [
         "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
-        "Section 4.1 LSA64 specifies 80/20 train/test. README passes experimental_train_split=0.8 after a 20% holdout, yielding 64% training, and names the holdout validation rather than testing.",
-        "Released training entry point does not invoke rectification; no published declaration identifies released CSVs as combined AA+FE alpha=0.4 data. Range tables can be recovered from history, so missing table files alone are not a blocker."
+        "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
+        "LSA80/20 is explicitly specified by paper. Missing seed alone is not a gate; README double reduction is a recorded recipe discrepancy."
       ],
-      "required_action": "Identify which configuration and prepared-data version generated Table 6, or authorize an explicitly conditional protocol. No author contact performed.",
+      "required_action": "Establish whether six paper-specified or nine released decoder heads generated Table6. No author contact performed.",
       "alternatives": [
         {
           "alternative_id": "paper-specification",
           "description": "Use six decoder heads, 80/20 LSA64 and apply combined AA+FE alpha 0.4.",
           "paper_evidence": "Sections 4.1 and 4.5",
-          "decision_needed": "Does this correspond to the reported rows, and are released CSVs already rectified?"
+          "decision_needed": "Does the six-head paper configuration correspond to the reported result? LSA CSV raw lineage and FE-to-AA preparation are resolved."
         },
         {
           "alternative_id": "published-example",
           "description": "Keep nine decoder heads, double-reduced LSA64 training split and author CSVs as supplied.",
           "paper_evidence": "Official README and train.py/model.py at selected commit",
-          "decision_needed": "Is the released example the actual Table 6 recipe or a different experiment?"
+          "decision_needed": "Does the released nine-head model correspond to Table6 or a different experiment?"
         }
       ]
     },
@@ -832,7 +1224,7 @@
       "reason": "Released split sizes match final stated counts but sampling order and identity remain unverified.",
       "evidence": [
         "Paper section 4.1 lists 2038 originals, 800 held out, then remaining 2400 before SMOTE: arithmetic inconsistent.",
-        "Historical notebook oversamples combined original splits; job scripts split the precomputed balanced file. These are research leads, not proof of target data leakage.",
+        "Historical preparation notebook contains exploratory WLASL and LSA64 cells and combined-split oversampling operations, while historical jobs split a balanced CSV. These do not establish Table 6 ordering or data leakage.",
         "Author release inspected: 3200 training rows (32/class), 800 validation rows (8/class). Filenames do not identify original sample IDs or rectification stage."
       ],
       "required_action": "Establish Table 6 pre-SMOTE held-out identities and whether supplied val CSV is the claimed test split."
