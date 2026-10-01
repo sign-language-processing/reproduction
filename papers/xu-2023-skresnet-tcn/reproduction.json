@@ -1,0 +1,924 @@
+{
+  "paper_id": "2be3c68e9731c401b36cc8d1d0588b59f86077ae",
+  "agents": [
+    {
+      "agent_id": "skresnet-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Source investigation, data preflight, structural gate and report. Exact model_id and harness_version unavailable.",
+      "evidence": [
+        "Session developer instructions identify GPT-6 using Codex; exact version identifiers are not exposed."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-2be3c68e9731c401b36cc8d1d0588b59f86077ae-2026-10-01.json",
+      "sha256": "5b5662ce3a6881a7f0caf4ca170ff173db78aa4a1c348dadb6f728229e5cb034"
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "N/A",
+          "copied_scores": "yes",
+          "datasets": [
+            "ogmzk93uoqpbpf5"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "LSA64 (Ronchetti et al., 2016) is the Argentine Sign Language dataset provided by III-\nLIDI (Informatics Institute) at the Informatics Faculty of the National University of La\nPlata (UNLP) available at: https://facundoq.github.io/datasets/lsa64/.",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "ogmzk93uoqpbpf5",
+                "license": "CC BY-NC-SA 4.0",
+                "name": "LSA64",
+                "on_modal": "yes",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "aed"
+                ],
+                "spoken_languages": [
+                  "eng"
+                ],
+                "url": [
+                  "https://facundoq.github.io/datasets/lsa64/",
+                  "https://zenodo.org/record/6674324/files/LSA64_Full.zip?download=",
+                  "https://zenodo.org/record/6674324/files/LSA64_Cut.zip?download=1"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "wzc6kxyuhls6lut",
+                "name": "Accuracy",
+                "url": []
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "zg2j7pm6uiowmue",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "wzc6kxyuhls6lut"
+          ],
+          "paper_id": "2be3c68e9731c401b36cc8d1d0588b59f86077ae",
+          "pdf_url": "https://downloads.hindawi.com/journals/js/2023/9503961.pdf",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "yes",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-09-24T01:40:22.911Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Isolated signing videos"
+          ],
+          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long\u2013short term memory, which effectively saves computational cost and time cost.",
+          "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
+          "venue": "Hindawi Journal of Sensors",
+          "what_to_reproduce": "Table 4",
+          "year": 2023
+        }
+      },
+      "id": "w27nd4hmis8n4fy",
+      "paper": "zg2j7pm6uiowmue",
+      "status": "in_progress",
+      "url": []
+    },
+    "evidence": [
+      "Direct user assignment via current tracker. Current export has expand.paper.status=final and no confirmation field; database record ID is distinct from paper_id. Reviewer and assignee contact details redacted."
+    ]
+  },
+  "paper": {
+    "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
+    "citation": "Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. Journal of Sensors 2023, 9503961.",
+    "url": "https://doi.org/10.1155/2023/9503961",
+    "pdf_sha256": "b82a83f17f761f7c5743c847766c7d8d37c3c96c47bebea0cce9da2f2b1fecf8",
+    "accessed_at": "2026-10-01"
+  },
+  "sources": [
+    {
+      "source_id": "paper",
+      "kind": "paper",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1155/2023/9503961",
+      "revision_or_sha256": "b82a83f17f761f7c5743c847766c7d8d37c3c96c47bebea0cce9da2f2b1fecf8",
+      "role": "Full paper equations, tables, captions, references, Data Availability. No code or supplementary architecture specification linked."
+    },
+    {
+      "source_id": "tcn",
+      "kind": "code",
+      "url": "https://github.com/locuslab/TCN",
+      "revision_or_sha256": "2f8c2b817050206397458dfd1f5a25ce8a32fe65",
+      "role": "Cited base TCN accepts arbitrary num_channels and kernel_size; base implementation cannot determine this paper network widths/depth or hybrid dilations."
+    },
+    {
+      "source_id": "sknet",
+      "kind": "code",
+      "url": "https://github.com/implus/SKNet",
+      "revision_or_sha256": null,
+      "role": "Official code URL stated by cited Li2019 SKNet paper; GitHub endpoint404 on access. Third-party SKNet implementations found but do not specify Xu hybrid architecture."
+    }
+  ],
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "No comparable values produced; missing architecture defines requested parameter, computation, and recognition results.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target.",
+      "target_ids": [
+        "table4-ours-parameters",
+        "table4-ours-flops",
+        "table4-ours-accuracy"
+      ]
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "lsa64",
+      "name": "LSA64",
+      "source_url": "https://facundoq.github.io/datasets/lsa64/",
+      "license_or_permission": "CC BY-NC-SA4.0 official academic/educational/personal use; internal noncommercial cloud analysis permitted, no redistribution in this PR.",
+      "modal_path": "lsa64",
+      "expected_counts": {
+        "videos": 3200,
+        "classes": 64,
+        "signers": 10,
+        "repetitions": 5
+      },
+      "archive_sha256": "218197acaa188583c1f06d149750af6af0d6b2bd44a627550d55773f5eefb20e",
+      "split": "Paper60/20/20 train/validation/test; exact allocation and seed absent. No invented split used.",
+      "version_or_subset": "Original3200video release",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "splits": [
+        {
+          "name": "all; paper60/20/20allocationunresolved",
+          "sample_count": 3200,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "b43af40df52e1a248a36ce2b9d65fac6e4fcbb75d0fcf91b2b60104d9a875098"
+            }
+          ]
+        }
+      ],
+      "manifest": {
+        "uri": "modal://datasets/lsa64/manifest.json",
+        "sha256": "b43af40df52e1a248a36ce2b9d65fac6e4fcbb75d0fcf91b2b60104d9a875098"
+      },
+      "verified_sample_count": 64,
+      "sample_frame_counts": 3
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "parameters",
+      "name": "Model parameter count",
+      "direction": "lower",
+      "implementation": "Author counting inclusion/exclusion unspecified.",
+      "version": "Paper Table4; implementation not released",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "million parameters"
+    },
+    {
+      "metric_id": "flops",
+      "name": "Floating point operations",
+      "direction": "lower",
+      "implementation": "Input image dimensions and MAC/FLOP convention absent; Table2 states32frames.",
+      "version": "Paper Table4; implementation not released",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "GFLOPs"
+    },
+    {
+      "metric_id": "accuracy",
+      "name": "Top1 classification accuracy",
+      "direction": "higher",
+      "implementation": "Number correctly classified held-out videos divided by total videos times100; exact test split and checkpoint selection unresolved.",
+      "version": "Paper Table4; implementation not released",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "lsa64-hybrid",
+      "dataset_id": "lsa64",
+      "recipe": "SKResNet spatial+TCN temporal,32interframe-difference keyframes,Ranger1e-4,batch128,1000iterations,60/20/20split. Improved hybrid dilations, adaptive max pool and Mish.",
+      "unresolved": "Widths/depth/inputdimensions/dilationsequence/keyframe-smoothing and baseunification; iteration versus epoch; Figure7 says testbest at656.",
+      "system": "Improved SKResNet-TCN",
+      "checkpoint_rule": "Figure7 reports best test state at656iterations; validation selection unspecified",
+      "paper_evidence": "Sections3.3\u20133.6,4.1,Table4"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table4-i3d-parameters",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 12.39,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-i3d-flops",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 111.6,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-i3d-accuracy",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 98.91,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-2-1-d-slr-parameters",
+      "in_scope": false,
+      "paper_location": "Table4,p8,row(2+1)D-SLR",
+      "system": "(2+1)D-SLR",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 33.3,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-2-1-d-slr-accuracy",
+      "in_scope": false,
+      "paper_location": "Table4,p8,row(2+1)D-SLR",
+      "system": "(2+1)D-SLR",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 98.2,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-parameters",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 13.4,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-flops",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 111.79,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-accuracy",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 100.0,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-memp-parameters",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 12.83,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-memp-flops",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 112.34,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-memp-accuracy",
+      "in_scope": false,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 99.06,
+      "copied_baseline": true,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Cited comparison value outside own method scope."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-ours-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 12.34,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+        },
+        "run_ids": [
+          "data-preflight-004"
+        ],
+        "artifact_ids": [
+          "data-audit-freeze",
+          "data-audit-audit",
+          "data-audit-execution"
+        ],
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-ours-flops",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 62.5,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+        },
+        "run_ids": [
+          "data-preflight-004"
+        ],
+        "artifact_ids": [
+          "data-audit-freeze",
+          "data-audit-audit",
+          "data-audit-execution"
+        ],
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    },
+    {
+      "target_id": "table4-ours-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 100.0,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+        },
+        "run_ids": [
+          "data-preflight-004"
+        ],
+        "artifact_ids": [
+          "data-audit-freeze",
+          "data-audit-audit",
+          "data-audit-execution"
+        ],
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "Table4 and Sections3\u20134;source-search audit."
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "data-preflight-001",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:38:32.021806+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:39:19Z",
+      "finished_at_utc": "2026-10-01T10:39:40Z",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-OkPK15AL83MGibmLot42IW",
+        "task_id": "ta-01M3VGREXS0T5Y2PBQAFNX86MR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OkPK15AL83MGibmLot42IW"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "simple-video-utils0.7.4 failed opening first real file because latest PyAV removed metadata_errors argument. No evidence of corrupt video. Pin av16.0.1 in separate compatibility hypothesis. App lifecycle timestamps from Modal app list.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-1"
+      ]
+    },
+    {
+      "run_id": "data-preflight-002",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-002",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "pyav-compatibility",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:40:15.421895+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:40:17+00:00",
+      "finished_at_utc": "2026-10-01T10:40:19+00:00",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-IRpHz2vtjd6PoxIdrcPYkS",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-IRpHz2vtjd6PoxIdrcPYkS"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Pinning av16.0.1 rejected by resolver because simple-video-utils0.7.4 explicitly requires av>=18.0.0; revert16.0.1 and pin first supported18.0.0 before19 API removal.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-2"
+      ]
+    },
+    {
+      "run_id": "data-preflight-003",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-003",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supported-pyav18",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:40:36.006325+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:40:37+00:00",
+      "finished_at_utc": "2026-10-01T10:40:57+00:00",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-YIykPJ7OafUrlxeO827hOo",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YIykPJ7OafUrlxeO827hOo"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "PyAV18 successfully decoded first real video. Audit serializer incorrectly assumed metadata was dataclass; replace with documented explicit metadata attributes.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-3"
+      ]
+    },
+    {
+      "run_id": "data-preflight-004",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-004",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "metadata-serialization",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:41:21.905308+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "artifact_ids": [
+        "data-audit-freeze",
+        "data-audit-audit",
+        "data-audit-execution"
+      ],
+      "started_at_utc": "2026-10-01T10:41:28.659233+00:00",
+      "finished_at_utc": "2026-10-01T10:41:54.810757+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-Q5jTR7jRU1BbyHlNewufsy",
+        "function_call_id": "fc-01M3VGW17RQMT228VPF0C8Q3Y0",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Q5jTR7jRU1BbyHlNewufsy"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only inventory3200videos64classes; one full-resolution sample perclass hashed and3framesdecoded each. This data-only preflight yields no model metric.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "data-audit-freeze",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/freeze.txt",
+      "sha256": "ba5b456eb8966d25f45e9e927295c0284c579fc8fb0d4e85eb3b8cc96ac3db16",
+      "size_bytes": 353
+    },
+    {
+      "artifact_id": "data-audit-audit",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/audit.json",
+      "sha256": "0318e7e3a62780202691dcebfab03fda355584357cf657ccdb544bae05d76c39",
+      "size_bytes": 26877
+    },
+    {
+      "artifact_id": "data-audit-execution",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/execution.json",
+      "sha256": "836aade075f3fb9480c9af01a1560358ea1eebdbab648c8262676e6fa61cccb1",
+      "size_bytes": 247
+    },
+    {
+      "artifact_id": "failure-1",
+      "kind": "sanitized_log",
+      "sha256": "7ad32380f41b4a91ea6ea7184afd8c1bf45cfabd4d63c8e990cd1db01e872791",
+      "size_bytes": 10326,
+      "uri": "artifacts/failure-1.log"
+    },
+    {
+      "artifact_id": "failure-2",
+      "kind": "sanitized_log",
+      "sha256": "6cb725bcea86705011228f6b707b6998041cf4091b5ec6c326b4097850003041",
+      "size_bytes": 2526,
+      "uri": "artifacts/failure-2.log"
+    },
+    {
+      "artifact_id": "failure-3",
+      "kind": "sanitized_log",
+      "sha256": "be54fe1acddb05e9edfd4fe4df88206f380ce64c2d467b08332a46600800429b",
+      "size_bytes": 7991,
+      "uri": "artifacts/failure-3.log"
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "architecture",
+      "status": "open",
+      "evidence": [
+        "Sections3.3\u20133.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
+        "Official article/PDF/data-availability/references examined. GitHub repository search SKResNet-TCN and9503961 both return0. Exacttitle/model/authorwebsearch yields paper/citations, no author code. GenericSKNet/TCN artifacts cannot resolve missing hybrid specification."
+      ],
+      "type": "protocol",
+      "reason": "Architecture and evaluation protocol missing.",
+      "required_action": "Provide the architecture/config and input shape defining Table4 12.34M/62.50G and recognition run, or explicitly authorize a conditional surrogate specification."
+    }
+  ],
+  "source_search": [
+    "Publisherfulltext/PDF all sections and references",
+    "GitHubrepositorysearch SKResNet-TCN,9503961",
+    "Webexacttitle+code/GitHub; authorXuebinXu+SKResNet",
+    "CitedLi2019officialSKNet URL404; citedBai2018TCN pinnedsource inspected"
+  ],
+  "guesses": [],
+  "deviations": [
+    "No substitute architecture or split was invented; data-only preflight does not yield a recognition metric."
+  ],
+  "author_contact": {
+    "contacted": false,
+    "reason": "No author contact authorized."
+  }
+}
