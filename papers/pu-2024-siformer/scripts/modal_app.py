@@ -137,6 +137,7 @@ def full_fingerprint(run_id:str):
                 else:padding['other']+=1
             if row_equal:counts['all_original_coordinates_preserved_records']+=1
             lengths[(original_length,released_length)]+=1
+    assert h.hexdigest()=='eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e', 'Original release hash changed'
     result.update(counts=dict(counts),padding_columns=dict(padding),length_pairs=[{'original_frames':a,'released_frames':b,'records':n} for (a,b),n in sorted(lengths.items())],mismatch_examples=mismatches,original_sha256=h.hexdigest(),label_mapping='Original published SPOTER loader subtracts1; Siformer loader leaves released zero-based labels unchanged.',method='Pair all CSV records in released order, parse list-valued coordinates exactly, compare every original coordinate to released prefix; classify appended values. No normalization or rounding.',finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
     (out/'fingerprint.json').write_text(json.dumps(result,indent=2));outputs.commit();print(json.dumps(result))
 
