@@ -9,6 +9,16 @@
       "evidence": [
         "Session instructions identify GPT-6 using Codex; exact model ID and harness version not exposed."
       ]
+    },
+    {
+      "agent_id": "codex-orchestrator-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable.",
+      "evidence": [
+        "Explicit root-session attestation dated 2026-10-01 identifies the reviewing agent as GPT-6 using Codex; exact model ID, model build/version and harness version were not exposed.",
+        "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged."
+      ]
     }
   ],
   "assignment": {
@@ -279,7 +289,7 @@
       "modal_path": "sign-language-mnist",
       "manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
       "archive_sha256": "fa1b513570d4348c6d6860e04e5854c59ef8eadb8c42a45d36bd1286ce3d489f",
-      "preprocessing": "28x28grayscale /255, bilinear upsample100x100 align_corners=False, repeat3channels; native label9(J) absent; labels>9 subtract1.",
+      "preprocessing": "28\u00d728 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100\u00d7100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
       "splits": [
         {
           "name": "train",
@@ -3226,7 +3236,7 @@
     },
     {
       "id": "mnist-input",
-      "detail": "Figure3 input100x100x3 and616504params require upsampling grayscaleMNIST to100x100 and repeatingRGB channels; bilinear chosen."
+      "detail": "Figure 3 input dimensions of 100\u00d7100\u00d73 and the exact 616,504 parameters require upsampling grayscale MNIST to 100\u00d7100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
     },
     {
       "id": "pooling",
@@ -3234,7 +3244,7 @@
     },
     {
       "id": "resize",
-      "detail": "Author XAI code uses cv2resize and RGBconversion; independent run uses Pillow bilinear RGB. Both are bilinear100x100, but library pixel rounding can differ."
+      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
     },
     {
       "id": "metrics",
