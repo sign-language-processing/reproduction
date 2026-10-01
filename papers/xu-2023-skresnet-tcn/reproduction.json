@@ -147,6 +147,13 @@
       "url": "https://github.com/implus/SKNet",
       "revision_or_sha256": null,
       "role": "Official code URL stated by cited Li2019 SKNet paper; GitHub endpoint404 on access. Third-party SKNet implementations found but do not specify Xu hybrid architecture."
+    },
+    {
+      "source_id": "spoter-baseline-provenance",
+      "kind": "paper",
+      "url": "https://openaccess.thecvf.com/content/WACV2022W/HADCV/papers/Bohacek_Sign_Pose-Based_Transformer_for_Word-Level_Sign_Language_Recognition_WACVW_2022_paper.pdf",
+      "revision_or_sha256": "WACVW2022 Table5",
+      "role": "Earlier I3D98.91 and MEMP99.06 accuracy evidence. Does not establish origin of all Xu comparison parameter/FLOP cells."
     }
   ],
   "status": {
@@ -245,7 +252,7 @@
   "targets": [
     {
       "target_id": "table4-i3d-parameters",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D",
       "system": "I3D",
       "experiment_id": "lsa64-hybrid",
@@ -253,27 +260,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 12.39,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-i3d-flops",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D",
       "system": "I3D",
       "experiment_id": "lsa64-hybrid",
@@ -281,27 +292,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 111.6,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-i3d-accuracy",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D",
       "system": "I3D",
       "experiment_id": "lsa64-hybrid",
@@ -309,27 +324,31 @@
       "dataset_id": "lsa64",
       "split": "test",
       "original_value": 98.91,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-2-1-d-slr-parameters",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,row(2+1)D-SLR",
       "system": "(2+1)D-SLR",
       "experiment_id": "lsa64-hybrid",
@@ -337,27 +356,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 33.3,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-2-1-d-slr-accuracy",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,row(2+1)D-SLR",
       "system": "(2+1)D-SLR",
       "experiment_id": "lsa64-hybrid",
@@ -365,27 +388,31 @@
       "dataset_id": "lsa64",
       "split": "test",
       "original_value": 98.2,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-i3d-glr-csa-parameters",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D+GLR+CSA",
       "system": "I3D+GLR+CSA",
       "experiment_id": "lsa64-hybrid",
@@ -393,27 +420,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 13.4,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-i3d-glr-csa-flops",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D+GLR+CSA",
       "system": "I3D+GLR+CSA",
       "experiment_id": "lsa64-hybrid",
@@ -421,27 +452,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 111.79,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-i3d-glr-csa-accuracy",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowI3D+GLR+CSA",
       "system": "I3D+GLR+CSA",
       "experiment_id": "lsa64-hybrid",
@@ -449,27 +484,31 @@
       "dataset_id": "lsa64",
       "split": "test",
       "original_value": 100.0,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-memp-parameters",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowMEMP",
       "system": "MEMP",
       "experiment_id": "lsa64-hybrid",
@@ -477,27 +516,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 12.83,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-memp-flops",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowMEMP",
       "system": "MEMP",
       "experiment_id": "lsa64-hybrid",
@@ -505,27 +548,31 @@
       "dataset_id": "lsa64",
       "split": "model",
       "original_value": 112.34,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-memp-accuracy",
-      "in_scope": false,
+      "in_scope": true,
       "paper_location": "Table4,p8,rowMEMP",
       "system": "MEMP",
       "experiment_id": "lsa64-hybrid",
@@ -533,23 +580,27 @@
       "dataset_id": "lsa64",
       "split": "test",
       "original_value": 99.06,
-      "copied_baseline": true,
+      "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
       ],
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "copied_baseline",
-          "detail": "Cited comparison value outside own method scope."
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
         },
         "run_ids": [],
         "artifact_ids": [],
-        "gate_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit."
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
         ]
-      }
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
     },
     {
       "target_id": "table4-ours-parameters",
@@ -905,6 +956,17 @@
       "type": "protocol",
       "reason": "Architecture and evaluation protocol missing.",
       "required_action": "Provide the architecture/config and input shape defining Table4 12.34M/62.50G and recognition run, or explicitly authorize a conditional surrogate specification."
+    },
+    {
+      "gate_id": "comparison-provenance",
+      "type": "protocol",
+      "status": "open",
+      "reason": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings.",
+      "required_action": "Identify the sources or experiment configurations for the comparison cells in Table4; they remain in scope until verified as copied.",
+      "evidence": [
+        "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+        "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+      ]
     }
   ],
   "source_search": [
