@@ -12,8 +12,8 @@ image = (modal.Image.from_registry('ghcr.io/sign-language-processing/reproductio
          .run_commands('cd /opt/siformer && git apply /opt/upstream.patch')
          .env({'HF_HOME': '/cache/huggingface', 'HF_HUB_CACHE': '/cache/huggingface/hub', 'MPLBACKEND': 'Agg'})
          .add_local_file(Path(__file__).with_name('preflight.py'), '/opt/preflight.py'))
-datasets = modal.Volume.from_name('datasets')
-cache = modal.Volume.from_name('huggingface-cache')
+datasets = modal.Volume.from_name('datasets', version=2)
+cache = modal.Volume.from_name('huggingface-cache', version=2)
 outputs = modal.Volume.from_name('d4719e6c-siformer-results', create_if_missing=True)
 
 @app.function(image=image, gpu='A10G', cpu=4, memory=16000, timeout=1800,
