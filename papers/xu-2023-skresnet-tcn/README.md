@@ -10,7 +10,7 @@ This attempt stops at a structural specification gate: `insufficient_information
 
 Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. [Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network](https://doi.org/10.1155/2023/9503961). *Journal of Sensors*, 2023, article 9503961.
 
-The assignment is a direct user request using the current tracker export. Its original SHA256 and redacted record are preserved in `reproduction.json`. The current export has `expand.paper.status=final`, no confirmation field, and distinct paper/database IDs. GPT-6 using Codex performed the source investigation, data audit, and reporting. Session instructions establish those identities; exact model and harness versions were not exposed.
+The assignment is a direct user request using the current tracker export. Its original SHA256 and redacted record are preserved in `reproduction.json`. The current export has `expand.paper.status=final`, no confirmation field, and distinct paper/database IDs. GPT-6 using Codex performed the source investigation, data audit, and reporting. A separate master agent, also identified as GPT-6 using Codex, independently reviewed rendered architecture figures and comparison provenance; it did not execute the recorded runs. Session instructions establish those identities; exact model and harness versions were not exposed.
 
 ## Target scope
 
@@ -27,6 +27,8 @@ Table 4, p. 8 compares the proposed system with cited earlier systems. All fourt
 ## What was resolved
 
 Sections 3–4 specify 32 keyframes, interframe difference maxima, grouped selective-kernel spatial convolutions, temporal causal convolutions, hybrid dilation, adaptive max pooling, Mish, Ranger, learning rate 0.0001, batch 128, and a 60/20/20 split. Table 1 and §4.1 specify 1,000 iterations; Figure 7 discussion identifies best test performance at 656. These details alone do not define the executable architecture or a reproducible evaluation split.
+
+An independent review of rendered Figures 2–4 confirmed that they use schematic channel/shape variables and illustrative dilations, without providing actual stage widths, depths, or input resolution.
 
 The unresolved specification consists of:
 
