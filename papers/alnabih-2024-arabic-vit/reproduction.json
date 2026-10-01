@@ -20,6 +20,17 @@
         "Rendered PDF page 9, section 4.1 prints 54,049 and a 70/15/15 split; page 10, Table 2 visibly prints 37,853 / 8,111 / 8,111 and total 54,075. The discrepancy is present in the source, not introduced by OCR. Those counts are consistent with 70/15/15 of 54,075, not rounding of 54,049.",
         "PDF page 11, section 4.2.1 identifies the selected ViT-L/16-224-in21k model. The inspected paper supplies no released split identifier resolving the corpus-count disagreement."
       ]
+    },
+    {
+      "agent_id": "root-loop-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent read-only review of the full reconstruction training loop before retained results; no execution. Exact model ID/version and harness version unavailable in session. Reviewed protocol comparability before primary test and identified the mismatched tracker dataset link. Independently recomputed final test metrics and checked saved split coverage/hash after completion.",
+      "evidence": [
+        "Explicit root session attestation on 2026-10-01: GPT-6 using Codex; exact variant/version not exposed.",
+        "Root reviewed full_train.py split boundaries totaling 54,049, disjoint test membership, declared AdamW/scheduler/three epochs, deterministic per-epoch shuffle, final-checkpoint test once, and optimizer/scheduler restoration. No correctness issue found.",
+        "Explicit root review on2026-10-01: all54,049 split indices are unique and disjoint; saved predictions contain exactly8,108 test indices, valid0\u201331 labels/predictions, and8,060 correct. Accuracy independently recomputes99.40799210656142%; prediction/split SHA-256 match native metrics. Review only, no execution."
+      ]
     }
   ],
   "assignment": {
@@ -188,20 +199,21 @@
       "url": "https://huggingface.co/google/vit-large-patch16-224-in21k",
       "revision_or_sha256": "6074eaf2211423e928c93b93ef773d5da618aa7e",
       "role": "Exact model family named in paper, current immutable weight revision for diagnostic."
+    },
+    {
+      "source_id": "training-defaults",
+      "kind": "code",
+      "url": "https://github.com/huggingface/transformers/blob/052e652d6d53c2b26ffde87e039b723949a53493/src/transformers/training_args.py",
+      "revision_or_sha256": "052e652d6d53c2b26ffde87e039b723949a53493",
+      "role": "Explicit source of declared ordinary defaults; not evidence of the authors original configuration."
     }
   ],
   "status": {
-    "pipeline": "insufficient_information",
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "No comparable value: Table 2 contradicts the cited dataset size and no split manifest is published. Diagnostic metrics are not Table 4 results.",
+    "pipeline": "complete",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Compare accuracy rounded to the paper one-decimal precision: reproduced 99.40799% (99.4% rounded) versus99.3%. Raw difference +0.10799 percentage points. This is a numerical comparison of a documented reconstruction, not a scientific success/failure judgment.",
     "preference_level": 3,
-    "blocker": {
-      "reason_code": "protocol_ambiguous",
-      "detail": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy.",
-      "target_ids": [
-        "table4-vit-accuracy"
-      ]
-    }
+    "blocker": null
   },
   "datasets": [
     {
@@ -247,7 +259,7 @@
       "experiment_id": "vit",
       "system": "Vision Transformer (google/vit-large-patch16-224-in21k)",
       "dataset_id": "arsl2018",
-      "checkpoint_rule": "Unreported; Figure 7 depicts convergence",
+      "checkpoint_rule": "Final epoch3 checkpoint, fixed before training as an ordinary default because the paper omits its selection rule.",
       "paper_evidence": "Table 4, p.81735, row Our work; section 4.2.2 identifies related-work comparison."
     },
     {
@@ -293,27 +305,25 @@
       "paper_location": "Table 4 p.81735, Our work row, Accuracy column",
       "experiment_id": "vit",
       "metric_id": "accuracy",
-      "split": "Paper test split: 15%, 8,111 images in Table 2 (inconsistent total)",
+      "split": "Paper test proportion15%; reported8,111 conflicts with corpus size. Reconstruction uses8,108 held-out examples from the authoritative54,049 corpus.",
       "original_value": 99.3,
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy."
-        },
+        "status": "produced",
+        "reproduced_value": 99.40799210656142,
+        "difference": 0.10799210656142577,
         "run_ids": [
-          "preflight-1",
-          "preflight-2"
+          "full-three-epochs-v1"
         ],
         "artifact_ids": [
-          "preflight-2-metrics-json"
+          "full-three-epochs-v1-metrics-json",
+          "full-three-epochs-v1-test-predictions-npz",
+          "full-three-epochs-v1-split-indices-npz"
         ],
-        "gate_ids": [
-          "split-conflict"
-        ],
+        "gate_ids": [],
         "evidence": [
-          "Table 2 p.81734: 37,853 / 8,111 / 8,111 = 54,075; sections 3.2 and 4.1: 54,049 images."
+          "Final checkpoint evaluated once on8,108 held-out examples; exact prediction count independently recomputed from NPZ.",
+          "Target eligibility reassessed before primary test under explicit user-authorized ordinary assumptions; all training/evaluation settings fixed before the full run. Exact historical membership and training configuration are not claimed."
         ]
       }
     },
@@ -583,6 +593,177 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       }
+    },
+    {
+      "run_id": "exact-preflight-v1",
+      "agent_ids": [
+        "arabic-vit-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/alnabih-2024-arabic-vit/modal_app.py --exact-preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "exact-loop-preflight",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:00:09.991956+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5
+      },
+      "planned_configuration": "Two 64-example epochs,batch 8, 32 validation and 32 test, exact full optimizer/scheduler/clip/checkpoint loop; original full split-index artifact preserved.",
+      "artifact_ids": [
+        "exact-preflight-v1-history-json",
+        "exact-preflight-v1-last-pt",
+        "exact-preflight-v1-nvidia-smi-txt",
+        "exact-preflight-v1-pip-freeze-txt",
+        "exact-preflight-v1-split-indices-npz",
+        "exact-preflight-v1-test-predictions-npz",
+        "exact-preflight-v1-metrics-json",
+        "exact-preflight-v1-execution-json",
+        "exact-preflight-v1-console-log"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-RthHmV35hOXJnSmo9EjdSO",
+        "modal_task_id": "ta-01M3VRVJAGTPPV6AMV49TZTZQR",
+        "modal_image_id": "im-QYb8LEzeWRz0i8DEwfGPG4",
+        "wall_time_seconds": 85.59505891799927,
+        "gpu_hours_function_body": 0.023776405254999796,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "started_at_utc": "2026-10-01T13:01:36.681668+00:00",
+      "finished_at_utc": "2026-10-01T13:02:40.485550+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two real-data epochs with exact optimizer/scheduler/clipping path, checkpoint reload after each epoch, validation and held-out test completed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "measurements": {
+        "peak_gpu_memory_bytes": 7313126912,
+        "epoch_examples_per_second": [
+          30.508645122506074,
+          69.48221054400203
+        ],
+        "checkpoint_reload_verified": true,
+        "native_wall_seconds": 63.803885154
+      }
+    },
+    {
+      "run_id": "full-three-epochs-v1",
+      "agent_ids": [
+        "arabic-vit-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/alnabih-2024-arabic-vit/modal_app.py --full",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-reconstructed-seed42",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:03:51.827076+00:00",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4,
+        "max_cost_chf": 20
+      },
+      "artifact_ids": [
+        "full-three-epochs-v1-history-json",
+        "full-three-epochs-v1-last-pt",
+        "full-three-epochs-v1-nvidia-smi-txt",
+        "full-three-epochs-v1-pip-freeze-txt",
+        "full-three-epochs-v1-split-indices-npz",
+        "full-three-epochs-v1-test-predictions-npz",
+        "full-three-epochs-v1-metrics-json",
+        "full-three-epochs-v1-execution-json",
+        "full-three-epochs-v1-console-log"
+      ],
+      "estimate": {
+        "gpu_hours": 1.3,
+        "likely_cost_usd": 4,
+        "gpu_price_usd_per_second": 0.000694,
+        "pricing_source": "https://modal.com/pricing",
+        "pricing_checked_at_utc": "2026-10-01T13:03:51.827076+00:00",
+        "basis": "Conservative 30.51 images/s training, 126 images/s evaluation, allowance for three checkpoint commits and startup; exact-loop preflight warm training 69.48 images/s.",
+        "storage_gb": 5,
+        "retry": "No full restart; any subsequent resume requires a new declared attempt within remaining budget."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-RdF4Y4BNq6tsVhriLvV6lU",
+        "modal_task_id": "ta-01M3VS2N4Y7DC3GG4NS2F8N1WR",
+        "modal_image_id": "im-QYb8LEzeWRz0i8DEwfGPG4",
+        "modal_function_call_id": "fc-01M3VS0YV0HYCW6CZKTHJNHV8M",
+        "wall_time_seconds": 1708.2121722698212,
+        "gpu_hours_function_body": 0.47450338118606145,
+        "estimated_gpu_cost_usd": 1.1854992475552557,
+        "actual_billed_cost_chf": null,
+        "wall_time_note": "Native UTC timestamps bracket the script training/evaluation. Wrapper wall includes imports, final artifact hashing and subprocess startup; neither is a billing measurement.",
+        "image_oci_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "comparability": "Eligible documented reconstruction; reassessed before primary test with fixed recipe unchanged. See comparability_reassessment.",
+      "started_at_utc": "2026-10-01T13:05:13.194983+00:00",
+      "finished_at_utc": "2026-10-01T13:33:26.431532+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Fixed three-epoch training completed with validation and checkpoint restoration each epoch, followed by final-checkpoint test evaluation on all8,108 held-out examples.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "measurements": {
+        "native_training_evaluation_wall_seconds": 1693.2365641319998,
+        "training_seconds": 1423.28821926,
+        "epochs_completed": 3,
+        "optimizer_steps": 14190,
+        "peak_gpu_memory_bytes": 7314068480,
+        "checkpoint_reload_verified": true
+      },
+      "metrics": {
+        "correct": 8060,
+        "count": 8108,
+        "accuracy_percent": 99.40799210656142,
+        "loss": 0.035897264702425186,
+        "seconds": 47.08039160299995
+      }
     }
   ],
   "artifacts": [
@@ -641,34 +822,162 @@
       "uri": "modal://repro-sign/repro-0285c237-results/preflight-2/pip-freeze.txt",
       "sha256": "5a363fe249168102fd3075af7935997afccc5b409c6daeb68686a6395e20233f",
       "size_bytes": 6843
+    },
+    {
+      "artifact_id": "exact-preflight-v1-history-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/history.json",
+      "sha256": "20f66cbd653f6302760b8e9009541c8b85861a8c69ac75b68069691e2dbc42d9",
+      "size_bytes": 713
+    },
+    {
+      "artifact_id": "exact-preflight-v1-last-pt",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/last.pt",
+      "sha256": "dc8f22bb9493b79e67ba640204e414be3ca3538a16f38900cc330d2372f7d67a",
+      "size_bytes": 3640430333
+    },
+    {
+      "artifact_id": "exact-preflight-v1-nvidia-smi-txt",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/nvidia-smi.txt",
+      "sha256": "30b127808d32ecf05d8b5d365d45082abff76edadcfb86e3f6ce3f3c491edc3c",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "exact-preflight-v1-pip-freeze-txt",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/pip-freeze.txt",
+      "sha256": "5a363fe249168102fd3075af7935997afccc5b409c6daeb68686a6395e20233f",
+      "size_bytes": 6843
+    },
+    {
+      "artifact_id": "exact-preflight-v1-split-indices-npz",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/split-indices.npz",
+      "sha256": "1b461f39210903e5cc4652805006d5aca04c93c1601a065186ee86f72207dd03",
+      "size_bytes": 433148
+    },
+    {
+      "artifact_id": "exact-preflight-v1-test-predictions-npz",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/test-predictions.npz",
+      "sha256": "1a3069a157ad80fd4a3a13fe36dfc43a00aba65e3811383344b1a35a246604dd",
+      "size_bytes": 1534
+    },
+    {
+      "artifact_id": "exact-preflight-v1-metrics-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/metrics.json",
+      "sha256": "7d960f266559468537bcfd8bbaab26013d3965892c6afd773fb332ed3e898e50",
+      "size_bytes": 2668
+    },
+    {
+      "artifact_id": "exact-preflight-v1-execution-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/execution.json",
+      "sha256": "30e5ec36856ec60ab99aa4c9ca848598a265737e84389acba88fb0a5b95e6e05",
+      "size_bytes": 160
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-history-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/history.json",
+      "sha256": "51ddcded181cc9718222b77b55e29caf6626b78fef4e1b7a719029a247321992",
+      "size_bytes": 1151
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-last-pt",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/last.pt",
+      "sha256": "15285ac8da00d402893c4bf1cee72e11af24864a06271703dd897e54e2d24913",
+      "size_bytes": 3640430461
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-nvidia-smi-txt",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/nvidia-smi.txt",
+      "sha256": "12ddd303e48c28346b340a01ddf99ac95900b1853832bd267b9bac9627166f80",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-pip-freeze-txt",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/pip-freeze.txt",
+      "sha256": "5a363fe249168102fd3075af7935997afccc5b409c6daeb68686a6395e20233f",
+      "size_bytes": 6843
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-split-indices-npz",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/split-indices.npz",
+      "sha256": "1b461f39210903e5cc4652805006d5aca04c93c1601a065186ee86f72207dd03",
+      "size_bytes": 433148
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-test-predictions-npz",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/test-predictions.npz",
+      "sha256": "8a046ba62e5572cfa3b06659d45164c9b436b0887fa64536ef2a9c9d87edde6e",
+      "size_bytes": 195358
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-metrics-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/metrics.json",
+      "sha256": "085c15b71c7ce6a20145e4b0cb345645403f9de6179907bf1d572ecd79930c1c",
+      "size_bytes": 3169
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-execution-json",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/execution.json",
+      "sha256": "bc3770ec917efa4e6683eb28184e9ee342a4bbf7a95cca2c1a7053877d856292",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "full-three-epochs-v1-console-log",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/full-three-epochs-v1/console.log",
+      "sha256": "599ec63a33cf0f9e94471f30ebecd9d910ca684e2131f6dcae55683d3b526fa0",
+      "size_bytes": 8447
+    },
+    {
+      "artifact_id": "exact-preflight-v1-console-log",
+      "kind": "raw_evidence",
+      "uri": "modal://repro-sign/repro-0285c237-results/exact-preflight-v1/console.log",
+      "sha256": "5c8d17b9e7449e5b081d91dce045836c8ee4dbbd2727249f4d116a38f1f2a461",
+      "size_bytes": 11730
     }
   ],
   "gates": [
     {
       "gate_id": "split-conflict",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy.",
       "evidence": [
         "Paper Table 2 p.81734",
         "Paper sections 3.2 and 4.1",
         "Mendeley dataset v1: 54,049 images; shared manifest: 54,049 rows"
       ],
-      "required_action": "Resolve whether Table 2 is a typographical error and identify the actual train/validation/test membership or approve a conditional 70/15/15 resplit. No full run is presented as comparable until resolved.",
+      "required_action": "None for execution. Complete the fixed run and report target accuracy with all reconstruction assumptions.",
       "alternatives": [
         {
           "alternative_id": "canonical-corpus",
           "description": "Use canonical 54,049 image corpus with 70/15/15 random split; counts differ from Table 2.",
           "paper_evidence": "Sections 3.2 and 4.1",
-          "decision_needed": "Confirm Table 2 counts are erroneous and define split membership."
+          "decision_needed": "No execution decision awaited; retained as the historical alternative considered before the user-authorized reconstruction."
         },
         {
           "alternative_id": "table2-corpus",
           "description": "Use the authors 54,075 image corpus and 37,853/8,111/8,111 split.",
           "paper_evidence": "Table 2",
-          "decision_needed": "Identify the extra 26 images and the original split."
+          "decision_needed": "No execution decision awaited; retained as the historical alternative considered before the user-authorized reconstruction."
         }
-      ]
+      ],
+      "resolution": "User-authorized judgment on 2026-10-01: use the authoritative 54,049 corpus and paper 70/15/15, seed 42 permutation. Exact historical membership is unknown; stated split proportions and dataset identity are preserved. This ordinary assumption does not prevent target eligibility.",
+      "selected_alternative_id": "canonical-corpus"
     }
   ],
   "source_search": {
@@ -696,7 +1005,11 @@
   "guesses": [
     {
       "id": "diagnostic-defaults",
-      "detail": "Disposable preflight uses seed42, AdamW lr5e-5, batch8, RGB conversion and pinned pretrained image processor, full-parameter float32 fine-tuning, 4 training steps plus one resumed step and 32 held-out diagnostic examples. These engineering defaults are not claimed as published hyperparameters."
+      "detail": "Disposable preflight uses seed 42, AdamW lr5e-5, batch8, RGB conversion and pinned pretrained image processor, full-parameter float32 fine-tuning, 4 training steps plus one resumed step and 32 held-out diagnostic examples. These engineering defaults are not claimed as published hyperparameters."
+    },
+    {
+      "id": "authorized-reconstruction",
+      "detail": "User explicitly authorized resolving the count inconsistency from the authoritative 54,049-image corpus and paper 70/15/15 ratio. Seed 42 NumPy permutation assigns 37,834 train, 8,107 validation, 8,108 test; no historical membership claim. Omitted settings fixed before scores to ordinary Transformers 4.46.3 defaults: 3 epochs, batch 8, AdamW learning rate 5e-5, betas 0.9/0.999, epsilon 1e-8, weight decay 0, linear decay, no warmup, gradient norm clip 1, float32 all-parameter fine-tuning,final checkpoint. Generic paper freeze-last-layer advice does not identify a concrete frozen-layer recipe; train newly initialized 32-class head and full encoder as retained preflight."
     }
   ],
   "deviations": [
@@ -705,8 +1018,8 @@
       "detail": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy."
     },
     {
-      "id": "no-full-run",
-      "detail": "No full run launched because the conflicting split definition prevents comparable target evaluation; preflight remains conditional."
+      "id": "reopened-full-run",
+      "detail": "Original attempt stopped after engineering diagnostics. Explicit user steering authorized documented judgment calls; the separate fixed three-epoch full reconstruction completed. Original diagnostics and the pre-test comparability reassessment are preserved."
     },
     {
       "id": "secondary-reporting-inconsistency",
@@ -723,11 +1036,80 @@
     "resolved_modal_image_id": "im-VsmEEbnMoCD0ZCEe0jbT2Q",
     "source_revision": "0ff14a2",
     "entrypoint_sha256": "cd46970a7debb13403ddf01c0c00ef1651aecd1aa4bae82acc272d1cec06ad2f",
-    "code_after_run_notes": "Return JSON string fixed first local failure; final v2 declarations for shared handles and idempotent existing-result guard added after successful run; these do not change training behavior. Results Volume explicitly v1 matching existing resource."
+    "code_after_run_notes": "Return JSON string fixed first local failure; final v2 declarations for shared handles and idempotent existing-result guard added after successful run; these do not change training behavior. Results Volume explicitly v1 matching existing resource.",
+    "full_reconstruction": {
+      "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "resolved_modal_image_id": "im-QYb8LEzeWRz0i8DEwfGPG4",
+      "training_script_sha256": "f3f9b0809c55d7826dcafa506027448bad8fa1e2712127ca727131d402a6d3fe",
+      "wrapper_after_launch_note": "Added a run-directory argument and selectable evidence directory after launch. A terminal-result guard preserves existing execution metadata, and failed retained attempts require a separate declared resume attempt. These repeat-safety changes do not alter the training script or retained command semantics.",
+      "current_wrapper_sha256": "0715cc3e0727ade62392816352f036c448aff159c8da702757914920d273445c"
+    }
   },
   "evidence_collection": {
     "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alnabih-2024-arabic-vit/modal_app.py::evidence",
     "app_id": "ap-z9HlioPOMnMD6rrR0e9b8O",
-    "result": "Final hashes collected after both jobs completed. Earlier overlapping read excluded because it observed partially written checkpoint; subsequent wrong v2 results handle failed read-only and was corrected to v1."
+    "result": "Final hashes collected after both jobs completed. Earlier overlapping read excluded because it observed partially written checkpoint; subsequent wrong v2 results handle failed read-only and was corrected to v1.",
+    "full_reconstruction_verification": {
+      "prediction_count": 8108,
+      "correct_recomputed": 8060,
+      "accuracy_recomputed": 99.40799210656142,
+      "disjoint_split_union_count": 54049,
+      "source_script_hash_matches": true,
+      "native_prediction_and_split_hashes_match": true
+    }
+  },
+  "reconstructed_protocol": {
+    "decision_date": "2026-10-01",
+    "authorization": "Explicit user steering to make documented judgment calls; parent authorized bounded full run.",
+    "comparability_decided_before_scores": "Initial conditional judgment reassessed before primary test under explicit user authorization; see comparability_reassessment. Eligible documented reconstruction with disclosed ordinary omissions.",
+    "human_execution_decision_required": false,
+    "epochs": 3,
+    "batch_size": 8,
+    "learning_rate": 5e-05,
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "weight_decay": 0,
+    "lr_schedule": "linear decay to zero, no warmup",
+    "gradient_clip_norm": 1,
+    "precision": "float32",
+    "trainable_parameters": "all encoder and newly initialized classifier parameters",
+    "checkpoint_selection": "final epoch",
+    "seed": 42,
+    "split_counts": {
+      "train": 37834,
+      "validation": 8107,
+      "test": 8108
+    },
+    "augmentation": "none; pinned ViT image processor, RGB conversion",
+    "dataset_population": "all 54,049 verified examples",
+    "source_pin": "google/vit-large-patch16-224-in21k@6074eaf2211423e928c93b93ef773d5da618aa7e"
+  },
+  "comparability_reassessment": {
+    "declared_at_utc": "2026-10-01T13:19:49.136262+00:00",
+    "previous_judgment": "Conditional solely because original split membership and training schedule were not released.",
+    "current_judgment": "Eligible documented reconstruction of the requested target after completion.",
+    "basis": "User explicitly authorizes documented judgment calls. The exact authoritative corpus, selected ViT-L weights, 32-class task, explicit 70/15/15 proportions and sample accuracy are preserved. Seeded membership and omitted optimizer/schedule are ordinary reconstruction assumptions; the 26-image count discrepancy is resolved from the actual corpus and stated ratio, not by inventing a materially different subset. Generic common-practice freezing advice does not specify a frozen-layer recipe for this experiment.",
+    "timing": "Made during epoch two, before any primary test evaluation. Epoch-one validation was already observed but is not the basis for eligibility; no training, checkpoint, split, seed or evaluation setting was changed.",
+    "limitations": "Historical split membership, optimizer, training duration and freezing are unknown. Produced means a documented reconstruction under stated assumptions, not a claim to recover the exact historical run."
+  },
+  "numerical_assessment_plan": {
+    "declared_at_utc": "2026-10-01T13:20:03.170898+00:00",
+    "basis": "Compare sample test accuracy rounded to the paper one-decimal precision against99.3%. Exact unrounded accuracy and percentage-point difference also reported. This numerical comparison is not a scientific success/failure judgment.",
+    "published_value": 99.3,
+    "rounding_decimal_places": 1
+  },
+  "tracker_dataset_link_review": {
+    "review_date": "2026-10-01",
+    "tracker_dataset_record_id": "0rl07ms2n5hrk7h",
+    "tracker_name": "Arabic Sign Language ArSL dataset",
+    "tracker_url": "https://www.kaggle.com/datasets/sabribelmadoui/arabic-sign-language-unaugmented-dataset",
+    "tracker_license_field": "blank",
+    "finding": "The linked tracker record points to the distinct YOLO-style author release, not the canonical54,049-image ArSL2018 corpus cited by this paper. It is an erroneous or ambiguous research lead and was not used as training-data provenance.",
+    "selected_basis": "Paper sections3.2/4.1 and reference16 identify ArSL2018; authoritative Mendeleyv1 and pinned54,049-example Hugging Face mirror establish the actual corpus. The shared dataset manifest and parquet hash are verified inside each run.",
+    "effect": "No training change. Do not mark the mismatched tracker dataset record as available on Modal based on this reproduction."
   }
 }
