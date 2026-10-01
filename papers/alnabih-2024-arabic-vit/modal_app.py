@@ -1,12 +1,13 @@
-"""Bounded real-data diagnostic; full training waits for the conflicting split counts."""
+"""Retained diagnostics and a declared, bounded full reconstruction."""
 from pathlib import Path
 import modal
 
 ROOT = Path(__file__).resolve().parent
 app = modal.App("repro-0285c237-arabic-vit")
-image = (modal.Image.from_registry("ghcr.io/sign-language-processing/reproduction:latest")
+image = (modal.Image.from_registry("ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291")
          .pip_install("transformers==4.46.3", "pyarrow==19.0.1", "pillow==11.1.0")
-         .env({"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"}))
+         .env({"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingface/hub"})
+         .add_local_file(ROOT / "full_train.py", "/opt/full_train.py"))
 data = modal.Volume.from_name("datasets", version=2)
 cache = modal.Volume.from_name("huggingface-cache", version=2)
 outputs = modal.Volume.from_name("repro-0285c237-results", create_if_missing=True, version=1)
@@ -105,17 +106,50 @@ def preflight():
     return json.dumps(result)
 
 @app.local_entrypoint()
-def main():
-    preflight.remote()
+def main(full: bool = False, exact_preflight: bool = False, run_id: str = ""):
+    if run_id and ("/" in run_id or ".." in run_id):
+        raise ValueError("A single run directory name is required")
+    if full or exact_preflight:
+        reconstruction.remote(exact_preflight, run_id)
+    else:
+        preflight.remote()
 
 @app.function(image=image, timeout=600, volumes={"/results": outputs.read_only(), "/cache/huggingface": cache})
-def evidence():
+def evidence(run_id: str = ""):
+    if run_id and ("/" in run_id or ".." in run_id):
+        raise ValueError("A single run directory name is required")
     import hashlib, json
     manifest = []
-    for path in sorted(Path('/results').glob('preflight-*/*')):
+    for path in sorted(Path('/results').glob(f'{run_id}/*' if run_id else 'preflight-*/*')):
         h = hashlib.sha256()
         with path.open('rb') as stream:
             for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b''):
                 h.update(chunk)
         manifest.append({'path': str(path.relative_to('/results')), 'sha256': h.hexdigest(), 'bytes': path.stat().st_size})
     print(json.dumps(manifest))
+
+@app.function(image=image, gpu="A100-80GB", timeout=14400, memory=24576,
+              volumes={"/datasets": data.read_only(), "/cache/huggingface": cache, "/results": outputs})
+def reconstruction(preflight_only: bool = False, run_id: str = ""):
+    if run_id and ("/" in run_id or ".." in run_id):
+        raise ValueError("A single run directory name is required")
+    import json, subprocess, sys, time
+    run_id = run_id or ("exact-preflight-v1" if preflight_only else "full-three-epochs-v1")
+    folder = Path("/results") / run_id
+    folder.mkdir(parents=True, exist_ok=True)
+    if (folder / "metrics.json").exists():
+        return (folder / "metrics.json").read_text()
+    if (folder / "execution.json").exists():
+        raise RuntimeError("A failed retained attempt exists; preserve it and declare a separate resume attempt.")
+    command = [sys.executable, "/opt/full_train.py", "--out", str(folder)]
+    if preflight_only: command.append("--preflight")
+    start = time.time()
+    try:
+        result = subprocess.run(command, timeout=1700 if preflight_only else 14300)
+        code = result.returncode
+    except subprocess.TimeoutExpired:
+        code = 124
+    (folder / "execution.json").write_text(json.dumps({"exit_code":code,"wall_seconds":time.time()-start,"command":command,"function_call_id":modal.current_function_call_id(),"input_id":modal.current_input_id()}))
+    outputs.commit()
+    if code: raise RuntimeError(f"Training command exited {code}")
+    return (folder / "metrics.json").read_text()
