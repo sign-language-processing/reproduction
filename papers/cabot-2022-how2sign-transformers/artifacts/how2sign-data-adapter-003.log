@@ -1,0 +1,65 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-f0q81f1WHArDGMPNd70AkG
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function audit_data.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/up
+│   stream.patch
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function execute.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function collect.
+└── 🔨 Created function execute_how2.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{"started_at_utc": "2026-10-01T13:35:33.291177+00:00", "app_id": "ap-f0q81f1WHArDGMPNd70AkG", "function_call_id": "fc-01M3VTTNZ69SG55B2E00RT97C4", "exit_code": 0, "finished_at_utc": "2026-10-01T13:48:19.802328+00:00"}
+{"split": "train", "archive_copy_seconds": 16.751599550247192, "archive_sha256": "637ffbf99f7420d41a0b6ef7e5790292e5f32ec188cb68342d45485c5a377e1d"}
+{"split": "train", "archive_vs_extracted_parity_records": 16, "all_equal": true}
+{"train": {"archive_vs_extracted_parity_records": 16, "input_rows": 30908, "retained_rows": 30904, "removed": [{"id": "01Dnm-s8rNI_6-3-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "04DtdCu2kfg_0-5-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "13yrKJ6yOPQ_24-8-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "13yrKJ6yOPQ_25-8-rgb_front", "reason": "missing_from_published_feature_archive"}], "native_training_filter_eligible": 28873, "max_timesteps": 3577, "sha256": "7006bb13afc1b1718eb820cc925f3a6999cf6f66a2da7ff150c6eb8398594203", "size_bytes": 8585611019}}
+{"split": "val", "archive_copy_seconds": 5.593898057937622, "archive_sha256": "492e2807f1473ed0a17acb9b0365634fac1f10f84805e963ef6cd5c24dfea92f"}
+{"split": "val", "archive_vs_extracted_parity_records": 16, "all_equal": true}
+{"val": {"archive_vs_extracted_parity_records": 16, "input_rows": 1713, "retained_rows": 1713, "removed": [], "native_training_filter_eligible": 1611, "max_timesteps": 1451, "sha256": "a4ffd76b1a3fb47b7dcd7ff4ded35d8a7197b9c2296017de38f9488b8c76a132", "size_bytes": 480421754, "diagnostic": {"path": "val-preflight.pkl.gz", "count": 16, "selection": "16 evenly spaced length ranks, including shortest/longest; diagnostics only", "sha256": "18464e674e8aa4a910c586391ae4782aa2e42433887cf96ed522db589e77cee0"}}}
+{"split": "test", "archive_copy_seconds": 1.32966947555542, "archive_sha256": "60c595b721649862d20cbc0ebccfa2b360fc87e5f564f2617f9e382d85620819"}
+{"split": "test", "archive_vs_extracted_parity_records": 16, "all_equal": true}
+{"test": {"archive_vs_extracted_parity_records": 16, "input_rows": 2328, "retained_rows": 2328, "removed": [], "native_training_filter_eligible": 2176, "max_timesteps": 1145, "sha256": "384236304ada0cbd5fafd6016d596828ca51bad9a6a52fca3bc2a6449d995b97", "size_bytes": 631532608, "diagnostic": {"path": "test-preflight.pkl.gz", "count": 16, "selection": "16 evenly spaced length ranks, including shortest/longest; diagnostics only", "sha256": "53c9f91a72dc15e4911c04539d9fe7bf3f4ca221cc97d4dc6db1168dc5fc8a32"}}}
+{"source_manifest_sha256": "3b871ee7d86f34b76fc4f0d97161b85c52d97ed73105cf4a75346f4910dd5045", "source_files_sha256": "55a5836f823ae3ed3070c293430953de10d7d5f32c332450b20797b5f6df696a", "adapter_sha256": "20f62de4868f5bb6942c5c86d5ef3ca31a4b801afbe27f66da3f1cf0c694b28d", "splits": {"train": {"archive_vs_extracted_parity_records": 16, "input_rows": 30908, "retained_rows": 30904, "removed": [{"id": "01Dnm-s8rNI_6-3-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "04DtdCu2kfg_0-5-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "13yrKJ6yOPQ_24-8-rgb_front", "reason": "missing_from_published_feature_archive"}, {"id": "13yrKJ6yOPQ_25-8-rgb_front", "reason": "missing_from_published_feature_archive"}], "native_training_filter_eligible": 28873, "max_timesteps": 3577, "sha256": "7006bb13afc1b1718eb820cc925f3a6999cf6f66a2da7ff150c6eb8398594203", "size_bytes": 8585611019}, "val": {"archive_vs_extracted_parity_records": 16, "input_rows": 1713, "retained_rows": 1713, "removed": [], "native_training_filter_eligible": 1611, "max_timesteps": 1451, "sha256": "a4ffd76b1a3fb47b7dcd7ff4ded35d8a7197b9c2296017de38f9488b8c76a132", "size_bytes": 480421754, "diagnostic": {"path": "val-preflight.pkl.gz", "count": 16, "selection": "16 evenly spaced length ranks, including shortest/longest; diagnostics only", "sha256": "18464e674e8aa4a910c586391ae4782aa2e42433887cf96ed522db589e77cee0"}}, "test": {"archive_vs_extracted_parity_records": 16, "input_rows": 2328, "retained_rows": 2328, "removed": [], "native_training_filter_eligible": 2176, "max_timesteps": 1145, "sha256": "384236304ada0cbd5fafd6016d596828ca51bad9a6a52fca3bc2a6449d995b97", "size_bytes": 631532608, "diagnostic": {"path": "test-preflight.pkl.gz", "count": 16, "selection": "16 evenly spaced length ranks, including shortest/longest; diagnostics only", "sha256": "53c9f91a72dc15e4911c04539d9fe7bf3f4ca221cc97d4dc6db1168dc5fc8a32"}}}, "started_unix": 1790861734.913878, "finished_unix": 1790862497.984261}
+
+Stopping app - local entrypoint completed.
+Runner terminated.
+✓ App completed. View run at 
+https://modal.com/apps/repro-sign/main/ap-f0q81f1WHArDGMPNd70AkG

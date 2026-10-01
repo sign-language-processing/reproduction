@@ -1,0 +1,24 @@
+
+10/01 12:09:21 [NOTICE] Downloading 1 item(s)
+
+10/01 12:09:21 [ERROR] CUID#7 - Download aborted. URI=https://dataverse.csuc.cat/api/access/datafile/53890
+Exception: [AbstractCommand.cc:403] errorCode=13 URI=https://dataverse.csuc.cat/api/access/datafile/53890
+  -> [RequestGroup.cc:783] errorCode=13 File /tmp/tmpxpu3wn6w/Readme.txt exists, but a control file(*.aria2) does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.
+
+10/01 12:09:21 [NOTICE] Download GID#9afb37f4bbde0959 not complete: /tmp/tmpxpu3wn6w/Readme.txt
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+9afb37|ERR |       0B/s|/tmp/tmpxpu3wn6w/Readme.txt
+
+Status Legend:
+(ERR):error occurred.
+
+aria2 will resume download if the transfer is restarted.
+If there are any errors, then see the log file. See '-l' option in help/man page for details.
+Traceback (most recent call last):
+  File "<string>", line 6, in <module>
+  File "/usr/local/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['aria2c', '--continue=true', '--always-resume=true', '--max-connection-per-server=4', '--split=4', '--min-split-size=16M', '--file-allocation=none', '--auto-file-renaming=false', '--allow-overwrite=false', '--max-tries=3', '--retry-wait=5', '--timeout=180', '--connect-timeout=60', '--dir=/tmp/tmpxpu3wn6w', '--out=Readme.txt', 'https://dataverse.csuc.cat/api/access/datafile/53890']' returned non-zero exit status 13.

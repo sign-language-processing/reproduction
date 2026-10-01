@@ -1,0 +1,120 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-KXvZVO635srMhOB3rnxJIW
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/up
+│   stream.patch
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function execute.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function collect.
+└── 🔨 Created function execute_how2.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{"started_at_utc": "2026-10-01T13:23:34.261620+00:00", "app_id": "ap-KXvZVO635srMhOB3rnxJIW", "function_call_id": "fc-01M3VT4PKBS3RRJ12BS61GDQBY", "exit_code": 1, "finished_at_utc": "2026-10-01T13:23:50.426643+00:00"}
+Traceback (most recent call last):
+  File "/opt/prepare_how2.py", line 38, in <module>
+    assert sum(r['reason']=='missing_from_published_feature_archive' for r in removed)==(4 if split=='train' else 0),split
+AssertionError: train
+
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 205, in prepare_how2
+    if p.returncode:raise RuntimeError('Data adapter failed: '+str(p.returncode))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Data adapter failed: 1
+Stopping app - uncaught exception raised locally: RuntimeError('Data adapter failed: 1').
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <worktree>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:219 in main                                               │
+│                                                                              │
+│   218 │   if mode=='prepare-how2':                                           │
+│ ❱ 219 │   │   prepare_how2.remote(run_id); return                            │
+│   220 │   if mode=='acquire-validation':                                     │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VT4QMRP9TCQYZ7596YK2ZR)...      │
+│                                                                              │
+│ /root/modal_app.py:205 in prepare_how2                                       │
+│                                                                              │
+│ ❱ 205 if p.returncode:raise RuntimeError('Data adapter failed: '+str(p.retur │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+RuntimeError: Data adapter failed: 1

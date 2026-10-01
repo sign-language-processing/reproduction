@@ -1,0 +1,128 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-2Y96oGB7G2nLuE1rIenFLr
+✓ Created objects.
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created function collect.
+├── 🔨 Created function execute.
+├── 🔨 Created function acquire_data.
+└── 🔨 Created function inspect_data.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+Traceback (most recent call last):
+  File "/opt/collect.py", line 6, in <module>
+    with path.open('rb') as f:d=pickle.load(f)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/storage.py", line 134, in _load_from_bytes
+    return torch.load(io.BytesIO(b))
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 529, in load
+    return _legacy_load(opened_file, map_location, pickle_module, **pickle_load_args)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 702, in _legacy_load
+    result = unpickler.load()
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 665, in persistent_load
+    deserialized_objects[root_key] = restore_location(obj, location)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 156, in default_restore_location
+    result = fn(storage, location)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 132, in _cuda_deserialize
+    device = validate_cuda_device(location)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/serialization.py", line 116, in validate_cuda_device
+    raise RuntimeError('Attempting to deserialize object on a CUDA '
+RuntimeError: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device('cpu') to map your storages to the CPU.
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 78, in collect
+    subprocess.run([PYTHON,'/opt/collect.py',str(Path('/outputs')/run_id)],env=env,check=True)
+  File "/usr/local/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/root/miniconda3/bin/python', '/opt/collect.py', '/outputs/preflight-003']' returned non-zero exit status 1.
+Stopping app - uncaught exception raised locally: CalledProcessError(1, ['/root/miniconda3/bin/python', '/opt/collect.py', '/outputs/preflight-003']).
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <checkout>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:84 in main                                                │
+│                                                                              │
+│   83 │   if mode=='collect':                                                 │
+│ ❱ 84 │   │   collect.remote(run_id); return                                  │
+│   85 │   if mode=='inspect-data':                                            │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VH42JD30A5X8BNE39S2PDR)...      │
+│                                                                              │
+│ /root/modal_app.py:78 in collect                                             │
+│                                                                              │
+│ ❱ 78 subprocess.run([PYTHON,'/opt/collect.py',str(Path('/outputs')/run_id)], │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.11/subprocess.py:571 in run                           │
+│                                                                              │
+│ ❱ 571 raise CalledProcessError(retcode, process.args,                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+CalledProcessError: Command '['/root/miniconda3/bin/python', '/opt/collect.py', 
+'/outputs/preflight-003']' returned non-zero exit status 1.
