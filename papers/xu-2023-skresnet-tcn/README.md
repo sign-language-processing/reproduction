@@ -66,4 +66,6 @@ Which architecture/configuration and input shape produced Table 4, and which key
 
 Preference level: 3. No faithful reimplementation can be selected before the structural gate is resolved. The successful CPU audit took 26.15 seconds, verified all 3,200 file paths, and decoded 192 full-resolution frames across 64 class samples. Raw evidence: `modal://2be3c68e-skresnet-results/data-preflight-004/`, app `ap-Q5jTR7jRU1BbyHlNewufsy`, call `fc-01M3VGW17RQMT228VPF0C8Q3Y0`. GPU-hours: 0.
 
+The [original (2+1)D-SLR abstract](https://link.springer.com/article/10.1007/s00521-021-06467-9) reports 98.7% LSA64 accuracy, whereas Xu Table 4 prints 98.2%. This unresolved discrepancy supports retaining the comparison provenance gate.
+
 Comparison-row question: which Table 4 cells were copied from which exact source locations, and which were remeasured with what input shape, split, and checkpoint? Until resolved, these cells are explicitly not produced rather than excluded as verified copied baselines.
