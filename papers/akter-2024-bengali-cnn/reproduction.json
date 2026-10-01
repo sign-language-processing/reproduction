@@ -1105,13 +1105,14 @@
     {
       "gate_id": "derived-split",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason_code": "protocol_ambiguous",
       "evidence": [
         "PaperIII.A\u2013B."
       ],
-      "reason": "Augmentation transforms and whether train/test source originals overlap are absent. Dataset files can resolve this; guessing an arbitrary split of augmented images would change leakage and target evaluation.",
-      "required_action": "Augmentation transforms and whether train/test source originals overlap are absent. Dataset files can resolve this; guessing an arbitrary split of augmented images would change leakage and target evaluation."
+      "reason": "Historical augmentation transforms and train/test source-image overlap are not reported; these remain limitations of any reconstructed split.",
+      "required_action": "No separate human execution decision is required for ordinary augmentation and split choices. First resolve the exact-data gate; the available one-image-per-class sample cannot replace the unidentified source corpus.",
+      "resolution": "Final metadata audit on 2026-10-01, coordinated with the reproduction owner: the user authorized documented routine choices. Resolve this standalone execution gate while preserving unavailable historical membership and augmentation as scientific uncertainty. Source-data access/identity and the inconsistent VGG16 metric row remain open; no target eligibility, result, run, or pipeline status changes."
     }
   ],
   "source_search": {
