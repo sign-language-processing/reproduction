@@ -63,3 +63,7 @@ The executed command was the native Python audit, not the Docker command: local 
 2. What corrects the VGG16 precision/recall/F1 row, and which aggregation was used?
 
 The reported 64×64 resize, division by 255, ImageNet VGG/ResNet families, Nadam optimizer, and sparse categorical cross-entropy are usable recipe details. Equation 1 instead depicts binary cross-entropy; a future implementation would follow the explicit 36-class loss text and disclose this inference. No optimizer or seed uncertainty was treated as a blocker. No authors were contacted, no restricted artifacts were published, and no third-party subset was presented as the requested experiment.
+
+## Approximation reassessment
+
+The 2026-10-01 continuation reviewed whether documented approximation could make an informative full attempt. The paper-linked release supplies one original image per character, rather than a nearly complete collection missing a few examples. Expanding those images to the reported train/test sizes would primarily measure transformations of the same source image. The separate 1,005-image collection has no verified relationship to this paper’s selected corpus or split. Neither is a scientifically meaningful substitute for the requested experiment. The remaining blockers are source-data access/identity and the inconsistent VGG16 metric row; ordinary implementation judgments do not require human action.
