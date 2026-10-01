@@ -3286,5 +3286,10 @@
       "checks": "Verified original archive split counts, MNIST missing-J label mapping, RGB alphabetic24class mapping, published epoch counts, finalcheckpoint reload, correct/count accuracy and per-class confusion formulas. No concrete implementation defect found.",
       "remaining_explanations": "Unpublished learning rate/batch/initialization and MNIST resizing, plus small library interpolation differences, are declared assumptions; no score-driven tuning or restart performed."
     }
-  ]
+  ],
+  "judgment_call_review": {
+    "date": "2026-10-01",
+    "detail": "2026-10-01 user-authorized judgment-call review: an ordinary held-out training split is feasible for a new diagnostic, but these completed runs already trained on every declared training example. Retrofitting a validation subset would either evaluate training data or require distinct retraining and would not identify the paper validation metric. Preserve the76 produced targets and mark two original validation targets not produced; no human execution decision is awaited for those two targets.",
+    "new_experiments": false
+  }
 }
