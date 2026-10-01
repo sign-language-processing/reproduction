@@ -1,0 +1,32 @@
+/usr/local/lib/python3.12/dist-packages/torch/nn/utils/weight_norm.py:144: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+Unsupported operator aten::mul encountered 17 time(s)
+Unsupported operator aten::mish_ encountered 65 time(s)
+Unsupported operator aten::max_pool2d encountered 1 time(s)
+Unsupported operator aten::sum encountered 32 time(s)
+Unsupported operator aten::mean encountered 16 time(s)
+Unsupported operator aten::softmax encountered 16 time(s)
+Unsupported operator aten::add_ encountered 16 time(s)
+Unsupported operator aten::adaptive_max_pool2d encountered 1 time(s)
+Unsupported operator aten::_weight_norm encountered 6 time(s)
+Unsupported operator aten::mish encountered 9 time(s)
+Unsupported operator aten::add encountered 3 time(s)
+Unsupported operator aten::amax encountered 1 time(s)
+/usr/local/lib/python3.12/dist-packages/pytorch_ranger/ranger.py:172: UserWarning: This overload of addcmul_ is deprecated:
+	addcmul_(Number value, Tensor tensor1, Tensor tensor2)
+Consider using one of the following signatures instead:
+	addcmul_(Tensor tensor1, Tensor tensor2, *, Number value = 1) (Triggered internally at /opt/pytorch/pytorch/torch/csrc/utils/python_arg_parser.cpp:1853.)
+  exp_avg_sq.mul_(beta2).addcmul_(1 - beta2, grad, grad)
+{"step": 10, "loss": 5.109468810260296, "elapsed": 89.68468236923218}
+{"step": 20, "loss": 4.568894185125828, "elapsed": 179.6691403388977}
+{"step": 30, "loss": 4.464634299278259, "elapsed": 268.83446502685547}
+{"step": 40, "loss": 4.382387086749077, "elapsed": 359.1347999572754}
+{"step": 50, "loss": 4.252473093569279, "elapsed": 449.42397713661194}
+validation 50 0.015625
+{"step": 60, "loss": 4.159471035003662, "elapsed": 557.8442842960358}
+checkpoint 60
+{"step": 70, "loss": 4.1355468556284904, "elapsed": 649.4347794055939}
+{"step": 80, "loss": 4.128959812223911, "elapsed": 739.7933945655823}
+{"step": 90, "loss": 4.126007601618767, "elapsed": 829.1251785755157}
+{"step": 100, "loss": 4.135379582643509, "elapsed": 919.4631595611572}
+validation 100 0.0234375
