@@ -1146,8 +1146,16 @@
   },
   "approximation_reassessment": {
     "date": "2026-10-01",
-    "decision": "Do not substitute the public sample or unrelated 2020 collection.",
+    "decision": "Do not substitute the public sample or unverified alternate2020 collection.",
     "basis": "The accessible paper-linked release has one original per character, not a near-complete corpus missing a few items. The other 1005-image corpus is not established as the selected target data and has no verified target selection/split lineage. Expanding one original per class into the reported train/test sizes would chiefly measure transformations of the same image, not the requested character-recognition experiment.",
-    "remaining_gates": "Exact source-data access/identity and TableI VGG16 metric inconsistency. Routine missing seed, optimizer defaults, and preprocessing details are not blocking decisions."
+    "remaining_gates": "Exact source-data access/identity and TableI VGG16 metric inconsistency. Routine missing seed, optimizer defaults, and preprocessing details are not blocking decisions.",
+    "additional_source_checks": {
+      "date": "2026-10-01",
+      "alternate_readme": "https://raw.githubusercontent.com/cloudy4next/Ishara-Lipi/6888dce6c19332a8d282c2b47b59fbf073b25a39/README.md",
+      "linked_drive_id": "1kBAKViy_rhKXvPKBY83TqWV0-9YLdLEy",
+      "drive_result": "HTTP404 from both folder and file views; no access-control bypass attempted.",
+      "repository_license": "GPL3 in pinned LICENSE; this does not establish original image lineage or the target paper selection.",
+      "exact_image_hash_comparison": "The56 unique public image files (including figures) and1005 unique alternate images have zero shared SHA256 image-byte hashes. This is not proof of different underlying origin because transformations could change bytes."
+    }
   }
 }
