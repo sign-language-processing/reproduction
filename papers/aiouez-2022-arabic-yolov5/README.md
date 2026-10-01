@@ -1,5 +1,8 @@
 # Real-time Arabic Sign Language Recognition based on YOLOv5
 
+**TL;DR:** Training remains blocked because the author dataset license is explicitly unknown; no GPU was used.
+**Decision:** Count differences can be documented assumptions, but cloud-use permission cannot be inferred from public availability.
+
 **Pipeline status:** blocked_on_data
 **Numerical agreement:** not_assessed
 **Preference level:** 1
