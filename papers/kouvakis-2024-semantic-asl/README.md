@@ -1,5 +1,8 @@
 # Semantic Communications for Image-Based Sign Language Transmission
 
+**TL;DR:** Full MNIST and RGB runs produced 76 of 81 requested numbers; test accuracies were 88.39% and 97.83%, below 97.12% and 99.72%.
+**Decision:** LEXSET requires permission. The two undefined validation scores remain unproduced; no completed run is repeated to invent validation membership.
+
 **Pipeline status:** partial
 
 **Numerical agreement:** does_not_agree
