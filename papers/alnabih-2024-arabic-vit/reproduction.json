@@ -9,6 +9,19 @@
       "evidence": [
         "Session instructions identify GPT-6 using Codex. Exact model ID and harness version not exposed."
       ]
+    },
+    {
+      "agent_id": "compute-inventory-reviewer",
+      "model": "GPT-6",
+      "model_id": null,
+      "harness": "Codex",
+      "harness_version": null,
+      "scope": "Independent review of the published PDF and split gate only; no implementation edits or experiments. Exact model ID/version and harness version were not exposed in the reviewing session.",
+      "evidence": [
+        "Explicit reviewer session attestation received 2026-10-01: GPT-6 using Codex; exact model ID/version and harness version unavailable. Contribution limited to independent read-only paper review.",
+        "Rendered PDF page 9, section 4.1 prints 54,049 and a 70/15/15 split; page 10, Table 2 visibly prints 37,853 / 8,111 / 8,111 and total 54,075. The discrepancy is present in the source, not introduced by OCR. Those counts are consistent with 70/15/15 of 54,075, not rounding of 54,049.",
+        "PDF page 11, section 4.2.1 identifies the selected ViT-L/16-224-in21k model. The inspected paper supplies no released split identifier resolving the corpus-count disagreement."
+      ]
     }
   ],
   "assignment": {
