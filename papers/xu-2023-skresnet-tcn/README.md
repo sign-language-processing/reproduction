@@ -1,0 +1,65 @@
+# Xu et al. (2023): Improved SKResNet-TCN
+
+**Pipeline status:** `insufficient_information`
+
+**Numerical agreement:** `not_assessed`
+
+**Preference level:** 3
+
+This attempt stops at a structural specification gate: `insufficient_information`, with numerical agreement `not_assessed`. The raw LSA64 data is available, but the paper does not specify a network whose parameter count, FLOPs, and recognition score can be faithfully measured. No replacement architecture was invented or trained.
+
+Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. [Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network](https://doi.org/10.1155/2023/9503961). *Journal of Sensors*, 2023, article 9503961.
+
+The assignment is a direct user request using the current tracker export. Its original SHA256 and redacted record are preserved in `reproduction.json`. The current export has `expand.paper.status=final`, no confirmation field, and distinct paper/database IDs. GPT-6 using Codex performed the source investigation, data audit, and reporting. Session instructions establish those identities; exact model and harness versions were not exposed.
+
+## Target scope
+
+Table 4,p8 compares the proposed system with cited earlier systems. Only its own row is in scope for a new experiment. The other four rows are retained in the target ledger as cited baselines; their provenance does not establish that this paper reran them.
+
+| Own Table 4 target | Published | Reproduced |
+|---|---:|---|
+| Parameters |12.34 million|Not produced|
+| Computation |62.50 GFLOPs|Not produced|
+| LSA64 accuracy |100.00%|Not produced|
+
+## What was resolved
+
+Sections3–4 specify32 keyframes, interframe difference maxima, grouped selective-kernel spatial convolutions, temporal causal convolutions, hybrid dilation, adaptive max pooling, Mish, Ranger, learning rate0.0001,batch128,and a60/20/20 split. Table 1 and§4.1 specify1,000 iterations; Figure 7 discussion identifies best test performance at656. These details alone do not define the executable architecture or a reproducible evaluation split.
+
+The unresolved specification consists of:
+
+- SKResNet stage depths, widths, grouped-convolution groups, and initialization; TCN widths, depth, kernel sizes, and actual hybrid dilation sequence.
+- Input image dimensions and the parameter/FLOP counting convention. These directly determine the two efficiency targets.
+- Keyframe smoothing and the procedure for reducing/padding each video to32frames; exact60/20/20 split and selection seed; whether “iterations” means optimizer steps or epochs; validation versus test checkpoint selection.
+
+Selecting arbitrary values and adjusting them until12.34M/62.50G match would be tuning toward a reported result. A conditional surrogate would need a declared specification and would not become comparable merely because its accuracy happened to be close.
+
+## Source search
+
+The complete publisher article, supplied PDF, captions, equations, references, and Data Availability were inspected. No implementation or supplement defining the architecture is linked. GitHub repository searches for`SKResNet-TCN`and`9503961`returned zero results; exact-title/model/author searches found the paper and citations without author code. This is evidence of the search performed, not proof that code has never existed.
+
+The cited Li et al.2019 SKNet paper links `https://github.com/implus/SKNet`, which returned404. Other SKNet implementations exist but cannot establish this hybrid architecture. The cited [Bai et al.TCN source](https://github.com/locuslab/TCN/tree/2f8c2b817050206397458dfd1f5a25ce8a32fe65) accepts an arbitrary channel list and kernel size; its powers-of-two dilation recipe does not define Xu's proposed hybrid sequence. It was inspected, not executed or copied.
+
+## Data, execution, and repeat commands
+
+The official [LSA64 source](https://facundoq.github.io/datasets/lsa64/) identifies3,200 videos,64 classes,10 nominal signer IDs,and5 repetitions. The raw release is1920 × 1080 at 60 fps. Its CC BY-NC-SA4.0 terms permit academic processing and require attribution/share-alike for derived data. Only existing project-cloud data is read; this PR redistributes no video. No new participants or author contact were involved.
+
+The canonical v2`datasets`Volume contains`lsa64`, with source archive SHA256`218197acaa188583c1f06d149750af6af0d6b2bd44a627550d55773f5eefb20e`. The audit checks3200paths/64 classes, samples one video per class, hashes it, and decodes three frames through`simple-video-utils0.7.4`. It does not create an undocumented train/test split.
+
+```bash
+./setup.sh
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-004
+python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/xu-2023-skresnet-tcn
+```
+
+The retained run ID is immutable; use a fresh ID when repeating. The CPU container uses Python3.12,`simple-video-utils0.7.4`,and`av18.0.0`. Datasets are read-only; shared v2`huggingface-cache`is mounted at`/cache/huggingface`; outputs use`2be3c68e-skresnet-results`. No GPU was requested. Each diagnostic was bounded at900 seconds / CHF 1. Actual billed cost is unavailable.
+
+Three cheap execution failures were preserved: newest PyAV19 rejects the decoder's`metadata_errors`argument; trying PyAV16 was rejected by the package's`av>=18`constraint; PyAV18 decoded successfully but the audit serializer incorrectly assumed a dataclass. The final script pins supported PyAV18 and reads the documented metadata attributes. These are data-audit environment/glue changes, not changes to the proposed model.
+
+The retained terminal evidence, timestamps, Modal app/function IDs, exact manifest/counts, dependencies, and hashes are in`reproduction.json`. Setup and the data audit are repeatable. Training and evaluation cannot be made faithful until the architecture gate is resolved; there are no pretend training entry points or invented metrics.
+
+## Open question
+
+Which architecture/configuration and input shape produced Table 4, and which keyframe/split/checkpoint protocol produced its100% accuracy? An author-released implementation or explicit specification can resolve this. No author was contacted. This question requires evidence rather than an optimizer default; Ranger is already specified.
+
+Preference level: 3. No faithful reimplementation can be selected before the structural gate is resolved. The successful CPU audit took 26.15 seconds, verified all 3,200 file paths, and decoded 192 full-resolution frames across 64 class samples. Raw evidence: `modal://2be3c68e-skresnet-results/data-preflight-004/`, app `ap-Q5jTR7jRU1BbyHlNewufsy`, call `fc-01M3VGW17RQMT228VPF0C8Q3Y0`. GPU-hours: 0.
