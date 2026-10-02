@@ -8,6 +8,10 @@
 
 **Preference level:** 1
 
+**Claim-level assessment (2026-10-02):** The released-checkpoint evaluation corroborates the paper’s central reported advantage over SPOT-ALIGN (Section 4.2, Tables 1–2): How2Sign T2V/V2T R@1 remain 22.5/28.0 percentage points above published SA-COMB, and PHOENIX remains 13.7/17.1 points above it. Recall@5/10 ordering is also preserved; PHOENIX median ranks tie the baseline. CSL-Daily retains the performance level of the baseline supplied in Table 3, which has no competing-system row.
+
+These comparisons use the published baseline scores; those systems were not rerun. Training reproducibility, component ablations (Tables 4–9), causal explanations of the gains and training-seed variability remain unassessed. This interpretation adds no numerical tolerance and leaves the declared exact-agreement result unchanged. A separate GPT-6/Codex agent reviewed these claims and updated the report on 2026-10-02; it executed no experiments, and its exact model/application versions were unavailable.
+
 Yiting Cheng, Fangyun Wei, Jianmin Bao, Dong Chen and Wenqiang Zhang. CVPR 2023. [Paper](https://arxiv.org/abs/2303.12793). The paper PDF has SHA-256 `5a0bb54fe956baaad50d474c5a065d977801413f50c2b6dc5a2dfd9b3f44be44`. Tables 1–3 are on **PDF page 7**. The assignment targets the three Ours rows: 24 numbers across text-to-video (T2V) and video-to-text (V2T) recall at 1/5/10 and median rank. Another 48 copied comparison numbers are retained out of execution scope.
 
 PHOENIX evaluation completed on all 642 test videos and queries, matching all eight published values. CSL-Daily evaluation completed on 1,176 videos grouped into 798 unique text queries; its recall differences range from −0.6 to +0.1 percentage points, with both median ranks unchanged. How2Sign full evaluation also completed on 2,348 videos and 1,969 text query groups. Its T2V R1 and R5 exceed the published values by 0.1 percentage points; the other six metrics match. All **24 requested checkpoint-evaluation targets** are produced. Pipeline completion refers to this evaluation scope and does not establish end-to-end training reproducibility.

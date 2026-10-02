@@ -19,6 +19,15 @@
         "Explicit session attestation on 2026-10-01: the executing agent identifies as GPT-6 using Codex under the active session instructions; no exact model ID or harness version was exposed.",
         "Read-only review checked dataset/checkpoint mappings, alpha values and evaluation arguments against FangyunWei/SLRT revision 38a4f7b00da7a858d59b7fabe5093876a84db8e0. Existing execution agent_ids were preserved."
       ]
+    },
+    {
+      "agent_id": "compute-inventory",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only scientific interpretation of the paper and completed evaluation evidence, followed by README/JSON/PR narrative maintenance on 2026-10-02. No model or experiment execution. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Explicit 2026-10-02 session attestation: active instructions identify GPT-6 using Codex; exact versions are not exposed. Reviewed paper Sections 4.2\u20135 and Tables 1\u20139 against the completed report; preserved every target and run object, including execution agent_ids."
+      ]
     }
   ],
   "assignment": {
@@ -3681,5 +3690,31 @@
     }
   ],
   "contacts": [],
-  "ethics": "Existing research datasets only; no new participants or human evaluation. Use published research/cloud permissions and prior institutional CSL grant; raw data and predictions remain in project volumes."
+  "ethics": "Existing research datasets only; no new participants or human evaluation. Use published research/cloud permissions and prior institutional CSL grant; raw data and predictions remain in project volumes.",
+  "conclusion_assessment": {
+    "assessed_on": "2026-10-02",
+    "review_agent_id": "compute-inventory",
+    "scope": "Interpretation of the completed released-checkpoint evaluation; separate from the unchanged exact numerical-agreement assessment.",
+    "claims": [
+      {
+        "claim": "CiCo substantially outperforms the reported SPOT-ALIGN retrieval baselines on How2Sign and PHOENIX.",
+        "assessment": "corroborated within released-checkpoint evaluation",
+        "paper_evidence": "Section 4.2, Tables 1\u20132 (PDF page 7), and Section 5 (PDF page 8).",
+        "basis": "Against the published SA-COMB rows, evaluated How2Sign T2V/V2T R@1 gains are +22.5/+28.0 percentage points; PHOENIX gains are +13.7/+17.1. Recall@5/10 ordering is also preserved. PHOENIX median ranks tie the SA-COMB baseline. The baseline systems were not rerun."
+      },
+      {
+        "claim": "The released method provides a retrieval baseline on CSL-Daily.",
+        "assessment": "corroborated for the released checkpoint",
+        "paper_evidence": "Table 3 (PDF page 7).",
+        "basis": "Evaluated T2V/V2T R@1 are 75.1/74.8 and both median ranks are 1. Table 3 supplies no competing system, so this does not establish superiority on CSL-Daily."
+      },
+      {
+        "claim": "The training procedure and proposed components cause the reported gains.",
+        "assessment": "not assessed",
+        "paper_evidence": "Section 4.3, Tables 4\u20139, and the training claim in Section 4.2.",
+        "basis": "This attempt evaluates released checkpoints and features. It does not repeat training, component ablations, baseline training/evaluation, or multiple training seeds."
+      }
+    ],
+    "limits": "No new numerical tolerance or statistical significance criterion is introduced. Evaluation of one released checkpoint per dataset cannot estimate training-seed variability or establish end-to-end training reproducibility."
+  }
 }
