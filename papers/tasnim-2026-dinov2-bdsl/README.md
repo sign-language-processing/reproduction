@@ -63,3 +63,11 @@ The initial direct Mendeley acquisition returned HTTP403 and was retained as fai
 No unresolved question requires human action. The dataset-total typo is resolved by the released split; unspecified ColorJitter strengths, defaults and seed remain disclosed reconstruction assumptions. Scientific interpretation of the measured difference remains for human review.
 
 Independent recomputation from the hash-verified raw predictions confirmed 2,940 unique test indices, 60 true examples per class, logits/argmax consistency, the confusion matrix, accuracy and macro F1. The deterministic-test diagnostic scored 99.4558% accuracy and 99.4562% macro F1; it remains secondary evidence and was never selected as the primary result.
+
+## Conclusion assessment (2026-10-02)
+
+High accuracy and the reported advantage over the Table 5 CNN literature are corroborated. Our primary accuracy/F1 of **99.2177%/99.2168%** exceed the strongest listed CNN accuracy (**98.10%**, ensemble) and F1 (**98%**, quantized modified Xception), by **1.1177/1.2168 percentage points**. Other listed CNN accuracies are **93/87/91/86/91%** and F1 values **93/91/92%** (Table 5 and §5.3, PDF p.14). The exact **99.7%/99.7%** values were not matched.
+
+The broader transformer comparison is less favorable. Substituting our primary accuracy into Table 4 places it below the reported ViT-B **99.8%**, ViT-L **99.5%**, and Swin-B **99.3%**, but above Swin-S **99.1%**. Thus the §5.2 claim of superiority over both Swin variants is not corroborated by this reconstruction. These CNN and transformer comparators were not rerun, so this is a comparison with published numbers, not a new controlled model ranking. Inference speed, the claimed accuracy/speed trade-off, fine-tuning ablations and cross-domain generalization were outside the executed targets. One seed cannot establish statistical equivalence or a stable ranking; the deterministic-test diagnostic remains secondary. No further human execution decision follows from these interpretation limits.
+
+The existing independent review GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
