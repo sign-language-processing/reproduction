@@ -14,10 +14,11 @@
       "agent_id": "master-review-agent",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent parent-agent review of runner/collector, native final metrics, validation-only parameter selection, saved execution/runtime hashes and zero exit. Identified missing future CLI exit propagation. Review only, no run execution attribution. Exact model_id and harness_version unavailable in session.",
+      "scope": "Independent parent review on 2026-10-01 of runner/collector, PHOENIX native metrics and evidence. On 2026-10-02 monitored, implemented the scoped collection glue change, and executed final How2 CPU collection and independent review; no GPU training/evaluation execution. Exact model_id and harness_version unavailable.",
       "evidence": [
         "Parent agent /root session message on 2026-10-01: read-only runner/collector review found main only prints execute.remote metadata; requested SystemExit propagation after healthy snapshot. Session developer identity is GPT-6 using Codex; no exact model/version metadata exposed.",
-        "Parent /root review 2026-10-01: downloaded final native model/train.log through wrapper; SHA256 matched evidence manifest; all ten dev/test rounded metrics matched raw summary; development beam 10 / translation beam 2 alpha 2 carried unchanged to test; execution/runtime SHA256 values and exit0 verified."
+        "Parent /root review 2026-10-01: downloaded final native model/train.log through wrapper; SHA256 matched evidence manifest; all ten dev/test rounded metrics matched raw summary; development beam 10 / translation beam 2 alpha 2 carried unchanged to test; execution/runtime SHA256 values and exit0 verified.",
+        "Parent /root explicit2026-10-02 session: GPT-6 using Codex, exact model/harness versions unavailable. Monitored How2 to native exit0, launched initial CPU collector, implemented scoped8-thread immutable-file hashing and1800-second CPU wrapper, executed successful final collector and reviewed results. No GPU training/evaluation execution; original cabot-agent attribution retained."
       ]
     },
     {
@@ -34,10 +35,11 @@
       "agent_id": "compute-inventory",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable. Independently reviewed the immutable original-deadline launcher, atomic call claim, four-segment limit and process-scoped watchdog; no run execution.",
+      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable. Independently reviewed the immutable original-deadline launcher, atomic call claim, four-segment limit and process-scoped watchdog; no run execution. Independently audited terminal How2 native grid/test and streamed remote artifact hashes on 2026-10-02; no experiment execution.",
       "evidence": [
         "Explicit session attestation on2026-10-01 from /root/compute_inventory: GPT-6 using Codex; exact model/harness versions unavailable. Owned recovery_eval.py and patch04; no remote/model executions. Independently confirmed all12 real CPU training trace rows match, and reviewed pinned torchtext0.5 Iterator/RNG recovery.",
-        "2026-10-01 session independent launcher re-review passed after scoped guard and atomic-claim fixes. Exact model/build versions unavailable; GPT-6 using Codex."
+        "2026-10-01 session independent launcher re-review passed after scoped guard and atomic-claim fixes. Exact model/build versions unavailable; GPT-6 using Codex.",
+        "compute-inventory explicit2026-10-02 attestation: GPT-6 using Codex; exactmodel/harnessversionsunavailable. Read-only terminal/source/hash/accounting review:70native candidates in original order, dev-only3/2 selection,1713/2328counts, primarymetrics exact,27independent payload hashes/sizes match7926filemanifest, checkpointb6a760... matches test-start identity, finalreceipt separate and exit0. No GPU/collector execution or report edits."
       ]
     }
   ],
@@ -265,9 +267,9 @@
     }
   ],
   "status": {
-    "pipeline": "partial",
+    "pipeline": "complete",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Descriptive agreement compares each produced metric rounded to the paper's two decimal places. All produced cells must match for agrees; otherwise does_not_agree. The paper specifies no statistical tolerance, and one seed does not estimate uncertainty. PHOENIX and the disclosed available-release How2Sign reconstruction were judged eligible before their primary scores.",
+    "numerical_agreement_basis": "Descriptive agreement compares each produced metric rounded to the paper's two decimal places. All produced cells must match for agrees; otherwise does_not_agree. The paper specifies no statistical tolerance, and one seed does not estimate uncertainty. PHOENIX and the disclosed available-release How2Sign reconstruction were judged eligible before their primary scores. All 20 requested values were produced; none equals the published value at its two-decimal precision.",
     "preference_level": 2,
     "blocker": null
   },
@@ -924,7 +926,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.60095706500066,
+        "difference": 0.5809570650006606,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-dev-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-dev-bleu1",
@@ -940,7 +955,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 19.646125036878104,
+        "difference": 1.9161250368781033,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-dev-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-dev-bleu2",
@@ -956,7 +984,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 9.94757609220233,
+        "difference": 2.0075760922023305,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-dev-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-dev-bleu3",
@@ -972,7 +1013,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 5.716081023437005,
+        "difference": 1.5860810234370053,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-dev-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-dev-bleu4",
@@ -988,7 +1042,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 3.4019932810000655,
+        "difference": 1.1619932810000653,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-dev-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-test-wer",
@@ -1004,7 +1071,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.73766297063482,
+        "difference": 0.33766297063480977,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-test-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-test-bleu1",
@@ -1020,7 +1100,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 19.08551109570084,
+        "difference": 1.6855110957008428,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-test-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-test-bleu2",
@@ -1036,7 +1129,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 9.546082669548426,
+        "difference": 1.8560826695484254,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-test-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-test-bleu3",
@@ -1052,7 +1158,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 5.417030446750064,
+        "difference": 1.4470304467500639,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-test-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     },
     {
       "target_id": "table5-how2sign-test-bleu4",
@@ -1068,7 +1187,20 @@
       ],
       "system": "Joint SLRT",
       "dataset_id": "how2sign-spot-align",
-      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments."
+      "comparability_assessment": "Available-author-release reconstruction declared before scores; see comparability_assessments.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 3.242027635535503,
+        "difference": 1.0320276355355031,
+        "run_ids": [
+          "how2sign-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "how2-full-raw-metrics-local",
+          "how2-full-model-best-IT-00022000-test-results-pkl"
+        ],
+        "notes": "Available-author-release reconstruction judged comparable before scores. Native development-selected checkpoint and full grid; corrected English int64 WER is primary, legacy-width WER is secondary only. One seed, no statistical uncertainty claim."
+      }
     }
   ],
   "runs": [
@@ -3053,7 +3185,121 @@
       },
       "artifact_ids": [
         "how2sign-full-initial-recovery-pointer",
-        "how2sign-full-initial-training-log"
+        "how2sign-full-initial-training-log",
+        "how2-full-claim-json",
+        "how2-full-config-yaml",
+        "how2-full-dev-recognition-text-json",
+        "how2-full-entrypoint-source-cabot-run-py",
+        "how2-full-entrypoint-source-collect-py",
+        "how2-full-entrypoint-source-evaluation-py",
+        "how2-full-entrypoint-source-parallel-ctc-py",
+        "how2-full-entrypoint-source-recovery-eval-py",
+        "how2-full-entrypoint-source-recovery-train-py",
+        "how2-full-entrypoint-source-sha256-json",
+        "how2-full-execution-json",
+        "how2-full-freeze-txt",
+        "how2-full-legacy-wer-diagnostic-json",
+        "how2-full-model-22000-ckpt",
+        "how2-full-model-best-IT-00022000-BW-010-dev-gls",
+        "how2-full-model-best-IT-00022000-BW-010-test-gls",
+        "how2-full-model-best-IT-00022000-BW-03-A-2-dev-txt",
+        "how2-full-model-best-IT-00022000-BW-03-A-2-test-txt",
+        "how2-full-model-best-IT-00022000-dev-results-pkl",
+        "how2-full-model-best-IT-00022000-test-results-pkl",
+        "how2-full-model-best-ckpt",
+        "how2-full-model-config-yaml",
+        "how2-full-model-gls-1000-dev-hyp-gls",
+        "how2-full-model-gls-10000-dev-hyp-gls",
+        "how2-full-model-gls-11000-dev-hyp-gls",
+        "how2-full-model-gls-12000-dev-hyp-gls",
+        "how2-full-model-gls-13000-dev-hyp-gls",
+        "how2-full-model-gls-14000-dev-hyp-gls",
+        "how2-full-model-gls-15000-dev-hyp-gls",
+        "how2-full-model-gls-16000-dev-hyp-gls",
+        "how2-full-model-gls-17000-dev-hyp-gls",
+        "how2-full-model-gls-18000-dev-hyp-gls",
+        "how2-full-model-gls-19000-dev-hyp-gls",
+        "how2-full-model-gls-2000-dev-hyp-gls",
+        "how2-full-model-gls-20000-dev-hyp-gls",
+        "how2-full-model-gls-21000-dev-hyp-gls",
+        "how2-full-model-gls-22000-dev-hyp-gls",
+        "how2-full-model-gls-23000-dev-hyp-gls",
+        "how2-full-model-gls-3000-dev-hyp-gls",
+        "how2-full-model-gls-4000-dev-hyp-gls",
+        "how2-full-model-gls-5000-dev-hyp-gls",
+        "how2-full-model-gls-6000-dev-hyp-gls",
+        "how2-full-model-gls-7000-dev-hyp-gls",
+        "how2-full-model-gls-8000-dev-hyp-gls",
+        "how2-full-model-gls-9000-dev-hyp-gls",
+        "how2-full-model-gls-vocab",
+        "how2-full-model-references-dev-gls",
+        "how2-full-model-references-dev-txt",
+        "how2-full-model-tensorboard-events-out-tfevents-1790868819-modal-30-0",
+        "how2-full-model-tensorboard-events-out-tfevents-1790880886-modal-30-0",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu1-events-out-tfevents-1790869847-modal-30-5",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu1-events-out-tfevents-1790881783-modal-30-5",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu2-events-out-tfevents-1790869847-modal-30-6",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu2-events-out-tfevents-1790881783-modal-30-6",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu3-events-out-tfevents-1790869847-modal-30-7",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu3-events-out-tfevents-1790881783-modal-30-7",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu4-events-out-tfevents-1790869847-modal-30-8",
+        "how2-full-model-tensorboard-valid-bleu-scores-bleu4-events-out-tfevents-1790881783-modal-30-8",
+        "how2-full-model-tensorboard-valid-wer-scores-del-rate-events-out-tfevents-1790869847-modal-30-2",
+        "how2-full-model-tensorboard-valid-wer-scores-del-rate-events-out-tfevents-1790881783-modal-30-2",
+        "how2-full-model-tensorboard-valid-wer-scores-ins-rate-events-out-tfevents-1790869847-modal-30-3",
+        "how2-full-model-tensorboard-valid-wer-scores-ins-rate-events-out-tfevents-1790881783-modal-30-3",
+        "how2-full-model-tensorboard-valid-wer-scores-sub-rate-events-out-tfevents-1790869847-modal-30-4",
+        "how2-full-model-tensorboard-valid-wer-scores-sub-rate-events-out-tfevents-1790881783-modal-30-4",
+        "how2-full-model-tensorboard-valid-wer-scores-wer-events-out-tfevents-1790869847-modal-30-1",
+        "how2-full-model-tensorboard-valid-wer-scores-wer-events-out-tfevents-1790881783-modal-30-1",
+        "how2-full-model-train-log",
+        "how2-full-model-txt-1000-dev-hyp-txt",
+        "how2-full-model-txt-10000-dev-hyp-txt",
+        "how2-full-model-txt-11000-dev-hyp-txt",
+        "how2-full-model-txt-12000-dev-hyp-txt",
+        "how2-full-model-txt-13000-dev-hyp-txt",
+        "how2-full-model-txt-14000-dev-hyp-txt",
+        "how2-full-model-txt-15000-dev-hyp-txt",
+        "how2-full-model-txt-16000-dev-hyp-txt",
+        "how2-full-model-txt-17000-dev-hyp-txt",
+        "how2-full-model-txt-18000-dev-hyp-txt",
+        "how2-full-model-txt-19000-dev-hyp-txt",
+        "how2-full-model-txt-2000-dev-hyp-txt",
+        "how2-full-model-txt-20000-dev-hyp-txt",
+        "how2-full-model-txt-21000-dev-hyp-txt",
+        "how2-full-model-txt-22000-dev-hyp-txt",
+        "how2-full-model-txt-23000-dev-hyp-txt",
+        "how2-full-model-txt-3000-dev-hyp-txt",
+        "how2-full-model-txt-4000-dev-hyp-txt",
+        "how2-full-model-txt-5000-dev-hyp-txt",
+        "how2-full-model-txt-6000-dev-hyp-txt",
+        "how2-full-model-txt-7000-dev-hyp-txt",
+        "how2-full-model-txt-8000-dev-hyp-txt",
+        "how2-full-model-txt-9000-dev-hyp-txt",
+        "how2-full-model-txt-vocab",
+        "how2-full-model-validations-txt",
+        "how2-full-raw-metrics-json",
+        "how2-full-recovery-best-22000-b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922-ckpt",
+        "how2-full-recovery-latest-json",
+        "how2-full-recovery-state-00023250-1790893244270510094-ckpt",
+        "how2-full-recovery-state-00023465-1790893287645489210-ckpt",
+        "how2-full-runtime-json",
+        "how2-full-segments-segment-0001-config-yaml",
+        "how2-full-segments-segment-0001-execution-json",
+        "how2-full-segments-segment-0001-freeze-txt",
+        "how2-full-segments-segment-0001-gpu-txt",
+        "how2-full-segments-segment-0001-stdout-log",
+        "how2-full-segments-segment-0002-config-yaml",
+        "how2-full-segments-segment-0002-execution-json",
+        "how2-full-segments-segment-0002-freeze-txt",
+        "how2-full-segments-segment-0002-gpu-txt",
+        "how2-full-segments-segment-0002-runtime-json",
+        "how2-full-segments-segment-0002-stdout-log",
+        "how2-full-test-recognition-text-json",
+        "how2-full-upstream-diff-patch",
+        "how2-full-evidence-index",
+        "how2-full-raw-metrics-local",
+        "how2-full-legacy-wer-local"
       ],
       "recovery_policy": {
         "max_execution_segments": 4,
@@ -3081,7 +3327,6 @@
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-9PXb7AldvQ2T0rymbnb8nC"
       },
       "aggregate_deadline_at_utc": "2026-10-02T15:28:13.999167+00:00",
-      "live_state_note": "Healthy detached full run: native log shows500finite optimizer updates; published recovery pointer retains steps500and250 with native SHA256. Full run remains active and has no terminal target scores.",
       "health_snapshot": {
         "observed_at_utc": "2026-10-01T15:36:07.464784+00:00",
         "training_steps": 500,
@@ -3096,7 +3341,203 @@
         },
         "losses_finite": true,
         "evidence_scope": "Fresh remote pointer and native log read after volume publication. Checkpoint hash is native recorded; no local checkpoint download. Final collector must use closed terminal files, not this snapshot."
+      },
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-02T05:34:15.620217+00:00",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 13 epochs / 23,465 steps and the complete 70-candidate native development grid plus selected test evaluation completed after one automatic verified checkpoint continuation. All 10 How2 targets produced.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "wall_time_seconds": 50761.621141,
+      "gpu_hours_upper_bound": 14.100450316944446,
+      "runtime_accounting": {
+        "basis": "Original start-to-terminal elapsed includes interrupted interval and provider replay gap, conservatively bounding one-GPU allocation. Exact billed GPU time unavailable; first segment native exit and exact end unknown.",
+        "aggregate_elapsed_seconds": 50761.621141,
+        "one_gpu_allocation_hours_upper_bound": 14.100450316944446,
+        "resumed_segment_native_seconds": 38649.248134755,
+        "resumed_segment_peak_memory_bytes": 9113363456,
+        "first_segment_peak_memory_bytes": null,
+        "requested_compute_usd_upper_estimate": 18.19702594662568,
+        "actual_billed_cost": null
+      },
+      "execution_segments": [
+        {
+          "segment_id": "segment-0001",
+          "started_at_utc": "2026-10-01T15:28:15.213672+00:00",
+          "app_id": "ap-9PXb7AldvQ2T0rymbnb8nC",
+          "function_call_id": "fc-01M3W18XK4409AAT9FCT0FD8QF",
+          "exit_code": null,
+          "state": "interrupted",
+          "native_timeout_seconds": 85000,
+          "command": [
+            "/root/miniconda3/bin/python",
+            "/opt/cabot-run.py",
+            "how2-full",
+            "/outputs/how2sign-full-seed42-001",
+            "segment-0001"
+          ],
+          "interruption_observed_at_utc": "2026-10-01T18:48:55.575819+00:00",
+          "detail": "Provider replay observed an unfinished segment; native exit and exact interruption time unavailable",
+          "wrapper_cleanup_observed_at_utc": "2026-10-01T18:48:19.380828+00:00",
+          "finished_at_utc": null,
+          "reason_code": "external_interruption",
+          "failure_class": "transient_infrastructure",
+          "timing_note": "Raw execution record finished_at is wrapper cleanup bookkeeping; it does not establish exact native termination time or exit code."
+        },
+        {
+          "segment_id": "segment-0002",
+          "started_at_utc": "2026-10-01T18:48:55.977329+00:00",
+          "app_id": "ap-9PXb7AldvQ2T0rymbnb8nC",
+          "function_call_id": "fc-01M3W18XK4409AAT9FCT0FD8QF",
+          "exit_code": 0,
+          "state": "succeeded",
+          "resume_checkpoint": {
+            "file": "state-00011750-1790880273417816282.ckpt",
+            "sha256": "fa5ee0a878e162989c19b3c50dca74998730d75caf2d878d5e4f8233fdaf7aff",
+            "steps": 11750,
+            "epoch": 6,
+            "complete": false,
+            "best_backup": "best-11000-52617c7376b12bd1be3485618fb53f6c04eaf97ee1590d258920f50fad566435.ckpt"
+          },
+          "native_timeout_seconds": 74189,
+          "command": [
+            "/root/miniconda3/bin/python",
+            "/opt/cabot-run.py",
+            "how2-full",
+            "/outputs/how2sign-full-seed42-001",
+            "segment-0002"
+          ],
+          "finished_at_utc": "2026-10-02T05:34:15.620217+00:00"
+        }
+      ],
+      "selection": {
+        "training_epochs": 13,
+        "optimizer_steps": 23465,
+        "checkpoint_step": 22000,
+        "checkpoint_rule": "Native development BLEU, independent of test",
+        "recognition_beam": 10,
+        "translation_beam": 3,
+        "translation_alpha": 2,
+        "translation_grid_candidates": 70,
+        "native_joint_evaluation_calls": 3,
+        "recognition_reuse_hits": 69,
+        "evaluation_recovery_cache_hits": 0,
+        "evaluation_batches_saved": 7814
       }
+    },
+    {
+      "run_id": "how2sign-final-collection-serial-001",
+      "agent_ids": [
+        "master-review-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode collect --run-id how2sign-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "how2sign-final-collection-serial",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T05:57:25Z",
+        "max_wall_time_seconds": 600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null,
+        "cpu_cores": 2,
+        "memory_gib": 4
+      },
+      "started_at_utc": "2026-10-02T05:57:43Z",
+      "finished_at_utc": "2026-10-02T06:07:51Z",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-1CMg0gj1tzIB7YD6cRGRjp",
+        "function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-1CMg0gj1tzIB7YD6cRGRjp",
+        "function_call_id_note": "Not emitted by original collector; platform input ID and app lifecycle retained.",
+        "input_id": "in-01M3XK1BSB81PGXEC4P59QX32B:1790920666926-0"
+      },
+      "artifact_ids": [
+        "how2-full-initial-collection-timeout-excerpt"
+      ],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "wall_time_ceiling_reached",
+        "detail": "The serial collector exceeded its declared 600-second function ceiling while hashing 7,926closed remote files. ModalFunctionTimeout surfaced as CLI exit 1; native child exit is unknown. A separately declared scoped collection change bounds concurrent read/hash operations; no GPU or metric rerun.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "native_exit_code": null,
+      "timing_scope": "Start is Modal app-created timestamp; finish is observed timeout/CLI terminal clock, not an invented native function duration. App lifetime includes startup overhead around the 600-second function ceiling.",
+      "evidence": [
+        "Parent GPT-6/Codex execution attestation on2026-10-02: source decorator600seconds/2CPU/4GiB; launch after05:57:25 clock, appcreated05:57:43; CLIexit1/ModalFunctionTimeout at06:07:51. No new model execution."
+      ]
+    },
+    {
+      "run_id": "how2sign-final-collection-parallel-001",
+      "agent_ids": [
+        "master-review-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/cabot-2022-how2sign-transformers/scripts/modal_app.py --mode collect --run-id how2sign-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "how2sign-final-collection-parallel",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T06:09:53.022502+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0,
+        "gpu": null,
+        "cpu_cores": 2,
+        "memory_gib": 4
+      },
+      "started_at_utc": "2026-10-02T06:10:02.943381+00:00",
+      "finished_at_utc": "2026-10-02T06:13:52.919420+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-uLq6n7L3gtLMvJTzPd09uX",
+        "function_call_id": "fc-01M3XKQPJNWZWH0XMF5PADXEVZ",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-uLq6n7L3gtLMvJTzPd09uX"
+      },
+      "artifact_ids": [
+        "how2-full-cpu-collection-receipt"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "CPU-only scoped retry used 8 bounded immutable-file hashing workers, preserved sorted manifest order/metrics, and completed all 7,926files. Final closed collector receipt is separate from the manifest. Native subprocess timeout 1,740 seconds, no GPU execution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "wall_time_seconds": 229.976039,
+      "collector_sha256": "ad39cda546dbf6f663a33a165d09951e7523ab53e790bc8e52cde4b8d18fd629",
+      "timing_scope": "Native CPU collector receipt timestamps."
     }
   ],
   "artifacts": [
@@ -3644,6 +4085,830 @@
       "sha256": "218721449e16f14d0842a9491ad9090e3803e3b63b79950636ca5cdb6afa720c",
       "observed_at_utc": "2026-10-01T15:36:07.464784+00:00",
       "detail": "Initial live health evidence only; never use this snapshot for terminal metrics or final log hashes."
+    },
+    {
+      "artifact_id": "how2-full-claim-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/claim.json",
+      "sha256": "83799353d0bbc6faf3af481a98f1a21d51e454f710e3014cd9705d660ca8a19e",
+      "size_bytes": 430
+    },
+    {
+      "artifact_id": "how2-full-config-yaml",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/config.yaml",
+      "sha256": "318c11ef17fcfbd306a1376cb2fa8a5a06e5d69d73e44c98cfde4830b441934a",
+      "size_bytes": 2118
+    },
+    {
+      "artifact_id": "how2-full-dev-recognition-text-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/dev-recognition-text.json",
+      "sha256": "6005de7c9b8befad13de0d2bb4bcc643942fde79c45d62325b8261b4f12a1f00",
+      "size_bytes": 173363
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-cabot-run-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/cabot-run.py",
+      "sha256": "5f945cad0f65b9a7ff08b69932dd0d439affa03041548cfd564d3e0703c4698b",
+      "size_bytes": 4632
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-collect-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/collect.py",
+      "sha256": "1b93b7cc58f0c463f36363b78e2148eefe8f5bc55e1b784c7b1b3e879ee48677",
+      "size_bytes": 2927
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-evaluation-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/evaluation.py",
+      "sha256": "4f3a563d7ca9544d5146512ec683c2b982074835bb05b2c6040ff2931af08517",
+      "size_bytes": 2407
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-parallel-ctc-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/parallel_ctc.py",
+      "sha256": "88820b2af3d60b4064357d0bb2bd6d5a039c20dc9c9da696a524159888cdad53",
+      "size_bytes": 2074
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-recovery-eval-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/recovery_eval.py",
+      "sha256": "32cfed5e09c6b6a2e42c804f9faf1d664321f11ec12f25fbf8758cc38cc7a0d2",
+      "size_bytes": 7885
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-recovery-train-py",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/recovery_train.py",
+      "sha256": "e846bbc17174c78f3f204bd33d1614d41188d398b6a55dd6ab73f19b81d51af9",
+      "size_bytes": 6025
+    },
+    {
+      "artifact_id": "how2-full-entrypoint-source-sha256-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/entrypoint-source/sha256.json",
+      "sha256": "19e2789eb65334d7f89a4bca2ffca49fcbffc2e0a79d4205810d24072b7240d9",
+      "size_bytes": 529
+    },
+    {
+      "artifact_id": "how2-full-execution-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/execution.json",
+      "sha256": "78de1a9490065cb29db74a5e2a6849bf53757c86eed224a384ad4284ab4b8e12",
+      "size_bytes": 2232
+    },
+    {
+      "artifact_id": "how2-full-freeze-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/freeze.txt",
+      "sha256": "68af6454c5a9d3fb5cf78d9e40ce4260de11bcad0665d4a1c632109856b1a351",
+      "size_bytes": 1816
+    },
+    {
+      "artifact_id": "how2-full-legacy-wer-diagnostic-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/legacy-wer-diagnostic.json",
+      "sha256": "2fb025f2c107d0cbaa5796045ea814d610c1ccff40805991d8fcdc3ee02e06a6",
+      "size_bytes": 522
+    },
+    {
+      "artifact_id": "how2-full-model-22000-ckpt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/22000.ckpt",
+      "sha256": "b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922",
+      "size_bytes": 758211363
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-BW-010-dev-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.BW_010.dev.gls",
+      "sha256": "c0175fe753b54a959626e3c1c0a77d8fb1a0817f9356cbcab452054cd43319c4",
+      "size_bytes": 53271
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-BW-010-test-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.BW_010.test.gls",
+      "sha256": "27f0f586e7553bc20aa5a7174c669a7840de7ba623fad25b604297f6e2b4eab5",
+      "size_bytes": 72628
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-BW-03-A-2-dev-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.BW_03.A_2.dev.txt",
+      "sha256": "ac5ebd3ab4ed0d1b4561ac58ef558f6fbb6f8e73e3c7e3a4eb414e9328826683",
+      "size_bytes": 180656
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-BW-03-A-2-test-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.BW_03.A_2.test.txt",
+      "sha256": "b0c8f8e77426ec538ef4a3afc45de249fe73d43274b517666370ca400768a747",
+      "size_bytes": 242192
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-dev-results-pkl",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.dev_results.pkl",
+      "sha256": "10dc2ae344d7abb90f07f6c2036cadf855ab54dd7ef0384510e92cbee5ba040d",
+      "size_bytes": 33862068
+    },
+    {
+      "artifact_id": "how2-full-model-best-IT-00022000-test-results-pkl",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.IT_00022000.test_results.pkl",
+      "sha256": "ccd2c2cea8aeb7a45f0b105a2e9cd6584d01b5527f5f9b47f39300f3995233be",
+      "size_bytes": 930675
+    },
+    {
+      "artifact_id": "how2-full-model-best-ckpt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/best.ckpt",
+      "sha256": "b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922",
+      "size_bytes": 758211363
+    },
+    {
+      "artifact_id": "how2-full-model-config-yaml",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/config.yaml",
+      "sha256": "a1de226b393ad792fb203cb584a1a6fd54340c3c0c6833a392ab98ac8a2bd0e6",
+      "size_bytes": 2236
+    },
+    {
+      "artifact_id": "how2-full-model-gls-1000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/1000.dev.hyp.gls",
+      "sha256": "ebadb69e6710147899d861c10ef25ebb7743d04b4cd568d6e01ec02de343b228",
+      "size_bytes": 47236
+    },
+    {
+      "artifact_id": "how2-full-model-gls-10000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/10000.dev.hyp.gls",
+      "sha256": "aca89d2ee8e2394eab1a45e3f499e37e2ad1cfddae22aa04c84f771cf3e85e04",
+      "size_bytes": 52249
+    },
+    {
+      "artifact_id": "how2-full-model-gls-11000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/11000.dev.hyp.gls",
+      "sha256": "abf53800d421c1878c28aaa105db891847986c364c14498fc52b0548ed44ebb2",
+      "size_bytes": 52030
+    },
+    {
+      "artifact_id": "how2-full-model-gls-12000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/12000.dev.hyp.gls",
+      "sha256": "0b6daf520a53ed379970332eab8e2f0581f7aa1fac008780371227e9add8ec39",
+      "size_bytes": 52500
+    },
+    {
+      "artifact_id": "how2-full-model-gls-13000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/13000.dev.hyp.gls",
+      "sha256": "de3df0fe686adbd5680aa60cebde49eb3cc4a1402f843db304d5dc065d7eaa4c",
+      "size_bytes": 51565
+    },
+    {
+      "artifact_id": "how2-full-model-gls-14000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/14000.dev.hyp.gls",
+      "sha256": "c3a54e1f51ee82154bbb5c7e4f5f3d6506b6eaa3bf6fd1be650f8df8de2cf31f",
+      "size_bytes": 52017
+    },
+    {
+      "artifact_id": "how2-full-model-gls-15000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/15000.dev.hyp.gls",
+      "sha256": "9c973ada5aed03352f1d704bc2c99f0810e862d6edd92fb306c861ca6413977d",
+      "size_bytes": 52138
+    },
+    {
+      "artifact_id": "how2-full-model-gls-16000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/16000.dev.hyp.gls",
+      "sha256": "9cfc4a5fee62cbf32f34bb168875625ecd9e9f4d589e1316a065d62ee0865975",
+      "size_bytes": 51821
+    },
+    {
+      "artifact_id": "how2-full-model-gls-17000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/17000.dev.hyp.gls",
+      "sha256": "450100b83e360abaf85f672c2d48904678cabf88e121f528948fa23980a58794",
+      "size_bytes": 51781
+    },
+    {
+      "artifact_id": "how2-full-model-gls-18000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/18000.dev.hyp.gls",
+      "sha256": "d60942ea6ad5a6c4b04cea685e74ddbc0924649372d5a407def466be6d81c5a8",
+      "size_bytes": 51478
+    },
+    {
+      "artifact_id": "how2-full-model-gls-19000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/19000.dev.hyp.gls",
+      "sha256": "a37bb6b4780dd356a661c40fe51b16d65e2c8b74911871dea52076f4ea72318f",
+      "size_bytes": 52089
+    },
+    {
+      "artifact_id": "how2-full-model-gls-2000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/2000.dev.hyp.gls",
+      "sha256": "fc43115fd3243caf5ef0cde91d2a8f685cc401248f9b702d50f1d41c2d9b2cbf",
+      "size_bytes": 51039
+    },
+    {
+      "artifact_id": "how2-full-model-gls-20000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/20000.dev.hyp.gls",
+      "sha256": "3e09feb317eb4c7dbaa85934b8628e5b7501b25b0aff20ea3a09b10c318a3f6e",
+      "size_bytes": 51811
+    },
+    {
+      "artifact_id": "how2-full-model-gls-21000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/21000.dev.hyp.gls",
+      "sha256": "17570f8ce24b08e7efe2cd9169e2ff1029a15eb1249f6b8fdd9f29b78d20a48f",
+      "size_bytes": 52187
+    },
+    {
+      "artifact_id": "how2-full-model-gls-22000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/22000.dev.hyp.gls",
+      "sha256": "80846a19dd2d5f06d875ef04902078b661752ff70c69a8d706da1cfac2fd0c4e",
+      "size_bytes": 52350
+    },
+    {
+      "artifact_id": "how2-full-model-gls-23000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/23000.dev.hyp.gls",
+      "sha256": "94b6acb168ab0a8bf789c02ab938d518a7239aa3713fb7b1d7fa43f62673934e",
+      "size_bytes": 51726
+    },
+    {
+      "artifact_id": "how2-full-model-gls-3000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/3000.dev.hyp.gls",
+      "sha256": "19a8574be99e42bc26e3b6eb4e3527c9c79d2cb1feaa3b62bb6a1df78477674c",
+      "size_bytes": 51657
+    },
+    {
+      "artifact_id": "how2-full-model-gls-4000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/4000.dev.hyp.gls",
+      "sha256": "efd766532a4ee6846a72900e1eb8a61aee37f8bb06ee6e4289735aea30d496a7",
+      "size_bytes": 51671
+    },
+    {
+      "artifact_id": "how2-full-model-gls-5000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/5000.dev.hyp.gls",
+      "sha256": "d76bda5980ea85258dfe94eda2e01f0b5c32a64310a5d83ccc4b68e1f4f14e00",
+      "size_bytes": 52027
+    },
+    {
+      "artifact_id": "how2-full-model-gls-6000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/6000.dev.hyp.gls",
+      "sha256": "d4160f32bbaec709db8700599970595d68a08fa5367587ae86f94733046c1bdc",
+      "size_bytes": 52217
+    },
+    {
+      "artifact_id": "how2-full-model-gls-7000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/7000.dev.hyp.gls",
+      "sha256": "e3bae1f59a05be3509d613c5b99b291a3213347248d6441a7d5b1ba83806b85d",
+      "size_bytes": 50937
+    },
+    {
+      "artifact_id": "how2-full-model-gls-8000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/8000.dev.hyp.gls",
+      "sha256": "bb8b64b3a33255eba88c87351eb6a3797b5307ba96cf12cf7561422dab0c0577",
+      "size_bytes": 51586
+    },
+    {
+      "artifact_id": "how2-full-model-gls-9000-dev-hyp-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls/9000.dev.hyp.gls",
+      "sha256": "6b8ddb78771021dff85bddf683f74938ac34502ad8cd73c1d420de7bd58aca4d",
+      "size_bytes": 52035
+    },
+    {
+      "artifact_id": "how2-full-model-gls-vocab",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/gls.vocab",
+      "sha256": "4f28ac91843ef374531a27924363119b82efe04aa3a6c953ac671704af7930de",
+      "size_bytes": 216497
+    },
+    {
+      "artifact_id": "how2-full-model-references-dev-gls",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/references.dev.gls",
+      "sha256": "c0449cd6fc96ec84b29a081f5734cc9e78d78303c1e95fcfa5aab7a8b1af273b",
+      "size_bytes": 200082
+    },
+    {
+      "artifact_id": "how2-full-model-references-dev-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/references.dev.txt",
+      "sha256": "c61b1d62c61ef8d03266fd106439f7df7305af6b0dc4f9623926d44201f2b969",
+      "size_bytes": 200082
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-events-out-tfevents-1790868819-modal-30-0",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/events.out.tfevents.1790868819.modal.30.0",
+      "sha256": "74c60d55d017c07a991a2d8a82c65cac7233486473fb605dcbb15c38be17ca79",
+      "size_bytes": 1612010
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-events-out-tfevents-1790880886-modal-30-0",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/events.out.tfevents.1790880886.modal.30.0",
+      "sha256": "528f2a393cd8a69cbd26dad038a88e597f33a43cc90693f9ec33377609bd1546",
+      "size_bytes": 1588671
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu1-events-out-tfevents-1790869847-modal-30-5",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu1/events.out.tfevents.1790869847.modal.30.5",
+      "sha256": "263136155ab736f1e014543d83ab8f9ca28365b9451c36c1b00884dccc8c0131",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu1-events-out-tfevents-1790881783-modal-30-5",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu1/events.out.tfevents.1790881783.modal.30.5",
+      "sha256": "7465a27311bbf53729557b331705eb7d9b3b2cdaf5bfeec8215cc4be8d8a8b12",
+      "size_bytes": 719
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu2-events-out-tfevents-1790869847-modal-30-6",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu2/events.out.tfevents.1790869847.modal.30.6",
+      "sha256": "22a5e0fcfaa9be44082d3cacd0ac53dac74b957c7faedd993e42864e2139e275",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu2-events-out-tfevents-1790881783-modal-30-6",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu2/events.out.tfevents.1790881783.modal.30.6",
+      "sha256": "42d648e6bd341d5b4f6821cb95fe258e31b061ecf0de70b5a7802f5846cfeb9f",
+      "size_bytes": 719
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu3-events-out-tfevents-1790869847-modal-30-7",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu3/events.out.tfevents.1790869847.modal.30.7",
+      "sha256": "9f1b16c27cb2d796afcbc4c6b9dcb61ae2c313ccc8cd09a735a93d9ba2ae4e44",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu3-events-out-tfevents-1790881783-modal-30-7",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu3/events.out.tfevents.1790881783.modal.30.7",
+      "sha256": "4841b3bb13ac61ecb02583d497d054478c467b0a0637c45b3fb21c9eb1f7f6cd",
+      "size_bytes": 719
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu4-events-out-tfevents-1790869847-modal-30-8",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu4/events.out.tfevents.1790869847.modal.30.8",
+      "sha256": "a881b30a2190c88e44368df570f23d4b49028495c9e13505cc17dd50f2917f3a",
+      "size_bytes": 656
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-bleu-scores-bleu4-events-out-tfevents-1790881783-modal-30-8",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_bleu_scores_bleu4/events.out.tfevents.1790881783.modal.30.8",
+      "sha256": "15d95cb96d8f76ae0aa7be9ae6b6c7516020481ad1a6bc32c5249363e8671808",
+      "size_bytes": 719
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-del-rate-events-out-tfevents-1790869847-modal-30-2",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_del_rate/events.out.tfevents.1790869847.modal.30.2",
+      "sha256": "4536fe0a7bed3aa46d87cd843ee33cc331a6018d3629227653fba6dff81a88fb",
+      "size_bytes": 645
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-del-rate-events-out-tfevents-1790881783-modal-30-2",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_del_rate/events.out.tfevents.1790881783.modal.30.2",
+      "sha256": "b424bd476b0ff4fadc2a12d45e28c44c54fa4fa72fe107d9c866791f7c4091bf",
+      "size_bytes": 707
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-ins-rate-events-out-tfevents-1790869847-modal-30-3",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_ins_rate/events.out.tfevents.1790869847.modal.30.3",
+      "sha256": "0a4803bbe6bc791b78ea8481a5b6a9aeb622fc20c1d01afdd11529abffe630b0",
+      "size_bytes": 645
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-ins-rate-events-out-tfevents-1790881783-modal-30-3",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_ins_rate/events.out.tfevents.1790881783.modal.30.3",
+      "sha256": "70f116246f22bfb09a181f13225a362cb7db84bcf99cfd1b826cb685bb10f1a9",
+      "size_bytes": 707
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-sub-rate-events-out-tfevents-1790869847-modal-30-4",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_sub_rate/events.out.tfevents.1790869847.modal.30.4",
+      "sha256": "895384ae8f85d01f81f23b47cbf6181780f489f53ab33ca86eacc2e5af35b93d",
+      "size_bytes": 645
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-sub-rate-events-out-tfevents-1790881783-modal-30-4",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_sub_rate/events.out.tfevents.1790881783.modal.30.4",
+      "sha256": "616601c5afe4796aec78315d585f04cda143f88fc232f4f963c518e029d3d9c4",
+      "size_bytes": 707
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-wer-events-out-tfevents-1790869847-modal-30-1",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_wer/events.out.tfevents.1790869847.modal.30.1",
+      "sha256": "e8bb19b9bb41d64ab5abd71d1ca1d97931baa273c9f5b86d589790cfa2a5c200",
+      "size_bytes": 645
+    },
+    {
+      "artifact_id": "how2-full-model-tensorboard-valid-wer-scores-wer-events-out-tfevents-1790881783-modal-30-1",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/tensorboard/valid_wer_scores_wer/events.out.tfevents.1790881783.modal.30.1",
+      "sha256": "86c6a92f6afdbe637c95a3692c75ee0322c0282df243a586f75a339314a28b88",
+      "size_bytes": 707
+    },
+    {
+      "artifact_id": "how2-full-model-train-log",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/train.log",
+      "sha256": "3e966968165202d422e1397a267105426cf800a7c86fe614736a9b944f0d2c51",
+      "size_bytes": 239686
+    },
+    {
+      "artifact_id": "how2-full-model-txt-1000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/1000.dev.hyp.txt",
+      "sha256": "1aefe7d195714d9a242f1b9e9a8d9fa150db29c17e5f4ff8d779c72f033fe986",
+      "size_bytes": 269892
+    },
+    {
+      "artifact_id": "how2-full-model-txt-10000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/10000.dev.hyp.txt",
+      "sha256": "cc566d30f8e90fba812476efbcc9f3a56ecb7e487b1ae3213fa6d4d865c5ae25",
+      "size_bytes": 198995
+    },
+    {
+      "artifact_id": "how2-full-model-txt-11000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/11000.dev.hyp.txt",
+      "sha256": "50c5fb5a79730b981daf2eb5939658b4dbe1d87f6658dd109f59eb6a5c7f451d",
+      "size_bytes": 203651
+    },
+    {
+      "artifact_id": "how2-full-model-txt-12000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/12000.dev.hyp.txt",
+      "sha256": "ebe82c7f6c23a047ecc4479a547e7626c4dd0168293c87161c2bde0d349bbb50",
+      "size_bytes": 207783
+    },
+    {
+      "artifact_id": "how2-full-model-txt-13000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/13000.dev.hyp.txt",
+      "sha256": "2990f71e07175f871596390e6338f1dca03f70057088bb0537f833aebca3c0eb",
+      "size_bytes": 190338
+    },
+    {
+      "artifact_id": "how2-full-model-txt-14000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/14000.dev.hyp.txt",
+      "sha256": "7f62f0d59538096ef92420e87200d3b13773cd9e8dc3a5e52e4e04034c62459a",
+      "size_bytes": 216293
+    },
+    {
+      "artifact_id": "how2-full-model-txt-15000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/15000.dev.hyp.txt",
+      "sha256": "8bf0105427118dc42191385cc9c2b6e5ae688bc02727fba961e04cc3aa055fde",
+      "size_bytes": 196650
+    },
+    {
+      "artifact_id": "how2-full-model-txt-16000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/16000.dev.hyp.txt",
+      "sha256": "136bc7af6e8283bbeb2f6182877256d7042400f1fbe73fe261553fdc200289f1",
+      "size_bytes": 202692
+    },
+    {
+      "artifact_id": "how2-full-model-txt-17000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/17000.dev.hyp.txt",
+      "sha256": "d4ba04ba0ab9c33b52c0a0c22c8a7560771906fc7d0ebf6a6a272a8ca6508b1c",
+      "size_bytes": 205580
+    },
+    {
+      "artifact_id": "how2-full-model-txt-18000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/18000.dev.hyp.txt",
+      "sha256": "444374777b27f5356e3a4d048d7c7d35665c970e0fba8605599ca74db8dddbfb",
+      "size_bytes": 195386
+    },
+    {
+      "artifact_id": "how2-full-model-txt-19000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/19000.dev.hyp.txt",
+      "sha256": "2daf2a078dc4bba8e67e9c4f248ce7c3713323ad5060d81f8576468c875a9eca",
+      "size_bytes": 202080
+    },
+    {
+      "artifact_id": "how2-full-model-txt-2000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/2000.dev.hyp.txt",
+      "sha256": "97ee1bfa18a0ece44a01b9bce6eb1a1f4074ee3f704131459bca60fc94997e4e",
+      "size_bytes": 231551
+    },
+    {
+      "artifact_id": "how2-full-model-txt-20000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/20000.dev.hyp.txt",
+      "sha256": "59e7051acf1cdfc0c2f1edf5118e91cffa4e8fe43d383af704b6d9a176f0f162",
+      "size_bytes": 184578
+    },
+    {
+      "artifact_id": "how2-full-model-txt-21000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/21000.dev.hyp.txt",
+      "sha256": "c2ba9dd745facb529ee430ed42ea3af92be02f0446f029b98c6b2e7e2ba7ccce",
+      "size_bytes": 197292
+    },
+    {
+      "artifact_id": "how2-full-model-txt-22000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/22000.dev.hyp.txt",
+      "sha256": "ea270abe80934a058e69058b10f8c6d11dc6b36de4be0f11ddc3df09aecbabbf",
+      "size_bytes": 195597
+    },
+    {
+      "artifact_id": "how2-full-model-txt-23000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/23000.dev.hyp.txt",
+      "sha256": "8b2aa94308ab1861d31f45911fc64d8d1e9b66c97643e425e9cb80e6ff6cc417",
+      "size_bytes": 202676
+    },
+    {
+      "artifact_id": "how2-full-model-txt-3000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/3000.dev.hyp.txt",
+      "sha256": "45214f963e17007ebec9c6681f0f9036adbc156c68b68146ed7a7874b9aebd68",
+      "size_bytes": 200692
+    },
+    {
+      "artifact_id": "how2-full-model-txt-4000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/4000.dev.hyp.txt",
+      "sha256": "a74a0acc16bc45b5cff09345b6165e5d7d357ded449e21e3b4d04858a77aa5d0",
+      "size_bytes": 193396
+    },
+    {
+      "artifact_id": "how2-full-model-txt-5000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/5000.dev.hyp.txt",
+      "sha256": "3adf5916c35cf6bd9fd0d1db4db74439a2a5fe21cc8dfc2c62e304e851066005",
+      "size_bytes": 216549
+    },
+    {
+      "artifact_id": "how2-full-model-txt-6000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/6000.dev.hyp.txt",
+      "sha256": "4f3eb1757219449de99af26e85f52fbe43bde8130346f3675614d439ef242c20",
+      "size_bytes": 238421
+    },
+    {
+      "artifact_id": "how2-full-model-txt-7000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/7000.dev.hyp.txt",
+      "sha256": "231e33ebe87b2a02bb062119c35e3e0ef5cb635268bf0badb31492751269737f",
+      "size_bytes": 226660
+    },
+    {
+      "artifact_id": "how2-full-model-txt-8000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/8000.dev.hyp.txt",
+      "sha256": "4a78966120e65a6ec6a13d01221ed25dc9044808d9a43d57d8ff5bd647d5356b",
+      "size_bytes": 215319
+    },
+    {
+      "artifact_id": "how2-full-model-txt-9000-dev-hyp-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt/9000.dev.hyp.txt",
+      "sha256": "623b6f26ae5389b9d7bb20d14c19379a4428faf443a88374943933193af7c0e9",
+      "size_bytes": 211092
+    },
+    {
+      "artifact_id": "how2-full-model-txt-vocab",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/txt.vocab",
+      "sha256": "0cdba376f36f1866f23f0955ca626860c780fad2ce39700fef181f16181d8b68",
+      "size_bytes": 202272
+    },
+    {
+      "artifact_id": "how2-full-model-validations-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/model/validations.txt",
+      "sha256": "ce60dd7b7a4f89eec32703f000641b38414936e485b1c6db0fc888dcd782bae6",
+      "size_bytes": 5957
+    },
+    {
+      "artifact_id": "how2-full-raw-metrics-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/raw-metrics.json",
+      "sha256": "464a3ccdf383c5a65975899dfb3e2b1464a6c7110e53adcbd7564e70af3fa483",
+      "size_bytes": 503
+    },
+    {
+      "artifact_id": "how2-full-recovery-best-22000-b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922-ckpt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/recovery/best-22000-b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922.ckpt",
+      "sha256": "b6a760926899d4f46739f881157a48d311dccabfc47e4b319769f44512483922",
+      "size_bytes": 758211363
+    },
+    {
+      "artifact_id": "how2-full-recovery-latest-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/recovery/latest.json",
+      "sha256": "78e16ce5a35ec9aa7904eb9e478d466531fa3ccd1c7af7a148c6cc74e299833c",
+      "size_bytes": 639
+    },
+    {
+      "artifact_id": "how2-full-recovery-state-00023250-1790893244270510094-ckpt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/recovery/state-00023250-1790893244270510094.ckpt",
+      "sha256": "2a64687ae6001b4ed93bef929234739dcc90734b715ca4eed0b3288eafa0d83b",
+      "size_bytes": 758233532
+    },
+    {
+      "artifact_id": "how2-full-recovery-state-00023465-1790893287645489210-ckpt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/recovery/state-00023465-1790893287645489210.ckpt",
+      "sha256": "fc13d6aa4421e9f617930638e8af0c3e975784cc6dfc855a24128fefee9d8941",
+      "size_bytes": 758233371
+    },
+    {
+      "artifact_id": "how2-full-runtime-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/runtime.json",
+      "sha256": "5ca9933d329a0cb85184d6714fb57665c41b9309065cc9773c7906f794670ce4",
+      "size_bytes": 361
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0001-config-yaml",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0001/config.yaml",
+      "sha256": "318c11ef17fcfbd306a1376cb2fa8a5a06e5d69d73e44c98cfde4830b441934a",
+      "size_bytes": 2118
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0001-execution-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0001/execution.json",
+      "sha256": "8c715f2bd3bf2cefe136c39ae80033bc601cd40e8eda338ae3331f024e98adc3",
+      "size_bytes": 667
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0001-freeze-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0001/freeze.txt",
+      "sha256": "68af6454c5a9d3fb5cf78d9e40ce4260de11bcad0665d4a1c632109856b1a351",
+      "size_bytes": 1816
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0001-gpu-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0001/gpu.txt",
+      "sha256": "4cd4515e0f81871257a29bceeda1b9a55b12d636f06b2a805ff5436bba955b36",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0001-stdout-log",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0001/stdout.log",
+      "sha256": "95abc3dbd266fe22d4b271004476122445f7eb43d101686da1a5e14fcf69bad2",
+      "size_bytes": 131949
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-config-yaml",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/config.yaml",
+      "sha256": "a1de226b393ad792fb203cb584a1a6fd54340c3c0c6833a392ab98ac8a2bd0e6",
+      "size_bytes": 2236
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-execution-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/execution.json",
+      "sha256": "cc2f19a40c4799e4dc0b2ba5c00dcf459c102141c97caf9931db54617c5b3cc4",
+      "size_bytes": 805
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-freeze-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/freeze.txt",
+      "sha256": "68af6454c5a9d3fb5cf78d9e40ce4260de11bcad0665d4a1c632109856b1a351",
+      "size_bytes": 1816
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-gpu-txt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/gpu.txt",
+      "sha256": "dfe976784f8400fc8d7ee16403e99f3afd96fd5642d50087610808bf7e3f1d0a",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-runtime-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/runtime.json",
+      "sha256": "5ca9933d329a0cb85184d6714fb57665c41b9309065cc9773c7906f794670ce4",
+      "size_bytes": 361
+    },
+    {
+      "artifact_id": "how2-full-segments-segment-0002-stdout-log",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/segments/segment-0002/stdout.log",
+      "sha256": "bf6e6396a1ad99fac98be12ff8a006ac297367f2a65fad54ad51624715f6f2fd",
+      "size_bytes": 148092
+    },
+    {
+      "artifact_id": "how2-full-test-recognition-text-json",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/test-recognition-text.json",
+      "sha256": "345750ca4064bc40e76f18fd01d1c8f10e08fe655dd1d42419265f2a116253cb",
+      "size_bytes": 236607
+    },
+    {
+      "artifact_id": "how2-full-upstream-diff-patch",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/upstream-diff.patch",
+      "sha256": "448b7600876558667dfa34d2a61a09048acc143d67151f6a88fcbc40ed459709",
+      "size_bytes": 7296
+    },
+    {
+      "artifact_id": "how2-full-evidence-index",
+      "kind": "raw_evidence_index",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/evidence.json",
+      "sha256": "f4e29b1aa63abeee363ed29e6720d7106fcef0e99ea7ca51f0dd1cae12866477",
+      "size_bytes": 2380303,
+      "detail": "Final CPU collector recursively hashes all closed artifacts, including every evaluation-cache batch; selected evidence is also indexed individually."
+    },
+    {
+      "artifact_id": "how2-full-independent-grid-audit",
+      "kind": "independent_review_evidence",
+      "uri": "artifacts/how2sign-final-independent-grid-audit.json",
+      "sha256": "94ebd974d67521592ec1a57e94433fb3b1480b2a94440d01df2b6b3c1e91e1b9"
+    },
+    {
+      "artifact_id": "how2-full-independent-payload-hashes",
+      "kind": "independent_review_evidence",
+      "uri": "artifacts/how2sign-final-independent-payload-hashes.json",
+      "sha256": "ee02d25e5869a016db759fd8db6d54fcdad0d9720ecb177013be6486c06ea8ae"
+    },
+    {
+      "artifact_id": "how2-full-cpu-collection-receipt",
+      "kind": "raw_run_evidence",
+      "uri": "modal://7f7abc3e-cabot-results/how2sign-full-seed42-001/collection-20261002T061002.json",
+      "sha256": "952eefc85df40419c10cb22388836583b6ae2d6f2038084a1757110a34fc9a60",
+      "size_bytes": 352,
+      "detail": "Closed collector receipt is written after evidence.json and hashed separately to avoid a provisional self-record."
+    },
+    {
+      "artifact_id": "how2-full-raw-metrics-local",
+      "kind": "raw_metrics",
+      "uri": "artifacts/how2sign-full-raw-metrics.json",
+      "sha256": "464a3ccdf383c5a65975899dfb3e2b1464a6c7110e53adcbd7564e70af3fa483"
+    },
+    {
+      "artifact_id": "how2-full-legacy-wer-local",
+      "kind": "secondary_metric_diagnostic",
+      "uri": "artifacts/how2sign-full-legacy-wer-diagnostic.json",
+      "sha256": "2fb025f2c107d0cbaa5796045ea814d610c1ccff40805991d8fcdc3ee02e06a6"
+    },
+    {
+      "artifact_id": "how2-full-initial-collection-timeout-excerpt",
+      "kind": "raw_console_excerpt",
+      "uri": "artifacts/how2sign-collection-initial-timeout.txt",
+      "sha256": "01da0501bcd46db218e3add26ded6664a81f82d64a7ab49cdb276ac5f5c74e8d",
+      "detail": "Exact pertinent CLI excerpt retained by parent executor; explicitly not the complete console log."
     }
   ],
   "gates": [
@@ -3686,7 +4951,7 @@
   ],
   "deviations": [
     "Reuse reviewedlegacyCamgozDockerfile to preservePyTorch1.4/Python3.7/TensorFlow2.1 recipe. Sharedmodernbase cannot install these legacyversions; thisenvironment was already investigated and retained inrepository.",
-    "No author model/training code copied or refactored. PHX uses original evaluator; How2 applies two narrow correctness patches for English cleanup and integer distance range.",
+    "No author model/training implementation copied or refactored. PHOENIX retains its original evaluator. How2 adds two evaluator correctness patches and two narrowly scoped training/evaluation recovery hooks, with declared native-output equivalence and recovery checks.",
     "No How2Signtarget value inferred from a later Fairseq experiment or a differentlycleaned corpus.",
     "Root-agent review identified that local CLI returned zero even when native execution metadata contained nonzero exit_code. Future invocations now propagate that code. Current full run remains unchanged; execution.json is the authoritative native exit status. No restart or model behavior change.",
     {
@@ -3701,13 +4966,33 @@
     {
       "id": "how2-output-preserving-evaluation-scheduling",
       "declared_at_utc": "2026-10-01T14:45:13.808730+00:00",
-      "detail": "User-authorized infrastructure judgment: four bounded worker threads invoke the unchanged TensorFlow2.1 CPU decoder on independent sentence slices and restore exact batch order. Within one native checkpoint test, reuse only identical recognition fields while the unchanged author loop enumerates all70 translation candidates in original order. Model flags and patched call entrypoints restore in finally. No loss, optimizer, checkpoint, metric, tie or test-selection change. Complete CPU grid proof is required before launching the full run; raw decoder and GPU-output equivalence already passed. Torch CPU thread allocation is4 on the four-core full container. Historical preflight resume child remains the unoptimized native CLI, with identical scientific semantics.",
+      "detail": "User-authorized infrastructure judgment: four bounded worker threads invoke the unchanged TensorFlow2.1 CPU decoder on independent sentence slices and restore exact batch order. Within one native checkpoint test, reuse only identical recognition fields while the unchanged author loop enumerates all70 translation candidates in original order. Model flags and patched call entrypoints restore in finally. No loss, optimizer, checkpoint, metric, tie or test-selection change. Complete CPU grid proof, raw decoder equivalence and GPU-output equivalence passed before the full launch. Torch CPU thread allocation is4 on the four-core full container. Historical preflight resume child remains the unoptimized native CLI, with identical scientific semantics.",
       "evidence": [
         "run:how2sign-evaluation-equivalence-004",
         "run:how2sign-evaluation-gpu-smoke-001",
         "run:how2sign-translation-capacity-001",
         "run:how2sign-translation-ordinary-capacity-001",
-        "https://github.com/tensorflow/tensorflow/blob/v2.1.0/tensorflow/core/kernels/ctc_decoder_ops.cc#L284-L310"
+        "https://github.com/tensorflow/tensorflow/blob/v2.1.0/tensorflow/core/kernels/ctc_decoder_ops.cc#L284-L310",
+        "run:how2sign-evaluation-equivalence-005"
+      ]
+    },
+    {
+      "id": "how2-preemption-recovery",
+      "detail": "Before full launch, verified training snapshots added epoch/native iterator/RNG and post-validation scheduler state at completed optimizer boundaries; protected native best checkpoint bytes are content-bound. Completed native evaluation batches are checksum-bound to checkpoint/config/data/source. Native algorithms, aggregation, full grid order and selection remain unchanged. One provider replay actually restored step11750; no fresh training restart. Exact12-update CPU trajectory and GPU evaluation/CUDA RNG proofs passed; this does not claim an independently replayed bitwise full GPU trajectory.",
+      "evidence": [
+        "patches/03-training-recovery.patch",
+        "patches/04-evaluation-recovery.patch",
+        "run:how2sign-training-recovery-check-002",
+        "run:how2sign-evaluation-recovery-check-001",
+        "run:how2sign-full-seed42-001"
+      ]
+    },
+    {
+      "id": "terminal-collection-concurrency",
+      "detail": "After the model run was terminal, the serial CPU collector reached its 600-second limit over 7,926 closed files. A separately bounded CPU-only attempt uses 8 independent read/hash workers with sorted pool.map output and 1,800-second wrapper / 1,740-second native ceilings. No training, decoding, metric formula or source artifact changes; final collection receipt is hashed separately after the manifest.",
+      "evidence": [
+        "scripts/collect.py",
+        "scripts/modal_app.py"
       ]
     }
   ],
@@ -3773,7 +5058,7 @@
     },
     {
       "path": "scripts/collect.py",
-      "sha256": "1b93b7cc58f0c463f36363b78e2148eefe8f5bc55e1b784c7b1b3e879ee48677"
+      "sha256": "ad39cda546dbf6f663a33a165d09951e7523ab53e790bc8e52cde4b8d18fd629"
     },
     {
       "path": "scripts/data.sh",
@@ -3785,7 +5070,7 @@
     },
     {
       "path": "scripts/modal_app.py",
-      "sha256": "8b84d277d2875239a73ea7117a7801f5e3747264f07a34eef6f9a81ef7ba2502"
+      "sha256": "ff38ce8eb1717b20348711b2be0421eb7c5e9007fca2e4a4079307db2c43822c"
     },
     {
       "path": "scripts/parallel_ctc.py",

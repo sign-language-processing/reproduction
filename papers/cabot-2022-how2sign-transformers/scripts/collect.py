@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib,io,json,pickle,sys
 import torch
+from concurrent.futures import ThreadPoolExecutor
 class CPUUnpickler(pickle.Unpickler):
     def find_class(self,module,name):
         if module=='torch.storage' and name=='_load_from_bytes':
@@ -35,12 +36,17 @@ for path in sorted(out.rglob('*.test_results.pkl')):
     metrics[str(path.relative_to(out))]={'wer':float(d['valid_scores']['wer']),**{k:float(v) for k,v in d['valid_scores']['bleu_scores'].items()}}
 if legacy_diagnostics:(out/'legacy-wer-diagnostic.json').write_text(json.dumps(legacy_diagnostics,indent=2))
 if metrics:(out/'raw-metrics.json').write_text(json.dumps(metrics,indent=2))
-files=[]
-for p in sorted(out.rglob('*')):
-    if not p.is_file() or p.name=='evidence.json':continue
+def hash_file(p):
     h=hashlib.sha256()
     with p.open('rb') as f:
         for chunk in iter(lambda:f.read(8*1024*1024),b''):h.update(chunk)
-    files.append(dict(path=str(p.relative_to(out)),sha256=h.hexdigest(),size_bytes=p.stat().st_size))
+    return dict(path=str(p.relative_to(out)),sha256=h.hexdigest(),size_bytes=p.stat().st_size)
+# Remote per-file reads dominate the large recovery cache. Preserve sorted
+# manifest order and exact bytes while bounding independent I/O concurrency.
+paths=[p for p in sorted(out.rglob('*')) if p.is_file() and p.name!='evidence.json']
+print('Hashing {} closed evidence files'.format(len(paths)),flush=True)
+with ThreadPoolExecutor(max_workers=8) as pool:
+    files=list(pool.map(hash_file,paths))
 result=dict(files=files,metrics=metrics)
-(out/'evidence.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))
+(out/'evidence.json').write_text(json.dumps(result,indent=2))
+print(json.dumps(dict(file_count=len(files),metrics=metrics)))
