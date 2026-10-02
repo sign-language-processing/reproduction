@@ -1,24 +1,26 @@
-# Siformer: completed conditional reproduction
+# Siformer: comparative conclusion reproduced
 
 Muxin Pu, Mei Kuan Lim and Chun Yong Chong. *Siformer: Feature-isolated Transformer for Efficient Skeleton-based Sign Language Recognition*. ACM Multimedia 2024. [DOI](https://doi.org/10.1145/3664647.3681578) · [Paper, arXiv v1](https://arxiv.org/abs/2503.20436v1) · [Official code](https://github.com/mpuu00001/Siformer).
 
-Paper ID: `d4719e6c4d9e7031bba559ad7e9a0fd84082194b`. Attempt date: 2026-10-01.
+Paper ID: `d4719e6c4d9e7031bba559ad7e9a0fd84082194b`. Attempt date: 2026-10-01. Scientific review: 2026-10-02.
 
 **Preference level:** 2
 
-**Pipeline status:** `insufficient_information`
+**Pipeline status:** `complete` — under the accepted released-artifact scope (2/2 targets).
 
-**Numerical agreement:** `not_assessed`
+**Numerical agreement:** `does_not_agree` — with the exact published values.
 
-Both conditional 100-epoch training attempts completed and emitted audited held-out accuracies. No human execution decision is pending. The released model uses nine decoder heads, whereas the paper explicitly specifies six; WLASL also lacks verifiable original-example/SMOTE split lineage. These limitations were declared before full scores. They prevent treating the conditional values as exact Table 6 target results, regardless of numerical closeness.
+**Comparative conclusion:** `reproduced`, validated by human scientific review on 2026-10-02. No further human decision is pending.
 
-The exact-target status is therefore `pipeline: insufficient_information` and `numerical_agreement: not_assessed`. This describes comparability of the paper targets; it does not mean that full training was skipped or failed. The raw differences below are arithmetic, not a scientific success/failure judgment.
+Both 100-epoch training attempts completed and emitted audited held-out accuracies. The scientific review accepts the published nine-head implementation and the already executed data reconstruction as the scope of this reproduction. The resulting Siformer scores exceed all main comparison rows in Table 6; on LSA64, 100% also ties the parenthetical original SPOTER result. No baseline was rerun here.
+
+Before the full scores, the attempt was classified conditional because the paper specifies six decoder heads and WLASL lacks verified original-example/SMOTE lineage. That original assessment remains in `assessment_history` and the prospectively recorded `continuation_decisions`. The 2026-10-02 review accepts a released-artifact reproduction; it does not retrospectively establish the unknown historical configuration or resolve WLASL lineage. Scores, checkpoint selection, execution attribution and raw evidence are unchanged. Exact numerical differences and comparative scientific conclusions are assessed separately.
 
 ## Scope and measured results
 
-The assignment selects the two **Siformer (Ours)** rows in Table 6, page 8. Other comparison rows include copied baselines and are out of scope. The tracker export nests the final paper in `expand.paper`, has no `confirmation` property, and distinguishes database `id` from `paper_id`. The direct user assignment, actual redacted record and original export hash are preserved without inventing queue-review fields.
+The assignment selects the two **Siformer (Ours)** rows in Table 6, page 8. Comparison rows are outside the execution scope and are used only as paper-reported evidence for the comparative conclusion; they were not rerun or independently verified against their original sources. The tracker export nests the final paper in `expand.paper`, has no `confirmation` property, and distinguishes database `id` from `paper_id`. The direct user assignment, actual redacted record and original export hash are preserved without inventing queue-review fields.
 
-| Dataset | Published top-1 | Conditional top-1 | Raw difference | Selected epoch |
+| Dataset | Published top-1 | Reproduced top-1 | Raw difference | Selected epoch |
 | --- | ---: | ---: | ---: | ---: |
 | WLASL100 | 86.50% | 89.1250% (713/800) | +2.6250 pp | 99 |
 | LSA64 | 99.84% | 100.0000% (636/636) | +0.1600 pp | 23 |
@@ -27,11 +29,34 @@ Top-1 is correct argmax predictions divided by evaluated samples, multiplied by 
 
 The native evaluator emitted the exact labels and logits used for each epoch's score. Independent NumPy recomputation verified finite logits, argmax correct count, denominator, earliest maximum epoch and artifact SHA-256. The chosen checkpoint exists and loads. Evaluator arrays are shuffled and do not include original row IDs: no per-example unique-ID audit is claimed. Membership is established by the immutable input CSVs and author loader. Native logs, all epoch metrics, predictions, checkpoints, execution metadata and environment evidence remain on `modal://d4719e6c-siformer-results/`, with run-specific paths and checksums in `reproduction.json`.
 
+## Comparative conclusion and its limits
+
+Table 6 reports the following comparison values. Its caption identifies parenthetical values as scores from the original authors and preceding scores as the Siformer authors' reproductions using GitHub code. This attempt transcribes those values from the pinned paper; it performs no new baseline experiments.
+
+| Dataset | Modality | Comparison method | Table 6 main top-1 | Parenthetical original-author top-1 |
+| --- | --- | --- | ---: | ---: |
+| WLASL100 | RGB | I3D | 65.89% | — |
+| WLASL100 | RGB | TCK | 77.52% | — |
+| WLASL100 | RGB | SignBERT+ | 84.11% | — |
+| WLASL100 | RGB | Fusion-3 | 75.67% | — |
+| WLASL100 | Skeleton | Pose-TGCN | 55.43% | — |
+| WLASL100 | Skeleton | ST-GCN | 50.78% | — |
+| WLASL100 | Skeleton | SignBERT+ | 79.84% | — |
+| WLASL100 | Skeleton | SPOTER | 58.52% | 63.18% |
+| LSA64 | RGB | LSTM + LDS | 98.09% | — |
+| LSA64 | RGB | DeepSign CNN | 96.00% | — |
+| LSA64 | RGB | MEMP | 99.06% | — |
+| LSA64 | RGB | I3D | 98.91% | — |
+| LSA64 | Skeleton | SPOTER | 99.52% | 100.00% |
+| LSA64 | Skeleton | LSTM + DSC | 92.15% | — |
+
+Observed WLASL100 accuracy exceeds the highest comparison value, 84.11%, by 5.015 percentage points. Observed LSA64 accuracy exceeds the highest main comparison value, 99.52%, by 0.48 percentage points and ties the original SPOTER 100%. Therefore the accepted comparison supports the paper's Table 6 conclusion, with the explicit qualification that Siformer does not strictly beat every parenthetical baseline. This is a comparison against published values under the accepted released-artifact scope, not evidence of statistical significance or an independently rerun common-protocol benchmark. Efficiency, robustness and ablation claims were not requested and are not assessed.
+
 ## Decisions and scientific limits
 
 The user authorized documented protocol judgments. We retained the published implementation rather than replacing its model with a local reimplementation:
 
-- Nine decoder heads, three encoders/two decoders, FIM enabled, encoder iterative attention enabled with patience one, decoder iterative attention disabled. Section 4.5 instead specifies six decoder heads; the exact configuration that generated Table 6 remains unknown.
+- Nine decoder heads, three encoders/two decoders, FIM enabled, encoder iterative attention enabled with patience one, decoder iterative attention disabled. Section 4.5 instead specifies six decoder heads; the exact historical configuration remains unknown, but the scientific review accepts following the released nine-head code.
 - Unchanged author FE rectification followed by AA, both alpha 0.4. Historical commit `a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7` establishes this order. Current functions and recovered motion tables are used.
 - LSA64: one stratified seed-42 80/20 split of all 3,177 released records, giving 2,541 training and 636 held-out samples. The paper specifies 80/20. The README's additional 0.8 training reduction is omitted. Missing historical seed alone is an ordinary stochastic-replication uncertainty.
 - WLASL100: preserve released 3,200/800 partitions and perform no new SMOTE. Section 4.1 lists 2,038 originals, 800 held out, then 2,400 remaining before oversampling, an arithmetic inconsistency. The release has the stated final sizes but no source-example mapping or definitive prior rectification history. Historical notebooks contain mixed exploratory oversampling operations; they neither prove leakage nor certify leakage-free Table 6 provenance.
@@ -118,7 +143,7 @@ Acquisition also retained its dead ends: a redundant slow local WLASL download w
 
 ## Agent attribution and validation
 
-All agents were exposed by their sessions as **GPT-6 using Codex**. Exact model IDs/builds and application versions were unavailable and are explicitly not inferred. `siformer-agent` performed initial discovery, data acquisition and diagnostics; `arabic-vit-review-agent` independently reviewed the initial protocol; `continuation-agent` prepared data, executed the conditional preflights/full runs and wrote the updated report; `codex-orchestrator-review` reviewed resume/evidence patches and the checkpoint-index formula, then independently verified both terminal prediction hashes and numerical results. Review-only agents are absent from execution `agent_ids`. Session attestations and contribution scope are recorded in JSON.
+All agents were exposed by their sessions as **GPT-6 using Codex**. Exact model IDs/builds and application versions were unavailable and are explicitly not inferred. `siformer-agent` performed initial discovery, data acquisition and diagnostics, then report-only Table 6 verification and recording of the 2026-10-02 human scientific assessment; `arabic-vit-review-agent` independently reviewed the initial protocol; `continuation-agent` prepared data, executed the conditional preflights/full runs and wrote the updated report; `codex-orchestrator-review` reviewed resume/evidence patches and the checkpoint-index formula, then independently verified both terminal prediction hashes and numerical results. Review-only agents are absent from execution `agent_ids`. Session attestations and contribution scope are recorded in JSON.
 
 Syntax, shell parsing, patch application and repository metadata checks passed. Numerical evidence was independently recomputed from the exact evaluator outputs, subject to the no-source-ID limitation above. Run the report validator with:
 

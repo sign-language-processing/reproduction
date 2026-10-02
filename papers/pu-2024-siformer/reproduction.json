@@ -5,9 +5,10 @@
       "agent_id": "siformer-agent",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Source investigation, implementation, execution, and report. Exact model ID and harness version unavailable in session.",
+      "scope": "Source investigation, implementation, execution, and report. Exact model ID and harness version unavailable in session. On 2026-10-02, report-only maintenance recorded human scientific scope acceptance and verified Table 6 comparison rows; no new experiment execution.",
       "evidence": [
-        "Session developer instructions identify GPT-6 using Codex; no exact model version or application version exposed."
+        "Session developer instructions identify GPT-6 using Codex; no exact model version or application version exposed.",
+        "2026-10-02 session attestation: GPT-6 using Codex inspected the pinned paper Table 6 and updated interpretation only under explicit human scientific review. Existing execution attribution and raw evidence unchanged."
       ]
     },
     {
@@ -222,18 +223,11 @@
     }
   ],
   "status": {
-    "pipeline": "insufficient_information",
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "Both full 100-epoch published-code reconstructions completed. Conditional values are LSA64 100.0% versus 99.84% and WLASL100 89.125% versus 86.50%. Comparability was declined before scores because the released decoder uses nine heads versus six in the paper; WLASL additionally lacks verified original held-out/SMOTE lineage. Raw differences are preserved, but exact-target numerical agreement is not assessed.",
+    "pipeline": "complete",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Under the released-artifact scope explicitly accepted by human scientific review on 2026-10-02, both target values are produced. Neither equals the published two-decimal Table 6 value: WLASL100 89.125% versus 86.50% (+2.625 percentage points), LSA64 100% versus 99.84% (+0.16 percentage points). No score-matching tolerance is asserted. The separately recorded comparative conclusion is reproduced; exact numerical agreement is not. The original pre-score conditional assessment is retained in assessment_history and continuation_decisions.",
     "preference_level": 2,
-    "blocker": {
-      "reason_code": "protocol_ambiguous",
-      "detail": "Paper specifies six decoder heads but released model hardcodes nine; WLASL additionally lacks verified original held-out provenance. LSA feature lineage and executable rectification recipe are resolved.",
-      "target_ids": [
-        "table6-wlasl100",
-        "table6-lsa64"
-      ]
-    }
+    "blocker": null
   },
   "datasets": [
     {
@@ -420,7 +414,7 @@
       "experiment_id": "siformer-wlasl100",
       "system": "Siformer 3 encoder / 2 decoder, encoder patience 1, AA/FE rectification alpha 0.4",
       "dataset_id": "wlasl100",
-      "checkpoint_rule": "Conditional reconstruction: highest released holdout validation accuracy across 100 epochs, earliest tie. The holdout also selects the checkpoint; no independent untouched-test claim.",
+      "checkpoint_rule": "Released-artifact reconstruction (originally classified conditional): highest released holdout validation accuracy across 100 epochs, earliest tie. The holdout also selects the checkpoint; no independent untouched-test claim.",
       "paper_evidence": "Paper sections 4.1, 4.5 and Table 6. Paper decoder heads=6; released code=9.",
       "training": {
         "epochs": 100,
@@ -443,7 +437,7 @@
       "experiment_id": "siformer-lsa64",
       "system": "Siformer 3 encoder / 2 decoder, encoder patience 1, AA/FE rectification alpha 0.4",
       "dataset_id": "lsa64",
-      "checkpoint_rule": "Conditional reconstruction: highest released holdout validation accuracy across 100 epochs, earliest tie. The holdout also selects the checkpoint; no independent untouched-test claim.",
+      "checkpoint_rule": "Released-artifact reconstruction (originally classified conditional): highest released holdout validation accuracy across 100 epochs, earliest tie. The holdout also selects the checkpoint; no independent untouched-test claim.",
       "paper_evidence": "Paper sections 4.1, 4.5 and Table 6. Paper decoder heads=6; released code=9.",
       "training": {
         "epochs": 100,
@@ -480,11 +474,9 @@
       "experiment_id": "siformer-wlasl100",
       "original_value": 86.5,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "Completed conditional full training using the prospectively chosen nine-head released model and validation-based checkpoint selection; this does not establish the six-head Table 6 target. Original-example/SMOTE split lineage and prior rectification stage also remain unverified."
-        },
+        "status": "produced",
+        "reproduced_value": 89.125,
+        "difference": 2.625,
         "run_ids": [
           "full-resolved-wlasl100-001"
         ],
@@ -492,19 +484,13 @@
           "full-resolved-wlasl100-001-metrics",
           "full-resolved-wlasl100-001-predictions"
         ],
-        "gate_ids": [
-          "table6-protocol",
-          "wlasl-provenance"
-        ],
         "evidence": [
-          "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
-          "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
-          "Paper section 4.1 lists 2038 originals, 800 held out, then remaining 2400 before SMOTE: arithmetic inconsistent.",
-          "Historical preparation notebook contains exploratory WLASL and LSA64 cells and combined-split oversampling operations, while historical jobs split a balanced CSV. These do not establish Table 6 ordering or data leakage.",
-          "Author release inspected: 3200 training rows (32/class), 800 validation rows (8/class). Filenames do not identify original sample IDs or rectification stage.",
-          "Conditional full run completed 100 epochs: 713/800 correct = 89.125%; earliest maximum epoch 99. Native predictions and metrics are linked. Pre-score comparability classification remains conditional."
+          "Existing full 100-epoch run and independent native-prediction audit; no new run or change of checkpoint.",
+          "Released-artifact target scope accepted by human scientific review on 2026-10-02; original conditional classification preserved in assessment_history.",
+          "713/800 correct, earliest maximum epoch 99."
         ]
-      }
+      },
+      "accepted_scope": "Released-artifact reconstruction described in conclusion_assessment; this does not assert identity with the unknown historical paper configuration."
     },
     {
       "target_id": "table6-lsa64",
@@ -522,34 +508,23 @@
       "experiment_id": "siformer-lsa64",
       "original_value": 99.84,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "Completed conditional full training using the prospectively chosen nine-head released model and validation-based checkpoint selection; this does not establish the six-head Table 6 target."
-        },
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.1599999999999966,
         "run_ids": [
-          "preflight-001",
-          "preflight-002",
-          "preflight-003",
-          "spoter-whole-corpus-001",
-          "rectification-check-001",
           "full-resolved-lsa64-001"
         ],
         "artifact_ids": [
-          "spoter-whole-corpus-json",
-          "rectification-check-result-json",
           "full-resolved-lsa64-001-metrics",
           "full-resolved-lsa64-001-predictions"
         ],
-        "gate_ids": [
-          "table6-protocol"
-        ],
         "evidence": [
-          "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
-          "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
-          "Conditional full run completed 100 epochs: 636/636 correct = 100.0%; earliest maximum epoch 23. Native predictions and metrics are linked. Pre-score comparability classification remains conditional."
+          "Existing full 100-epoch run and independent native-prediction audit; no new run or change of checkpoint.",
+          "Released-artifact target scope accepted by human scientific review on 2026-10-02; original conditional classification preserved in assessment_history.",
+          "636/636 correct, earliest maximum epoch 23."
         ]
-      }
+      },
+      "accepted_scope": "Released-artifact reconstruction described in conclusion_assessment; this does not assert identity with the unknown historical paper configuration."
     }
   ],
   "runs": [
@@ -4938,22 +4913,22 @@
         "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
         "LSA80/20 is explicitly specified by paper. Missing seed alone is not a gate; README double reduction is a recorded recipe discrepancy."
       ],
-      "required_action": "No human execution action pending. Preserve scientific limitation when reviewing conditional full metrics.",
-      "alternatives": [
+      "required_action": "None. Human scientific review accepted the released-artifact scope on 2026-10-02; retain historical discrepancies and provenance limits as caveats.",
+      "resolution": "Resolved for the accepted released-code comparative assessment on 2026-10-02. Nine heads follow published code; unknown historical WLASL lineage remains disclosed, not an outstanding execution or review decision.",
+      "historical_alternatives": [
         {
           "alternative_id": "paper-specification",
           "description": "Use six decoder heads, 80/20 LSA64 and apply combined AA+FE alpha 0.4.",
           "paper_evidence": "Sections 4.1 and 4.5",
-          "decision_needed": "Does the six-head paper configuration correspond to the reported result? LSA CSV raw lineage and FE-to-AA preparation are resolved."
+          "historical_question": "Does the six-head paper configuration correspond to the reported result? LSA CSV raw lineage and FE-to-AA preparation are resolved."
         },
         {
           "alternative_id": "published-example",
           "description": "Keep nine decoder heads, double-reduced LSA64 training split and author CSVs as supplied.",
           "paper_evidence": "Official README and train.py/model.py at selected commit",
-          "decision_needed": "Does the released nine-head model correspond to Table6 or a different experiment?"
+          "historical_question": "Does the released nine-head model correspond to Table6 or a different experiment?"
         }
-      ],
-      "resolution": "Execution decision resolved by documented conditional reconstruction; the historical scientific ambiguity remains and precludes claiming exact Table6 comparability."
+      ]
     },
     {
       "gate_id": "wlasl-provenance",
@@ -4965,8 +4940,8 @@
         "Historical preparation notebook contains exploratory WLASL and LSA64 cells and combined-split oversampling operations, while historical jobs split a balanced CSV. These do not establish Table 6 ordering or data leakage.",
         "Author release inspected: 3200 training rows (32/class), 800 validation rows (8/class). Filenames do not identify original sample IDs or rectification stage."
       ],
-      "required_action": "No human execution action pending. Preserve scientific limitation when reviewing conditional full metrics.",
-      "resolution": "Execution decision resolved by documented conditional reconstruction; the historical scientific ambiguity remains and precludes claiming exact Table6 comparability."
+      "required_action": "None. Human scientific review accepted the released-artifact scope on 2026-10-02; retain historical discrepancies and provenance limits as caveats.",
+      "resolution": "Resolved for the accepted released-code comparative assessment on 2026-10-02. Nine heads follow published code; unknown historical WLASL lineage remains disclosed, not an outstanding execution or review decision."
     }
   ],
   "source_search": [
@@ -5069,33 +5044,246 @@
     "expected_storage_gb": 5,
     "full_attempt_ceiling": 2
   },
-  "conditional_results": [
+  "conditional_execution_state": "Historical conditional full runs both completed 100 epochs and produced audited native metrics. Human scientific review on 2026-10-02 accepted them as target values under the released-artifact scope; see conclusion_assessment and assessment_history. No further execution or human decision remains.",
+  "assessment_history": [
     {
-      "target_id": "table6-lsa64",
-      "run_id": "full-resolved-lsa64-001",
-      "value": 100.0,
-      "unit": "percent",
-      "published_value": 99.84,
-      "difference_percentage_points": 0.1599999999999966,
-      "artifact_ids": [
-        "full-resolved-lsa64-001-metrics",
-        "full-resolved-lsa64-001-predictions"
-      ],
-      "comparability": "conditional; predeclared published-code reconstruction, not an exact Table6 target result"
-    },
-    {
-      "target_id": "table6-wlasl100",
-      "run_id": "full-resolved-wlasl100-001",
-      "value": 89.125,
-      "unit": "percent",
-      "published_value": 86.5,
-      "difference_percentage_points": 2.625,
-      "artifact_ids": [
-        "full-resolved-wlasl100-001-metrics",
-        "full-resolved-wlasl100-001-predictions"
-      ],
-      "comparability": "conditional; predeclared published-code reconstruction, not an exact Table6 target result"
+      "assessment_id": "pre-review-conditional",
+      "scope": "Original conditional classification, declared before full scores on 2026-10-01; superseded only for the explicitly accepted released-artifact scope by human scientific review on 2026-10-02. No historical protocol identity was established by the later review.",
+      "status": {
+        "pipeline": "insufficient_information",
+        "numerical_agreement": "not_assessed",
+        "numerical_agreement_basis": "Both full 100-epoch published-code reconstructions completed. Conditional values are LSA64 100.0% versus 99.84% and WLASL100 89.125% versus 86.50%. Comparability was declined before scores because the released decoder uses nine heads versus six in the paper; WLASL additionally lacks verified original held-out/SMOTE lineage. Raw differences are preserved, but exact-target numerical agreement is not assessed.",
+        "preference_level": 2,
+        "blocker": {
+          "reason_code": "protocol_ambiguous",
+          "detail": "Paper specifies six decoder heads but released model hardcodes nine; WLASL additionally lacks verified original held-out provenance. LSA feature lineage and executable rectification recipe are resolved.",
+          "target_ids": [
+            "table6-wlasl100",
+            "table6-lsa64"
+          ]
+        }
+      },
+      "target_results": {
+        "table6-wlasl100": {
+          "status": "not_produced",
+          "reason": {
+            "code": "protocol_ambiguous",
+            "detail": "Completed conditional full training using the prospectively chosen nine-head released model and validation-based checkpoint selection; this does not establish the six-head Table 6 target. Original-example/SMOTE split lineage and prior rectification stage also remain unverified."
+          },
+          "run_ids": [
+            "full-resolved-wlasl100-001"
+          ],
+          "artifact_ids": [
+            "full-resolved-wlasl100-001-metrics",
+            "full-resolved-wlasl100-001-predictions"
+          ],
+          "gate_ids": [
+            "table6-protocol",
+            "wlasl-provenance"
+          ],
+          "evidence": [
+            "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
+            "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
+            "Paper section 4.1 lists 2038 originals, 800 held out, then remaining 2400 before SMOTE: arithmetic inconsistent.",
+            "Historical preparation notebook contains exploratory WLASL and LSA64 cells and combined-split oversampling operations, while historical jobs split a balanced CSV. These do not establish Table 6 ordering or data leakage.",
+            "Author release inspected: 3200 training rows (32/class), 800 validation rows (8/class). Filenames do not identify original sample IDs or rectification stage.",
+            "Conditional full run completed 100 epochs: 713/800 correct = 89.125%; earliest maximum epoch 99. Native predictions and metrics are linked. Pre-score comparability classification remains conditional."
+          ]
+        },
+        "table6-lsa64": {
+          "status": "not_produced",
+          "reason": {
+            "code": "protocol_ambiguous",
+            "detail": "Completed conditional full training using the prospectively chosen nine-head released model and validation-based checkpoint selection; this does not establish the six-head Table 6 target."
+          },
+          "run_ids": [
+            "preflight-001",
+            "preflight-002",
+            "preflight-003",
+            "spoter-whole-corpus-001",
+            "rectification-check-001",
+            "full-resolved-lsa64-001"
+          ],
+          "artifact_ids": [
+            "spoter-whole-corpus-json",
+            "rectification-check-result-json",
+            "full-resolved-lsa64-001-metrics",
+            "full-resolved-lsa64-001-predictions"
+          ],
+          "gate_ids": [
+            "table6-protocol"
+          ],
+          "evidence": [
+            "Section 4.5 specifies six decoder attention heads; siformer/model.py SiFormer passes [3,3,2,9].",
+            "Whole-corpus CPU audit: all3177 records, labels and349470 coordinate columns match original SPOTER coordinates exactly; Siformer only zero-pads sequences to204 and subtracts1 from labels. Original SHA256 eafb70e22e8a41e0df0535a0fbc27ec42bd9274a41bd106641c04670052d014e. FE then AA alpha0.4 recipe recovered from a6b3cb84c508057fbca71b19b9fcdd9d0443f6a7 and executed on four real records with finite, shape-preserving output.",
+            "Conditional full run completed 100 epochs: 636/636 correct = 100.0%; earliest maximum epoch 23. Native predictions and metrics are linked. Pre-score comparability classification remains conditional."
+          ]
+        }
+      },
+      "conditional_results": [
+        {
+          "target_id": "table6-lsa64",
+          "run_id": "full-resolved-lsa64-001",
+          "value": 100.0,
+          "unit": "percent",
+          "published_value": 99.84,
+          "difference_percentage_points": 0.1599999999999966,
+          "artifact_ids": [
+            "full-resolved-lsa64-001-metrics",
+            "full-resolved-lsa64-001-predictions"
+          ],
+          "comparability": "conditional; predeclared published-code reconstruction, not an exact Table6 target result"
+        },
+        {
+          "target_id": "table6-wlasl100",
+          "run_id": "full-resolved-wlasl100-001",
+          "value": 89.125,
+          "unit": "percent",
+          "published_value": 86.5,
+          "difference_percentage_points": 2.625,
+          "artifact_ids": [
+            "full-resolved-wlasl100-001-metrics",
+            "full-resolved-wlasl100-001-predictions"
+          ],
+          "comparability": "conditional; predeclared published-code reconstruction, not an exact Table6 target result"
+        }
+      ]
     }
   ],
-  "conditional_execution_state": "Both authorized full reconstructions completed 100 epochs and produced audited native metrics; no human execution decision remains."
+  "conclusion_assessment": {
+    "status": "reproduced",
+    "assessment_date": "2026-10-02",
+    "authority": "Explicit human scientific review accepted the released-code implementation and its comparative conclusion, including use of nine decoder heads. This post-run scope acceptance is distinct from the original pre-score conditional classification.",
+    "accepted_scope": "Two Table 6 Siformer targets assessed using the pinned released nine-head model, recovered FE-to-AA rectification and already executed released-data reconstruction. No exact reconstruction of the unknown historical six-head experiment is claimed.",
+    "basis": "Observed WLASL100 89.125% exceeds every Table 6 comparison value (highest 84.11%). Observed LSA64 100% exceeds every main comparison value (highest 99.52%) and ties the parenthetical original SPOTER 100%. Thus the accepted released-artifact experiment supports the comparative conclusion, while exact published Siformer numbers differ.",
+    "baseline_evidence": {
+      "paper_location": "Table 6, page 8, caption and comparison rows; Section 5 surrounding comparison discussion",
+      "paper_url": "https://arxiv.org/pdf/2503.20436v1",
+      "paper_sha256": "c6e05c0fdd9facd224e8a78a5144af5c3517338a975352eed9e5628de5c16834",
+      "caption_interpretation": "Parentheses identify original-author scores; preceding scores identify the Siformer authors' GitHub-code reproductions. All entries here are transcribed from Table 6, not independently verified against the cited original papers or rerun.",
+      "rows": [
+        {
+          "dataset_id": "wlasl100",
+          "modality": "RGB",
+          "system": "I3D",
+          "paper_table6_main_value": 65.89,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "RGB",
+          "system": "TCK",
+          "paper_table6_main_value": 77.52,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "RGB",
+          "system": "SignBERT+",
+          "paper_table6_main_value": 84.11,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "RGB",
+          "system": "Fusion-3",
+          "paper_table6_main_value": 75.67,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "skeleton",
+          "system": "Pose-TGCN",
+          "paper_table6_main_value": 55.43,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "skeleton",
+          "system": "ST-GCN",
+          "paper_table6_main_value": 50.78,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "skeleton",
+          "system": "SignBERT+",
+          "paper_table6_main_value": 79.84,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "wlasl100",
+          "modality": "skeleton",
+          "system": "SPOTER",
+          "paper_table6_main_value": 58.52,
+          "unit": "percent",
+          "rerun_in_this_attempt": false,
+          "paper_table6_parenthetical_original_author_value": 63.18
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "RGB",
+          "system": "LSTM + LDS",
+          "paper_table6_main_value": 98.09,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "RGB",
+          "system": "DeepSign CNN",
+          "paper_table6_main_value": 96.0,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "RGB",
+          "system": "MEMP",
+          "paper_table6_main_value": 99.06,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "RGB",
+          "system": "I3D",
+          "paper_table6_main_value": 98.91,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "skeleton",
+          "system": "SPOTER",
+          "paper_table6_main_value": 99.52,
+          "unit": "percent",
+          "rerun_in_this_attempt": false,
+          "paper_table6_parenthetical_original_author_value": 100.0
+        },
+        {
+          "dataset_id": "lsa64",
+          "modality": "skeleton",
+          "system": "LSTM + DSC",
+          "paper_table6_main_value": 92.15,
+          "unit": "percent",
+          "rerun_in_this_attempt": false
+        }
+      ]
+    },
+    "limitations": [
+      "No comparison baseline was rerun in this attempt; the comparison is against paper-reported values.",
+      "Released WLASL original-example/SMOTE lineage and prior rectification history remain unverified; acceptance of the released-artifact scope does not resolve those facts or establish leakage-free historical provenance.",
+      "The validation holdout selects the checkpoint; no untouched independent-test or statistical-significance claim.",
+      "This review concerns Table 6 top-1 comparisons only, not unrequested efficiency, robustness or ablation claims."
+    ],
+    "pending_human_action": false
+  }
 }
