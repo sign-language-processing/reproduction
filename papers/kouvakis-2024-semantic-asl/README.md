@@ -101,3 +101,11 @@ Existing completed output directories return their retained metrics without over
 GPT-6 using Codex performed source discovery, implementation, execution and reporting. This identity comes from session instructions; exact model ID and harness version were not exposed. The tracker record's operator identifiers are redacted, its original export hash is preserved, and no legacy `confirmation` field is invented for a current schema that lacks it. This is a direct user-authorized tracker assignment, with final paper status and a separate database ID. No numerical closeness is called a scientific success or failure; the declared criterion is agreement at the published two-decimal precision for comparable produced metrics, leaving interpretation to review.
 
 A second GPT-6/Codex agent, `codex-orchestrator-reviewer`, independently reviewed the report, metric formulas, label mapping and training implementation on 2026-10-01. Its explicit session attestation supplies those model/application names; exact model ID and harness version remain unavailable. This review clarified the documentation of MNIST interpolation versus RGB resizing. It did not change the implementation, run any experiment, or alter execution attribution.
+
+## Conclusion assessment
+
+The tested RGB-versus-MNIST ordering is reproduced: RGB achieves 97.83333% test accuracy using 10,490 training images, versus MNIST 88.38539% using 27,455. The reported absolute test performance is not recovered, particularly MNIST: 88.38539% versus 97.12%. This supports only part of the recognition findings.
+
+These are comparisons across different datasets, not a controlled demonstration that RGB representation alone causes the improvement. LEXSET is permission-blocked, so RGB superiority over all three datasets is not established. Undefined validation membership leaves two validation scores unproduced. Communication/channel simulations were outside the assigned scope; no conclusion about the proposed communication system is reproduced by these recognition runs alone.
+
+This assessment uses the existing completed runs; no training, protocol or numerical-agreement criterion was changed.
