@@ -5,9 +5,10 @@
       "agent_id": "arabic-vit-agent",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent source investigation, implementation, execution and report. Exact model ID and harness version unavailable in session.",
+      "scope": "Independent source investigation, implementation, execution and report. Exact model ID and harness version unavailable in session. On 2026-10-02, reviewed the paper claims against retained results and updated the conclusion assessment and report; this follow-up performed no experiments.",
       "evidence": [
-        "Session instructions identify GPT-6 using Codex. Exact model ID and harness version not exposed."
+        "Session instructions identify GPT-6 using Codex. Exact model ID and harness version not exposed.",
+        "Explicit 2026-10-02 session attestation: GPT-6 using Codex, exact model ID/build and harness version unavailable. Compared the local supplied paper tables and surrounding conclusions against the existing report and ledger; performed claim-level assessment and report maintenance only, without new experiment execution."
       ]
     },
     {
@@ -1111,5 +1112,18 @@
     "finding": "The linked tracker record points to the distinct YOLO-style author release, not the canonical54,049-image ArSL2018 corpus cited by this paper. It is an erroneous or ambiguous research lead and was not used as training-data provenance.",
     "selected_basis": "Paper sections3.2/4.1 and reference16 identify ArSL2018; authoritative Mendeleyv1 and pinned54,049-example Hugging Face mirror establish the actual corpus. The shared dataset manifest and parquet hash are verified inside each run.",
     "effect": "No training change. Do not mark the mismatched tracker dataset record as available on Modal based on this reproduction."
+  },
+  "conclusion_assessment": {
+    "summary": "The tested high accuracy and ordering above the paper's reported CNN baselines were reproduced: ViT-L reached 99.40799%, exceeding the strongest listed baseline (EfficientNetB4, 98%) by 1.40799 percentage points. This corroborates the main benchmark conclusion despite not matching the published 99.3% at its reporting precision.",
+    "evidence": [
+      "Paper Table 4 and section 4.2.2, PDF page 11: ViT 99.3%; CNN 97.6%; AlexNet 94.81%; EfficientNetB4 98%; ResNet50/MobileNetV2 95%; VGGNet 97%. These are reported literature comparisons.",
+      "Retained full-three-epochs-v1 final-checkpoint evaluation: 8,060/8,108 correct, 99.40799210656142%; target and raw-artifact linkage remain unchanged."
+    ],
+    "limits": [
+      "The five literature baselines were not rerun on this reconstruction's split, so preserved reported ordering is not a new controlled head-to-head comparison.",
+      "One seed, newly sampled split membership and disclosed training defaults do not establish equivalence to the historical experiment or variability across runs.",
+      "Webcam generalization, efficiency claims and the other ViT variants were outside the executed target scope."
+    ],
+    "assessed_at_utc": "2026-10-02T06:52:00+00:00"
   }
 }

@@ -79,3 +79,11 @@ An independent GPT-6/Codex reviewer (`compute-inventory-reviewer`) visually chec
 The root GPT-6/Codex agent (`root-loop-reviewer`) independently reviewed split boundaries, the optimizer/scheduler and checkpoint logic, protocol comparability before primary test, and tracker-data provenance. It did not execute these runs. Its explicit session attestation supplies model/application identity; exact model ID/version and harness version were not exposed.
 
 After completion, the root reviewer independently confirmed all 54,049 split indices are unique and disjoint, prediction indices exactly match the 8,108 held-out examples, labels and predictions are valid class IDs, and the saved prediction/split hashes match native metrics. Its independent count was also 8,060 correct (99.40799210656142%).
+
+## Conclusion assessment (2026-10-02)
+
+The tested high accuracy and ordering above the paper's reported CNN baselines were reproduced. Our **99.40799%** exceeds Table 4's strongest listed comparator, EfficientNetB4 at **98%**, by **1.40799 percentage points**. The remaining published baselines are CNN **97.6%**, VGGNet **97%**, ResNet50/MobileNetV2 **95%**, and AlexNet **94.81%** (Table 4 and §4.2.2, PDF p.11). This corroborates the paper's main benchmark conclusion even though our result does not equal its **99.3%** at the declared rounding precision.
+
+Those five literature baselines were not rerun on our split; the preserved reported ordering is not a new controlled head-to-head comparison. This single seeded reconstruction does not establish statistical equivalence or recover historical membership/settings. Webcam generalization, efficiency and the other ViT variants were outside the executed scope. These are interpretation limits, not unresolved execution decisions.
+
+The existing executing GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
