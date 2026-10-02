@@ -1,0 +1,191 @@
+"""Invoke pinned native YOLOv5 training, resume and held-out evaluation."""
+import argparse
+import hashlib
+import json
+import math
+from pathlib import Path
+import statistics
+import sys
+import time
+import urllib.request
+
+import numpy as np
+from PIL import Image
+import torch
+import yaml
+
+sys.path.insert(0, '/opt/yolov5')
+import train
+import val
+from models.experimental import attempt_load
+from utils.callbacks import Callbacks
+from utils.general import non_max_suppression
+
+RECIPES = {'s': (16, 60, .015), 'm': (16, 50, .01), 'l': (24, 50, .01)}
+
+
+def sha(path):
+    result = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+            result.update(chunk)
+    return result.hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', choices=RECIPES, required=True)
+    parser.add_argument('--data', type=Path, required=True)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--preflight', action='store_true')
+    parser.add_argument('--resume-check', action='store_true')
+    parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--weights-sha256')
+    args = parser.parse_args()
+    args.output.mkdir(parents=True, exist_ok=True)
+    if (args.output / 'metrics.json').exists():
+        print((args.output / 'metrics.json').read_text())
+        return
+    if not args.preflight:
+        assert args.weights_sha256, 'Full training requires the preflight-pinned COCO weight checksum'
+        if (args.output / 'train').exists() and not args.resume:
+            raise RuntimeError('Incomplete prior training exists; explicit checkpoint resume required')
+    batch, epochs, lr = RECIPES[args.model]
+    epochs = 3 if args.preflight else epochs
+    dataset = yaml.safe_load(args.data.read_text())
+    assert dataset['nc'] == len(dataset['names']) == 28
+    for split in ['train', 'val', 'test']:
+        assert Path(dataset[split]).is_file()
+    train_count = len(Path(dataset['train']).read_text().splitlines())
+    batch_count = math.ceil(train_count / batch)
+    weight = Path('/cache/huggingface/yolov5-v6.0') / f'yolov5{args.model}.pt'
+    weight.parent.mkdir(parents=True, exist_ok=True)
+    url = f'https://github.com/ultralytics/yolov5/releases/download/v6.0/{weight.name}'
+    if not weight.exists():
+        temporary = weight.with_suffix('.part')
+        urllib.request.urlretrieve(url, temporary)
+        assert temporary.stat().st_size > 1_000_000
+        temporary.replace(weight)
+    weight_hash = sha(weight)
+    if args.weights_sha256:
+        assert weight_hash == args.weights_sha256, 'COCO weight bytes changed'
+    hyp = yaml.safe_load(Path('/opt/yolov5/data/hyps/hyp.scratch.yaml').read_text())
+    hyp['lr0'] = lr
+    hyp_path = args.output / 'hyp.yaml'
+    hyp_path.write_text(yaml.safe_dump(hyp))
+    opt = train.parse_opt(known=True)
+    opt.data, opt.weights, opt.hyp = str(args.data), str(weight), str(hyp_path)
+    opt.cfg, opt.batch_size, opt.epochs, opt.imgsz = '', batch, epochs, 416
+    opt.project, opt.name, opt.exist_ok = str(args.output), 'train', True
+    opt.device, opt.workers, opt.freeze = '0', 4, 0
+    opt.save_period = 1 if args.preflight else -1
+    opt.resume = False
+    callbacks = Callbacks()
+    # Native Callbacks uses class-level storage; this process has only one training invocation.
+    warm_times = []
+    observed_shapes = set()
+    epoch_counts = {}
+    previous = None
+
+    def batch_end(ni, model, images, targets, paths, plots, sync_bn):
+        nonlocal previous
+        torch.cuda.synchronize()
+        now = time.monotonic()
+        observed_shapes.add(tuple(images.shape))
+        epoch = ni // batch_count
+        epoch_counts[epoch] = epoch_counts.get(epoch, 0) + len(images)
+        if previous is not None and ni % batch_count != 0:
+            warm_times.append(now - previous)
+        previous = now
+
+    callbacks.register_action('on_train_batch_end', callback=batch_end)
+
+    def epoch_end(epoch):
+        assert epoch_counts[epoch] == train_count, 'Native loader sample count changed'
+
+    callbacks.register_action('on_train_epoch_end', callback=epoch_end)
+    torch.cuda.reset_peak_memory_stats()
+    started = time.monotonic()
+    if args.resume_check or args.resume:
+        checkpoint = args.output / ('train/weights/epoch1.pt' if args.resume_check else 'train/weights/last.pt')
+        state = torch.load(checkpoint, map_location='cpu', weights_only=False)
+        assert state['epoch'] >= 0 and state['optimizer']['state'] and state['ema'] is not None
+        if args.resume_check:
+            assert state['epoch'] == 1
+        (args.output / 'resume-input.json').write_text(json.dumps({
+            'checkpoint_sha256': sha(checkpoint), 'epoch': state['epoch'],
+            'optimizer_state_entries': len(state['optimizer']['state']), 'ema_updates': state['updates'],
+        }, indent=2) + '\n')
+        del state
+        opt.resume = str(checkpoint)
+    train.main(opt, callbacks=callbacks)
+    torch.cuda.synchronize()
+    train_seconds = time.monotonic() - started
+    if args.preflight and args.model == 's' and not args.resume_check:
+        # The caller launches a fresh process to exercise native --resume from epoch1.pt.
+        result = {'phase': 'pre-resume', 'training_seconds': train_seconds,
+                  'peak_gpu_bytes': torch.cuda.max_memory_allocated(),
+                  'mean_warm_batch_seconds': statistics.mean(warm_times),
+                  'observed_training_shapes': sorted(observed_shapes),
+                  'weights_url': url, 'weights_sha256': weight_hash}
+        (args.output / 'pre-resume.json').write_text(json.dumps(result, indent=2) + '\n')
+        print(json.dumps(result), flush=True)
+        return
+    checkpoint = args.output / 'train/weights/best.pt'
+    evaluation = args.output / 'test'
+    evaluation.mkdir(exist_ok=True)
+    eval_started = time.monotonic()
+    values, maps, timings = val.run(str(args.data), weights=str(checkpoint), batch_size=batch,
+                                   imgsz=416, task='test', device='0', project=str(args.output),
+                                   name='test', exist_ok=True,
+                                   save_txt=True, save_conf=True, save_json=True, plots=True,
+                                   half=True, verbose=True)
+    torch.cuda.synchronize()
+    eval_seconds = time.monotonic() - eval_started
+    model = attempt_load(str(checkpoint), map_location=torch.device('cuda')).float().eval()
+    # Unfused native architecture parameter count, before attempt_load's default fusion.
+    saved = torch.load(checkpoint, map_location='cpu', weights_only=False)
+    original_model = saved['ema'] if saved.get('ema') is not None else saved['model']
+    parameter_count = sum(p.numel() for p in original_model.parameters())
+    test_paths = Path(dataset['test']).read_text().splitlines()
+    cpu_tensors = []
+    for path in test_paths:
+        with Image.open(path) as image:
+            assert image.size == (416, 416)
+            cpu_tensors.append(torch.from_numpy(np.asarray(image.convert('RGB')).copy())
+                               .permute(2, 0, 1).contiguous().unsqueeze(0))
+    latency = []
+    with torch.inference_mode():
+        for index in range(5 + len(cpu_tensors)):
+            tensor = cpu_tensors[index % len(cpu_tensors)]
+            torch.cuda.synchronize()
+            clock = time.perf_counter()
+            tensor = tensor.to('cuda').float() / 255.0
+            prediction = model(tensor)[0]
+            non_max_suppression(prediction, conf_thres=.25, iou_thres=.45, max_det=300)
+            torch.cuda.synchronize()
+            if index >= 5:
+                latency.append(time.perf_counter() - clock)
+    result = {'model': f'yolov5{args.model}', 'preflight': args.preflight,
+              'native_training_seconds_this_process': train_seconds,
+              'evaluation_seconds': eval_seconds, 'native_test_metrics': list(values),
+              'native_per_class_ap': maps.tolist(), 'native_mean_timing_ms': list(timings),
+              'parameters_unfused': parameter_count,
+              'matched_batch1_inference_seconds': {'image_paths': [test_paths[i % len(test_paths)] for i in range(5, 5 + len(test_paths))], 'samples': latency, 'min': min(latency), 'max': max(latency),
+                                                 'mean': statistics.mean(latency),
+                                                 'median': statistics.median(latency),
+                                                 'fps': 1 / statistics.mean(latency)},
+              'timing_boundary': 'FP32 fused eval model, batch1 actual416x416 decoded CPUuint8 input, H2D/float/255 normalization, forward and nativeNMS(conf .25, IoU .45, max300); 5warmups, one synchronized sample per testimage. Excludes filedecode/render/metrics. Native half-precision held-out validation timing is separate.',
+              'peak_gpu_bytes': torch.cuda.max_memory_allocated(),
+              'mean_warm_batch_seconds': statistics.mean(warm_times),
+              'observed_training_shapes': sorted(observed_shapes),
+              'observed_epoch_sample_counts': epoch_counts,
+              'split_seed': 42, 'native_training_seed': 0,
+              'weights_url': url, 'weights_sha256': weight_hash,
+              'best_checkpoint_sha256': sha(checkpoint), 'resume_verified': args.resume_check}
+    (args.output / 'metrics.json').write_text(json.dumps(result, indent=2) + '\n')
+    print(json.dumps(result), flush=True)
+
+
+if __name__ == '__main__':
+    main()
