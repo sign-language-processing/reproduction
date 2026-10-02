@@ -4,6 +4,10 @@
 **Numerical agreement:** `does_not_agree`
 **Preference level:** 2
 
+**Claim-level assessment (2026-10-02):** The run corroborates Table 5’s broad finding that this attempted How2Sign transfer performs much worse than the PHOENIX configuration: test BLEU-4 is 3.24 versus 18.49, while How2Sign auxiliary transcription WER remains 98.74. Table 1’s failure to recover the cited Camgoz recognition result also persists: PHOENIX test WER is 54.00 versus the original recognition-selected 24.49. These conclusions survive the differences from Cabot’s exact scores.
+
+This is evidence about the evaluated configurations. How2Sign WER measures English transcription while PHOENIX WER measures glosses; languages, features and configurations also differ. Domain/vocabulary explanations and the forecast that longer training would close the gap (page 7) remain hypotheses. The claim that three layers/four heads are optimal (Section 5.2, Tables 2–4) was not tested against alternative architectures. One seed and the disclosed data-release assumption limit generalization; no new numerical tolerance is introduced. The GPT-6/Codex recovery-helper agent reviewed these claims and subsequently updated this narrative on 2026-10-02, without additional experiment execution.
+
 This independent attempt completed all twenty Table 5 targets using the cited joint recognition/translation pipeline. None equals the published value at two-decimal precision. PHOENIX used recovered author features; How2Sign used the available author release under a reconstruction assumption declared before scores. Its original splits and native training filter yield 32,914 eligible entries versus the report’s 33,116; four missing training files and the historical-release limitation remain disclosed. No human execution decision is pending.
 
 [Patricia Cabot Álvarez, Xavier Giró Nieto, Laia Tarrés Benet. *Sign Language Translation based on Transformers for the How2Sign Dataset*. UPC Introduction to Research project report, 2022.](https://imatge.upc.edu/web/sites/default/files/pub/xCabot22.pdf)

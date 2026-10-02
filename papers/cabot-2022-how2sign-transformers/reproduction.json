@@ -35,11 +35,12 @@
       "agent_id": "compute-inventory",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable. Independently reviewed the immutable original-deadline launcher, atomic call claim, four-segment limit and process-scoped watchdog; no run execution. Independently audited terminal How2 native grid/test and streamed remote artifact hashes on 2026-10-02; no experiment execution.",
+      "scope": "Implemented the evaluation recovery helper and patch04; reviewed training recovery boundaries and exact sample/loss traces. Local mocked evaluator/control-flow tests and source/syntax checks only; no model/GPU execution. Exact model and harness version metadata unavailable. Independently reviewed the immutable original-deadline launcher, atomic call claim, four-segment limit and process-scoped watchdog; no run execution. Independently audited terminal How2 native grid/test and streamed remote artifact hashes on 2026-10-02; no experiment execution. On 2026-10-02 subsequently performed read-only claim interpretation and README/JSON/PR narrative maintenance, preserving all target/run records; no additional experiment execution.",
       "evidence": [
         "Explicit session attestation on2026-10-01 from /root/compute_inventory: GPT-6 using Codex; exact model/harness versions unavailable. Owned recovery_eval.py and patch04; no remote/model executions. Independently confirmed all12 real CPU training trace rows match, and reviewed pinned torchtext0.5 Iterator/RNG recovery.",
         "2026-10-01 session independent launcher re-review passed after scoped guard and atomic-claim fixes. Exact model/build versions unavailable; GPT-6 using Codex.",
-        "compute-inventory explicit2026-10-02 attestation: GPT-6 using Codex; exactmodel/harnessversionsunavailable. Read-only terminal/source/hash/accounting review:70native candidates in original order, dev-only3/2 selection,1713/2328counts, primarymetrics exact,27independent payload hashes/sizes match7926filemanifest, checkpointb6a760... matches test-start identity, finalreceipt separate and exit0. No GPU/collector execution or report edits."
+        "compute-inventory explicit2026-10-02 attestation: GPT-6 using Codex; exactmodel/harnessversionsunavailable. Read-only terminal/source/hash/accounting review:70native candidates in original order, dev-only3/2 selection,1713/2328counts, primarymetrics exact,27independent payload hashes/sizes match7926filemanifest, checkpointb6a760... matches test-start identity, finalreceipt separate and exit0. No GPU/collector execution or report edits.",
+        "Explicit later 2026-10-02 session attestation: reviewed the actual paper Sections 5.2–6 and Tables 1–5 against final metrics, then added a separate claim-level assessment. Earlier terminal audit remained read-only; this later contribution edits report narrative only. GPT-6 using Codex; exact model/application versions unavailable."
       ]
     }
   ],
@@ -5101,5 +5102,31 @@
       "basis": "Available-author-release reconstruction: paper uses How2Sign retrieval-trained I3D features; coauthor release explicitly supplies features from that retrieval work. Original split assignments and features retained, four missing training files omitted, native filtered total 32914 vs published33116 (202 fewer, about0.61%). Paper specifies 3layers/4heads,13epochs,batch16,validation1000,recognitionbeam10; cited defaults resolve seed/optimizer/loss/checkpoint selection. User explicitly authorized reasonable data/protocol judgments. English whitespace-only WER is a declared domain-specific metric convention. No How2Sign primary or preflight score had been observed.",
       "limitations": "No claim of byte-identical historical2022 feature/checkpoint provenance or unreleased normalization implementation. These are disclosed reconstruction limits rather than substantial unresolved protocol alternatives."
     }
-  ]
+  ],
+  "conclusion_assessment": {
+    "assessed_on": "2026-10-02",
+    "review_agent_id": "compute-inventory",
+    "scope": "Interpretation of the completed PHOENIX and available-author-release How2Sign reconstruction; separate from the unchanged exact numerical-agreement assessment.",
+    "claims": [
+      {
+        "claim": "The attempted How2Sign transfer performs much worse than the PHOENIX configuration.",
+        "assessment": "corroborated for these evaluated configurations",
+        "paper_evidence": "Section 5.2 and Table 5 (page 7).",
+        "basis": "Test BLEU-4 is 3.24 for How2Sign versus 18.49 for PHOENIX (published 2.21 versus 19.79). How2Sign auxiliary English-transcription CTC WER remains 98.74; PHOENIX gloss WER is 54.00. The low How2Sign translation performance and poor auxiliary recognition persist despite the numerical differences."
+      },
+      {
+        "claim": "The PHOENIX reproduction does not recover the original Camgoz recognition performance.",
+        "assessment": "corroborated",
+        "paper_evidence": "Table 1 (page 4).",
+        "basis": "Our PHOENIX test WER is 54.00, versus Cabot’s 48.06 and the cited Camgoz recognition-selected result of 24.49. Our test BLEU-4 of 18.49 is also below that cited row’s 21.80."
+      },
+      {
+        "claim": "Three layers and four heads are optimal, and longer training or domain/vocabulary differences explain the cross-dataset gap.",
+        "assessment": "not assessed",
+        "paper_evidence": "Section 5.2, Tables 2–4 (pages 5–6), and Section 6 (page 7).",
+        "basis": "Only the selected How2Sign architecture was rerun for 13 epochs. Alternative architectures, longer training and controlled interventions isolating domain or vocabulary were not evaluated."
+      }
+    ],
+    "limits": "One seed and the disclosed available-release reconstruction do not establish seed robustness or exact historical artifact identity. Cross-dataset WER uses English transcription versus gloss targets; languages, features and configurations also differ. The observed gap is not a causal estimate of inherent dataset difficulty. No new numerical tolerance is introduced."
+  }
 }
