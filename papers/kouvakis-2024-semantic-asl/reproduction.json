@@ -14,10 +14,11 @@
       "agent_id": "codex-orchestrator-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable.",
+      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution.",
       "evidence": [
         "Explicit root-session attestation dated 2026-10-01 identifies the reviewing agent as GPT-6 using Codex; exact model ID, model build/version and harness version were not exposed.",
-        "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged."
+        "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged.",
+        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
       ]
     }
   ],
@@ -81,7 +82,7 @@
                 "contact_dates": [],
                 "correspondence": "",
                 "id": "ik20wubgibxy60m",
-                "license": "Data files \u00a9 Original Authors",
+                "license": "Data files © Original Authors",
                 "name": "LEXSET",
                 "on_modal": "",
                 "permission_model_weights": "",
@@ -213,7 +214,7 @@
   },
   "paper": {
     "title": "Semantic Communications for Image-Based Sign Language Transmission",
-    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088\u20131100. DOI10.1109/OJCOMS.2024.3360191.",
+    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088–1100. DOI10.1109/OJCOMS.2024.3360191.",
     "url": "https://doi.org/10.1109/OJCOMS.2024.3360191",
     "pdf_sha256": "eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa",
     "accessed_at": "2026-10-01"
@@ -289,7 +290,7 @@
       "modal_path": "sign-language-mnist",
       "manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
       "archive_sha256": "fa1b513570d4348c6d6860e04e5854c59ef8eadb8c42a45d36bd1286ce3d489f",
-      "preprocessing": "28\u00d728 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100\u00d7100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
+      "preprocessing": "28×28 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100×100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
       "splits": [
         {
           "name": "train",
@@ -355,7 +356,7 @@
       "dataset_id": "lexset",
       "name": "LEXSET synthetic ASL alphabet",
       "version_or_subset": "Kaggle lexset/synthetic-asl-alphabet version3; intended24letters excludingJ/Z/background",
-      "license_or_permission": "Data files \u00a9 Original Authors; no affirmative license for intended project cloud acquisition/processing found",
+      "license_or_permission": "Data files © Original Authors; no affirmative license for intended project cloud acquisition/processing found",
       "cloud_processing_allowed": false,
       "modal_volume": "datasets",
       "volume_version": 2,
@@ -492,7 +493,7 @@
           "lexset-permission"
         ],
         "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
         ]
       }
     },
@@ -520,7 +521,7 @@
           "lexset-permission"
         ],
         "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
         ]
       }
     },
@@ -548,7 +549,7 @@
           "lexset-permission"
         ],
         "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
         ]
       }
     },
@@ -3213,7 +3214,7 @@
       "reason": "The author Kaggle metadata reserves dataset copyright without a positive cloud-use license.",
       "required_action": "Team S obtains or identifies permission for project cloud acquisition/processing; no author contact initiated here.",
       "evidence": [
-        "artifacts/lexset-source-metadata.txt licenseName=Data files \u00a9 Original Authors",
+        "artifacts/lexset-source-metadata.txt licenseName=Data files © Original Authors",
         "Paper reference32 identifies this exact dataset."
       ]
     },
@@ -3237,7 +3238,7 @@
     },
     {
       "id": "mnist-input",
-      "detail": "Figure 3 input dimensions of 100\u00d7100\u00d73 and the exact 616,504 parameters require upsampling grayscale MNIST to 100\u00d7100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
+      "detail": "Figure 3 input dimensions of 100×100×3 and the exact 616,504 parameters require upsampling grayscale MNIST to 100×100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
     },
     {
       "id": "pooling",
@@ -3245,7 +3246,7 @@
     },
     {
       "id": "resize",
-      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
+      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100×100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
     },
     {
       "id": "metrics",
@@ -3292,5 +3293,19 @@
     "date": "2026-10-01",
     "detail": "2026-10-01 user-authorized judgment-call review: an ordinary held-out training split is feasible for a new diagnostic, but these completed runs already trained on every declared training example. Retrofitting a validation subset would either evaluate training data or require distinct retraining and would not identify the paper validation metric. Preserve the76 produced targets and mark two original validation targets not produced; no human execution decision is awaited for those two targets.",
     "new_experiments": false
+  },
+  "conclusion_assessment": {
+    "summary": "The tested RGB-versus-MNIST ordering is reproduced: RGB achieves 97.83333% test accuracy using 10,490 training images, versus MNIST 88.38539% using 27,455. The reported absolute test performance is not recovered, particularly MNIST: 88.38539% versus 97.12%. This supports only part of the recognition findings.",
+    "evidence": [
+      "Paper section IV-C and Tables 1-2 state that RGB attains higher accuracy with fewer training images; the completed rgb-full and mnist-full runs preserve that ordering.",
+      "The reproduced RGB-minus-MNIST gap is 9.44794 percentage points. Published RGB accuracy is 99.72%; reproduced is 97.83333%.",
+      "Both runs reached 100% recorded training accuracy while held-out accuracy was lower; these results do not establish the paper section IV-B assertion that no overfitting occurs."
+    ],
+    "limits": [
+      "These are comparisons across different datasets, not a controlled demonstration that RGB representation alone causes the improvement.",
+      "LEXSET is permission-blocked, so RGB superiority over all three datasets is not established. Undefined validation membership leaves two validation scores unproduced.",
+      "Communication/channel simulations were outside the assigned scope; no conclusion about the proposed communication system is reproduced by these recognition runs alone."
+    ],
+    "assessed_at_utc": "2026-10-02T06:52:37.552235+00:00"
   }
 }
