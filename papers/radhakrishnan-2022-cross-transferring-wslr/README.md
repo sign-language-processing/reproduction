@@ -45,7 +45,7 @@ Metric: accuracy over the 15% test split, 50 classes. The paper does not state t
 | Weights/configs/supplements | none found | — | — |
 | MS-ASL annotations | https://download.microsoft.com/download/3/c/a/3ca92c78-1c4a-4a91-a7ee-6980c1d242ec/MS-ASL.zip | `a8562008309eea4129e1bc0ed7f654a314fee195227222859657e307b6434c34` | Parent dataset annotations (C-UDA 0.1), used only for the availability checks |
 
-Searched on 2026-10-02: the full PDF (no links, footnotes or availability statement); web search for the exact title; GitHub repository search for the title phrase (0 results) and for "MS-ASL slowfast"; the first author's GitHub account (20 public repositories, none on sign language or video recognition). Not checked: the CVF workshop supplemental listing, Zenodo/OSF, and the other authors' accounts.
+Searched on 2026-10-02: the full PDF (no links, footnotes or availability statement); web search for the exact title; GitHub repository search for the title phrase (0 results) and for "MS-ASL slowfast"; the first author's GitHub account (20 public repositories, none on sign language or video recognition). The CVF workshop listing and the paper's landing page give a PDF link only and no supplemental link, although other papers on the same listing have one. Not checked: IEEE Xplore's page for attached media, Zenodo/OSF, and the other authors' accounts.
 
 The queue record's Zenodo link (record 6674324, `MS-ASL.zip`) is OpenHands pose keypoints, not video, and was not downloaded.
 
@@ -89,6 +89,7 @@ Selected blocker: `data_unavailable`. It is the earliest blocker and independent
 Evidence gathered on 2026-10-02, all in gate `data-authors-curated-subset`:
 
 - **Paper (Sec. 4.1):** the 50 most frequent classes; videos "manually downloaded, screened, and trimmed"; the set "deviated from the original MS-ASL dataset" because many links were dead; 48 videos per class on average, SD 6; random 85/15 split. No clip list, trims, split or seed is published.
+- **Split:** unrecoverable even with every video in hand. The paper does not use MS-ASL's official train/val/test files; it draws its own 85/15 split with no file list, seed, or stratification rule, over a manually screened pool that is itself unknown. No supplementary material exists that lists the videos.
 - **Modal:** no MS-ASL directory exists in Volume `datasets` (26 directories listed).
 - **Top-50 classes:** from the annotations, labels 0–49 hold 3,191 clips over 1,109 videos. The cut is tied at 56 clips between "bored", "water", "computer", "boy" and "help" (label 50), so the class set itself is ambiguous by one class.
 - **Availability:** via YouTube's public oEmbed endpoint, 730 of the 1,109 videos are public, 194 removed, 169 private, 16 embedding-restricted. That leaves 2,208 clips (69.2%).
