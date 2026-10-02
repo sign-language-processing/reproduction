@@ -1,0 +1,10 @@
+Subject: Mark author datasets directory as a package to avoid Hugging Face shadowing
+
+The shared GPU image contains an installed datasets package. Upstream has no
+__init__.py, so Python resolves datasets.czech_slr_dataset to the unrelated
+installed package. Preflight-001 demonstrated ModuleNotFoundError. An empty
+package marker restores the author import without changing data or model behavior.
+
+diff --git a/datasets/__init__.py b/datasets/__init__.py
+new file mode 100644
+index 0000000..e69de29
