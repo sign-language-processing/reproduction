@@ -1,5 +1,5 @@
 FROM ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291
-RUN python -m pip install --no-cache-dir numpy==1.26.4 pandas==2.2.3 matplotlib==3.9.4 seaborn==0.13.2 Pillow==11.1.0 PyYAML==6.0.2 requests==2.32.3 scipy==1.15.1 tqdm==4.67.1 opencv-python==4.10.0.84 tensorboard==2.18.0 thop==0.1.1.post2209072238 setuptools==70.3.0
+RUN python -m pip install --no-cache-dir numpy==1.26.4 pandas==2.2.3 matplotlib==3.9.4 seaborn==0.13.2 Pillow==11.1.0 PyYAML==6.0.1 requests==2.32.3 scipy==1.15.1 tqdm==4.67.1 opencv-python==4.10.0.84 tensorboard==2.18.0 thop==0.1.1.post2209072238 setuptools==70.3.0 pycocotools==2.0.11
 # Optional third-party upload and augmentation integrations are not part of the cited recipe.
 RUN python -m pip uninstall -y wandb albumentations
 RUN git clone https://github.com/ultralytics/yolov5 /opt/yolov5 && cd /opt/yolov5 && git checkout --detach 956be8e642b5c10af4a1533e09084ca32ff4f21f

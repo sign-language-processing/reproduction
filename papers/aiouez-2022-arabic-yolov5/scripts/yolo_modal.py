@@ -11,6 +11,7 @@ ENV = {'HF_HOME': '/cache/huggingface', 'HF_HUB_CACHE': '/cache/huggingface/hub'
 CPU_IMAGE = (modal.Image.debian_slim(python_version='3.11').pip_install('Pillow==11.1.0', 'numpy==1.26.4', 'PyYAML==6.0.2')
              .env(ENV).add_local_file(HERE / 'yolo_data.py', '/work/yolo_data.py')
              .add_local_file(HERE / 'yolo_prepare.py', '/work/yolo_prepare.py')
+             .add_local_file(HERE / 'yolo_label_audit.py', '/work/yolo_label_audit.py')
              .add_local_file(HERE / 'data.sh', '/work/data.sh'))
 
 
@@ -21,9 +22,9 @@ def data_job(run_id: str, mode: str):
     import os
     import subprocess
     import time
-    assert mode in {'acquire', 'prepare'}
-    script = 'yolo_data.py' if mode == 'acquire' else 'yolo_prepare.py'
-    ceiling = 1740 if mode == 'acquire' else 840
+    assert mode in {'acquire', 'prepare', 'audit'}
+    script, ceiling = {'acquire': ('yolo_data.py', 1740), 'prepare': ('yolo_prepare.py', 840),
+                       'audit': ('yolo_label_audit.py', 240)}[mode]
     output = Path('/outputs') / run_id
     if (output / 'execution.json').exists():
         existing = (output / 'execution.json').read_text()
@@ -34,6 +35,7 @@ def data_job(run_id: str, mode: str):
         raise RuntimeError('Interrupted acquisition exists; refusing automatic replay or log overwrite')
     output.mkdir(parents=True, exist_ok=True)
     start = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    clock = time.monotonic()
     (output / 'started.json').write_text(json.dumps({
         'started_at_utc': start, 'modal_app_id': APP.app_id,
         'modal_function_call_id': modal.current_function_call_id(),
@@ -43,11 +45,13 @@ def data_job(run_id: str, mode: str):
     (output / 'executed-source.py').write_bytes(Path('/work/' + script).read_bytes())
     with (output / 'freeze.txt').open('w') as freeze:
         subprocess.run(['python3', '-m', 'pip', 'freeze'], stdout=freeze, check=True)
-    clock = time.monotonic()
     code = 1
     try:
         with (output / 'console.log').open('w') as log:
-            code = subprocess.run(['python3', '/work/' + script], stdout=log, stderr=subprocess.STDOUT,
+            command = ['python3', '/work/' + script]
+            if mode == 'audit':
+                command += ['--output', str(output / 'label-audit.json')]
+            code = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT,
                                   timeout=ceiling).returncode
     except subprocess.TimeoutExpired:
         code = 124
@@ -75,7 +79,8 @@ def data_job(run_id: str, mode: str):
             for path in output.iterdir() if path.is_file() and path.name != 'execution.json'
         }
         (output / 'execution.json').write_text(json.dumps(record, indent=2) + '\n')
-        DATA.commit()
+        if mode != 'audit':
+            DATA.commit()
         OUTPUT.commit()
     if code:
         raise RuntimeError(f'Dataset acquisition exited {code}; see retained console')
@@ -94,7 +99,113 @@ def prepare(run_id: str):
     return data_job(run_id, 'prepare')
 
 
+@APP.function(image=CPU_IMAGE, cpu=2, memory=4096, timeout=300, retries=0,
+              volumes={'/datasets': DATA.read_only(), '/cache/huggingface': CACHE, '/outputs': OUTPUT})
+def label_audit(run_id: str):
+    return data_job(run_id, 'audit')
+
+
+YOLO_IMAGE = (modal.Image.from_dockerfile(HERE.parent / 'Dockerfile.yolo')
+              .env({**ENV, 'OMP_NUM_THREADS': '4', 'MKL_NUM_THREADS': '4',
+                    'OPENBLAS_NUM_THREADS': '4'})
+              .add_local_file(HERE / 'yolo_stage.py', '/work/yolo_stage.py')
+              .add_local_file(HERE / 'yolo_train.py', '/work/yolo_train.py')
+              .add_local_file(HERE / 'yolo_smoke.py', '/work/yolo_smoke.py')
+              .add_local_file(HERE / 'yolo_modal.py', '/work/yolo_modal.py')
+              .add_local_file(HERE.parent / 'Dockerfile.yolo', '/work/Dockerfile.yolo'))
+MANIFEST_SHA = 'bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e'
+
+
+def experiment_job(run_id: str, mode: str):
+    import datetime
+    import hashlib
+    import json
+    import os
+    import shutil
+    import subprocess
+    import time
+    output = Path('/outputs') / run_id
+    output.mkdir(parents=True, exist_ok=False)
+    clock = time.monotonic()
+    ceiling = 840 if mode == 'smoke' else 1740
+    record = {'run_id': run_id, 'mode': mode, 'started_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'modal_app_id': APP.app_id, 'modal_function_call_id': modal.current_function_call_id(),
+              'modal_task_id': os.environ.get('MODAL_TASK_ID'), 'max_wall_seconds': ceiling + 60,
+              'manifest_sha256': MANIFEST_SHA}
+    (output / 'started.json').write_text(json.dumps(record, indent=2) + '\n')
+    OUTPUT.commit()
+    code = 1
+    try:
+        sources = output / 'sources'
+        sources.mkdir()
+        for source in Path('/work').iterdir():
+            if source.is_file():
+                shutil.copyfile(source, sources / source.name)
+        with (output / 'freeze.txt').open('w') as stream:
+            subprocess.run(['python', '-m', 'pip', 'freeze'], stdout=stream, check=True)
+        with (output / 'hardware.txt').open('w') as stream:
+            subprocess.run(['uname', '-a'], stdout=stream, check=True)
+            if mode == 'preflight':
+                subprocess.run(['nvidia-smi'], stdout=stream, check=True)
+        commands = [['python', '/work/yolo_stage.py', '--manifest-sha256', MANIFEST_SHA, '--preflight']]
+        if mode == 'smoke':
+            commands.append(['python', '/work/yolo_smoke.py', str(output / 'smoke.json')])
+        else:
+            for model in ['s', 'm', 'l']:
+                command = ['python', '/work/yolo_train.py', '--model', model, '--data', '/tmp/yolo-data/data.yaml',
+                           '--output', str(output / model), '--preflight']
+                commands.append(command)
+                if model == 's':
+                    commands.append(command + ['--resume-check'])
+        (output / 'commands.json').write_text(json.dumps(commands, indent=2) + '\n')
+        with (output / 'console.log').open('w') as stream:
+            for command in commands:
+                stream.write(json.dumps({'command': command}) + '\n')
+                stream.flush()
+                remaining = ceiling - (time.monotonic() - clock)
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(command, ceiling)
+                code = subprocess.run(command, cwd='/opt/yolov5', stdout=stream,
+                                      stderr=subprocess.STDOUT, timeout=remaining).returncode
+                OUTPUT.commit()
+                if code:
+                    break
+    except subprocess.TimeoutExpired:
+        code = 124
+        raise
+    finally:
+        record.update({'finished_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                       'wall_seconds': time.monotonic() - clock, 'exit_code': code})
+        def digest(path):
+            hasher = hashlib.sha256()
+            with path.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b''):
+                    hasher.update(chunk)
+            return hasher.hexdigest()
+        record['artifacts'] = {str(path.relative_to(output)): {'sha256': digest(path), 'bytes': path.stat().st_size}
+                               for path in output.rglob('*') if path.is_file() and path.name != 'execution.json'}
+        (output / 'execution.json').write_text(json.dumps(record, indent=2) + '\n')
+        OUTPUT.commit()
+    if code:
+        raise RuntimeError(f'{mode} exited {code}; see retained console')
+    return json.dumps(record)
+
+
+@APP.function(image=YOLO_IMAGE, cpu=4, memory=16384, timeout=900, retries=0,
+              volumes={'/datasets': DATA.read_only(), '/cache/huggingface': CACHE, '/outputs': OUTPUT})
+def smoke(run_id: str):
+    return experiment_job(run_id, 'smoke')
+
+
+@APP.function(image=YOLO_IMAGE, gpu='A100-80GB', cpu=4, memory=65536, timeout=1800, retries=0,
+              volumes={'/datasets': DATA.read_only(), '/cache/huggingface': CACHE, '/outputs': OUTPUT})
+def preflight(run_id: str):
+    return experiment_job(run_id, 'preflight')
+
+
 @APP.local_entrypoint()
 def main(run_id: str = 'data-acquisition-v1', mode: str = 'acquire'):
-    assert mode in {'acquire', 'prepare'}
-    print((acquire if mode == 'acquire' else prepare).remote(run_id))
+    functions = {'acquire': acquire, 'prepare': prepare, 'audit': label_audit,
+                 'smoke': smoke, 'preflight': preflight}
+    assert mode in functions
+    print(functions[mode].remote(run_id))

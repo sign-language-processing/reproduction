@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import statistics
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -30,7 +31,8 @@ def subset(source, destination, minimum):
         if ann['category_id'] not in covered:
             selected.add(ann['image_id'])
             covered.add(ann['category_id'])
-    assert covered == {x['id'] for x in data['categories']}
+    assert covered == (set(range(1,29)) - {25}), 'Observed IDs must preserve absent NOON (zero-based24).'
+    assert {x['id'] for x in data['categories']} == set(range(1,29))
     for identity in sorted(image_ids):
         if len(selected) >= minimum: break
         selected.add(identity)
@@ -73,6 +75,7 @@ def main():
                 assert sha(image_path) == record_hashes[image['file_name']]
                 verified_images.add(image['file_name'])
     import torch
+    torch.set_num_threads(4)
     from detectron2.config import get_cfg
     from detectron2.data import build_detection_test_loader
     from detectron2.data.datasets import register_coco_instances
@@ -100,6 +103,8 @@ def main():
     cfg.merge_from_file(get_config_file(CONFIG))
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 28
     cfg.MODEL.WEIGHTS = PathManager.get_local_path(WEIGHTS)
+    shutil.copyfile(cfg.MODEL.WEIGHTS,args.output/'initialization.pkl')
+    cfg.MODEL.WEIGHTS = str(args.output/'initialization.pkl')
     cfg.INPUT.MIN_SIZE_TRAIN = (416,)
     cfg.INPUT.MAX_SIZE_TRAIN = 416
     cfg.INPUT.MIN_SIZE_TEST = 416
@@ -117,7 +122,7 @@ def main():
     cfg.freeze()
     default_setup(cfg, argparse.Namespace(config_file='', eval_only=False))
     result = {'manifest_sha256': args.manifest_sha256, 'train_annotations_sha256': sha(args.train_json),
-              'validation_annotations_sha256': sha(args.val_json), 'counts': counts, 'selected_image_hashes_verified': len(verified_images),
+              'validation_annotations_sha256': sha(args.val_json), 'counts': counts, 'selected_image_hashes_verified': len(verified_images), 'observed_category_ids': sorted({a['category_id'] for a in train_data['annotations']}), 'absent_category_id': 25,
               'weights_url': WEIGHTS, 'weights_sha256': sha(cfg.MODEL.WEIGHTS),
               'normalization': {'input_format': cfg.INPUT.FORMAT, 'pixel_mean': list(cfg.MODEL.PIXEL_MEAN), 'pixel_std': list(cfg.MODEL.PIXEL_STD)},
               'resume_scope': 'Native checkpointer with explicit optimizer registration because v0.6 DefaultTrainer omits it; model/optimizer/scheduler/iteration restore tested. RNG and data cursor are not preserved.',

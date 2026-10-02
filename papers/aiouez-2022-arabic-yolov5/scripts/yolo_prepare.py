@@ -35,7 +35,7 @@ def main():
         classes = config['names']
         assert config['nc'] == len(classes) == len(set(classes)) == 28
         images = [f for f in release['files'] if f['path'].lower().endswith('.jpg')]
-        records, missing = [], []
+        records, missing, unusable = [], [], []
         seen_labels = set()
         for image in images:
             label_path = image['path'].replace('/images/', '/labels/').rsplit('.', 1)[0] + '.txt'
@@ -50,11 +50,19 @@ def main():
                 assert len(parts) == 5 and all(np.isfinite(parts))
                 cls, x, y, w, h = parts
                 assert cls == int(cls) and 0 <= cls < 28
-                assert 0 <= x <= 1 and 0 <= y <= 1 and 0 < w <= 1 and 0 < h <= 1
+                assert 0 <= x <= 1 and 0 <= y <= 1 and 0 <= w <= 1 and 0 <= h <= 1
                 boxes.append({'class_id': int(cls), 'xywh_normalized': [x, y, w, h]})
             assert boxes, 'Unexpected empty hand annotation'
             assert image['image_size'] == [416, 416]
             seen_labels.add(label_path)
+            if any(a['xywh_normalized'][2] == 0 or a['xywh_normalized'][3] == 0 for a in boxes):
+                assert len(boxes) == 1
+                assert files[label_path]['sha256'] == 'd3b182f79df356f113ef1e33b3a4b8c91f0dc94547c393e43ef2d3ebb6f058ab'
+                unusable.append({'image': image['path'], 'image_sha256': image['sha256'],
+                                 'label': label_path, 'label_sha256': files[label_path]['sha256'],
+                                 'original_label': label_bytes.decode(),
+                                 'reason': 'Sole annotation has zero area; exclude this one unusable example without inventing a box or treating it as background.'})
+                continue
             records.append({'id': len(records), 'image': image['path'], 'label': label_path,
                             'image_sha256': image['sha256'], 'label_sha256': files[label_path]['sha256'],
                             'width': 416, 'height': 416, 'annotations': boxes,
@@ -72,7 +80,9 @@ def main():
         exclusions.append({'image': image['path'], 'sha256': image['sha256'],
                            'identical_labeled_images': [r['image'] for r in matches],
                            'reason': 'Redundant exact-byte duplicate with no matching label; valid labeled original retained.'})
-    assert len(images) == 15088 and len(records) == 15086 and len(exclusions) == 2
+    assert len(images) == 15088 and len(records) == 15085 and len(exclusions) == 2 and len(unusable) == 1
+    observed_classes = sorted({a['class_id'] for r in records for a in r['annotations']})
+    assert observed_classes == [i for i in range(28) if i != 24]
     permutation = np.random.default_rng(42).permutation(len(records)).tolist()
     train_end = int(.8 * len(records))
     val_end = train_end + (len(records) - train_end) // 2
@@ -83,16 +93,39 @@ def main():
             records[index]['split'] = split
         selected = set()
         per_class = 4 if split == 'train' else 1
-        for cls in range(28):
+        for cls in observed_classes:
             matches = [i for i in ids if any(a['class_id'] == cls for a in records[i]['annotations'])]
             assert len(matches) >= per_class
             selected.update(matches[:per_class])
+        minimum = 112 if split == 'train' else 28
+        for index in ids:
+            if len(selected) >= minimum:
+                break
+            selected.add(index)
         preflight[split] = [i for i in ids if i in selected]
     family_splits = collections.defaultdict(set)
     byte_splits = collections.defaultdict(set)
     for record in records:
         family_splits[record['source_family_heuristic']].add(record['split'])
         byte_splits[record['image_sha256']].add(record['split'])
+    unaugmented = next(r for r in acquisition['releases'] if r['name'] == 'unaugmented')
+    unaug_archive = Path('/tmp/belmadoui-unaugmented-v1.zip')
+    shutil.copyfile(ROOT / unaugmented['archive'], unaug_archive)
+    assert digest(unaug_archive.read_bytes()) == unaugmented['archive_sha256']
+    unaug_counts, unaug_invalid = collections.Counter(), []
+    with zipfile.ZipFile(unaug_archive) as zf:
+        for entry in unaugmented['files']:
+            if not entry['path'].endswith('.txt'):
+                continue
+            payload = zf.read(entry['path'].removeprefix('original/unaugmented/'))
+            assert digest(payload) == entry['sha256']
+            for line in payload.decode().splitlines():
+                try:
+                    values = [float(v) for v in line.split()]
+                    assert len(values) == 5 and all(np.isfinite(values)) and values[0] == int(values[0])
+                    unaug_counts[int(values[0])] += 1
+                except (ValueError, AssertionError):
+                    unaug_invalid.append({'label': entry['path'], 'line': line})
     output_files = {}
     for scope, membership in [('full', splits), ('preflight', preflight)]:
         for split, ids in membership.items():
@@ -122,6 +155,8 @@ def main():
                 'acquisition_manifest_sha256': digest((ROOT / 'acquisition-manifest.json').read_bytes()),
                 'archive_sha256': release['archive_sha256'], 'records': records,
                 'splits': splits, 'preflight_splits': preflight, 'excluded_duplicate_artifacts': exclusions,
+                'excluded_zero_area_examples': unusable, 'observed_class_ids': observed_classes,
+                'missing_class_ids': [24],
                 'split_rule': 'Sorted acquired image paths; NumPy default_rng42 permutation; floor80percent train, remaining half val and half test. No class stratification or source-family grouping.',
                 'split_counts': {k: len(v) for k, v in splits.items()},
                 'released_split_counts': dict(collections.Counter(r['released_split'] for r in records)),
@@ -129,6 +164,9 @@ def main():
                 'source_families_crossing_splits': sum(len(v) > 1 for v in family_splits.values()),
                 'identical_image_hashes_crossing_splits': sum(len(v) > 1 for v in byte_splits.values()),
                 'source_family_note': 'Filename prefix before .rf. is a heuristic for augmentation relatives, not proven signer/original provenance. Original images and transformed relatives can cross the paper-style post-augmentation random split.',
+                'unaugmented_label_support': {'class_object_counts': dict(unaug_counts),
+                                             'malformed_rows': unaug_invalid,
+                                             'archive_sha256': unaugmented['archive_sha256']},
                 'coco_files': output_files}
     payload = (json.dumps(manifest, indent=2) + '\n').encode()
     path = ROOT / 'manifest.json'
