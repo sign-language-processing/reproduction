@@ -9,6 +9,33 @@
       "evidence": [
         "Session identifies GPT-6 using Codex; exact model ID and harness version unavailable."
       ]
+    },
+    {
+      "agent_id": "yolo-continuation-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "2026-10-02 continuation: dataset acquisition, YOLO implementation, preflight and bounded execution. Exact model ID and harness version unavailable in exposed session.",
+      "evidence": [
+        "Current Codex session identifies model family GPT-6; subagent /root/arabic_vit explicitly assigned continuation after user permission exception."
+      ]
+    },
+    {
+      "agent_id": "continuation-orchestrator",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "2026-10-02 permission resolution, prospective execution ledger, protocol review, evidence and report maintenance; not the executor of earlier investigation. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Current root session identifies GPT-6 using Codex; user explicitly authorized internal public dataset use and no redistribution."
+      ]
+    },
+    {
+      "agent_id": "faster-continuation-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "2026-10-02 Faster R-CNN continuation: source/environment compatibility probe, model setup, representative preflight and bounded execution. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Current Codex session identifies GPT-6; subagent /root/siformer explicitly assigned Faster R-CNN continuation."
+      ]
     }
   ],
   "assignment": {
@@ -159,40 +186,11 @@
     "accessed_at": "2026-10-01"
   },
   "status": {
-    "pipeline": "blocked_on_data",
+    "pipeline": null,
     "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "No data processed or comparable target measured because cloud processing permission is unresolved.",
+    "numerical_agreement_basis": "Continuation in progress; no new target measurements yet. Previous terminal assessment is preserved in assessment_history.",
     "preference_level": 1,
-    "blocker": {
-      "reason_code": "data_permission_blocked",
-      "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered.",
-      "target_ids": [
-        "table3-yolov5s-precision",
-        "table3-yolov5s-recall",
-        "table3-yolov5s-map50",
-        "table3-yolov5s-map5095",
-        "table3-yolov5m-precision",
-        "table3-yolov5m-recall",
-        "table3-yolov5m-map50",
-        "table3-yolov5m-map5095",
-        "table3-yolov5l-precision",
-        "table3-yolov5l-recall",
-        "table3-yolov5l-map50",
-        "table3-yolov5l-map5095",
-        "table4-yolov5s-parameters",
-        "table4-yolov5s-inference-min",
-        "table4-yolov5s-inference-max",
-        "table4-yolov5s-fps",
-        "table4-yolov5s-map50",
-        "table4-yolov5s-map5095",
-        "table4-faster-rcnn-parameters",
-        "table4-faster-rcnn-inference-min",
-        "table4-faster-rcnn-inference-max",
-        "table4-faster-rcnn-fps",
-        "table4-faster-rcnn-map50",
-        "table4-faster-rcnn-map5095"
-      ]
-    }
+    "blocker": null
   },
   "sources": [
     {
@@ -228,12 +226,12 @@
     {
       "dataset_id": "author-arsl",
       "name": "Aiouez/Belmadoui ArSL RGB bounding-box dataset",
-      "version_or_subset": "Author Kaggle augmented v1, 2022-02-06; metadata total15,086 versus paper15,088",
-      "license_or_permission": "Unknown (author Kaggle API); permission not established",
-      "cloud_processing_allowed": false,
+      "version_or_subset": "Author augmented v1 actual15,088JPEGs,15,086labels; eligible15,086 labeled images after excluding two exact duplicate unannotated copies.",
+      "license_or_permission": "Unknown owner license; explicit user-authorized internal research-use exception on 2026-10-02, no redistribution.",
+      "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "modal_path": "belmadoui-arabic-sign-language",
-      "availability": "Absent: wrapper volume ls exact path failed; similarly named arab-sign has RGB/Depth/Skeleton and is not established as this corpus. No dataset downloaded.",
+      "availability": "Both exact public v1 archives acquired and all20,920JPEGs decoded and hashed. Augmented15088JPEGs/15086labels includes two redundant unlabeled exact-byte copies; valid labeled originals retained. Canonical annotation/split validation in progress.",
       "splits": [
         {
           "name": "train",
@@ -268,7 +266,20 @@
             }
           ]
         }
-      ]
+      ],
+      "source_archives": [
+        {
+          "name": "augmented-v1.zip",
+          "sha256": "d29fac5a6afdc107d02815689f06deb4a1e861690164c28c43b9f7f235fa9421",
+          "size_bytes": 917335395
+        },
+        {
+          "name": "unaugmented-v1.zip",
+          "sha256": "312fad5736b47297e60fbe9cbb1362640a77a495623d3b9eb1f1c3166838753f",
+          "scope": "Acquisition/provenance audit only, not training;5832images/5811labels."
+        }
+      ],
+      "acquisition_manifest_sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090"
     }
   ],
   "metric_definitions": [
@@ -406,22 +417,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -434,22 +433,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -462,22 +449,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -490,22 +465,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -518,22 +481,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -546,22 +497,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -574,22 +513,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -602,22 +529,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -630,22 +545,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -658,22 +561,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -686,22 +577,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -714,22 +593,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -742,22 +609,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -770,22 +625,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -798,22 +641,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -826,22 +657,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -854,22 +673,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -882,22 +689,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -910,22 +705,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -938,22 +721,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -966,22 +737,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -994,22 +753,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -1022,22 +769,10 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     },
     {
@@ -1050,26 +785,325 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
-        },
+        "status": "pending",
         "run_ids": [],
-        "artifact_ids": [
-          "metadata-view",
-          "metadata-aug"
-        ],
-        "gate_ids": [
-          "data-permission"
-        ],
-        "evidence": [
-          "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
-        ]
+        "artifact_ids": [],
+        "detail": "Reopened after user authorization; prior terminal result preserved in assessment_history."
       }
     }
   ],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "data-acquisition-v1",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --run-id data-acquisition-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-acquisition-v1",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T06:59:42.822634+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:00:23.817092+00:00",
+      "finished_at_utc": "2026-10-02T07:07:01.817785+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both public version1 archives acquired; archive and every extracted file hashed, all20,920JPEGs decoded with416x416 image counts inventoried. Annotation validity and sharedsplit will be verified by separate CPUpreparation.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "detail": "Prospective CPU acquisition/inventory of public augmented and unaugmented version1 archives. Function1800s, native1740s, retries0. Canonical v2 volumes referenced explicitly by API; wrapper authentication and volume list succeeded before launch.",
+      "modal_app_id": "ap-7hT4cSpHqms5hlJ54P5Ep0",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-7hT4cSpHqms5hlJ54P5Ep0",
+        "task_id": "ta-01M3XPKX8T6H4T7VQ7VN3B0X7R",
+        "function_call_id": null,
+        "identity_note": "The initial wrapper incorrectly queried nonexistent app/call environment variables. App ID is recovered from the CLI launch log; task ID and unique run path are retained. Function-call ID unavailable; no alternate call identity is invented.",
+        "image_id": "im-9k7iyLUZDhMQHCDzscc8H7",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7hT4cSpHqms5hlJ54P5Ep0"
+      },
+      "measurements": {
+        "wall_seconds": 398.000685558,
+        "gpu_hours": 0,
+        "estimated_cost_chf": null,
+        "cost_note": "CPU-only acquisition; CHF1 prospective cap, actual billing unavailable."
+      },
+      "artifact_ids": [
+        "data-acquisition-v1-execution-json",
+        "data-acquisition-v1-acquisition-manifest-json",
+        "data-acquisition-v1-console-log",
+        "yolo-modal-acquisition-v1-py",
+        "yolo-data-acquisition-v1-py"
+      ]
+    },
+    {
+      "run_id": "faster-source-probe-001",
+      "agent_ids": [
+        "faster-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/faster_modal.py --run-id faster-source-probe-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-source-probe-001",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:00:47.268041+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:01:29.806680+00:00",
+      "finished_at_utc": "2026-10-02T07:02:06.439738+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Native Detectron2 v0.6 wheel compiled on repository base; CPU import failed because local no-deps environment omitted upstream-required cloudpickle. No model construction or GPU work completed. Next dependency hypothesis is a new bounded group."
+      },
+      "detail": "Prospective CPU-only Detectron2 v0.6 pinned source build/import/28-class X101-FPN parameter count. Native3480s wrapper3600s, retries0. No training or target metric claim.",
+      "modal_app_id": "ap-aDVvaCGfIaAgEiKMuoCZV0",
+      "source_files": [
+        {
+          "path": "scripts/faster_run.py",
+          "sha256": "3769e363dc7d2aa34aa48664973c3887dfab766b211dba2cddd429bf3847b1b9"
+        },
+        {
+          "path": "scripts/faster_modal.py",
+          "sha256": "e9a0d574fac437bbcd039c9969cdd1384b4e28d1b936f69d5a8d8ffba21fec68"
+        }
+      ],
+      "modal_function_call_id": "fc-01M3XPNW3F6317D4EP6AC2PZ6E",
+      "modal_task_id": "ta-01M3XPNWE05EKCKV0G2M6SK0ER",
+      "native_command": [
+        "bash",
+        "-c",
+        "set -eu\ngit clone --depth 1 --branch v0.6 https://github.com/facebookresearch/detectron2 /opt/detectron2\ntest \"$(git -C /opt/detectron2 rev-parse HEAD)\" = d1e04565d3bec8719335b88be9e9b961bf3ec464\npython -m pip wheel --no-build-isolation --no-deps /opt/detectron2 --wheel-dir \"$1/wheels\"\npython -m pip install --no-deps \"$1\"/wheels/*.whl\npython /work/faster_run.py --probe --output \"$1\"",
+        "faster-source-probe",
+        "/outputs/faster-source-probe-001"
+      ],
+      "gpu_count": 0,
+      "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "native_timeout_seconds": 3480,
+      "wall_seconds": 36.633029596,
+      "retained_source_snapshots": [
+        {
+          "path": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_run_probe001.py",
+          "sha256": "3769e363dc7d2aa34aa48664973c3887dfab766b211dba2cddd429bf3847b1b9"
+        },
+        {
+          "path": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe001.py",
+          "sha256": "e9a0d574fac437bbcd039c9969cdd1384b4e28d1b936f69d5a8d8ffba21fec68"
+        }
+      ]
+    },
+    {
+      "run_id": "faster-source-probe-002",
+      "agent_ids": [
+        "faster-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/faster_modal.py --run-id faster-source-probe-002 --wheel-run faster-source-probe-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-cloudpickle-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:04:04.374331+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.25
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:05:01.456146+00:00",
+      "finished_at_utc": "2026-10-02T07:05:14.666513+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Added missing declared cloudpickle dependency. Model import then failed on removed Pillow Image.LINEAR alias; next scoped compatibility hypothesis replaces alias with equal Image.BILINEAR."
+      },
+      "detail": "Scoped dependency hypothesis: add declared cloudpickle==3.1.1 omitted by no-deps install. Reuse hash-verified compiled wheel; no upstream/model changes, native240s, retries0.",
+      "modal_app_id": "ap-GC5x0MvkF33w66FqbegOPo",
+      "modal_function_call_id": "fc-01M3XPW9DSNKXBNMY8V86CWJN2",
+      "modal_task_id": "ta-01M3XPWAAYNAGF1BH9947MJ25R",
+      "native_command": [
+        "bash",
+        "-c",
+        "set -eu\npython -m pip install --no-deps \"$2\"\npython /work/faster_run.py --probe --output \"$1\"",
+        "faster-source-probe",
+        "/outputs/faster-source-probe-002",
+        "/outputs/faster-source-probe-001/wheels/detectron2-0.6-cp312-cp312-linux_x86_64.whl"
+      ],
+      "gpu_count": 0,
+      "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "native_timeout_seconds": 240,
+      "wheel_sha256": "8c66da87f7a725c03990caa9dde11ce69610a63f8808b7b27e782d3fbcc2b328",
+      "wall_seconds": 13.210329859,
+      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe002.py"
+    },
+    {
+      "run_id": "faster-source-probe-003",
+      "agent_ids": [
+        "faster-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/faster_modal.py --run-id faster-source-probe-003 --wheel-run faster-source-probe-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-pillow-alias-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:07:32.808529+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.25
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:08:04.308898+00:00",
+      "finished_at_utc": "2026-10-02T07:08:14.167750+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Pinned Detectron2v0.6 X10132x8dFPN28class model constructed onCPU after confirmed Pillowaliascompatibility patch. Allparameters104517980/trainable104092828. No weights acquisition or training in this source probe."
+      },
+      "detail": "Scoped compatibility hypothesis: replace removed Pillow Image.LINEAR with equivalent Image.BILINEAR in pinned Detectron2. No model or interpolation semantics change. Reuse verified native wheel, native240s, retries0.",
+      "patch_sha256": "6c5c2e5af1d457a231daf42c44028e4f6ce0686b766f5044e440c2f69b367fc4",
+      "modal_app_id": "ap-ksSBK0mpjViSRYgccStfbY",
+      "modal_function_call_id": "fc-01M3XQ1XWW410AH78TSD3SV0C4",
+      "modal_task_id": "ta-01M3XQ1YJ4Z6KQB4RCBMHPEM8R",
+      "native_command": [
+        "bash",
+        "-c",
+        "set -eu\npython -m pip install --no-deps \"$2\"\ngit apply --unsafe-paths --directory=\"$(python -c 'import sysconfig; print(sysconfig.get_path(\"purelib\"))')\" /work/faster-pillow.patch\npython /work/faster_run.py --probe --output \"$1\"",
+        "faster-source-probe",
+        "/outputs/faster-source-probe-003",
+        "/outputs/faster-source-probe-001/wheels/detectron2-0.6-cp312-cp312-linux_x86_64.whl"
+      ],
+      "gpu_count": 0,
+      "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "native_timeout_seconds": 240,
+      "wheel_sha256": "8c66da87f7a725c03990caa9dde11ce69610a63f8808b7b27e782d3fbcc2b328",
+      "wall_seconds": 9.858787298,
+      "result": {
+        "source_revision": "d1e04565d3bec8719335b88be9e9b961bf3ec464",
+        "config": "COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml",
+        "class_count": 28,
+        "python": "3.12.3",
+        "torch": "2.11.0a0+eb65b36914.nv26.02",
+        "detectron2": "0.6",
+        "parameter_counts": {
+          "all_parameters": 104517980,
+          "trainable_parameters": 104092828
+        },
+        "proposed_coco_weights_url": "https://dl.fbaipublicfiles.com/detectron2/COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x/139173657/model_final_68b088.pkl",
+        "scope": "CPU model construction only; no training, weights download or target metric claim."
+      },
+      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe003.py"
+    },
+    {
+      "run_id": "data-prepare-v1",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode prepare --run-id data-prepare-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-prepare-v1",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:12:29.524544+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "exit_code": null,
+      "terminal": null,
+      "detail": "Validate unchanged author labels from hash-verified local archive. Exclude only two redundant unlabeled exact-byte duplicates; retain all boxes. Deterministic shared seed42 80/10/10 split, full/preflight COCO views. Immutable output checks; native840s, retries0."
+    }
+  ],
   "artifacts": [
     {
       "artifact_id": "metadata-view",
@@ -1082,20 +1116,167 @@
       "kind": "raw public API dataset metadata",
       "uri": "kaggle-augmented-metadata.txt",
       "sha256": "f94432b4e58f39734e8de9afa5f68afeadbf11d36d1ff45ec478b3a9057d0d49"
+    },
+    {
+      "artifact_id": "faster-source-probe-001-console-log",
+      "kind": "closed CPU source-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-001/console.log",
+      "sha256": "6635d485aff925c76d4201b92423c35ceae0ba3fc5161c94031bb69ce2dace3a",
+      "size_bytes": 1943
+    },
+    {
+      "artifact_id": "faster-source-probe-001-execution-json",
+      "kind": "closed CPU source-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-001/execution.json",
+      "sha256": "489d14d066a2e76898d320cf5c290c4ca40c8e068072f4d7a039e66043ce1e5f",
+      "size_bytes": 1068
+    },
+    {
+      "artifact_id": "faster-source-probe-001-pip-freeze-txt",
+      "kind": "closed CPU source-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-001/pip-freeze.txt",
+      "sha256": "ca39dd75f148807b530d80570a7f7182a528f2110c4d46e7c2bd163738f986a3",
+      "size_bytes": 7051
+    },
+    {
+      "artifact_id": "faster-source-probe-001-wheels-detectron2-0-6-cp312-cp312-linux_x86_64-whl",
+      "kind": "closed CPU source-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-001/wheels/detectron2-0.6-cp312-cp312-linux_x86_64.whl",
+      "sha256": "8c66da87f7a725c03990caa9dde11ce69610a63f8808b7b27e782d3fbcc2b328",
+      "size_bytes": 1266757
+    },
+    {
+      "artifact_id": "faster-source-probe-002-console-log",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-002/console.log",
+      "sha256": "69b0910d622c4ab1ac7d70968f5ad76e84e23e30024facafeabe226a81f251a7",
+      "size_bytes": 2492
+    },
+    {
+      "artifact_id": "faster-source-probe-002-execution-json",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-002/execution.json",
+      "sha256": "3aae1b163e63efc2f8820eebd41af20116f7da18f8aad880c2aa48369d095fed",
+      "size_bytes": 945
+    },
+    {
+      "artifact_id": "faster-source-probe-002-faster_run-py",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-002/faster_run.py",
+      "sha256": "3769e363dc7d2aa34aa48664973c3887dfab766b211dba2cddd429bf3847b1b9",
+      "size_bytes": 2003
+    },
+    {
+      "artifact_id": "faster-source-probe-002-pip-freeze-txt",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-002/pip-freeze.txt",
+      "sha256": "f78b09a9f4dd5a26f65ac8cff632c06381a256c62c52dcf40dbcff9a9aefb0fb",
+      "size_bytes": 7070
+    },
+    {
+      "artifact_id": "faster-source-probe-003-config-yaml",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/config.yaml",
+      "sha256": "76d9b3c48df9b479365c422daf01075c979fd2775d1e33f512504f3d0126973c",
+      "size_bytes": 5671
+    },
+    {
+      "artifact_id": "faster-source-probe-003-console-log",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/console.log",
+      "sha256": "4984b056c3c8f33120c82b6fa6071597bd2ee55ef7c0f9a1e19be813038f51bc",
+      "size_bytes": 1111
+    },
+    {
+      "artifact_id": "faster-source-probe-003-execution-json",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/execution.json",
+      "sha256": "a15a2dbdb61f40e5588e4bb4549b95b5d1e77b81707ff457adf5657fe253a846",
+      "size_bytes": 1084
+    },
+    {
+      "artifact_id": "faster-source-probe-003-faster-pillow-patch",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/faster-pillow.patch",
+      "sha256": "6c5c2e5af1d457a231daf42c44028e4f6ce0686b766f5044e440c2f69b367fc4",
+      "size_bytes": 991
+    },
+    {
+      "artifact_id": "faster-source-probe-003-faster_run-py",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/faster_run.py",
+      "sha256": "3769e363dc7d2aa34aa48664973c3887dfab766b211dba2cddd429bf3847b1b9",
+      "size_bytes": 2003
+    },
+    {
+      "artifact_id": "faster-source-probe-003-pip-freeze-txt",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/pip-freeze.txt",
+      "sha256": "f78b09a9f4dd5a26f65ac8cff632c06381a256c62c52dcf40dbcff9a9aefb0fb",
+      "size_bytes": 7070
+    },
+    {
+      "artifact_id": "faster-source-probe-003-source-probe-json",
+      "kind": "closed CPU compatibility-probe evidence",
+      "uri": "modal://repro-sign/repro-992e7a-results/faster-source-probe-003/source-probe.json",
+      "sha256": "57e0456a7b714899a0bba71954f85b0d0f4c49b05481789e2fc5940de33760de",
+      "size_bytes": 594
+    },
+    {
+      "artifact_id": "data-acquisition-v1-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-acquisition-v1/execution.json",
+      "sha256": "375327f04c86bb0db87ee1e02b6df58d9890c81a0bd21e102fb6d3b3033c2911",
+      "size_bytes": 488
+    },
+    {
+      "artifact_id": "data-acquisition-v1-acquisition-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-acquisition-v1/acquisition-manifest.json",
+      "sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090",
+      "size_bytes": 13980792
+    },
+    {
+      "artifact_id": "data-acquisition-v1-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-acquisition-v1/console.log",
+      "sha256": "5fd2e29cc5d0279702697595532a505fbc3371077b6f449f0ee61e82dc24e19b",
+      "size_bytes": 7216
+    },
+    {
+      "artifact_id": "yolo-modal-acquisition-v1-py",
+      "kind": "source_snapshot",
+      "uri": "artifacts/yolo-modal-acquisition-v1.py",
+      "sha256": "841488ac744a76d296e5b7b6da4411c53502a355220e3d548070824dac583079"
+    },
+    {
+      "artifact_id": "yolo-data-acquisition-v1-py",
+      "kind": "source_snapshot",
+      "uri": "artifacts/yolo-data-acquisition-v1.py",
+      "sha256": "19ffdc55fa5d562f41b955b980439f9a2b241ead840af741880d32378fadd222"
     }
   ],
   "gates": [
     {
       "gate_id": "data-permission",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered.",
       "evidence": [
         "kaggle-unaugmented-metadata.txt",
         "kaggle-augmented-metadata.txt",
         "Paper section4.1, p.21; broad availability statement, no license or cloud-processing terms."
       ],
-      "required_action": "Team S to confirm author permission/license for project-cloud storage and processing before downloading/populating Modal."
+      "required_action": "None. Proceed with internal project-cloud use under explicit user instruction; no dataset redistribution.",
+      "resolution": {
+        "at_utc": "2026-10-02T06:59:42.822634+00:00",
+        "basis": "Explicit project user authorization / research-use exception, not an inferred license from the dataset owner.",
+        "user_instruction": "Arabic YOLOv5 #50: license is unknown; use it as a publicly available resource, we will not re-release the dataset",
+        "restrictions": [
+          "No redistribution of dataset archives, images or annotations.",
+          "Do not bypass authentication, access controls or newly encountered click-through terms."
+        ]
+      }
     },
     {
       "gate_id": "split-identity",
@@ -1106,8 +1287,8 @@
         "Paper sections3.1.1,3.2 pp.19\u201320",
         "Author Kaggle version1 descriptions"
       ],
-      "required_action": "No human execution choice remains for counts/split. Dataset permission must be verified before acquisition and concrete membership inspection.",
-      "resolution": "User explicitly authorized documented judgment calls2026-10-01. Once permission is verified, use the actual eligible released corpus with a documented seeded80/10/10 partition following the paper ratio; label results conditional and record measured hardware/timing boundaries. Do not invent missing images or claim historical membership."
+      "required_action": "None. Actual two duplicate/unannotated images are excluded after byte-hash verification; use documented seeded paper-ratio partition of15086 eligible records.",
+      "resolution": "User authorized documented judgment calls on2026-10-01 and public-resource use on2026-10-02. Actual archive15088JPEGs reconciled by two redundant unlabeled byte-identical copies; preserve labeled originals and allboxes. Seed42 80/10/10 partition follows published random ratio; do not claim exact historical membership."
     }
   ],
   "contacts": [],
@@ -1131,7 +1312,24 @@
     ],
     "conclusion": "No paper-specific source, custom hyperparameter file or original split found. Generic published implementations exist, so no reimplementation attempted."
   },
-  "guesses": [],
+  "guesses": [
+    {
+      "guess_id": "released-corpus-partition",
+      "detail": "Use eligible author augmented v1 images and a deterministic seed42 80/10/10 partition following the paper ratio, after actual annotation/content inspection. Paper15,088 versus release15,086 discrepancy does not require fabricating images. Historical split membership is unavailable.",
+      "basis": "User explicitly authorized documented judgment calls; paper random split ratio is specified, seed and membership are not.",
+      "limitation": "Conditional released-corpus reconstruction; augmentation precedes split and related source images may cross subsets. No signer-independent generalization claim."
+    },
+    {
+      "guess_id": "native-published-defaults",
+      "detail": "Use pinned published YOLOv5v6.0 and Detectron2v0.6 entrypoints and disclosed defaults; paper Table2 overrides. FasterX101 uses nativeReLU despite Table2SiLU discrepancy, with COCO model-zoo initialization inferred.",
+      "basis": "Least invasive published-code approach; no paper-specific implementation found."
+    },
+    {
+      "guess_id": "timing-boundary",
+      "detail": "Measure batch1 warmed-up synchronized GPU model+postprocessing timing on shared hardware and actual tensor shapes; report samplecount,min/max,mean and FPS=N/total duration. Preserve preprocessing/transfer boundary separately.",
+      "basis": "Paper lists possible Colab accelerators but no exact GPU or complete timing protocol. Hardware-dependent absolute times are descriptive conditional evidence."
+    }
+  ],
   "deviations": [
     {
       "id": "tracker-dataset-identity",
@@ -1146,5 +1344,495 @@
     "date": "2026-10-01",
     "detail": "2026-10-01 user-authorized judgment-call review: missing/count-mismatched examples need not independently prevent a documented reconstruction. The remaining execution gate is verified dataset permission; no inferred license or cloud-processing permission was substituted.",
     "new_experiments": false
+  },
+  "assessment_history": [
+    {
+      "recorded_at_utc": "2026-10-02T06:59:42.822634+00:00",
+      "source_record_sha256": "41d455013db2172314519209093ded448c3a5ce3b04128e30dc7323a401604f7",
+      "status": {
+        "pipeline": "blocked_on_data",
+        "numerical_agreement": "not_assessed",
+        "numerical_agreement_basis": "No data processed or comparable target measured because cloud processing permission is unresolved.",
+        "preference_level": 1,
+        "blocker": {
+          "reason_code": "data_permission_blocked",
+          "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered.",
+          "target_ids": [
+            "table3-yolov5s-precision",
+            "table3-yolov5s-recall",
+            "table3-yolov5s-map50",
+            "table3-yolov5s-map5095",
+            "table3-yolov5m-precision",
+            "table3-yolov5m-recall",
+            "table3-yolov5m-map50",
+            "table3-yolov5m-map5095",
+            "table3-yolov5l-precision",
+            "table3-yolov5l-recall",
+            "table3-yolov5l-map50",
+            "table3-yolov5l-map5095",
+            "table4-yolov5s-parameters",
+            "table4-yolov5s-inference-min",
+            "table4-yolov5s-inference-max",
+            "table4-yolov5s-fps",
+            "table4-yolov5s-map50",
+            "table4-yolov5s-map5095",
+            "table4-faster-rcnn-parameters",
+            "table4-faster-rcnn-inference-min",
+            "table4-faster-rcnn-inference-max",
+            "table4-faster-rcnn-fps",
+            "table4-faster-rcnn-map50",
+            "table4-faster-rcnn-map5095"
+          ]
+        }
+      },
+      "target_results": {
+        "table3-yolov5s-precision": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5s-recall": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5s-map50": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5s-map5095": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5m-precision": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5m-recall": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5m-map50": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5m-map5095": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5l-precision": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5l-recall": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5l-map50": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table3-yolov5l-map5095": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-parameters": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-inference-min": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-inference-max": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-fps": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-map50": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-yolov5s-map5095": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-parameters": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-inference-min": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-inference-max": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-fps": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-map50": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        },
+        "table4-faster-rcnn-map5095": {
+          "status": "not_produced",
+          "reason": {
+            "code": "data_permission_blocked",
+            "detail": "Both author-hosted Kaggle datasets declare Unknown license; no explicit cloud storage/processing permission basis recovered."
+          },
+          "run_ids": [],
+          "artifact_ids": [
+            "metadata-view",
+            "metadata-aug"
+          ],
+          "gate_ids": [
+            "data-permission"
+          ],
+          "evidence": [
+            "Author-linked Kaggle unaugmented and augmented APIs each licenseName Unknown. Paper states freely available for interested researchers but does not establish cloud-storage rights."
+          ]
+        }
+      },
+      "reason": "Prior terminal data-gated assessment superseded by explicit user authorization for internal public-resource use on 2026-10-02; original evidence retained."
+    }
+  ],
+  "execution_state": {
+    "state": "in_progress",
+    "updated_at_utc": "2026-10-02T06:59:42.822634+00:00",
+    "detail": "User authorized public dataset use without redistribution; acquiring exact author v1 archives before representative preflight."
+  },
+  "conclusion_assessment": {
+    "status": "not_assessed",
+    "assessment_basis": "Prospectively compare YOLOv5s and Faster R-CNN AP50/AP50:95, parameter counts and measured same-hardware latency. Also compare s/m/l detector P/R/AP; published medium leads AP50:95, while large leads precision/AP50. Do not collapse into a universal large-model superiority claim.",
+    "limitations": [
+      "Historical split and accelerator unknown; no signer-independent generalization claim.",
+      "Native YOLO and COCO evaluator conventions will both be disclosed; do not tune thresholds toward published numbers."
+    ]
   }
 }

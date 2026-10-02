@@ -1,0 +1,19 @@
+Subject: Replace removed Pillow interpolation alias without changing interpolation
+
+Detectron2 v0.6 import fails with Pillow 12 because Image.LINEAR was removed.
+Image.BILINEAR is the same interpolation constant formerly named LINEAR.
+Official replacement: https://pillow.readthedocs.io/en/stable/deprecations.html#constants
+The retained CPU probe records the import failure before this compatibility fix.
+
+diff --git a/detectron2/data/transforms/transform.py b/detectron2/data/transforms/transform.py
+--- a/detectron2/data/transforms/transform.py
++++ b/detectron2/data/transforms/transform.py
+@@ -43,7 +43,7 @@ class ExtentTransform(Transform):
+     See: https://pillow.readthedocs.io/en/latest/PIL.html#PIL.ImageTransform.ExtentTransform
+     """
+ 
+-    def __init__(self, src_rect, output_size, interp=Image.LINEAR, fill=0):
++    def __init__(self, src_rect, output_size, interp=Image.BILINEAR, fill=0):
+         """
+         Args:
+             src_rect (x0, y0, x1, y1): src coordinates
