@@ -109,3 +109,13 @@ The four corrected runs consumed 2.712 measured GPU-hours in parallel, with a pl
 Every native checkpoint, probability/prediction array, split, model definition, hardware record, freeze and raw metric is retained under the corresponding `modal://taqiyya-2025-efficientnetv2b0-results/` Volume, in the model-specific full-run directories listed in reproduction.json, with its checksum and run linkage in reproduction.json. Sanitized logs and the invalid historical source are retained separately. No checkpoint or dataset is committed or republished.
 
 No remaining question requires human action. Exact historical seed, augmentation draws, optimizer/defaults, freezing and stopping monitor are disclosed reconstruction assumptions; numerical proximity cannot resolve those unpublished choices. No original author was contacted.
+
+## Conclusion assessment (2026-10-02)
+
+EfficientNetV2B0 remains the observed accuracy winner, supporting its effectiveness and top placement in this four-model experiment. It classified **2,322/2,336** test images correctly (**99.4007%**), versus **2,321/2,336** (**99.3579%**) for both MobileNetV2 and ConvNeXt-Tiny, and **2,318/2,336** (**99.2295%**) for ResNet50V2. Its lead is **one image, or 0.04281 percentage points**. Table X's published order was **EfficientNet > ConvNeXt > ResNet > MobileNet**; the reproduced order is **EfficientNet > MobileNet = ConvNeXt > ResNet**. The top placement survives, while the remaining ordering changes and none of the exact published accuracies matches.
+
+The adjacent Table X discussion (PDF p.6) claims EfficientNet achieves the highest accuracy with the fewest parameters. The **fewest-parameters claim is false even in the paper's own table**: MobileNet has **2,592,859** parameters versus EfficientNet's **6,254,187**. Our architectures reproduce those counts exactly. EfficientNet is smaller than ResNet (**24,096,283**) and ConvNeXt (**28,023,931**), but not MobileNet.
+
+A one-image lead in one seeded run does not establish a stable ordering across runs. Historical baseline settings remain disclosed reconstruction assumptions. Augmentation before splitting permits transformed NULL examples and their sources in different partitions, limiting conclusions about independent-source or signer generalization. The paper's augmentation-benefit and hyperparameter-optimality claims require ablations outside these four target runs; parameter counts alone do not establish inference speed. These limits require no new human execution decision.
+
+The existing independent review GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
