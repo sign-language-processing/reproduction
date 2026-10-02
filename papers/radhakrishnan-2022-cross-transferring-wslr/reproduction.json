@@ -1,0 +1,1225 @@
+{
+  "paper_id": "18b8675237185c3272f727b5c9e6a63db15833a4",
+  "agents": [
+    {
+      "agent_id": "claude-code-fable-5-1",
+      "model": "Claude Fable 5.1",
+      "model_id": "claude-fable-5-1",
+      "harness": "Claude Code",
+      "harness_version": "2.1.267",
+      "scope": "Whole attempt on 2026-10-02: retrieved the queue record, read the paper, built the target contract, ran the source search, fixed the Modal CLI preflight and inspected the datasets Volume read-only, downloaded the official MS-ASL annotations, wrote data.sh and ran a partial video acquisition that stopped at YouTube bot verification, checked top-50 class availability and per-class counts, and wrote reproduction.json and README.md. No container, training, or evaluation was run.",
+      "evidence": [
+        "Session system metadata on 2026-10-02 names the model 'Fable 5.1' with exact model ID claude-fable-5-1, running in Claude Code inside the Claude desktop app (Code tab).",
+        "harness_version is the output of `claude --version` on the executing machine (2.1.267); the desktop app's own build version was not exposed."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "papers-18b8675237185c3272f727b5c9e6a63db15833a4-2026-10-02.json",
+      "sha256": "bcf290125f101f05e1eb4472f947bb13b86c58b36a277ea55173aa6879e3294f"
+    },
+    "request": "Start the reproduction of the survey-tool record for this paper ID.",
+    "retrieval": {
+      "origin": "REPRO-SIGN survey tool single-paper JSON export (/export?collection=papers&id=<paper_id>), read on 2026-10-02 through the assignee's authenticated browser session.",
+      "fidelity": "The export body was hashed in the browser (source.sha256) and its fields transcribed into assignment.record with email addresses redacted; the export file itself was not saved to disk, so the record below is a field-for-field transcription rather than ingest_candidate.py output. source.path is the filename the tool's Download JSON button would assign.",
+      "confirmation_field": "The export has status 'final' (set 2026-09-08) but contains no 'confirmation' field at all, so ingest_candidate.py's queue_record invariants cannot be asserted; kind therefore stays direct_user_request."
+    },
+    "normalized": {
+      "title": "Cross Transferring Activity Recognition to Word Level Sign Language Detection",
+      "year": 2022,
+      "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)",
+      "pdf_url": "https://doi.org/10.1109/CVPRW56347.2022.00273",
+      "code_repos": [],
+      "what_to_reproduce": "Table 2",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "qmajh31r87f5x7e",
+        "zqa5irdd7vyynce"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "qmajh31r87f5x7e",
+          "name": "top-5 accuracy",
+          "url": null
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "zqa5irdd7vyynce",
+          "name": "top-3 accuracy",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "1fvvsx6qxa83i4h",
+          "name": "MS-ASL",
+          "available": "yes",
+          "license": "Computational Use of Data Agreement (C-UDA)",
+          "urls": [
+            "https://www.microsoft.com/en-us/download/details.aspx?id=100121",
+            "https://zenodo.org/record/6674324/files/MS-ASL.zip?download=1"
+          ],
+          "comments": ""
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": "",
+      "flag_reason": ""
+    },
+    "record": {
+      "area_of_slp": [
+        "Recognition"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "",
+      "compute_requirements": "N/A",
+      "copied_scores": "yes",
+      "datasets": [
+        "1fvvsx6qxa83i4h"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "1fvvsx6qxa83i4h",
+            "license": "Computational Use of Data Agreement (C-UDA)",
+            "name": "MS-ASL",
+            "on_modal": "",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [],
+            "spoken_languages": [],
+            "url": [
+              "https://www.microsoft.com/en-us/download/details.aspx?id=100121",
+              "https://zenodo.org/record/6674324/files/MS-ASL.zip?download=1"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "wzc6kxyuhls6lut",
+            "name": "Accuracy",
+            "url": []
+          },
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "qmajh31r87f5x7e",
+            "name": "top-5 accuracy",
+            "url": null
+          },
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "zqa5irdd7vyynce",
+            "name": "top-3 accuracy",
+            "url": null
+          }
+        ]
+      },
+      "finalized_by": "[email redacted]",
+      "flag_reason": "",
+      "id": "9k18mi03su6b8v5",
+      "includes_human_evaluation": "no",
+      "main_experiment_has_ranking": "yes",
+      "metrics": [
+        "wzc6kxyuhls6lut",
+        "qmajh31r87f5x7e",
+        "zqa5irdd7vyynce"
+      ],
+      "paper_id": "18b8675237185c3272f727b5c9e6a63db15833a4",
+      "pdf_url": "https://doi.org/10.1109/CVPRW56347.2022.00273",
+      "peer_reviewed": "yes",
+      "potential_ethical_concerns": "no",
+      "rejection_reason": "",
+      "status": "final",
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "[email redacted]",
+          "when": "2026-09-08T08:38:28.228Z"
+        }
+      ],
+      "sub_area_of_slp": [
+        "Isolated signing videos"
+      ],
+      "textual_conclusion": "I3D architec-\ntures have achieved better performances by employing a\nResNet backbone, as in the case of I3D ResNet 101 and I3D\nResNet 50. The SlowFast 8×8 ResNet 101 has achieved a\nnew state-of-the-accuracy 92.35% on the MS-ASL dataset\nwith an improvement of 7.03% higher top-1 accuracy com-\npared to the previous state of the art accuracy 85.32% in-\ntroduced in the MS-ASL paper that uses the I3D Inception-\nV1 model.",
+      "title": "Cross Transferring Activity Recognition to Word Level Sign Language Detection",
+      "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)",
+      "what_to_reproduce": "Table 2",
+      "year": 2022
+    }
+  },
+  "paper": {
+    "title": "Cross Transferring Activity Recognition to Word Level Sign Language Detection",
+    "citation": "S. Radhakrishnan, N. C. Mohan, M. Varma, J. Varma, and S. N. Pai, \"Cross Transferring Activity Recognition to Word Level Sign Language Detection,\" in 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), 2022, pp. 2445-2452, doi: 10.1109/CVPRW56347.2022.00273.",
+    "url": "https://doi.org/10.1109/CVPRW56347.2022.00273",
+    "open_access_url": "https://openaccess.thecvf.com/content/CVPR2022W/ABAW/papers/Radhakrishnan_Cross_Transferring_Activity_Recognition_to_Word_Level_Sign_Language_Detection_CVPRW_2022_paper.pdf",
+    "pdf_sha256": "5eb47fbc642a8b5d956d80e284a0d7903c5d2998f3f5a970b3cccab8ffe54e24",
+    "pages": 8,
+    "accessed_at": "2026-10-02"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://openaccess.thecvf.com/content/CVPR2022W/ABAW/papers/Radhakrishnan_Cross_Transferring_Activity_Recognition_to_Word_Level_Sign_Language_Detection_CVPRW_2022_paper.pdf",
+      "revision_or_sha256": "5eb47fbc642a8b5d956d80e284a0d7903c5d2998f3f5a970b3cccab8ffe54e24",
+      "role": "CVF open-access version of the paper; sole source of targets and protocol. No paper-owned code, weights, split files, or supplement were found."
+    }
+  ],
+  "source_search": {
+    "performed_at": "2026-10-02",
+    "locations": [
+      "Paper PDF (all 8 pages): no code, data, supplement, or project-page link or footnote; no code/data-availability statement.",
+      "Queue record: code_repos 'N/A'.",
+      "Web search for the exact title plus 'github code': only the Manipal research-portal entry and the ML Anthology entry for the paper; no repository.",
+      "GitHub repository search for the exact phrase \"Cross Transferring Activity Recognition\": 0 results; search for 'MS-ASL slowfast': no results.",
+      "GitHub account of the first author (Srijith-rkr, name and later affiliation match): 20 public repositories listed, none related to sign language, MS-ASL, or video action recognition."
+    ],
+    "not_yet_checked": [
+      "CVF supplemental-material listing for the CVPRW 2022 ABAW workshop page",
+      "Zenodo/OSF/institutional repositories",
+      "GitHub accounts of the other four authors"
+    ],
+    "conclusion": "No paper-owned code or data artifact found so far. The eight architectures and their Kinetics-400 pretrained variants match the GluonCV model zoo by name (see guesses); that is a cited-basis candidate, not this paper's artifact."
+  },
+  "status": {
+    "pipeline": "blocked_on_data",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no experiment was run and no in-scope target produced a value.",
+    "preference_level": 3,
+    "preference_level_basis": "Provisional. No paper-owned code was found, so any attempt would have reimplemented training from the paper on published Kinetics-400 pretrained models. No implementation was carried out.",
+    "blocker": {
+      "reason_code": "data_unavailable",
+      "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept. This is the earliest blocker and independently prevents all 24 targets; the under-specified training recipe (gate protocol-underspecified-training) is a second, later blocker.",
+      "target_ids": [
+        "table2-p3d-top1",
+        "table2-p3d-top3",
+        "table2-p3d-top5",
+        "table2-r2plus1d-top1",
+        "table2-r2plus1d-top3",
+        "table2-r2plus1d-top5",
+        "table2-i3d-inceptionv3-top1",
+        "table2-i3d-inceptionv3-top3",
+        "table2-i3d-inceptionv3-top5",
+        "table2-i3d-resnet50-top1",
+        "table2-i3d-resnet50-top3",
+        "table2-i3d-resnet50-top5",
+        "table2-i3d-resnet101-top1",
+        "table2-i3d-resnet101-top3",
+        "table2-i3d-resnet101-top5",
+        "table2-slowfast-4x16-resnet50-top1",
+        "table2-slowfast-4x16-resnet50-top3",
+        "table2-slowfast-4x16-resnet50-top5",
+        "table2-slowfast-8x8-resnet50-top1",
+        "table2-slowfast-8x8-resnet50-top3",
+        "table2-slowfast-8x8-resnet50-top5",
+        "table2-slowfast-8x8-resnet101-top1",
+        "table2-slowfast-8x8-resnet101-top3",
+        "table2-slowfast-8x8-resnet101-top5"
+      ]
+    }
+  },
+  "metric_definitions": [
+    {
+      "metric_id": "top1",
+      "name": "Top-1 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Not specified by the paper. Standard reading: share of test clips whose true class is among the 1 highest-scoring classes of the 50-way softmax output.",
+      "version": "unspecified",
+      "aggregation": "Micro-average over all test clips. The paper does not say whether one clip or several clips/crops per video are scored.",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "top3",
+      "name": "Top-3 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Not specified by the paper. Standard reading: share of test clips whose true class is among the 3 highest-scoring classes of the 50-way softmax output.",
+      "version": "unspecified",
+      "aggregation": "Micro-average over all test clips. The paper does not say whether one clip or several clips/crops per video are scored.",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "top5",
+      "name": "Top-5 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Not specified by the paper. Standard reading: share of test clips whose true class is among the 5 highest-scoring classes of the 50-way softmax output.",
+      "version": "unspecified",
+      "aggregation": "Micro-average over all test clips. The paper does not say whether one clip or several clips/crops per video are scored.",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "p3d-msasl50",
+      "system": "P3D pretrained on Kinetics-400 and fine-tuned for 50-way classification (25M parameters, 32 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "r2plus1d-msasl50",
+      "system": "R(2+1)D pretrained on Kinetics-400 and fine-tuned for 50-way classification (53.2M parameters, 32 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 112x112; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "i3d-inceptionv3-msasl50",
+      "system": "I3D InceptionV3 pretrained on Kinetics-400 and fine-tuned for 50-way classification (12.3M parameters, 32 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "i3d-resnet50-msasl50",
+      "system": "I3D ResNet 50 pretrained on Kinetics-400 and fine-tuned for 50-way classification (51.9M parameters, 32 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "i3d-resnet101-msasl50",
+      "system": "I3D ResNet 101 pretrained on Kinetics-400 and fine-tuned for 50-way classification (99.4M parameters, 32 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "slowfast-4x16-resnet50-msasl50",
+      "system": "SlowFast 4x16 ResNet 50 pretrained on Kinetics-400 and fine-tuned for 50-way classification (33.7M parameters, 32+4 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "slowfast-8x8-resnet50-msasl50",
+      "system": "SlowFast 8x8 ResNet 50 pretrained on Kinetics-400 and fine-tuned for 50-way classification (33.8M parameters, 32+8 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    },
+    {
+      "experiment_id": "slowfast-8x8-resnet101-msasl50",
+      "system": "SlowFast 8x8 ResNet 101 pretrained on Kinetics-400 and fine-tuned for 50-way classification (62.1M parameters, 32+8 input frames per Table 2)",
+      "protocol": "Sec. 4.2: train the new output layer at lr 1e-2 for 20 epochs, then unfreeze and tune 'until we achieved optimal performance for each model'; cosine schedule between 1e-2 and 1e-5; L2 weight decay between 1e-3 and 1e-4; Adam; softmax cross-entropy; horizontal flip, scale ratios in (1.0, 0.8), random crop 224x224; 64 consecutive frames sampled per clip.",
+      "checkpoint_rule": "Not specified. No validation split is described; test accuracy is reported after per-model tuning.",
+      "seed_policy": "Not specified; single reported value per cell.",
+      "paper_evidence": "Sec. 3, Sec. 4.1, Sec. 4.2, Sec. 5, Table 2.",
+      "dataset_id": "ms-asl",
+      "dataset_note": "Run by the authors on their curated 50-class subset of this dataset, which was never obtained."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table2-p3d-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'P3D'",
+      "experiment_id": "p3d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 85.55,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'P3D', column 'Accuracy(%)' = 85.55; #Parameters 25M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-p3d-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'P3D'",
+      "experiment_id": "p3d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 95.75,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'P3D', column 'Top-3(%)' = 95.75; #Parameters 25M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'",
+        "Table 2 prints the same value (95.75) for P3D top-3 and top-5; transcribed as printed."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-p3d-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'P3D'",
+      "experiment_id": "p3d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 95.75,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'P3D', column 'Top-5(%)' = 95.75; #Parameters 25M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'",
+        "Table 2 prints the same value (95.75) for P3D top-3 and top-5; transcribed as printed."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-r2plus1d-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'R(2+1)D'",
+      "experiment_id": "r2plus1d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 88.38,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'R(2+1)D', column 'Accuracy(%)' = 88.38; #Parameters 53.2M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-r2plus1d-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'R(2+1)D'",
+      "experiment_id": "r2plus1d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 91.31,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'R(2+1)D', column 'Top-3(%)' = 91.31; #Parameters 53.2M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'",
+        "Table 2 prints R(2+1)D top-3 (91.31) only 2.93 points above its top-1 (88.38), far below every other row's top-3; transcribed as printed."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-r2plus1d-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'R(2+1)D'",
+      "experiment_id": "r2plus1d-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 96.88,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'R(2+1)D', column 'Top-5(%)' = 96.88; #Parameters 53.2M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-inceptionv3-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D InceptionV3'",
+      "experiment_id": "i3d-inceptionv3-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 85.83,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D InceptionV3', column 'Accuracy(%)' = 85.83; #Parameters 12.3M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-inceptionv3-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D InceptionV3'",
+      "experiment_id": "i3d-inceptionv3-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 95.06,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D InceptionV3', column 'Top-3(%)' = 95.06; #Parameters 12.3M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-inceptionv3-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D InceptionV3'",
+      "experiment_id": "i3d-inceptionv3-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 96.05,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D InceptionV3', column 'Top-5(%)' = 96.05; #Parameters 12.3M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet50-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 50'",
+      "experiment_id": "i3d-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 84.7,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 50', column 'Accuracy(%)' = 84.7; #Parameters 51.9M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet50-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 50'",
+      "experiment_id": "i3d-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 96.6,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 50', column 'Top-3(%)' = 96.6; #Parameters 51.9M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet50-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 50'",
+      "experiment_id": "i3d-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 97.45,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 50', column 'Top-5(%)' = 97.45; #Parameters 51.9M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet101-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 101'",
+      "experiment_id": "i3d-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 88.1,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 101', column 'Accuracy(%)' = 88.1; #Parameters 99.4M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet101-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 101'",
+      "experiment_id": "i3d-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 97.16,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 101', column 'Top-3(%)' = 97.16; #Parameters 99.4M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-i3d-resnet101-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'I3D ResNet 101'",
+      "experiment_id": "i3d-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 98.58,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'I3D ResNet 101', column 'Top-5(%)' = 98.58; #Parameters 99.4M, #Frames 32.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-4x16-resnet50-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50'",
+      "experiment_id": "slowfast-4x16-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 89.52,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50', column 'Accuracy(%)' = 89.52; #Parameters 33.7M, #Frames 32+4.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-4x16-resnet50-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50'",
+      "experiment_id": "slowfast-4x16-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 95.18,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50', column 'Top-3(%)' = 95.18; #Parameters 33.7M, #Frames 32+4.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-4x16-resnet50-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50'",
+      "experiment_id": "slowfast-4x16-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 97.73,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 4x16 ResNet 50', column 'Top-5(%)' = 97.73; #Parameters 33.7M, #Frames 32+4.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet50-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50'",
+      "experiment_id": "slowfast-8x8-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 90.37,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50', column 'Accuracy(%)' = 90.37; #Parameters 33.8M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet50-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50'",
+      "experiment_id": "slowfast-8x8-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 96.6,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50', column 'Top-3(%)' = 96.6; #Parameters 33.8M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet50-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50'",
+      "experiment_id": "slowfast-8x8-resnet50-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 98.58,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 50', column 'Top-5(%)' = 98.58; #Parameters 33.8M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet101-top1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101'",
+      "experiment_id": "slowfast-8x8-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top1",
+      "original_value": 92.35,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101', column 'Accuracy(%)' = 92.35; #Parameters 62.1M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet101-top3",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101'",
+      "experiment_id": "slowfast-8x8-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top3",
+      "original_value": 97.73,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101', column 'Top-3(%)' = 97.73; #Parameters 62.1M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-slowfast-8x8-resnet101-top5",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101'",
+      "experiment_id": "slowfast-8x8-resnet101-msasl50",
+      "split": "Authors' unpublished 15% test split of their curated 50-class MS-ASL subset (Sec. 4.1)",
+      "metric_id": "top5",
+      "original_value": 98.87,
+      "copied_baseline": false,
+      "evidence": [
+        "Table 2 (p. 2449), row 'SlowFast 8x8 ResNet 101', column 'Top-5(%)' = 98.87; #Parameters 62.1M, #Frames 32+8.",
+        "Sec. 5: 'The test accuracy has been reported in Table 2.'"
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The authors' hand-curated, hand-trimmed 50-class MS-ASL subset and its random 85/15 split are unpublished, and it cannot be rebuilt: 379 of the 1,109 source videos for the 50 most frequent classes are no longer public, leaving 44.2 clips per class against the paper's 48, with no way to tell which clips the authors kept."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-authors-curated-subset"
+        ],
+        "evidence": [
+          "Sec. 4.1: the dataset was manually downloaded, screened and trimmed, deviates from MS-ASL, and was split 85/15 with no published list.",
+          "Availability and per-class count checks of 2026-10-02 recorded in gate data-authors-curated-subset."
+        ]
+      }
+    }
+  ],
+  "guesses": [
+    {
+      "guess_id": "gluoncv-model-zoo",
+      "detail": "The paper names no framework or weight source. The eight systems (P3D, R(2+1)D at 112x112, I3D InceptionV3, I3D ResNet 50/101, SlowFast 4x16 R50, 8x8 R50, 8x8 R101, all Kinetics-400 pretrained) coincide with entries of the GluonCV action-recognition model zoo. Treated as the leading candidate basis; backbone depth for P3D and R(2+1)D is inferred from that match and the Table 2 parameter counts, not stated by the paper. Not yet verified against the zoo's parameter counts."
+    }
+  ],
+  "deviations": [],
+  "contacts": [],
+  "runs": [],
+  "artifacts": [],
+  "gates": [
+    {
+      "gate_id": "modal-reauth",
+      "type": "modal_auth",
+      "status": "resolved",
+      "reason": "The Modal wrapper preflight failed on 2026-10-02: \"Modal credentials for 'repro-sign' are invalid or expired.\" No Modal volume, app, or billing state was inspected.",
+      "evidence": [
+        "Output of .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume list --json on 2026-10-02."
+      ],
+      "required_action": "The user runs `modal setup` and selects the repro-sign workspace; then re-run the wrapper preflight and check_modal_dataset.sh for MS-ASL.",
+      "resolution": "Resolved 2026-10-02. The user re-ran `modal setup`; the wrapper still failed because the installed Modal CLI 1.2.6 (Python 3.9) has no `modal token info` command, which the wrapper uses for its workspace check. With Modal CLI 1.6.0 installed in a separate Python 3.13 venv and placed first on PATH, the wrapper preflight printed \"Verified Modal profile and workspace 'repro-sign'.\""
+    },
+    {
+      "gate_id": "data-authors-curated-subset",
+      "type": "data",
+      "status": "resolved",
+      "reason": "Every Table 2 number was measured on the authors' own hand-curated, hand-trimmed 50-class subset of MS-ASL with a random 85/15 split. Neither the clip list, the trims, nor the split is published, and the paper itself says the set deviates from MS-ASL because many links were dead.",
+      "evidence": [
+        "Sec. 4.1: 'we chose the 50 classes with the highest frequency'; 'Videos from these classes were manually downloaded, screened, and trimmed'; 'Our compiled dataset deviated from the original MS-ASL dataset as a significant amount of video links were no longer valid'; 'each class has 48 videos on average, with a standard deviation of 6'; 'Videos were split into 85% and 15% train-test split.'",
+        "No data-availability statement, split file, or seed anywhere in the paper; source search found no artifact.",
+        "Queue dataset record names plain 'MS-ASL' with available 'yes'; that identifies the parent dataset, not the experiment's data.",
+        "Modal check on 2026-10-02: no MS-ASL directory exists in Volume `datasets` (26 root directories listed), so neither the authors' subset nor the parent dataset is on project storage.",
+        "Official MS-ASL annotations (MS-ASL.zip from download.microsoft.com, sha256 a8562008309eea4129e1bc0ed7f654a314fee195227222859657e307b6434c34, C-UDA 0.1): 25,513 clips over 7,212 YouTube videos. The Zenodo MS-ASL.zip in the queue record (record 6674324) is OpenHands pose data, not video.",
+        "Top-50 classes from annotations alone (train+val+test clip counts): labels 0-49 hold 3,191 clips over 1,109 videos (56-85 per class). The cut is tied: 'bored', 'help' (label 50), 'water', 'computer' and 'boy' all have 56 clips for the last four places, so 'the 50 most frequent classes' is label<50 or a variant swapping 'help' in. The paper names 'water' and 'computer' among its classes.",
+        "Availability on 2026-10-02 via YouTube's public oEmbed endpoint for those 1,109 videos: 730 public (HTTP 200), 194 removed (404), 169 private (403), 16 embedding-restricted (401, playability unknown). On the 40 videos also attempted with yt-dlp the two agree (25/25 downloaded = 200; 15/15 unavailable = 403/404). Clips on public videos: 2,208 of 3,191 (69.2%): train 1,537, val 372, test 299; per class mean 44.2, SD 5.6, range 31-56; 115 of 165 signers. The paper reports mean 48, SD 6 per class after its own screening.",
+        "Bulk video download from the cluster was stopped on 2026-10-02 after 223 of 7,212 videos when YouTube began requiring sign-in bot verification; it was not worked around. 25 of the 730 public top-50 videos are already staged.",
+        "Check of the paper's '48 videos on average, SD 6' against labels 0-49 (2026-10-02). Per-class clips: full 2019 release 63.8, SD 6.2 (total 3,191); public today 44.2, SD 5.6 (2,208), or 46.0, SD 5.5 (2,301) counting embed-restricted videos. Per-class distinct source videos: full release 50.9, SD 6.0 (2,545); public today 34.9, SD 5.1. No reading available today gives 48: the paper's figure sits between the full release and today's public set if 'videos' means clips (about 75% of the release), or just under the full release if it means distinct source videos (about 94%). The statistic is consistent with a top-50 subset but cannot be verified, and does not identify which clips the authors kept."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "request-author-data",
+          "description": "Obtain the authors' curated clips (or at least their clip list, trim boundaries, and train/test split) through Team S.",
+          "paper_evidence": "Sec. 4.1 describes a single compiled dataset used for all eight models.",
+          "decision_needed": "Team S coordination and author contact; permission basis for storing the clips on project Modal storage."
+        },
+        {
+          "alternative_id": "rebuild-from-msasl",
+          "description": "Rebuild a 50-class set from the public MS-ASL annotations (top-50 classes by frequency, official start/end times, currently live YouTube links) with a new seeded 85/15 split.",
+          "paper_evidence": "Sec. 4.1 gives the selection rule and split ratio only.",
+          "decision_needed": "This is a behaviour-changing substitution: different clips, no manual screening or trimming, a different split. Under the study rules its numbers are conditional evidence and no Table 2 target could be marked produced. Needs a protocol decision, plus confirmation that downloading the YouTube videos to project cloud storage is permitted."
+        },
+        {
+          "alternative_id": "record-blocked-on-data",
+          "description": "Stop without running and record all 24 targets as not produced (data_unavailable).",
+          "paper_evidence": "Same as above.",
+          "decision_needed": "Team decision that neither route above is worth pursuing."
+        }
+      ],
+      "required_action": "Human decision among the alternatives; route dataset acquisition to Team S. Raise in #repro-sign-team-r.",
+      "resolution": "Resolved 2026-10-02 by the assignee: alternative record-blocked-on-data. After the availability and per-class checks showed the authors' set cannot be recovered or matched from public MS-ASL, the assignee decided to record the paper as not reproducible on data grounds without running experiments. The author-data route through Team S was not pursued; the conditional rebuild was not run.",
+      "author_contact": "None."
+    },
+    {
+      "gate_id": "protocol-underspecified-training",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "Beyond the data, the fine-tuning recipe is not reproducible as written: per-model hyperparameters were tuned 'until we achieved optimal performance' with only ranges given, and there is no validation split, so the reported test accuracy is also the model-selection criterion.",
+      "evidence": [
+        "Sec. 4.2: 'We then began unfreezing the network architecture and hyperparameter tuning until we achieved optimal performance for each model.'",
+        "Sec. 4.2 gives ranges only: cosine schedule 1e-2 to 1e-5; weight decay 1e-3 to 1e-4. Batch size, epochs after unfreezing, unfreezing order, framework, pretrained-weight source, test-time clip sampling, and seeds are not stated.",
+        "Sec. 4.1 describes only a train/test split."
+      ],
+      "required_action": "If a run is authorised under the data gate, agree one fixed, documented recipe per model before launch (no tuning against the test split); record every filled-in value as a guess.",
+      "resolution": "Not reached: closed 2026-10-02 without a decision because the data blocker ended the attempt before any recipe was needed. The under-specification stands as recorded."
+    }
+  ],
+  "datasets": [
+    {
+      "dataset_id": "ms-asl",
+      "name": "MS-ASL (parent of the authors' unpublished curated 50-class subset)",
+      "version_or_subset": "Official 2019 annotation release (MS-ASL.zip, sha256 a8562008309eea4129e1bc0ed7f654a314fee195227222859657e307b6434c34): 25,513 clips over 7,212 YouTube videos, 1,000 classes. The experiments used a derived set that is not this release: Unpublished. Sec. 4.1: the 50 most frequent MS-ASL classes; videos 'manually downloaded, screened, and trimmed'; repeated signs, non-target-class frames and idle frames removed by hand; long clips uniformly subsampled, short clips zero-padded at the front; about 48 videos per class (std 6), i.e. roughly 2,400 clips; random 85%/15% train/test split with no published file list or seed.",
+      "license_or_permission": "Queue record lists MS-ASL under Microsoft's Computational Use of Data Agreement (C-UDA); that covers the annotation files. The underlying videos are third-party YouTube uploads and the authors' curated clips are author-held. Not yet verified for project-cloud processing.",
+      "cloud_processing_allowed": false,
+      "cloud_processing_basis": "Unresolved and treated as not allowed for the videos: C-UDA covers the annotations only, and no decision was recorded on storing third-party YouTube videos on project storage beyond the assignee's instruction to attempt acquisition. Nothing was uploaded.",
+      "modal_volume": "datasets",
+      "modal_path": "ms-asl",
+      "populated": false,
+      "populated_note": "Checked 2026-10-02 through the wrapper (Modal CLI 1.6.0, profile repro-sign). Volumes `datasets` and `huggingface-cache` both exist. The `datasets` root has 26 directories and none is MS-ASL or a derivative: `check_modal_dataset.sh ms-asl` exited 1 with \"Requested dataset 'ms-asl' is absent from Modal Volume 'datasets'\", and a case-insensitive listing for 'asl' matched only WLASL, arasl-database-grayscale, asl-alphabet, asl-citizen, asl-semcom-rgb, and aslg-pc12, which are different datasets. The path is the intended slug only.",
+      "availability": "Exact data unavailable from public sources: the clip list, manual trims, and split are unpublished (gate data-authors-curated-subset).",
+      "expected_counts": "About 2,400 clips over 50 classes; test split about 15% (about 360 clips). Exact counts are not stated in the paper.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 16054,
+          "note": "Official MS-ASL split of the full release; the paper did not use it and drew its own 85/15 split of the curated subset.",
+          "files": [
+            {
+              "path": "annotations/MSASL_train.json",
+              "sha256": "dfd75a9f3087e57b105123d3553445a9e1d2fbd0c25ee6b3767a14dee68a8c02"
+            }
+          ]
+        },
+        {
+          "name": "val",
+          "sample_count": 5287,
+          "note": "Official MS-ASL split of the full release; the paper did not use it and drew its own 85/15 split of the curated subset.",
+          "files": [
+            {
+              "path": "annotations/MSASL_val.json",
+              "sha256": "c698b0ce4b2be749bede18c423d32cb8d6440c23bb52a6b7beb802bbc27e44be"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 4172,
+          "note": "Official MS-ASL split of the full release; the paper did not use it and drew its own 85/15 split of the curated subset.",
+          "files": [
+            {
+              "path": "annotations/MSASL_test.json",
+              "sha256": "aa0f78ef40d03696ce7effc0d087ba6a8fe83dbd1e777a027b20a79a1514df8f"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "dead_ends": [
+    {
+      "id": "msasl-video-acquisition",
+      "detail": "data.sh was run on 2026-10-02 from an institutional cluster to build a shared ms-asl tree (official annotations plus one clip per annotation). It processed 223 of 7,212 videos (126 downloaded, 349 clips cut; 97 private or removed) in two minutes, then stopped when YouTube required sign-in bot verification, which was not worked around. Nothing was uploaded to Modal. Earlier HTTP 403 failures were a tooling fault fixed by installing a current yt-dlp with a JavaScript runtime."
+    }
+  ]
+}
