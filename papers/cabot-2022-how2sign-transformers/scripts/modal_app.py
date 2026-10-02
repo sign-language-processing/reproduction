@@ -334,12 +334,26 @@ def prepare_how2(run_id:str):
     print(json.dumps(meta));print((out/'stdout.log').read_text()[-20000:])
     if p.returncode:raise RuntimeError('Data adapter failed: '+str(p.returncode))
 
-@app.function(image=image,cpu=2,memory=4096,timeout=600,volumes={'/outputs':outputs,'/cache/huggingface':cache})
+@app.function(image=image,cpu=2,memory=4096,timeout=1800,volumes={'/outputs':outputs,'/cache/huggingface':cache})
 def collect(run_id:str):
-    import subprocess,os
+    import subprocess,os,json,datetime,hashlib
     env=dict(os.environ,HF_HOME='/cache/huggingface',HF_HUB_CACHE='/cache/huggingface/hub',PYTHONNOUSERSITE='1');env.pop('PYTHONPATH',None)
-    subprocess.run([PYTHON,'/opt/collect.py',str(Path('/outputs')/run_id)],env=env,check=True)
-    outputs.commit()
+    started=datetime.datetime.now(datetime.timezone.utc)
+    meta=dict(started_at_utc=started.isoformat(),app_id=app.app_id,
+        function_call_id=modal.current_function_call_id(),max_wall_time_seconds=1800,
+        collector_sha256=hashlib.sha256(Path('/opt/collect.py').read_bytes()).hexdigest())
+    print(json.dumps(meta),flush=True)
+    try:
+        result=subprocess.run([PYTHON,'/opt/collect.py',str(Path('/outputs')/run_id)],env=env,timeout=1740)
+        meta['exit_code']=result.returncode
+    except subprocess.TimeoutExpired:
+        meta['exit_code']=124
+    meta['finished_at_utc']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+    # Written after the manifest, so its final timestamp cannot invalidate an
+    # already-recorded hash. The report records this receipt separately.
+    (Path('/outputs')/run_id/('collection-'+started.strftime('%Y%m%dT%H%M%S')+'.json')).write_text(json.dumps(meta,indent=2))
+    outputs.commit();print(json.dumps(meta),flush=True)
+    if meta['exit_code']:raise RuntimeError('CPU collection failed: '+str(meta['exit_code']))
 
 
 @app.function(image=how2_image,cpu=1,memory=4096,timeout=300,
