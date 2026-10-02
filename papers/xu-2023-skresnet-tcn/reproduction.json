@@ -14,10 +14,11 @@
       "agent_id": "master-review-agent",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent source, figure, and comparison-provenance review only; no run execution contribution. Exact model_id and harness_version unavailable in session.",
+      "scope": "Independent source, figure, and comparison-provenance review only; no run execution contribution. Exact model_id and harness_version unavailable in session. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution.",
       "evidence": [
-        "Parent /root session message on 2026-10-01: independently rendered PDF pages 4\u20135; Figures 2\u20134 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
-        "Parent /root supplied the primary (2+1)D-SLR abstract discrepancy lead; executing agent independently verified its 98.7% versus Xu Table 4 98.2%. Session identifies GPT-6 using Codex but exposes no exact model or application version."
+        "Parent /root session message on 2026-10-01: independently rendered PDF pages 4–5; Figures 2–4 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
+        "Parent /root supplied the primary (2+1)D-SLR abstract discrepancy lead; executing agent independently verified its 98.7% versus Xu Table 4 98.2%. Session identifies GPT-6 using Codex but exposes no exact model or application version.",
+        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
       ]
     },
     {
@@ -142,7 +143,7 @@
           "sub_area_of_slp": [
             "Isolated signing videos"
           ],
-          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long\u2013short term memory, which effectively saves computational cost and time cost.",
+          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long–short term memory, which effectively saves computational cost and time cost.",
           "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
           "venue": "Hindawi Journal of Sensors",
           "what_to_reproduce": "Table 4",
@@ -386,7 +387,7 @@
       "unresolved": "Widths/depth/inputdimensions/dilationsequence/keyframe-smoothing and baseunification; iteration versus epoch; Figure7 says testbest at656.",
       "system": "Improved SKResNet-TCN",
       "checkpoint_rule": "Figure7 reports best test state at656iterations; validation selection unspecified",
-      "paper_evidence": "Sections3.3\u20133.6,4.1,Table4"
+      "paper_evidence": "Sections3.3–3.6,4.1,Table4"
     },
     {
       "experiment_id": "conditional-sknet50-tcn",
@@ -395,7 +396,7 @@
       "recipe": "timm 1.0.22 skresnext50_32x4d; random initialization, Mish and max pooling; cited TCN blocks with width 256, kernel 3 and dilations 1/2/5; Ranger 1e-4, 1,000 steps, effective batch 128, microbatch 4; seed 42",
       "checkpoint_rule": "Maximum validation accuracy every 50 steps; earliest tie; test only after training.",
       "comparability": "Conditional evidence: the author architecture is unavailable. This assessment and all configuration choices were fixed before scores.",
-      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
+      "paper_evidence": "Sections 3–4, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
       "conditional_result": {
         "run_id": "conditional-full-seed42-001",
         "artifact_ids": [
@@ -792,7 +793,7 @@
       "original_value": 12.34,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
         "status": "not_produced",
@@ -814,7 +815,7 @@
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
+          "Table4 and Sections3–4;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
@@ -831,7 +832,7 @@
       "original_value": 62.5,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
         "status": "not_produced",
@@ -853,7 +854,7 @@
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
+          "Table4 and Sections3–4;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
@@ -870,7 +871,7 @@
       "original_value": 100.0,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
         "status": "not_produced",
@@ -892,7 +893,7 @@
           "architecture"
         ],
         "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
+          "Table4 and Sections3–4;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
       }
@@ -1610,9 +1611,9 @@
       "gate_id": "architecture",
       "status": "resolved",
       "evidence": [
-        "Sections3.3\u20133.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
+        "Sections3.3–3.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
         "Official article/PDF/data-availability/references examined. GitHub repository search SKResNet-TCN and9503961 both return0. Exacttitle/model/authorwebsearch yields paper/citations, no author code. GenericSKNet/TCN artifacts cannot resolve missing hybrid specification.",
-        "Independent master review rendered PDF pages 4\u20135: Figures 2\u20134 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
+        "Independent master review rendered PDF pages 4–5: Figures 2–4 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
         "2026-10-01 judgment review: ordinary split/seed/iteration/default choices are declared rather than gated; missing core architecture still prevents exact target attribution. Conditional execution proceeds independently."
       ],
       "type": "protocol",
@@ -1679,5 +1680,17 @@
   "author_contact": {
     "contacted": false,
     "reason": "No author contact authorized."
+  },
+  "conclusion_assessment": {
+    "summary": "The central claim of simultaneously achieving 100% accuracy with fewer parameters and operations is not established by this attempt. The documented reconstruction produced 55.15625% accuracy with 28.53M parameters and 143.947G counted operations; it does not recover the claimed 100%, 12.34M and 62.50G.",
+    "evidence": [
+      "Paper Table 4 and section 4.3 claim a joint accuracy/efficiency advantage; section 5 repeats that conclusion.",
+      "The completed conditional-full-seed42-001 run and existing raw artifacts preserve measured accuracy, architecture counts and fixed pre-score choices."
+    ],
+    "limits": [
+      "The paper does not identify the exact executable architecture. Our larger declared reconstruction cannot serve as a controlled refutation of the unavailable author model.",
+      "A different architecture chosen to hit the published counts would be a new assumption, not evidence resolving this attempt. No new experiment is required to conclude that the current evidence does not establish the claimed advantage."
+    ],
+    "assessed_at_utc": "2026-10-02T06:52:37.540428+00:00"
   }
 }
