@@ -1,6 +1,7 @@
 """Invoke pinned native YOLOv5 training, resume and held-out evaluation."""
 import argparse
 import hashlib
+import inspect
 import json
 import math
 from pathlib import Path
@@ -22,6 +23,10 @@ from utils.callbacks import Callbacks
 from utils.general import non_max_suppression
 
 RECIPES = {'s': (16, 60, .015), 'm': (16, 50, .01), 'l': (24, 50, .01)}
+
+
+class PreflightCheckpointReady(Exception):
+    """Intentional boundary after native epoch1 checkpoint save, before epoch2."""
 
 
 def sha(path):
@@ -85,7 +90,11 @@ def main():
     warm_times = []
     observed_shapes = set()
     epoch_counts = {}
+    validation_started = {}
+    validation_seconds = {}
     previous = None
+    expected_resume = None
+    resume_proof = {}
 
     def batch_end(ni, model, images, targets, paths, plots, sync_bn):
         nonlocal previous
@@ -94,6 +103,11 @@ def main():
         observed_shapes.add(tuple(images.shape))
         epoch = ni // batch_count
         epoch_counts[epoch] = epoch_counts.get(epoch, 0) + len(images)
+        if expected_resume is not None and 'first_resumed_batch_ni' not in resume_proof:
+            assert ni == (expected_resume['epoch'] + 1) * batch_count
+            resume_proof['first_resumed_batch_ni'] = ni
+            resume_proof['first_resumed_epoch'] = epoch
+            (args.output / 'resume-proof.json').write_text(json.dumps(resume_proof, indent=2) + '\n')
         if previous is not None and ni % batch_count != 0:
             warm_times.append(now - previous)
         previous = now
@@ -102,8 +116,59 @@ def main():
 
     def epoch_end(epoch):
         assert epoch_counts[epoch] == train_count, 'Native loader sample count changed'
+        torch.cuda.synchronize()
+        validation_started[epoch] = time.monotonic()
 
     callbacks.register_action('on_train_epoch_end', callback=epoch_end)
+
+    def validation_end(log_vals, epoch, best_fitness, fi):
+        torch.cuda.synchronize()
+        validation_seconds[epoch] = time.monotonic() - validation_started[epoch]
+
+    callbacks.register_action('on_fit_epoch_end', callback=validation_end)
+
+    def equal_state(actual, expected):
+        if isinstance(expected, torch.Tensor):
+            assert torch.equal(actual.detach().cpu(), expected.detach().cpu().to(actual.dtype))
+        elif isinstance(expected, dict):
+            assert actual.keys() == expected.keys()
+            for key in expected:
+                equal_state(actual[key], expected[key])
+        elif isinstance(expected, (list, tuple)):
+            assert len(actual) == len(expected)
+            for left, right in zip(actual, expected):
+                equal_state(left, right)
+        else:
+            assert actual == expected
+
+    def verify_native_restore():
+        if expected_resume is None:
+            return
+        # The published hook has no arguments. Inspect its native caller read-only;
+        # no upstream training function or optimizer is replaced.
+        frame = inspect.currentframe().f_back
+        while frame is not None and not (frame.f_code.co_name == 'train' and
+                                          frame.f_code.co_filename.endswith('/yolov5/train.py')):
+            frame = frame.f_back
+        assert frame is not None, 'Pinned native training caller not found'
+        native = frame.f_locals
+        assert native['start_epoch'] == expected_resume['epoch'] + 1
+        equal_state(native['model'].state_dict(), expected_resume['model'].state_dict())
+        equal_state(native['optimizer'].state_dict(), expected_resume['optimizer'])
+        equal_state(native['ema'].ema.state_dict(), expected_resume['ema'].state_dict())
+        assert native['ema'].updates == expected_resume['updates']
+        resume_proof.update({'loaded_model_state_equal': True, 'loaded_optimizer_state_equal': True,
+                             'loaded_ema_state_equal': True, 'loaded_ema_updates': native['ema'].updates,
+                             'native_start_epoch': native['start_epoch']})
+        del frame, native
+
+    callbacks.register_action('on_pretrain_routine_end', callback=verify_native_restore)
+
+    def stop_at_resume_boundary(last, epoch, final_epoch, best_fitness, fi):
+        if args.preflight and args.model == 's' and not args.resume_check and epoch == 1:
+            raise PreflightCheckpointReady()
+
+    callbacks.register_action('on_model_save', callback=stop_at_resume_boundary)
     torch.cuda.reset_peak_memory_stats()
     started = time.monotonic()
     if args.resume_check or args.resume:
@@ -116,9 +181,14 @@ def main():
             'checkpoint_sha256': sha(checkpoint), 'epoch': state['epoch'],
             'optimizer_state_entries': len(state['optimizer']['state']), 'ema_updates': state['updates'],
         }, indent=2) + '\n')
-        del state
+        expected_resume = state
         opt.resume = str(checkpoint)
-    train.main(opt, callbacks=callbacks)
+    try:
+        train.main(opt, callbacks=callbacks)
+    except PreflightCheckpointReady:
+        assert args.preflight and args.model == 's' and not args.resume_check
+    if expected_resume is not None:
+        assert resume_proof['first_resumed_epoch'] == expected_resume['epoch'] + 1
     torch.cuda.synchronize()
     train_seconds = time.monotonic() - started
     if args.preflight and args.model == 's' and not args.resume_check:
@@ -126,6 +196,7 @@ def main():
         result = {'phase': 'pre-resume', 'training_seconds': train_seconds,
                   'peak_gpu_bytes': torch.cuda.max_memory_allocated(),
                   'mean_warm_batch_seconds': statistics.mean(warm_times),
+                  'epoch_validation_seconds': validation_seconds,
                   'observed_training_shapes': sorted(observed_shapes),
                   'weights_url': url, 'weights_sha256': weight_hash}
         (args.output / 'pre-resume.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -134,20 +205,53 @@ def main():
     checkpoint = args.output / 'train/weights/best.pt'
     evaluation = args.output / 'test'
     evaluation.mkdir(exist_ok=True)
+    test_shapes = set()
+
+    def record_test_shape(pred, predn, path, names, image):
+        test_shapes.add(tuple(image.shape))
+
+    callbacks.register_action('on_val_image_end', callback=record_test_shape)
     eval_started = time.monotonic()
     values, maps, timings = val.run(str(args.data), weights=str(checkpoint), batch_size=batch,
                                    imgsz=416, task='test', device='0', project=str(args.output),
                                    name='test', exist_ok=True,
                                    save_txt=True, save_conf=True, save_json=True, plots=True,
-                                   half=True, verbose=True)
+                                   half=True, verbose=True, callbacks=callbacks)
     torch.cuda.synchronize()
     eval_seconds = time.monotonic() - eval_started
+    from pycocotools.coco import COCO
+    from pycocotools.cocoeval import COCOeval
+    ground_truth = COCO(str(args.data.parent / 'coco-test.json'))
+    native_prediction_path = evaluation / 'best_predictions.json'
+    native_predictions = json.loads(native_prediction_path.read_text()) if native_prediction_path.exists() else []
+    image_ids = set(ground_truth.getImgIds())
+    common_predictions = []
+    for prediction in native_predictions:
+        assert prediction['image_id'] in image_ids and 0 <= prediction['category_id'] < 28
+        common_predictions.append({**prediction, 'category_id': prediction['category_id'] + 1})
+    (evaluation / 'common-coco-predictions.json').write_text(json.dumps(common_predictions) + '\n')
+    if common_predictions:
+        detections = ground_truth.loadRes(common_predictions)
+    else:
+        detections = COCO()
+        detections.dataset = {'images': ground_truth.dataset['images'],
+                              'categories': ground_truth.dataset['categories'], 'annotations': []}
+        detections.createIndex()
+    coco_evaluator = COCOeval(ground_truth, detections, 'bbox')
+    coco_evaluator.params.imgIds = sorted(image_ids)
+    coco_evaluator.evaluate()
+    coco_evaluator.accumulate()
+    coco_evaluator.summarize()
+    np.savez_compressed(evaluation / 'common-coco-curves.npz',
+                        precision=coco_evaluator.eval['precision'], recall=coco_evaluator.eval['recall'],
+                        scores=coco_evaluator.eval['scores'])
     model = attempt_load(str(checkpoint), map_location=torch.device('cuda')).float().eval()
     # Unfused native architecture parameter count, before attempt_load's default fusion.
     saved = torch.load(checkpoint, map_location='cpu', weights_only=False)
     original_model = saved['ema'] if saved.get('ema') is not None else saved['model']
     parameter_count = sum(p.numel() for p in original_model.parameters())
-    test_paths = Path(dataset['test']).read_text().splitlines()
+    timing_split = 'val' if args.preflight else 'test'
+    test_paths = Path(dataset[timing_split]).read_text().splitlines()
     cpu_tensors = []
     for path in test_paths:
         with Image.open(path) as image:
@@ -157,7 +261,7 @@ def main():
     latency = []
     with torch.inference_mode():
         for index in range(5 + len(cpu_tensors)):
-            tensor = cpu_tensors[index % len(cpu_tensors)]
+            tensor = cpu_tensors[index if index < 5 else index - 5]
             torch.cuda.synchronize()
             clock = time.perf_counter()
             tensor = tensor.to('cuda').float() / 255.0
@@ -169,20 +273,28 @@ def main():
     result = {'model': f'yolov5{args.model}', 'preflight': args.preflight,
               'native_training_seconds_this_process': train_seconds,
               'evaluation_seconds': eval_seconds, 'native_test_metrics': list(values),
-              'native_per_class_ap': maps.tolist(), 'native_mean_timing_ms': list(timings),
+              'raw_native_maps_including_absent_class_fallback': maps.tolist(),
+              'per_class_ap': [float(value) if ground_truth.getAnnIds(catIds=[i + 1]) else None
+                               for i, value in enumerate(maps)],
+              'per_class_note': 'Native maps fills unsupported classes with global mAP; NOON has no ground truth and is reported null rather than as a measured per-class score.',
+              'native_mean_timing_ms': list(timings),
+              'observed_test_image_shapes': sorted(test_shapes),
+              'common_pycocotools_stats': coco_evaluator.stats.tolist(),
+              'common_evaluator_note': 'pycocotools 2.0.11 bbox COCOeval with default maxDets=100; category IDs shifted from 0..27 to 1..28; identical held-out image IDs and boxes as Faster R-CNN. Native YOLO JSON rounds boxes to 3 decimals and scores to 5 decimals; native AP remains separate. Category 25 (NOON) has no ground truth and standard COCO averaging excludes it.',
               'parameters_unfused': parameter_count,
-              'matched_batch1_inference_seconds': {'image_paths': [test_paths[i % len(test_paths)] for i in range(5, 5 + len(test_paths))], 'samples': latency, 'min': min(latency), 'max': max(latency),
+              'matched_batch1_inference_seconds': {'split': timing_split, 'image_paths': test_paths, 'samples': latency, 'min': min(latency), 'max': max(latency),
                                                  'mean': statistics.mean(latency),
                                                  'median': statistics.median(latency),
                                                  'fps': 1 / statistics.mean(latency)},
-              'timing_boundary': 'FP32 fused eval model, batch1 actual416x416 decoded CPUuint8 input, H2D/float/255 normalization, forward and nativeNMS(conf .25, IoU .45, max300); 5warmups, one synchronized sample per testimage. Excludes filedecode/render/metrics. Native half-precision held-out validation timing is separate.',
+              'timing_boundary': 'FP32 fused evaluation model, batch 1 with actual 416x416 decoded CPU uint8 input; H2D transfer, float/255 normalization, forward and native NMS (confidence .25, IoU .45, max 300); 5 warmups and one synchronized sample per timing image (shared validation subset in preflight, test split in full runs). Excludes file decoding, rendering and metric computation. Native half-precision held-out validation timing is separate.',
               'peak_gpu_bytes': torch.cuda.max_memory_allocated(),
               'mean_warm_batch_seconds': statistics.mean(warm_times),
+                  'epoch_validation_seconds': validation_seconds,
               'observed_training_shapes': sorted(observed_shapes),
               'observed_epoch_sample_counts': epoch_counts,
               'split_seed': 42, 'native_training_seed': 0,
               'weights_url': url, 'weights_sha256': weight_hash,
-              'best_checkpoint_sha256': sha(checkpoint), 'resume_verified': args.resume_check}
+              'best_checkpoint_sha256': sha(checkpoint), 'resume_verified': bool(args.resume_check or args.resume)}
     (args.output / 'metrics.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result), flush=True)
 

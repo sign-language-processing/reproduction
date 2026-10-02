@@ -36,6 +36,15 @@
       "evidence": [
         "Current Codex session identifies GPT-6; subagent /root/siformer explicitly assigned Faster R-CNN continuation."
       ]
+    },
+    {
+      "agent_id": "independent-protocol-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent paper/protocol and preflight source review; bounded CPU cross-release annotation evidence audit. Does not execute GPU training. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Current Codex session identifies GPT-6; subagent /root/compute_inventory reviewed native recipes and checkpoint/data guards, then explicitly assigned read-only cross-release archive audit."
+      ]
     }
   ],
   "assignment": {
@@ -226,43 +235,40 @@
     {
       "dataset_id": "author-arsl",
       "name": "Aiouez/Belmadoui ArSL RGB bounding-box dataset",
-      "version_or_subset": "Author augmented v1 actual15,088JPEGs,15,086labels; eligible15,086 labeled images after excluding two exact duplicate unannotated copies.",
+      "version_or_subset": "Author augmented v1:15088JPEGs; exclude2unannotated exact-byte duplicates and1image with sole zero-area box =>15085eligible. Author28-class ontology retained, actual annotation support27classes (NOON/class24 absent).",
       "license_or_permission": "Unknown owner license; explicit user-authorized internal research-use exception on 2026-10-02, no redistribution.",
       "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "modal_path": "belmadoui-arabic-sign-language",
-      "availability": "Both exact public v1 archives acquired and all20,920JPEGs decoded and hashed. Augmented15088JPEGs/15086labels includes two redundant unlabeled exact-byte copies; valid labeled originals retained. Canonical annotation/split validation in progress.",
+      "availability": "Verified on canonical v2 datasets Volume; immutable shared preparation completed.15085eligible images/15101boxes,27observedclasses with28-class ontology.",
       "splits": [
         {
           "name": "train",
-          "sample_count": 13926,
+          "sample_count": 12068,
           "files": [
             {
-              "path": "kaggle-augmented-metadata.txt",
-              "sha256": "f94432b4e58f39734e8de9afa5f68afeadbf11d36d1ff45ec478b3a9057d0d49",
-              "role": "Metadata declaring expected sample count; not a checksum of dataset contents, which were not acquired."
+              "path": "modal://datasets/belmadoui-arabic-sign-language/coco/full/train.json",
+              "sha256": "c1d04be2d65670b533c9ed7245ecccd5489c20a4fc5c4bb4b164e63f646228cc"
             }
           ]
         },
         {
-          "name": "validation",
-          "sample_count": 870,
+          "name": "val",
+          "sample_count": 1508,
           "files": [
             {
-              "path": "kaggle-augmented-metadata.txt",
-              "sha256": "f94432b4e58f39734e8de9afa5f68afeadbf11d36d1ff45ec478b3a9057d0d49",
-              "role": "Metadata declaring expected sample count; not a checksum of dataset contents, which were not acquired."
+              "path": "modal://datasets/belmadoui-arabic-sign-language/coco/full/val.json",
+              "sha256": "79c4f6c67baaf7aafa06f93060ddc63f085c64ce1b2ddf25db58f96d61be6bfd"
             }
           ]
         },
         {
           "name": "test",
-          "sample_count": 290,
+          "sample_count": 1509,
           "files": [
             {
-              "path": "kaggle-augmented-metadata.txt",
-              "sha256": "f94432b4e58f39734e8de9afa5f68afeadbf11d36d1ff45ec478b3a9057d0d49",
-              "role": "Metadata declaring expected sample count; not a checksum of dataset contents, which were not acquired."
+              "path": "modal://datasets/belmadoui-arabic-sign-language/coco/full/test.json",
+              "sha256": "3a75cd1b9528ffc7c69b2df9df7d54579bbb4b45ed63f45f5c728c7e3cb36049"
             }
           ]
         }
@@ -279,7 +285,89 @@
           "scope": "Acquisition/provenance audit only, not training;5832images/5811labels."
         }
       ],
-      "acquisition_manifest_sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090"
+      "acquisition_manifest_sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090",
+      "canonical_manifest": {
+        "uri": "modal://datasets/belmadoui-arabic-sign-language/manifest.json",
+        "sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e"
+      },
+      "cross_release_audit": {
+        "run_id": "cross-release-label-audit-v1",
+        "report_artifact_id": "cross-release-label-audit-v1-report-json",
+        "summary": {
+          "class_name_arrays_equal": true,
+          "verified_config_count": 5,
+          "exact_image_pair_count": 421,
+          "exact_pair_comparisons": {
+            "same_class_sequence_different_coordinates": 196,
+            "same_parsed_annotations": 211,
+            "different_class_sequence": 14
+          },
+          "exact_class_transitions": {
+            "([0, 0], [0, 0])": 1,
+            "([0], [0])": 21,
+            "([10], [10])": 6,
+            "([11], [11])": 5,
+            "([12], [12])": 6,
+            "([13], [13])": 10,
+            "([14], [14])": 4,
+            "([15], [15])": 7,
+            "([16], [16])": 18,
+            "([17], [17])": 24,
+            "([18], [18])": 26,
+            "([19], [19])": 21,
+            "([1], [1])": 10,
+            "([20], [20])": 11,
+            "([21], [21])": 42,
+            "([22], [22])": 41,
+            "([23], [23])": 41,
+            "([24], [0])": 14,
+            "([25], [25])": 14,
+            "([26], [26])": 13,
+            "([27], [27])": 11,
+            "([2], [2])": 14,
+            "([3], [3])": 18,
+            "([4], [4])": 12,
+            "([5], [5])": 7,
+            "([6], [6])": 8,
+            "([7], [7])": 1,
+            "([8], [8])": 12,
+            "([9], [9])": 3
+          },
+          "shared_filename_families": 5810,
+          "heuristic_family_class_transitions": {
+            "([0], [0])": 194,
+            "([10], [10])": 207,
+            "([11], [11])": 218,
+            "([12], [12])": 226,
+            "([13], [13])": 235,
+            "([14], [14])": 237,
+            "([15], [15])": 217,
+            "([16], [16])": 205,
+            "([17], [17])": 203,
+            "([18], [18])": 206,
+            "([19], [19])": 205,
+            "([1], [1])": 193,
+            "([20], [20])": 205,
+            "([21], [21])": 210,
+            "([22], [22])": 204,
+            "([23], [23])": 204,
+            "([24], [0])": 203,
+            "([25], [25])": 203,
+            "([26], [26])": 206,
+            "([27], [27])": 203,
+            "([2], [2])": 199,
+            "([3], [3])": 201,
+            "([4], [4])": 200,
+            "([5], [5])": 200,
+            "([6], [6])": 199,
+            "([7], [7])": 201,
+            "([8], [8])": 211,
+            "([9], [9])": 215
+          },
+          "unaugmented_missing_label_images": 21
+        },
+        "decision": "Preserve author augmented release labels unchanged for primary reproduction; do not repair transformed-image classes from heuristic filename lineage. Document that released benchmark supports27observed labels and cannot establish28-letter semantic recognition. No human execution decision pending."
+      }
     }
   ],
   "metric_definitions": [
@@ -1097,11 +1185,673 @@
         "memory_gib": 4,
         "gpu_count": 0
       },
+      "started_at_utc": "2026-10-02T07:12:59.440291+00:00",
+      "finished_at_utc": "2026-10-02T07:13:14.712181+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Validation found at least one nativeYOLO normalized coordinate or extent outside its assumed valid range; assertion stopped before split/COCO writes. A separate read-only label audit will establish actual extent before any correction.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "detail": "Validate unchanged author labels from hash-verified local archive. Exclude only two redundant unlabeled exact-byte duplicates; retain all boxes. Deterministic shared seed42 80/10/10 split, full/preflight COCO views. Immutable output checks; native840s, retries0.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-adh92JE2hAQczCBhYt5hps",
+        "function_call_id": "fc-01M3XQAZ71AQDNHYE25AH8J38Y",
+        "task_id": "ta-01M3XQAZBYDH0QDYYAFBP311FR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-adh92JE2hAQczCBhYt5hps"
+      },
+      "measurements": {
+        "native_subprocess_and_finalization_wall_seconds": 13.873750987000001,
+        "wall_seconds": 15.27189,
+        "gpu_hours": 0,
+        "timing_note": "Native monotonic counter began after initial dependency/source collection; UTC wrapper interval is the aggregate15.27189seconds."
+      },
+      "artifact_ids": [
+        "data-prepare-v1-acquisition-manifest-json",
+        "data-prepare-v1-console-log",
+        "data-prepare-v1-executed-source-py",
+        "data-prepare-v1-freeze-txt",
+        "data-prepare-v1-started-json",
+        "data-prepare-v1-execution-json"
+      ]
+    },
+    {
+      "run_id": "data-label-audit-v1",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode audit --run-id data-label-audit-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-label-audit-v1",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:14:29.247772+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.25
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:15:14.030673+00:00",
+      "finished_at_utc": "2026-10-02T07:15:34.694379+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only scan of all15,086 native label files found15,102 boxes, exactly onezero-heightbox, noout-of-range coordinates or emptylabel files. Declared28classes have27 observed IDs; class24NOON absent. No annotation changed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "detail": "Read-only archive label diagnostic after preparation found normalized bbox outside[0,1] or nonpositive extent. Enumerate exact rows/ranges/counts before choosing any correction; do not mutate annotations.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-RMFFjkcj2oPS1VECwOlm5j",
+        "function_call_id": "fc-01M3XQEZPTWZAQ5MPMKJ2CQ1X6",
+        "task_id": "ta-01M3XQF0PB787ND73RPS4D7JDR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RMFFjkcj2oPS1VECwOlm5j"
+      },
+      "measurements": {
+        "wall_seconds": 20.663702373,
+        "gpu_hours": 0
+      },
+      "artifact_ids": [
+        "data-label-audit-v1-acquisition-manifest-json",
+        "data-label-audit-v1-console-log",
+        "data-label-audit-v1-executed-source-py",
+        "data-label-audit-v1-freeze-txt",
+        "data-label-audit-v1-label-audit-json",
+        "data-label-audit-v1-started-json",
+        "data-label-audit-v1-execution-json"
+      ]
+    },
+    {
+      "run_id": "data-prepare-v2",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode prepare --run-id data-prepare-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-prepare-valid-labels",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:18:27.792349+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:18:54.961636+00:00",
+      "finished_at_utc": "2026-10-02T07:19:03.314034+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Verified all eligible native annotations; excluded two redundant unlabeled duplicatecopies and one solezero-area annotationimage. Froze disjoint12068/1508/1509 split and sharedCOCO views;28classheadmetadata,27observedclassIDs. Originalbytespreserved.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "detail": "Apply diagnosed eligibility rule: exclude only two redundant unlabeled byte-copies and one sole zero-area bbox image. Retain author28-class ontology/27observed IDs. Produce shared15085-image seed42 split12068/1508/1509; preserve all validboxes. Audit unaugmented class support without training use. Native840s, retries0.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-ph0t7a3MNbMmCrF0hsFfgG",
+        "function_call_id": "fc-01M3XQNT33QEM8ZJZ4WGTGSH46",
+        "task_id": "ta-01M3XQNTV6JY3KYZK9HE1BJ9RR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ph0t7a3MNbMmCrF0hsFfgG"
+      },
+      "measurements": {
+        "wall_seconds": 8.352388986000001,
+        "gpu_hours": 0,
+        "dataset_records": 15085,
+        "split_counts": {
+          "train": 12068,
+          "val": 1508,
+          "test": 1509
+        },
+        "box_count": 15101
+      },
+      "artifact_ids": [
+        "data-prepare-v2-acquisition-manifest-json",
+        "data-prepare-v2-console-log",
+        "data-prepare-v2-executed-source-py",
+        "data-prepare-v2-freeze-txt",
+        "data-prepare-v2-manifest-json",
+        "data-prepare-v2-started-json",
+        "data-prepare-v2-execution-json"
+      ]
+    },
+    {
+      "run_id": "faster-preflight-001",
+      "agent_ids": [
+        "faster-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/faster_modal.py --gpu-preflight --run-id faster-preflight-001 --data-root /datasets/belmadoui-arabic-sign-language --train-json /datasets/belmadoui-arabic-sign-language/coco/preflight/train.json --val-json /datasets/belmadoui-arabic-sign-language/coco/preflight/val.json --manifest /datasets/belmadoui-arabic-sign-language/manifest.json --manifest-sha256 bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-real-data-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:23:52.520712+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 3
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": "2026-10-02T07:24:54.450756+00:00",
+      "finished_at_utc": "2026-10-02T07:26:58.482983+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Ten native real-data updates completed. Model/optimizer/scheduler restored exactly atstep8; finite loss; native detection/COCOevaluation path exercised. Firsteval emitted detections/AP0; final tiny-preflight eval emitted none/APNaN, retainedraw as diagnostic only."
+      },
+      "detail": "Representative112train/28validation image preflight,8+2native updates and exact model/optimizer/scheduler checkpoint-restore proof; manifest/selected image hashes verified,28-head/27observed classes. Native1740s, retries0, unique output guard. Single GPU; YOLO preflight waits for terminal state.",
+      "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "modal_app_id": "ap-TWi4dSGoMzzNx3Ig39mhyE",
+      "source_files": [
+        {
+          "path": "scripts/faster_modal.py",
+          "sha256": "e5ff04de1ccef8e9025bd680d6668e54cd3472d60fea76474001532bf6dba57e"
+        },
+        {
+          "path": "scripts/faster_preflight.py",
+          "sha256": "cbda3319a82f5c91b3512999f5a37fd4352a5afa1cfa0b017663b382d7cc1cf3"
+        }
+      ],
+      "modal_function_call_id": "fc-01M3XR008EANWFX77J0YSFVESZ",
+      "modal_task_id": "ta-01M3XR00ERKBJK2DCH9Z07QCQR",
+      "native_command": [
+        "bash",
+        "-c",
+        "set -eu\npython -m pip install --no-deps \"$1\"\ngit apply --unsafe-paths --directory=\"$(python -c 'import sysconfig; print(sysconfig.get_path(\"purelib\"))')\" /work/faster-pillow.patch\ngit clone --depth 1 --branch v0.6 https://github.com/facebookresearch/detectron2 /opt/detectron2\ntest \"$(git -C /opt/detectron2 rev-parse HEAD)\" = d1e04565d3bec8719335b88be9e9b961bf3ec464\nshift\nexec \"$@\"",
+        "faster-preflight",
+        "/outputs/faster-source-probe-001/wheels/detectron2-0.6-cp312-cp312-linux_x86_64.whl",
+        "python",
+        "/work/faster_preflight.py",
+        "--output",
+        "/outputs/faster-preflight-001",
+        "--data-root",
+        "/datasets/belmadoui-arabic-sign-language",
+        "--train-json",
+        "/datasets/belmadoui-arabic-sign-language/coco/preflight/train.json",
+        "--val-json",
+        "/datasets/belmadoui-arabic-sign-language/coco/preflight/val.json",
+        "--manifest",
+        "/datasets/belmadoui-arabic-sign-language/manifest.json",
+        "--manifest-sha256",
+        "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e"
+      ],
+      "gpu_count": 1,
+      "gpu": "A100-80GB",
+      "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "native_timeout_seconds": 1740,
+      "wall_seconds": 124.032153454,
+      "result": {
+        "manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+        "train_annotations_sha256": "6140e40b5a124b9048a34925ae50531418e84c5ae8bf7bcc203d75792d840d21",
+        "validation_annotations_sha256": "29c96bfb5418fd0f6810fe26f3445361fc4e8627747783f56e9f03432d3c7451",
+        "counts": {
+          "preflight_train": 112,
+          "preflight_val": 28
+        },
+        "selected_image_hashes_verified": 140,
+        "observed_category_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          26,
+          27,
+          28
+        ],
+        "absent_category_id": 25,
+        "weights_url": "https://dl.fbaipublicfiles.com/detectron2/COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x/139173657/model_final_68b088.pkl",
+        "weights_sha256": "fe5ad56ff746aa55c5f453b01f8395134e9281d240dbeb473411d4a6b262c9dc",
+        "normalization": {
+          "input_format": "BGR",
+          "pixel_mean": [
+            103.53,
+            116.28,
+            123.675
+          ],
+          "pixel_std": [
+            57.375,
+            57.12,
+            58.395
+          ]
+        },
+        "resume_scope": "Native checkpointer with explicit optimizer registration because v0.6 DefaultTrainer omits it; model/optimizer/scheduler/iteration restore tested. RNG and data cursor are not preserved.",
+        "native_source_revision": "d1e04565d3bec8719335b88be9e9b961bf3ec464",
+        "all_parameters": 104517980,
+        "trainable_parameters": 104092828,
+        "initial_training_and_validation_seconds": 18.912996488999994,
+        "initial_checkpoint_path": "model/model_0000007.pth",
+        "initial_checkpoint_sha256": "9cee6ea851d232657dd1e2741ab768040fe86dde7e0f982e77439122b0ad4fd0",
+        "saved_model_exact": true,
+        "resume_model_optimizer_scheduler_exact": true,
+        "resume_start_iter": 8,
+        "completed_updates": 10,
+        "validation_metrics": {
+          "bbox": {
+            "AP": null,
+            "AP50": null,
+            "AP75": null,
+            "APs": null,
+            "APm": null,
+            "APl": null
+          }
+        },
+        "peak_gpu_memory_bytes": 10916049920,
+        "timing": {
+          "scope": "CPU uint8 CHW decoded/resized tensor through H2D/native normalization/model/postprocessing; excludes file decode and evaluation metrics. FP32 batch1, five warmups, synchronized CUDA.",
+          "seconds": [
+            0.03121969499999011,
+            0.03145626900000309,
+            0.036213321000005294,
+            0.03240950800000064,
+            0.03151881700000558,
+            0.031758319999994455,
+            0.03218544599999973,
+            0.033174762999991,
+            0.03239883999999904,
+            0.03975984500000607,
+            0.03326678800000593,
+            0.03800941400000113,
+            0.040463720999994734,
+            0.03408986400000913,
+            0.037741657000012196,
+            0.03345457499999327,
+            0.047194086999994056,
+            0.03169554400000152,
+            0.03445425499999999,
+            0.03329761099999473,
+            0.032841942000004565,
+            0.0370615679999986,
+            0.039407034000007,
+            0.03395291600000405,
+            0.03318313999999134,
+            0.0334035279999938,
+            0.04731544999999926,
+            0.035807629000004226
+          ],
+          "mean_seconds": 0.035311983821428736,
+          "median_seconds": 0.033429051499993534,
+          "min_seconds": 0.03121969499999011,
+          "max_seconds": 0.04731544999999926,
+          "fps": 28.318998022228353
+        },
+        "native_training_step_seconds": [
+          0.7477877910000004
+        ],
+        "native_loss_finite": true,
+        "final_checkpoint_sha256": "2ed3b1087385f8d7804ccf5c0b858ede791c6461b421e6f5637dbf3c3b65d3ac"
+      },
+      "validation_note": "Native evaluator completed with no detections after10updates; AP fields are NaN in raw output and null here, not target results."
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v1",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-cpu-smoke-v1",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:25:30.012187+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:26:03+00:00",
+      "finished_at_utc": "2026-10-02T07:31:35+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "interrupted",
+        "reason_code": "external_interruption",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "next_run_id": "yolo-cpu-smoke-v2",
+        "gate_ids": [],
+        "detail": "Provider/image provisioning DNS failure stopped app before any function execution; zero tasks confirmed, no GPU. One explicitly budgeted manual provisioning retry authorized by orchestration; no source change or experiment restart."
+      },
+      "detail": "CPU native v6.0 compatibility smoke using hash-verified preflight data: train/validation loader batch, COCO-initialized small model and one real forward/loss/backward. Same GPU image recipe; no scientific target claim. No automatic retry.",
+      "provisioning_evidence": {
+        "run_id": "yolo-cpu-smoke-v1",
+        "app_id": "ap-U2mDjf2LSnf4MB8kHzRWg3",
+        "local_command_exit_code": 1,
+        "function_call_id": null,
+        "function_execution_observed": false,
+        "app_created_at_utc": "2026-10-02T07:26:03+00:00",
+        "app_stopped_at_utc": "2026-10-02T07:31:35+00:00",
+        "app_tasks_at_audit": 0,
+        "gpu_hours": 0,
+        "detail": "Modal image build reached pinned base OCI unpacking, then CLI DNS error [Errno 8] nodename nor servname provided, or not known. App independently confirmed stopped with zero tasks; no function or source-smoke execution was observed. No output execution record expected.",
+        "launch_log_sha256": "845f141c68bfb364891d621e56af7a4c8ca74a9243cbf7da429e09963194019b",
+        "launch_log_bytes": 8677,
+        "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v1-launch.log"
+      },
+      "modal_app_id": "ap-U2mDjf2LSnf4MB8kHzRWg3"
+    },
+    {
+      "run_id": "cross-release-label-audit-v1",
+      "agent_ids": [
+        "independent-protocol-reviewer"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/lineage_modal.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cross-release-label-audit-v1",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T07:27:39.861481+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.25
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T07:28:01.055501+00:00",
+      "finished_at_utc": "2026-10-02T07:28:07.477149+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Hash-verified read-only cross-release audit completed; five class arrays match.14identical images change NOON24\u2192ALIF0;4retain identicalboxes.203originalNOON filename families map to529augmentedALIFimages (heuristic beyond exactmatches). No annotations changed."
+      },
+      "detail": "Read-only hash-verified archive comparison: compare actual class-name arrays and parsed label rows for421 identical-image pairs, separately audit heuristic filename-family transitions. No label changes. Internal raw evidence only. Native270s, retries0, exclusive output path.",
+      "modal_app_id": "ap-TgCpjPogRIcd0scDT8emgL",
+      "modal_function_call_id": "fc-01M3XR6GWMYSJY746H65MDKJHP",
+      "cpu": 2,
+      "memory_mib": 4096,
+      "gpu_count": 0,
+      "timeout_seconds": 300,
+      "native_timeout_seconds": 270,
+      "retry_ceiling": 0,
+      "cost_ceiling_chf": 0.25,
+      "wall_seconds": 6.4217219739999996,
+      "native_command": [
+        "python",
+        "/work/lineage_audit.py",
+        "/outputs/cross-release-label-audit-v1/report.json"
+      ]
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v2",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-cpu-smoke-v1",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:17:31.897401+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T09:17:59+00:00",
+      "finished_at_utc": "2026-10-02T09:21:34+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Retry passed OCI provisioning. Deterministic image-build failure: prescribed base contains Debian PyYAML 6.0.1 without pip RECORD, so replacing with 6.0.2 fails uninstall. No function executed. Next scoped fix retains base PyYAML 6.0.1 instead of replacing it; native YOLO only requires PyYAML >=5.3.1."
+      },
+      "detail": "One manual transient image-provisioning DNS retry after original app confirmed stopped/no function. Identical smoke/stage/Docker recipe; no speculative code change. Native retries0; no GPU.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "3283b0984627e68ba993690cf36ffe69f844f486d898585f10cb0bba5767dc92"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "d1c28fcc4ca5da95f1b5ce8001365b08d42296f5cafc2d17db8d5e6c1432045c"
+        }
+      ],
+      "provisioning_evidence": {
+        "run_id": "yolo-cpu-smoke-v2",
+        "app_id": "ap-kUtTYPPrkpqYwA9rGOEQ4m",
+        "local_command_exit_code": 1,
+        "function_call_id": null,
+        "function_execution_observed": false,
+        "gpu_hours": 0,
+        "detail": "Retry passed OCI provisioning. Deterministic image-build failure: prescribed base contains Debian PyYAML 6.0.1 without pip RECORD, so replacing with 6.0.2 fails uninstall. No function executed. Next scoped fix retains base PyYAML 6.0.1 instead of replacing it; native YOLO only requires PyYAML >=5.3.1.",
+        "launch_log_sha256": "697273ad7acfef089205b8a82b50de972e672a26e976adc52f94b0dcc4027fce",
+        "launch_log_bytes": 20265,
+        "app_created_at_utc": "2026-10-02T09:17:59+00:00",
+        "app_stopped_at_utc": "2026-10-02T09:21:34+00:00",
+        "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v2-launch.log"
+      },
+      "modal_app_id": "ap-kUtTYPPrkpqYwA9rGOEQ4m"
+    },
+    {
+      "run_id": "faster-full-001",
+      "agent_ids": [
+        "faster-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/faster_modal.py --full-run --run-id faster-full-001 --data-root /datasets/belmadoui-arabic-sign-language --manifest-sha256 bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e --weights-file /outputs/faster-preflight-001/initialization.pkl --weights-sha256 fe5ad56ff746aa55c5f453b01f8395134e9281d240dbeb473411d4a6b262c9dc --max-wall-seconds 43200",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:22:07.680090+00:00",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12,
+        "max_cost_chf": 42
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": "2026-10-02T09:22:43.015471+00:00",
+      "finished_at_utc": null,
+      "exit_code": null,
+      "terminal": null,
+      "source_files": [
+        {
+          "path": "scripts/faster_modal.py",
+          "sha256": "490e4a0e6add16e56f85c42986e51b352be8db9ee5d5a0492f3f2cca9a09ad3f"
+        },
+        {
+          "path": "scripts/faster_train.py",
+          "sha256": "92e6c4824f5c0ae2c4bdd6d38e0657deb1a417454246086f65e1a347dac04918"
+        }
+      ],
+      "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "weights_sha256": "fe5ad56ff746aa55c5f453b01f8395134e9281d240dbeb473411d4a6b262c9dc",
+      "execution_segments": {
+        "max_segments": 4,
+        "policy": "Same logical call only; original deadline immutable, no duplicate call or fresh restart. Provider replay without durable verified recovery fails closed. Each segment retained separately."
+      },
+      "forecast": {
+        "expected_wall_hours": [
+          8,
+          10
+        ],
+        "training_hours_from_preflight": 6.27,
+        "validation_hours_baseline": 1.26,
+        "detail": "30180updates\u00d70.748s warm preflight step;60\u00d71508validationimages\u00d70.05s plus checkpoint/COCO/setup overhead;12h hardcap/CHF42 reservation using verified prices and margin."
+      },
+      "detail": "Native SGD.001/batch24/416px/503updates\u00d760epochs with COCO initial weights. Independent full-hook/guard review and real checkpoint preflight passed; final held-out test uses native validation AP-selected checkpoint. Author released labels unchanged (NOON\u2192ALIF corruption disclosed),28head/27observed classes. RNG/data cursor limitation disclosed.",
+      "modal_app_id": "ap-WnKAcIYIQNxWkd4z5bYrtB",
+      "modal_function_call_id": "fc-01M3XYR3J6YA9D2K9DJGP13J59",
+      "original_deadline_unix": 1790976163.0154715,
+      "original_deadline_utc": "2026-10-02T21:22:43.015471Z",
+      "live_observation": {
+        "observed_at_utc": "2026-10-02T09:23:53Z",
+        "native_updates": 20,
+        "loss": 3.455,
+        "gpu_memory_gb": 10.4,
+        "detail": "Healthy first native training window; cold full-corpus I/O1.72s/step increases provisional ETA. Original12h ceiling retained; watch first/second epoch before revising forecast."
+      }
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v3",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v3",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-retain-base-pyyaml",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:23:01.610807+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
       "started_at_utc": null,
       "finished_at_utc": null,
       "exit_code": null,
       "terminal": null,
-      "detail": "Validate unchanged author labels from hash-verified local archive. Exclude only two redundant unlabeled exact-byte duplicates; retain all boxes. Deterministic shared seed42 80/10/10 split, full/preflight COCO views. Immutable output checks; native840s, retries0."
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        }
+      ],
+      "detail": "New diagnosed environment hypothesis: retain base Debian PyYAML6.0.1, which satisfies native requirements, instead of pip uninstalling a RECORD-less package for6.0.2. No model/protocol change. Same real-data CPU native smoke, no GPU/retries."
     }
   ],
   "artifacts": [
@@ -1254,6 +2004,308 @@
       "kind": "source_snapshot",
       "uri": "artifacts/yolo-data-acquisition-v1.py",
       "sha256": "19ffdc55fa5d562f41b955b980439f9a2b241ead840af741880d32378fadd222"
+    },
+    {
+      "artifact_id": "data-prepare-v1-acquisition-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/acquisition-manifest.json",
+      "sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090"
+    },
+    {
+      "artifact_id": "data-prepare-v1-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/console.log",
+      "sha256": "73b7870145ccff60195f3f80d3af9c2b4ab232848aa9bece6c2d6aec4e6c1ca8"
+    },
+    {
+      "artifact_id": "data-prepare-v1-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/executed-source.py",
+      "sha256": "cfc49060b6b2d9e14cb8e4d048996ae6f39b4b6c01675b44f1efcd75e7c72b5b"
+    },
+    {
+      "artifact_id": "data-prepare-v1-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/freeze.txt",
+      "sha256": "a65016813b20b9dfe190e455311d6e95ec6b4da720c1cdc0bba9d030420ec75c"
+    },
+    {
+      "artifact_id": "data-prepare-v1-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/started.json",
+      "sha256": "3d7558cf80cf51c951b415d45a5fc395e54022a897f547e482e6bbfcdd0ea032"
+    },
+    {
+      "artifact_id": "data-prepare-v1-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v1/execution.json",
+      "sha256": "41bc2a30447e09bb620bb92f97ade5a709dfa9c96b431ab83a5c373110ebf761"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-acquisition-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/acquisition-manifest.json",
+      "sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/console.log",
+      "sha256": "70d2b2b02d09637287673799b7adeae195dfeac23f528249d58c75f888ec7612"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/executed-source.py",
+      "sha256": "0a4af67b1617dacf430ac78b4e26fd5e9b6cd9cbfb483986248fc5aa7bc213be"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/freeze.txt",
+      "sha256": "a65016813b20b9dfe190e455311d6e95ec6b4da720c1cdc0bba9d030420ec75c"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-label-audit-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/label-audit.json",
+      "sha256": "adff9c1e30226d590f829deafc14edef0593369d29ad5163b1b6e546512210f2"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/started.json",
+      "sha256": "3c1a0acc93bd10c8f9d1b0360d5d477b970c3ceeef97e5e08bd62f743f622d10"
+    },
+    {
+      "artifact_id": "data-label-audit-v1-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-label-audit-v1/execution.json",
+      "sha256": "a984e357e2d560eec4cc61391511b1a01876e58367f123bbaffb1ad857876772"
+    },
+    {
+      "artifact_id": "data-prepare-v2-acquisition-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/acquisition-manifest.json",
+      "sha256": "ee043a72a3bf6eb7e204c01d415563b2c9e50d3889a05c016bb46069113b2090"
+    },
+    {
+      "artifact_id": "data-prepare-v2-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/console.log",
+      "sha256": "1e2030fd31772135cc6829a16b6dbc58acc8ea8ef5413570e383e9b3a23460d2"
+    },
+    {
+      "artifact_id": "data-prepare-v2-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/executed-source.py",
+      "sha256": "44b9d48b434ea69c1f604200e7e961dc504ec3783d1236cf79f5857127410641"
+    },
+    {
+      "artifact_id": "data-prepare-v2-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/freeze.txt",
+      "sha256": "a65016813b20b9dfe190e455311d6e95ec6b4da720c1cdc0bba9d030420ec75c"
+    },
+    {
+      "artifact_id": "data-prepare-v2-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/manifest.json",
+      "sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e"
+    },
+    {
+      "artifact_id": "data-prepare-v2-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/started.json",
+      "sha256": "8381225658dca8fb05f8d740f1a8e49659fc55d80320400cc3de399bc4d0e860"
+    },
+    {
+      "artifact_id": "data-prepare-v2-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/data-prepare-v2/execution.json",
+      "sha256": "635da394a50fe83703e7d784ab82b4be73b9d09bf0ba8dd2d7f8948370d8f11f"
+    },
+    {
+      "artifact_id": "faster-preflight-001-console-log",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/console.log",
+      "sha256": "51b1559c62d7c538d03c1aa061b870e60dd47ce3561b08e2674cf02ff3537c6a",
+      "size_bytes": 100739
+    },
+    {
+      "artifact_id": "faster-preflight-001-execution-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/execution.json",
+      "sha256": "0b264b55665869483f0948124a4d73dcacf74992ed281d1dedad344c2e4f0c03",
+      "size_bytes": 1762
+    },
+    {
+      "artifact_id": "faster-preflight-001-faster-pillow-patch",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/faster-pillow.patch",
+      "sha256": "6c5c2e5af1d457a231daf42c44028e4f6ce0686b766f5044e440c2f69b367fc4",
+      "size_bytes": 991
+    },
+    {
+      "artifact_id": "faster-preflight-001-faster_preflight-py",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/faster_preflight.py",
+      "sha256": "cbda3319a82f5c91b3512999f5a37fd4352a5afa1cfa0b017663b382d7cc1cf3",
+      "size_bytes": 10802
+    },
+    {
+      "artifact_id": "faster-preflight-001-gpu-txt",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/gpu.txt",
+      "sha256": "fb44a78943889104316522ae320860483baa7aa246afe3fe3837eea9d01c1c43",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "faster-preflight-001-initialization-pkl",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/initialization.pkl",
+      "sha256": "fe5ad56ff746aa55c5f453b01f8395134e9281d240dbeb473411d4a6b262c9dc",
+      "size_bytes": 420839087
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-config-yaml",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/config.yaml",
+      "sha256": "a2051b04ee6d088d7f60aafb08aeddbb65b5f3ee8ac6f555c69f0203958a9ce5",
+      "size_bytes": 5664
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-events-out-tfevents-1790925976-modal-127-0",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/events.out.tfevents.1790925976.modal.127.0",
+      "sha256": "803c0b233c1f6b176c95a17be00b58e420f341fd82b4baf2e7e50a1443a0e2ce",
+      "size_bytes": 2643
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-events-out-tfevents-1790926001-modal-127-1",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/events.out.tfevents.1790926001.modal.127.1",
+      "sha256": "903f8d44e678449930303ddec2f7a16cc9f773281f409d5c39d1b49d38ea59b3",
+      "size_bytes": 1117
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-last_checkpoint",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/last_checkpoint",
+      "sha256": "246223e02009784cb866f1bcb454a5edce8768b8e753b2967c09cffdc7e887ae",
+      "size_bytes": 15
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-log-txt",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/log.txt",
+      "sha256": "00f34812f32d1550d46d5ade6d90429b9dc3dd157a9751b86c05bc5a39407ef4",
+      "size_bytes": 86339
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-metrics-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/metrics.json",
+      "sha256": "6fc3302294a743b5e6b3085be8e5cf780c72db4497ddfc7f15f24de9927414d3",
+      "size_bytes": 1984
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-model_0000007-pth",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/model_0000007.pth",
+      "sha256": "9cee6ea851d232657dd1e2741ab768040fe86dde7e0f982e77439122b0ad4fd0",
+      "size_bytes": 836304573
+    },
+    {
+      "artifact_id": "faster-preflight-001-model-model_final-pth",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/model/model_final.pth",
+      "sha256": "2ed3b1087385f8d7804ccf5c0b858ede791c6461b421e6f5637dbf3c3b65d3ac",
+      "size_bytes": 836304573
+    },
+    {
+      "artifact_id": "faster-preflight-001-pip-freeze-txt",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/pip-freeze.txt",
+      "sha256": "f78b09a9f4dd5a26f65ac8cff632c06381a256c62c52dcf40dbcff9a9aefb0fb",
+      "size_bytes": 7070
+    },
+    {
+      "artifact_id": "faster-preflight-001-preflight-result-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/preflight-result.json",
+      "sha256": "50085e8e897e1174286222550aba714a475ccb26bb017e2b7f7b191e9fa0a199",
+      "size_bytes": 3372
+    },
+    {
+      "artifact_id": "faster-preflight-001-preflight_train-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/preflight_train.json",
+      "sha256": "6140e40b5a124b9048a34925ae50531418e84c5ae8bf7bcc203d75792d840d21",
+      "size_bytes": 37086
+    },
+    {
+      "artifact_id": "faster-preflight-001-preflight_val-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/preflight_val.json",
+      "sha256": "29c96bfb5418fd0f6810fe26f3445361fc4e8627747783f56e9f03432d3c7451",
+      "size_bytes": 10002
+    },
+    {
+      "artifact_id": "faster-preflight-001-validation-coco_instances_results-json",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/validation/coco_instances_results.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "size_bytes": 2
+    },
+    {
+      "artifact_id": "faster-preflight-001-validation-instances_predictions-pth",
+      "kind": "closed representative GPU preflight evidence",
+      "uri": "modal://repro-992e7a-results/faster-preflight-001/validation/instances_predictions.pth",
+      "sha256": "fb034c92eae24194f5a20e646279851d18ad8d1f243eda0128c4233110c62ce1",
+      "size_bytes": 1709
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-console-log",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/console.log",
+      "sha256": "adc840a4f23dcf8d7d21e2b16a269da84b6d7e2994ad4e88d46767878cea3452",
+      "size_bytes": 1768
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-execution-json",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/execution.json",
+      "sha256": "5058eb550106a566a02956e62c82f3eaeae0c4e4026a7ca4408ea50715e035e5",
+      "size_bytes": 605
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-lineage_audit-py",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/lineage_audit.py",
+      "sha256": "77622b10b79ec8c53588d04a1558add220839c833278d4f7d251acab715fb3a3",
+      "size_bytes": 7630
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-lineage_modal-py",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/lineage_modal.py",
+      "sha256": "45503888fa59c986316ff490965d543166e6e248643813059c8e56578bfe65be",
+      "size_bytes": 3155
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-pip-freeze-txt",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/pip-freeze.txt",
+      "sha256": "9a5b0b92abf6638e28063a5f12eb56673a69d9f4a8b688bef6d12bcdc84fc3d0",
+      "size_bytes": 303
+    },
+    {
+      "artifact_id": "cross-release-label-audit-v1-report-json",
+      "kind": "internal cross-release annotation audit evidence",
+      "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/report.json",
+      "sha256": "21dbe060ceda3ac64724b935d1f77e464128c0b583f91af90c562c41520fd138",
+      "size_bytes": 2666024
     }
   ],
   "gates": [
@@ -1328,6 +2380,12 @@
       "guess_id": "timing-boundary",
       "detail": "Measure batch1 warmed-up synchronized GPU model+postprocessing timing on shared hardware and actual tensor shapes; report samplecount,min/max,mean and FPS=N/total duration. Preserve preprocessing/transfer boundary separately.",
       "basis": "Paper lists possible Colab accelerators but no exact GPU or complete timing protocol. Hardware-dependent absolute times are descriptive conditional evidence."
+    },
+    {
+      "guess_id": "author-label-integrity",
+      "detail": "Exclude one image whose only bbox has zero height, preserving the exact source row in internal audit. Retain28-class head and author labels unchanged even though class24/NOON has no instances; preflight covers27 observed classes. Do not infer label reassignment from class frequencies.",
+      "basis": "Actual read-only archive label audit found exactly one invalid bbox; user authorized documented judgment calls for limited data defects.",
+      "limitation": "Released data cannot test the paper\u2019s claimed NOON-class recognition; scientific interpretation must identify absent class support."
     }
   ],
   "deviations": [
@@ -1825,14 +2883,48 @@
   "execution_state": {
     "state": "in_progress",
     "updated_at_utc": "2026-10-02T06:59:42.822634+00:00",
-    "detail": "User authorized public dataset use without redistribution; acquiring exact author v1 archives before representative preflight."
+    "detail": "Faster full training active under original12h deadline; YOLO CPU compatibility/preflight continues independently. Shared released-label protocol frozen; no human execution decision pending."
   },
   "conclusion_assessment": {
     "status": "not_assessed",
     "assessment_basis": "Prospectively compare YOLOv5s and Faster R-CNN AP50/AP50:95, parameter counts and measured same-hardware latency. Also compare s/m/l detector P/R/AP; published medium leads AP50:95, while large leads precision/AP50. Do not collapse into a universal large-model superiority claim.",
     "limitations": [
       "Historical split and accelerator unknown; no signer-independent generalization claim.",
-      "Native YOLO and COCO evaluator conventions will both be disclosed; do not tune thresholds toward published numbers."
+      "Native YOLO and COCO evaluator conventions will both be disclosed; do not tune thresholds toward published numbers.",
+      "Author released ontology lists28classes but annotations support27: NOON/class24 absent. Comparative detector findings apply to the supplied label distribution; no performance claim for NOON.",
+      "Cross-release exact-byte evidence confirms14NOON\u2192ALIF label changes;203filename families/529augmentedimages suggest broader corruption but transformed-image lineage is heuristic. Primary run follows released labels, not a silently repaired benchmark."
     ]
+  },
+  "compute_price_basis": {
+    "source": "https://modal.com/pricing",
+    "checked_on": "2026-10-02",
+    "usd_per_second": {
+      "A100-80GB": 0.000694,
+      "cpu_core": 1.31e-05,
+      "memory_gib": 2.22e-06
+    },
+    "planning_currency_note": "Conservative reservation uses1USD=1CHF, not a claim about currency market rates. Include storage/idle/actualCPU margin. Estimates are not bills."
+  },
+  "attempt_policy_amendments": [
+    {
+      "recorded_at_utc": "2026-10-02T09:17:31.897401+00:00",
+      "group_id": "yolo-cpu-smoke-v1",
+      "original_max_attempts": 1,
+      "updated_max_attempts": 2,
+      "scope": "Prospective amendment before second CPU provision, retaining first failed launch evidence. First function never executed. Allow one manual transient DNS retry within combinedCHF2 reservation; both nativefunctions keepretries0 and900s ceilings. No user-imposed deadline or full-training ceiling changed."
+    }
+  ],
+  "aggregate_compute_budget": {
+    "declared_at_utc": "2026-10-02T09:22:07.680090+00:00",
+    "max_gpu_hours": 24,
+    "max_cost_chf": 90,
+    "scope": "All PR50 continuation work, including completed preflights and CPU preparation. Independent single-GPU jobs may overlap; no distributed training.",
+    "allocations": {
+      "faster_full_gpu_hours": 12,
+      "faster_full_cost_chf": 42,
+      "yolo_full_gpu_hours_upper_limit": 9,
+      "yolo_full_cost_chf_upper_limit": 32
+    },
+    "policy": "No reset of any launched run deadline; no duplicate or fresh full restart. YOLO full declaration still requires measured preflight forecast; remaining aggregate budget controls later work."
   }
 }
