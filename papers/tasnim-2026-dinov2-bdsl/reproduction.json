@@ -25,9 +25,10 @@
       "agent_id": "independent-review-agent",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Read-only independent review of paper, data, implementation and evaluation; did not edit or run experiments. Exact model ID/build and harness version unavailable.",
+      "scope": "Read-only independent review of paper, data, implementation and evaluation; did not edit or run experiments. Exact model ID/build and harness version unavailable. On 2026-10-02, reviewed the paper claims against retained results and updated the conclusion assessment and report; this follow-up performed no experiments.",
       "evidence": [
-        "Explicit session attestation 2026-10-01: GPT-6 using Codex, exact IDs unavailable. Checked original split, transforms/order, unfrozen ViT-S/14 architecture, Adam, final30epoch checkpoint and macro/weighted F1. No result-changing bug found. Recommended pre-load weight hash assertion for repeatability."
+        "Explicit session attestation 2026-10-01: GPT-6 using Codex, exact IDs unavailable. Checked original split, transforms/order, unfrozen ViT-S/14 architecture, Adam, final30epoch checkpoint and macro/weighted F1. No result-changing bug found. Recommended pre-load weight hash assertion for repeatability.",
+        "Explicit 2026-10-02 session attestation: GPT-6 using Codex, exact model ID/build and harness version unavailable. Compared the local supplied paper tables and surrounding conclusions against the existing report and ledger; performed claim-level assessment and report maintenance only, without new experiment execution."
       ]
     }
   ],
@@ -1372,5 +1373,20 @@
       "id": "weight-check-timing",
       "detail": "The retained full execution loads official weights from the same cache artifact hash-verified by its preflight, then measures their SHA256 again in final metrics. Review added a pre-load hash assertion to the committed entry point for fresh future repetitions. This does not change the weights or model; accept the current result only if its final SHA256 equals the predeclared official artifact."
     }
-  ]
+  ],
+  "conclusion_assessment": {
+    "summary": "High accuracy and the reported advantage over Table 5 CNN literature are corroborated: reproduced accuracy/F1 99.2177%/99.2168% exceed the strongest reported CNN accuracy 98.10% and F1 98%. Superiority over Swin-B is not corroborated: our accuracy is below its published 99.3%; these comparator models were not rerun.",
+    "evidence": [
+      "Paper Table 5 and section 5.3, PDF page 14: strongest listed CNN accuracy is ensemble 98.10%; strongest listed CNN F1 is Quantize Modified Xception 98%. Other listed accuracies are 93%, 87%, 91%, 86%, 91%, and other F1 values are 93%, 91%, 92%.",
+      "Paper Table 4 and section 5.2, PDF page 14: ViT-B 99.8%, ViT-L 99.5%, Swin-B 99.3%, Swin-S 99.1%; text claims ViT-S superiority over Swin and a favorable accuracy/inference-time trade-off.",
+      "Retained full-seed42 primary evaluation: 2,917/2,940 correct, accuracy 99.21768707482994% and macro F1 99.2168% rounded; final 30-epoch checkpoint and prospectively selected augmented-test protocol."
+    ],
+    "limits": [
+      "Literature CNN baselines and the Table 4 transformer/ablation models were not rerun. Comparing against their reported values corroborates the CNN ordering but does not establish a controlled head-to-head result.",
+      "The lower-than-published primary score falls below reported Swin-B but remains above reported Swin-S; it does not independently prove Swin-B is superior under matched execution.",
+      "One seed does not establish statistical equivalence, stable ordering or cross-domain generalization. Inference-speed, accuracy/speed trade-off and fine-tuning ablation claims were outside the executed targets.",
+      "The deterministic-test diagnostic remains secondary and is not substituted for the primary score to improve the comparison."
+    ],
+    "assessed_at_utc": "2026-10-02T06:52:00+00:00"
+  }
 }
