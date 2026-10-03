@@ -5210,6 +5210,54 @@
         "source_sha256": "9ce92324fce0003bf057cfbda2ec963dd0a0afb4d4cf3c94d1bc3981af15fc8c"
       },
       "terminal": null
+    },
+    {
+      "run_id": "phx-pseudo-collection-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/adapt_full_modal.py::collect_pseudo --run-id phx-pseudo-collection-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-pseudo-collection",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:23:51.834473+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "CPU audit of all256 closed pseudo rank receipts and generated clip SHA/size/decoded frame metadata; no model execution. Only launch after parent pseudo native exit0 and complete receipt. Canonical closed-training-manifest is idempotent exactbytes.",
+        "source_sha256": "6cc086d1510885735593191fe179da72709295e57b920460557c2b4a413f219c",
+        "forecast": "At most1800CPUfunction-seconds/CHF1 within aggregate4CPUh/CHF8; no GPU. Exact count supplies adaptation forecast."
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
