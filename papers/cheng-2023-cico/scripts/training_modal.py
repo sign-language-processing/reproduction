@@ -200,3 +200,26 @@ def collect_features(run_id:str,source_run:str,expected_weights_sha:str):
  manifest={'source_run':source_run,'plan_sha256':sha(base/'plan.json'),'split_completion_sha256':split_completions,'identity':identity,'weights_sha256':expected_weights_sha,'raw_manifest_sha256':sha(rawpath),'root_completion_sha256':sha(base/'complete.json'),'rank_receipts':receipts,'features':records,'archive_sha256':sha(archive),'archive_bytes':archive.stat().st_size,'archive_format':'ZIP_STORED; canonical native pickle bytes unchanged; deterministic member metadata.'}
  target=out/'manifest.json';target.write_text(json.dumps(manifest,indent=2)+'\n');report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'manifest_sha256':sha(target),'archive_sha256':manifest['archive_sha256'],'archive_bytes':manifest['archive_bytes'],'feature_files':len(records),'windows':sum(r['shape'][0] for r in records)}
  (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
+
+@app.function(image=native_image,cpu=4,memory=8192,timeout=600,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def csl_annotation_forecast(run_id:str):
+ import json,pickle,hashlib,datetime,time,re,concurrent.futures
+ from simple_video_utils.metadata import video_metadata
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
+ report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'purpose':'Canonical annotation frame-count forecast with16 actual-video consistency checks; no full data audit or trained target.','splits':{}}
+ (out/'started.json').write_text(json.dumps(report));outputs.commit()
+ annotation=Path('/datasets/csl-daily/sentence_label/csl2020ct_v2.pkl');payload=annotation.read_bytes();records=pickle.loads(payload)['info'];by_name={r['name']:r for r in records};assert len(by_name)==len(records)
+ report['annotation_sha256']=hashlib.sha256(payload).hexdigest();report['annotation_rows']=len(records);report['annotation_length_definition']='Dataset sentence_label/README.txt defines info.length as number of video frames.'
+ requested=[]
+ for split in ['train','test']:
+  label=Path('/upstream/CiCo/CLCL/data_csl')/f'{split}.pkl';labels=pickle.load(label.open('rb'));names=[v['video_name'] for group in labels.values() for v in group];assert len(names)==len(set(names)) and all(name in by_name for name in names)
+  selected=[{'name':name,'frames':int(by_name[name]['length'])} for name in names];assert all(r['frames']>0 for r in selected);requested+=selected
+  report['splits'][split]={'queries':len(labels),'videos':len(selected),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in selected),'windows_16_stride1':sum(max(1,r['frames']-15) for r in selected),'records':selected}
+ (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
+ sample=sorted(requested,key=lambda r:hashlib.sha256(r['name'].encode()).hexdigest())[:16]
+ def check(r):
+  path=Path('/datasets/csl-daily/videos')/(r['name']+'.mp4');meta=video_metadata(str(path));observed=int(meta.nb_frames);assert observed==r['frames']
+  return dict(r,observed_frames=observed,bytes=path.stat().st_size)
+ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:report['video_consistency_checks']=list(pool.map(check,sample))
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))

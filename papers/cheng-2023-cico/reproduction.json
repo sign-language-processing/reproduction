@@ -4442,8 +4442,19 @@
         "0003-pseudo-range-concatenation.patch_sha256": "b21034f3f84fb579c529ed306efb39c6aaf0269cb516f89c0953e9be8612cfbc",
         "immutable_deadline_utc": "2026-10-03T23:34:27.801375+00:00"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-03T19:34:28.181151+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All256 native train pseudo ranks closed and720914windows processed; native exit0. Clientstream lostconnection earlier but detachedrun continued; no retry/restart. Closed clip audit is separateCPUcollection.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:34:28.181151+00:00",
+      "finished_at_utc": "2026-10-03T21:31:54.952708+00:00",
+      "wall_time_seconds": 7046.300241318,
+      "exit_code": 0,
+      "native_exit_code": 0
     },
     {
       "run_id": "native-trainer-probe-v1",
@@ -5201,13 +5212,26 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-Bm5lPWqYIK5FAIszUoPcjv"
       },
       "configuration": {
         "scope": "Read-only actual frame counts for all author CSL train/test filenames to establish an evidence-based end-to-end compute forecast. Does not imply complete data-integrity audit or a launched GPU attempt.",
-        "source_sha256": "9ce92324fce0003bf057cfbda2ec963dd0a0afb4d4cf3c94d1bc3981af15fc8c"
+        "source_sha256": "9ce92324fce0003bf057cfbda2ec963dd0a0afb4d4cf3c94d1bc3981af15fc8c",
+        "timestamp_basis": "Modal appcreated/stopped timestamps bracket execution. Provider cancellation log21:31:38UTC explicitly reports1800functionseconds timeout; nativeprocess exit unknown."
       },
-      "terminal": null
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "wall_time_ceiling_reached",
+        "detail": "Provider enforced declared1800s CPU limit during all-video metadata forecast before anysplit receipt. NoGPUtraining and no invented frame totals. Separate cheaper canonicalannotation hypothesis follows, with representativevideo checks.",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T21:01:25Z",
+      "finished_at_utc": "2026-10-03T21:31:47Z",
+      "exit_code": 1,
+      "native_exit_code": null
     },
     {
       "run_id": "phx-pseudo-collection-v1",
@@ -5255,6 +5279,54 @@
         "source_sha256": "9a703fab58ef8ff65f81f070b82f174bd9e87885a7a4bf2169bb08d2e83f5f0c",
         "forecast": "At most1800CPUfunction-seconds/CHF1 within aggregate4CPUh/CHF8; no GPU. Exact count supplies adaptation forecast.",
         "io_policy": "Eight concurrent audit reads within each closed rank; ordered metadata-only results preserve manifest order and exactbytes. No native source or training guard changed."
+      },
+      "terminal": null
+    },
+    {
+      "run_id": "csl-annotation-forecast-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::csl_annotation_forecast --run-id csl-annotation-forecast-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-annotation-forecast",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:34:56.504687+00:00",
+        "max_wall_time_seconds": 600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Read canonical CSL annotation info.length (documentedvideo framecount) for authortrain/test membership;16 deterministicactualvideo checks. Cheap distinctdata-source forecast afterbounded allvideo metadata tasktimeout; noGPU orfulltraining.",
+        "source_sha256": "5ee0bb454ce6b7c6fe76844f04d586808aea8a8b6d286467e7023e217d7d0033",
+        "permission": "Existing institutional projectgrant already recorded; metadata andvideo processing remain internal."
       },
       "terminal": null
     }
