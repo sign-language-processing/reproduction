@@ -11,9 +11,9 @@ image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@
  .run_commands('git clone https://github.com/FangyunWei/SLRT.git /upstream && cd /upstream && git checkout 38a4f7b00da7a858d59b7fabe5093876a84db8e0'))
 for name in ['0004-trainer-data-paths-and-splits.patch','0005-trainer-project-video-decoder.patch','0006-trainer-python-callable.patch','0007-trainer-initialization-and-checkpoint-recovery.patch','0009-trainer-recovery-evidence.patch']:
  image=image.add_local_file(HERE.parent/'patches'/name,'/repro/'+name,copy=True).run_commands('cd /upstream && git apply --unidiff-zero /repro/'+name)
-image=image.env({'HF_HOME':'/cache/huggingface','HF_HUB_CACHE':'/cache/huggingface/hub','OMP_NUM_THREADS':'4'}).add_local_file(HERE/'i3d_train_probe.py','/repro/i3d_train_probe.py')
+image=image.env({'HF_HOME':'/cache/huggingface','HF_HUB_CACHE':'/cache/huggingface/hub','OMP_NUM_THREADS':'4'}).add_local_file(HERE/'i3d_train_probe.py','/repro/i3d_train_probe.py').add_local_file(HERE/'i3d_train_representative.py','/repro/i3d_train_representative.py')
 @app.function(image=image,gpu='A100-80GB',cpu=4,memory=16384,timeout=900,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
-def run(run_id:str):
+def run(run_id:str,representative:bool=False):
  import subprocess,json,datetime,time,re,threading,os
  if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid run ID')
  out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
@@ -21,7 +21,7 @@ def run(run_id:str):
  (out/'started.json').write_text(json.dumps(record,indent=2));outputs.commit()
  timer=threading.Timer(890,lambda:os._exit(124));timer.daemon=True;timer.start()
  try:
-  with (out/'console.log').open('w') as f:p=subprocess.run(['python','/repro/i3d_train_probe.py',str(out)],stdout=f,stderr=subprocess.STDOUT,timeout=820)
+  with (out/'console.log').open('w') as f:p=subprocess.run(['python','/repro/i3d_train_representative.py' if representative else '/repro/i3d_train_probe.py',str(out)],stdout=f,stderr=subprocess.STDOUT,timeout=820)
   record['native_exit_code']=p.returncode
  finally:
   record.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_time_seconds=time.monotonic()-t);(out/'execution.json').write_text(json.dumps(record,indent=2));outputs.commit();timer.cancel()
