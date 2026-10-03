@@ -133,7 +133,7 @@ def prepare(root, out):
     print("Prepared all3200", {k: len(v) for k, v in splits.items()}, flush=True)
 
 
-def train(root, out, preflight):
+def train(root, out, preflight, paper_sized=False):
     import shutil
     import subprocess
     import tarfile
@@ -158,6 +158,8 @@ def train(root, out, preflight):
         return
     started = time.time()
     manifest = json.loads((root / "manifest.json").read_text())
+    if paper_sized:
+        assert sha(root / "manifest.json") == "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
     local = Path("/tmp/lsa64-conditional")
     local.mkdir(exist_ok=True)
     archive = local / "frames.tar"
@@ -208,12 +210,14 @@ def train(root, out, preflight):
                 num_classes=0,
                 global_pool="max",
                 act_layer=nn.Mish,
+                **({"layers": [1, 2, 2, 1]} if paper_sized else {}),
             )
             blocks = []
+            temporal_width = 224 if paper_sized else 256
             width = 2048
             for dilation in [1, 2, 5]:
                 block = TemporalBlock(
-                    width, 256, 3, 1, dilation, 2 * dilation, dropout=0.2
+                    width, temporal_width, 3, 1, dilation, 2 * dilation, dropout=0.2
                 )
                 # The paper explicitly replaces ReLU by Mish; use the published block otherwise.
                 block.relu1 = nn.Mish()
@@ -230,9 +234,9 @@ def train(root, out, preflight):
                     block.dropout2,
                 )
                 blocks.append(block)
-                width = 256
+                width = temporal_width
             self.temporal = nn.Sequential(*blocks)
-            self.classifier = nn.Linear(256, 64)
+            self.classifier = nn.Linear(temporal_width, 64)
 
         def forward(self, x):
             b, t, c, h, w = x.shape
@@ -381,6 +385,24 @@ def train(root, out, preflight):
     model.load_state_dict(state["model"])
     optimizer.load_state_dict(state["optimizer"])
     if preflight:
+        # A fresh instance proves restoration independently of the objects just trained.
+        del model, optimizer
+        torch.cuda.empty_cache()
+        model = Model().cuda()
+        optimizer = torch_optimizer.Ranger(model.parameters(), lr=0.0001)
+        model.load_state_dict(state["model"])
+        optimizer.load_state_dict(state["optimizer"])
+        # Verify every model, Ranger and Lookahead tensor before a real resumed update.
+        def equal(a, b):
+            if isinstance(a, torch.Tensor):
+                return isinstance(b, torch.Tensor) and torch.equal(a.cpu(), b.cpu())
+            if isinstance(a, dict):
+                return a.keys() == b.keys() and all(equal(a[k], b[k]) for k in a)
+            if isinstance(a, (list, tuple)):
+                return len(a) == len(b) and all(equal(x, y) for x, y in zip(a, b))
+            return a == b
+        assert equal(model.state_dict(), state["model"])
+        assert equal(optimizer.state_dict(), state["optimizer"])
         model.train()
         x, y, _ = next(iter(loader))
         optimizer.zero_grad()
@@ -398,7 +420,8 @@ def train(root, out, preflight):
         indices=primary["indices"],
     )
     metrics = dict(
-        scope="conditional reconstruction, not comparable to the unspecified author architecture",
+        scope=("parameter-sized reconstruction authorized before accuracy; parameter calibration is not independent reproduction evidence" if paper_sized else "conditional reconstruction, not comparable to the unspecified author architecture"),
+        paper_sized=paper_sized,
         accuracy=primary["accuracy"],
         test_count=len(primary["truth"]),
         deterministic_test_accuracy=secondary["accuracy"],
@@ -410,6 +433,7 @@ def train(root, out, preflight):
         history=history,
         checkpoint_reload_verified=True,
         optimizer_resume_verified=preflight,
+        fresh_instance_checkpoint_restore_verified=preflight,
         wall_seconds=time.time() - started,
         training_seconds=time.time() - training_started,
         mean_warm_microbatch_seconds=float(np.mean(microbatch_times[1:])),
@@ -432,6 +456,7 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("mode", choices=["prepare", "preflight", "full"])
     p.add_argument("--output", required=True)
+    p.add_argument("--paper-sized", action="store_true")
     a = p.parse_args()
     if a.mode == "prepare":
         prepare(Path("/datasets/lsa64"), Path(a.output))
@@ -440,4 +465,5 @@ if __name__ == "__main__":
             Path("/datasets/lsa64-skresnet-conditional-v1"),
             Path(a.output),
             a.mode == "preflight",
+            a.paper_sized,
         )
