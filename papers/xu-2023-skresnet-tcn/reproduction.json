@@ -65,10 +65,7 @@
       "harness": "Codex",
       "scope": "Implements, executes and reports the newly authorized parameter-sized reconstruction. Exact model ID and harness version unavailable. Does not claim execution of earlier runs or root size audit 001.",
       "evidence": [
-        {
-          "type": "session_attestation",
-          "detail": "The active subagent session identifies itself as GPT-6 using Codex, delegated by the orchestrator on 2026-10-03."
-        }
+        "Active subagent session identifies GPT-6 using Codex, delegated by the orchestrator on 2026-10-03; exact model ID and harness version were not exposed."
       ]
     }
   ],
@@ -1390,7 +1387,7 @@
       },
       "started_at_utc": "2026-10-02T09:36:47+00:00",
       "finished_at_utc": "2026-10-03T18:07:09+00:00",
-      "exit_code": null,
+      "exit_code": -1,
       "terminal": {
         "state": "stopped",
         "reason_code": "invalid_run",
@@ -1404,7 +1401,10 @@
         "profile": "repro-sign",
         "environment": "main",
         "app_id": "ap-zxa9pMmsy7GnyeoMyORfXf"
-      }
+      },
+      "native_exit_code": null,
+      "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
+      "artifact_ids": []
     },
     {
       "run_id": "paper-sized-audit-002",
@@ -1508,7 +1508,7 @@
       "run_id": "paper-sized-preflight-001",
       "started_at_utc": "2026-10-03T18:10:43+00:00",
       "finished_at_utc": "2026-10-03T18:11:12+00:00",
-      "exit_code": null,
+      "exit_code": -1,
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
@@ -1521,7 +1521,10 @@
         "retry_decision": "stop",
         "gate_ids": [],
         "detail": "Orchestrator bookkeeping failed before ledger append while shell continued to launch; immediately cancelled. No function output directory exists. Conservative whole-app GPU allowance29seconds though no nativeGPU execution observed."
-      }
+      },
+      "native_exit_code": null,
+      "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
+      "artifact_ids": []
     },
     {
       "run_id": "paper-sized-preflight-002",
@@ -1634,9 +1637,10 @@
         "estimated_gpu_hours": 2,
         "estimated_cost_chf": 7,
         "forecast_basis": "Preflight warmmicrobatch0.13210s \u00d732000=4227s training; sevenupdates plus preflightvalidation/twoevalpaths48.03s, full\u22481.2\u20132h including20fullvalidationpasses,2testpasses,staging,checkpointwrites andmargin.13.303GBpeak. Fivehour/CHF20maximum includes up tothreeprovidersegments and nofreshrestart; wholeprocess immutabledeadline watchdog.",
-        "aggregate_ceiling": "Additional6GPUh/CHF24 includes allnewruns. Preflight102.62s, cancelledapp29s conservativelycharged; CPUcount10.92s. Full5h ceiling leaves room belowaggregate."
+        "aggregate_ceiling": "Additional6GPUh/CHF24 includes allnewruns. Preflight102.62s, cancelledapp29s conservativelycharged; CPUcount10.92s. Full5h ceiling leaves room belowaggregate.",
+        "deadline_utc": "2026-10-03T23:18:46.568692+00:00"
       },
-      "started_at_utc": null,
+      "started_at_utc": "2026-10-03T18:18:46.572982+00:00",
       "finished_at_utc": null,
       "exit_code": null,
       "terminal": null,
@@ -1645,7 +1649,15 @@
         "source_sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
         "wrapper_sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3"
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-w8cKY5RzlyHvHHSKx7ODbY",
+        "function_call_id": "fc-01M41FTN7PF1YX24MECYTZY6ME",
+        "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-w8cKY5RzlyHvHHSKx7ODbY"
+      }
     }
   ],
   "artifacts": [
@@ -2646,7 +2658,11 @@
       "Initial count-audit remote import failed; app had zero tasks and was stopped. Standalone image definition fixes import without touching model.",
       "Folder-download target was incorrectly a file; overlapping concatenated JSON caused per-run ledger append to fail while shell continued launching preflight001. The app was immediately stopped after29seconds before nativeoutput; parent prospective aggregate policy remains documented. Subsequent commands separate mutation/validation fromlaunch.",
       "Preflight002 first CLI call failed locally on a syntax error introduced by broad replacement of code=1 inside code=124. No Modal app existed for that local failure. Fixed explicitexception blocks and AST-parsed all sources before actual002 app launch."
-    ]
+    ],
+    "assessment_scope": {
+      "decision_before_full_accuracy": true,
+      "detail": "The requested approximate reconstruction is the active scientific scope: assess whether a model obeying known paper modules, optimization, dataset proportions and approximate12.34Mcapacity supports the claimed recognition/efficiency tradeoff. Preserve original exact-author targets in assessment_history; any new own-row measurements are produced for this explicitly revised scope, not recovered author code. Parameter agreement is calibration, operations use disclosed1FMAconvention, and baselines remain paper-reported comparisons rather than rerunexperiments. No accuracy-driven changes."
+    }
   },
   "execution_state": {
     "state": "in_progress",
