@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+if [[ "${1:-}" == "lexset" ]]; then
+  exec python /app/lexset_data.py
+fi
 python - <<'PY'
 import pathlib, urllib.request, hashlib, zipfile, json, collections
 for slug,url,md5,expected_sha256,license in [
