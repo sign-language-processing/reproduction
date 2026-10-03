@@ -14,11 +14,12 @@
       "agent_id": "codex-orchestrator-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution.",
+      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution. On 2026-10-03, independently reviewed LEXSET source, checkpoint/deadline guards, manifest pin and native membership, and independently verified the dataset manifest. Did not execute the LEXSET GPU run.",
       "evidence": [
         "Explicit root-session attestation dated 2026-10-01 identifies the reviewing agent as GPT-6 using Codex; exact model ID, model build/version and harness version were not exposed.",
         "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged.",
-        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
+        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable.",
+        "2026-10-03 session review approved dedicated pinned-image LEXSET loader, exact source/manifest binding, fresh model/optimizer restore and bounded full launch conditional on representative preflight; independently confirmed all27000 samples and21600/2400 native subset counts from manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0."
       ]
     },
     {
@@ -3343,6 +3344,80 @@
         "max_gpu_hours": 0.3333333333333333,
         "max_cost_chf": 2
       },
+      "artifact_ids": [
+        "lexset-preflight-v1-metrics-json",
+        "lexset-preflight-v1-execution-segment-1-json"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-TvWkgwebqW4fjBxcop6yyj",
+        "modal_function_call_id": "fc-01M41GK4D4QZ9122QGFBAGT2RP",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TvWkgwebqW4fjBxcop6yyj",
+        "modal_task_id": "ta-01M41GMXW13439Y58BHN93KRDR",
+        "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
+        "wall_time_seconds": 273.8318169116974,
+        "gpu_hours": 0.07606439358658261
+      },
+      "configuration": {
+        "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+        "train_source_sha256": "797a9249824090597d701aff18903c55f219d1513d6fa446ec07acb8bdc3804b",
+        "modal_source_sha256": "dbded721b2abe29e01b95fbcd82828be97240dcdefe7a7cb912f980a587e5078",
+        "image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "preflight": "256 real training samples /four optimizer steps, fresh CNN+Adam checkpoint restoration bitwise checks, one resumed step and128 held-out samples; all canonical training/test samples loaded through intended path.",
+        "deadline_unix": 1791053598.5253627,
+        "examples_per_second": 361.6854436559353,
+        "peak_gpu_memory_bytes": 1629828096,
+        "resume_loss": 3.15311336517334
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Loaded all21600/2400 canonical samples; four optimizer steps; fresh616504-parameterCNN and Adam restored every model/optimizer tensor exactly; resumed one optimizer step then evaluated128 held-out samples. Diagnostic accuracy3.125%, not a target.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T18:33:19.380362+00:00",
+      "finished_at_utc": "2026-10-03T18:37:52.357159+00:00",
+      "exit_code": 0
+    },
+    {
+      "run_id": "lexset-full-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-full-v1 --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:39:01.142071+00:00",
+        "max_wall_time_seconds": 18000,
+        "max_gpu_hours": 5,
+        "max_cost_chf": 18
+      },
       "artifact_ids": [],
       "compute": {
         "platform": "modal",
@@ -3367,9 +3442,21 @@
         "train_source_sha256": "797a9249824090597d701aff18903c55f219d1513d6fa446ec07acb8bdc3804b",
         "modal_source_sha256": "dbded721b2abe29e01b95fbcd82828be97240dcdefe7a7cb912f980a587e5078",
         "image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
-        "preflight": "256 real training samples /four optimizer steps, fresh CNN+Adam checkpoint restoration bitwise checks, one resumed step and128 held-out samples; all canonical training/test samples loaded through intended path."
+        "epochs": 60,
+        "seed": 42,
+        "batch_size": 64,
+        "optimizer": "Adam lr0.001 defaults",
+        "checkpoint_rule": "Final epoch60; no test-directed selection",
+        "max_execution_segments": 2,
+        "checkpoint_recovery": "Same function call/source/manifest/deadline only; model/optimizer/epoch/RNG persisted each epoch; no fresh restart."
       },
-      "terminal": null
+      "terminal": null,
+      "estimate": {
+        "wall_time_seconds": 4150.85,
+        "gpu_hours": 1.153013888888889,
+        "cost_chf": 4,
+        "basis": "Cold representative throughput361.685 images/s \u00d721600\u00d760, plus observed267.6s setup and300s evaluation/overhead allowance. A10080+8CPU+16GiB budget roughly3.00USD/h, conservative1USD=1CHF planning conversion. Actual billing unknown. Hard5h/CHF18 full ceiling under additional6GPUh/CHF25 aggregate."
+      }
     }
   ],
   "artifacts": [
@@ -3569,6 +3656,20 @@
       "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution.json",
       "sha256": "29781e7866af2a77a47aa51a593c67df9ad437aded4f052a396228a0c86cbfac",
       "size_bytes": 331
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-metrics-json",
+      "kind": "native preflight evidence",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/metrics.json",
+      "sha256": "260b90b53ca64cf7ccfa973f008859a6e40630d5e39ed1914e0da0fc2caa3441",
+      "size_bytes": 5149
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-execution-segment-1-json",
+      "kind": "native preflight evidence",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/execution-segment-1.json",
+      "sha256": "05ae3a4c85eb9a2bce70cb6a9cc576ef07bf5da709421d215021e35ef8eec83e",
+      "size_bytes": 547
     }
   ],
   "gates": [
