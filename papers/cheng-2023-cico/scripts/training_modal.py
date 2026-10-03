@@ -121,3 +121,19 @@ def pseudo_probe(run_id:str,mode:str="pseudo"):
   record.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_time_seconds=time.monotonic()-t);(out/'execution.json').write_text(json.dumps(record,indent=2));outputs.commit();timer.cancel()
  print(json.dumps(record));print((out/'console.log').read_text()[-10000:])
  if record['native_exit_code']:raise RuntimeError('Pseudo probe failed')
+
+@app.function(image=image,cpu=2,memory=4096,timeout=900,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def prepare_clip(run_id:str):
+ import urllib.request,hashlib,json,time,datetime,re
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);started=datetime.datetime.now(datetime.timezone.utc).isoformat();t=time.monotonic()
+ expected='40d365715913c9da98579312b702a82c18be219cc2a73407c4526f58eba950af';url=f'https://openaipublic.azureedge.net/clip/models/{expected}/ViT-B-32.pt';target=Path('/outputs/training-inputs/ViT-B-32.pt')
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ if not target.exists() or sha(target)!=expected:
+  partial=target.with_suffix('.partial')
+  with urllib.request.urlopen(url,timeout=120) as response,partial.open('wb') as f:
+   while block:=response.read(8*1024*1024):f.write(block)
+  assert sha(partial)==expected;partial.replace(target)
+ report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'sha256':sha(target),'bytes':target.stat().st_size,'url':url,'permission':'Published OpenAI CLIP initialization used under upstream MIT license; no trained CiCo retrieval checkpoint used.'}
+ (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
