@@ -19,7 +19,8 @@
         "Explicit root-session attestation dated 2026-10-01 identifies the reviewing agent as GPT-6 using Codex; exact model ID, model build/version and harness version were not exposed.",
         "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged.",
         "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable.",
-        "2026-10-03 session review approved dedicated pinned-image LEXSET loader, exact source/manifest binding, fresh model/optimizer restore and bounded full launch conditional on representative preflight; independently confirmed all27000 samples and21600/2400 native subset counts from manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0."
+        "2026-10-03 session review approved dedicated pinned-image LEXSET loader, exact source/manifest binding, fresh model/optimizer restore and bounded full launch conditional on representative preflight; independently confirmed all27000 samples and21600/2400 native subset counts from manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0.",
+        "2026-10-03 independent terminal review recomputed LEXSET NPZ SHA7d6b8f874d0a9397e76e80811c042a966a343c464ec21debb868dc57fc649df7,2400 predictions/labels,100 support per24classes, exact confusion,2350correct and60 epochs each21600 examples. No execution attribution added."
       ]
     },
     {
@@ -497,8 +498,20 @@
       "copied_baseline": false,
       "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, training column",
       "result": {
-        "status": "pending",
-        "detail": "Authorized LEXSET continuation underway; no new value claimed."
+        "status": "produced",
+        "reproduced_value": 99.48611111111111,
+        "difference": 1.0961111111111137,
+        "run_ids": [
+          "lexset-full-v1"
+        ],
+        "artifact_ids": [
+          "lexset-full-v1-metrics-json",
+          "lexset-full-v1-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch online training metric and final-checkpoint test predictions; official24-letter native train/test partitions, predeclared defaults and60epochs. Closed artifact hashes independently collected after terminal execution."
+        ]
       },
       "prior_results": [
         {
@@ -582,8 +595,20 @@
       "copied_baseline": false,
       "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, testing column",
       "result": {
-        "status": "pending",
-        "detail": "Authorized LEXSET continuation underway; no new value claimed."
+        "status": "produced",
+        "reproduced_value": 97.91666666666667,
+        "difference": -1.0333333333333314,
+        "run_ids": [
+          "lexset-full-v1"
+        ],
+        "artifact_ids": [
+          "lexset-full-v1-metrics-json",
+          "lexset-full-v1-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch online training metric and final-checkpoint test predictions; official24-letter native train/test partitions, predeclared defaults and60epochs. Closed artifact hashes independently collected after terminal execution."
+        ]
       },
       "prior_results": [
         {
@@ -3136,7 +3161,10 @@
       "started_at_utc": "2026-10-03T18:09:29.878064+00:00",
       "finished_at_utc": "2026-10-03T18:10:22.791038+00:00",
       "exit_code": 1,
-      "artifact_ids": []
+      "artifact_ids": [
+        "lexset-acquisition-v1-console-log",
+        "lexset-acquisition-v1-execution-json"
+      ]
     },
     {
       "run_id": "lexset-acquisition-v2",
@@ -3193,7 +3221,10 @@
         "source_snapshot": "artifacts/lexset-acquisition-v2-source.py",
         "note": "Retained exact acquisition source prior to later extraction CRC/atomic hardening; v1 had only completed and decoded the first file before its folder-name assertion failed."
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "lexset-acquisition-v2-console-log",
+        "lexset-acquisition-v2-execution-json"
+      ],
       "started_at_utc": "2026-10-03T18:11:17.131059+00:00",
       "finished_at_utc": "2026-10-03T18:15:58.523112+00:00",
       "exit_code": 1
@@ -3244,14 +3275,18 @@
         "detail": "Stopped after >7 minutes without first 3000/27000 milestone, projecting beyond 3600s ceiling. Repeated remote per-file audit was unproductive; canonical ZIP-member audit tests the exact training inputs more cheaply. Native process exit not emitted before explicit app stop.",
         "failure_class": "budget_protocol",
         "retry_decision": "stop",
-        "gate_ids": []
+        "gate_ids": [
+          "lexset-remote-tree-budget"
+        ]
       },
       "configuration": {
         "data_script_sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
         "detail": "All existing extracted files are now CRC/size verified against ZIP and atomically repaired if needed; overview explicitly inventoried as auxiliary image.",
         "source_snapshot": "artifacts/lexset-acquisition-v3-source.py"
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "lexset-acquisition-v3-console-log"
+      ],
       "started_at_utc": "2026-10-03T18:16:26.833154+00:00",
       "finished_at_utc": "2026-10-03T18:26:20.162459+00:00",
       "exit_code": 1,
@@ -3315,7 +3350,10 @@
       },
       "artifact_ids": [
         "lexset-manifest",
-        "lexset-acquisition-v4-execution"
+        "lexset-acquisition-v4-execution",
+        "lexset-acquisition-v4-console-log",
+        "lexset-acquisition-v4-execution-start-json",
+        "lexset-acquisition-v4-execution-json"
       ],
       "started_at_utc": "2026-10-03T18:26:29.237190+00:00",
       "finished_at_utc": "2026-10-03T18:30:10.081027+00:00",
@@ -3346,7 +3384,13 @@
       },
       "artifact_ids": [
         "lexset-preflight-v1-metrics-json",
-        "lexset-preflight-v1-execution-segment-1-json"
+        "lexset-preflight-v1-execution-segment-1-json",
+        "lexset-preflight-v1-checkpoint-pt",
+        "lexset-preflight-v1-claim-json",
+        "lexset-preflight-v1-console-segment-1-log",
+        "lexset-preflight-v1-nvidia-smi-txt",
+        "lexset-preflight-v1-pip-freeze-txt",
+        "lexset-preflight-v1-predictions-npz"
       ],
       "compute": {
         "platform": "modal",
@@ -3418,7 +3462,16 @@
         "max_gpu_hours": 5,
         "max_cost_chf": 18
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "lexset-full-v1-checkpoint-pt",
+        "lexset-full-v1-claim-json",
+        "lexset-full-v1-console-segment-1-log",
+        "lexset-full-v1-execution-segment-1-json",
+        "lexset-full-v1-metrics-json",
+        "lexset-full-v1-nvidia-smi-txt",
+        "lexset-full-v1-pip-freeze-txt",
+        "lexset-full-v1-predictions-npz"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -3435,7 +3488,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "modal_app_id": "ap-riaYpafepN5mW0emUdwkt6",
+        "modal_function_call_id": "fc-01M41H02F0TGPGABJZWPG2JZH9",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-riaYpafepN5mW0emUdwkt6",
+        "modal_task_id": "ta-01M41H0H9DG36Q56VHSPKZNEJR",
+        "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
+        "wall_time_seconds": 542.534957408905,
+        "gpu_hours": 0.15070415483580696,
+        "estimated_cost_chf": 0.45264776566539766,
+        "cost_note": "Process/function elapsed times official A10080+8CPU+16GiB rate, conservative1USD=1CHF budgeting conversion; storage/provisioning excluded, actual billing unknown."
       },
       "configuration": {
         "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
@@ -3448,15 +3510,112 @@
         "optimizer": "Adam lr0.001 defaults",
         "checkpoint_rule": "Final epoch60; no test-directed selection",
         "max_execution_segments": 2,
-        "checkpoint_recovery": "Same function call/source/manifest/deadline only; model/optimizer/epoch/RNG persisted each epoch; no fresh restart."
+        "checkpoint_recovery": "Same function call/source/manifest/deadline only; model/optimizer/epoch/RNG persisted each epoch; no fresh restart.",
+        "deadline_unix": 1791070783.7011998,
+        "deadline_at_utc": "2026-10-03T23:39:43.701200+00:00",
+        "peak_gpu_memory_bytes": 1625123328,
+        "examples_per_second": 6594.0313653318335,
+        "final_checkpoint_sha256": "7568f82afbe19e43ccb34a05a9d48ae164193aa162665392cbb1f4e30434b43b"
       },
-      "terminal": null,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All60 published epochs completed; final checkpoint restored and all2400 native test samples evaluated,2350correct. No full restart or recovery segment consumed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
       "estimate": {
         "wall_time_seconds": 4150.85,
         "gpu_hours": 1.153013888888889,
         "cost_chf": 4,
         "basis": "Cold representative throughput361.685 images/s \u00d721600\u00d760, plus observed267.6s setup and300s evaluation/overhead allowance. A10080+8CPU+16GiB budget roughly3.00USD/h, conservative1USD=1CHF planning conversion. Actual billing unknown. Hard5h/CHF18 full ceiling under additional6GPUh/CHF25 aggregate."
-      }
+      },
+      "started_at_utc": "2026-10-03T18:39:44.241555+00:00",
+      "finished_at_utc": "2026-10-03T18:48:46.236133+00:00",
+      "exit_code": 0
+    },
+    {
+      "run_id": "lexset-evidence-audit",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-evidence-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:48:41.006330+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [
+        "lexset-acquisition-v4-execution",
+        "lexset-preflight-v1-metrics-json",
+        "lexset-preflight-v1-execution-segment-1-json",
+        "lexset-acquisition-v1-console-log",
+        "lexset-acquisition-v1-execution-json",
+        "lexset-acquisition-v2-console-log",
+        "lexset-acquisition-v2-execution-json",
+        "lexset-acquisition-v3-console-log",
+        "lexset-acquisition-v4-console-log",
+        "lexset-acquisition-v4-execution-start-json",
+        "lexset-acquisition-v4-execution-json",
+        "lexset-full-v1-checkpoint-pt",
+        "lexset-full-v1-claim-json",
+        "lexset-full-v1-console-segment-1-log",
+        "lexset-full-v1-execution-segment-1-json",
+        "lexset-full-v1-metrics-json",
+        "lexset-full-v1-nvidia-smi-txt",
+        "lexset-full-v1-pip-freeze-txt",
+        "lexset-full-v1-predictions-npz",
+        "lexset-preflight-v1-checkpoint-pt",
+        "lexset-preflight-v1-claim-json",
+        "lexset-preflight-v1-console-segment-1-log",
+        "lexset-preflight-v1-nvidia-smi-txt",
+        "lexset-preflight-v1-pip-freeze-txt",
+        "lexset-preflight-v1-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only CPU collection after full execution exited0; closed native hashes match downloaded metrics/predictions and recorded final checkpoint. Prior MNIST/RGB artifact hashes and76 produced target objects preserved.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "gpu": null,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": null,
+        "datasets_mount_note": "No dataset mount required for read-only output hash audit.",
+        "modal_app_id": "ap-mrYwyTmf9mEz5jjVLgICGq",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mrYwyTmf9mEz5jjVLgICGq"
+      },
+      "started_at_utc": "2026-10-03T18:49:19.385616+00:00",
+      "finished_at_utc": "2026-10-03T18:49:23.504557+00:00",
+      "exit_code": 0
     }
   ],
   "artifacts": [
@@ -3670,6 +3829,174 @@
       "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/execution-segment-1.json",
       "sha256": "05ae3a4c85eb9a2bce70cb6a9cc576ef07bf5da709421d215021e35ef8eec83e",
       "size_bytes": 547
+    },
+    {
+      "artifact_id": "lexset-acquisition-v1-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v1/console.log",
+      "sha256": "d3c9f09d6626d130099a3c556c4a430d1b589b7f2b7b8c9e3abc2543a313e3e1",
+      "size_bytes": 439
+    },
+    {
+      "artifact_id": "lexset-acquisition-v1-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v1/execution.json",
+      "sha256": "08f65186ffe33a6f5ef8583e8d0999f556cc866953fbf09f48e60a1dbb1de716",
+      "size_bytes": 330
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v2/console.log",
+      "sha256": "6c5aeb09f9b5f5915b1fc9df533a2eaba173a8ae2eba7bec217001e5beebecac",
+      "size_bytes": 459
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v2/execution.json",
+      "sha256": "5852a7bc581412272023f1798b3793c10c0a98e926e653c0b02163fa83285f7a",
+      "size_bytes": 336
+    },
+    {
+      "artifact_id": "lexset-acquisition-v3-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v3/console.log",
+      "sha256": "da04f48ac1901cf8f60a03666890e95bac282670c46757930ef71fb5d2855642",
+      "size_bytes": 472
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/console.log",
+      "sha256": "90e38c6885f1e5534c402a0c2c55aec29d8ebfeeb41d7616518dfac45795e6a8",
+      "size_bytes": 1559
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution-start-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution-start.json",
+      "sha256": "f32b85060aec9f9e887c8cbe7dbd85d9fb9ce072cf9acff0db258023af6a69fd",
+      "size_bytes": 218
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution.json",
+      "sha256": "29781e7866af2a77a47aa51a593c67df9ad437aded4f052a396228a0c86cbfac",
+      "size_bytes": 331
+    },
+    {
+      "artifact_id": "lexset-full-v1-checkpoint-pt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/checkpoint.pt",
+      "sha256": "7568f82afbe19e43ccb34a05a9d48ae164193aa162665392cbb1f4e30434b43b",
+      "size_bytes": 7425013
+    },
+    {
+      "artifact_id": "lexset-full-v1-claim-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/claim.json",
+      "sha256": "7aa8d17e06c87808500985b3b6dbb8e88aad30acdc388ee5e445ca05cd82b316",
+      "size_bytes": 479
+    },
+    {
+      "artifact_id": "lexset-full-v1-console-segment-1-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/console-segment-1.log",
+      "sha256": "b42216791ed3c93167085ab73d3fec43da2773de856267e992db99f4ce9e461c",
+      "size_bytes": 23234
+    },
+    {
+      "artifact_id": "lexset-full-v1-execution-segment-1-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/execution-segment-1.json",
+      "sha256": "6e5db92a856f48a4bc23c065d365fa6702c22829c5cb832dc5f20eeae9d4c459",
+      "size_bytes": 522
+    },
+    {
+      "artifact_id": "lexset-full-v1-metrics-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/metrics.json",
+      "sha256": "9435b7cdd45319609f113367863feb197652c2797756fefec4056dd6a3c2babe",
+      "size_bytes": 17410
+    },
+    {
+      "artifact_id": "lexset-full-v1-nvidia-smi-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/nvidia-smi.txt",
+      "sha256": "3ff9d1db378c0885cc25f9c261dc06eb030f6ae10d533d233dfe1e02d4a71150",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "lexset-full-v1-pip-freeze-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "lexset-full-v1-predictions-npz",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/predictions.npz",
+      "sha256": "7d6b8f874d0a9397e76e80811c042a966a343c464ec21debb868dc57fc649df7",
+      "size_bytes": 1181
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-checkpoint-pt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/checkpoint.pt",
+      "sha256": "5532395b5ff9af7ab98764bdda48a433ece5aa5305949b473b6cea2083c3eb94",
+      "size_bytes": 7421173
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-claim-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/claim.json",
+      "sha256": "5aeafdb29ad41a3f3cfdbb2fc25a3e5202ef724ea77c7e929b11608bc780a9c5",
+      "size_bytes": 477
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-console-segment-1-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/console-segment-1.log",
+      "sha256": "93f85c2b5ed1fca85c67635520fe60f59e571578e5018a1115ceaa78963b1983",
+      "size_bytes": 4085
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-nvidia-smi-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/nvidia-smi.txt",
+      "sha256": "8aeb6761ef875fc18fc98eb7079b4aa0bb28ca98e2407c9e0b64f78513dce253",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-pip-freeze-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-predictions-npz",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/predictions.npz",
+      "sha256": "31d3acb0537def7cb26471198b8d57a42ab1c18fecb19b7e331f58ac6f513139",
+      "size_bytes": 679
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-source",
+      "kind": "retained executed source snapshot",
+      "uri": "artifacts/lexset-acquisition-v2-source.py",
+      "sha256": "aa641391f456a912d0319c24c9d1870c2bf1400a20ffd66fccaf82db8a016f98",
+      "size_bytes": 3756
+    },
+    {
+      "artifact_id": "lexset-acquisition-v3-source",
+      "kind": "retained executed source snapshot",
+      "uri": "artifacts/lexset-acquisition-v3-source.py",
+      "sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
+      "size_bytes": 4188
     }
   ],
   "gates": [
@@ -3696,6 +4023,18 @@
         "Author XAI repository provides loading/inference examples but no training or validation splitter."
       ],
       "resolution": "Execution disposition resolved2026-10-01 under user-authorized judgment calls: retain completed train/test targets and mark historical validation scores not produced. No invented train-as-validation evaluation and no duplicate retraining solely to create an unidentifiable historical number."
+    },
+    {
+      "gate_id": "lexset-remote-tree-budget",
+      "type": "compute",
+      "status": "resolved",
+      "reason": "Remote extracted-file audit had not reached3000of27000 files after more than7minutes, projecting beyond the declared3600s CPU ceiling.",
+      "required_action": "None; stop redundant slow audit and verify the canonical pinned ZIP locally in the worker. No budget increase or human decision needed.",
+      "resolution": "Canonical ZIP-member audit v4 completed in219.94s; every member CRC/SHA/decode verified. Training uses only those archive bytes; extractedtree is explicitly noncanonical.",
+      "evidence": [
+        "lexset-acquisition-v3/console.log retained on repro-2248c066-results contains archive pin but no3000-file milestone when stopped.",
+        "lexset-acquisition-v4/execution.json and canonical manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0."
+      ]
     }
   ],
   "guesses": [
@@ -3713,11 +4052,15 @@
     },
     {
       "id": "resize",
-      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
+      "detail": "For RGB and the later LEXSET continuation, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
     },
     {
       "id": "metrics",
       "detail": "Use final-epoch online trainingaccuracy and finalcheckpoint testaccuracy; no test-basedmodelselection or augmentation."
+    },
+    {
+      "id": "lexset-native-size",
+      "detail": "Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented."
     }
   ],
   "contacts": [
@@ -3745,7 +4088,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "76of81 targets produced under predeclared architecture/preprocessing/defaults; agreement requires matching published two-decimal rounding for every comparable value. Two validation scores have unidentified partitions, three LEXSET scores are permission-blocked. Numerical difference is not a scientific success/failure classification.",
+    "numerical_agreement_basis": "78of81 targets produced under predeclared architecture/preprocessing/defaults. Agreement requires matching published two-decimal rounding for every comparable value; this is not met. Three validation scores have unidentified historical memberships and remain not produced. LEXSET test2350/2400=97.9166667% versus98.95%; no score-directed tuning.",
     "preference_level": 3,
     "blocker": null
   },
@@ -3762,18 +4105,18 @@
     "new_experiments": false
   },
   "conclusion_assessment": {
-    "summary": "The tested RGB-versus-MNIST ordering is reproduced: RGB achieves 97.83333% test accuracy using 10,490 training images, versus MNIST 88.38539% using 27,455. The reported absolute test performance is not recovered, particularly MNIST: 88.38539% versus 97.12%. This supports only part of the recognition findings.",
+    "summary": "RGB and LEXSET reach similar test accuracy (97.83333% and97.91667%), both higher than MNIST88.38539%. RGB uses10490 training images versus LEXSET21600 and MNIST27455. The paper strict RGB-best ranking is not reproduced: LEXSET is0.08333 percentage points higher in this single-seed reconstruction. Similar RGB performance with fewer training examples is retained descriptively; absolute paper test scores are not recovered.",
     "evidence": [
-      "Paper section IV-C and Tables 1-2 state that RGB attains higher accuracy with fewer training images; the completed rgb-full and mnist-full runs preserve that ordering.",
-      "The reproduced RGB-minus-MNIST gap is 9.44794 percentage points. Published RGB accuracy is 99.72%; reproduced is 97.83333%.",
-      "Both runs reached 100% recorded training accuracy while held-out accuracy was lower; these results do not establish the paper section IV-B assertion that no overfitting occurs."
+      "Original MNIST/RGB runs preserved; lexset-full-v1 completed60epochs with2350/2400 correct.",
+      "LEXSET published98.95%, reproduced97.91667%, difference-1.03333pp. RGB-minus-LEXSET difference-0.08333pp; RGB-minus-MNIST+9.44794pp.",
+      "LEXSET final online training99.48611% versus test97.91667%; prior MNIST/RGB training100% with lower tests. These runs do not substantiate the paper assertion of no overfitting."
     ],
     "limits": [
-      "These are comparisons across different datasets, not a controlled demonstration that RGB representation alone causes the improvement.",
-      "LEXSET continuation is in progress; three-dataset comparison pending. Historical validation membership remains unspecified.",
-      "Communication/channel simulations were outside the assigned scope; no conclusion about the proposed communication system is reproduced by these recognition runs alone."
+      "Different datasets and test samples; this is not a controlled causal comparison of representations or evidence of statistically reliable superiority from the0.08333pp difference.",
+      "All three historical validation memberships remain unspecified; their scores are not invented. Learning rate, batch, initialization and resize-library defaults remain documented reconstruction assumptions.",
+      "Communication/channel simulations and full-system semantic transmission claims are outside the assigned recognition scope."
     ],
-    "assessed_at_utc": "2026-10-02T06:52:37.552235+00:00"
+    "assessed_at_utc": "2026-10-03T18:52:31.864707+00:00"
   },
   "continuation_budget": {
     "declared_at_utc": "2026-10-03T18:09:23.388230+00:00",
@@ -3781,5 +4124,13 @@
     "max_cost_chf": 25,
     "detail": "LEXSET acquisition, preflight and one checkpoint-resumable full attempt; preserve earlier results."
   },
-  "execution_state": "lexset_continuation_in_progress"
+  "execution_state": "terminal",
+  "continuation_summary": {
+    "gpu_hours": 0.22676854842238958,
+    "full_restarts": 0,
+    "closed_lexset_artifact_count": 24,
+    "prior_76_targets_unchanged": true,
+    "permission_gate_resolved": true,
+    "human_execution_action_required": false
+  }
 }
