@@ -248,3 +248,21 @@ def csl_native_label_forecast(run_id:str):
   return dict(r,observed_frames=observed,bytes=path.stat().st_size,native_frame_count_matches=observed==r['frames'])
  with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:report['video_consistency_checks']=list(pool.map(check,sample.values()))
  report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))
+
+@app.function(image=native_image,cpu=4,memory=8192,timeout=1200,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def csl_direct_frame_forecast(run_id:str):
+ import json,pickle,hashlib,datetime,time,re,concurrent.futures
+ from simple_video_utils.metadata import video_metadata
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic();report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'purpose':'Actual metadata via native-label-derived paths, no directory traversal; full count forecast only, not content-hash data audit.','splits':{}}
+ (out/'started.json').write_text(json.dumps(report));outputs.commit()
+ for split in ['train','test']:
+  label=Path('/upstream/CiCo/CLCL/data_csl')/f'{split}.pkl';labels=pickle.load(label.open('rb'));items=[v for group in labels.values() for v in group];assert len({r['video_name'] for r in items})==len(items);records=[]
+  def read(r):
+   path=Path('/datasets/csl-daily/videos')/(r['video_name']+'.mp4');meta=video_metadata(str(path));frames=int(meta.nb_frames);assert frames>0
+   return {'name':r['video_name'],'frames':frames,'label_num_frames':r['num_frames'],'bytes':path.stat().st_size,'height':meta.height,'width':meta.width}
+  with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+   for start in range(0,len(items),256):
+    records.extend(pool.map(read,items[start:start+256]));(out/'progress.json').write_text(json.dumps({'split':split,'completed':len(records),'total':len(items),'wall_seconds':time.monotonic()-t}));outputs.commit()
+  report['splits'][split]={'queries':len(labels),'videos':len(records),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in records),'windows_16_stride1':sum(max(1,r['frames']-15) for r in records),'bytes':sum(r['bytes'] for r in records),'records':records};(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))

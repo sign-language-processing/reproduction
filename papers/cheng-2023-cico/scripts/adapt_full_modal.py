@@ -12,13 +12,13 @@ image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@
 for name in ['0004-trainer-data-paths-and-splits.patch','0005-trainer-project-video-decoder.patch','0006-trainer-python-callable.patch','0007-trainer-initialization-and-checkpoint-recovery.patch','0009-trainer-recovery-evidence.patch']:
  image=image.add_local_file(HERE.parent/'patches'/name,'/repro/'+name,copy=True).run_commands('cd /upstream && git apply --unidiff-zero /repro/'+name)
 image=image.env({'HF_HOME':'/cache/huggingface','HF_HUB_CACHE':'/cache/huggingface/hub','OMP_NUM_THREADS':'4'}).add_local_file(HERE/'i3d_adapt.py','/repro/i3d_adapt.py')
-@app.function(image=image,gpu='A100-80GB',cpu=4,memory=16384,timeout=10800,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
+@app.function(image=image,gpu='A100-80GB',cpu=4,memory=16384,timeout=16200,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
 def run(run_id:str,manifest_sha:str,resume_after_stopped_app:str=''):
  import subprocess,json,datetime,time,re,threading,os,hashlib,signal
  if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id) or not re.fullmatch(r'[0-9a-f]{64}',manifest_sha):raise ValueError('Invalid run or manifest')
  out=Path('/outputs')/run_id;out.mkdir(exist_ok=True)
  def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
- identity={'upstream':'38a4f7b00da7a858d59b7fabe5093876a84db8e0','source':sha('/repro/i3d_adapt.py'),'wrapper':sha(__file__),'patches':{p.name:sha(p) for p in sorted(Path('/repro').glob('*.patch'))},'manifest_sha256':manifest_sha,'max_seconds':10800,'max_segments':2,'epochs':15,'batch':4,'seed':0,'selection':'final epoch','validation_rows':0}
+ identity={'upstream':'38a4f7b00da7a858d59b7fabe5093876a84db8e0','source':sha('/repro/i3d_adapt.py'),'wrapper':sha(__file__),'patches':{p.name:sha(p) for p in sorted(Path('/repro').glob('*.patch'))},'manifest_sha256':manifest_sha,'max_seconds':16200,'max_segments':2,'epochs':15,'batch':4,'seed':0,'selection':'final epoch','validation_rows':0}
  planfile=out/'plan.json';now=time.time()
  if (out/'complete.json').exists():raise ValueError('Already complete')
  if not planfile.exists():(out/'initial-claim').mkdir(exist_ok=False)
@@ -28,7 +28,7 @@ def run(run_id:str,manifest_sha:str,resume_after_stopped_app:str=''):
   if plan['segments']>=2 or not (out/'native/checkpoint.pth.tar').exists():raise ValueError('No recovery budget/checkpoint')
  else:
   if resume_after_stopped_app:raise ValueError('Absent run')
-  plan={'identity':identity,'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'deadline_epoch':now+10800,'segments':0}
+  plan={'identity':identity,'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'deadline_epoch':now+16200,'segments':0}
  if plan['deadline_epoch']-time.time()<120:raise ValueError('Original deadline reached')
  next_segment=plan['segments']+1;(out/f'segment-{next_segment}-claim').mkdir(exist_ok=False)
  plan.update(segments=next_segment,last_app_id=app.app_id);planfile.write_text(json.dumps(plan,indent=2));outputs.commit()
