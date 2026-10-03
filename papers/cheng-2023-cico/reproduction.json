@@ -4859,7 +4859,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-HLKnKc2vhvFBkBDAmqxJip",
+        "function_call_id": "fc-01M41NZQQM9JRDW84VPZ9BFR85"
       },
       "configuration": {
         "scope": "32 distinct real training-only native pseudo clips, batch4, two native epochs, empty validation execution and measured steady batch throughput. Final epoch only; diagnostic not a target.",
@@ -4872,7 +4874,18 @@
         "0009-trainer-recovery-evidence.patch_sha256": "33afc0ab7c8a0af56b3709f2d55dc3197dfae59c7d5822f0c1fb7cd13a9b4cb0",
         "i3d_train_representative.py_sha256": "42235f4451c6e4ffa09bf528660d764c574f23d60e7b451a73a98ae6ad5be180"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native two-epoch training on32 distinct pseudo clips with zero validation rows completed. Warm batch4 mean0.361477375s, peak13,871,224,832bytes; fixed final15-epoch selection is unaffected by empty validation.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T20:06:29.003977Z",
+      "finished_at_utc": "2026-10-03T20:07:15.544967Z",
+      "wall_time_seconds": 46.54103427,
+      "exit_code": 0
     },
     {
       "run_id": "native-features-recovery-v1",
@@ -4913,7 +4926,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-YRMgVIX6pwn1eYA8XmY9ZQ",
+        "function_call_id": "fc-01M41P2PGZ6TGA60EBGNXPY3J5"
       },
       "configuration": {
         "scope": "Native PHOENIX per-window1024-d feature extraction for three real training videos; verify output shapes/identity plus closed-rank skip and unreceipted-rank regeneration.",
@@ -4921,7 +4936,19 @@
         "i3d_extract.py_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
         "training_modal.py_sha256": "06197831479f43f0dd40a0b60f746d2d3346b3a25e88bfba1fd47717105ca6d8"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native feature extraction and closed-rank skip/interrupted-rank regeneration completed;126windows for3real videos. Wrapper printed nativeexit0 then CLI transport raised Connection._transport; preserve closed evidence, no repeat needed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T20:08:10.280604Z",
+      "finished_at_utc": "2026-10-03T20:08:37.366059Z",
+      "wall_time_seconds": 27.085483258,
+      "exit_code": 0,
+      "client_exit_code": 1
     }
   ],
   "artifacts": [
