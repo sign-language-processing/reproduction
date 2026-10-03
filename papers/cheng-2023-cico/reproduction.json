@@ -5009,6 +5009,62 @@
       "finished_at_utc": "2026-10-03T20:32:57.488722Z",
       "wall_time_seconds": 2.026800011,
       "exit_code": 0
+    },
+    {
+      "run_id": "phx-agnostic-features-full-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/features_full_modal.py::run --run-id phx-agnostic-features-full-v1 --weights-path /outputs/training-inputs/bsl5k.pth.tar --weights-sha 6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-agnostic-features-full",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T20:44:36.396442+00:00",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4,
+        "max_cost_chf": 16
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Native domain-agnostic PHOENIX train/test feature extraction,7096train+642test,775911windows,1024float32 features. No scientific target produced by preparation.",
+        "source_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
+        "wrapper_sha256": "ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "weights_sha256": "6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f",
+        "expected_raw_feature_bytes": 3178131456,
+        "forecast_wall_hours": 3.2,
+        "forecast_basis": "Native126window microcase1.7566s; full pseudo sustained~111windows/s including encoding; conservative3.2h includes staging/hash/pickle serialization.",
+        "recovery": "No fresh restart. At most2segments sharing original4h deadline; explicit resume only after wrapper-verified prior app stopped. Atomic segment claims and closed-rank/split exacthash verification. Process group terminated on watchdog/exception. Completion-only recovery keeps nativeexitnull and explicitstageexit0.",
+        "independent_source_review": "GPT-6 using Codex peer reviewed finalwrapper ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6 and frozen native driver; PASS on2026-10-03.",
+        "aggregate_budget": "Within continuation24GPUh/CHF90; reserve4h/CHF16 for this stage,4h/CHF16 already reservedpseudo; diagnosticsactual0.114h. Provisionaladapt3h+aware4h leaves8.886h for CLCL and futurediagnostics."
+      },
+      "terminal": null
     }
   ],
   "artifacts": [

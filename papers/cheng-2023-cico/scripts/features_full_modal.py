@@ -41,7 +41,7 @@ def run(run_id:str,weights_path:str,weights_sha:str,resume_after_stopped_app:str
  next_segment=plan['segments']+1;(out/f'segment-{next_segment}-claim').mkdir(exist_ok=False)
  plan.update(segments=next_segment,last_app_id=app.app_id)
  planfile.write_text(json.dumps(plan,indent=2));outputs.commit()
- segment=plan['segments'];record={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'deadline_epoch':plan['deadline_epoch'],'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'segment':segment,'native_exit_code':None}
+ segment=plan['segments'];record={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'deadline_epoch':plan['deadline_epoch'],'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'segment':segment,'native_exit_code':None,'stage_exit_code':None,'completion_only':False}
  (out/f'segment-{segment}-started.json').write_text(json.dumps(record,indent=2));outputs.commit()
  child=[None]
  def kill_child():
@@ -60,7 +60,7 @@ def run(run_id:str,weights_path:str,weights_sha:str,resume_after_stopped_app:str
   with (out/f'segment-{segment}-hardware.txt').open('w') as f:subprocess.run(['nvidia-smi'],stdout=f,check=True,timeout=30)
   for split in ['train','test']:
    if (out/split/'complete.json').exists():
-    finished=json.loads((out/split/'complete.json').read_text());assert finished['identity']['weights_sha256']==weights_sha and finished['identity']['manifest_sha256']==identity['manifest_sha256']
+    finished=json.loads((out/split/'complete.json').read_text());assert finished['identity']=={'mode':'features','split':split,'probe':False,'manifest_sha256':identity['manifest_sha256'],'weights_sha256':weights_sha,'entrypoint_sha256':identity['source']}
     assert finished['ranks']==list(range(256 if split=='train' else 16))
     for rank in finished['ranks']:
      receipt=json.loads((out/split/f'rank-{rank:03d}.json').read_text())
@@ -72,7 +72,9 @@ def run(run_id:str,weights_path:str,weights_sha:str,resume_after_stopped_app:str
     child[0]=subprocess.Popen(command,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
     record['native_exit_code']=child[0].wait(timeout=max(1,plan['deadline_epoch']-time.time()-90))
    if record['native_exit_code']:break
-  if all((out/x/'complete.json').exists() for x in ['train','test']):(out/'complete.json').write_text(json.dumps({'splits':['train','test'],'weights_sha256':weights_sha}))
+  if all((out/x/'complete.json').exists() for x in ['train','test']) and record['native_exit_code'] in [None,0]:
+   record.update(stage_exit_code=0,completion_only=record['native_exit_code'] is None)
+   (out/'complete.json').write_text(json.dumps({'splits':['train','test'],'weights_sha256':weights_sha,'completion_only':record['completion_only']}))
  except BaseException as e:
   record['exception']=repr(e);raise
  finally:
@@ -82,4 +84,4 @@ def run(run_id:str,weights_path:str,weights_sha:str,resume_after_stopped_app:str
   (out/f'segment-{segment}-execution.json').write_text(json.dumps(record,indent=2));outputs.commit();timer.cancel()
  print(json.dumps(record));log=out/f'segment-{segment}-console.log'
  if log.exists():print(log.read_text()[-3000:])
- if record['native_exit_code']:raise RuntimeError('Native feature stage failed; no automatic retry')
+ if record['stage_exit_code']!=0 or (record['native_exit_code']!=0 and not record['completion_only']):raise RuntimeError('Native feature stage failed; no automatic retry')
