@@ -1,0 +1,113 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-YIykPJ7OafUrlxeO827hOo
+Building image im-qixzCeyoS8ilFe0fPqCe45
+
+=> Step 0: FROM base
+
+=> Step 1: RUN python -m pip install av==18.0.0 simple-video-utils==0.7.4
+Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+Collecting av==18.0.0
+  Downloading http://pypi-mirror.modal.local:5555/simple/av/av-18.0.0-cp311-abi3-manylinux_2_28_x86_64.whl.metadata (4.5 kB)
+Collecting simple-video-utils==0.7.4
+  Downloading http://pypi-mirror.modal.local:5555/simple/simple-video-utils/simple_video_utils-0.7.4-py3-none-any.whl.metadata (4.2 kB)
+Collecting numpy (from simple-video-utils==0.7.4)
+  Downloading http://pypi-mirror.modal.local:5555/simple/numpy/numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Downloading http://pypi-mirror.modal.local:5555/simple/av/av-18.0.0-cp311-abi3-manylinux_2_28_x86_64.whl (35.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.5/35.5 MB 351.6 MB/s eta 0:00:00
+Downloading http://pypi-mirror.modal.local:5555/simple/simple-video-utils/simple_video_utils-0.7.4-py3-none-any.whl (19 kB)
+Downloading http://pypi-mirror.modal.local:5555/simple/numpy/numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 501.1 MB/s eta 0:00:00
+Installing collected packages: numpy, av, simple-video-utils
+
+Successfully installed av-18.0.0 numpy-2.5.3 simple-video-utils-0.7.4
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+Saving image...
+Image saved, took 439.22ms
+
+Built image im-qixzCeyoS8ilFe0fPqCe45 in 4.93s
+
+
+Building image im-Rgf3JiHTijuwv1KcTILnO6
+
+=> Step 0: FROM base
+
+=> Step 1: ENV HF_HOME=/cache/huggingface
+
+=> Step 2: ENV HF_HUB_CACHE=/cache/huggingface/hub
+Saving image...
+Image saved, took 418.28ms
+
+Built image im-Rgf3JiHTijuwv1KcTILnO6 in 1.47s
+
+
+✓ Created objects.
+├── 🔨 Created mount 
+└── 🔨 Created function audit.
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 24, in audit
+    samples.append(dict(path=str(p.relative_to(root)),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),metadata=dataclasses.asdict(meta),decoded_frames=len(frames),decoded_shape=list(frames[0].shape)))
+                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dataclasses.py", line 1328, in asdict
+    raise TypeError("asdict() should be called on dataclass instances")
+TypeError: asdict() should be called on dataclass instances
+Stopping app - uncaught exception raised locally: TypeError('asdict() should be called on dataclass instances').
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ in main                                                                      │
+│                                                                              │
+│   29 @app.local_entrypoint()                                                 │
+│ ❱ 30 def main(run_id:str='data-preflight-003'):audit.remote(run_id)          │
+│   31                                                                         │
+│                                                                              │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VGTVPFMZ3JQPSHQN7M8KZR)...      │
+│                                                                              │
+│ /root/modal_app.py:24 in audit                                               │
+│                                                                              │
+│ ❱ 24 samples.append(dict(path=str(p.relative_to(root)),sha256=hashlib.sha256 │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/dataclasses.py:1328 in asdict                      │
+│                                                                              │
+│ ❱ 1328 raise TypeError("asdict() should be called on dataclass instances")   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+TypeError: asdict() should be called on dataclass instances
