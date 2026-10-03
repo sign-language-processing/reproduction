@@ -9,8 +9,8 @@ outputs=modal.Volume.from_name('cheng-2023-cico-results',version=2)
 image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291')
  .apt_install('git').pip_install('opencv-python-headless==4.11.0.86','beartype==0.19.0','simple-video-utils==0.0.6','av==19.0.1','mock==5.1.0','humanize==4.11.0','tensorboard==2.18.0','zsvision==0.7.12','mergedeep==1.3.4')
  .run_commands('git clone https://github.com/FangyunWei/SLRT.git /upstream && cd /upstream && git checkout 38a4f7b00da7a858d59b7fabe5093876a84db8e0'))
-for name in ['0004-trainer-data-paths-and-splits.patch','0005-trainer-project-video-decoder.patch','0006-trainer-python-callable.patch','0007-trainer-initialization-and-checkpoint-recovery.patch','0008-trainer-deterministic-kernel-selection.patch']:
- image=image.add_local_file(HERE.parent/'patches'/name,'/repro/'+name,copy=True).run_commands('cd /upstream && git apply /repro/'+name)
+for name in ['0004-trainer-data-paths-and-splits.patch','0005-trainer-project-video-decoder.patch','0006-trainer-python-callable.patch','0007-trainer-initialization-and-checkpoint-recovery.patch','0009-trainer-recovery-evidence.patch']:
+ image=image.add_local_file(HERE.parent/'patches'/name,'/repro/'+name,copy=True).run_commands('cd /upstream && git apply --unidiff-zero /repro/'+name)
 image=image.env({'HF_HOME':'/cache/huggingface','HF_HUB_CACHE':'/cache/huggingface/hub','OMP_NUM_THREADS':'4'}).add_local_file(HERE/'i3d_train_probe.py','/repro/i3d_train_probe.py')
 @app.function(image=image,gpu='A100-80GB',cpu=4,memory=16384,timeout=900,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
 def run(run_id:str):

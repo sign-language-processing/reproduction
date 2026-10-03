@@ -1,0 +1,50 @@
+Subject: Assert exact native state restoration and retain batch/timing evidence
+
+--- a/CiCo/I3D_trainer/main.py
++++ b/CiCo/I3D_trainer/main.py
+@@ -151,7 +151,21 @@
+             np.random.set_state((ns[0], np.asarray(ns[1], dtype=np.uint32), ns[2], ns[3], ns[4]))
+             torch.set_rng_state(rng['torch'].cpu())
+             torch.cuda.set_rng_state_all(rng['cuda'])
+-            args.start_epoch = checkpoint["epoch"]
++            # Validate actual fresh-process restoration before taking another step.
++            import json
++            assert all(torch.equal(v.detach().cpu(), checkpoint['state_dict'][k].cpu()) for k, v in model.state_dict().items())
++            current_opt = optimizer.state_dict()
++            assert current_opt['param_groups'] == checkpoint['optimizer']['param_groups']
++            for key, entry in current_opt['state'].items():
++                for name, value in entry.items():
++                    expected = checkpoint['optimizer']['state'][key][name]
++                    assert torch.equal(value.cpu(), expected.cpu()) if torch.is_tensor(value) else value == expected
++            assert random.getstate() == rng['python']
++            assert torch.equal(torch.get_rng_state(), rng['torch'].cpu())
++            assert all(torch.equal(a, b.cpu()) for a, b in zip(torch.cuda.get_rng_state_all(), rng['cuda']))
++            current_np = np.random.get_state()
++            assert current_np[0] == ns[0] and np.array_equal(current_np[1], ns[1]) and current_np[2:] == tuple(ns[2:])
++            Path(args.checkpoint, 'resume-state-proof.json').write_text(json.dumps({'model_exact': True, 'optimizer_exact': True, 'rng_exact': True, 'checkpoint_epoch': checkpoint['epoch']}))
+             plog.info(
+                 f"=> loaded checkpoint '{args.resume}' (epoch {checkpoint['epoch']})"
+             )
+--- a/CiCo/I3D_trainer/epoch.py
++++ b/CiCo/I3D_trainer/epoch.py
+@@ -78,6 +78,10 @@
+ 
+         inputs = data["rgb"]
+         targets = data["class"]
++        if i == 0:
++            import json
++            from pathlib import Path
++            Path(checkpoint, f'first-batch-{setname}-{epochno}.json').write_text(json.dumps({'indices': data['data_index'].tolist(), 'labels': targets.tolist(), 'videos': data['video_path'], 'shape': list(inputs.shape)}))
+ 
+         inputs_cuda = inputs.cuda()
+         targets_cuda = targets.cuda()
+@@ -141,6 +145,9 @@
+         )
+         bar.next()
+     bar.finish()
++    import json
++    from pathlib import Path
++    Path(checkpoint, f'epoch-{setname}-{epochno}.json').write_text(json.dumps({'batches': len(loader), 'mean_batch_seconds': batch_time.avg, 'mean_loss': losses[0].avg, 'peak_gpu_bytes': torch.cuda.max_memory_allocated()}))
+ 
+     # save outputs
+     if save_logits or save_features:
