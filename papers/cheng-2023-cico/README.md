@@ -1,8 +1,10 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
-**Evaluation scope:** released-checkpoint evaluation only. This attempt does not reproduce training of the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
+**Current work:** training reproduction reopened on 2026-10-03. Source and training-data preparation are in progress; no new full training run has launched.
 
-**Pipeline status:** complete
+**Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
+
+**Released-checkpoint pipeline status:** complete
 
 **Numerical agreement:** does_not_agree
 
@@ -108,3 +110,5 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/c
 The evaluation entry point handles setup, checkpoint loading and scoring; it does not provide a verified training reproduction. Any training attempt requires its own data/recipe investigation and prospective run records.
 
 The direct batch assignment preserves the redacted tracker export and its original SHA-256 `61a45da0c6d25859bc8abba10df4096806e371ca2b326b5d3881043781fcf780`. Its current schema has final paper status, a separate database ID and no legacy confirmation field; none was invented. `codex-orchestrator`—GPT-6 using Codex—performed source investigation, implementation and execution. `codex-reviewer`—also GPT-6 using Codex—independently reviewed the wrapper against upstream and edited this report on 2026-10-01; it did not execute the reported runs. These identities are explicitly attested by the active session instructions. Exact model IDs and application versions were not exposed, and execution attribution is preserved unchanged.
+
+Training continuation is separately recorded in `reproduction.json.training_continuation`. GPT-6 using Codex (`codex-training-orchestrator`) is investigating raw-data preparation, sign-encoder adaptation, and native CLCL training; exact model and harness versions are not exposed. Earlier 24 checkpoint-evaluation results and their executor attribution remain unchanged. The new trained-model results will be evaluated against the published baselines without score-driven tuning.

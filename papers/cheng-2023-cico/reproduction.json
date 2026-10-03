@@ -28,6 +28,21 @@
       "evidence": [
         "Explicit 2026-10-02 session attestation: active instructions identify GPT-6 using Codex; exact versions are not exposed. Reviewed paper Sections 4.2\u20135 and Tables 1\u20139 against the completed report; preserved every target and run object, including execution agent_ids."
       ]
+    },
+    {
+      "agent_id": "codex-training-orchestrator",
+      "model": "GPT-6",
+      "model_id": null,
+      "harness": "Codex",
+      "harness_version": null,
+      "scope": "Training-continuation source/data investigation and orchestration beginning 2026-10-03; did not execute earlier checkpoint evaluations. Exact model identifier and harness version are not exposed.",
+      "evidence": [
+        {
+          "type": "session_attestation",
+          "date": "2026-10-03",
+          "detail": "Active session identifies the agent as GPT-6 using Codex; no exact model identifier or application version is available."
+        }
+      ]
     }
   ],
   "assignment": {
@@ -3716,5 +3731,28 @@
       }
     ],
     "limits": "No new numerical tolerance or statistical significance criterion is introduced. Evaluation of one released checkpoint per dataset cannot estimate training-seed variability or establish end-to-end training reproducibility."
+  },
+  "training_continuation": {
+    "requested_at": "2026-10-03",
+    "state": "investigating_training_recipe_and_inputs",
+    "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
+    "full_run_launched": false,
+    "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
+    "observations": [
+      "The released feature ZIP contains test features only; training requires feature extraction from raw videos.",
+      "Pinned upstream provides 15-epoch I3D adaptation and 200-epoch CLCL training with global batch 512.",
+      "The native CLCL loop evaluates test data after every epoch and tracks test R@1; preserve and disclose this selection protocol rather than implying untouched held-out selection.",
+      "Modal inventory finds PHOENIX and CSL raw video trees; How2Sign currently contains only SPOT-ALIGN features, which are not interchangeable with CiCo features.",
+      "Official How2Sign frontal raw training/test downloads are 290/23 GB and use manually realigned boundaries; smaller released sentence clips use original boundaries.",
+      "Upstream issues 54,55,64 report missing domain-aware PHOENIX/CSL weights, absent training features, and a classifier-width discrepancy; no replies were present on 2026-10-03. Investigate executable evidence before classifying a blocker."
+    ],
+    "compute_policy": "Complete real-data preflight and recovery proof; declare measured full-run ceilings before any full launch. No full training budget is consumed or declared yet.",
+    "evidence": [
+      "https://github.com/FangyunWei/SLRT/tree/38a4f7b00da7a858d59b7fabe5093876a84db8e0/CiCo",
+      "https://how2sign.github.io/",
+      "https://github.com/FangyunWei/SLRT/issues/54",
+      "https://github.com/FangyunWei/SLRT/issues/55",
+      "https://github.com/FangyunWei/SLRT/issues/64"
+    ]
   }
 }
