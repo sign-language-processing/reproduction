@@ -5623,6 +5623,83 @@
       "finished_at_utc": "2026-10-03T21:49:50.206052+00:00",
       "wall_time_seconds": 4.087614046000001,
       "exit_code": 0
+    },
+    {
+      "run_id": "training-evidence-closure-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::close_evidence --run-id training-evidence-closure-v1 --source-runs training-input-preparation-v1,training-input-preparation-v2,i3d-phx-probe-v1,decoder-audit-v1,decoder-audit-v2,i3d-phx-probe-v2,phx-raw-manifest-v1,native-pseudo-probe-v1,native-pseudo-recovery-v1,native-pseudo-recovery-v2,phx-pseudo-full-v1,native-trainer-probe-v1,trainer-recovery-audit-v1,native-trainer-probe-v2,native-trainer-probe-v3,native-trainer-probe-v4,native-trainer-probe-v5,native-trainer-representative-v1,native-features-recovery-v1,clip-initialization-prepare-v1,clcl-native-mechanics-v1,csl-window-forecast-v1,phx-pseudo-collection-v1,csl-annotation-forecast-v1,csl-native-label-forecast-v1,csl-direct-frame-forecast-v1,csl-feature-length-audit-v1,training-inputs",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-evidence-closure",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:58:39.988544+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Read-only hashes for alreadyterminal continuation runs andpinnedinitializationfiles. Excludesrunningagnostic/adaptation; clips alreadySHAverified viaclosedrank/pseudomanifest retainedindirectly. No model execution.",
+        "source_runs": [
+          "training-input-preparation-v1",
+          "training-input-preparation-v2",
+          "i3d-phx-probe-v1",
+          "decoder-audit-v1",
+          "decoder-audit-v2",
+          "i3d-phx-probe-v2",
+          "phx-raw-manifest-v1",
+          "native-pseudo-probe-v1",
+          "native-pseudo-recovery-v1",
+          "native-pseudo-recovery-v2",
+          "phx-pseudo-full-v1",
+          "native-trainer-probe-v1",
+          "trainer-recovery-audit-v1",
+          "native-trainer-probe-v2",
+          "native-trainer-probe-v3",
+          "native-trainer-probe-v4",
+          "native-trainer-probe-v5",
+          "native-trainer-representative-v1",
+          "native-features-recovery-v1",
+          "clip-initialization-prepare-v1",
+          "clcl-native-mechanics-v1",
+          "csl-window-forecast-v1",
+          "phx-pseudo-collection-v1",
+          "csl-annotation-forecast-v1",
+          "csl-native-label-forecast-v1",
+          "csl-direct-frame-forecast-v1",
+          "csl-feature-length-audit-v1",
+          "training-inputs"
+        ],
+        "source_sha256": "bb42a840ce2d6ae8dc4622deeb5208f6effb301a9d253864518e9cd35f5bcfaa"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [

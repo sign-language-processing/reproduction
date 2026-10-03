@@ -281,3 +281,25 @@ def csl_feature_length_audit(run_id:str):
    f=Path('/datasets/cico-features/sign_features')/('csl_domain_'+stream)/'test'/(name+'.pkl');payload=f.read_bytes();obj=pickle.loads(payload);entry['features'][stream]={'sha256':hashlib.sha256(payload).hexdigest(),'shape':list(obj['feature'].shape)}
   report['records'].append(entry)
  report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
+
+@app.function(image=image,cpu=4,memory=8192,timeout=900,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def close_evidence(run_id:str,source_runs:str):
+ import json,hashlib,datetime,time,re,concurrent.futures
+ names=source_runs.split(',')
+ if len(names)>50 or not all(re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',x) for x in [run_id]+names) or len(set(names))!=len(names):raise ValueError('Invalid run IDs')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic();started=datetime.datetime.now(datetime.timezone.utc).isoformat();records=[];missing=[]
+ (out/'started.json').write_text(json.dumps({'started_at_utc':started,'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'source_runs':names}));outputs.commit()
+ for name in names:
+  base=Path('/outputs')/name
+  if not base.exists():missing.append(name);continue
+  # Clip bytes are covered by native closed rank receipts and the full pseudo audit.
+  # Never read canonical datasets or a running experiment in this collection.
+  paths=sorted(p for p in base.rglob('*') if p.is_file() and p.suffix!='.mp4')
+  def read(p):
+   before=p.stat()
+   with p.open('rb') as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
+   after=p.stat();assert (before.st_size,before.st_mtime_ns)==(after.st_size,after.st_mtime_ns)
+   return {'path':str(p.relative_to('/outputs')),'sha256':digest,'bytes':after.st_size}
+  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:records.extend(pool.map(read,paths))
+ manifest={'source_runs':names,'missing_directories':missing,'excluded':'MP4 bytes remain in native rank receipts and independently closed pseudo manifest; no clip deletion or scientific re-execution.','files':records}
+ target=out/'manifest.json';target.write_text(json.dumps(manifest,indent=2)+'\n');report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'manifest_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'files':len(records),'bytes':sum(r['bytes'] for r in records),'missing_directories':missing};(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
