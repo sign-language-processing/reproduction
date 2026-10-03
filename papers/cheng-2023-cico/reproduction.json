@@ -4949,6 +4949,53 @@
       "wall_time_seconds": 27.085483258,
       "exit_code": 0,
       "client_exit_code": 1
+    },
+    {
+      "run_id": "clip-initialization-prepare-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::prepare_clip --run-id clip-initialization-prepare-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "clip-initialization-acquisition",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T20:32:34.019959+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Acquire and SHA256 verify published OpenAI CLIP ViT-B/32 initialization for independent native CLCL training. Never substitute released CiCo retrieval checkpoint.",
+        "source_sha256": "f15984fe0da14c9a65d34367bd910832bb81f220f48bd8ffe5655071f0b01943"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
