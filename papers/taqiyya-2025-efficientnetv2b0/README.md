@@ -4,6 +4,8 @@
 
 Thifa Ziada Taqiyya, Khadijah, and Retno Kusumaningrum. *Classification of American Sign Language Using EfficientNetV2B0 Architecture.* ICITACEE 2025, pp. 196–202. [Paper](https://doi.org/10.1109/ICITACEE66165.2025.11233171).
 
+**Conclusion:** The assigned four-model training reproduction is complete, with mixed findings. All four models exceed 99% accuracy and EfficientNet retains the observed top placement by one test image. The exact scores and remaining ranking differ; the claim that EfficientNet has the fewest parameters is contradicted. No target run or human decision remains pending.
+
 This attempt reconstructs all four accuracy rows in Table X. The tracker export names Table X without limiting the model rows. These are the paper's own comparison experiments, not copied baselines. The Table X parameter-count column is used to verify architecture identity, rather than as a separate requested metric.
 
 ## Assignment and agent
@@ -110,7 +112,7 @@ Every native checkpoint, probability/prediction array, split, model definition, 
 
 No remaining question requires human action. Exact historical seed, augmentation draws, optimizer/defaults, freezing and stopping monitor are disclosed reconstruction assumptions; numerical proximity cannot resolve those unpublished choices. No original author was contacted.
 
-## Conclusion assessment (2026-10-02)
+## Conclusion assessment (2026-10-03)
 
 EfficientNetV2B0 remains the observed accuracy winner, supporting its effectiveness and top placement in this four-model experiment. It classified **2,322/2,336** test images correctly (**99.4007%**), versus **2,321/2,336** (**99.3579%**) for both MobileNetV2 and ConvNeXt-Tiny, and **2,318/2,336** (**99.2295%**) for ResNet50V2. Its lead is **one image, or 0.04281 percentage points**. Table X's published order was **EfficientNet > ConvNeXt > ResNet > MobileNet**; the reproduced order is **EfficientNet > MobileNet = ConvNeXt > ResNet**. The top placement survives, while the remaining ordering changes and none of the exact published accuracies matches.
 
@@ -119,3 +121,17 @@ The adjacent Table X discussion (PDF p.6) claims EfficientNet achieves the highe
 A one-image lead in one seeded run does not establish a stable ordering across runs. Historical baseline settings remain disclosed reconstruction assumptions. Augmentation before splitting permits transformed NULL examples and their sources in different partitions, limiting conclusions about independent-source or signer generalization. The paper's augmentation-benefit and hyperparameter-optimality claims require ablations outside these four target runs; parameter counts alone do not establish inference speed. These limits require no new human execution decision.
 
 The existing independent review GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
+
+The completed experiment supports the following conclusions:
+
+| Paper finding | Reproduction conclusion |
+|---|---|
+| High ASL benchmark accuracy | Reproduced under the declared reconstruction: all four trained models score 99.23–99.40%. |
+| EfficientNet ranks first | Observed top placement reproduced, by one image over the nearest models; robust superiority is not established. |
+| Full ranking and exact Table X scores | Not reproduced: MobileNet rises to tied second, and every exact score differs. |
+| EfficientNet uses the fewest parameters | Contradicted: MobileNet has 2.593M versus EfficientNet 6.254M; all four published counts match. |
+| Augmentation benefit, optimal hyperparameters, inference speed and signer generalization | Not assessed by these four assigned runs. |
+
+A later independent review on 2026-10-03 rechecked each prediction file against its retained SHA-256 and recomputed every score, index and probability argmax. Against MobileNet, EfficientNet alone correctly classifies seven images while MobileNet alone correctly classifies six; against ConvNeXt, these counts are six and five. This explains why the ranking is a narrow observed result. All 47 generated test images are correctly classified by every model; the remaining 2,289 original test images preserve the same ranking. That diagnostic does not remove possible cross-split source relationships introduced by augmentation before splitting.
+
+This closes the assigned Table X attempt. Additional seeds could test ranking stability, and separate ablations could test augmentation benefits, but neither is a missing execution in this completed four-model reproduction. No settings were adjusted to strengthen EfficientNet's lead. The GPT-6/Codex orchestrator performed this later analysis and report update without running new model experiments.
