@@ -137,3 +137,21 @@ def prepare_clip(run_id:str):
   assert sha(partial)==expected;partial.replace(target)
  report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'sha256':sha(target),'bytes':target.stat().st_size,'url':url,'permission':'Published OpenAI CLIP initialization used under upstream MIT license; no trained CiCo retrieval checkpoint used.'}
  (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
+
+@app.function(image=native_image,cpu=4,memory=8192,timeout=1800,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def csl_forecast(run_id:str):
+ import json,pickle,hashlib,datetime,time,re,concurrent.futures
+ from simple_video_utils.metadata import video_metadata
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
+ report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'purpose':'Read-only frame/window forecast, not a full data-integrity or permission audit.','splits':{}}
+ files=list(Path('/datasets/csl-daily/videos').rglob('*.mp4'));paths={p.stem:p for p in files};assert len(paths)==len(files)
+ for split in ['train','test']:
+  label=Path('/upstream/CiCo/CLCL/data_csl')/f'{split}.pkl';labels=pickle.load(label.open('rb'));names=[v['video_name'] for group in labels.values() for v in group];assert len(names)==len(set(names)) and all(name in paths for name in names)
+  def read(name):
+   meta=video_metadata(str(paths[name]));frames=int(meta.nb_frames);assert frames>0
+   return {'name':name,'frames':frames,'windows_16_stride1':max(1,frames-15),'bytes':paths[name].stat().st_size,'height':meta.height,'width':meta.width}
+  with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:records=list(pool.map(read,names))
+  report['splits'][split]={'queries':len(labels),'videos':len(names),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in records),'windows_16_stride1':sum(r['windows_16_stride1'] for r in records),'bytes':sum(r['bytes'] for r in records),'records':records}
+  (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))

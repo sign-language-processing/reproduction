@@ -5147,6 +5147,53 @@
         "clcl_probe.py_sha256": "d87d699c63091e6fab3a8ca043b11618bb5713b516a818621a15b05b56167ea3"
       },
       "terminal": null
+    },
+    {
+      "run_id": "csl-window-forecast-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::csl_forecast --run-id csl-window-forecast-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-window-forecast",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:01:04.311157+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Read-only actual frame counts for all author CSL train/test filenames to establish an evidence-based end-to-end compute forecast. Does not imply complete data-integrity audit or a launched GPU attempt.",
+        "source_sha256": "9ce92324fce0003bf057cfbda2ec963dd0a0afb4d4cf3c94d1bc3981af15fc8c"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
