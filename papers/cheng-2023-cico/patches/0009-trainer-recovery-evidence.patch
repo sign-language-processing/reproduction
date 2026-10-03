@@ -2,11 +2,12 @@ Subject: Assert exact native state restoration and retain batch/timing evidence
 
 --- a/CiCo/I3D_trainer/main.py
 +++ b/CiCo/I3D_trainer/main.py
-@@ -151,7 +151,21 @@
+@@ -151,7 +151,22 @@
              np.random.set_state((ns[0], np.asarray(ns[1], dtype=np.uint32), ns[2], ns[3], ns[4]))
              torch.set_rng_state(rng['torch'].cpu())
              torch.cuda.set_rng_state_all(rng['cuda'])
 -            args.start_epoch = checkpoint["epoch"]
++            args.start_epoch = checkpoint["epoch"]
 +            # Validate actual fresh-process restoration before taking another step.
 +            import json
 +            assert all(torch.equal(v.detach().cpu(), checkpoint['state_dict'][k].cpu()) for k, v in model.state_dict().items())
