@@ -1,0 +1,13 @@
+# Correctness: English references exceed the uint8 weighted-distance range.
+# Widen storage only; retain published costs, tie-breaking, and corpus aggregation.
+--- a/signjoey/metrics.py
++++ b/signjoey/metrics.py
+@@ -149,7 +149,7 @@
+         r -> the list of words produced by splitting reference sentence.
+         h -> the list of words produced by splitting hypothesis sentence.
+     """
+-    d = np.zeros((len(r) + 1) * (len(h) + 1), dtype=np.uint8).reshape(
++    d = np.zeros((len(r) + 1) * (len(h) + 1), dtype=np.int64).reshape(
+         (len(r) + 1, len(h) + 1)
+     )
+     for i in range(len(r) + 1):

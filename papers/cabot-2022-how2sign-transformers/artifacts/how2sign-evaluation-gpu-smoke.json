@@ -1,0 +1,65 @@
+{
+  "source_checkpoint": "/outputs/how2sign-preflight-001/model/best.ckpt",
+  "source_state_sha256": "f93050c677fd7397e7336970cc9ba1e0cbe9a47d2ef41369a28298c427212018",
+  "full_model_vocabulary": {
+    "gloss": 26656,
+    "text": 24607
+  },
+  "dev_lengths": [
+    144,
+    237
+  ],
+  "test_lengths": [
+    132,
+    220
+  ],
+  "candidates": [
+    {
+      "phase": "dev-recognition",
+      "recognition_beam": 10,
+      "translation_beam": 1,
+      "alpha": -1,
+      "native_seconds": 34.072288158,
+      "reused_seconds": 23.078726443000008,
+      "full_result_sha256": "d492bf608b893d5735a31341c7282961f7c3b2edc7a7d246f9dbaadc5357f34f",
+      "exact_equal": true,
+      "bleu4": 0.0
+    },
+    {
+      "phase": "dev-translation",
+      "recognition_beam": 1,
+      "translation_beam": 1,
+      "alpha": -1,
+      "native_seconds": 3.5075169320000015,
+      "reused_seconds": 2.261689278999995,
+      "full_result_sha256": "612a2f3ea50941b411de9e24aa6999d3033558a093d0824e4c6d896006f3e2e7",
+      "exact_equal": true,
+      "bleu4": 0.0
+    },
+    {
+      "phase": "dev-translation",
+      "recognition_beam": 1,
+      "translation_beam": 10,
+      "alpha": 5,
+      "native_seconds": 3.767233762999993,
+      "reused_seconds": 0.2681893750000057,
+      "full_result_sha256": "612a2f3ea50941b411de9e24aa6999d3033558a093d0824e4c6d896006f3e2e7",
+      "exact_equal": true,
+      "bleu4": 0.0
+    }
+  ],
+  "selected_translation": {
+    "beam": 1,
+    "alpha": -1
+  },
+  "final_test_exact_equal": true,
+  "model_state_unchanged": true,
+  "cache_stats": {
+    "native_joint_calls": 3,
+    "recognition_cache_hits": 1
+  },
+  "elapsed_seconds": 120.431672453,
+  "diagnostic_only": true,
+  "gpu_smoke": true,
+  "peak_gpu_memory_bytes": 421248512
+}

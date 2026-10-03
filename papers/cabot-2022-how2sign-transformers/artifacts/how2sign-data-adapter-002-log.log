@@ -1,0 +1,94 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-GyiYrBxyiZNY8NhufRIPZT
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/up
+│   stream.patch
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function execute.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function collect.
+└── 🔨 Created function execute_how2.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+Stopping app - user stopped from CLI.
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <worktree>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:219 in main                                               │
+│                                                                              │
+│   218 │   if mode=='prepare-how2':                                           │
+│ ❱ 219 │   │   prepare_how2.remote(run_id); return                            │
+│   220 │   if mode=='acquire-validation':                                     │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:483 in run_function                                               │
+│                                                                              │
+│    482 │   │   │   if await_response.output.result.status in TERMINAL_STATUS │
+│ ❱  483 │   │   │   │   return await _process_result(                         │
+│    484 │   │   │   │   │   await_response.output.result, await_response.outp │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:574 in _process_result                                 │
+│                                                                              │
+│   573 │   │                                                                  │
+│ ❱ 574 │   │   raise RemoteError(result.exception)                            │
+│   575                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+RemoteError
