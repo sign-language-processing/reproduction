@@ -4,13 +4,14 @@ import modal
 APP = modal.App('repro-992e7a-yolo-collect')
 OUTPUT = modal.Volume.from_name('repro-992e7a-results', version=2)
 CACHE = modal.Volume.from_name('huggingface-cache', version=2)
-IMAGE = (modal.Image.debian_slim(python_version='3.12')
+DATA = modal.Volume.from_name('datasets', version=2)
+IMAGE = (modal.Image.debian_slim(python_version='3.12').pip_install('numpy==1.26.4', 'pycocotools==2.0.11')
          .env({'HF_HOME': '/cache/huggingface', 'HF_HUB_CACHE': '/cache/huggingface/hub'})
          .add_local_file(Path(__file__), '/work/yolo_collect.py'))
 
 
 @APP.function(image=IMAGE, cpu=2, memory=4096, timeout=900, retries=0,
-              volumes={'/outputs': OUTPUT, '/cache/huggingface': CACHE})
+              volumes={'/outputs': OUTPUT, '/cache/huggingface': CACHE, '/datasets': DATA.read_only()})
 def collect(run_id: str):
     import csv
     import datetime
@@ -47,6 +48,33 @@ def collect(run_id: str):
         assert all(int(row[next(k for k in row if k.strip() == 'epoch')]) == i for i, row in enumerate(rows))
         receipt['validated_epochs'] = len(rows)
         receipt['validated_test_timing_count'] = 1509
+        from pycocotools.coco import COCO
+        from pycocotools.cocoeval import COCOeval
+        import numpy as np
+        dataset = Path('/datasets/belmadoui-arabic-sign-language')
+        assert hashlib.sha256((dataset / 'manifest.json').read_bytes()).hexdigest() == 'bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e'
+        ground_truth_path = dataset / 'coco/full/test.json'
+        assert hashlib.sha256(ground_truth_path.read_bytes()).hexdigest() == '3a75cd1b9528ffc7c69b2df9df7d54579bbb4b45ed63f45f5c728c7e3cb36049'
+        ground_truth = COCO(str(ground_truth_path))
+        image_ids = set(ground_truth.getImgIds())
+        assert len(image_ids) == 1509
+        predictions = json.loads((output / model / 'test/common-coco-predictions.json').read_text())
+        assert all(p['image_id'] in image_ids and 1 <= p['category_id'] <= 28 and 0 <= p['score'] <= 1 for p in predictions)
+        if predictions:
+            detections = ground_truth.loadRes(predictions)
+        else:
+            detections = COCO()
+            detections.dataset = {'images': ground_truth.dataset['images'], 'categories': ground_truth.dataset['categories'], 'annotations': []}
+            detections.createIndex()
+        evaluator = COCOeval(ground_truth, detections, 'bbox')
+        evaluator.params.imgIds = sorted(image_ids)
+        evaluator.evaluate()
+        evaluator.accumulate()
+        evaluator.summarize()
+        assert np.allclose(evaluator.stats, metrics['common_pycocotools_stats'], rtol=0, atol=1e-12)
+        receipt['independent_common_coco_stats'] = evaluator.stats.tolist()
+        receipt['independent_common_coco_exact'] = True
+        receipt['prediction_count'] = len(predictions)
     paths = sorted(p for p in output.rglob('*') if p.is_file() and p.name != 'evidence.json' and not p.name.startswith('collection-'))
     with ThreadPoolExecutor(max_workers=4) as pool:
         files = list(pool.map(digest, paths))
