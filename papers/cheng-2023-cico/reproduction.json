@@ -4792,7 +4792,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-zsvOqfTluKlOylf81gLN4U",
+        "function_call_id": "fc-01M41NTVHMZPWADQ3D1DXYDTXF"
       },
       "configuration": {
         "scope": "Exactfresh native model/optimizer/allRNG restoration assertions, correct resumedbatch/labels versuscontinuouspath, finiteoptimizer state; preserve nativebenchmark; record independently repeatedfloatingpointdrift ratherthan forcebitwise equality.",
@@ -4805,7 +4807,18 @@
         "0009-trainer-recovery-evidence.patch_sha256": "33afc0ab7c8a0af56b3709f2d55dc3197dfae59c7d5822f0c1fb7cd13a9b4cb0",
         "hypothesis": "Retain native args.start_epoch assignment removed accidentally by instrumentation; verify exact next epoch batch identity."
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Fresh native model/optimizer/Python/NumPy/Torch/CUDA restoration exact; restored epoch and next batch indices/labels match uninterrupted path; finite SGD continuation. Independent floating-point drift predates resume and is preserved rather than changing the native recipe.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T20:04:20.674225Z",
+      "finished_at_utc": "2026-10-03T20:05:20.217500Z",
+      "wall_time_seconds": 59.543315025,
+      "exit_code": 0
     },
     {
       "run_id": "native-trainer-representative-v1",
@@ -4858,6 +4871,55 @@
         "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
         "0009-trainer-recovery-evidence.patch_sha256": "33afc0ab7c8a0af56b3709f2d55dc3197dfae59c7d5822f0c1fb7cd13a9b4cb0",
         "i3d_train_representative.py_sha256": "42235f4451c6e4ffa09bf528660d764c574f23d60e7b451a73a98ae6ad5be180"
+      },
+      "terminal": null
+    },
+    {
+      "run_id": "native-features-recovery-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::pseudo_probe --run-id native-features-recovery-v1 --mode features",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-feature-extraction-recovery",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T20:06:52.218376+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Native PHOENIX per-window1024-d feature extraction for three real training videos; verify output shapes/identity plus closed-rank skip and unreceipted-rank regeneration.",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "i3d_extract.py_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
+        "training_modal.py_sha256": "06197831479f43f0dd40a0b60f746d2d3346b3a25e88bfba1fd47717105ca6d8"
       },
       "terminal": null
     }
