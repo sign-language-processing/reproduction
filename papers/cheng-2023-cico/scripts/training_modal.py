@@ -92,25 +92,26 @@ extract_image=(native_image
  .run_commands('cd /upstream && git apply /repro/pseudo-decoder.patch && git apply /repro/pseudo-range.patch')
  .add_local_file(HERE/'i3d_extract.py','/repro/i3d_extract.py'))
 @app.function(image=extract_image,gpu='A100-80GB',cpu=4,memory=32768,timeout=900,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
-def pseudo_probe(run_id:str):
+def pseudo_probe(run_id:str,mode:str="pseudo"):
  import subprocess,json,datetime,time,re,threading,os
  if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid run ID')
+ if mode not in ['pseudo','features']:raise ValueError('Unknown mode')
  out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
  record={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'native_exit_code':None}
  (out/'started.json').write_text(json.dumps(record,indent=2));outputs.commit()
  timer=threading.Timer(890,lambda:os._exit(124));timer.daemon=True;timer.start()
  try:
-  command=['python','/repro/i3d_extract.py','--output',str(out/'pseudo'),'--manifest','/outputs/phx-raw-manifest-v1/manifest.json','--manifest-sha','4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a','--weights','/outputs/training-inputs/bsl5k.pth.tar','--weights-sha','6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f','--mode','pseudo','--split','train','--probe']
+  command=['python','/repro/i3d_extract.py','--output',str(out/mode),'--manifest','/outputs/phx-raw-manifest-v1/manifest.json','--manifest-sha','4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a','--weights','/outputs/training-inputs/bsl5k.pth.tar','--weights-sha','6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f','--mode',mode,'--split','train','--probe']
   with (out/'console.log').open('w') as f:
    p=subprocess.run(command,stdout=f,stderr=subprocess.STDOUT,timeout=240)
    if p.returncode==0:
-    receipt=out/'pseudo/rank-255.json';original=json.loads(receipt.read_text())
+    receipt=out/mode/'rank-255.json';original=json.loads(receipt.read_text())
     # Closed-rank replay verifies each artifact without recomputing it.
     first_mtime=receipt.stat().st_mtime_ns
     p=subprocess.run(command,stdout=f,stderr=subprocess.STDOUT,timeout=240)
     assert p.returncode==0 and receipt.stat().st_mtime_ns==first_mtime
     # Simulate interruption after final-directory rename but before receipt.
-    receipt.rename(out/'pseudo/rank-255.saved')
+    receipt.rename(out/mode/'rank-255.saved')
     p=subprocess.run(command,stdout=f,stderr=subprocess.STDOUT,timeout=240)
     assert p.returncode==0
     recovered=json.loads(receipt.read_text());assert original['artifacts']==recovered['artifacts']
