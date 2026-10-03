@@ -48,6 +48,28 @@
       ],
       "model_id": null,
       "harness_version": null
+    },
+    {
+      "agent_id": "cico-adaptation-source-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "model_id": null,
+      "harness_version": null,
+      "scope": "Independent read-only review of native I3D recipe, restoration evidence and adaptation/feature launcher guards; no execution. Exact model ID and harness version unavailable in inherited session.",
+      "evidence": [
+        "Delegated GPT-6/Codex review on2026-10-03 confirmed final15 selection/empty validation and source guard PASS; feature wrapper ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6."
+      ]
+    },
+    {
+      "agent_id": "cico-clcl-source-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "model_id": null,
+      "harness_version": null,
+      "scope": "Independent read-only review of native CLCL initialization, optimizer/negative-pool semantics, checkpoint recovery patches and bounded diagnostic; no execution. Exact model ID and harness version unavailable in inherited session.",
+      "evidence": [
+        "Delegated GPT-6/Codex review on2026-10-03 inspected pinned38a4f7b and patches0010\u20130012; approved bounded diagnostic scope after source/AST checks, not full training."
+      ]
     }
   ],
   "assignment": {
@@ -5049,7 +5071,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-4Lpt8BmHT5kvqaDKkdzfOI",
+        "function_call_id": "fc-01M41R78RCHNKWFWBBXJBRVFA9"
       },
       "configuration": {
         "scope": "Native domain-agnostic PHOENIX train/test feature extraction,7096train+642test,775911windows,1024float32 features. No scientific target produced by preparation.",
@@ -5062,7 +5086,65 @@
         "forecast_basis": "Native126window microcase1.7566s; full pseudo sustained~111windows/s including encoding; conservative3.2h includes staging/hash/pickle serialization.",
         "recovery": "No fresh restart. At most2segments sharing original4h deadline; explicit resume only after wrapper-verified prior app stopped. Atomic segment claims and closed-rank/split exacthash verification. Process group terminated on watchdog/exception. Completion-only recovery keeps nativeexitnull and explicitstageexit0.",
         "independent_source_review": "GPT-6 using Codex peer reviewed finalwrapper ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6 and frozen native driver; PASS on2026-10-03.",
-        "aggregate_budget": "Within continuation24GPUh/CHF90; reserve4h/CHF16 for this stage,4h/CHF16 already reservedpseudo; diagnosticsactual0.114h. Provisionaladapt3h+aware4h leaves8.886h for CLCL and futurediagnostics."
+        "aggregate_budget": "Within continuation24GPUh/CHF90; reserve4h/CHF16 for this stage,4h/CHF16 already reservedpseudo; diagnosticsactual0.114h. Provisionaladapt3h+aware4h leaves8.886h for CLCL and futurediagnostics.",
+        "immutable_deadline_utc": "2026-10-04T00:45:37.937545+00:00"
+      },
+      "terminal": null,
+      "started_at_utc": "2026-10-03T20:45:38.555811+00:00"
+    },
+    {
+      "run_id": "clcl-native-mechanics-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/clcl_modal.py::probe --run-id clcl-native-mechanics-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "clcl-native-mechanics",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T20:54:20.016645+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "512 actual training-feature/query pairs, truebatch512/accumulation1, native fp16-containing parameter precision and BertAdam; two-epoch mechanics and fresh resume. Same agnostic stream used twice and16training-query evaluation explicitly diagnostic. Full paired-aware/full-loader gate remains.",
+        "optimizer_horizon": "Configured200epochs but512diagnostic examples yields200totalsteps; full7096rows withdrop_last yields2600steps. This diagnostic does not claim full scheduling equivalence.",
+        "canonical_clip_sha256": "40d365715913c9da98579312b702a82c18be219cc2a73407c4526f58eba950af",
+        "native_sampler_seed": 0,
+        "model_and_augmentation_seed": 42,
+        "review": "Independent read-only source review PASS for bounded diagnostic only.",
+        "0011-clcl-atomic-recovery-and-selection.patch_sha256": "8ee81760e80eaf5ea31426f8b7e934c80ef078d401d07927c4a94a6bf9fcb45d",
+        "0012-clcl-native-initialization-audit.patch_sha256": "7edad7b0c2da033ff4bdb1cdc726a4351080bc546fb4a6974ec4b376ded6b25b",
+        "0010-clcl-phoenix-aware-path.patch_sha256": "a2d3d5c60c4a8444c178741211c25afadf745f8b0566eee37604b505860cef28",
+        "clcl_modal.py_sha256": "2c9caccfc33e2e4c4e8898571266cdcb5103a3cca298d207f33e7586722edb51",
+        "clcl_probe.py_sha256": "d87d699c63091e6fab3a8ca043b11618bb5713b516a818621a15b05b56167ea3"
       },
       "terminal": null
     }
