@@ -373,28 +373,31 @@
       "metric_id": "parameters",
       "name": "Model parameter count",
       "direction": "lower",
-      "implementation": "Author counting inclusion/exclusion unspecified.",
-      "version": "Paper Table4; implementation not released",
+      "implementation": "sum(p.numel() for p in model.parameters()), counting learned parameters including weight-normalization parameters; divided by1e6.",
+      "version": "PyTorch2.11.0a0+eb65b36914.nv26.02",
       "aggregation": "single model/test partition",
-      "unit_or_scale": "million parameters"
+      "unit_or_scale": "million parameters",
+      "paper_implementation_limit": "Author counting inclusion/exclusion unspecified."
     },
     {
       "metric_id": "flops",
       "name": "Floating point operations",
       "direction": "lower",
-      "implementation": "Input image dimensions and MAC/FLOP convention absent; Table2 states32frames.",
-      "version": "Paper Table4; implementation not released",
+      "implementation": "fvcore FlopCountAnalysis for one video tensor[1,32,3,224,224], eval mode; one fused multiply-add counted as one operation; unsupportedoperators retained in rawmetrics, divided by1e9.",
+      "version": "fvcore0.1.5.post20221221",
       "aggregation": "single model/test partition",
-      "unit_or_scale": "GFLOPs"
+      "unit_or_scale": "GFLOPs",
+      "paper_implementation_limit": "Input image dimensions and MAC/FLOP convention absent; Table2 states32frames."
     },
     {
       "metric_id": "accuracy",
       "name": "Top1 classification accuracy",
       "direction": "higher",
-      "implementation": "Number correctly classified held-out videos divided by total videos times100; exact test split and checkpoint selection unresolved.",
-      "version": "Paper Table4; implementation not released",
+      "implementation": "Exactly correct argmax video classifications /640held-out videos \u00d7100; primarywhole-video horizontalflip probability0.5 atseed314159 after validation-only checkpoint selection.",
+      "version": "NumPy equality/mean; native dependency freeze retained.",
       "aggregation": "single model/test partition",
-      "unit_or_scale": "percent"
+      "unit_or_scale": "percent",
+      "paper_implementation_limit": "Number correctly classified held-out videos divided by total videos times100; exact test split and checkpoint selection unresolved."
     }
   ],
   "experiments": [
@@ -444,6 +447,15 @@
         "selected_step": 1000,
         "comparability": "Not an exact-paper target result: architecture dimensions are inferred and BatchNorm uses the disclosed microbatch behavior. Predeclared before scores; no numerical agreement assessment."
       }
+    },
+    {
+      "experiment_id": "paper-sized-skresnet-tcn",
+      "dataset_id": "lsa64-conditional-v1",
+      "system": "Parameter-sized SKResNet-TCN reconstruction",
+      "recipe": "timm1.0.22 grouped skresnext50_32x4d with stage depths[1,2,2,1]; random initialization, Mish, max representation pooling; pinned cited TCN blocks width224/kernel3/dilations1,2,5/dropout0.2; Ranger0.3.0 lr1e-4;1,000 optimizer updates/effectivebatch128/microbatch4/seed42; existing32-frame224px preprocessing and1,920/640/640split.",
+      "checkpoint_rule": "Earliest maximum validation accuracy among the20scheduled evaluations every50updates; primary augmented test seed314159 only after training, secondary deterministic evaluation separately.",
+      "comparability": "Explicitly authorized approximate reconstruction fixed before accuracy. New own-row values assess the requested approximate scope, not an exact author implementation. Parameter closeness is design calibration; operation counts use1FMA convention with unsupportedoperators disclosed. Same held-out video accuracy metric, reconstructed class-balanced split; shared signers across partitions prevent signer-independent claims.",
+      "paper_evidence": "PaperSections3\u20134;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details."
     }
   ],
   "targets": [
@@ -804,9 +816,9 @@
       "in_scope": true,
       "paper_location": "Table4,p8,rowours",
       "system": "ours",
-      "experiment_id": "lsa64-hybrid",
+      "experiment_id": "paper-sized-skresnet-tcn",
       "metric_id": "parameters",
-      "dataset_id": "lsa64",
+      "dataset_id": "lsa64-conditional-v1",
       "split": "model",
       "original_value": 12.34,
       "copied_baseline": false,
@@ -836,16 +848,17 @@
           "Table4 and Sections3\u20134;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
-      }
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
     {
       "target_id": "table4-ours-flops",
       "in_scope": true,
       "paper_location": "Table4,p8,rowours",
       "system": "ours",
-      "experiment_id": "lsa64-hybrid",
+      "experiment_id": "paper-sized-skresnet-tcn",
       "metric_id": "flops",
-      "dataset_id": "lsa64",
+      "dataset_id": "lsa64-conditional-v1",
       "split": "model",
       "original_value": 62.5,
       "copied_baseline": false,
@@ -875,16 +888,17 @@
           "Table4 and Sections3\u20134;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
-      }
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
     {
       "target_id": "table4-ours-accuracy",
       "in_scope": true,
       "paper_location": "Table4,p8,rowours",
       "system": "ours",
-      "experiment_id": "lsa64-hybrid",
+      "experiment_id": "paper-sized-skresnet-tcn",
       "metric_id": "accuracy",
-      "dataset_id": "lsa64",
+      "dataset_id": "lsa64-conditional-v1",
       "split": "test",
       "original_value": 100.0,
       "copied_baseline": false,
@@ -914,7 +928,8 @@
           "Table4 and Sections3\u20134;source-search audit.",
           "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
         ]
-      }
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     }
   ],
   "runs": [
