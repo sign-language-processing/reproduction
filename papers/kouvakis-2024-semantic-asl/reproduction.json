@@ -370,32 +370,38 @@
       "modal_volume": "datasets",
       "volume_version": 2,
       "modal_path": "synthetic-asl-alphabet",
-      "preprocessing": "Not acquired or processed.",
+      "preprocessing": "Canonical ZIP native Train_Alphabet/Test_Alphabet. Select24static letters, excludeJ/Z/BLANK. Images actually513x512, resized RGB100x100 with Pillow bilinear then /255, same transformation as priorRGB. Archive copied temporarily to local worker disk and each selected member checksum verified before decoding.",
       "splits": [
         {
           "name": "train",
           "sample_count": 21600,
           "files": [
             {
-              "path": "source-metadata-only:not-payload",
-              "sha256": "62cf4486f376e9565d812f00fe889cbec403d285f2f0c08e04d860abf18da7b2"
+              "path": "manifest.json",
+              "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0"
             }
           ],
-          "note": "Paper/metadata expected counts, not downloaded dataset checksums."
+          "note": "Verified original native split:900train and100test per selectedletter; manifest enumerates every ZIP member hash, CRC and dimensions."
         },
         {
           "name": "test",
           "sample_count": 2400,
           "files": [
             {
-              "path": "source-metadata-only:not-payload",
-              "sha256": "62cf4486f376e9565d812f00fe889cbec403d285f2f0c08e04d860abf18da7b2"
+              "path": "manifest.json",
+              "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0"
             }
           ],
-          "note": "Paper/metadata expected counts, not downloaded dataset checksums."
+          "note": "Verified original native split:900train and100test per selectedletter; manifest enumerates every ZIP member hash, CRC and dimensions."
         }
       ],
-      "permission_basis": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized."
+      "permission_basis": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized.",
+      "manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "archive_sha256": "fee9a105ef0785ded6c795031fc0b25252263e782a13836645d06f175cd04373",
+      "canonical_format": "source-v3.zip members",
+      "file_count": 27000,
+      "auxiliary_image_count": 1,
+      "cross_split_exact_duplicates": 0
     }
   ],
   "targets": [
@@ -3228,14 +3234,142 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "datasets_volume_version": 2
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-1Pa6DZM9nXojjdMaLPRCnm"
       },
-      "terminal": null,
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "detail": "Stopped after >7 minutes without first 3000/27000 milestone, projecting beyond 3600s ceiling. Repeated remote per-file audit was unproductive; canonical ZIP-member audit tests the exact training inputs more cheaply. Native process exit not emitted before explicit app stop.",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
       "configuration": {
         "data_script_sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
-        "detail": "All existing extracted files are now CRC/size verified against ZIP and atomically repaired if needed; overview explicitly inventoried as auxiliary image."
+        "detail": "All existing extracted files are now CRC/size verified against ZIP and atomically repaired if needed; overview explicitly inventoried as auxiliary image.",
+        "source_snapshot": "artifacts/lexset-acquisition-v3-source.py"
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "started_at_utc": "2026-10-03T18:16:26.833154+00:00",
+      "finished_at_utc": "2026-10-03T18:26:20.162459+00:00",
+      "exit_code": 1,
+      "timestamps_note": "Start is conservative local declaration/launch lower bound; native start receipt was not persisted before app stop. Finish records collection after explicit stop; exact native termination timestamp unavailable.",
+      "native_exit_code": null,
+      "exit_code_basis": "Observed wrapper CLI exited 1 with RemoteError after explicit app stop. Native subprocess exit unavailable and remains null."
+    },
+    {
+      "run_id": "lexset-acquisition-v4",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v4",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-canonical-archive-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:26:20.162737+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-ICy50ZZP9kxLmF9pDpdU4d",
+        "modal_function_call_id": "fc-01M41G8WCZH4D4Z94DM8CC3GM8",
+        "modal_task_id": "ta-01M41G8X3FK972MBM3ZAJHWEVR"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 27000 sample images plus one overview CRC/SHA/decode verified from canonical pinned ZIP; native paper subset21600train2400test; no exact cross-split duplicates.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "configuration": {
+        "data_script_sha256": "3c7f92f5753561b0936d6acbfeaaf783661885e511541c56085cfbce3d6a83f3",
+        "detail": "Canonical pinned ZIP local staging; every ZIP member CRC/SHA/decode; native sample membership unchanged. Extracted leftovers explicitly noncanonical."
+      },
+      "artifact_ids": [
+        "lexset-manifest",
+        "lexset-acquisition-v4-execution"
+      ],
+      "started_at_utc": "2026-10-03T18:26:29.237190+00:00",
+      "finished_at_utc": "2026-10-03T18:30:10.081027+00:00",
+      "exit_code": 0,
+      "wall_time_seconds": 219.939215561
+    },
+    {
+      "run_id": "lexset-preflight-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-preflight-v1 --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0 --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:31:56.643455+00:00",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": 0.3333333333333333,
+        "max_cost_chf": 2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+        "train_source_sha256": "797a9249824090597d701aff18903c55f219d1513d6fa446ec07acb8bdc3804b",
+        "modal_source_sha256": "dbded721b2abe29e01b95fbcd82828be97240dcdefe7a7cb912f980a587e5078",
+        "image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "preflight": "256 real training samples /four optimizer steps, fresh CNN+Adam checkpoint restoration bitwise checks, one resumed step and128 held-out samples; all canonical training/test samples loaded through intended path."
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
@@ -3413,6 +3547,28 @@
       "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/predictions.npz",
       "sha256": "40c00e26265d5a82884bf311e299321981c758a7f73ec9925dfa5ad56b018fb2",
       "size_bytes": 658
+    },
+    {
+      "artifact_id": "lexset-source-metadata-20261003",
+      "sha256": "58b2c48aeabf10957dbaf0c9362ade83cdc1d5fe180439e8d9ec72a977c0dcbd",
+      "description": "Public Kaggle metadata inspected 2026-10-03; actual copyright label retained separately from project authorization.",
+      "uri": "artifacts/lexset-source-metadata-20261003.json",
+      "kind": "raw public source metadata",
+      "size_bytes": 5588
+    },
+    {
+      "artifact_id": "lexset-manifest",
+      "kind": "canonical dataset manifest",
+      "uri": "modal://repro-sign/datasets/synthetic-asl-alphabet/manifest.json",
+      "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "size_bytes": 11744661
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution",
+      "kind": "native execution receipt",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution.json",
+      "sha256": "29781e7866af2a77a47aa51a593c67df9ad437aded4f052a396228a0c86cbfac",
+      "size_bytes": 331
     }
   ],
   "gates": [

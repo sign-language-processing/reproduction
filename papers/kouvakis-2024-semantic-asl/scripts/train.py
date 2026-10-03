@@ -25,6 +25,28 @@ if args.dataset=='mnist':
  train_x,train_y=load('train');test_x,test_y=load('test')
  assert len(train_y)==27455 and len(test_y)==7172
  def batch(x,idx):return F.interpolate(x[idx].float()/255,size=(100,100),mode='bilinear',align_corners=False).expand(-1,3,-1,-1)
+elif args.dataset=='lexset':
+ # Stage the pinned source archive locally: byte-identical input avoids many remote PNG opens.
+ import shutil,zipfile,io
+ staged=Path('/tmp/lexset-source-v3.zip')
+ shutil.copyfile(root/'source-v3.zip',staged)
+ h=hashlib.sha256()
+ with staged.open('rb') as f:
+  for block in iter(lambda:f.read(8*1024*1024),b''):h.update(block)
+ assert h.hexdigest()==manifest['source_sha256']=='fee9a105ef0785ded6c795031fc0b25252263e782a13836645d06f175cd04373'
+ with zipfile.ZipFile(staged) as z:
+  def load(split):
+   chosen=[r for r in manifest['files'] if r.get('split')==split and r.get('label') in letters and len(r.get('label',''))==1]
+   chosen.sort(key=lambda r:r['path'])
+   x=[];y=[]
+   for r in chosen:
+    raw=z.read(r['path'].removeprefix('files/'));assert hashlib.sha256(raw).hexdigest()==r['sha256']
+    with Image.open(io.BytesIO(raw)) as im:x.append(np.asarray(im.convert('RGB').resize((100,100),Image.Resampling.BILINEAR)))
+    y.append(letters.index(r['label']))
+   return torch.from_numpy(np.stack(x).transpose(0,3,1,2)).cuda(),torch.tensor(y,device='cuda')
+  train_x,train_y=load('train');test_x,test_y=load('test')
+ assert (len(train_y),len(test_y))==(21600,2400)
+ def batch(x,idx):return x[idx].float()/255
 else:
  files=sorted(p for p in (root/'files').rglob('*') if p.suffix.lower() in ['.jpg','.jpeg','.png'])
  def load(split):

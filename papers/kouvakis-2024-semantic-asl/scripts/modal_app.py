@@ -49,6 +49,7 @@ def populate_lexset(run_id: str="lexset-acquisition-v1"):
  from datetime import datetime,timezone
  out=Path('/results')/run_id;out.mkdir(parents=True,exist_ok=True)
  receipt={'started_at_utc':datetime.now(timezone.utc).isoformat(),'modal_app_id':app.app_id,'modal_function_call_id':modal.current_function_call_id(),'modal_task_id':os.environ.get('MODAL_TASK_ID')}
+ (out/'execution-start.json').write_text(json.dumps(receipt,indent=2));outputs.commit()
  start=time.monotonic()
  with (out/'console.log').open('w') as f:
   p=subprocess.run(['bash','/app/data.sh','lexset'],stdout=f,stderr=subprocess.STDOUT,timeout=3500)
