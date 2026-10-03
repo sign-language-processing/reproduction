@@ -8,6 +8,7 @@ assert sha(a.manifest)==a.manifest_sha
 manifest=json.loads(Path(a.manifest).read_text());assert manifest['source_run']=='phx-pseudo-full-v1' and manifest['ranks']==256 and manifest['split']=='train'
 out=Path(a.output);out.mkdir(exist_ok=True);local=Path('/tmp/cico-adaptation-clips');local.mkdir(exist_ok=True);rows=[]
 for r in manifest['clips']:
+ assert not Path(r['path']).is_absolute() and '..' not in Path(r['path']).parts
  source=Path('/outputs/phx-pseudo-full-v1/pseudo')/r['path'];dest=local/r['path'];dest.parent.mkdir(parents=True,exist_ok=True)
  if not dest.exists() or sha(dest)!=r['sha256']:shutil.copyfile(source,dest)
  assert sha(dest)==r['sha256'];rows.append(dest)

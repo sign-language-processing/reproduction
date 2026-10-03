@@ -1,4 +1,4 @@
-"""Bounded native trainer microcase; every call uses the repro-sign wrapper."""
+"""Guarded final-epoch native I3D adaptation and closed pseudo collection."""
 from pathlib import Path
 import modal
 HERE=Path(__file__).resolve().parent
@@ -74,12 +74,13 @@ def collect_pseudo(run_id:str):
  out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);base=Path('/outputs/phx-pseudo-full-v1/pseudo');t=time.monotonic()
  def sha(p):
   with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
- complete=json.loads((base/'complete.json').read_text());assert complete['ranks']==list(range(256)) and complete['identity']['mode']=='pseudo' and complete['identity']['split']=='train'
+ complete=json.loads((base/'complete.json').read_text());assert complete['identity']['manifest_sha256']=='4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a' and complete['identity']['weights_sha256']=='6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f' and complete['identity']['entrypoint_sha256']=='b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c'
+ assert complete['ranks']==list(range(256)) and complete['identity']['mode']=='pseudo' and complete['identity']['split']=='train'
  manifest={'source_run':'phx-pseudo-full-v1','split':'train','ranks':256,'complete_sha256':sha(base/'complete.json'),'rank_receipts':[],'clips':[]};total_windows=0
  for rank in range(256):
   receipt=base/f'rank-{rank:03d}.json';r=json.loads(receipt.read_text());assert r['rank']==rank;total_windows+=r['windows'];manifest['rank_receipts'].append({'rank':rank,'sha256':sha(receipt)})
   for a in r['artifacts']:
-   path=base/a['path'];assert path.is_relative_to(base) and path.stat().st_size==a['bytes'] and sha(path)==a['sha256']
+   path=base/a['path'];assert not Path(a['path']).is_absolute() and '..' not in Path(a['path']).parts and path.is_relative_to(base) and path.stat().st_size==a['bytes'] and sha(path)==a['sha256']
    if path.suffix=='.mp4':
     frames=int(video_metadata(str(path)).nb_frames);assert frames>0;label=int(path.parent.name);assert 0<=label<5383
     manifest['clips'].append(dict(a,frames=frames,class_id=label))
