@@ -1,0 +1,20 @@
+Subject: Python3.12 moved Callable to collections.abc
+
+--- a/CiCo/I3D_trainer/opts.py
++++ b/CiCo/I3D_trainer/opts.py
+@@ -1,5 +1,5 @@
+ import argparse
+-import collections
++import collections.abc
+ import datetime
+ import json
+ import os
+@@ -17,7 +17,7 @@
+     for name in models.__dict__
+     # if name.islower() and not name.startswith("__")
+     if not name.startswith("__")
+-    and isinstance(models.__dict__[name], collections.Callable)
++    and isinstance(models.__dict__[name], collections.abc.Callable)
+ )
+ 
+ 
