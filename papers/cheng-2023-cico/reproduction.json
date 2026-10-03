@@ -4335,13 +4335,86 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-jTLhi1MCP4zg27MkV518Qh",
+        "function_call_id": "fc-01M41KZ9GTJQW15JWCPEA951D6"
       },
       "configuration": {
         "scope": "Native3video pseudo extraction then closed-rank replay and simulated post-directory/pre-receipt interruption recovery; exact artifact-hash equality required. Additional codec-open/nonempty/decode-output assertions.",
         "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
         "i3d_extract.py_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
         "training_modal.py_sha256": "473389b2777b2335a76c1ad56bdc823288e07af1b461891e0ff261758ac17dc6"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native pseudo generation with encoder-open/nonempty/video-decode checks passed. Closed-rank replay skipped work; rename-before-receipt recovery regenerated identical artifacts.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:31:21.275665+00:00",
+      "finished_at_utc": "2026-10-03T19:31:48.991145+00:00",
+      "wall_time_seconds": 27.71550967,
+      "exit_code": 0
+    },
+    {
+      "run_id": "phx-pseudo-full-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/pseudo_full_modal.py::run --run-id phx-pseudo-full-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-pseudo-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:32:58.192772+00:00",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4,
+        "max_cost_chf": 16
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Full native pseudo labels on7096PHOENIX training videos only;720914windows,threshold0.6,NMS24. No target metrics or encodertraining claimed.",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "max_execution_segments": 2,
+        "resume_policy": "Only closed-rank checkpoints, originaldeadline/identicalsource,data,weights; prior app independently stopped and ID supplied; no freshrestart; completedstage replay forbidden.",
+        "forecast": {
+          "basis": "Native126windows including clipencoding1.945seconds (65windows/s), conservative extrapolation3.1h plus staging/commit within4h. Latest equivalent guardeddecoder stage1.759s.",
+          "expected_gpu_hours": 3.3,
+          "expected_storage_bytes_max": 2000000000
+        },
+        "review": "Independent root review accepted native patches and fourhourstage conditional on atomicfirstclaim/completedrunrefusal/codecchecks/recoveryproof; all implemented and microcasepassed.",
+        "i3d_extract.py_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
+        "pseudo_full_modal.py_sha256": "58304ea634f17e7ec2aa55352dd810cab61e5aa766da6af54cc2c6e53689d5c9",
+        "0001-extractor-video-decoder.patch_sha256": "3ae0055e9898cd74cc7fde36be67b13f2f5cd487690ba32061bc39aae94ae7ab",
+        "0002-pseudo-video-decoder.patch_sha256": "b8361b33eb885d952d1da3e72643e2f37877445de508f43cbf646838a5788cf9",
+        "0003-pseudo-range-concatenation.patch_sha256": "b21034f3f84fb579c529ed306efb39c6aaf0269cb516f89c0953e9be8612cfbc"
       },
       "terminal": null
     }
@@ -4757,7 +4830,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_i3d_preflight",
+    "state": "full_training_pseudo_stage_launching",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": false,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -4815,6 +4888,7 @@
       "trained-csl-daily-v2t-r5",
       "trained-csl-daily-v2t-r10",
       "trained-csl-daily-v2t-medianr"
-    ]
+    ],
+    "full_pseudo_stage_launched": false
   }
 }
