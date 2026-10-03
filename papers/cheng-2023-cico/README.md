@@ -1,6 +1,6 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
-**Current work:** training reproduction reopened on 2026-10-03. Source and training-data preparation are in progress; no new full training run has launched.
+**Current work:** training reproduction reopened on 2026-10-03. Native PHOENIX pseudo-label and domain-agnostic feature extraction are running. True-batch-512 CLCL training mechanics passed; independent full-model training still awaits the closed encoder/feature chain.
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
@@ -146,3 +146,10 @@ The native I3D trainer microcase runs the actual author train/validation loops o
 A representative native run then trained on 32 distinct generated training clips for two epochs with zero validation rows. Empty validation executes without changing selection or scheduling. The second epoch averaged 0.36148 seconds per batch of four, with 13.87 GB peak allocated GPU memory. Full adaptation will use all closed training pseudo clips, native SGD (learning rate 0.01, momentum 0.9, weight decay zero), seed zero and the final epoch-15 checkpoint. Native milestones 20 and 40 do not occur. Zero-row validation logs are not scientific accuracy measurements. The final clip count, staged-data cost, source review and immutable run policy must pass before that launch.
 
 The native feature microcase produced finite float32 arrays of shapes (38,1024), (75,1024) and (13,1024); all file hashes matched closed receipts. Completed-rank replay and interrupted-rank regeneration passed. Its native exit was zero; a client transport error occurred after the completion receipt and did not justify repeating GPU work. Closed diagnostic GPU subprocess time for this continuation totals approximately 0.114 hours as of this report update, excluding provisioning.
+
+
+Domain-agnostic PHOENIX feature extraction runs under a separate immutable four-hour / CHF16 ceiling (app `ap-4Lpt8BmHT5kvqaDKkdzfOI`, call `fc-01M41R78RCHNKWFWBBXJBRVFA9`, deadline 2026-10-04 00:45:37 UTC). It preserves the native 16-frame stride-one windows and 1,024 float32 channels for all 7,096 train and 642 test videos. This is preparation, not a trained target result.
+
+The native CLCL diagnostic completed on 512 real training feature/query pairs with true global batch 512, accumulation one, the author mixed parameter precision and BertAdam. Fresh resume and uninterrupted execution produced identical model tensors, optimizer state, next-batch tensors and loss/metric histories after two updates; 299 parameter tensors changed. All 300 compatible CLIP tensors loaded exactly. The image convolution and positional embeddings have the two expected image-to-feature shape mismatches, so their native seeded initialization is retained. Peak CUDA memory was 45.18 GB allocated / 47.75 GB reserved, with 1.7423 seconds for the warm batch. The complete diagnostic took 301.50 seconds, mostly remote feature staging. Its duplicated domain-agnostic streams and 16 training-query evaluation are mechanics only; final paired-feature/full-loader preflight remains required. The full 7,096-row loader has 13 batches per epoch and 2,600 optimizer updates over 200 epochs, unlike the 200-update diagnostic horizon.
+
+CPU collection preserves every native feature-pickle byte in a checksum-verified archive for container-local staging. This changes I/O location only. Every native best-test checkpoint, the decadal snapshots, optimizer state, raw metric history and similarity matrices remain retained; no trained paper result is inferred from preprocessing or diagnostics.

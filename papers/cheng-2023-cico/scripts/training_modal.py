@@ -155,3 +155,48 @@ def csl_forecast(run_id:str):
   report['splits'][split]={'queries':len(labels),'videos':len(names),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in records),'windows_16_stride1':sum(r['windows_16_stride1'] for r in records),'bytes':sum(r['bytes'] for r in records),'records':records}
   (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
  report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))
+
+@app.function(image=image,cpu=4,memory=8192,timeout=1800,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def collect_features(run_id:str,source_run:str,expected_weights_sha:str):
+ import json,hashlib,pickle,datetime,time,re,concurrent.futures,zipfile
+ import numpy as np
+ if not all(re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',x) for x in [run_id,source_run]) or not re.fullmatch(r'[0-9a-f]{64}',expected_weights_sha):raise ValueError('Invalid identity')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);base=Path('/outputs')/source_run;t=time.monotonic();started=datetime.datetime.now(datetime.timezone.utc).isoformat()
+ (out/'started.json').write_text(json.dumps({'started_at_utc':started,'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id()}));outputs.commit()
+ def sha(p):
+  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ root_complete=json.loads((base/'complete.json').read_text());assert root_complete['weights_sha256']==expected_weights_sha and root_complete['splits']==['train','test']
+ plan=json.loads((base/'plan.json').read_text());identity=plan['identity']
+ assert identity['upstream']=='38a4f7b00da7a858d59b7fabe5093876a84db8e0' and identity['source']=='b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c' and identity['wrapper']=='ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6'
+ assert identity['patches']==['3ae0055e9898cd74cc7fde36be67b13f2f5cd487690ba32061bc39aae94ae7ab', 'b8361b33eb885d952d1da3e72643e2f37877445de508f43cbf646838a5788cf9', 'b21034f3f84fb579c529ed306efb39c6aaf0269cb516f89c0953e9be8612cfbc'] and identity['weights_sha256']==expected_weights_sha and identity['mode']=='features' and identity['splits']==['train','test']
+ split_completions={}
+ rawpath=Path('/outputs/phx-raw-manifest-v1/manifest.json');assert sha(rawpath)=='4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a';raw=json.loads(rawpath.read_text());raw_by_name={r['path'].removesuffix('.mp4'):r for r in raw['records']};entries=[];receipts=[]
+ for split in ['train','test']:
+  split_completions[split]=sha(base/split/'complete.json');complete=json.loads((base/split/'complete.json').read_text());assert complete['ranks']==list(range(256 if split=='train' else 16))
+  assert complete['identity']=={'mode':'features','split':split,'probe':False,'manifest_sha256':sha(rawpath),'weights_sha256':expected_weights_sha,'entrypoint_sha256':'b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c'}
+  for rank in complete['ranks']:
+   receipt=base/split/f'rank-{rank:03d}.json';r=json.loads(receipt.read_text());assert r['rank']==rank;receipts.append({'split':split,'rank':rank,'sha256':sha(receipt)})
+   for a in r['artifacts']:
+    assert not Path(a['path']).is_absolute() and '..' not in Path(a['path']).parts and a['path'].endswith('.pkl') and Path(a['path']).parts[0]==f'rank-{rank:03d}'
+    entries.append(dict(a,split=split,member=split+'/'+Path(a['path']).name))
+ assert len({a['member'] for a in entries})==len(entries)==7738
+ assert {a['member'].removesuffix('.pkl') for a in entries}=={k for k in raw_by_name if k.startswith(('train/','test/'))}
+ def read(a):
+  payload=(base/a['split']/a['path']).read_bytes();assert len(payload)==a['bytes'] and hashlib.sha256(payload).hexdigest()==a['sha256'];obj=pickle.loads(payload);features=obj['feature'];record=raw_by_name[a['member'].removesuffix('.pkl')]
+  assert features.shape==(max(1,record['frames']-15),1024) and features.dtype==np.float32 and np.isfinite(features).all()
+  assert Path(obj['name']).stem==Path(a['member']).stem
+  return dict(a,shape=list(features.shape),dtype=str(features.dtype)),payload
+ entries.sort(key=lambda a:a['member'])
+ archive=out/'features.zip';partial=out/'features.zip.partial';records=[]
+ with zipfile.ZipFile(partial,'w',compression=zipfile.ZIP_STORED,allowZip64=True) as z,concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+  for start in range(0,len(entries),8):
+   for record,payload in pool.map(read,entries[start:start+8]):
+    z.writestr(zipfile.ZipInfo(record['member'],date_time=(1980,1,1,0,0,0)),payload);records.append(record)
+ with zipfile.ZipFile(partial) as z:
+  assert z.namelist()==[r['member'] for r in records]
+  for r in records:
+   payload=z.read(r['member']);assert len(payload)==r['bytes'] and hashlib.sha256(payload).hexdigest()==r['sha256']
+ partial.replace(archive)
+ manifest={'source_run':source_run,'plan_sha256':sha(base/'plan.json'),'split_completion_sha256':split_completions,'identity':identity,'weights_sha256':expected_weights_sha,'raw_manifest_sha256':sha(rawpath),'root_completion_sha256':sha(base/'complete.json'),'rank_receipts':receipts,'features':records,'archive_sha256':sha(archive),'archive_bytes':archive.stat().st_size,'archive_format':'ZIP_STORED; canonical native pickle bytes unchanged; deterministic member metadata.'}
+ target=out/'manifest.json';target.write_text(json.dumps(manifest,indent=2)+'\n');report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'manifest_sha256':sha(target),'archive_sha256':manifest['archive_sha256'],'archive_bytes':manifest['archive_bytes'],'feature_files':len(records),'windows':sum(r['shape'][0] for r in records)}
+ (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
