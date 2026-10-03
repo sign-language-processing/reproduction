@@ -1,7 +1,7 @@
 # Semantic Communications for Image-Based Sign Language Transmission
 
-**TL;DR:** Full MNIST and RGB runs produced 76 of 81 requested numbers; test accuracies were 88.39% and 97.83%, below 97.12% and 99.72%.
-**Decision:** LEXSET continuation is in progress with attributed internal cloud use authorized; no human action is needed. Original validation membership remains undefined.
+**TL;DR:** All three recognition runs finished: 78/81 targets produced; test accuracy is MNIST 88.39%, LEXSET 97.92%, RGB 97.83%.
+**Conclusion:** RGB and LEXSET are nearly tied; strict RGB-best ranking and absolute paper scores were not reproduced. No human action is needed; three undefined validation scores remain unproduced.
 
 **Pipeline status:** partial
 
@@ -9,16 +9,16 @@
 
 **Preference level:** 3
 
-The full MNIST and RGB schedules completed and produced **76 of 81 requested numbers**. LEXSET acquisition and its 60-epoch continuation are in progress after project authorization; validation scores lack an identified validation partition. There were no failed training attempts or full restarts.
+All published MNIST (90), RGB (80), and LEXSET (60) epoch schedules completed, producing **78 of 81 requested numbers**. The three historical validation partitions remain undefined. There were no failed GPU training attempts or full restarts; CPU acquisition fixes and the stopped remote-file audit are documented below.
 
 | Dataset / split | Published accuracy (%) | Reproduced (%) | Difference (pp) |
 |---|---:|---:|---:|
 | MNIST / training | 99.61 | 100.00000 | +0.39000 |
 | MNIST / validation | 100 | Not produced | — |
 | MNIST / testing | 97.12 | 88.38539 | -8.73461 |
-| LEXSET / training | 98.39 | Not produced | — |
+| LEXSET / training | 98.39 | 99.48611 | +1.09611 |
 | LEXSET / validation | 98.52 | Not produced | — |
-| LEXSET / testing | 98.95 | Not produced | — |
+| LEXSET / testing | 98.95 | 97.91667 | -1.03333 |
 | RGB / training | 99.21 | 100.00000 | +0.79000 |
 | RGB / validation | 99.81 | Not produced | — |
 | RGB / testing | 99.72 | 97.83333 | -1.88667 |
@@ -75,9 +75,9 @@ Data identity and permission were checked before training. [Sign Language MNIST]
 
 The authors' [RGB dataset, Zenodo 14635573](https://zenodo.org/records/14635573), is CC BY 4.0. `ASL_SemCom.zip` has MD5 `831ff816c3bb36ffc3b0c9f248cf5033` and SHA-256 `686e818063a1a81bb90fb2cbb319f8c9dc8d368650faf71351d836e508ba0582`. Direct inventory established **10,490 training and 1,800 test images**, precisely the paper's counts, with 75 test images per letter. The landing page's statement of 440 training images per class is inaccurate; it does not override the actual published archive. Both datasets were absent from their intended canonical directories and were acquired directly inside Modal through the committed, idempotent `scripts/data.sh`. Their manifests enumerate every file checksum; the datasets were then mounted read-only for training. Existing public hand images and rendered hand landmarks are processed under their public licenses, with no new human participants or identification task.
 
-[LEXSET](https://www.kaggle.com/datasets/lexset/synthetic-asl-alphabet), by Lexset, version 3 lists **Data files © Original Authors**. On 2026-10-03, project authorization confirmed attribution-based internal acquisition, Modal storage and processing. This resolves the permission gate without relabeling the public metadata or inferring broader redistribution rights. The pinned archive SHA-256 is `fee9a105ef0785ded6c795031fc0b25252263e782a13836645d06f175cd04373` (7,067,002,276 bytes). The expected 24-class subset excludes J, Z and background, giving 21,600/2,400 native train/test examples. The canonical archive audit completed: all 27,000 sample images and one auxiliary overview passed ZIP CRC, SHA-256 and decoding. The manifest SHA-256 is `de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0` at `modal://repro-sign/datasets/synthetic-asl-alphabet/manifest.json`. The 24-letter subset has 900 training/100 test images per letter, with no exact cross-split duplicate. Actual sample dimensions are **513×512**, whereas the paper says 512×512; the declared 100×100 resize is unchanged. No dataset payload is committed or redistributed. Public metadata responses for all three sources are retained under `artifacts/` with hashes. The tracker mentions historical Team S correspondence about RGB; this attempt did not contact authors or rely on unverified correspondence, because the public Zenodo license independently permits the work.
+[LEXSET](https://www.kaggle.com/datasets/lexset/synthetic-asl-alphabet), by Lexset, version 3 lists **Data files © Original Authors**. On 2026-10-03, project authorization confirmed attribution-based internal acquisition, Modal storage and processing. This resolves the permission gate without relabeling the public metadata or inferring broader redistribution rights. The pinned archive SHA-256 is `fee9a105ef0785ded6c795031fc0b25252263e782a13836645d06f175cd04373` (7,067,002,276 bytes). The verified 24-class subset excludes J, Z and background, giving 21,600/2,400 native train/test examples. The canonical archive audit completed: all 27,000 sample images and one auxiliary overview passed ZIP CRC, SHA-256 and decoding. The manifest SHA-256 is `de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0` at `modal://repro-sign/datasets/synthetic-asl-alphabet/manifest.json`. The 24-letter subset has 900 training/100 test images per letter, with no exact cross-split duplicate. Actual sample dimensions are **513×512**, whereas the paper says 512×512; the declared 100×100 resize is unchanged. No dataset payload is committed or redistributed. Public metadata responses for all three sources are retained under `artifacts/` with hashes. The tracker mentions historical Team S correspondence about RGB; this attempt did not contact authors or rely on unverified correspondence, because the public Zenodo license independently permits the work.
 
-The other open issue is the validation set: section IV-A/Table 1 allocates every listed sample to training or testing, while Table 2 reports validation accuracy without defining its allocation or membership. Creating an arbitrary validation partition would not recover those two scores. All published train/test samples remain in their original partitions for the permitted full runs.
+The other open issue is the validation set: section IV-A/Table 1 allocates every listed sample to training or testing, while Table 2 reports validation accuracy without defining its allocation or membership. Creating an arbitrary validation partition would not recover those three validation scores. All published train/test samples remain in their original partitions for the permitted full runs.
 
 The environment starts from the prescribed `ghcr.io/sign-language-processing/reproduction:latest`, resolving to an immutable Modal image recorded with each run. Native dependency freezes, hardware logs, model/optimizer/RNG checkpoints, metrics with epoch history, and predictions/confusion matrices live in v2 Volume `repro-2248c066-results`; every retained artifact has a SHA-256 in `reproduction.json`. Canonical `datasets` and `huggingface-cache` are both v2, with the cache mounted read-write at `/cache/huggingface` and both required HF environment variables set. For the original MNIST/RGB runs an OCI digest was not exposed; immutable Modal image IDs and native package freezes are preserved. The LEXSET continuation pins `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291` and also retains the native dependency freeze. All operations use the `repro-sign` wrapper.
 
@@ -104,10 +104,24 @@ A second GPT-6/Codex agent, `codex-orchestrator-reviewer`, independently reviewe
 
 ## Conclusion assessment
 
-The tested RGB-versus-MNIST ordering is reproduced: RGB achieves 97.83333% test accuracy using 10,490 training images, versus MNIST 88.38539% using 27,455. The reported absolute test performance is not recovered, particularly MNIST: 88.38539% versus 97.12%. This supports only part of the recognition findings.
+All three recognition runs completed. **RGB 97.83333% and LEXSET 97.91667% are nearly tied**, and both exceed MNIST 88.38539%. RGB uses 10,490 training examples versus 21,600 for LEXSET and 27,455 for MNIST. Similar RGB accuracy with fewer training images is retained descriptively. The paper's strict RGB-best ordering is not reproduced: LEXSET is 0.08333 percentage points higher in this single-seed reconstruction. The reported absolute scores are also not recovered: LEXSET is 1.03333 points below 98.95%, RGB 1.88667 below 99.72%, and MNIST 8.73461 below 97.12%.
 
-These are comparisons across different datasets, not a controlled demonstration that RGB representation alone causes the improvement. The LEXSET continuation is still in progress, so the three-dataset comparison remains pending. Undefined validation membership will remain explicitly unproduced. Communication/channel simulations were outside the assigned scope; no conclusion about the proposed communication system is reproduced by these recognition runs alone.
-
-This assessment uses the existing completed runs; no training, protocol or numerical-agreement criterion was changed.
+These different datasets do not provide a controlled causal comparison of image representations. The very small LEXSET/RGB gap is not evidence of statistically reliable superiority. Higher training than test accuracy also does not substantiate the paper's assertion of no overfitting. Three historical validation scores remain unproduced because their membership is unspecified. Communication/channel simulations were outside the assigned recognition scope.
 
 The 2026-10-03 LEXSET continuation is executed by a separate GPT-6/Codex agent (`lexset-continuation-agent`); exact model and harness versions are not exposed. It preserves all 76 previously produced target records and does not rerun MNIST or RGB. Section IV-B specifies 60 LEXSET epochs; the same Figure 3 CNN, Adam defaults, batch 64, seed 42 and final-epoch selection apply. Its additional ceiling is six GPU-hours and CHF25 including diagnostics. The initial CPU acquisition exposed a directory-name assumption (`Test_Alphabet`, not `test`); the scoped mapping correction reuses the already checksum-verified archive. A second audit decoded all 27,000 sample images, then rejected an additional root `alphabet.jpg` overview as unassigned. The third audit attempted existing-file CRC/SHA/decode checks but was stopped after more than seven minutes without a 3,000-file milestone, projecting beyond its one-hour ceiling. The fourth audit stages the pinned archive locally, validates each ZIP member CRC, SHA-256 and image decode, and inventories the overview separately. The canonical data is the verified archive plus its manifest; the partially re-audited extracted tree remains an unused noncanonical leftover. Training reads exact manifest-selected archive bytes after archive and per-image SHA checks, using identical Pillow resizing.
+
+
+LEXSET's representative preflight loaded all 21,600/2,400 images, trained four batches, restored a fresh CNN and Adam optimizer with exact tensor checks, took a resumed step, and evaluated 128 test images. Its 3.125% accuracy was diagnostic only. Peak allocated memory was 1.63 GB; cold throughput 361.685 images/s predicted approximately 4,151 seconds including loading/evaluation. The prospective full ceiling was five GPU-hours/CHF18 within the additional six GPU-hours/CHF25 aggregate allowance.
+
+The full run `lexset-full-v1` completed in **542.535 seconds (0.150704 GPU-hours)**, app `ap-riaYpafepN5mW0emUdwkt6`, call `fc-01M41H02F0TGPGABJZWPG2JZH9`, one execution segment, native exit 0. It ran from 2026-10-03 18:39:44 to 18:48:46 UTC, before the immutable 23:39:43 UTC deadline. All 60 epochs completed; the final checkpoint produced **2,350/2,400 correct** with 100 test samples per letter. Final online training accuracy was 99.48611%; warm training throughput 6,594 images/s. Total new preflight plus full GPU time was 0.226769 hours. Estimated full compute cost is CHF0.453 using the recorded conservative conversion/rate; actual billing and storage cost are unavailable. CPU data acquisition used no GPU.
+
+Final checkpoint SHA-256: `7568f82afbe19e43ccb34a05a9d48ae164193aa162665392cbb1f4e30434b43b`. Predictions SHA-256: `7d6b8f874d0a9397e76e80811c042a966a343c464ec21debb868dc57fc649df7`. Closed CPU hash collection independently verified the metrics, predictions and checkpoint after GPU execution ended, and preserved every original MNIST/RGB artifact hash and all 76 prior target objects. Raw artifacts are in `modal://repro-sign/repro-2248c066-results/lexset-full-v1/`; exact hashes, source pins, package freeze, GPU/driver details and execution records are in `reproduction.json`.
+
+For the LEXSET path, run these commands from repository root. The acquisition is idempotent. A new independent training reproduction uses a new run ID and requires its own prospective ledger entry; the completed `lexset-full-v1` is immutable and is not restarted. Provider recovery is limited to the same call, two total segments and the original deadline, with a durable checkpoint required.
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-data-repeat
+.agents/skills/reproduce-paper/scripts/check_modal_dataset.sh synthetic-asl-alphabet manifest.json
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-full-repeat --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence
+```
