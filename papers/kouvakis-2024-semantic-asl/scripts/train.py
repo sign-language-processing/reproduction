@@ -8,11 +8,11 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-parser=argparse.ArgumentParser();parser.add_argument('--dataset',choices=['mnist','rgb'],default='mnist');parser.add_argument('--preflight',action='store_true');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--dataset',choices=['mnist','rgb','lexset'],default='mnist');parser.add_argument('--preflight',action='store_true');parser.add_argument('--run-id');args=parser.parse_args()
 start=time.monotonic();started=datetime.now(timezone.utc).isoformat();torch.manual_seed(42);torch.set_num_threads(8)
-slug={'mnist':'sign-language-mnist','rgb':'asl-semcom-rgb'}[args.dataset]
+slug={'mnist':'sign-language-mnist','rgb':'asl-semcom-rgb','lexset':'synthetic-asl-alphabet'}[args.dataset]
 root=Path('/datasets')/slug;manifest=json.loads((root/'manifest.json').read_text())
-out=Path('/results')/(args.dataset+('-preflight' if args.preflight else '-full'));out.mkdir(parents=True,exist_ok=True)
+out=Path('/results')/(args.run_id or (args.dataset+('-preflight' if args.preflight else '-full')));out.mkdir(parents=True,exist_ok=True)
 if (out/'metrics.json').exists():print((out/'metrics.json').read_text());raise SystemExit(0)
 letters='ABCDEFGHIKLMNOPQRSTUVWXY'
 if args.dataset=='mnist':
@@ -32,18 +32,21 @@ else:
   x=np.stack([np.asarray(Image.open(p).convert('RGB').resize((100,100),Image.Resampling.BILINEAR)) for p in chosen]);y=np.array([letters.index(p.parent.name.upper()) for p in chosen])
   return torch.from_numpy(x.transpose(0,3,1,2)).cuda(),torch.tensor(y,device='cuda')
  train_x,train_y=load('train');test_x,test_y=load('test')
- assert len(train_y)==10490 and len(test_y)==1800
+ assert (len(train_y),len(test_y))==({'rgb':(10490,1800),'lexset':(21600,2400)}[args.dataset])
  def batch(x,idx):return x[idx].float()/255
 
-layers=[];ch=3
-for i,(cout,k) in enumerate([(128,7),(128,5),(128,2),(128,2),(32,2)]):
- layers.extend([nn.Conv2d(ch,cout,k),nn.ReLU()]);ch=cout
- if i<4:layers.append(nn.MaxPool2d(2))
-model=nn.Sequential(*layers,nn.Flatten(),nn.Linear(288,128),nn.ReLU(),nn.Linear(128,24)).cuda()
+def make_model():
+ layers=[];ch=3
+ for i,(cout,k) in enumerate([(128,7),(128,5),(128,2),(128,2),(32,2)]):
+  layers.extend([nn.Conv2d(ch,cout,k),nn.ReLU()]);ch=cout
+  if i<4:layers.append(nn.MaxPool2d(2))
+ return nn.Sequential(*layers,nn.Flatten(),nn.Linear(288,128),nn.ReLU(),nn.Linear(128,24)).cuda()
+model=make_model()
 assert sum(p.numel() for p in model.parameters())==616504
 opt=torch.optim.Adam(model.parameters(),lr=1e-3)
-checkpoint=out/'checkpoint.pt';epochs=1 if args.preflight else (90 if args.dataset=='mnist' else 80)
+checkpoint=out/'checkpoint.pt';epochs=1 if args.preflight else {'mnist':90,'rgb':80,'lexset':60}[args.dataset]
 first_epoch=0;history=[]
+if os.environ.get('REQUIRE_CHECKPOINT')=='1' and not checkpoint.exists():raise RuntimeError('Recovery requires a durable checkpoint; fresh restart refused')
 if checkpoint.exists():
  state=torch.load(checkpoint,weights_only=True);model.load_state_dict(state['model']);opt.load_state_dict(state['optimizer']);first_epoch=state['epoch'];history=state['history'];torch.set_rng_state(state['rng']);torch.cuda.set_rng_state(state['cuda_rng'])
 peak=0;train_seconds=0
@@ -54,12 +57,20 @@ for epoch in range(first_epoch,epochs):
   opt.zero_grad(set_to_none=True);pred=model(batch(train_x,b));loss=F.cross_entropy(pred,train_y[b]);loss.backward();opt.step();correct+=(pred.argmax(1)==train_y[b]).sum().item();total_loss+=loss.item()*len(b)
  torch.cuda.synchronize();elapsed=time.monotonic()-t;train_seconds+=elapsed
  history.append({'epoch':epoch+1,'online_training_accuracy_percent':100*correct/len(idx),'training_loss':total_loss/len(idx),'seconds':elapsed,'examples':len(idx)})
- torch.save({'model':model.state_dict(),'optimizer':opt.state_dict(),'epoch':epoch+1,'history':history,'rng':torch.get_rng_state(),'cuda_rng':torch.cuda.get_rng_state()},checkpoint)
+ torch.save({'model':model.state_dict(),'optimizer':opt.state_dict(),'epoch':epoch+1,'history':history,'rng':torch.get_rng_state(),'cuda_rng':torch.cuda.get_rng_state()},out/'checkpoint.partial')
+ (out/'checkpoint.partial').replace(checkpoint)
  print(json.dumps(history[-1]),flush=True)
  if not args.preflight:
   import modal
   modal.Volume.from_name('repro-2248c066-results',version=2).commit()
-state=torch.load(checkpoint,weights_only=True);model.load_state_dict(state['model']);opt.load_state_dict(state['optimizer']);del state
+state=torch.load(checkpoint,weights_only=True)
+assert all(torch.equal(v,state['model'][k]) for k,v in model.state_dict().items())
+if args.preflight:
+ model=make_model();opt=torch.optim.Adam(model.parameters(),lr=1e-3)
+model.load_state_dict(state['model']);opt.load_state_dict(state['optimizer'])
+assert all(torch.equal(v,state['model'][k]) for k,v in model.state_dict().items())
+assert all(torch.equal(opt.state_dict()['state'][k][field],v[field]) for k,v in state['optimizer']['state'].items() for field in v)
+del state
 if args.preflight:
  model.train();b=torch.arange(64,device='cuda');opt.zero_grad(set_to_none=True);loss=F.cross_entropy(model(batch(train_x,b)),train_y[b]);loss.backward();opt.step();resume_loss=loss.item()
 else:resume_loss=None

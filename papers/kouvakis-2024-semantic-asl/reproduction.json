@@ -20,6 +20,15 @@
         "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged.",
         "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
       ]
+    },
+    {
+      "agent_id": "lexset-continuation-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "LEXSET continuation: acquisition, implementation, execution and reporting. Exact model ID and harness version are not exposed. Prior MNIST/RGB execution attribution preserved.",
+      "evidence": [
+        "Active session instructions identify GPT-6 using Codex; continuation assigned 2026-10-03. Exact model ID and harness version are not exposed."
+      ]
     }
   ],
   "assignment": {
@@ -82,7 +91,7 @@
                 "contact_dates": [],
                 "correspondence": "",
                 "id": "ik20wubgibxy60m",
-                "license": "Data files © Original Authors",
+                "license": "Data files \u00a9 Original Authors",
                 "name": "LEXSET",
                 "on_modal": "",
                 "permission_model_weights": "",
@@ -214,7 +223,7 @@
   },
   "paper": {
     "title": "Semantic Communications for Image-Based Sign Language Transmission",
-    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088–1100. DOI10.1109/OJCOMS.2024.3360191.",
+    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088\u20131100. DOI10.1109/OJCOMS.2024.3360191.",
     "url": "https://doi.org/10.1109/OJCOMS.2024.3360191",
     "pdf_sha256": "eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa",
     "accessed_at": "2026-10-01"
@@ -290,7 +299,7 @@
       "modal_path": "sign-language-mnist",
       "manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
       "archive_sha256": "fa1b513570d4348c6d6860e04e5854c59ef8eadb8c42a45d36bd1286ce3d489f",
-      "preprocessing": "28×28 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100×100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
+      "preprocessing": "28\u00d728 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100\u00d7100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
       "splits": [
         {
           "name": "train",
@@ -356,11 +365,11 @@
       "dataset_id": "lexset",
       "name": "LEXSET synthetic ASL alphabet",
       "version_or_subset": "Kaggle lexset/synthetic-asl-alphabet version3; intended24letters excludingJ/Z/background",
-      "license_or_permission": "Data files © Original Authors; no affirmative license for intended project cloud acquisition/processing found",
-      "cloud_processing_allowed": false,
+      "license_or_permission": "Metadata: Data files \u00a9 Original Authors; user-confirmed attribution-based internal project cloud use.",
+      "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "volume_version": 2,
-      "modal_path": "lexset-synthetic-asl-alphabet",
+      "modal_path": "synthetic-asl-alphabet",
       "preprocessing": "Not acquired or processed.",
       "splits": [
         {
@@ -385,7 +394,8 @@
           ],
           "note": "Paper/metadata expected counts, not downloaded dataset checksums."
         }
-      ]
+      ],
+      "permission_basis": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized."
     }
   ],
   "targets": [
@@ -480,22 +490,31 @@
       "copied_baseline": false,
       "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, training column",
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
-        },
-        "run_ids": [],
-        "artifact_ids": [
-          "lexset-source-metadata"
-        ],
-        "gate_ids": [
-          "lexset-permission"
-        ],
-        "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
-        ]
-      }
+        "status": "pending",
+        "detail": "Authorized LEXSET continuation underway; no new value claimed."
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.286881+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
     },
     {
       "target_id": "table2-lexset-validation",
@@ -510,20 +529,40 @@
       "result": {
         "status": "not_produced",
         "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+          "code": "protocol_ambiguous",
+          "detail": "Historical validation membership is unspecified; no invented partition used."
         },
         "run_ids": [],
-        "artifact_ids": [
-          "lexset-source-metadata"
-        ],
+        "artifact_ids": [],
         "gate_ids": [
-          "lexset-permission"
+          "validation-membership"
         ],
         "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
+          "Paper section IV-A allocates all 24000 selected LEXSET images to train/test; section IV-B reports validation without specifying membership."
         ]
-      }
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.287069+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
     },
     {
       "target_id": "table2-lexset-testing",
@@ -536,22 +575,31 @@
       "copied_baseline": false,
       "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, testing column",
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "data_permission_blocked",
-          "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
-        },
-        "run_ids": [],
-        "artifact_ids": [
-          "lexset-source-metadata"
-        ],
-        "gate_ids": [
-          "lexset-permission"
-        ],
-        "evidence": [
-          "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
-        ]
-      }
+        "status": "pending",
+        "detail": "Authorized LEXSET continuation underway; no new value claimed."
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.287073+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
     },
     {
       "target_id": "table2-rgb-training",
@@ -2605,7 +2653,7 @@
       "experiment_id": "lexset",
       "implementation": "independent PyTorch reconstruction from Figure3 exact parameter counts; author XAI repository lacks training/model artifacts",
       "architecture": "100x100x3, valid convolutions 128x7,128x5,128x2,128x2,32x2; 2x2 pools after first four; ReLU; flatten288,dense128,24class;616504parameters",
-      "training": "Adam defaults lr0.001, batch64, seed42, float32; MNIST90epochs,RGB80epochs; final checkpoint",
+      "training": "Adam defaults lr0.001, batch64, seed42, float32; LEXSET60epochs; final checkpoint",
       "comparability_predeclared": "Official train/test partitions, all published training samples. Test accuracy and RGB per-class metrics comparable under declared defaults; online training accuracy uses conventional epoch aggregate. Validation has no identifiable partition and is not reconstructed. Numerical agreement means matching published two-decimal rounding; no score-directed tuning.",
       "dataset_id": "lexset",
       "system": "Figure3 CNN (616504parameters)",
@@ -3027,6 +3075,167 @@
         "datasets_read_only": null,
         "datasets_mount_note": "No dataset mount required for read-only output hash audit."
       }
+    },
+    {
+      "run_id": "lexset-acquisition-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-acquisition",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:09:23.388230+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "modal_app_id": "ap-30vGKQLgRWieeLYL6sErg3",
+        "modal_function_call_id": "fc-01M41F9TKM2YVH7YSDJ727JAKZ",
+        "modal_task_id": "ta-01M41F9TWV1S2N8EBTRAFDQ00R",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Archive acquired and hashed; audit assumed train/test directories rather than actual Train_Alphabet/Test_Alphabet. Failed on first image before manifest. Correct only directory mapping.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T18:09:29.878064+00:00",
+      "finished_at_utc": "2026-10-03T18:10:22.791038+00:00",
+      "exit_code": 1,
+      "artifact_ids": []
+    },
+    {
+      "run_id": "lexset-acquisition-v2",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-native-split-directory-fix",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:11:09.349604+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-z1d5x9c7Rd6yHmig68UgNE",
+        "modal_function_call_id": "fc-01M41FD2MEDZK3ZYCPXQADWY46",
+        "modal_task_id": "ta-01M41FD2Z3SE4F5GH624BNSZJR"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "All 27000 sample images decoded successfully. The archive additionally contains root alphabet.jpg, an overview image with no split; audit failed closed on this extra file. Next scoped correction inventories and hashes that overview but excludes it from sample counts.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "configuration": {
+        "data_script_sha256": "aa641391f456a912d0319c24c9d1870c2bf1400a20ffd66fccaf82db8a016f98",
+        "source_snapshot": "artifacts/lexset-acquisition-v2-source.py",
+        "note": "Retained exact acquisition source prior to later extraction CRC/atomic hardening; v1 had only completed and decoded the first file before its folder-name assertion failed."
+      },
+      "artifact_ids": [],
+      "started_at_utc": "2026-10-03T18:11:17.131059+00:00",
+      "finished_at_utc": "2026-10-03T18:15:58.523112+00:00",
+      "exit_code": 1
+    },
+    {
+      "run_id": "lexset-acquisition-v3",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v3",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-overview-exclusion",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:16:26.833154+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2
+      },
+      "terminal": null,
+      "configuration": {
+        "data_script_sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
+        "detail": "All existing extracted files are now CRC/size verified against ZIP and atomically repaired if needed; overview explicitly inventoried as auxiliary image."
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -3210,13 +3419,14 @@
     {
       "gate_id": "lexset-permission",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "The author Kaggle metadata reserves dataset copyright without a positive cloud-use license.",
-      "required_action": "Team S obtains or identifies permission for project cloud acquisition/processing; no author contact initiated here.",
+      "required_action": "None; resolved by project authorization.",
       "evidence": [
-        "artifacts/lexset-source-metadata.txt licenseName=Data files © Original Authors",
+        "artifacts/lexset-source-metadata.txt licenseName=Data files \u00a9 Original Authors",
         "Paper reference32 identifies this exact dataset."
-      ]
+      ],
+      "resolution": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized."
     },
     {
       "gate_id": "validation-membership",
@@ -3238,7 +3448,7 @@
     },
     {
       "id": "mnist-input",
-      "detail": "Figure 3 input dimensions of 100×100×3 and the exact 616,504 parameters require upsampling grayscale MNIST to 100×100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
+      "detail": "Figure 3 input dimensions of 100\u00d7100\u00d73 and the exact 616,504 parameters require upsampling grayscale MNIST to 100\u00d7100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
     },
     {
       "id": "pooling",
@@ -3246,7 +3456,7 @@
     },
     {
       "id": "resize",
-      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100×100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
+      "detail": "For RGB only, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
     },
     {
       "id": "metrics",
@@ -3303,9 +3513,16 @@
     ],
     "limits": [
       "These are comparisons across different datasets, not a controlled demonstration that RGB representation alone causes the improvement.",
-      "LEXSET is permission-blocked, so RGB superiority over all three datasets is not established. Undefined validation membership leaves two validation scores unproduced.",
+      "LEXSET continuation is in progress; three-dataset comparison pending. Historical validation membership remains unspecified.",
       "Communication/channel simulations were outside the assigned scope; no conclusion about the proposed communication system is reproduced by these recognition runs alone."
     ],
     "assessed_at_utc": "2026-10-02T06:52:37.552235+00:00"
-  }
+  },
+  "continuation_budget": {
+    "declared_at_utc": "2026-10-03T18:09:23.388230+00:00",
+    "max_additional_gpu_hours": 6,
+    "max_cost_chf": 25,
+    "detail": "LEXSET acquisition, preflight and one checkpoint-resumable full attempt; preserve earlier results."
+  },
+  "execution_state": "lexset_continuation_in_progress"
 }
