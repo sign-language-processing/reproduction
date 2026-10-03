@@ -6,13 +6,15 @@ import sys
 import urllib.request
 
 import torch
+import numpy as np
 import yaml
 
 sys.path.insert(0, '/opt/yolov5')
 import train  # exercise native import tree
 from models.yolo import Model
 from utils.datasets import create_dataloader
-from utils.general import intersect_dicts
+from utils.torch_utils import intersect_dicts
+from utils.general import labels_to_class_weights, labels_to_image_weights
 from utils.loss import ComputeLoss
 
 torch.set_num_threads(4)
@@ -20,6 +22,8 @@ data = yaml.safe_load(Path('/tmp/yolo-data/data.yaml').read_text())
 hyp = yaml.safe_load(Path('/opt/yolov5/data/hyps/hyp.scratch.yaml').read_text())
 loader, dataset = create_dataloader(data['train'], 416, 16, 32, hyp=hyp, augment=True, workers=0)
 images, targets, paths, shapes = next(iter(loader))
+assert len(labels_to_class_weights(dataset.labels, 28)) == 28
+assert len(labels_to_image_weights(dataset.labels, 28, np.ones(28))) == len(dataset.labels)
 validation, _ = create_dataloader(data['val'], 416, 16, 32, hyp=hyp, rect=True, pad=.5, workers=0)
 validation_images = next(iter(validation))[0]
 weight = Path('/cache/huggingface/yolov5-v6.0/yolov5s.pt')
@@ -40,7 +44,9 @@ model.names = data['names']
 model.train()
 prediction = model(images[:1].float() / 255)
 loss, items = ComputeLoss(model)(prediction, targets[targets[:, 0] == 0])
+assert torch.isfinite(loss).all()
 loss.backward()
+assert all(torch.isfinite(p.grad).all() for p in model.parameters() if p.grad is not None)
 result = {'train_batch_shape': list(images.shape), 'validation_batch_shape': list(validation_images.shape),
           'loss': float(loss.detach()), 'loss_items': items.detach().tolist(),
           'weights_url': url, 'weights_sha256': hashlib.sha256(weight.read_bytes()).hexdigest(),

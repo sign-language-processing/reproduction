@@ -45,6 +45,15 @@
       "evidence": [
         "Current Codex session identifies GPT-6; subagent /root/compute_inventory reviewed native recipes and checkpoint/data guards, then explicitly assigned read-only cross-release archive audit."
       ]
+    },
+    {
+      "agent_id": "continuation-oct3-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "October3 continuation: collection/review of earlier executions, YOLO compatibility/preflight and bounded execution. Exact model ID and harness version unavailable. Earlier executors retained.",
+      "evidence": [
+        "Codex session identifies GPT-6; delegated PR50 continuation after interrupted prior turn."
+      ]
     }
   ],
   "assignment": {
@@ -1021,6 +1030,12 @@
           "path": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe001.py",
           "sha256": "e9a0d574fac437bbcd039c9969cdd1384b4e28d1b936f69d5a8d8ffba21fec68"
         }
+      ],
+      "artifact_ids": [
+        "faster-source-probe-001-console-log",
+        "faster-source-probe-001-execution-json",
+        "faster-source-probe-001-pip-freeze-txt",
+        "faster-source-probe-001-wheels-detectron2-0-6-cp312-cp312-linux_x86_64-whl"
       ]
     },
     {
@@ -1080,7 +1095,13 @@
       "native_timeout_seconds": 240,
       "wheel_sha256": "8c66da87f7a725c03990caa9dde11ce69610a63f8808b7b27e782d3fbcc2b328",
       "wall_seconds": 13.210329859,
-      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe002.py"
+      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe002.py",
+      "artifact_ids": [
+        "faster-source-probe-002-console-log",
+        "faster-source-probe-002-execution-json",
+        "faster-source-probe-002-faster_run-py",
+        "faster-source-probe-002-pip-freeze-txt"
+      ]
     },
     {
       "run_id": "faster-source-probe-003",
@@ -1154,7 +1175,16 @@
         "proposed_coco_weights_url": "https://dl.fbaipublicfiles.com/detectron2/COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x/139173657/model_final_68b088.pkl",
         "scope": "CPU model construction only; no training, weights download or target metric claim."
       },
-      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe003.py"
+      "source_snapshot": "papers/aiouez-2022-arabic-yolov5/artifacts/faster_modal_probe003.py",
+      "artifact_ids": [
+        "faster-source-probe-003-config-yaml",
+        "faster-source-probe-003-console-log",
+        "faster-source-probe-003-execution-json",
+        "faster-source-probe-003-faster-pillow-patch",
+        "faster-source-probe-003-faster_run-py",
+        "faster-source-probe-003-pip-freeze-txt",
+        "faster-source-probe-003-source-probe-json"
+      ]
     },
     {
       "run_id": "data-prepare-v1",
@@ -1555,7 +1585,29 @@
         "native_loss_finite": true,
         "final_checkpoint_sha256": "2ed3b1087385f8d7804ccf5c0b858ede791c6461b421e6f5637dbf3c3b65d3ac"
       },
-      "validation_note": "Native evaluator completed with no detections after10updates; AP fields are NaN in raw output and null here, not target results."
+      "validation_note": "Native evaluator completed with no detections after10updates; AP fields are NaN in raw output and null here, not target results.",
+      "artifact_ids": [
+        "faster-preflight-001-console-log",
+        "faster-preflight-001-execution-json",
+        "faster-preflight-001-faster-pillow-patch",
+        "faster-preflight-001-faster_preflight-py",
+        "faster-preflight-001-gpu-txt",
+        "faster-preflight-001-initialization-pkl",
+        "faster-preflight-001-model-config-yaml",
+        "faster-preflight-001-model-events-out-tfevents-1790925976-modal-127-0",
+        "faster-preflight-001-model-events-out-tfevents-1790926001-modal-127-1",
+        "faster-preflight-001-model-last_checkpoint",
+        "faster-preflight-001-model-log-txt",
+        "faster-preflight-001-model-metrics-json",
+        "faster-preflight-001-model-model_0000007-pth",
+        "faster-preflight-001-model-model_final-pth",
+        "faster-preflight-001-pip-freeze-txt",
+        "faster-preflight-001-preflight-result-json",
+        "faster-preflight-001-preflight_train-json",
+        "faster-preflight-001-preflight_val-json",
+        "faster-preflight-001-validation-coco_instances_results-json",
+        "faster-preflight-001-validation-instances_predictions-pth"
+      ]
     },
     {
       "run_id": "yolo-cpu-smoke-v1",
@@ -1614,7 +1666,8 @@
         "launch_log_bytes": 8677,
         "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v1-launch.log"
       },
-      "modal_app_id": "ap-U2mDjf2LSnf4MB8kHzRWg3"
+      "modal_app_id": "ap-U2mDjf2LSnf4MB8kHzRWg3",
+      "artifact_ids": []
     },
     {
       "run_id": "cross-release-label-audit-v1",
@@ -1671,6 +1724,14 @@
         "python",
         "/work/lineage_audit.py",
         "/outputs/cross-release-label-audit-v1/report.json"
+      ],
+      "artifact_ids": [
+        "cross-release-label-audit-v1-console-log",
+        "cross-release-label-audit-v1-execution-json",
+        "cross-release-label-audit-v1-lineage_audit-py",
+        "cross-release-label-audit-v1-lineage_modal-py",
+        "cross-release-label-audit-v1-pip-freeze-txt",
+        "cross-release-label-audit-v1-report-json"
       ]
     },
     {
@@ -1738,7 +1799,8 @@
         "app_stopped_at_utc": "2026-10-02T09:21:34+00:00",
         "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v2-launch.log"
       },
-      "modal_app_id": "ap-kUtTYPPrkpqYwA9rGOEQ4m"
+      "modal_app_id": "ap-kUtTYPPrkpqYwA9rGOEQ4m",
+      "artifact_ids": []
     },
     {
       "run_id": "faster-full-001",
@@ -1768,12 +1830,21 @@
         "gpu": "A100-80GB",
         "gpu_count": 1,
         "cpu": 4,
-        "memory_gib": 64
+        "memory_gib": 64,
+        "gpu_hours_lower_bound": 0.29555555555555557,
+        "gpu_hours_upper_bound": 12
       },
       "started_at_utc": "2026-10-02T09:22:43.015471+00:00",
-      "finished_at_utc": null,
+      "finished_at_utc": "2026-10-02T09:40:27Z",
       "exit_code": null,
-      "terminal": null,
+      "terminal": {
+        "state": "interrupted",
+        "reason_code": "external_interruption",
+        "failure_class": "interrupted_full_run",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Modal app log confirms cancellation at09:39:19UTC; wrapper finally wrote defaultexit1, while native child logged480updates through09:40:27. True native exit/end not captured. No durable503-update checkpoint or selection exists. Original deadline passed beforecontinuation; nofreshrestart ordeadline extension."
+      },
       "source_files": [
         {
           "path": "scripts/faster_modal.py",
@@ -1810,7 +1881,71 @@
         "loss": 3.455,
         "gpu_memory_gb": 10.4,
         "detail": "Healthy first native training window; cold full-corpus I/O1.72s/step increases provisional ETA. Original12h ceiling retained; watch first/second epoch before revising forecast."
-      }
+      },
+      "artifact_ids": [
+        "faster-full-001-claim-json",
+        "faster-full-001-console-segment-01-log",
+        "faster-full-001-execution-json",
+        "faster-full-001-faster-pillow-patch",
+        "faster-full-001-faster_modal-py",
+        "faster-full-001-faster_train-py",
+        "faster-full-001-gpu-segment-01-txt",
+        "faster-full-001-model-config-yaml",
+        "faster-full-001-model-events-out-tfevents-1790932986-modal-128-0",
+        "faster-full-001-model-log-txt",
+        "faster-full-001-model-metrics-json",
+        "faster-full-001-pip-freeze-segment-01-txt",
+        "faster-full-001-platform-cancellation"
+      ],
+      "execution_evidence": {
+        "segments": [
+          {
+            "number": 1,
+            "state": "failed",
+            "exit_code": 1,
+            "started_at_utc": "2026-10-02T09:22:43.959202+00:00",
+            "modal_task_id": "ta-01M3XYR3R3GX1EXPEB1WT5DT0R",
+            "command": [
+              "bash",
+              "-c",
+              "set -eu\npython -m pip install --no-deps \"$1\"\ngit apply --unsafe-paths --directory=\"$(python -c 'import sysconfig; print(sysconfig.get_path(\"purelib\"))')\" /work/faster-pillow.patch\ngit clone --depth 1 --branch v0.6 https://github.com/facebookresearch/detectron2 /opt/detectron2\ntest \"$(git -C /opt/detectron2 rev-parse HEAD)\" = d1e04565d3bec8719335b88be9e9b961bf3ec464\nshift\nexec \"$@\"",
+              "faster-full",
+              "/outputs/faster-source-probe-001/wheels/detectron2-0.6-cp312-cp312-linux_x86_64.whl",
+              "python",
+              "/work/faster_train.py",
+              "--data-root",
+              "/datasets/belmadoui-arabic-sign-language",
+              "--manifest-sha256",
+              "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+              "--weights-file",
+              "/outputs/faster-preflight-001/initialization.pkl",
+              "--weights-sha256",
+              "fe5ad56ff746aa55c5f453b01f8395134e9281d240dbeb473411d4a6b262c9dc",
+              "--output",
+              "/outputs/faster-full-001"
+            ],
+            "remaining_native_timeout_seconds": 43077,
+            "finished_at_utc": "2026-10-02T09:39:19.696478+00:00"
+          }
+        ],
+        "run_id": "faster-full-001",
+        "modal_app_id": "ap-WnKAcIYIQNxWkd4z5bYrtB",
+        "modal_function_call_id": "fc-01M3XYR3J6YA9D2K9DJGP13J59",
+        "started_at_utc": "2026-10-02T09:22:43.015471+00:00",
+        "deadline_unix": 1790976163.0154715,
+        "max_wall_seconds": 43200,
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_mib": 65536,
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "source_revision": "d1e04565d3bec8719335b88be9e9b961bf3ec464",
+        "accounting": "Original elapsed wall-clock includes interrupted/idle gaps; conservative allocation bound, not exact billing.",
+        "exit_code": 1,
+        "finished_at_utc": "2026-10-02T09:39:19.696478+00:00",
+        "conservative_elapsed_seconds": 996.6810266971588
+      },
+      "finished_at_note": "Last native log timestamp; precise container end unavailable. Wrapper finally timestamp was earlier and is not native completion."
     },
     {
       "run_id": "yolo-cpu-smoke-v3",
@@ -1841,17 +1976,916 @@
         "memory_gib": 16,
         "gpu_count": 0
       },
-      "started_at_utc": null,
-      "finished_at_utc": null,
-      "exit_code": null,
-      "terminal": null,
+      "started_at_utc": "2026-10-02T09:27:55.093473+00:00",
+      "finished_at_utc": "2026-10-02T09:28:14.653001+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Base PyYAML fix and all168 real image/label staging passed. Smoke wrapper failed importing intersect_dicts from utils.general; pinned v6.0 exports it from utils.torch_utils. Correcting this wrapper import only; no upstream algorithm change."
+      },
       "source_files": [
         {
           "path": "Dockerfile.yolo",
           "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
         }
       ],
-      "detail": "New diagnosed environment hypothesis: retain base Debian PyYAML6.0.1, which satisfies native requirements, instead of pip uninstalling a RECORD-less package for6.0.2. No model/protocol change. Same real-data CPU native smoke, no GPU/retries."
+      "detail": "New diagnosed environment hypothesis: retain base Debian PyYAML6.0.1, which satisfies native requirements, instead of pip uninstalling a RECORD-less package for6.0.2. No model/protocol change. Same real-data CPU native smoke, no GPU/retries.",
+      "modal_app_id": "ap-zbeO8jaTAIi1YwQOIwOjt0",
+      "modal_function_call_id": "fc-01M3XZ1Y1HY283QV5CK0MBDGVZ",
+      "modal_task_id": "ta-01M3XZ1YD4CBWFV0FHPYK0YEWR",
+      "wall_seconds": 19.559558489,
+      "artifact_ids": [
+        "yolo-cpu-smoke-v3-commands-json",
+        "yolo-cpu-smoke-v3-console-log",
+        "yolo-cpu-smoke-v3-freeze-txt",
+        "yolo-cpu-smoke-v3-hardware-txt",
+        "yolo-cpu-smoke-v3-started-json",
+        "yolo-cpu-smoke-v3-sources-Dockerfile-yolo",
+        "yolo-cpu-smoke-v3-sources-yolo-modal-py",
+        "yolo-cpu-smoke-v3-sources-yolo-smoke-py",
+        "yolo-cpu-smoke-v3-sources-yolo-stage-py",
+        "yolo-cpu-smoke-v3-sources-yolo-train-py",
+        "yolo-cpu-smoke-v3-execution-json"
+      ]
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v4",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v4",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-smoke-import-correction",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:33:43.663033+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T09:33:52.101531+00:00",
+      "finished_at_utc": "2026-10-02T09:34:08.074678+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Corrected wrapper import passed; native loader scanned all112 training records, then failed because NumPy removed np.int. Replacing only the three np.int aliases with builtin int preserves their historical semantics; no data or model change."
+      },
+      "detail": "Correct native intersect_dicts import; same cached image, real112/28/28 split, CPU loader/model/loss/backward smoke. No GPU or automatic retries.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "df4473dbb2fa125f16f5ee45f0bcbc5aa629b59250cca2b5719a76c8a06a8ce0"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "b21fb6b89f1904fc498a80160fb4f911bffe37d942206fb5522fa142a8255db3"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        }
+      ],
+      "modal_app_id": "ap-SgP5gkfFHc3GDg2zgpqidN",
+      "modal_function_call_id": "fc-01M3XZCWYS7236RBBMDG5CEGNG",
+      "modal_task_id": "ta-01M3XZCX6CT5XFF06FVHG8DVVR",
+      "wall_seconds": 15.973179499,
+      "artifact_ids": [
+        "yolo-cpu-smoke-v4-commands-json",
+        "yolo-cpu-smoke-v4-console-log",
+        "yolo-cpu-smoke-v4-freeze-txt",
+        "yolo-cpu-smoke-v4-hardware-txt",
+        "yolo-cpu-smoke-v4-started-json",
+        "yolo-cpu-smoke-v4-sources-Dockerfile-yolo",
+        "yolo-cpu-smoke-v4-sources-yolo-modal-py",
+        "yolo-cpu-smoke-v4-sources-yolo-smoke-py",
+        "yolo-cpu-smoke-v4-sources-yolo-stage-py",
+        "yolo-cpu-smoke-v4-sources-yolo-train-py",
+        "yolo-cpu-smoke-v4-execution-json"
+      ]
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v5",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v5",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-numpy-alias-compatibility",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:34:45.988438+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T09:35:00.610192+00:00",
+      "finished_at_utc": "2026-10-02T09:35:26.408550+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Native training/validation loaders and COCO-initialized forward passed after NumPy alias correction. Real loss failed on float-valued clamp bounds applied to integer grid indices. Use the identical original integer grid dimensions as bounds; no objective/geometry change. Extend the same proven NumPy alias correction to two native class-weight helper uses."
+      },
+      "detail": "Test the observed removed-np.int compatibility patch on real native loader, COCO-initialized model and loss/backward. Same image/data; no GPU or automatic retries.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "df4473dbb2fa125f16f5ee45f0bcbc5aa629b59250cca2b5719a76c8a06a8ce0"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        }
+      ],
+      "artifact_ids": [
+        "yolo-cpu-smoke-v5-applied-upstream-patch",
+        "yolo-cpu-smoke-v5-commands-json",
+        "yolo-cpu-smoke-v5-console-log",
+        "yolo-cpu-smoke-v5-freeze-txt",
+        "yolo-cpu-smoke-v5-hardware-txt",
+        "yolo-cpu-smoke-v5-started-json",
+        "yolo-cpu-smoke-v5-sources-Dockerfile-yolo",
+        "yolo-cpu-smoke-v5-sources-yolo-modal-py",
+        "yolo-cpu-smoke-v5-sources-yolo-smoke-py",
+        "yolo-cpu-smoke-v5-sources-yolo-stage-py",
+        "yolo-cpu-smoke-v5-sources-yolo-train-py",
+        "yolo-cpu-smoke-v5-sources-patches-yolo-numpy-int-patch",
+        "yolo-cpu-smoke-v5-execution-json"
+      ],
+      "modal_app_id": "ap-qqym34Dgl4JUOT1NkrOqBF",
+      "modal_function_call_id": "fc-01M3XZESQ0E1YADEDJS5KW4Q3B",
+      "modal_task_id": "ta-01M3XZETPK18Y4TMGW7QR58T7R",
+      "wall_seconds": 25.798407628
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v6",
+      "agent_ids": [
+        "yolo-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v6",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-integer-grid-bound-compatibility",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:36:25.122053+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-02T09:36:37.670522+00:00",
+      "finished_at_utc": "2026-10-02T09:37:00.500422+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Native training loader passed; added smoke-only class-weight helper check incorrectly used its80-class default weights with28classes. Pass an explicit28-element weight vector; upstream unchanged."
+      },
+      "detail": "Test observed PyTorch integer-grid clamp compatibility correction; native real loader, class-weight helpers, COCO initialization, forward, finite loss and finite backward. All five known np.int aliases use identical builtin int. No GPU, retries or recipe change.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "5f9f740f010b52c262b026fb997a419f4f2012ca5e6ac484fa964755a531694b"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "wall_seconds": 22.829935566,
+      "modal_app_id": "ap-e67m2uki9Zl20XoicB5NNN",
+      "modal_function_call_id": "fc-01M3XZHTKM08X0KYCQTNTYT9AF",
+      "modal_task_id": "ta-01M3XZHVFJSMKFAZJP3H4Y70ZR",
+      "artifact_ids": [
+        "yolo-cpu-smoke-v6-applied-upstream-patch",
+        "yolo-cpu-smoke-v6-commands-json",
+        "yolo-cpu-smoke-v6-console-log",
+        "yolo-cpu-smoke-v6-freeze-txt",
+        "yolo-cpu-smoke-v6-hardware-txt",
+        "yolo-cpu-smoke-v6-started-json",
+        "yolo-cpu-smoke-v6-sources-Dockerfile-yolo",
+        "yolo-cpu-smoke-v6-sources-yolo_modal-py",
+        "yolo-cpu-smoke-v6-sources-yolo_smoke-py",
+        "yolo-cpu-smoke-v6-sources-yolo_stage-py",
+        "yolo-cpu-smoke-v6-sources-yolo_train-py",
+        "yolo-cpu-smoke-v6-sources-patches-yolo-numpy-int-patch",
+        "yolo-cpu-smoke-v6-sources-patches-yolo-torch-grid-bounds-patch"
+      ]
+    },
+    {
+      "run_id": "yolo-cpu-smoke-v7",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode smoke --run-id yolo-cpu-smoke-v7",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-smoke-explicit-class-weight-vector",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:08:44.113201+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 4,
+        "memory_gib": 16,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-03T18:08:54.380730+00:00",
+      "finished_at_utc": "2026-10-03T18:09:15.167385+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "All168 image/label checks, native real train/val loaders, COCOmodel forward, finite native loss and finite backward passed. Smoke helper explicitly passes28class weights."
+      },
+      "detail": "Test corrected smoke helper argument; unchanged native real loader/COCO initialization/finite loss/backward.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "wall_seconds": 20.786702998000003,
+      "modal_app_id": "ap-NNwzMQLWeo0rdz8EsSQ4kK",
+      "modal_function_call_id": "fc-01M41F8NCE0JK474MR6SJD6WDQ",
+      "modal_task_id": "ta-01M41F8NQ8NMS435DHKFPEGE0R",
+      "artifact_ids": [
+        "yolo-cpu-smoke-v7-applied-upstream-patch",
+        "yolo-cpu-smoke-v7-commands-json",
+        "yolo-cpu-smoke-v7-console-log",
+        "yolo-cpu-smoke-v7-freeze-txt",
+        "yolo-cpu-smoke-v7-hardware-txt",
+        "yolo-cpu-smoke-v7-smoke-json",
+        "yolo-cpu-smoke-v7-started-json",
+        "yolo-cpu-smoke-v7-sources-Dockerfile-yolo",
+        "yolo-cpu-smoke-v7-sources-yolo_modal-py",
+        "yolo-cpu-smoke-v7-sources-yolo_smoke-py",
+        "yolo-cpu-smoke-v7-sources-yolo_stage-py",
+        "yolo-cpu-smoke-v7-sources-yolo_train-py",
+        "yolo-cpu-smoke-v7-sources-patches-yolo-numpy-int-patch",
+        "yolo-cpu-smoke-v7-sources-patches-yolo-torch-grid-bounds-patch"
+      ]
+    },
+    {
+      "run_id": "faster-full-001-collection-001",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/faster_collect.py --run-id faster-full-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "faster-terminal-collection",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:08:44.113201+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "cpu": 2,
+        "memory_gib": 4,
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-03T18:08:52.938096+00:00",
+      "finished_at_utc": "2026-10-03T18:08:54.263827+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Hashed all12closed files; no native final result, checkpoint or validation selection exists. Collection is separate from GPUexecution."
+      },
+      "detail": "Hash closed evidence after original app stopped; GPU execution status reportsfailed but native log continues afterwards, so actual exit interpretation requires audit.",
+      "wall_seconds": 1.325759342,
+      "modal_app_id": "ap-M0oledFcphiTwHLs8x49OP",
+      "modal_function_call_id": "fc-01M41F8NQHMYVB17HGWQWYCHMJ"
+    },
+    {
+      "run_id": "yolo-gpu-preflight-v1",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode preflight --run-id yolo-gpu-preflight-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-all-model-gpu-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:09:59.188438+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": "2026-10-03T18:11:42.474569+00:00",
+      "finished_at_utc": "2026-10-03T18:15:07.150000+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Allthree native COCO-initialized detectors trained/evaluated112/28/28real images; smallmodel freshprocess model/optimizer/EMA/update restoration exact. Timing/memory forecast measured. No target result from tiny preflight."
+      },
+      "detail": "Native s/m/l training/evaluation throughput, real weights/data, fresh-process s optimizer/model/EMA restore proof. No final target claim. All shared datasets verified.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "wall_seconds": 204.675464423,
+      "modal_app_id": "ap-i54O0pBWqc8Y794GOUr8M1",
+      "modal_function_call_id": "fc-01M41FCGRMMKTRA81TZNCXQ40V",
+      "modal_task_id": "ta-01M41FCY658X458YDMJJ1MVEGR",
+      "artifact_ids": [
+        "yolo-gpu-preflight-v1-commands-json",
+        "yolo-gpu-preflight-v1-console-log",
+        "yolo-gpu-preflight-v1-freeze-txt",
+        "yolo-gpu-preflight-v1-hardware-txt",
+        "yolo-gpu-preflight-v1-l-metrics-json",
+        "yolo-gpu-preflight-v1-m-metrics-json",
+        "yolo-gpu-preflight-v1-s-metrics-json",
+        "yolo-gpu-preflight-v1-s-pre-resume-json",
+        "yolo-gpu-preflight-v1-s-resume-proof-json",
+        "yolo-gpu-preflight-v1-sources-Dockerfile-yolo",
+        "yolo-gpu-preflight-v1-sources-yolo_modal-py",
+        "yolo-gpu-preflight-v1-sources-yolo_smoke-py",
+        "yolo-gpu-preflight-v1-sources-yolo_stage-py",
+        "yolo-gpu-preflight-v1-sources-yolo_train-py",
+        "yolo-gpu-preflight-v1-l-train-weights-best-pt",
+        "yolo-gpu-preflight-v1-m-train-weights-best-pt",
+        "yolo-gpu-preflight-v1-s-train-weights-best-pt",
+        "yolo-gpu-preflight-v1-sources-patches-yolo-numpy-int-patch",
+        "yolo-gpu-preflight-v1-sources-patches-yolo-torch-grid-bounds-patch",
+        "oct3-execution"
+      ]
+    },
+    {
+      "run_id": "yolo-recovery-proof-v1",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode recovery --run-id yolo-recovery-proof-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-durable-recovery-proof",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:15:43.564751+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": "2026-10-03T18:16:07.196258+00:00",
+      "finished_at_utc": "2026-10-03T18:18:29.516387+00:00",
+      "exit_code": 1,
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Durablecheckpoint trainrestore passed; completedtraining evaluationreplay incorrectly followed smoke pre-resume return branch. Correct fixture branch toexclude --resume; compare evaluated modeltensorhash ratherthan raw containerfilehash since native finalization strips optimizer."
+      },
+      "detail": "Verify durable immutable native epoch checkpoint/optimizer/EMA restoration and completed-training evaluation-only recovery; native metrics exact across evaluation replay. GPU diagnostic combined ceiling1hour remains.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "b0d26d79f1126ac1307f1053894116611ae57f5312d3099505232b67ae0c15c7"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "wall_seconds": 142.32018448300002,
+      "modal_app_id": "ap-zBezbm89uTISZ6bHxzLt78",
+      "modal_function_call_id": "fc-01M41FNEZSBDA9CAQV14QQK0SV",
+      "modal_task_id": "ta-01M41FNFC2S16J70CMDKQDMRTR",
+      "artifact_ids": [
+        "yolo-recovery-proof-v1-console-log",
+        "yolo-recovery-proof-v1-s-metrics-before-recovery-json",
+        "yolo-recovery-proof-v1-s-recovery-json",
+        "yolo-recovery-proof-v1-s-resume-proof-json"
+      ]
+    },
+    {
+      "run_id": "yolo-recovery-proof-v2",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_modal.py --mode recovery --run-id yolo-recovery-proof-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-evaluation-replay-fixture-correction",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:20:01.755905+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": "2026-10-03T18:20:16.011613+00:00",
+      "finished_at_utc": "2026-10-03T18:21:31.088471+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Immutable native epoch checkpoint and best SHA verified; model/optimizer/EMA/update restore exact. Completed-training evaluation-only replay emitted exactly equal native metrics, common COCO stats and selectedmodeltensorhash. No training restarted."
+      },
+      "detail": "Test completed-training evaluation replay branch and tensor-level selection equality. Retains native training-recovery proof. All GPU diagnostics actualtotal capped1hour/CHF5.",
+      "source_files": [
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "scripts/yolo_smoke.py",
+          "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d"
+        },
+        {
+          "path": "scripts/yolo_modal.py",
+          "sha256": "dec2100692a4685fe7e1eac927dbbaf0059d7c65be3578710006574fa35efe00"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        },
+        {
+          "path": "scripts/yolo_train.py",
+          "sha256": "ea14e67142db447564ea74acdfe05fba105b634e03c26111f288e84bf6ab6f45"
+        }
+      ],
+      "wall_seconds": 75.076879403,
+      "modal_app_id": "ap-MyDzvQSlsF2ZHp2QgED5Mk",
+      "modal_function_call_id": "fc-01M41FXB86G67428PEH7368X3Y",
+      "modal_task_id": "ta-01M41FXBCBDGF2VQYSVB7HA9CR",
+      "artifact_ids": [
+        "yolo-recovery-proof-v2-console-log",
+        "yolo-recovery-proof-v2-s-metrics-before-recovery-json",
+        "yolo-recovery-proof-v2-s-metrics-json",
+        "yolo-recovery-proof-v2-s-recovery-json",
+        "yolo-recovery-proof-v2-s-resume-proof-json",
+        "yolo-recovery-proof-v2-sources-Dockerfile-yolo",
+        "yolo-recovery-proof-v2-sources-yolo_modal-py",
+        "yolo-recovery-proof-v2-sources-yolo_smoke-py",
+        "yolo-recovery-proof-v2-sources-yolo_stage-py",
+        "yolo-recovery-proof-v2-sources-yolo_train-py",
+        "yolo-recovery-proof-v2-sources-patches-yolo-numpy-int-patch",
+        "yolo-recovery-proof-v2-sources-patches-yolo-torch-grid-bounds-patch"
+      ]
+    },
+    {
+      "run_id": "yolo-s-full-001",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_full.py --run-id yolo-s-full-001 --model s --weights-sha256 c3b140f32001a9eec4afa07120b3851eb1b6c2c7c7e7a4303af9eadfacbeb598 --max-wall-seconds 6480",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-s-full-001",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:23:54.499898+00:00",
+        "max_wall_time_seconds": 6480,
+        "max_gpu_hours": 1.8,
+        "max_cost_chf": 7
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "exit_code": null,
+      "terminal": null,
+      "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "weights_sha256": "c3b140f32001a9eec4afa07120b3851eb1b6c2c7c7e7a4303af9eadfacbeb598",
+      "source_files": [
+        {
+          "path": "scripts/yolo_full.py",
+          "sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1"
+        },
+        {
+          "path": "scripts/yolo_train.py",
+          "sha256": "ea14e67142db447564ea74acdfe05fba105b634e03c26111f288e84bf6ab6f45"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "forecast": {
+        "training_gpu_hours": 1.053,
+        "validation_gpu_hours": 0.356,
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+      },
+      "execution_segments": {
+        "max_segments": 4,
+        "policy": "Same logical call only, native verifiedcheckpoint resume, immutable originaldeadline, no fullrestart. RNG/data-loader position not restored bypublishednativecode."
+      },
+      "review": {
+        "guard_source_sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1",
+        "reviewer": "Root GPT-6/Codex independent review, October3",
+        "proof_run_id": "yolo-recovery-proof-v2",
+        "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
+      }
+    },
+    {
+      "run_id": "yolo-m-full-001",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_full.py --run-id yolo-m-full-001 --model m --weights-sha256 4947bf5605d671037cd4b4cb250e5f52f836c0c5b97c1084aca391997f78d593 --max-wall-seconds 11520",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-m-full-001",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:23:54.499898+00:00",
+        "max_wall_time_seconds": 11520,
+        "max_gpu_hours": 3.2,
+        "max_cost_chf": 11
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "exit_code": null,
+      "terminal": null,
+      "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "weights_sha256": "4947bf5605d671037cd4b4cb250e5f52f836c0c5b97c1084aca391997f78d593",
+      "source_files": [
+        {
+          "path": "scripts/yolo_full.py",
+          "sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1"
+        },
+        {
+          "path": "scripts/yolo_train.py",
+          "sha256": "ea14e67142db447564ea74acdfe05fba105b634e03c26111f288e84bf6ab6f45"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "forecast": {
+        "training_gpu_hours": 2.43,
+        "validation_gpu_hours": 0.234,
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+      },
+      "execution_segments": {
+        "max_segments": 4,
+        "policy": "Same logical call only, native verifiedcheckpoint resume, immutable originaldeadline, no fullrestart. RNG/data-loader position not restored bypublishednativecode."
+      },
+      "review": {
+        "guard_source_sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1",
+        "reviewer": "Root GPT-6/Codex independent review, October3",
+        "proof_run_id": "yolo-recovery-proof-v2",
+        "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
+      }
+    },
+    {
+      "run_id": "yolo-l-full-001",
+      "agent_ids": [
+        "continuation-oct3-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/aiouez-2022-arabic-yolov5/scripts/yolo_full.py --run-id yolo-l-full-001 --model l --weights-sha256 84f0a2d6945dfd65d64b0595ea7b912f6addac32dd23fe77bc3fa6d3c1385f16 --max-wall-seconds 14400",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "yolo-l-full-001",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:23:54.499898+00:00",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4,
+        "max_cost_chf": 14
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu": "A100-80GB",
+        "gpu_count": 1,
+        "cpu": 4,
+        "memory_gib": 64
+      },
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "exit_code": null,
+      "terminal": null,
+      "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
+      "weights_sha256": "84f0a2d6945dfd65d64b0595ea7b912f6addac32dd23fe77bc3fa6d3c1385f16",
+      "source_files": [
+        {
+          "path": "scripts/yolo_full.py",
+          "sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1"
+        },
+        {
+          "path": "scripts/yolo_train.py",
+          "sha256": "ea14e67142db447564ea74acdfe05fba105b634e03c26111f288e84bf6ab6f45"
+        },
+        {
+          "path": "scripts/yolo_stage.py",
+          "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
+        },
+        {
+          "path": "Dockerfile.yolo",
+          "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3"
+        },
+        {
+          "path": "patches/yolo-numpy-int.patch",
+          "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613"
+        },
+        {
+          "path": "patches/yolo-torch-grid-bounds.patch",
+          "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f"
+        }
+      ],
+      "forecast": {
+        "training_gpu_hours": 3.052,
+        "validation_gpu_hours": 0.227,
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+      },
+      "execution_segments": {
+        "max_segments": 4,
+        "policy": "Same logical call only, native verifiedcheckpoint resume, immutable originaldeadline, no fullrestart. RNG/data-loader position not restored bypublishednativecode."
+      },
+      "review": {
+        "guard_source_sha256": "9350954780b56a97dc8764fe130033af7b4569184d8080df09b270acb3ca4ed1",
+        "reviewer": "Root GPT-6/Codex independent review, October3",
+        "proof_run_id": "yolo-recovery-proof-v2",
+        "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
+      }
     }
   ],
   "artifacts": [
@@ -2306,6 +3340,797 @@
       "uri": "modal://repro-992e7a-results/cross-release-label-audit-v1/report.json",
       "sha256": "21dbe060ceda3ac64724b935d1f77e464128c0b583f91af90c562c41520fd138",
       "size_bytes": 2666024
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/commands.json",
+      "sha256": "734109199e18fd163789425bd5474d14fc83a8e9e36a629a4370865aee247482",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/console.log",
+      "sha256": "e6f3a16c19c4cb8114b34b7b3c2999a7799d64b68856bf1c4d8d50d8de8f7dc3",
+      "size_bytes": 797
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/hardware.txt",
+      "sha256": "1f2b682809ea1507f5788cf27b6471c7a9a8c5383f3ca82ad7be558824acd5b4",
+      "size_bytes": 93
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/started.json",
+      "sha256": "ba86091b77b6dc890c95a7d22bd56a5b5c31efd30ce9e3f04f86113ad3eeef3f",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-sources-yolo-modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/sources/yolo_modal.py",
+      "sha256": "b21fb6b89f1904fc498a80160fb4f911bffe37d942206fb5522fa142a8255db3",
+      "size_bytes": 10514
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-sources-yolo-smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/sources/yolo_smoke.py",
+      "sha256": "d1c28fcc4ca5da95f1b5ce8001365b08d42296f5cafc2d17db8d5e6c1432045c",
+      "size_bytes": 2168
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-sources-yolo-stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-sources-yolo-train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/sources/yolo_train.py",
+      "sha256": "33eb53d49ea88cf334f01ad3bb6dec06f75c8448a114e10590970a0aa201e80e",
+      "size_bytes": 15962
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v3-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v3/execution.json",
+      "sha256": "3385e69a7824fc3f9f41b0a08f29448543c04036c45c3ad9cd209281007a8245",
+      "size_bytes": 1886
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/commands.json",
+      "sha256": "41d9d5f45f8778db4b41c9379c59be1a59ac6717aa4f5eea899b4a323e178fb0",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/console.log",
+      "sha256": "7b7f06346f77d6672634be7cacc16287579699ee7c6d0ef6b8c8a8ed709e0fc6",
+      "size_bytes": 2410
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/hardware.txt",
+      "sha256": "1f2b682809ea1507f5788cf27b6471c7a9a8c5383f3ca82ad7be558824acd5b4",
+      "size_bytes": 93
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/started.json",
+      "sha256": "291277c0ac0b2f276b127e4f433b10c822e50151f45b799ba6904485d732d90f",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-sources-yolo-modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/sources/yolo_modal.py",
+      "sha256": "b21fb6b89f1904fc498a80160fb4f911bffe37d942206fb5522fa142a8255db3",
+      "size_bytes": 10514
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-sources-yolo-smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/sources/yolo_smoke.py",
+      "sha256": "df4473dbb2fa125f16f5ee45f0bcbc5aa629b59250cca2b5719a76c8a06a8ce0",
+      "size_bytes": 2172
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-sources-yolo-stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-sources-yolo-train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/sources/yolo_train.py",
+      "sha256": "39a882b0326e61692ba40ee9824cc1b6d141908afeb86fa80c51cae2b2b759c1",
+      "size_bytes": 16060
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v4-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v4/execution.json",
+      "sha256": "a5d6f893538d3f8d34bdc503ce3fdb7b79da577017080f176a77b273acfde501",
+      "size_bytes": 1887
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-applied-upstream-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/applied-upstream.patch",
+      "sha256": "ca22627511e4117aac05e1134b4a314e2152400b241d9c3a693febadc5f9e8ba",
+      "size_bytes": 1620
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/commands.json",
+      "sha256": "605fe66cbab2eb17ed92fd1e8e32f30c904013038e523dbeeafba9d905436077",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/console.log",
+      "sha256": "28a8bea28b0a5d640d7cb43e7ba6086f5c9451870ad1ceba51cdb473a6d10e21",
+      "size_bytes": 2536
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/hardware.txt",
+      "sha256": "1f2b682809ea1507f5788cf27b6471c7a9a8c5383f3ca82ad7be558824acd5b4",
+      "size_bytes": 93
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/started.json",
+      "sha256": "ba4237c6f2c8425fe61f57ccd63e5d913dc7a68b7a7bb96b0878dc64b10ac976",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-yolo-modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/yolo_modal.py",
+      "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19",
+      "size_bytes": 11125
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-yolo-smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/yolo_smoke.py",
+      "sha256": "df4473dbb2fa125f16f5ee45f0bcbc5aa629b59250cca2b5719a76c8a06a8ce0",
+      "size_bytes": 2172
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-yolo-stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-yolo-train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/yolo_train.py",
+      "sha256": "39a882b0326e61692ba40ee9824cc1b6d141908afeb86fa80c51cae2b2b759c1",
+      "size_bytes": 16060
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-sources-patches-yolo-numpy-int-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/sources/patches/yolo-numpy-int.patch",
+      "sha256": "947bd02ae955de4d56d85963ee4c5b75f154504a32796781d60cd11afc130662",
+      "size_bytes": 1569
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v5-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v5/execution.json",
+      "sha256": "63ccda3920b9ab42b39dc96f72c6be5ccc5752bd478ab33499e39990661a0e30",
+      "size_bytes": 2187
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-applied-upstream-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/applied-upstream.patch",
+      "sha256": "b19d6557e4cf89b4e2249fbd5b93aed4749c95f205ab7bf709e8e9d62e546db0",
+      "size_bytes": 3408
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/commands.json",
+      "sha256": "9f1a8a2f9c1c0235eb67c0ad4b3cc5d3007d698e2d766b2f2ad958214d122c1e",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/console.log",
+      "sha256": "6b7de45b0cf40868481374e2d73f9baab8bb6ac71e2ba545278d1ebb4349f5b0",
+      "size_bytes": 1679
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/hardware.txt",
+      "sha256": "1f2b682809ea1507f5788cf27b6471c7a9a8c5383f3ca82ad7be558824acd5b4",
+      "size_bytes": 93
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/started.json",
+      "sha256": "0c1cd892320a2c24f8815dafda1c5f118d31b7fa7fdb684366928ae94e6ba694",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-yolo_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/yolo_modal.py",
+      "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19",
+      "size_bytes": 11125
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-yolo_smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/yolo_smoke.py",
+      "sha256": "5f9f740f010b52c262b026fb997a419f4f2012ca5e6ac484fa964755a531694b",
+      "size_bytes": 2513
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-yolo_stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-yolo_train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/yolo_train.py",
+      "sha256": "39a882b0326e61692ba40ee9824cc1b6d141908afeb86fa80c51cae2b2b759c1",
+      "size_bytes": 16060
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-patches-yolo-numpy-int-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/patches/yolo-numpy-int.patch",
+      "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613",
+      "size_bytes": 2543
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v6-sources-patches-yolo-torch-grid-bounds-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v6/sources/patches/yolo-torch-grid-bounds.patch",
+      "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f",
+      "size_bytes": 793
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-applied-upstream-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/applied-upstream.patch",
+      "sha256": "b19d6557e4cf89b4e2249fbd5b93aed4749c95f205ab7bf709e8e9d62e546db0",
+      "size_bytes": 3408
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/commands.json",
+      "sha256": "79404a7d336ef2feb8e08f57b8526a7d9c88e1acab0fbcf25348fb65ab0331b0",
+      "size_bytes": 262
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/console.log",
+      "sha256": "6b7fbf8dc9f573e2f7b486eb19ca49b697ffa48976a1499d22e05b31308b1bdc",
+      "size_bytes": 2248
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/hardware.txt",
+      "sha256": "1f2b682809ea1507f5788cf27b6471c7a9a8c5383f3ca82ad7be558824acd5b4",
+      "size_bytes": 93
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-smoke-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/smoke.json",
+      "sha256": "5aaff30620d909fabc94b6a8ee56e5125bd1148c7551ea8d411b932bf4b27bbe",
+      "size_bytes": 521
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-started-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/started.json",
+      "sha256": "c76a408557fe6b56f10894a25765bf59c504d077b6e1f262496f4bdeadd28432",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-yolo_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/yolo_modal.py",
+      "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19",
+      "size_bytes": 11125
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-yolo_smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/yolo_smoke.py",
+      "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d",
+      "size_bytes": 2545
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-yolo_stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-yolo_train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/yolo_train.py",
+      "sha256": "39a882b0326e61692ba40ee9824cc1b6d141908afeb86fa80c51cae2b2b759c1",
+      "size_bytes": 16060
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-patches-yolo-numpy-int-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/patches/yolo-numpy-int.patch",
+      "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613",
+      "size_bytes": 2543
+    },
+    {
+      "artifact_id": "yolo-cpu-smoke-v7-sources-patches-yolo-torch-grid-bounds-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-cpu-smoke-v7/sources/patches/yolo-torch-grid-bounds.patch",
+      "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f",
+      "size_bytes": 793
+    },
+    {
+      "artifact_id": "faster-full-001-claim-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/claim.json",
+      "sha256": "c93f58c8a09d2f2bebf39f5df07e2d0e431f5ad7f27c045ab9ef4f3d82f43b99",
+      "size_bytes": 893
+    },
+    {
+      "artifact_id": "faster-full-001-console-segment-01-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/console-segment-01.log",
+      "sha256": "afbf91046799f05af5a2d7e22fdba384424efd1de905060d61e13469a682a6a5",
+      "size_bytes": 62825
+    },
+    {
+      "artifact_id": "faster-full-001-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/execution.json",
+      "sha256": "f4cfe691de415ad179ca8938bd08ea2d230d613cde4982e3d383158ce7acef28",
+      "size_bytes": 2187
+    },
+    {
+      "artifact_id": "faster-full-001-faster-pillow-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/faster-pillow.patch",
+      "sha256": "6c5c2e5af1d457a231daf42c44028e4f6ce0686b766f5044e440c2f69b367fc4",
+      "size_bytes": 991
+    },
+    {
+      "artifact_id": "faster-full-001-faster_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/faster_modal.py",
+      "sha256": "490e4a0e6add16e56f85c42986e51b352be8db9ee5d5a0492f3f2cca9a09ad3f",
+      "size_bytes": 16633
+    },
+    {
+      "artifact_id": "faster-full-001-faster_train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/faster_train.py",
+      "sha256": "92e6c4824f5c0ae2c4bdd6d38e0657deb1a417454246086f65e1a347dac04918",
+      "size_bytes": 12027
+    },
+    {
+      "artifact_id": "faster-full-001-gpu-segment-01-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/gpu-segment-01.txt",
+      "sha256": "4d9257d0676bf4a7e8cd7e65ef54eb7b24caee46e04cb88a256ac29399b37328",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "faster-full-001-model-config-yaml",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/model/config.yaml",
+      "sha256": "8b2f80ea0253b2177214f1700d8007a91c0639102b9caf51d545c803f1c58a14",
+      "size_bytes": 5660
+    },
+    {
+      "artifact_id": "faster-full-001-model-events-out-tfevents-1790932986-modal-128-0",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/model/events.out.tfevents.1790932986.modal.128.0",
+      "sha256": "5f73ea92b50b6265567b93ad6fe9cac90e9b5c9c4ecad951f2ab4206c3070e12",
+      "size_bytes": 20608
+    },
+    {
+      "artifact_id": "faster-full-001-model-log-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/model/log.txt",
+      "sha256": "43d16aa42deb5b005de02a6c157ec1994eb78afa9962dcc214ba0ef4b3faabe7",
+      "size_bytes": 61309
+    },
+    {
+      "artifact_id": "faster-full-001-model-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/model/metrics.json",
+      "sha256": "17cb6a1efb01323e60670c71dc2551b5671e607be36db282ad04d96a519d407e",
+      "size_bytes": 14356
+    },
+    {
+      "artifact_id": "faster-full-001-pip-freeze-segment-01-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/pip-freeze-segment-01.txt",
+      "sha256": "f78b09a9f4dd5a26f65ac8cff632c06381a256c62c52dcf40dbcff9a9aefb0fb",
+      "size_bytes": 7070
+    },
+    {
+      "artifact_id": "faster-full-001-platform-cancellation",
+      "kind": "execution_evidence",
+      "path": "artifacts/faster-full-001-platform-cancellation.log",
+      "sha256": "d288f6c0f572fa0fca8edb87d2dab17ca7503d6084a2e3c7b5503cb6985bba90",
+      "size_bytes": 264
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-commands-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/commands.json",
+      "sha256": "2b1a68bfc64ecaf95c5efeccc56882b4e2ec116a4f01c588775d1f01c658dd9e",
+      "size_bytes": 966
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/console.log",
+      "sha256": "7d70b074454ff70fbf3ab9e3bbb100a63cbf544fa6a68eab4436007a6e83a16a",
+      "size_bytes": 120605
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/freeze.txt",
+      "sha256": "7e73a54fce0f0fb05901fe1f81a8f74c756c011a128ecdc19fff9521fb132cdc",
+      "size_bytes": 6802
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-hardware-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/hardware.txt",
+      "sha256": "043afa7c8b785dabf375ba41b28a96864dba7b6923cade3858fef203f6d10d94",
+      "size_bytes": 1782
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-l-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/l/metrics.json",
+      "sha256": "9bd6b0ced4dc34a7d0a1c19a7bfb9ebb443f5146c8e1de73c2a7f1b62d93d221",
+      "size_bytes": 5600
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-m-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/m/metrics.json",
+      "sha256": "0cdbc8b7a0de3eec044eb86a8880d1f513aa152bad14e0d95a596e736cb385f5",
+      "size_bytes": 5656
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-s-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/s/metrics.json",
+      "sha256": "c1a87413d24fd6f02afeebf8f650211b47232d1709d8071dcbd0d5d749949f1a",
+      "size_bytes": 5368
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-s-pre-resume-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/s/pre-resume.json",
+      "sha256": "5ccfba3b7db0a54c61ba5ae93f9a98584d45c6fdc5217aa4ba85ca2b50d6b6f0",
+      "size_bytes": 508
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-s-resume-proof-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/s/resume-proof.json",
+      "sha256": "996c9c8ccdedc2c4b322c2b21cb1432426ebe06afe3ee2fcac76866d7af4150d",
+      "size_bytes": 228
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-yolo_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/yolo_modal.py",
+      "sha256": "53223322e1cb326a3d23aad1a978a466c33bc363091c1d48d620ea92ee2d0f19",
+      "size_bytes": 11125
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-yolo_smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/yolo_smoke.py",
+      "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d",
+      "size_bytes": 2545
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-yolo_stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-yolo_train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/yolo_train.py",
+      "sha256": "39a882b0326e61692ba40ee9824cc1b6d141908afeb86fa80c51cae2b2b759c1",
+      "size_bytes": 16060
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-l-train-weights-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/l/train/weights/best.pt",
+      "sha256": "5b2145bc9801931e0f4a8c0cffdc0910654dfa0d5ac54827163d1c9e00224d38",
+      "size_bytes": 93037511
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-m-train-weights-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/m/train/weights/best.pt",
+      "sha256": "77f5901112094ddf1910d477929dad8644e639f88b6d43d7ab55c6a76b039c3d",
+      "size_bytes": 42333211
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-s-train-weights-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/s/train/weights/best.pt",
+      "sha256": "ba4552450c3134db1f4438182978279e6f5e589e516c5121c8c990f18ddc34b5",
+      "size_bytes": 14474607
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-patches-yolo-numpy-int-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/patches/yolo-numpy-int.patch",
+      "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613",
+      "size_bytes": 2543
+    },
+    {
+      "artifact_id": "yolo-gpu-preflight-v1-sources-patches-yolo-torch-grid-bounds-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/sources/patches/yolo-torch-grid-bounds.patch",
+      "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f",
+      "size_bytes": 793
+    },
+    {
+      "artifact_id": "oct3-execution",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-gpu-preflight-v1/execution.json",
+      "sha256": "73d5367cc6ac37f4e72ec26959abea9fb019c756b25441d650206b0aad6006ce",
+      "size_bytes": 26534
+    },
+    {
+      "artifact_id": "oct3-faster-evidence",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/evidence.json",
+      "sha256": "449c0ee378e1d876e39dc9f23327d6b6dc6948846771adce1c8925ef7df78e92",
+      "size_bytes": 1741
+    },
+    {
+      "artifact_id": "oct3-faster-collection",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/faster-full-001/collection-20261003T180852.json",
+      "sha256": "b94967557bedd6e33a3d33d9d025ab07ab64c2a7568461e51a3f80c91225d2be",
+      "size_bytes": 550
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v1-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v1/console.log",
+      "sha256": "8795eb1958d71dddeb7d8ec0ec1f1c00429e4f47edc79c970b2f29ed63285abc",
+      "size_bytes": 48341
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v1-s-metrics-before-recovery-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v1/s/metrics-before-recovery.json",
+      "sha256": "7ae131c7f0daa94d2b740fa27187d88ab328e9c4097dbdeef7eea88424ffd413",
+      "size_bytes": 5372
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v1-s-recovery-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v1/s/recovery.json",
+      "sha256": "bea3cca1205ea9f43965938dd20568339f8182b048c7ae075ead11db67c1ea09",
+      "size_bytes": 443
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v1-s-resume-proof-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v1/s/resume-proof.json",
+      "sha256": "996c9c8ccdedc2c4b322c2b21cb1432426ebe06afe3ee2fcac76866d7af4150d",
+      "size_bytes": 228
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/console.log",
+      "sha256": "e076a47a10acfec14b447ade9a4c1030ae06e088507f0806be2da78079751b06",
+      "size_bytes": 61014
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-s-metrics-before-recovery-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/s/metrics-before-recovery.json",
+      "sha256": "4742eedc59f807f07f01c96214a4129041370f39fe429cfbf5d16ad111d5efa4",
+      "size_bytes": 5480
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-s-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/s/metrics.json",
+      "sha256": "04a0348e0884c1df18368be1eab532fa83ff3bd63c9d904c5e305f48c34a3493",
+      "size_bytes": 5371
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-s-recovery-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/s/recovery.json",
+      "sha256": "bea3cca1205ea9f43965938dd20568339f8182b048c7ae075ead11db67c1ea09",
+      "size_bytes": 443
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-s-resume-proof-json",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/s/resume-proof.json",
+      "sha256": "996c9c8ccdedc2c4b322c2b21cb1432426ebe06afe3ee2fcac76866d7af4150d",
+      "size_bytes": 228
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-Dockerfile-yolo",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/Dockerfile.yolo",
+      "sha256": "86ebfb186d99937266732a514258e1ac72ccb5478953b28a1dbfbbe38a68c9c3",
+      "size_bytes": 944
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-yolo_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/yolo_modal.py",
+      "sha256": "dec2100692a4685fe7e1eac927dbbaf0059d7c65be3578710006574fa35efe00",
+      "size_bytes": 12123
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-yolo_smoke-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/yolo_smoke.py",
+      "sha256": "0b3d5b36afb6f62be0f3fe986253cc98fe25c4d4e6ac4938a33d1c24c93a177d",
+      "size_bytes": 2545
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-yolo_stage-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/yolo_stage.py",
+      "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a",
+      "size_bytes": 2904
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-yolo_train-py",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/yolo_train.py",
+      "sha256": "ea14e67142db447564ea74acdfe05fba105b634e03c26111f288e84bf6ab6f45",
+      "size_bytes": 18715
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-patches-yolo-numpy-int-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/patches/yolo-numpy-int.patch",
+      "sha256": "ec62cf6ce4fff5c4ee42996d28f6723cc387c03eeefdc769a4a7863909e01613",
+      "size_bytes": 2543
+    },
+    {
+      "artifact_id": "yolo-recovery-proof-v2-sources-patches-yolo-torch-grid-bounds-patch",
+      "kind": "execution_evidence",
+      "uri": "modal://repro-992e7a-results/yolo-recovery-proof-v2/sources/patches/yolo-torch-grid-bounds.patch",
+      "sha256": "d6cdb4494a3a8822f92cf50780085d67587e2e8156e8422104434ab8b8f8e99f",
+      "size_bytes": 793
     }
   ],
   "gates": [
@@ -2925,6 +4750,17 @@
       "yolo_full_gpu_hours_upper_limit": 9,
       "yolo_full_cost_chf_upper_limit": 32
     },
-    "policy": "No reset of any launched run deadline; no duplicate or fresh full restart. YOLO full declaration still requires measured preflight forecast; remaining aggregate budget controls later work."
+    "policy": "No reset of any launched run deadline; no duplicate or fresh full restart. YOLO full declaration still requires measured preflight forecast; remaining aggregate budget controls later work.",
+    "yolo_continuation_allowance": {
+      "declared_at_utc": "2026-10-02T09:33:43.663997+00:00",
+      "authority": "Root orchestration handoff, 2026-10-02; no further approval round trips for within-budget diagnosed work.",
+      "additional_cpu_diagnostic_seconds": 2700,
+      "additional_cpu_diagnostic_cost_chf": 3,
+      "gpu_diagnostic_hours": 1,
+      "gpu_diagnostic_cost_chf": 5,
+      "full_gpu_hours": 9,
+      "full_cost_chf": 32,
+      "policy": "Every individual run declared before launch. Original full-run deadlines immutable; no fresh full restarts. Whole-paper24GPUh/CHF90 overrides."
+    }
   }
 }

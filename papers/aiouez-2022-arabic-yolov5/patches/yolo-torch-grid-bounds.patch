@@ -1,0 +1,14 @@
+# Correctness: modern PyTorch rejects float clamp bounds for integer grid indices.
+# Observed real forward/loss failure in yolo-cpu-smoke-v5. gain[3]/gain[2] are assigned
+# exactly these grid dimensions immediately above; use their original integer types.
+--- a/utils/loss.py
++++ b/utils/loss.py
+@@ -214,7 +214,7 @@
+ 
+             # Append
+             a = t[:, 6].long()  # anchor indices
+-            indices.append((b, a, gj.clamp_(0, gain[3] - 1), gi.clamp_(0, gain[2] - 1)))  # image, anchor, grid indices
++            indices.append((b, a, gj.clamp_(0, p[i].shape[2] - 1), gi.clamp_(0, p[i].shape[3] - 1)))  # image, anchor, grid indices
+             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
+             anch.append(anchors[a])  # anchors
+             tcls.append(c)  # class
