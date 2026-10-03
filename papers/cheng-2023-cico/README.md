@@ -4,13 +4,13 @@
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
-**Pipeline status:** complete
+**Pipeline status:** partial
 
-This status describes the preserved released-checkpoint experiment only; the training continuation is pending.
+The24released-checkpoint targets are preserved;24independent training targets are now also in scope and pending.
 
 **Numerical agreement:** does_not_agree
 
-**Preference level:** 1
+**Preference level:** 2
 
 **Claim-level assessment (2026-10-02):** The released-checkpoint evaluation corroborates the paper’s central reported advantage over SPOT-ALIGN (Section 4.2, Tables 1–2): How2Sign T2V/V2T R@1 remain 22.5/28.0 percentage points above published SA-COMB, and PHOENIX remains 13.7/17.1 points above it. Recall@5/10 ordering is also preserved; PHOENIX median ranks tie the baseline. CSL-Daily retains the performance level of the baseline supplied in Table 3, which has no competing-system row.
 
@@ -114,3 +114,24 @@ The evaluation entry point handles setup, checkpoint loading and scoring; it doe
 The direct batch assignment preserves the redacted tracker export and its original SHA-256 `61a45da0c6d25859bc8abba10df4096806e371ca2b326b5d3881043781fcf780`. Its current schema has final paper status, a separate database ID and no legacy confirmation field; none was invented. `codex-orchestrator`—GPT-6 using Codex—performed source investigation, implementation and execution. `codex-reviewer`—also GPT-6 using Codex—independently reviewed the wrapper against upstream and edited this report on 2026-10-01; it did not execute the reported runs. These identities are explicitly attested by the active session instructions. Exact model IDs and application versions were not exposed, and execution attribution is preserved unchanged.
 
 Training continuation is separately recorded in `reproduction.json.training_continuation`. GPT-6 using Codex (`codex-training-orchestrator`) is investigating raw-data preparation, sign-encoder adaptation, and native CLCL training; exact model and harness versions are not exposed. Earlier 24 checkpoint-evaluation results and their executor attribution remain unchanged. The new trained-model results will be evaluated against the published baselines without score-driven tuning.
+
+## Independent training continuation (2026-10-03)
+
+A GPT-6 agent using Codex is executing this continuation separately from the earlier checkpoint evaluation (agent ID `cico-training-agent`; exact model ID and harness version are unavailable). No trained retrieval result is claimed yet. The24original target objects remain unchanged, and24distinct `trained-` targets track end-to-end training. Published baseline scores will be compared but their systems are not rerun.
+
+Bounded CPU acquisition verified the official BSL5K initialization (`6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f`) and released How2Sign domain-aware checkpoint (`99e101d696ff63131b5d44fa6e465201216604ba5d8cc773f3cefa4a96ebd518`). Their classifier heads differ (5383/1432classes), but both pooled feature vectors have1024channels. The How2Sign adapted checkpoint is retained for an explicitly separate CLCL-only sub-attempt if needed; it does not establish independent encoder training.
+
+All7096PHOENIX training/642test raw names and18401CSL training/1176test names in the pinned author labels are present on Modal, with no duplicate stems. How2Sign raw videos are absent. PHOENIX is the first full-chain candidate because the necessary raw videos are available. Its author `dev.pkl` combines7096train and519dev identities; physical split membership must be used for a distinct development set.
+
+The native training recipe uses15I3D adaptation epochs, SGD learning rate0.01/batch4, and200CLCL epochs with global contrastive batch512. Ordinary gradient accumulation changes the negative pool and is not a substitute. Native CLCL evaluates test retrieval each epoch and selects by testR@1; this selection is explicitly disclosed. No full training run has launched. The continuation has a24GPU-hour/CHF90 total ceiling, including at most2GPU-hours/CHF10diagnostics and4CPU-hours/CHF8initial acquisition/audits.
+
+The first CPU wrapper failed before native execution because its sibling module was not packaged for remote import; a standalone wrapper fixed the issue. Corrected acquisition finished in64.155seconds. A9.434secondGPU probe stopped at the missingOpenCV import before model execution; pinningOpenCV4.11.0.86 is being verified through CPU import/decoder checks before anotherGPU allocation. Actual runs, original policies, immutable source hashes and evidence remain in `reproduction.json`.
+
+Repeat bounded preparation and diagnostics through the project wrapper:
+
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::prepare --run-id training-input-preparation-v2
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::decoder_audit --run-id decoder-audit-v2
+```
+
+Run IDs cannot be reused over existing output directories. Native input/output paths and all new evidence use the existing `cheng-2023-cico-results` volume; datasets remain read-only. Training-only patches do not alter the preserved checkpoint experiment.

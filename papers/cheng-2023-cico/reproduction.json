@@ -37,6 +37,15 @@
       "evidence": [
         "Active session attestation, 2026-10-03: GPT-6 using Codex. Exact model ID and harness version unavailable; omitted to satisfy the current validator, with the metadata gap explicitly preserved here and in scope."
       ]
+    },
+    {
+      "agent_id": "cico-training-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "2026-10-03 independent training continuation execution and reporting, following preserved checkpoint evaluation. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Session instructions explicitly identify GPT-6 using Codex; assigned exclusive CiCo training continuation after completing LEXSET."
+      ]
     }
   ],
   "assignment": {
@@ -255,10 +264,10 @@
     }
   ],
   "status": {
-    "pipeline": "complete",
+    "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
     "numerical_agreement_basis": "All 24 in-scope released-checkpoint evaluation targets produced comparable values. At the prospectively declared one-decimal precision, all eight PHOENIX values match; two How2Sign recalls differ by +0.1 percentage point, and six CSL-Daily recalls differ by -0.6 to +0.1 points. All median ranks match. This evaluates released checkpoints, not training reproducibility.",
-    "preference_level": 1,
+    "preference_level": 2,
     "blocker": null
   },
   "datasets": [
@@ -490,6 +499,27 @@
       "dataset_id": "phoenix2014t",
       "checkpoint_rule": "Copied literature baseline, excluded",
       "paper_evidence": "Table 2, SA-COMB row, PDF page 7"
+    },
+    {
+      "experiment_id": "trained-how2sign-cico",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "checkpoint_rule": "Independently trained I3D final15epoch; native CLCL per-epoch test-R1 selection disclosed; no released retrieval checkpoint initialization.",
+      "paper_evidence": "Table 1, Ours row, T2V R1, PDF page 7"
+    },
+    {
+      "experiment_id": "trained-phoenix2014t-cico",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "checkpoint_rule": "Independently trained I3D final15epoch; native CLCL per-epoch test-R1 selection disclosed; no released retrieval checkpoint initialization.",
+      "paper_evidence": "Table 2, Ours row, T2V R1, PDF page 7"
+    },
+    {
+      "experiment_id": "trained-csl-daily-cico",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "checkpoint_rule": "Independently trained I3D final15epoch; native CLCL per-epoch test-R1 selection disclosed; no released retrieval checkpoint initialization.",
+      "paper_evidence": "Table 3, Ours row, T2V R1, PDF page 7"
     }
   ],
   "targets": [
@@ -2676,6 +2706,414 @@
       },
       "original_value": 1,
       "experiment_id": "phoenix2014t-sa-comb"
+    },
+    {
+      "target_id": "trained-how2sign-t2v-r1",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, T2V R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "T2V-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 56.6,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-t2v-r5",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, T2V R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "T2V-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 69.9,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-t2v-r10",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, T2V R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "T2V-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 74.7,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-t2v-medianr",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, T2V MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "T2V-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-v2t-r1",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, V2T R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "V2T-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 51.6,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-v2t-r5",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, V2T R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "V2T-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 64.8,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-v2t-r10",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, V2T R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "V2T-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 70.1,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-how2sign-v2t-medianr",
+      "in_scope": true,
+      "paper_location": "Table 1, Ours row, V2T MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "how2sign",
+      "split": "test",
+      "metric_id": "V2T-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 1 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-how2sign-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-t2v-r1",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, T2V R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "T2V-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 69.5,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-t2v-r5",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, T2V R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "T2V-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 86.6,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-t2v-r10",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, T2V R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "T2V-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 92.1,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-t2v-medianr",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, T2V MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "T2V-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-v2t-r1",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, V2T R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "V2T-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 70.2,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-v2t-r5",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, V2T R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "V2T-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 88,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-v2t-r10",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, V2T R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "V2T-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 92.8,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-phoenix2014t-v2t-medianr",
+      "in_scope": true,
+      "paper_location": "Table 2, Ours row, V2T MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "phoenix2014t",
+      "split": "test",
+      "metric_id": "V2T-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 2 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-phoenix2014t-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-t2v-r1",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, T2V R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "T2V-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 75.3,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-t2v-r5",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, T2V R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "T2V-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 88.2,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-t2v-r10",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, T2V R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "T2V-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 91.9,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-t2v-medianr",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, T2V MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "T2V-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-v2t-r1",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, V2T R1, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "V2T-R1",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 74.7,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-v2t-r5",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, V2T R5, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "V2T-R5",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 89.4,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-v2t-r10",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, V2T R10, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "V2T-R10",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 92.2,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
+    },
+    {
+      "target_id": "trained-csl-daily-v2t-medianr",
+      "in_scope": true,
+      "paper_location": "Table 3, Ours row, V2T MedianR, PDF page 7",
+      "system": "CiCo",
+      "dataset_id": "csl-daily",
+      "split": "test",
+      "metric_id": "V2T-MedianR",
+      "copied_baseline": false,
+      "evidence": [
+        "Paper Table 3 and official README Performance table"
+      ],
+      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "original_value": 1,
+      "experiment_id": "trained-csl-daily-cico",
+      "result": null
     }
   ],
   "runs": [
@@ -3315,6 +3753,277 @@
         "gate_ids": []
       },
       "gpu_hours": 0.1948248580611111
+    },
+    {
+      "run_id": "training-input-preparation-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::prepare --run-id training-input-preparation-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-input-preparation",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:59:05.730040+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-FM069jJBPsg5TLhhUsQ3t8"
+      },
+      "configuration": {
+        "scope": "Download official encoder initialization weights and inspect tensor-only checkpoint structure; inventory available raw video filenames against exact upstream training/test labels. No GPU, no training, no dataset mutation.",
+        "source_sha256": "3d859c6a0bfdd1bebe8584c63bd503c83f07fde5c61b26b1f0a4c40b628700ea"
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Remote hydration repeatedly failed importing sibling modal_app before native code started. Stopped app; standalone image/volume declarations are a new scoped packaging correction. No GPU or training. Native exit is unknown because native subprocess never began.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "exit_code": null,
+      "finished_at_utc": "2026-10-03T19:04:38.891776+00:00"
+    },
+    {
+      "run_id": "training-input-preparation-v2",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::prepare --run-id training-input-preparation-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "training-input-preparation-standalone",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:04:38.892054+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-MaljXFey1C6f1HecNprx1p",
+        "function_call_id": "fc-01M41JFT3F4XFGTBCTQSMT64HJ"
+      },
+      "configuration": {
+        "scope": "Download official encoder initialization weights and inspect tensor-only checkpoint structure; inventory available raw video filenames against exact upstream training/test labels. No GPU, no training, no dataset mutation.",
+        "source_sha256": "d82ba076cd938039de7494a77e1c5848c3cb677d1aeca8ca516190017cee9f85",
+        "wrapper_sha256": "8304a881d93290935f61473ff07a2a37c89cc3e2a38a866e898790983ad643ad"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both official weights downloaded and tensor-only inspected; exact upstream PHOENIX and CSL train/test video names are present; How2 raw videos absent. No GPU.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:05:18.072776+00:00",
+      "finished_at_utc": "2026-10-03T19:06:23.987658+00:00",
+      "exit_code": 0,
+      "wall_time_seconds": 64.155082836
+    },
+    {
+      "run_id": "i3d-phx-probe-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::i3d_probe --run-id i3d-phx-probe-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "i3d-phx-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:11:37.181641+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-qNxi00elcwv01ioh1Wl4bo",
+        "function_call_id": "fc-01M41JX9B9XDAFGSP0FBKBXYS6"
+      },
+      "configuration": {
+        "scope": "Native I3D real-video inference/throughput plus diagnostic SGD mechanics/fresh model and optimizer restoration. No target evidence; diagnostic pseudo labels use argmax, full threshold/NMS recipe remains required.",
+        "i3d_probe.py_sha256": "09453ef364418a00c4277e650d8498ec9d50d9d6d4233096858de635ff0d6787",
+        "training_modal.py_sha256": "d2142eb9cd17b65e882b5a9464ac24cafff5655a9d7022de43bce4e94da45eae"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Native dataset import requires cv2, absent in base image. Add pinned opencv-python-headless4.11.0.86; verify import and decoder on CPU before nextGPU.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:12:55.458445+00:00",
+      "finished_at_utc": "2026-10-03T19:13:05.888658+00:00",
+      "exit_code": 1,
+      "wall_time_seconds": 9.43414316
+    },
+    {
+      "run_id": "decoder-audit-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::decoder_audit --run-id decoder-audit-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "decoder-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:12:53.643112+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
+        "source_sha256": "f5e27df191a9c398ca90bb37f4235a0c79400e176de8b8473c158bab13c75ec7"
+      },
+      "terminal": null
+    },
+    {
+      "run_id": "decoder-audit-v2",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::decoder_audit --run-id decoder-audit-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "decoder-audit-opencv",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:13:56.132696+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
+        "source_sha256": "e73ceb0208a7fa41142c897658782127732513ae3fb4338fd9515b3f78edb940"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
@@ -3728,7 +4437,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "investigating_training_recipe_and_inputs",
+    "state": "native_i3d_preflight",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": false,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -3738,7 +4447,10 @@
       "The native CLCL loop evaluates test data after every epoch and tracks test R@1; preserve and disclose this selection protocol rather than implying untouched held-out selection.",
       "Modal inventory finds PHOENIX and CSL raw video trees; How2Sign currently contains only SPOT-ALIGN features, which are not interchangeable with CiCo features.",
       "Official How2Sign frontal raw training/test downloads are 290/23 GB and use manually realigned boundaries; smaller released sentence clips use original boundaries.",
-      "Upstream issues 54,55,64 report missing domain-aware PHOENIX/CSL weights, absent training features, and a classifier-width discrepancy; no replies were present on 2026-10-03. Investigate executable evidence before classifying a blocker."
+      "Upstream issues 54,55,64 report missing domain-aware PHOENIX/CSL weights, absent training features, and a classifier-width discrepancy; no replies were present on 2026-10-03. Investigate executable evidence before classifying a blocker.",
+      "CPU acquisition verified both official encoder weights: BSL5K5383-class head and released How2Sign1432-class head; both expose1024-dimensional pooled embeddings used by CLCL.",
+      "Exact native labels match all7096PHOENIX train/642test and18401CSL train/1176test raw filenames. PHOENIX dev.pkl combines train+dev and cannot be interpreted as519held-out examples.",
+      "Native PHOENIX extractor assumes256square frame allocation but original rawvideo is260high\u00d7210wide; decoder patch uses actual dimensions with existing native grid preprocessing. Backend equivalence being checked before full."
     ],
     "compute_policy": "Complete real-data preflight and recovery proof; declare measured full-run ceilings before any full launch. No full training budget is consumed or declared yet.",
     "evidence": [
@@ -3747,6 +4459,42 @@
       "https://github.com/FangyunWei/SLRT/issues/54",
       "https://github.com/FangyunWei/SLRT/issues/55",
       "https://github.com/FangyunWei/SLRT/issues/64"
+    ],
+    "budget": {
+      "declared_at_utc": "2026-10-03T18:59:05.730040+00:00",
+      "max_gpu_hours": 24,
+      "max_cost_chf": 90,
+      "initial_cpu_max_wall_seconds": 14400,
+      "initial_cpu_max_cost_chf": 8,
+      "gpu_diagnostics_max_gpu_hours": 2,
+      "gpu_diagnostics_max_cost_chf": 10,
+      "detail": "Single GPU per execution; measured preflight and independently reviewed plan before any full training launch. No ordinary gradient accumulation substitute for512 global contrastive negative pool."
+    },
+    "target_ids": [
+      "trained-how2sign-t2v-r1",
+      "trained-how2sign-t2v-r5",
+      "trained-how2sign-t2v-r10",
+      "trained-how2sign-t2v-medianr",
+      "trained-how2sign-v2t-r1",
+      "trained-how2sign-v2t-r5",
+      "trained-how2sign-v2t-r10",
+      "trained-how2sign-v2t-medianr",
+      "trained-phoenix2014t-t2v-r1",
+      "trained-phoenix2014t-t2v-r5",
+      "trained-phoenix2014t-t2v-r10",
+      "trained-phoenix2014t-t2v-medianr",
+      "trained-phoenix2014t-v2t-r1",
+      "trained-phoenix2014t-v2t-r5",
+      "trained-phoenix2014t-v2t-r10",
+      "trained-phoenix2014t-v2t-medianr",
+      "trained-csl-daily-t2v-r1",
+      "trained-csl-daily-t2v-r5",
+      "trained-csl-daily-t2v-r10",
+      "trained-csl-daily-t2v-medianr",
+      "trained-csl-daily-v2t-r1",
+      "trained-csl-daily-v2t-r5",
+      "trained-csl-daily-v2t-r10",
+      "trained-csl-daily-v2t-medianr"
     ]
   }
 }
