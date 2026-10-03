@@ -1,6 +1,6 @@
 # Real-time Arabic Sign Language Recognition based on YOLOv5
 
-**TL;DR:** YOLO three-model preflight passed; bounded full runs are declared after the durable-recovery check passed. Faster R-CNN was canceled before its first checkpoint.
+**TL;DR:** YOLO three-model preflight passed; all three bounded full runs are running after the durable-recovery check passed. Faster R-CNN was canceled before its first checkpoint.
 **Decision:** License remains unknown; dataset redistribution is prohibited. No human action is pending.
 
 **Execution state:** in progress (previous terminal data-gated assessment retained in `reproduction.json.assessment_history`)
@@ -112,3 +112,21 @@ The new durable-recovery proof stores immutable copies of native epoch checkpoin
 The October3 continuation agent is GPT-6 using Codex; exact model and harness versions were not exposed. It collects/reviews earlier work and executes new YOLO diagnostics. Earlier acquisition, Faster execution and YOLO diagnostics retain their original executor attribution.
 
 Durable recovery proof v2 passed: exact native metrics and selected model tensors after evaluation replay. A local fixture executes the actual full-wrapper function and confirms cancellation kills its child, records an unknown native exit, rejects a duplicate logical call and refuses an expired deadline without resetting it. Repeat with `python3 papers/aiouez-2022-arabic-yolov5/scripts/yolo_guard_check.py`. Independent root review approved the exact launcher and training source hashes recorded per run.
+
+## Current YOLO execution and collection
+
+All three full runs launched independently on October3 at approximately18:25UTC. Each uses one A10080GB and the exact committed source (`5741511`); no multi-GPU training is introduced. These are original deadlines and must never be reset.
+
+| Model | Run | App | Function call | Deadline UTC |
+|---|---|---|---|---|
+| s | `yolo-s-full-001` | `ap-HYBot17D083xtvujzvHqBq` | `fc-01M41G64B0ZDEVVTAVAACTKZZA` | 2026-10-03T20:13:14.674843+00:00 |
+| m | `yolo-m-full-001` | `ap-SInmo7oY4Ggf812hW4bKQ3` | `fc-01M41G65PB6EPPPM2DFJS9N22C` | 2026-10-03T21:37:10.398795+00:00 |
+| l | `yolo-l-full-001` | `ap-Vo2K1d1Q3GkddT1gYJs5X4` | `fc-01M41G67EA03JHAKXMDW6P5APY` | 2026-10-03T22:25:13.728302+00:00 |
+
+Monitor the immutable claim, `execution.json`, current `console-segment-NN.log`, and `<model>/recovery.json` in each run directory on `repro-992e7a-results`, always through the required wrapper. Each recovery pointer records completed epoch and SHA-256 of the native checkpoint and validation-selected checkpoint. A running or submitted job is not a completed reproduction.
+
+After a run is terminal, declare one CPU collection attempt (2 CPU,4GiB,900seconds,CHF1,noGPU,no retry), then run the following, substituting its recorded run ID:
+```bash
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/aiouez-2022-arabic-yolov5/scripts/yolo_collect.py --run-id yolo-s-full-001
+```
+The collector verifies60/50/50 native CSV epochs, selected checkpoint hash, and1509test timing samples on successful runs, then hashes every closed artifact. Download `evidence.json`, timestamped `collection-*.json`, `execution.json`, `<model>/metrics.json`, and `<model>/train/results.csv` individually. Keep predictions, images and weights internal. Native YOLO target values are `native_test_metrics[0:4]` (P,R,AP50,AP50:95), multiplied by100 for percent; independent common COCO metrics are reported separately. Native validation fitness selects the best checkpoint (ties use the native last matching epoch); no test selection is performed.
