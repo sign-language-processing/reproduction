@@ -45,16 +45,12 @@
       "scope": "2026-10-03 independent training continuation execution and reporting, following preserved checkpoint evaluation. Exact model ID and harness version unavailable.",
       "evidence": [
         "Session instructions explicitly identify GPT-6 using Codex; assigned exclusive CiCo training continuation after completing LEXSET."
-      ],
-      "model_id": null,
-      "harness_version": null
+      ]
     },
     {
       "agent_id": "cico-adaptation-source-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "model_id": null,
-      "harness_version": null,
       "scope": "Independent read-only review of native I3D recipe, restoration evidence and adaptation/feature launcher guards; no execution. Exact model ID and harness version unavailable in inherited session.",
       "evidence": [
         "Delegated GPT-6/Codex review on2026-10-03 confirmed final15 selection/empty validation and source guard PASS; feature wrapper ce2b2aabb707aa7700472cf9d0919a0511e6befbfaa7cca5d31a3feeee955dc6."
@@ -64,8 +60,6 @@
       "agent_id": "cico-clcl-source-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "model_id": null,
-      "harness_version": null,
       "scope": "Independent read-only review of native CLCL initialization, optimizer/negative-pool semantics, checkpoint recovery patches and bounded diagnostic; no execution. Exact model ID and harness version unavailable in inherited session.",
       "evidence": [
         "Delegated GPT-6/Codex review on2026-10-03 inspected pinned38a4f7b and patches0010\u20130012; approved bounded diagnostic scope after source/AST checks, not full training."
@@ -3832,10 +3826,12 @@
         "retry_decision": "stop",
         "gate_ids": []
       },
-      "exit_code": null,
+      "exit_code": 1,
       "finished_at_utc": "2026-10-03T19:03:40+00:00",
       "started_at_utc": "2026-10-03T18:59:07+00:00",
-      "timestamp_basis": "Modal app created/stopped metadata, because native subprocess never began."
+      "timestamp_basis": "Modal app created/stopped metadata, because native subprocess never began.",
+      "native_exit_code": null,
+      "exit_code_basis": "Observed Modal CLI/build command exit1 before native process launch; native_exit_code remains unknown/not started, not inferred from command failure."
     },
     {
       "run_id": "training-input-preparation-v2",
@@ -4636,11 +4632,13 @@
         "retry_decision": "stop",
         "gate_ids": []
       },
-      "exit_code": null,
+      "exit_code": 1,
       "build_exit_code": 1,
       "finished_at_utc": "2026-10-03T19:44:41+00:00",
       "started_at_utc": "2026-10-03T19:44:25+00:00",
-      "timestamp_basis": "Modal app created/stopped metadata, because native subprocess never began."
+      "timestamp_basis": "Modal app created/stopped metadata, because native subprocess never began.",
+      "native_exit_code": null,
+      "exit_code_basis": "Observed Modal CLI/build command exit1 before native process launch; native_exit_code remains unknown/not started, not inferred from command failure."
     },
     {
       "run_id": "native-trainer-probe-v3",
@@ -5254,8 +5252,9 @@
       },
       "configuration": {
         "scope": "CPU audit of all256 closed pseudo rank receipts and generated clip SHA/size/decoded frame metadata; no model execution. Only launch after parent pseudo native exit0 and complete receipt. Canonical closed-training-manifest is idempotent exactbytes.",
-        "source_sha256": "6cc086d1510885735593191fe179da72709295e57b920460557c2b4a413f219c",
-        "forecast": "At most1800CPUfunction-seconds/CHF1 within aggregate4CPUh/CHF8; no GPU. Exact count supplies adaptation forecast."
+        "source_sha256": "9a703fab58ef8ff65f81f070b82f174bd9e87885a7a4bf2169bb08d2e83f5f0c",
+        "forecast": "At most1800CPUfunction-seconds/CHF1 within aggregate4CPUh/CHF8; no GPU. Exact count supplies adaptation forecast.",
+        "io_policy": "Eight concurrent audit reads within each closed rank; ordered metadata-only results preserve manifest order and exactbytes. No native source or training guard changed."
       },
       "terminal": null
     }
@@ -5671,7 +5670,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "full_training_pseudo_stage_running",
+    "state": "native_encoder_preparation_running_clcl_mechanics_passed",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": false,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -5684,9 +5683,9 @@
       "Upstream issues 54,55,64 report missing domain-aware PHOENIX/CSL weights, absent training features, and a classifier-width discrepancy; no replies were present on 2026-10-03. Investigate executable evidence before classifying a blocker.",
       "CPU acquisition verified both official encoder weights: BSL5K5383-class head and released How2Sign1432-class head; both expose1024-dimensional pooled embeddings used by CLCL.",
       "Exact native labels match all7096PHOENIX train/642test and18401CSL train/1176test raw filenames. PHOENIX dev.pkl combines train+dev and cannot be interpreted as519held-out examples.",
-      "Native PHOENIX extractor assumes256square frame allocation but original rawvideo is260high\u00d7210wide; decoder patch uses actual dimensions with existing native grid preprocessing. Backend equivalence being checked before full."
+      "Native PHOENIX decoder actual-dimension patch and simple-video-utils passed byte-exact RGB/frame-index equivalence with OpenCV across initial/interior/tail/short windows before full extraction."
     ],
-    "compute_policy": "Complete real-data preflight and recovery proof; declare measured full-run ceilings before any full launch. No full training budget is consumed or declared yet.",
+    "compute_policy": "Whole continuation24GPUh/CHF90; pseudo andagnostic full preparation each reserve4GPUh/CHF16. Native CLCL mechanics passed within diagnostics cap. Adaptation and paired-feature fullCLCL remain conditional on exactcloseddata, measuredforecasts, source review and prospective immutable policies; no independent trained target produced yet.",
     "evidence": [
       "https://github.com/FangyunWei/SLRT/tree/38a4f7b00da7a858d59b7fabe5093876a84db8e0/CiCo",
       "https://how2sign.github.io/",

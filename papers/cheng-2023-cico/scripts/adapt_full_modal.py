@@ -68,7 +68,7 @@ def run(run_id:str,manifest_sha:str,resume_after_stopped_app:str=''):
 
 @app.function(image=image,cpu=4,memory=8192,timeout=1800,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
 def collect_pseudo(run_id:str):
- import json,hashlib,datetime,time,re,collections
+ import json,hashlib,datetime,time,re,collections,concurrent.futures
  from simple_video_utils.metadata import video_metadata
  if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
  out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);base=Path('/outputs/phx-pseudo-full-v1/pseudo');t=time.monotonic()
@@ -79,11 +79,14 @@ def collect_pseudo(run_id:str):
  manifest={'source_run':'phx-pseudo-full-v1','split':'train','ranks':256,'complete_sha256':sha(base/'complete.json'),'rank_receipts':[],'clips':[]};total_windows=0
  for rank in range(256):
   receipt=base/f'rank-{rank:03d}.json';r=json.loads(receipt.read_text());assert r['rank']==rank;total_windows+=r['windows'];manifest['rank_receipts'].append({'rank':rank,'sha256':sha(receipt)})
-  for a in r['artifacts']:
-   path=base/a['path'];assert not Path(a['path']).is_absolute() and '..' not in Path(a['path']).parts and path.is_relative_to(base) and path.stat().st_size==a['bytes'] and sha(path)==a['sha256']
+  def verify(a):
+   path=base/a['path'];assert not Path(a['path']).is_absolute() and '..' not in Path(a['path']).parts and Path(a['path']).parts[0]==f'rank-{rank:03d}' and path.is_relative_to(base) and path.stat().st_size==a['bytes'] and sha(path)==a['sha256']
    if path.suffix=='.mp4':
     frames=int(video_metadata(str(path)).nb_frames);assert frames>0;label=int(path.parent.name);assert 0<=label<5383
-    manifest['clips'].append(dict(a,frames=frames,class_id=label))
+    return dict(a,frames=frames,class_id=label)
+  with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+   for checked in pool.map(verify,r['artifacts']):
+    if checked is not None:manifest['clips'].append(checked)
  assert total_windows==720914 and len({r['path'] for r in manifest['clips']})==len(manifest['clips'])
  manifest.update(total_windows=total_windows,clip_count=len(manifest['clips']),class_counts=dict(sorted(collections.Counter(r['class_id'] for r in manifest['clips']).items())),total_bytes=sum(r['bytes'] for r in manifest['clips']))
  target=base.parent/'closed-training-manifest.json'
