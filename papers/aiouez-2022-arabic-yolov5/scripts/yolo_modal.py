@@ -108,6 +108,7 @@ def label_audit(run_id: str):
 YOLO_IMAGE = (modal.Image.from_dockerfile(HERE.parent / 'Dockerfile.yolo')
               .env({**ENV, 'OMP_NUM_THREADS': '4', 'MKL_NUM_THREADS': '4',
                     'OPENBLAS_NUM_THREADS': '4'})
+              .add_local_dir(HERE.parent / 'patches', '/work/patches')
               .add_local_file(HERE / 'yolo_stage.py', '/work/yolo_stage.py')
               .add_local_file(HERE / 'yolo_train.py', '/work/yolo_train.py')
               .add_local_file(HERE / 'yolo_smoke.py', '/work/yolo_smoke.py')
@@ -138,25 +139,40 @@ def experiment_job(run_id: str, mode: str):
     try:
         sources = output / 'sources'
         sources.mkdir()
-        for source in Path('/work').iterdir():
+        for source in Path('/work').rglob('*'):
             if source.is_file():
-                shutil.copyfile(source, sources / source.name)
+                target = sources / source.relative_to('/work')
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+        for patch in sorted(Path('/work/patches').glob('yolo-*.patch')):
+            subprocess.run(['git', '-C', '/opt/yolov5', 'apply', '--check', str(patch)], check=True)
+            subprocess.run(['git', '-C', '/opt/yolov5', 'apply', str(patch)], check=True)
+        with (output / 'applied-upstream.patch').open('w') as stream:
+            subprocess.run(['git', '-C', '/opt/yolov5', 'diff'], stdout=stream, check=True)
         with (output / 'freeze.txt').open('w') as stream:
             subprocess.run(['python', '-m', 'pip', 'freeze'], stdout=stream, check=True)
         with (output / 'hardware.txt').open('w') as stream:
             subprocess.run(['uname', '-a'], stdout=stream, check=True)
-            if mode == 'preflight':
+            if mode != 'smoke':
                 subprocess.run(['nvidia-smi'], stdout=stream, check=True)
         commands = [['python', '/work/yolo_stage.py', '--manifest-sha256', MANIFEST_SHA, '--preflight']]
         if mode == 'smoke':
             commands.append(['python', '/work/yolo_smoke.py', str(output / 'smoke.json')])
         else:
-            for model in ['s', 'm', 'l']:
+            for model in (['s'] if mode == 'recovery' else ['s', 'm', 'l']):
                 command = ['python', '/work/yolo_train.py', '--model', model, '--data', '/tmp/yolo-data/data.yaml',
                            '--output', str(output / model), '--preflight']
                 commands.append(command)
                 if model == 's':
                     commands.append(command + ['--resume-check'])
+                    if mode == 'recovery':
+                        metrics = str(output / model / 'metrics.json')
+                        reference = str(output / model / 'metrics-before-recovery.json')
+                        commands.append(['python', '-c', 'import pathlib,sys;pathlib.Path(sys.argv[1]).rename(sys.argv[2])', metrics, reference])
+                        commands.append(command + ['--resume'])
+                        commands.append(['python', '-c',
+                            'import json,sys; a=json.load(open(sys.argv[1])); b=json.load(open(sys.argv[2])); keys=["native_test_metrics","common_pycocotools_stats","selected_model_state_sha256"]; assert all(a[k]==b[k] for k in keys); print("Evaluation recovery metrics and checkpoint exact")',
+                            metrics, reference])
         (output / 'commands.json').write_text(json.dumps(commands, indent=2) + '\n')
         with (output / 'console.log').open('w') as stream:
             for command in commands:
@@ -199,13 +215,16 @@ def smoke(run_id: str):
 
 @APP.function(image=YOLO_IMAGE, gpu='A100-80GB', cpu=4, memory=65536, timeout=1800, retries=0,
               volumes={'/datasets': DATA.read_only(), '/cache/huggingface': CACHE, '/outputs': OUTPUT})
-def preflight(run_id: str):
-    return experiment_job(run_id, 'preflight')
+def preflight(run_id: str, recovery_only: bool = False):
+    return experiment_job(run_id, 'recovery' if recovery_only else 'preflight')
 
 
 @APP.local_entrypoint()
 def main(run_id: str = 'data-acquisition-v1', mode: str = 'acquire'):
     functions = {'acquire': acquire, 'prepare': prepare, 'audit': label_audit,
                  'smoke': smoke, 'preflight': preflight}
-    assert mode in functions
-    print(functions[mode].remote(run_id))
+    if mode == 'recovery':
+        print(preflight.remote(run_id, True))
+    else:
+        assert mode in functions
+        print(functions[mode].remote(run_id))
