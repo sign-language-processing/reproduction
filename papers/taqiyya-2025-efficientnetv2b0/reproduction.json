@@ -24,10 +24,11 @@
       "agent_id": "codex-orchestrator",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Read-only independent verification of terminal prediction arrays, unique test indices, probability argmax, exact correct counts, test accuracy and unchanged split hash; review of source-based correction. Did not execute these model experiments. Exact model variant/build and harness version are unavailable in the session.",
+      "scope": "Read-only independent verification of terminal prediction arrays, unique test indices, probability argmax, exact correct counts, test accuracy and unchanged split hash; review of source-based correction. Did not execute these model experiments. Exact model variant/build and harness version are unavailable in the session. On 2026-10-03, rechecked preserved predictions and paired errors and finalized claim-level conclusions; later analysis/reporting only, not new model execution.",
       "evidence": [
         "Session attestation on 2026-10-01 identifies root orchestrator as GPT-6 using Codex; exact model and app versions unavailable. Root independently recomputed EfficientNet and ConvNeXt results and reported PASS, then independently recomputed ResNet 2318/2336 and reported PASS; all test indices and split SHA agreed. Root explicitly confirmed review-only attribution and exclusion from execution agent_ids.",
-        "Session audit 2026-10-01: root independently verified the final MobileNet result 2321/2336 = 0.9935787671232876, unique indices, probability argmax and unchanged split SHA; all four final prediction audits passed."
+        "Session audit 2026-10-01: root independently verified the final MobileNet result 2321/2336 = 0.9935787671232876, unique indices, probability argmax and unchanged split SHA; all four final prediction audits passed.",
+        "2026-10-03 session attestation: GPT-6 using Codex; exact model and harness versions unavailable. Independently hash-verified and recomputed all four retained predictions, paired correctness differences and generated-test counts; compared Table X and adjacent conclusion text. Target/run/artifact/status records preserved."
       ]
     }
   ],
@@ -3588,7 +3589,7 @@
     ]
   },
   "conclusion_assessment": {
-    "summary": "EfficientNetV2B0 remains the observed accuracy winner, but only by one of 2,336 test images. The ordering changes from published EfficientNet > ConvNeXt > ResNet > MobileNet to EfficientNet > MobileNet = ConvNeXt > ResNet. The claim that EfficientNet uses the fewest parameters is false: both Table X and matching reconstructed counts show MobileNet has fewer.",
+    "summary": "Completed four-model training reproduction with mixed conclusions. All models exceed 99% accuracy and EfficientNetV2B0 retains the observed top placement, but its margin over MobileNetV2 and ConvNeXt-Tiny is one image. Exact scores and the remaining ranking are not reproduced. The claim that EfficientNet has the fewest parameters is contradicted by both Table X and the matching model counts.",
     "evidence": [
       "Paper Table X and adjacent discussion, PDF page 6: published accuracies EfficientNet 0.9957, ConvNeXt 0.9940, ResNet 0.9932, MobileNet 0.9906; prose asserts highest accuracy and fewest parameters.",
       "Four corrected retained full runs share the same test split: EfficientNet 2,322/2,336 = 99.4007%; MobileNet and ConvNeXt each 2,321/2,336 = 99.3579%; ResNet 2,318/2,336 = 99.2295%. The top margin is one image, 0.04281 percentage points.",
@@ -3600,6 +3601,104 @@
       "Augmentation precedes splitting under the paper recipe, allowing a generated NULL image and its source across splits; the benchmark result does not establish independent-source or signer generalization.",
       "The augmentation-benefit and hyperparameter-optimality claims require omitted ablations and were not tested by the four Table X target runs. Parameter counts do not themselves measure inference speed."
     ],
-    "assessed_at_utc": "2026-10-02T06:52:00+00:00"
+    "assessed_at_utc": "2026-10-03T19:10:37.464934+00:00",
+    "claim_verdicts": [
+      {
+        "claim": "High ASL benchmark accuracy",
+        "verdict": "reproduced_under_declared_reconstruction",
+        "basis": "All four independently trained models achieve 99.23\u201399.40% on the common test split."
+      },
+      {
+        "claim": "EfficientNet is the most accurate of the four models",
+        "verdict": "observed_top_placement_reproduced_robust_superiority_not_established",
+        "basis": "2322 correct versus 2321/2321/2318; one seed and a one-image lead over the nearest models do not establish a stable advantage."
+      },
+      {
+        "claim": "Complete Table X ordering and exact accuracies",
+        "verdict": "not_reproduced",
+        "basis": "EfficientNet > MobileNet = ConvNeXt > ResNet replaces EfficientNet > ConvNeXt > ResNet > MobileNet; all exact accuracies differ."
+      },
+      {
+        "claim": "EfficientNet has the fewest parameters",
+        "verdict": "contradicted",
+        "basis": "MobileNet has2592859 parameters versus EfficientNet6254187. All four Table X parameter counts match our models."
+      },
+      {
+        "claim": "Augmentation benefit, optimal hyperparameters, inference speed or signer generalization",
+        "verdict": "not_assessed_by_assigned_experiments",
+        "basis": "Requires ablations, timing or an independent-source/signer protocol outside the four Table X runs."
+      }
+    ],
+    "retained_prediction_audit": {
+      "date": "2026-10-03",
+      "models": {
+        "efficientnetv2b0": {
+          "correct": 2322,
+          "test_count": 2336,
+          "accuracy_percent": 99.40068493150685,
+          "parameters": 6254187,
+          "epochs": 16,
+          "original_examples": 2289,
+          "original_correct": 2275,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "d8d95296053ea21a5da33e94bb075185bf27e4e013e4b683774df425b4c49a43"
+        },
+        "mobilenetv2": {
+          "correct": 2321,
+          "test_count": 2336,
+          "accuracy_percent": 99.35787671232876,
+          "parameters": 2592859,
+          "epochs": 32,
+          "original_examples": 2289,
+          "original_correct": 2274,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "0f0534a99cba49f6a7df726733ea3729ead1909370fb91b7b37da5147aa5d472",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 7,
+            "comparator_only_correct": 6,
+            "both_wrong": 8
+          }
+        },
+        "resnet50v2": {
+          "correct": 2318,
+          "test_count": 2336,
+          "accuracy_percent": 99.22945205479452,
+          "parameters": 24096283,
+          "epochs": 18,
+          "original_examples": 2289,
+          "original_correct": 2271,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "f3101e1fbe5f6838f141e8daa07fa98603e9d9ce33a3702855567c840939ae28",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 11,
+            "comparator_only_correct": 7,
+            "both_wrong": 7
+          }
+        },
+        "convnexttiny": {
+          "correct": 2321,
+          "test_count": 2336,
+          "accuracy_percent": 99.35787671232876,
+          "parameters": 28023931,
+          "epochs": 13,
+          "original_examples": 2289,
+          "original_correct": 2274,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "2b1990d2f0a3309dbb9e1910dbde6b53f6a5bf95261dab57edaa99974120a829",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 6,
+            "comparator_only_correct": 5,
+            "both_wrong": 9
+          }
+        }
+      },
+      "method": "Hash-verify each retained predictions.npz against reproduction.json artifacts; assert2336 unique matching test indices and identical truths, probability argmax and correct-count agreement; count paired correctness disagreements. Generated examples have index>=22801 in the pinned train.py. This is local analysis of existing outputs, not new model execution.",
+      "interpretation": "The nearest-model one-image gaps arise from 7-versus-6 and6-versus-5 discordant correct predictions. All47 generated test examples are correct for every model, so their inclusion does not change the observed ranking. Excluding generated test samples would not remove possible cross-split source relationships created before splitting."
+    },
+    "completion_decision": "No additional model execution is required to close the assigned four Table X runs. Report the mixed conclusion; new seeds or ablations would answer additional questions, not fill a missing target run."
   }
 }
