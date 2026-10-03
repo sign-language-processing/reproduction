@@ -4,7 +4,7 @@
 **Numerical agreement:** `does_not_agree`
 **Preference level:** 2
 
-**Claim-level assessment (2026-10-02):** The run corroborates Table 5’s broad finding that this attempted How2Sign transfer performs much worse than the PHOENIX configuration: test BLEU-4 is 3.24 versus 18.49, while How2Sign auxiliary transcription WER remains 98.74. Table 1’s failure to recover the cited Camgoz recognition result also persists: PHOENIX test WER is 54.00 versus the original recognition-selected 24.49. These conclusions survive the differences from Cabot’s exact scores.
+**Claim-level assessment (reviewed 2026-10-03):** The run corroborates Table 5’s broad finding that this attempted How2Sign transfer performs much worse than the PHOENIX configuration: test BLEU-4 is 3.24 versus 18.49, while How2Sign auxiliary transcription WER remains 98.74. Table 1’s failure to recover the cited Camgoz recognition result also persists: PHOENIX test WER is 54.00 versus the original recognition-selected 24.49. These conclusions survive the differences from Cabot’s exact scores.
 
 This is evidence about the evaluated configurations. How2Sign WER measures English transcription while PHOENIX WER measures glosses; languages, features and configurations also differ. Domain/vocabulary explanations and the forecast that longer training would close the gap (page 7) remain hypotheses. The claim that three layers/four heads are optimal (Section 5.2, Tables 2–4) was not tested against alternative architectures. One seed and the disclosed data-release assumption limit generalization; no new numerical tolerance is introduced. The GPT-6/Codex recovery-helper agent reviewed these claims and subsequently updated this narrative on 2026-10-02, without additional experiment execution.
 
@@ -84,6 +84,21 @@ All scores are percentages. Differences are reproduced minus published in percen
 | How2Sign | test | BLEU4 | 2.21 | 3.24 | +1.03 |
 
 The PHOENIX run selected checkpoint step 2,600 using development BLEU, then selected recognition beam 10 and translation beam 2 / length penalty 2 on development. Test settings were not selected using test scores. Full precision is preserved in [the raw metric artifact](artifacts/phoenix-full-raw-metrics.json), with native result-object and checkpoint hashes in `reproduction.json`. The numerical label records observed disagreement under exact two-decimal comparison; it is not a scientific success/failure judgment. The How2Sign run completed 13 epochs / 23,465 optimizer steps and selected checkpoint step 22,000 using development BLEU. Its complete 70-candidate development grid selected translation beam 3 / alpha 2; recognition beam 10 was fixed by the declared recipe. The same settings were applied once to all 2,328 test samples. Development WER comes from the native recognition-beam-10 result, while BLEU comes from the independently selected translation result, exactly as the author evaluator combines them. The [independent audit](artifacts/how2sign-final-independent-grid-audit.json) verified all 70 candidates in native order and the 1,713/2,328 development/test counts. Full precision is retained in [the How2Sign raw metrics](artifacts/how2sign-full-raw-metrics.json).
+
+## Ranking verification (2026-10-03)
+
+The expected ordering is preserved; `does_not_agree` records exact numerical differences, not a ranking reversal. Rechecking Tables 1–5 against the retained metrics gives:
+
+| Comparison | Published test values | Our test values | Conclusion |
+| --- | --- | --- | --- |
+| Selected How2Sign vs strongest other reported architecture, BLEU-4 | 2.21 vs 1.89 | 3.24 vs published 1.89 | Selected run remains above the reported alternative |
+| Selected How2Sign vs cited Duarte baseline, BLEU-4 | 2.21 vs 1.74 | 3.24 vs published 1.74 | Reported-baseline advantage preserved |
+| PHOENIX vs How2Sign, BLEU-4 | 19.79 vs 2.21 | 18.49 vs 3.24 | Cross-dataset ordering preserved; both configurations rerun |
+| PHOENIX vs cited Camgoz recognition-selected system, WER | 48.06 vs 24.49 | 54.00 vs published 24.49 | Recognition gap persists; lower is better |
+
+This finding is not restricted to BLEU-4. Against the other How2Sign configurations in Tables 2–4, our dev/test BLEU-1 (19.65/19.09) exceeds their maxima (15.95/15.68), our BLEU-4 (3.40/3.24) exceeds their maxima (1.95/1.89), and our WER (98.60/98.74) is below their minima (99.18/99.33). The cited Duarte test BLEU-1 of 17.08 is also below our 19.09. PHOENIX remains better than How2Sign in every Table 5 metric on both splits, and remains worse than both cited Camgoz rows in every Table 1 metric on both splits.
+
+Only the two Table 5 configurations were independently trained here. The architecture alternatives and external systems above are **published comparators**, not additional reproduction runs. Thus the selected configuration preserves the paper's reported comparative advantage, but a controlled architecture ranking or an optimality claim remains untested. Cross-dataset WER has different target types, so its ordering is descriptive. This review changes no scores, execution evidence, scope, or numerical tolerance. The master GPT-6/Codex agent performed this later interpretation review without executing another experiment.
 
 ## Repeat commands
 
