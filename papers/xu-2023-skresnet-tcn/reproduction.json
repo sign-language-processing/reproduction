@@ -262,19 +262,11 @@
     }
   ],
   "status": {
-    "pipeline": "insufficient_information",
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "No comparable values produced; missing architecture defines requested parameter, computation, and recognition results.",
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "All three own-row quantities were measured for the authorized approximate scope. They differ from the printed Table4 values at its reported precision; raw differences are preserved. Parameter closeness is design calibration, operations use a disclosed one-FMA convention, and primary accuracy uses the preregistered reconstructed split/validation selection. Eleven baseline cells remain unproduced; their published numbers are comparison context, not independently rerun baselines.",
     "preference_level": 3,
-    "blocker": {
-      "reason_code": "protocol_ambiguous",
-      "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target.",
-      "target_ids": [
-        "table4-ours-parameters",
-        "table4-ours-flops",
-        "table4-ours-accuracy"
-      ]
-    }
+    "blocker": null
   },
   "datasets": [
     {
@@ -455,7 +447,19 @@
       "recipe": "timm1.0.22 grouped skresnext50_32x4d with stage depths[1,2,2,1]; random initialization, Mish, max representation pooling; pinned cited TCN blocks width224/kernel3/dilations1,2,5/dropout0.2; Ranger0.3.0 lr1e-4;1,000 optimizer updates/effectivebatch128/microbatch4/seed42; existing32-frame224px preprocessing and1,920/640/640split.",
       "checkpoint_rule": "Earliest maximum validation accuracy among the20scheduled evaluations every50updates; primary augmented test seed314159 only after training, secondary deterministic evaluation separately.",
       "comparability": "Explicitly authorized approximate reconstruction fixed before accuracy. New own-row values assess the requested approximate scope, not an exact author implementation. Parameter closeness is design calibration; operation counts use1FMA convention with unsupportedoperators disclosed. Same held-out video accuracy metric, reconstructed class-balanced split; shared signers across partitions prevent signer-independent claims.",
-      "paper_evidence": "PaperSections3\u20134;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details."
+      "paper_evidence": "PaperSections3\u20134;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details.",
+      "result": {
+        "run_id": "paper-sized-full-seed42-001",
+        "artifact_ids": [
+          "paper-sized-full-metrics-json"
+        ],
+        "accuracy_percent": 81.875,
+        "correct": 524,
+        "count": 640,
+        "selected_step": 1000,
+        "parameters": 12222880,
+        "counted_flops_one_fma": 68347287552
+      }
     }
   ],
   "targets": [
@@ -826,28 +830,16 @@
         "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
       ],
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
-        },
+        "status": "produced",
+        "reproduced_value": 12.22288,
+        "difference": -0.11711999999999989,
         "run_ids": [
-          "data-preflight-004",
-          "conditional-full-seed42-001"
+          "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
-          "data-audit-freeze",
-          "data-audit-audit",
-          "data-audit-execution",
-          "conditional-full-metrics-json"
+          "paper-sized-full-metrics-json"
         ],
-        "gate_ids": [
-          "architecture"
-        ],
-        "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
-          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
-        ]
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
@@ -866,28 +858,16 @@
         "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
       ],
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
-        },
+        "status": "produced",
+        "reproduced_value": 68.347287552,
+        "difference": 5.847287551999997,
         "run_ids": [
-          "data-preflight-004",
-          "conditional-full-seed42-001"
+          "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
-          "data-audit-freeze",
-          "data-audit-audit",
-          "data-audit-execution",
-          "conditional-full-metrics-json"
+          "paper-sized-full-metrics-json"
         ],
-        "gate_ids": [
-          "architecture"
-        ],
-        "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
-          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
-        ]
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
@@ -906,28 +886,16 @@
         "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
       ],
       "result": {
-        "status": "not_produced",
-        "reason": {
-          "code": "protocol_ambiguous",
-          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
-        },
+        "status": "produced",
+        "reproduced_value": 81.875,
+        "difference": -18.125,
         "run_ids": [
-          "data-preflight-004",
-          "conditional-full-seed42-001"
+          "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
-          "data-audit-freeze",
-          "data-audit-audit",
-          "data-audit-execution",
-          "conditional-full-metrics-json"
+          "paper-sized-full-metrics-json"
         ],
-        "gate_ids": [
-          "architecture"
-        ],
-        "evidence": [
-          "Table4 and Sections3\u20134;source-search audit.",
-          "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
-        ]
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     }
@@ -1419,7 +1387,9 @@
       },
       "native_exit_code": null,
       "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
-      "artifact_ids": []
+      "artifact_ids": [
+        "paper-sized-setup-audit"
+      ]
     },
     {
       "run_id": "paper-sized-audit-002",
@@ -1539,7 +1509,9 @@
       },
       "native_exit_code": null,
       "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
-      "artifact_ids": []
+      "artifact_ids": [
+        "paper-sized-setup-audit"
+      ]
     },
     {
       "run_id": "paper-sized-preflight-002",
@@ -1620,7 +1592,9 @@
         "paper-sized-preflight002-paper_sized_modal-py",
         "paper-sized-preflight002-predictions-npz",
         "paper-sized-preflight002-runtime-segment-1-json"
-      ]
+      ],
+      "source_snapshot_commit": "a3bf661833a109b791a29c657f993055d7a25bf4",
+      "source_worktree_state": "Executed previously uncommitted files captured by source hashes and raw Modal snapshots; this later commit preserves exactly those executed bytes."
     },
     {
       "run_id": "paper-sized-full-seed42-001",
@@ -1656,23 +1630,80 @@
         "deadline_utc": "2026-10-03T23:18:46.568692+00:00"
       },
       "started_at_utc": "2026-10-03T18:18:46.572982+00:00",
-      "finished_at_utc": null,
-      "exit_code": null,
-      "terminal": null,
+      "finished_at_utc": "2026-10-03T19:36:38.811529+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 1,000 declared optimizer updates,20validation passes and both640-video test paths completed. Earliest maximum-validation checkpoint selected. Raw artifact hashes and primary prediction counts independently verified. This is the authorized approximate reconstruction, not recovered author code.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
       "planned_scope": "1000optimizersteps on1920trainvideos,20validationpasses on640videos, earliestmaxvalidation checkpoint, fixedseed314159 augmentedprimary andseparate deterministic test on640videos. Selected architecture12.222880Mparams before newaccuracy. No accuracy-driven changes.",
       "source_hashes": {
         "source_sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
         "wrapper_sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3"
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "paper-sized-full-best-pt",
+        "paper-sized-full-claim-json",
+        "paper-sized-full-conditional-py",
+        "paper-sized-full-console-segment-1-log",
+        "paper-sized-full-execution-segment-1-json",
+        "paper-sized-full-execution-json",
+        "paper-sized-full-freeze-txt",
+        "paper-sized-full-gpu-txt",
+        "paper-sized-full-last-pt",
+        "paper-sized-full-manifest-json",
+        "paper-sized-full-metrics-json",
+        "paper-sized-full-model-txt",
+        "paper-sized-full-paper_sized_modal-py",
+        "paper-sized-full-predictions-npz",
+        "paper-sized-full-runtime-segment-1-json",
+        "paper-sized-full-evidence-json",
+        "paper-sized-full-independent-verification-json"
+      ],
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
         "app_id": "ap-w8cKY5RzlyHvHHSKx7ODbY",
         "function_call_id": "fc-01M41FTN7PF1YX24MECYTZY6ME",
         "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-w8cKY5RzlyHvHHSKx7ODbY"
-      }
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-w8cKY5RzlyHvHHSKx7ODbY",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
+      },
+      "source_commit": "a3bf661833a109b791a29c657f993055d7a25bf4",
+      "source_worktree_state": "Training sources committed before launch; later ledger/report updates do not alter executed sources.",
+      "execution_segments": [
+        {
+          "number": 1,
+          "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
+          "started_at_utc": "2026-10-03T18:18:46.573521+00:00",
+          "checkpoint_sha256": null
+        }
+      ],
+      "measurements": {
+        "parameters": 12222880,
+        "flops_one_fused_multiply_add": 68347287552,
+        "steps": 1000,
+        "accuracy": 0.81875,
+        "deterministic_test_accuracy": 0.8140625,
+        "test_count": 640,
+        "best_validation_accuracy": 0.815625,
+        "wall_seconds": 4661.867804050446,
+        "training_seconds": 4622.5456602573395,
+        "mean_warm_microbatch_seconds": 0.12828004272651916,
+        "peak_gpu_bytes": 13178870784,
+        "checkpoint_reload_verified": true,
+        "correct": 524,
+        "selected_step": 1000,
+        "overall_wrapper_seconds": 4672.238547,
+        "gpu_hours": 1.2978440408333334,
+        "estimated_cost_chf": 4.542454142916667,
+        "cost_basis": "Estimated from the prospective CHF7 / two-GPU-hour forecast; not a billing statement. Overall wrapper interval includes staging and evaluation, excludes image startup and final hashing/commit after execution-record timestamp. All-run aggregate is below the declared ceiling even with the conservative cancelled-app interval."
+      },
+      "evidence_note": "The wrapper evidence.json hashes artifacts after native console closure. Any earlier embedded console hash inside metrics.files is only a pre-final-print snapshot; the closed wrapper hash is authoritative."
     }
   ],
   "artifacts": [
@@ -2059,6 +2090,131 @@
       "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/runtime-segment-1.json",
       "sha256": "04dea6376d12988b71addeaf501fa7e3903e2081534e30f5495fcac3c3b3dc99",
       "bytes": 266
+    },
+    {
+      "artifact_id": "paper-sized-setup-audit",
+      "kind": "execution_evidence",
+      "uri": "artifacts/paper-sized-setup-audit.json",
+      "sha256": "46e6614e2254bf681fa55d272fdbbb73f01a86de6ac6737dcf62a1f8af28f9ca"
+    },
+    {
+      "artifact_id": "paper-sized-full-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/best.pt",
+      "sha256": "1427e02f542650f74483a5013c5c7feb9e192d9a76efbac4996b43e6ad8de2bc",
+      "bytes": 57623725
+    },
+    {
+      "artifact_id": "paper-sized-full-claim-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/claim.json",
+      "sha256": "97e49a21cb7ac93b369895c546a7cc3a34c8a46b33dd97a4cc096898574e7a45",
+      "bytes": 551
+    },
+    {
+      "artifact_id": "paper-sized-full-conditional-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/conditional.py",
+      "sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+      "bytes": 17337
+    },
+    {
+      "artifact_id": "paper-sized-full-console-segment-1-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/console-segment-1.log",
+      "sha256": "53b002994128fa670c37d95d94ac413892fe55cba4b60e806993978daeb0c63f",
+      "bytes": 12428
+    },
+    {
+      "artifact_id": "paper-sized-full-execution-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/execution-segment-1.json",
+      "sha256": "b178f0bf926a3a4fc9cba609023ca19ca94bd9d1bd42ef006be2a7db7026ca66",
+      "bytes": 786
+    },
+    {
+      "artifact_id": "paper-sized-full-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/execution.json",
+      "sha256": "b178f0bf926a3a4fc9cba609023ca19ca94bd9d1bd42ef006be2a7db7026ca66",
+      "bytes": 786
+    },
+    {
+      "artifact_id": "paper-sized-full-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5",
+      "bytes": 6969
+    },
+    {
+      "artifact_id": "paper-sized-full-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/gpu.txt",
+      "sha256": "819115dbf991433731e2b0c071b4716a56cc4a6479af7b442db9159db96ba307",
+      "bytes": 1689
+    },
+    {
+      "artifact_id": "paper-sized-full-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/last.pt",
+      "sha256": "7e05e369783b2b2fb6261a03f3468bbc46e4e04f79f7dea86d0d24c9038dbb5b",
+      "bytes": 253521005
+    },
+    {
+      "artifact_id": "paper-sized-full-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92",
+      "bytes": 2263641
+    },
+    {
+      "artifact_id": "paper-sized-full-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/metrics.json",
+      "sha256": "762b69679509fa0687f372f57603d8fb9c56a9260d178aa1198c2bd413d62e8d",
+      "bytes": 3728
+    },
+    {
+      "artifact_id": "paper-sized-full-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/model.txt",
+      "sha256": "562e1c59b93f549fa9d1c4c97f5e96657739e6c26abe456748dbdd9b18e5582b",
+      "bytes": 15484
+    },
+    {
+      "artifact_id": "paper-sized-full-paper_sized_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/paper_sized_modal.py",
+      "sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3",
+      "bytes": 6545
+    },
+    {
+      "artifact_id": "paper-sized-full-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/predictions.npz",
+      "sha256": "cc4f8d7fa8162298e0949d842d12be32505bcd70885f5a6237bb7394d1f12900",
+      "bytes": 2229
+    },
+    {
+      "artifact_id": "paper-sized-full-runtime-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/runtime-segment-1.json",
+      "sha256": "123d4f2b64daa63e88e2e4a525ffc57268ad0c9e87b28f67def0b5ddd5521489",
+      "bytes": 266
+    },
+    {
+      "artifact_id": "paper-sized-full-evidence-json",
+      "kind": "closed_manifest",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/evidence.json",
+      "sha256": "4f02072083f3bc9f805581e3ab49ca3a16d7fb0420fbe0135f5cfd6f3bb1e98d",
+      "bytes": 1913
+    },
+    {
+      "artifact_id": "paper-sized-full-independent-verification-json",
+      "kind": "independent_verification",
+      "uri": "artifacts/paper-sized-terminal-verification.json",
+      "sha256": "206f1a29dad4ef1c6ce2cfb210b1eba3c1c5bb4446a2952898b053ab32f3bf85",
+      "bytes": 811
     }
   ],
   "gates": [
@@ -2073,20 +2229,21 @@
       ],
       "type": "protocol",
       "reason": "Architecture and evaluation protocol missing.",
-      "required_action": "No execution decision is pending: a documented conditional reconstruction is authorized. An exact author architecture/input/configuration would still be required to establish target comparability.",
-      "resolution": "Execution choices are resolved by the declared conditional recipe. The exact author architecture remains unknown and prevents comparable target attribution; this is a scientific limitation, not a pending execution decision."
+      "required_action": "None for this completed authorized approximate reconstruction.",
+      "resolution": "Known paper details plus explicit parameter-sized dimensions were fixed before training. Exact historical architecture remains unknown; the completed result answers the authorized approximate question."
     },
     {
       "gate_id": "comparison-provenance",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings.",
-      "required_action": "Identify the sources or experiment configurations for the comparison cells in Table4; they remain in scope until verified as copied.",
+      "required_action": "No human action is needed to finalize this attempt. The unresolved provenance is retained as a scientific limitation.",
       "evidence": [
         "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
         "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied.",
         "Primary (2+1)D-SLR publisher abstract https://link.springer.com/article/10.1007/s00521-021-06467-9 reports LSA64 accuracy 98.7%, whereas Xu Table 4 prints 98.2%; this discrepancy prevents treating that cell as verified copied. Root agent supplied the lead; reproduction agent independently read the primary abstract on 2026-10-01."
-      ]
+      ],
+      "resolution": "Comparison cells remain explicitly unproduced and are used only as paper-reported contextual values; no baseline rerun or copied-score exemption is claimed. Their exact provenance does not prevent a conclusion about the completed proposed-method reconstruction."
     }
   ],
   "source_search": [
@@ -2137,16 +2294,23 @@
     "reason": "No author contact authorized."
   },
   "conclusion_assessment": {
-    "summary": "The central claim of simultaneously achieving 100% accuracy with fewer parameters and operations is not established by this attempt. The documented reconstruction produced 55.15625% accuracy with 28.53M parameters and 143.947G counted operations; it does not recover the claimed 100%, 12.34M and 62.50G.",
+    "summary": "The parameter-sized reconstruction reached 81.875% accuracy (524/640), versus the paper\u2019s 100% and Table 4 baseline accuracies of 98.20\u2013100%. This is 26.71875 percentage points above the earlier larger reconstruction, but it does not support the paper\u2019s claimed joint accuracy and efficiency advantage.",
+    "assessed_at_utc": "2026-10-03T19:38:02.357275+00:00",
+    "human_execution_blocker": null,
+    "scope": "Explicitly authorized approximate reconstruction using all available paper details and documented missing dimensions. Exact historical attempt remains archived.",
+    "capacity_and_operations": "Measured 12.222880M parameters (0.949% below 12.34M) and 68.347287552G counted operations (9.356% above 62.50G). Both are below paper-reported baseline totals, but parameter scale was preselected and cross-paper operation conventions remain unknown.",
     "evidence": [
-      "Paper Table 4 and section 4.3 claim a joint accuracy/efficiency advantage; section 5 repeats that conclusion.",
-      "The completed conditional-full-seed42-001 run and existing raw artifacts preserve measured accuracy, architecture counts and fixed pre-score choices."
+      "paper-sized-full-seed42-001",
+      "paper-sized-full-metrics-json",
+      "paper-sized-full-independent-verification-json",
+      "PaperTable4 and Sections4.3,5"
     ],
     "limits": [
-      "The paper does not identify the exact executable architecture. Our larger declared reconstruction cannot serve as a controlled refutation of the unavailable author model.",
-      "A different architecture chosen to hit the published counts would be a new assumption, not evidence resolving this attempt. No new experiment is required to conclude that the current evidence does not establish the claimed advantage."
-    ],
-    "assessed_at_utc": "2026-10-02T06:52:37.540428+00:00"
+      "Missing author architecture, initialization, image size, split and meaning of iterations are resolved here by explicit assumptions, not recovered facts. A mismatch in this reconstructed recipe does not refute every possible unpublished author configuration.",
+      "The paper-reported comparison models were not independently rerun. The (2+1)D-SLR source abstract says98.7% while Xu Table4 says98.2%; this unresolved citation discrepancy does not alter a result below both values.",
+      "Parameter closeness was used to select the architecture before training and is not an independent numerical reproduction claim. Unsupported FLOP operators and the one-FMA convention are preserved.",
+      "One seed and one fixed640-video test partition; no signer-independent generalization claim. Secondary test accuracy is native output without saved per-example secondary predictions."
+    ]
   },
   "assessment_history": [
     {
@@ -2677,10 +2841,13 @@
     "assessment_scope": {
       "decision_before_full_accuracy": true,
       "detail": "The requested approximate reconstruction is the active scientific scope: assess whether a model obeying known paper modules, optimization, dataset proportions and approximate12.34Mcapacity supports the claimed recognition/efficiency tradeoff. Preserve original exact-author targets in assessment_history; any new own-row measurements are produced for this explicitly revised scope, not recovered author code. Parameter agreement is calibration, operations use disclosed1FMAconvention, and baselines remain paper-reported comparisons rather than rerunexperiments. No accuracy-driven changes."
+    },
+    "completion": {
+      "full_run_id": "paper-sized-full-seed42-001",
+      "full_wrapper_gpu_hours": 1.2978440408333334,
+      "additional_gpu_hours_conservative": 1.3344047830555557,
+      "cost_note": "Actual billing unavailable; full-run estimate uses CHF3.5/hour. The29-second cancelled app interval is conservatively counted despite no observed native GPU execution. CPU audit10.924349seconds; all totals below additional6GPUh/CHF24."
     }
   },
-  "execution_state": {
-    "state": "in_progress",
-    "detail": "Architecture reconstruction authorized; CPU size audit pending. Historical run remains terminal."
-  }
+  "execution_state": "complete"
 }

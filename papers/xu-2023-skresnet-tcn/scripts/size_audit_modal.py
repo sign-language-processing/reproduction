@@ -10,9 +10,14 @@ gpu_image = (modal.Image.from_registry("ghcr.io/sign-language-processing/reprodu
 app = modal.App("2be3c68e-skresnet-size-audit")
 image = gpu_image.add_local_file(Path(__file__).with_name("size_audit.py"), "/opt/size_audit.py")
 @app.function(image=image,cpu=4,memory=16384,timeout=900,retries=0,volumes={"/cache/huggingface":cache,"/outputs":outputs})
-def audit():
+def audit(run_id: str):
     import subprocess,datetime,json,hashlib
-    out=Path("/outputs/paper-sized-audit-002")
+    assert run_id.startswith("paper-sized-audit-") and "/" not in run_id
+    out=Path("/outputs")/run_id
+    if (out/"execution.json").exists():
+        previous=json.loads((out/"execution.json").read_text())
+        assert previous["exit_code"] == 0 and previous["source_sha256"] == hashlib.sha256(Path("/opt/size_audit.py").read_bytes()).hexdigest()
+        return previous
     out.mkdir(exist_ok=False)
     start=datetime.datetime.now(datetime.timezone.utc).isoformat()
     command=["python","/opt/size_audit.py",str(out/"counts.json")]
@@ -24,6 +29,6 @@ def audit():
     print(json.dumps(record))
     return record
 @app.local_entrypoint()
-def main():
-    result=audit.remote()
+def main(run_id: str="paper-sized-audit-002"):
+    result=audit.remote(run_id)
     if result["exit_code"]: raise SystemExit(result["exit_code"])

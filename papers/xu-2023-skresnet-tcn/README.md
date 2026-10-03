@@ -1,14 +1,16 @@
 # Xu et al. (2023): Improved SKResNet-TCN
 
-**Current work:** A parameter-sized reconstruction is in progress; final scientific assessment is pending. No human execution decision is required.
+**Pipeline status:** `partial` — the proposed method's three quantities were produced for the authorized approximate scope; eleven baseline cells remain unproduced.
 
-**Historical exact-target pipeline status:** `insufficient_information`
+**Numerical agreement:** `does_not_agree`
 
-**Historical exact-target numerical agreement:** `not_assessed`
+**Current state:** The requested parameter-sized attempt is complete. No human execution decision is pending.
 
 **Preference level:** 3
 
-The exact-target attempt has a structural specification limit: `insufficient_information`, with numerical agreement `not_assessed`. The raw LSA64 data is available, but the paper does not specify a network whose parameter count, FLOPs, and recognition score can be faithfully measured. A separately declared conditional reconstruction completed all 1,000 optimizer steps and evaluation; it cannot identify the missing author architecture.
+**Conclusion:** The paper-sized reconstruction does not support the claimed joint accuracy/efficiency advantage: it reached 81.87500% accuracy, below the paper's 100% and every Table 4 baseline accuracy (98.20–100%). Matching approximate capacity did not recover the recognition conclusion.
+
+The completed model has **12.222880M parameters**, within 0.95% of the paper's 12.34M, and **68.3473G counted operations** versus 62.50G. Those values describe the documented reconstructed model, not recovered author code. The earlier 28.53M/55.15625% attempt is preserved below and in the assessment history. Repeat the current recipe using the commands in the parameter-sized reconstruction section.
 
 Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. [Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network](https://doi.org/10.1155/2023/9503961). *Journal of Sensors*, 2023, article 9503961.
 
@@ -16,7 +18,7 @@ The assignment is a direct user request using the current tracker export. Its or
 
 ## Target scope
 
-Table 4, p. 8 compares the proposed system with cited earlier systems. All fourteen numeric cells remain in the ledger. The proposed method’s three cells cannot be attributed to an identifiable author architecture. The comparison cells have a provenance gate: citations alone do not establish whether each number was copied or remeasured, so none is silently exempted from scope. Earlier SPOTER Table 5 contains the same I3D 98.91 and MEMP 99.06 accuracy values, but the origins of the other parameter/FLOP/accuracy cells are not fully established.
+Table 4, p. 8 compares the proposed system with cited earlier systems. All fourteen numeric cells remain in the ledger. The proposed method’s three cells now carry measured values for the explicitly authorized approximate reconstruction; their original exact-author assessment remains archived. The comparison cells retain a provenance limitation: citations alone do not establish whether each number was copied or remeasured, so none is silently exempted from scope. Earlier SPOTER Table 5 contains the same I3D 98.91 and MEMP 99.06 accuracy values, but the origins of the other parameter/FLOP/accuracy cells are not fully established.
 
 | Table 4 system | Parameters (millions) | Computation (GFLOPs) | LSA64 accuracy (%) | Reproduced |
 |---|---:|---:|---:|---|
@@ -24,7 +26,7 @@ Table 4, p. 8 compares the proposed system with cited earlier systems. All fourt
 | (2+1)D-SLR | 33.30 | Not reported | 98.20 | None produced; provenance unresolved |
 | I3D + GLR + CSA | 13.40 | 111.79 | 100.00 | None produced; provenance unresolved |
 | MEMP | 12.83 | 112.34 | 99.06 | None produced; provenance unresolved |
-| Improved SKResNet-TCN (proposed) | 12.34 | 62.50 | 100.00 | None produced; structural specification unresolved |
+| Improved SKResNet-TCN (proposed) | 12.34 | 62.50 | 100.00 | Approximate reconstruction: 12.222880M / 68.3473G / 81.87500% |
 
 ## What was resolved
 
@@ -64,7 +66,7 @@ Three cheap execution failures were preserved: newest PyAV 19 rejects the decode
 
 The retained terminal evidence, timestamps, Modal app/function IDs, exact manifest/counts, dependencies, and hashes are in `reproduction.json`. Setup and the data audit are repeatable. The conditional training entry point below produces evidence for its declared architecture. It does not identify the missing author architecture or silently promote its measurements to exact-paper targets.
 
-## Open question
+## Historical specification limits
 
 Which architecture/configuration and input shape produced Table 4, and which keyframe/split/checkpoint protocol produced its 100% accuracy? An author-released implementation or explicit specification can resolve this. No author was contacted. This question requires evidence rather than an optimizer default; Ranger is already specified.
 
@@ -74,7 +76,7 @@ The [original (2+1)D-SLR abstract](https://link.springer.com/article/10.1007/s00
 
 Comparison-row question: which Table 4 cells were copied from which exact source locations, and which were remeasured with what input shape, split, and checkpoint? Until resolved, these cells are explicitly not produced rather than excluded as verified copied baselines.
 
-## Documented judgment calls and conditional extension
+## Documented judgment calls and original conditional extension
 
 A conditional reconstruction completed without a pending human execution decision. It uses timm 1.0.22's original-SKNet-equivalent `skresnext50_32x4d`, random initialization, 224 × 224 RGB input, Mish, and max spatial pooling. Three cited TCN blocks use width 256, kernel 3, dilations 1/2/5 and dropout 0.2, followed by temporal max pooling and a 64-class classifier. These choices were fixed before scores and were not adjusted to match the reported parameter or FLOP totals.
 
@@ -108,7 +110,7 @@ The original wrapper overwrote its console/runtime files on replay. Retained par
 
 ## Full conditional result
 
-The full run completed with **353/640 = 55.15625% primary test accuracy**. The separate deterministic test was 54.68750%. The paper reports 100%, but these measurements are conditional because the exact author architecture is unavailable; numerical agreement remains `not_assessed` for the target contract. The earliest highest-validation checkpoint was step 1000, selected without inspecting the test scores. All 1,000 logical optimizer steps and 20 retained scheduled validation entries completed, with one provider-triggered checkpoint resume from step 480 and no configuration search. Lost work since that checkpoint was repeated; bitwise cross-container equivalence is not established.
+The full run completed with **353/640 = 55.15625% primary test accuracy**. The separate deterministic test was 54.68750%. The paper reports 100%, but these measurements are conditional because the exact author architecture is unavailable; numerical agreement remains `not_assessed` for that historical exact-target assessment. The earliest highest-validation checkpoint was step 1000, selected without inspecting the test scores. All 1,000 logical optimizer steps and 20 retained scheduled validation entries completed, with one provider-triggered checkpoint resume from step 480 and no configuration search. Lost work since that checkpoint was repeated; bitwise cross-container equivalence is not established.
 
 The reconstructed architecture has 28,530,752 parameters and 143.947 billion counted operations under the disclosed one-FMA convention, versus the paper's 12.34M / 62.50 GFLOPs. Unsupported operations are listed in the raw metrics. These counts describe different, incompletely specified architectures and are not promoted to produced targets.
 
@@ -125,13 +127,13 @@ The paper does not identify the exact executable architecture. Our larger declar
 This assessment uses the existing completed runs; no training, protocol or numerical-agreement criterion was changed.
 
 
-## Parameter-sized reconstruction (full run declared)
+## Parameter-sized reconstruction (completed)
 
 The revised architecture retains the paper's grouped selective-kernel bottlenecks, Mish activation, max representation pooling, 32 frames, Ranger, effective batch 128 and 1,000 optimizer steps. The existing preprocessing, seed-42 class-balanced 60/20/20 split, validation-only checkpoint selection and fixed-seed primary test remain the same as above. Only spatial stage depths and temporal width change: timm 1.0.22 `skresnext50_32x4d` with `[1, 2, 2, 1]` blocks, followed by three cited TCN blocks of width 224, kernel 3 and dilations `[1, 2, 5]`. Their receptive field is 33 frames. Original SK full-input branches and its attention average pooling remain; max pooling applies to the representation, consistent with retaining the paper's attention equation.
 
-An architecture-only CPU audit measured **12,222,880 parameters**, **0.949% below the reported 12.34M**. Spatial features account for 9,617,920 parameters, the temporal module for 2,590,560 and the classifier for 14,400. Selection was fixed before new validation or test scores. The grouped bottleneck SK design was prioritized over a simpler basic-block SK18 alternative; the shorter [1,2,2,1] stage stack preserves more central blocks, and width224 is a conventional multiple of32 within1% of the target. Width232 would match the total more closely (12,343,752), but was not selected merely to fit the last parameter digits. The audit retains all16 depth/width counts for transparency; no accuracy-driven architecture search is permitted. Matching the count by construction is not evidence of recovered author code or an independent reproduction of the efficiency claim.
+An architecture-only CPU audit measured **12,222,880 parameters**, **0.949% below the reported 12.34M**. Spatial features account for 9,617,920 parameters, the temporal module for 2,590,560 and the classifier for 14,400. Selection was fixed before new validation or test scores. The grouped bottleneck SK design was prioritized over a simpler basic-block SK18 alternative; the shorter [1,2,2,1] stage stack preserves more central blocks, and width 224 is a conventional multiple of 32 within 1% of the target. Width 232 would match the total more closely (12,343,752), but was not selected merely to fit the last parameter digits. The audit retains all 16 depth/width counts for transparency; no accuracy-driven architecture search is permitted. Matching the count by construction is not evidence of recovered author code or an independent reproduction of the efficiency claim.
 
-The completed preflight trained seven real effective-batch updates, instantiated a fresh model and Ranger optimizer, verified every restored state tensor exactly, took a real resumed update, and evaluated 64 held-out samples. It measured 13.303GB peak allocated GPU memory, 0.13210 seconds per warm microbatch and **68.3473G counted operations** (9.36% above the paper's 62.50G; unsupported operators retained). The 102.62-second preflight forecasts approximately two GPU-hours for the full run, within a five-hour ceiling. A durable per-run claim ties source hashes and the Modal function call to an immutable deadline. Provider recovery requires an existing checkpoint, permits at most three execution segments and never starts new training from initialization. A process watchdog covers setup, training, collection and final output commit. Logs and execution records are preserved separately for every segment.
+The completed preflight trained seven real effective-batch updates, instantiated a fresh model and Ranger optimizer, verified every restored state tensor exactly, took a real resumed update, and evaluated 64 held-out samples. It measured 13.303 GB peak allocated GPU memory, 0.13210 seconds per warm microbatch and **68.3473G counted operations** (9.36% above the paper's 62.50G; unsupported operators retained). The 102.62-second preflight forecast approximately two GPU-hours for the full run, within a five-hour ceiling. A durable per-run claim ties source hashes and the Modal function call to an immutable deadline. Provider recovery requires an existing checkpoint, permits at most three execution segments and never starts new training from initialization. A process watchdog covers setup, training, collection and final output commit. Logs and execution records are preserved separately for every segment.
 
 The additional ceiling is six GPU-hours / CHF 24 across the revision, separate from the completed earlier attempt. A cancelled 29-second app lifecycle is conservatively counted in this allowance although no native training output exists. The preflight is capped at 30 minutes / CHF 2, and any full run at five hours / CHF 20. Limits are ceilings; actual billing is not yet available. The original five-hour attempt and consumed resume remain closed.
 
@@ -141,4 +143,26 @@ The additional ceiling is six GPU-hours / CHF 24 across the revision, separate f
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/paper_sized_modal.py --mode full --run-id paper-sized-full-seed42-001
 ```
 
-The new implementation/execution/reporting agent is GPT-6 using Codex; exact model and application identifiers were not exposed. The orchestrator independently reviews the source and preflight before full launch. Their scopes are recorded separately in `reproduction.json`. No author was contacted and no video is redistributed.
+The new implementation/execution/reporting agent is GPT-6 using Codex; exact model and application identifiers were not exposed. The orchestrator independently reviewed the source and preflight before full launch. Their scopes are recorded separately in `reproduction.json`. No author was contacted and no video is redistributed.
+
+
+## Final result and conclusion for the parameter-sized model
+
+| Quantity | Paper | This reconstruction | Difference |
+|---|---:|---:|---:|
+| Parameters | 12.34M | 12.222880M | −0.117120M |
+| Counted operations | 62.50G | 68.347287552G | +5.847287552G |
+| Primary test accuracy | 100% | 524/640 = 81.875% | −18.125 percentage points |
+| Deterministic test diagnostic | Not reported | 81.40625% | Not assessed |
+
+All 1,000 updates and 20 validation passes completed. The earliest maximum-validation checkpoint was step 1000 (validation accuracy 81.5625%). Only then were the two test paths evaluated. Primary prediction indices exactly match the 640 unique held-out records; every class contributes ten test videos and none overlaps the training or validation split. Independently recomputed correct counts and accuracy match native output exactly.
+
+The requested capacity adjustment improved accuracy from the earlier 55.15625% to **81.875%**, an increase of **26.71875 percentage points**. It still falls **18.125 points below the paper’s 100%** and below every Table 4 baseline accuracy (98.20–100%). This reconstruction therefore **does not support the claimed joint accuracy and efficiency advantage**.
+
+The compact model meets the requested approximate parameter budget. Its measured counts are below the totals printed for Table 4 baselines, but the parameter budget was selected by construction and operation-count conventions are not known to be identical. Baselines were not rerun. The paper’s (2+1)D-SLR citation discrepancy (98.2% versus 98.7% in the source abstract) remains documented; our recognition result is below both values. No further human action is required to finish this attempt, and no architecture or optimizer choices were changed to seek a better score.
+
+Run `paper-sized-full-seed42-001`, app `ap-w8cKY5RzlyHvHHSKx7ODbY`, call `fc-01M41FTN7PF1YX24MECYTZY6ME` completed from 2026-10-03T18:18:46.572982+00:00 to 2026-10-03T19:36:38.811529+00:00 in one execution segment, with no provider recovery. The overall wrapper interval was 4,672.24 seconds (**1.29784 A100 80GB GPU-hours**), including staging, training and evaluation. Native peak allocation was 13.179 GB; warm microbatches averaged 0.12828 seconds. Estimated full-run cost is **CHF 4.54**, derived from the prospective CHF 7/two-hour forecast. Actual billing is unavailable; startup and final hashing/commit after the execution timestamp are excluded from this interval. The original five-hour deadline and additional six-GPU-hour/CHF 24 ceiling were not reset or exceeded.
+
+All **15 closed artifact payloads (313,477,169 bytes)**, including both checkpoints, were downloaded and independently SHA-256/byte-count verified against the final wrapper manifest. The committed `artifacts/paper-sized-terminal-verification.json` records this audit. Source hashes match the reviewed prelaunch commit, the complete 20-entry validation history selects the reported checkpoint, and the dataset manifest pin matches exactly. The wrapper’s closed-log hash supersedes the earlier console snapshot embedded in native metrics. Secondary accuracy has a native raw metric but no saved per-example predictions, so no independent secondary recomputation is claimed. Large evidence remains at `modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/`.
+
+Setup diagnostics are preserved: an initial count-audit module import failure; a cancelled 29-second app after a failed per-run ledger append; and a local preflight CLI syntax failure fixed before any remote preflight-002 execution. Cancelled-app records use exit-code sentinel `-1` for an unobserved native exit, with explicit native status `null`; they do not invent a process return code. The new GPT-6/Codex agent executed and reported this revision; the root orchestrator independently reviewed the source before launch. Earlier executor attribution remains separate.
