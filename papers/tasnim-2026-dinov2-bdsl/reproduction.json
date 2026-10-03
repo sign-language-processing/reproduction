@@ -14,11 +14,12 @@
       "agent_id": "codex-orchestrator",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Official browser source discovery, dataset acquisition assistance, and pre-run protocol review. Exact model ID and harness version unavailable in the actual session.",
+      "scope": "Official browser source discovery, dataset acquisition assistance, and pre-run protocol review. Exact model ID and harness version unavailable in the actual session. On 2026-10-03, checked Table 5 and recorded the accepted comparative reproduction conclusion; report maintenance only, no new execution.",
       "evidence": [
         "Explicit session attestation: orchestration agent identifies as GPT-6 using Codex, without exact variant/version.",
         "Inspected canonicalMendeleyV6 publicfilelinks inbrowser anddownloadedRecognition_2; resolvedRecognition_1publicS3redirecthttps://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/d5f2b6cd-5567-4c19-94c9-f51ef7add9b1 fromnormalbrowserdownload.",
-        "Pre-run review selected primary test augmentation based on section4/Figure4 and kept deterministic test as diagnostic, before any evaluation scores."
+        "Pre-run review selected primary test augmentation based on section4/Figure4 and kept deterministic test as diagnostic, before any evaluation scores.",
+        "Session attestation 2026-10-03: GPT-6 using Codex; exact model and harness versions unavailable. Verified Table 5 comparator maxima against the preserved full-run scores and recorded the accepted in-scope scientific interpretation without changing target/run/artifact/status records."
       ]
     },
     {
@@ -1375,7 +1376,7 @@
     }
   ],
   "conclusion_assessment": {
-    "summary": "High accuracy and the reported advantage over Table 5 CNN literature are corroborated: reproduced accuracy/F1 99.2177%/99.2168% exceed the strongest reported CNN accuracy 98.10% and F1 98%. Superiority over Swin-B is not corroborated: our accuracy is below its published 99.3%; these comparator models were not rerun.",
+    "summary": "The assigned Table 5 comparative conclusion is reproduced: trained ViT-S-BDSL reaches 99.2177% accuracy and 99.2168% macro F1, exceeding every reported comparator with that metric in Table 5 (best accuracy 98.10%; best F1 98%). This is accepted as a valid reproduction of the in-scope comparative finding. Exact 99.7% values were not recovered.",
     "evidence": [
       "Paper Table 5 and section 5.3, PDF page 14: strongest listed CNN accuracy is ensemble 98.10%; strongest listed CNN F1 is Quantize Modified Xception 98%. Other listed accuracies are 93%, 87%, 91%, 86%, 91%, and other F1 values are 93%, 91%, 92%.",
       "Paper Table 4 and section 5.2, PDF page 14: ViT-B 99.8%, ViT-L 99.5%, Swin-B 99.3%, Swin-S 99.1%; text claims ViT-S superiority over Swin and a favorable accuracy/inference-time trade-off.",
@@ -1383,10 +1384,16 @@
     ],
     "limits": [
       "Literature CNN baselines and the Table 4 transformer/ablation models were not rerun. Comparing against their reported values corroborates the CNN ordering but does not establish a controlled head-to-head result.",
-      "The lower-than-published primary score falls below reported Swin-B but remains above reported Swin-S; it does not independently prove Swin-B is superior under matched execution.",
+      "The separate Table 4 comparison remains uncorroborated for Swin-B; that broader claim is outside the assigned Table 5 reproduction and does not negate its preserved comparative result.",
       "One seed does not establish statistical equivalence, stable ordering or cross-domain generalization. Inference-speed, accuracy/speed trade-off and fine-tuning ablation claims were outside the executed targets.",
       "The deterministic-test diagnostic remains secondary and is not substituted for the primary score to improve the comparison."
     ],
-    "assessed_at_utc": "2026-10-02T06:52:00+00:00"
+    "assessed_at_utc": "2026-10-03T19:04:32.500817+00:00",
+    "scope": "Table 5 comparison with existing BDSL49 methods. Table 4 transformer rankings are a separate, unexecuted comparison and do not determine this assigned conclusion.",
+    "interpretation_review": {
+      "date": "2026-10-03",
+      "decision": "accepted_reproduction_of_table5_comparative_conclusion",
+      "basis": "Human scientific review accepts preservation of the Table 5 advantage despite a lower absolute score. The agent checked the table and retained measurements; no new execution or tolerance change."
+    }
   }
 }
