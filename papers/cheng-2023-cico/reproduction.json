@@ -5466,6 +5466,88 @@
         "source_sha256": "133ec05899a9b0f36c07ea0ccdb1ae2472a744e2a69a4d0d7c407676689c6812"
       },
       "terminal": null
+    },
+    {
+      "run_id": "phx-i3d-adaptation-full-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/adapt_full_modal.py::run --run-id phx-i3d-adaptation-full-v1 --manifest-sha d0509e382d73920ccc6768a26cf0a3c531f714b957f53c5c288f9b2c9aa9539a",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-i3d-adaptation-full",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:47:25.739439+00:00",
+        "max_wall_time_seconds": 16200,
+        "max_gpu_hours": 4.5,
+        "max_cost_chf": 18
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "All8608 native teacher pseudo clips;15epochs,4batch,32280updates,SGD.01/momentum.9/wd0/seed0,5383teacher-classhead,workers0,finalepoch15 selection. Zero validation rows produce no scientificvalidationmetric.",
+        "source_sha256": "922753de6010d77697b11bceecaaa5a2f3ec3c02d261367facae6b3e00e1a90c",
+        "wrapper_sha256": "ffe3d1681e24dc8d92463eaa004bdcad054a4f9019fcdf69b671ed5c9de72c10",
+        "patch_sha256": {
+          "0004-trainer-data-paths-and-splits.patch": "8e92b5b3cd21863c1dd157e9113dd467b6a439dd887ae85518ff36ef0b44406a",
+          "0005-trainer-project-video-decoder.patch": "02ba97be52886d0bbdeea312de458c05a974d80e94959854ebf3151a60c7787a",
+          "0006-trainer-python-callable.patch": "1b2fd8226352ca519d082107b0a89e3382fadff629fb54e34b45b206f8dffe48",
+          "0007-trainer-initialization-and-checkpoint-recovery.patch": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
+          "0009-trainer-recovery-evidence.patch": "33afc0ab7c8a0af56b3709f2d55dc3197dfae59c7d5822f0c1fb7cd13a9b4cb0"
+        },
+        "input_manifest_sha256": "d0509e382d73920ccc6768a26cf0a3c531f714b957f53c5c288f9b2c9aa9539a",
+        "forecast_native_update_seconds": 11668.489665,
+        "forecast_total_seconds": 14500,
+        "forecast_basis": "Representative32distinctclips warmbatch4=.361477375seconds;32280updates imply3.24125h. Forecast adds47.2min for exactbyteconcurrentstaging,15atomiccheckpoints,3snapshots andvariance;4.5h ceiling providesadditional28.3min. Dataset319278600bytes.",
+        "original_provisional_cap_rejected": "Unlaunched3h proposal rejected beforeexecution because8608closedclips exceed it evenwithoutoverhead. This4.5h policy isprospective, not a runningdeadlineextension.",
+        "resume_policy": "At most2segments share original16200s deadline. Neverfreshrestart; strictmodel/optimizer/RNGcheckpoint verification, priorapp independentlyconfirmedstopped,atomicclaims/checkpointhash/source/dataidentity. Completedepoch15 mayfinalizewithouttraining.",
+        "review": "IndependentGPT-6/Codex source andclosedmanifest auditPASS; root revised4.5h/CHF18 allowance pending, no launchyet.",
+        "cost_basis": {
+          "source": "https://modal.com/pricing",
+          "verified_at": "2026-10-03",
+          "a10080_usd_per_second": 0.000694,
+          "cpu_usd_per_core_second": 1.31e-05,
+          "memory_usd_per_gib_second": 2.22e-06,
+          "planning_conversion": "Conservative1CHFperUSD planning rate, not actualFX or billing claim;4CHF/hourreservation addsmargin over~2.82USD/hour forA10080/4CPU/16GiB.",
+          "aggregate_reservations_chf": {
+            "closed_pseudo": 8,
+            "agnostic_features": 16,
+            "adaptation": 18,
+            "aware_features": 16,
+            "clcl": 12,
+            "diagnostics": 10,
+            "cpu": 8,
+            "storage": 2
+          },
+          "closed_pseudo_basis": "Native1.9573GPUh plusstartup/idle allowance to2.05h at~2.943USD/h,1CHF/USDplusmargin rounds8CHF; unused16CHFreservation not billedactual.",
+          "aggregate_reserved_gpu_hours": 19.5
+        }
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
