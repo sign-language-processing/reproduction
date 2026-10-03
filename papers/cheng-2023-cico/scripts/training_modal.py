@@ -266,3 +266,18 @@ def csl_direct_frame_forecast(run_id:str):
     records.extend(pool.map(read,items[start:start+256]));(out/'progress.json').write_text(json.dumps({'split':split,'completed':len(records),'total':len(items),'wall_seconds':time.monotonic()-t}));outputs.commit()
   report['splits'][split]={'queries':len(labels),'videos':len(records),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in records),'windows_16_stride1':sum(max(1,r['frames']-15) for r in records),'bytes':sum(r['bytes'] for r in records),'records':records};(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
  report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))
+
+@app.function(image=native_image,cpu=2,memory=4096,timeout=300,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def csl_feature_length_audit(run_id:str):
+ import json,pickle,hashlib,datetime,time,re,cv2
+ from simple_video_utils.metadata import video_metadata
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic();report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'records':[]}
+ (out/'started.json').write_text(json.dumps(report));outputs.commit()
+ labels=pickle.load(Path('/upstream/CiCo/CLCL/data_csl/test.pkl').open('rb'));items=[v for group in labels.values() for v in group]
+ for r in sorted(items,key=lambda r:hashlib.sha256(r['video_name'].encode()).hexdigest())[:4]:
+  name=r['video_name'];path=Path('/datasets/csl-daily/videos')/(name+'.mp4');meta=video_metadata(str(path));cap=cv2.VideoCapture(str(path));assert cap.isOpened();cv_frames=int(cap.get(cv2.CAP_PROP_FRAME_COUNT));cap.release();entry={'name':name,'label_frames':r['num_frames'],'simple_video_utils_frames':int(meta.nb_frames),'opencv_frames':cv_frames,'features':{}}
+  for stream in ['agnostic','aware']:
+   f=Path('/datasets/cico-features/sign_features')/('csl_domain_'+stream)/'test'/(name+'.pkl');payload=f.read_bytes();obj=pickle.loads(payload);entry['features'][stream]={'sha256':hashlib.sha256(payload).hexdigest(),'shape':list(obj['feature'].shape)}
+  report['records'].append(entry)
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
