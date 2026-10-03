@@ -223,3 +223,28 @@ def csl_annotation_forecast(run_id:str):
   return dict(r,observed_frames=observed,bytes=path.stat().st_size)
  with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:report['video_consistency_checks']=list(pool.map(check,sample))
  report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))
+
+@app.function(image=native_image,cpu=4,memory=8192,timeout=600,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def csl_native_label_forecast(run_id:str):
+ import json,pickle,hashlib,datetime,time,re,concurrent.futures
+ from simple_video_utils.metadata import video_metadata
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
+ report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'purpose':'Pinned native-label num_frames forecast compared with canonical dataset annotation and selected actual videos; no complete data audit.','splits':{}}
+ (out/'started.json').write_text(json.dumps(report));outputs.commit()
+ annotation=Path('/datasets/csl-daily/sentence_label/csl2020ct_v2.pkl');payload=annotation.read_bytes();records=pickle.loads(payload)['info'];by_name={r['name']:r for r in records};report['annotation_sha256']=hashlib.sha256(payload).hexdigest();requested=[];differences=[]
+ for split in ['train','test']:
+  label=Path('/upstream/CiCo/CLCL/data_csl')/f'{split}.pkl';labels=pickle.load(label.open('rb'));items=[v for group in labels.values() for v in group];names=[r['video_name'] for r in items];assert len(names)==len(set(names))
+  selected=[{'name':r['video_name'],'frames':int(r['num_frames'])} for r in items];assert all(r['frames']>0 for r in selected);requested+=selected
+  for r in selected:
+   other=by_name.get(r['name'])
+   if other is None or int(other['length'])!=r['frames']:differences.append(dict(r,annotation_frames=None if other is None else int(other['length'])))
+  report['splits'][split]={'queries':len(labels),'videos':len(selected),'label_sha256':hashlib.sha256(label.read_bytes()).hexdigest(),'frames':sum(r['frames'] for r in selected),'windows_16_stride1':sum(max(1,r['frames']-15) for r in selected),'records':selected}
+ report['annotation_differences']=differences;(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit()
+ sample={r['name']:r for r in sorted(requested,key=lambda r:hashlib.sha256(r['name'].encode()).hexdigest())[:16]}
+ sample.update({r['name']:r for r in differences})
+ def check(r):
+  path=Path('/datasets/csl-daily/videos')/(r['name']+'.mp4');meta=video_metadata(str(path));observed=int(meta.nb_frames)
+  return dict(r,observed_frames=observed,bytes=path.stat().st_size,native_frame_count_matches=observed==r['frames'])
+ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:report['video_consistency_checks']=list(pool.map(check,sample.values()))
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t);(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps({**{k:v for k,v in report.items() if k!='splits'},'splits':{k:{x:y for x,y in v.items() if x!='records'} for k,v in report['splits'].items()}}))
