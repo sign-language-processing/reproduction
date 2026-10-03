@@ -4,7 +4,9 @@
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
-**Released-checkpoint pipeline status:** complete
+**Pipeline status:** complete
+
+This status describes the preserved released-checkpoint experiment only; the training continuation is pending.
 
 **Numerical agreement:** does_not_agree
 
