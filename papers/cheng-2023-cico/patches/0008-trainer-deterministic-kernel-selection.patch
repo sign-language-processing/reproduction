@@ -1,0 +1,13 @@
+Subject: Disable cuDNN benchmarking to honor the native deterministic-mode request
+
+--- a/CiCo/I3D_trainer/main.py
++++ b/CiCo/I3D_trainer/main.py
+@@ -59,7 +59,7 @@
+     # Seed
+     torch.manual_seed(args.seed)
+     torch.backends.cudnn.deterministic = True
+-    torch.backends.cudnn.benchmark = True
++    torch.backends.cudnn.benchmark = False
+     np.random.seed(args.seed)
+ 
+     if args.featurize_mode:
