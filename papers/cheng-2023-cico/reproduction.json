@@ -45,7 +45,9 @@
       "scope": "2026-10-03 independent training continuation execution and reporting, following preserved checkpoint evaluation. Exact model ID and harness version unavailable.",
       "evidence": [
         "Session instructions explicitly identify GPT-6 using Codex; assigned exclusive CiCo training continuation after completing LEXSET."
-      ]
+      ],
+      "model_id": null,
+      "harness_version": null
     }
   ],
   "assignment": {
@@ -266,7 +268,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "All 24 in-scope released-checkpoint evaluation targets produced comparable values. At the prospectively declared one-decimal precision, all eight PHOENIX values match; two How2Sign recalls differ by +0.1 percentage point, and six CSL-Daily recalls differ by -0.6 to +0.1 points. All median ranks match. This evaluates released checkpoints, not training reproducibility.",
+    "numerical_agreement_basis": "The 24 preserved released-checkpoint evaluation targets produced comparable values. At the prospectively declared one-decimal precision, all eight PHOENIX values match; two How2Sign recalls differ by +0.1 percentage point, and six CSL-Daily recalls differ by -0.6 to +0.1 points. All median ranks match. This evaluates released checkpoints, not training reproducibility.",
     "preference_level": 2,
     "blocker": null
   },
@@ -4397,7 +4399,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-ptrUKZx3D3xVTdREcJSgrj",
+        "function_call_id": "fc-01M41M4ZFK5G3RDN1GE1BJ6WXQ"
       },
       "configuration": {
         "scope": "Full native pseudo labels on7096PHOENIX training videos only;720914windows,threshold0.6,NMS24. No target metrics or encodertraining claimed.",
@@ -4414,7 +4418,188 @@
         "pseudo_full_modal.py_sha256": "58304ea634f17e7ec2aa55352dd810cab61e5aa766da6af54cc2c6e53689d5c9",
         "0001-extractor-video-decoder.patch_sha256": "3ae0055e9898cd74cc7fde36be67b13f2f5cd487690ba32061bc39aae94ae7ab",
         "0002-pseudo-video-decoder.patch_sha256": "b8361b33eb885d952d1da3e72643e2f37877445de508f43cbf646838a5788cf9",
-        "0003-pseudo-range-concatenation.patch_sha256": "b21034f3f84fb579c529ed306efb39c6aaf0269cb516f89c0953e9be8612cfbc"
+        "0003-pseudo-range-concatenation.patch_sha256": "b21034f3f84fb579c529ed306efb39c6aaf0269cb516f89c0953e9be8612cfbc",
+        "immutable_deadline_utc": "2026-10-03T23:34:27.801375+00:00"
+      },
+      "terminal": null,
+      "started_at_utc": "2026-10-03T19:34:28.181151+00:00"
+    },
+    {
+      "run_id": "native-trainer-probe-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/train_probe_modal.py::run --run-id native-trainer-probe-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-trainer-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:37:22.427670+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-AZyEJGF3ZSi0KLY1X4lTgQ",
+        "function_call_id": "fc-01M41ME01147YPGG4TFS2W4F62"
+      },
+      "configuration": {
+        "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
+        "i3d_train_probe.py_sha256": "a97c22282154d1698c80db1146009aad64e7ec984dfe48c86deae4c67d0580ef",
+        "train_probe_modal.py_sha256": "4556bb261db79f151361fdcea913e3dab9238d374338eb8b2369149314cacc26",
+        "0004-trainer-data-paths-and-splits.patch_sha256": "8e92b5b3cd21863c1dd157e9113dd467b6a439dd887ae85518ff36ef0b44406a",
+        "0005-trainer-project-video-decoder.patch_sha256": "02ba97be52886d0bbdeea312de458c05a974d80e94959854ebf3151a60c7787a",
+        "0006-trainer-python-callable.patch_sha256": "1b2fd8226352ca519d082107b0a89e3382fadff629fb54e34b45b206f8dffe48",
+        "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Native batch4training/validation and resume all executed, but resumed-versus-uninterrupted2epoch model state exact-equality check failed. Closed checkpoints retained; diagnose cheaply before anyfulltraining.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:39:13.513289+00:00",
+      "finished_at_utc": "2026-10-03T19:40:22.301893+00:00",
+      "wall_time_seconds": 68.788627857,
+      "exit_code": 1
+    },
+    {
+      "run_id": "trainer-recovery-audit-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/train_probe_modal.py::compare --run-id trainer-recovery-audit-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "trainer-recovery-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:42:48.994059+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null,
+        "modal_app_id": "ap-NrWdyYNw5ta2ZgVYmu8amY",
+        "function_call_id": "fc-01M41MN19XCP5HTF91J53N6H6W"
+      },
+      "configuration": {
+        "scope": "CPU compare closed native epoch1and2 checkpoints, parameter differences and RNG state to localize failed exactrecovery proof.",
+        "source_sha256": "f3098c143c9e30484df28c9707fe0ae21f5e29477b35ab2ddaa00de03ecdd4a9"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Difference already present before resume:180epoch1model tensors differ(max BNvariance0.0009765625); allPython/NumPy/CPU/CUDA RNG states equal inepochs1and2. Tests kernel-selection rather thanRNG-loss hypothesis.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:43:07.505297+00:00",
+      "finished_at_utc": "2026-10-03T19:43:12.277396+00:00",
+      "wall_time_seconds": 4.772103355,
+      "exit_code": 0
+    },
+    {
+      "run_id": "native-trainer-probe-v2",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/train_probe_modal.py::run --run-id native-trainer-probe-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-trainer-probe-kernel",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:44:23.920857+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
+        "i3d_train_probe.py_sha256": "a97c22282154d1698c80db1146009aad64e7ec984dfe48c86deae4c67d0580ef",
+        "train_probe_modal.py_sha256": "9cfde94bcdb38d34d3eedb400f56591dc4913e029648b7deb9d56e737c4752fc",
+        "0004-trainer-data-paths-and-splits.patch_sha256": "8e92b5b3cd21863c1dd157e9113dd467b6a439dd887ae85518ff36ef0b44406a",
+        "0005-trainer-project-video-decoder.patch_sha256": "02ba97be52886d0bbdeea312de458c05a974d80e94959854ebf3151a60c7787a",
+        "0006-trainer-python-callable.patch_sha256": "1b2fd8226352ca519d082107b0a89e3382fadff629fb54e34b45b206f8dffe48",
+        "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
+        "hypothesis": "Disable cudnn benchmarking while preserving native deterministic=True to prevent run-dependent deterministic-kernel selection; all other model/data/optimizer/recipe unchanged.",
+        "0008-trainer-deterministic-kernel-selection.patch_sha256": "89e4161aaa337e63758e3ceb633cb165d0e4df66dd79533f11e2133994d5666a"
       },
       "terminal": null
     }
@@ -4830,7 +5015,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "full_training_pseudo_stage_launching",
+    "state": "full_training_pseudo_stage_running",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": false,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -4889,6 +5074,6 @@
       "trained-csl-daily-v2t-r10",
       "trained-csl-daily-v2t-medianr"
     ],
-    "full_pseudo_stage_launched": false
+    "full_pseudo_stage_launched": true
   }
 }
