@@ -5272,15 +5272,31 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-DrQT1ZleH9qu1BOlE5OUUw",
+        "function_call_id": "fc-01M41TY4FT1JF6KVHZRYCJRS0P"
       },
       "configuration": {
         "scope": "CPU audit of all256 closed pseudo rank receipts and generated clip SHA/size/decoded frame metadata; no model execution. Only launch after parent pseudo native exit0 and complete receipt. Canonical closed-training-manifest is idempotent exactbytes.",
         "source_sha256": "9a703fab58ef8ff65f81f070b82f174bd9e87885a7a4bf2169bb08d2e83f5f0c",
         "forecast": "At most1800CPUfunction-seconds/CHF1 within aggregate4CPUh/CHF8; no GPU. Exact count supplies adaptation forecast.",
-        "io_policy": "Eight concurrent audit reads within each closed rank; ordered metadata-only results preserve manifest order and exactbytes. No native source or training guard changed."
+        "io_policy": "Eight concurrent audit reads within each closed rank; ordered metadata-only results preserve manifest order and exactbytes. No native source or training guard changed.",
+        "start_timestamp_basis": "Derived from recorded terminalUTC minus native monotonic wall_seconds; submillisecond clock-sampling uncertainty.",
+        "manifest_sha256": "d0509e382d73920ccc6768a26cf0a3c531f714b957f53c5c288f9b2c9aa9539a",
+        "observed_clip_count": 8608
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All256ranks/720914windows closed;8608uniquegeneratedtrainingclips/319278600bytes SHA/size/decodedframes verified. Exactclosedmanifest preserved.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T21:32:54.261228+00:00",
+      "finished_at_utc": "2026-10-03T21:40:32.119064+00:00",
+      "wall_time_seconds": 457.857835602,
+      "exit_code": 0
     },
     {
       "run_id": "csl-annotation-forecast-v1",
@@ -5383,11 +5399,71 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-5qU8SzVear7Y5bORZlHzTA",
+        "function_call_id": "fc-01M41V8N2QMWZSSWE24C6Y5PKJ"
       },
       "configuration": {
         "scope": "Pinned native train/test num_frames forecast; preserves1 missing and3 differing canonical annotation rows and checks these4 plus16 deterministic actualvideos. Forecast evidence only, not full data gate.",
         "source_sha256": "0c01eef30e43059f91cec40664ff8c5ded5c2c8ce18ebd37cad72b6a92bfbacd"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native metadata forecast and20actualvideo checks completed; every sampled rawvideo is longer thanlabelnum_frames. NativeI3D uses actualvideo framecount, so metadata sums are not substituted for extraction forecast. Four annotation membership/count discrepancies retained.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T21:38:37.398845+00:00",
+      "finished_at_utc": "2026-10-03T21:38:42.616594+00:00",
+      "wall_time_seconds": 5.217790385,
+      "exit_code": 0
+    },
+    {
+      "run_id": "csl-direct-frame-forecast-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::csl_direct_frame_forecast --run-id csl-direct-frame-forecast-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-direct-frame-forecast",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T21:45:37.387433+00:00",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Actualframecount metadata through authorlabel-derived paths, eliminating expensive rglobinventory;16concurrentreads/256boundeditems with durableprogress. Distinct justifiedI/O hypothesis after1800s exhaustedinventory forecast and proof labelnumframes insufficient. CPUonly withinaggregate4h/CHF8.",
+        "source_sha256": "133ec05899a9b0f36c07ea0ccdb1ae2472a744e2a69a4d0d7c407676689c6812"
       },
       "terminal": null
     }
