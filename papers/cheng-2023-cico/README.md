@@ -6,7 +6,7 @@
 
 **Pipeline status:** partial
 
-The24released-checkpoint targets are preserved;24independent training targets are now also in scope and pending.
+The 24 released-checkpoint targets are preserved; 24 independent training targets are also in scope and pending.
 
 **Numerical agreement:** does_not_agree
 
@@ -117,15 +117,19 @@ Training continuation is separately recorded in `reproduction.json.training_cont
 
 ## Independent training continuation (2026-10-03)
 
-A GPT-6 agent using Codex is executing this continuation separately from the earlier checkpoint evaluation (agent ID `cico-training-agent`; exact model ID and harness version are unavailable). No trained retrieval result is claimed yet. The24original target objects remain unchanged, and24distinct `trained-` targets track end-to-end training. Published baseline scores will be compared but their systems are not rerun.
+A GPT-6 agent using Codex is executing this continuation separately from the earlier checkpoint evaluation (`cico-training-agent`; exact model ID and harness version are unavailable). All 24 original target objects remain unchanged. Another 24 `trained-` targets track independent training. Published baseline scores will be compared; those systems are not rerun.
 
-Bounded CPU acquisition verified the official BSL5K initialization (`6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f`) and released How2Sign domain-aware checkpoint (`99e101d696ff63131b5d44fa6e465201216604ba5d8cc773f3cefa4a96ebd518`). Their classifier heads differ (5383/1432classes), but both pooled feature vectors have1024channels. The How2Sign adapted checkpoint is retained for an explicitly separate CLCL-only sub-attempt if needed; it does not establish independent encoder training.
+CPU acquisition verified the official BSL5K initialization (`6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f`) and released How2Sign domain-aware encoder (`99e101d696ff63131b5d44fa6e465201216604ba5d8cc773f3cefa4a96ebd518`). Their classifier heads differ (5,383 versus 1,432 classes), but both expose 1,024-dimensional pooled embeddings. The released adapted encoder does not establish independent encoder training.
 
-All7096PHOENIX training/642test raw names and18401CSL training/1176test names in the pinned author labels are present on Modal, with no duplicate stems. How2Sign raw videos are absent. PHOENIX is the first full-chain candidate because the necessary raw videos are available. Its author `dev.pkl` combines7096train and519dev identities; physical split membership must be used for a distinct development set.
+PHOENIX is the first full-chain candidate. A read-only audit verified SHA-256 and frame metadata for all 8,257 videos: 7,096 train, 519 dev, and 642 test. The manifest is `modal://cheng-2023-cico-results/phx-raw-manifest-v1/manifest.json`, SHA-256 `4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a`. The train split contains 720,914 native 16-frame, stride-one windows. Author `dev.pkl` combines train and dev identities, so it is not a held-out development split. CSL has all 18,401 training and 1,176 test filenames requested by the author labels. How2Sign raw videos are absent.
 
-The native training recipe uses15I3D adaptation epochs, SGD learning rate0.01/batch4, and200CLCL epochs with global contrastive batch512. Ordinary gradient accumulation changes the negative pool and is not a substitute. Native CLCL evaluates test retrieval each epoch and selects by testR@1; this selection is explicitly disclosed. No full training run has launched. The continuation has a24GPU-hour/CHF90 total ceiling, including at most2GPU-hours/CHF10diagnostics and4CPU-hours/CHF8initial acquisition/audits.
+Native I3D inference and three diagnostic SGD steps passed on real PHOENIX videos; fresh model/optimizer restoration was exact. The resumed diagnostic step used the previous batch's pseudo labels, so it proves finite mechanics only. The actual threshold-0.6/NMS-24 pseudo-label microcase produced two clips from 126 windows. Closed-rank replay and recovery after a directory rename but before its completion receipt regenerated identical clip hashes. These checks are diagnostic evidence, not trained paper results.
 
-The first CPU wrapper failed before native execution because its sibling module was not packaged for remote import; a standalone wrapper fixed the issue. Corrected acquisition finished in64.155seconds. A9.434secondGPU probe stopped at the missingOpenCV import before model execution; pinningOpenCV4.11.0.86 is being verified through CPU import/decoder checks before anotherGPU allocation. Actual runs, original policies, immutable source hashes and evidence remain in `reproduction.json`.
+Training-only patches replace video decoding with `simple-video-utils`, preserve RGB values and native end-exclusive clip encoding, use the real 260×210 source dimensions, and convert native `range` objects to lists for the existing segment-concatenation operation. Decoded bytes exactly matched native OpenCV on initial, interior and tail windows; short-video padding also passed. The original checkpoint experiment remains unchanged.
+
+The continuation ceiling is 24 GPU-hours / CHF 90, including up to two GPU-hours / CHF 10 for diagnostics and four CPU-hours / CHF 8 for acquisition/audits. The proposed training-pseudo stage has a four-hour absolute deadline, at most two execution segments, and a CHF 16 reservation. Full adaptation and CLCL training require separate native preflights and measured forecasts. No trained target value is claimed yet.
+
+The first CPU wrapper failed before native execution because a sibling module was missing remotely; a standalone wrapper fixed it. A GPU probe then stopped at the missing OpenCV import; pinned OpenCV 4.11.0.86 passed CPU checks before the corrected GPU probe. Every retained attempt, original policy, source hash, native exit and Modal identifier is recorded in `reproduction.json`.
 
 Repeat bounded preparation and diagnostics through the project wrapper:
 
@@ -134,4 +138,4 @@ Repeat bounded preparation and diagnostics through the project wrapper:
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::decoder_audit --run-id decoder-audit-v2
 ```
 
-Run IDs cannot be reused over existing output directories. Native input/output paths and all new evidence use the existing `cheng-2023-cico-results` volume; datasets remain read-only. Training-only patches do not alter the preserved checkpoint experiment.
+Existing run IDs are immutable and cannot be reused for a fresh execution. New inputs and outputs use `cheng-2023-cico-results`; datasets remain read-only. Native CLCL uses a true global contrastive batch of 512 and evaluates test retrieval every epoch, selecting by test R@1. This selection protocol is explicitly disclosed; ordinary gradient accumulation is not an equivalent negative pool.
