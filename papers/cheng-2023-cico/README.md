@@ -127,7 +127,7 @@ Native I3D inference and three diagnostic SGD steps passed on real PHOENIX video
 
 Training-only patches replace video decoding with `simple-video-utils`, preserve RGB values and native end-exclusive clip encoding, use the real 260×210 source dimensions, and convert native `range` objects to lists for the existing segment-concatenation operation. Decoded bytes exactly matched native OpenCV on initial, interior and tail windows; short-video padding also passed. The original checkpoint experiment remains unchanged.
 
-The continuation ceiling is 24 GPU-hours / CHF 90, including up to two GPU-hours / CHF 10 for diagnostics and four CPU-hours / CHF 8 for acquisition/audits. The proposed training-pseudo stage has a four-hour absolute deadline, at most two execution segments, and a CHF 16 reservation. Full adaptation and CLCL training require separate native preflights and measured forecasts. No trained target value is claimed yet.
+The continuation ceiling is 24 GPU-hours / CHF 90, including up to two GPU-hours / CHF 10 for diagnostics and four CPU-hours / CHF 8 for acquisition/audits. The active [training-pseudo stage](https://modal.com/apps/repro-sign/main/ap-ptrUKZx3D3xVTdREcJSgrj) started at 2026-10-03 19:34:27 UTC. Its immutable deadline is 2026-10-03 23:34:27 UTC, with at most two execution segments and a CHF 16 reservation. Full adaptation and CLCL training require separate native preflights and measured forecasts. No trained target value is claimed yet.
 
 The first CPU wrapper failed before native execution because a sibling module was missing remotely; a standalone wrapper fixed it. A GPU probe then stopped at the missing OpenCV import; pinned OpenCV 4.11.0.86 passed CPU checks before the corrected GPU probe. Every retained attempt, original policy, source hash, native exit and Modal identifier is recorded in `reproduction.json`.
 
@@ -139,3 +139,6 @@ Repeat bounded preparation and diagnostics through the project wrapper:
 ```
 
 Existing run IDs are immutable and cannot be reused for a fresh execution. New inputs and outputs use `cheng-2023-cico-results`; datasets remain read-only. Native CLCL uses a true global contrastive batch of 512 and evaluates test retrieval every epoch, selecting by test R@1. This selection protocol is explicitly disclosed; ordinary gradient accumulation is not an equivalent negative pool.
+
+
+The native I3D trainer microcase runs the actual author train/validation loops on two generated pseudo clips, repeated only to exercise batch size four. Its validation rows reuse these same diagnostic clips and are never reported as held-out measurements. Independently repeated runs exhibit small floating-point state differences before any resume despite identical RNG states. Disabling cuDNN benchmarking did not resolve this, so that hypothesis was discarded. Recovery is instead checked by exact model/optimizer/all-RNG restoration in a fresh native process, matching next-batch IDs and labels, and finite continuation. The full training gate remains closed until this proof and the measured full-data forecast pass.

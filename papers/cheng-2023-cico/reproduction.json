@@ -4588,7 +4588,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-n4naw9atubmaQwjaAfE42Z",
+        "gpu_allocated": false
       },
       "configuration": {
         "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
@@ -4600,6 +4602,136 @@
         "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
         "hypothesis": "Disable cudnn benchmarking while preserving native deterministic=True to prevent run-dependent deterministic-kernel selection; all other model/data/optimizer/recipe unchanged.",
         "0008-trainer-deterministic-kernel-selection.patch_sha256": "89e4161aaa337e63758e3ceb633cb165d0e4df66dd79533f11e2133994d5666a"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "CPU image build rejected patch0008context because priorpatch addedPythonseed. No native process/GPU allocated. Corrected narrowhunk and locallyverified all8patches applyinorder before nextlaunch.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "exit_code": null,
+      "build_exit_code": 1,
+      "finished_at_utc": "2026-10-03T19:45:45.737467+00:00"
+    },
+    {
+      "run_id": "native-trainer-probe-v3",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/train_probe_modal.py::run --run-id native-trainer-probe-v3",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-trainer-probe-kernel-context",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:45:45.737668+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-AOirTeSphiZGkB7gPrFsn4",
+        "function_call_id": "fc-01M41MV5BZRZXJ03S97S5EBTW4"
+      },
+      "configuration": {
+        "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
+        "i3d_train_probe.py_sha256": "a97c22282154d1698c80db1146009aad64e7ec984dfe48c86deae4c67d0580ef",
+        "train_probe_modal.py_sha256": "9cfde94bcdb38d34d3eedb400f56591dc4913e029648b7deb9d56e737c4752fc",
+        "0004-trainer-data-paths-and-splits.patch_sha256": "8e92b5b3cd21863c1dd157e9113dd467b6a439dd887ae85518ff36ef0b44406a",
+        "0005-trainer-project-video-decoder.patch_sha256": "02ba97be52886d0bbdeea312de458c05a974d80e94959854ebf3151a60c7787a",
+        "0006-trainer-python-callable.patch_sha256": "1b2fd8226352ca519d082107b0a89e3382fadff629fb54e34b45b206f8dffe48",
+        "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
+        "hypothesis": "Disable cudnn benchmarking while preserving native deterministic=True to prevent run-dependent deterministic-kernel selection; all other model/data/optimizer/recipe unchanged.",
+        "0008-trainer-deterministic-kernel-selection.patch_sha256": "0115115e2994902a68ba72dfb9814afa16fcad6f1fcc422ac3805bb300a9c053"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Disablingcudnnbenchmark didnot make independently repeated2epoch training bitwiseidentical. Discard this unsupportedchange; retain nativebenchmark and verify exactfresh-state restoration plus correctnextbatch/finite continuation directly.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:46:27.220983+00:00",
+      "finished_at_utc": "2026-10-03T19:46:56.355518+00:00",
+      "wall_time_seconds": 29.134557367,
+      "exit_code": 1
+    },
+    {
+      "run_id": "native-trainer-probe-v4",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/train_probe_modal.py::run --run-id native-trainer-probe-v4",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-trainer-restoration-proof",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:50:34.418989+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Exactfresh native model/optimizer/allRNG restoration assertions, correct resumedbatch/labels versuscontinuouspath, finiteoptimizer state; preserve nativebenchmark; record independently repeatedfloatingpointdrift ratherthan forcebitwise equality.",
+        "i3d_train_probe.py_sha256": "5f51daa6f178dd66f50b1ed98cd4441162d6844dd044a87a830f390a0d75b745",
+        "train_probe_modal.py_sha256": "3974a647f4f9e4095a9a3232fc27a321bef388dcf84c3c346b9e6f8d6c6acc4d",
+        "0004-trainer-data-paths-and-splits.patch_sha256": "8e92b5b3cd21863c1dd157e9113dd467b6a439dd887ae85518ff36ef0b44406a",
+        "0005-trainer-project-video-decoder.patch_sha256": "02ba97be52886d0bbdeea312de458c05a974d80e94959854ebf3151a60c7787a",
+        "0006-trainer-python-callable.patch_sha256": "1b2fd8226352ca519d082107b0a89e3382fadff629fb54e34b45b206f8dffe48",
+        "0007-trainer-initialization-and-checkpoint-recovery.patch_sha256": "2a89607797c2715923493adee1673e8cf504d61b8f09e60c8c55a2b0b58643aa",
+        "0009-trainer-recovery-evidence.patch_sha256": "92405f09452a00eeb4c167e3c4a9d65a405ebca6d52bda06446845f3e8764f6a"
       },
       "terminal": null
     }
