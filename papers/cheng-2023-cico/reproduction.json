@@ -5337,7 +5337,9 @@
         "detail": "Provider enforced declared1800s CPU limit during all-video metadata forecast before anysplit receipt. NoGPUtraining and no invented frame totals. Separate cheaper canonicalannotation hypothesis follows, with representativevideo checks.",
         "failure_class": "budget_protocol",
         "retry_decision": "stop",
-        "gate_ids": []
+        "gate_ids": [
+          "csl-forecast-inventory-ceiling"
+        ]
       },
       "started_at_utc": "2026-10-03T21:01:25Z",
       "finished_at_utc": "2026-10-03T21:31:47Z",
@@ -6729,7 +6731,19 @@
       "bytes": 58716
     }
   ],
-  "gates": [],
+  "gates": [
+    {
+      "gate_id": "csl-forecast-inventory-ceiling",
+      "type": "compute",
+      "status": "resolved",
+      "reason": "The read-only all-video inventory/metadata call reached its declared1800CPU-second ceiling. The expired call was not resumed or granted extra time.",
+      "required_action": "Use a cheaper direct-label-path metadata audit within the original aggregate CPU allowance; completed253.56seconds with all19577 records. No human action or higher ceiling needed.",
+      "evidence": [
+        "csl-window-forecast-v1 Modal timeout log2026-10-03T21:31:38UTC states1800seconds.",
+        "csl-direct-frame-forecast-v1 closed report and allframe records: modal://repro-sign/main/cheng-2023-cico-results/csl-direct-frame-forecast-v1/report.json"
+      ]
+    }
+  ],
   "observations": [
     "Tables 1\u20133 were visually verified on PDF page 7. Table 2's copied Translation V2T median rank of 56.1 is preserved literally despite being inconsistent with an ordinary median of integer ranks. The \u00a74.3 prose reverses the retrieval directions; Table 1 and the official released evaluator agree, so the table headers govern target mapping.",
     "CSL discrepancy investigation: the source and data content are unchanged from the original 0322431 release; later CiCo changes concern file modes and the README. The fixed released checkpoint, both exact feature sets, all 1,176 labels, official alpha 0.8, default batch size 256, seed 42 and metric implementation were used. No material protocol mismatch was found. Environment drift or differences between the released checkpoint and the one behind the published table remain possible but unproven.",
