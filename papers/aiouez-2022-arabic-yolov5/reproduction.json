@@ -384,73 +384,81 @@
       "metric_id": "precision",
       "name": "Precision",
       "direction": "higher",
-      "implementation": "TP/(TP+FP), fixed IoU threshold",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "percent"
+      "implementation": "Pinned YOLOv5 v6.0 utils/metrics.py ap_per_class: per-class P/R at the confidence maximizing mean F1, IoU0.5 matching.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Macro mean across27observed labels; NOON unmeasured.",
+      "unit_or_scale": "percent",
+      "paper_definition": "TP/(TP+FP), fixed IoU threshold"
     },
     {
       "metric_id": "recall",
       "name": "Recall",
       "direction": "higher",
-      "implementation": "TP/(TP+FN), fixed IoU threshold",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "percent"
+      "implementation": "Pinned YOLOv5 v6.0 utils/metrics.py ap_per_class: per-class P/R at the confidence maximizing mean F1, IoU0.5 matching.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Macro mean across27observed labels; NOON unmeasured.",
+      "unit_or_scale": "percent",
+      "paper_definition": "TP/(TP+FN), fixed IoU threshold"
     },
     {
       "metric_id": "map50",
       "name": "mAP@0.5",
       "direction": "higher",
-      "implementation": "Mean per-class AP at IoU0.5",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "percent"
+      "implementation": "Pinned YOLOv5 v6.0 native ap_per_class/compute_ap for YOLO; Detectron2v0.6 COCOEvaluator/pycocotools2.0.11 for Faster. Common pycocotools2.0.11 scores recorded separately fromnativeYOLO.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Mean over observed classes at IoU0.5",
+      "unit_or_scale": "percent",
+      "paper_definition": "Mean per-class AP at IoU0.5"
     },
     {
       "metric_id": "map5095",
       "name": "mAP@[.5:.95]",
       "direction": "higher",
-      "implementation": "Mean AP over classes and IoU0.5:0.05:0.95",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "percent"
+      "implementation": "Pinned YOLOv5 v6.0 native ap_per_class/compute_ap for YOLO; Detectron2v0.6 COCOEvaluator/pycocotools2.0.11 for Faster. Common pycocotools2.0.11 scores recorded separately fromnativeYOLO.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Mean over observed classes and IoU0.50:0.05:0.95; absentNOON excluded.",
+      "unit_or_scale": "percent",
+      "paper_definition": "Mean AP over classes and IoU0.5:0.05:0.95"
     },
     {
       "metric_id": "parameters",
       "name": "Model parameters",
       "direction": "descriptive",
-      "implementation": "Count model parameters",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "millions"
+      "implementation": "sum(p.numel() for p in native unfused_model.parameters())/1e6",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "All registered model parameters, including frozenparameters; millions.",
+      "unit_or_scale": "millions",
+      "paper_definition": "Count model parameters"
     },
     {
       "metric_id": "inference-min",
       "name": "Minimum reported inference time",
       "direction": "lower",
-      "implementation": "Wall-clock time per image; hardware unspecified",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "seconds"
+      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input\u2192GPU/float normalization\u2192nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Hardware-specific range endpoints; exact original GPU/timing boundary unknown.",
+      "unit_or_scale": "seconds",
+      "paper_definition": "Wall-clock time per image; hardware unspecified"
     },
     {
       "metric_id": "inference-max",
       "name": "Maximum reported inference time",
       "direction": "lower",
-      "implementation": "Wall-clock time per image; hardware unspecified",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "seconds"
+      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input\u2192GPU/float normalization\u2192nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Hardware-specific range endpoints; exact original GPU/timing boundary unknown.",
+      "unit_or_scale": "seconds",
+      "paper_definition": "Wall-clock time per image; hardware unspecified"
     },
     {
       "metric_id": "fps",
       "name": "Average FPS",
       "direction": "higher",
-      "implementation": "Images processed per second; hardware unspecified",
-      "version": "Paper section4.3 definition; exact library version omitted",
-      "aggregation": "Mean over test set/classes where applicable; timing hardware and timing boundary unspecified",
-      "unit_or_scale": "frames/second"
+      "implementation": "1 / mean synchronized FP32 batch1 inference seconds over1509testimages, after fivewarmups.",
+      "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
+      "aggregation": "Hardware-specific throughput; filedecode/visualization excluded.",
+      "unit_or_scale": "frames/second",
+      "paper_definition": "Images processed per second; hardware unspecified"
     }
   ],
   "experiments": [
@@ -458,7 +466,7 @@
       "experiment_id": "yolov5s",
       "system": "yolov5s",
       "dataset_id": "author-arsl",
-      "checkpoint_rule": "Author checkpoint selection unspecified; max epochs in Table2",
+      "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
       "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
       "config": {
         "learning_rate": 0.015,
@@ -470,7 +478,7 @@
       "experiment_id": "yolov5m",
       "system": "yolov5m",
       "dataset_id": "author-arsl",
-      "checkpoint_rule": "Author checkpoint selection unspecified; max epochs in Table2",
+      "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
       "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
       "config": {
         "learning_rate": 0.01,
@@ -482,7 +490,7 @@
       "experiment_id": "yolov5l",
       "system": "yolov5l",
       "dataset_id": "author-arsl",
-      "checkpoint_rule": "Author checkpoint selection unspecified; max epochs in Table2",
+      "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
       "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
       "config": {
         "learning_rate": 0.01,
@@ -494,7 +502,7 @@
       "experiment_id": "faster-rcnn",
       "system": "faster-rcnn (X101-FPN)",
       "dataset_id": "author-arsl",
-      "checkpoint_rule": "Author checkpoint selection unspecified; max epochs in Table2",
+      "checkpoint_rule": "Pinned Detectron2 validation bbox/AP strict improvement; first maximum. Interrupted before first validation.",
       "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
       "config": {
         "learning_rate": 0.001,
@@ -1835,8 +1843,8 @@
         "gpu_hours_upper_bound": 12
       },
       "started_at_utc": "2026-10-02T09:22:43.015471+00:00",
-      "finished_at_utc": "2026-10-02T09:40:27Z",
-      "exit_code": null,
+      "finished_at_utc": "2026-10-02T09:39:19.696478+00:00",
+      "exit_code": 1,
       "terminal": {
         "state": "interrupted",
         "reason_code": "external_interruption",
@@ -1945,7 +1953,8 @@
         "finished_at_utc": "2026-10-02T09:39:19.696478+00:00",
         "conservative_elapsed_seconds": 996.6810266971588
       },
-      "finished_at_note": "Last native log timestamp; precise container end unavailable. Wrapper finally timestamp was earlier and is not native completion."
+      "finished_at_note": "Timestamp and exit1 are observed wrapper-finally bookkeeping after Modal cancellation, not native process completion; child logs continued through09:40:27UTC. Native exit and exact stop unavailable.",
+      "native_exit_code": null
     },
     {
       "run_id": "yolo-cpu-smoke-v3",
@@ -2386,7 +2395,11 @@
       "detail": "Hash closed evidence after original app stopped; GPU execution status reportsfailed but native log continues afterwards, so actual exit interpretation requires audit.",
       "wall_seconds": 1.325759342,
       "modal_app_id": "ap-M0oledFcphiTwHLs8x49OP",
-      "modal_function_call_id": "fc-01M41F8NQHMYVB17HGWQWYCHMJ"
+      "modal_function_call_id": "fc-01M41F8NQHMYVB17HGWQWYCHMJ",
+      "artifact_ids": [
+        "oct3-faster-evidence",
+        "oct3-faster-collection"
+      ]
     },
     {
       "run_id": "yolo-gpu-preflight-v1",
@@ -2734,7 +2747,8 @@
       "modal_function_call_id": "fc-01M41G64B0ZDEVVTAVAACTKZZA",
       "original_deadline_unix": 1791058394.6748426,
       "original_deadline_utc": "2026-10-03T20:13:14.674843+00:00",
-      "source_commit": "5741511"
+      "source_commit": "5741511",
+      "artifact_ids": []
     },
     {
       "run_id": "yolo-m-full-001",
@@ -2817,7 +2831,8 @@
       "modal_function_call_id": "fc-01M41G65PB6EPPPM2DFJS9N22C",
       "original_deadline_unix": 1791063430.3987954,
       "original_deadline_utc": "2026-10-03T21:37:10.398795+00:00",
-      "source_commit": "5741511"
+      "source_commit": "5741511",
+      "artifact_ids": []
     },
     {
       "run_id": "yolo-l-full-001",
@@ -2900,7 +2915,8 @@
       "modal_function_call_id": "fc-01M41G67EA03JHAKXMDW6P5APY",
       "original_deadline_unix": 1791066313.7283025,
       "original_deadline_utc": "2026-10-03T22:25:13.728302+00:00",
-      "source_commit": "5741511"
+      "source_commit": "5741511",
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -3877,9 +3893,9 @@
     {
       "artifact_id": "faster-full-001-platform-cancellation",
       "kind": "execution_evidence",
-      "path": "artifacts/faster-full-001-platform-cancellation.log",
       "sha256": "d288f6c0f572fa0fca8edb87d2dab17ca7503d6084a2e3c7b5503cb6985bba90",
-      "size_bytes": 264
+      "size_bytes": 264,
+      "uri": "artifacts/faster-full-001-platform-cancellation.log"
     },
     {
       "artifact_id": "yolo-gpu-preflight-v1-commands-json",
@@ -4179,7 +4195,7 @@
         "Paper sections3.1.1,3.2 pp.19\u201320",
         "Author Kaggle version1 descriptions"
       ],
-      "required_action": "None. Actual two duplicate/unannotated images are excluded after byte-hash verification; use documented seeded paper-ratio partition of15086 eligible records.",
+      "required_action": "None. Exclude two redundant unannotated byte-identical copies and one sole zero-area annotation image; seeded80/10/10 split of15085eligible images,12068/1508/1509.",
       "resolution": "User authorized documented judgment calls on2026-10-01 and public-resource use on2026-10-02. Actual archive15088JPEGs reconciled by two redundant unlabeled byte-identical copies; preserve labeled originals and allboxes. Seed42 80/10/10 partition follows published random ratio; do not claim exact historical membership."
     }
   ],
