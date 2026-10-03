@@ -3970,13 +3970,26 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-WQj62fUce75DptlUkm0OWJ",
+        "function_call_id": "fc-01M41JY6D6QJK5TXNCCRRP2E51"
       },
       "configuration": {
         "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
         "source_sha256": "f5e27df191a9c398ca90bb37f4235a0c79400e176de8b8473c158bab13c75ec7"
       },
-      "terminal": null
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Missing cv2 dependency before decoding. Scoped pinned dependency correction follows.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:13:07.008147+00:00",
+      "finished_at_utc": "2026-10-03T19:13:07.078713+00:00",
+      "wall_time_seconds": 0.070617595,
+      "exit_code": 1
     },
     {
       "run_id": "decoder-audit-v2",
@@ -4017,11 +4030,318 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-ScMWQVBHAzfshiMIrh90lk",
+        "function_call_id": "fc-01M41K1D6RNVNMC31YGVZ9NKZH"
       },
       "configuration": {
         "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
         "source_sha256": "e73ceb0208a7fa41142c897658782127732513ae3fb4338fd9515b3f78edb940"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Exact decoded RGB/frame indices agree on initial, interior, tail and short windows; native import and patched padding passed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:14:52.612997+00:00",
+      "finished_at_utc": "2026-10-03T19:15:00.856926+00:00",
+      "wall_time_seconds": 8.243976683,
+      "exit_code": 0
+    },
+    {
+      "run_id": "i3d-phx-probe-v2",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::i3d_probe --run-id i3d-phx-probe-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "i3d-phx-probe-opencv",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:16:37.433801+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-pQ7VycDLrqyuKaa6cifLNI",
+        "function_call_id": "fc-01M41K50JHDJMJYX942HE832D9"
+      },
+      "configuration": {
+        "scope": "Native I3D real-video inference/throughput plus diagnostic SGD mechanics/fresh model and optimizer restoration. No target evidence; diagnostic pseudo labels use argmax, full threshold/NMS recipe remains required.",
+        "i3d_probe.py_sha256": "09453ef364418a00c4277e650d8498ec9d50d9d6d4233096858de635ff0d6787",
+        "training_modal.py_sha256": "99e0ba12ecc900539c6fd32bb58e98b372e55c2c025f8a8b661760cf65205f61"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real native I3D inference,3diagnosticSGD steps and fresh model/optimizer reload plus finite resumed step passed. No target score claimed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:16:56.265466+00:00",
+      "finished_at_utc": "2026-10-03T19:17:14.826297+00:00",
+      "exit_code": 0,
+      "wall_time_seconds": 17.659778342
+    },
+    {
+      "run_id": "phx-raw-manifest-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::phx_manifest --run-id phx-raw-manifest-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-raw-manifest",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:18:00.500502+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null,
+        "modal_app_id": "ap-A0hAn9QgqyoOQZVzeNN8PC",
+        "function_call_id": "fc-01M41K7HN451XH4F5XFX8QGXRG"
+      },
+      "configuration": {
+        "scope": "Read-only exactPHOENIX byteSHA256/frame metadata and author train/test identity audit for full-run window count/throughput forecast.",
+        "source_sha256": "d388a5bfa19a36fe43520a182bfa1fc83d83f5b660f91bd0ce7a315ce1a827ba"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "8257video SHA/frame metadata verified;7096/519/642physicalsplits, native train/test exactmembership,720914train/47990dev/54997test stride1windows.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:18:13.634371+00:00",
+      "finished_at_utc": "2026-10-03T19:21:15.832023+00:00",
+      "exit_code": 0,
+      "wall_time_seconds": 182.197683581
+    },
+    {
+      "run_id": "native-pseudo-probe-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::pseudo_probe --run-id native-pseudo-probe-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-pseudo-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:23:28.045486+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-vrDBciNs15khMqJMSxc0vv",
+        "function_call_id": "fc-01M41KJ5W68ZZBM9NG5RQPVE5G"
+      },
+      "configuration": {
+        "scope": "Native pseudo threshold0.6/NMS24/clipwrite on3real PHX videos; no final target.",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "i3d_extract.py_sha256": "402f16e1c989288b03a7b66ce175a6f3b9bedc6ba924f210c56204b41b66806e",
+        "training_modal.py_sha256": "e199a0baf9f745bc1f55bc52725abb3cb51d059fe89561dfcffe15eee700d7fa"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native threshold0.6/NMS24 generated2pseudo clips from3real PHOENIX videos/126windows, native stage1.9447seconds including encoding.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:24:15.788070+00:00",
+      "finished_at_utc": "2026-10-03T19:24:29.462852+00:00",
+      "wall_time_seconds": 13.674831563,
+      "exit_code": 0
+    },
+    {
+      "run_id": "native-pseudo-recovery-v1",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::pseudo_probe --run-id native-pseudo-recovery-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-pseudo-recovery",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:29:04.257688+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-pCxNeEzMwCTsdjDeybMvEX",
+        "function_call_id": "fc-01M41KVTMT0R4RJNZRDSW9BDFB"
+      },
+      "configuration": {
+        "scope": "Native3video pseudo extraction then closed-rank replay and simulated post-directory/pre-receipt interruption recovery; exact artifact-hash equality required.",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "i3d_extract.py_sha256": "1d6cdb462aa6d808b3d7c2ef0ca7f3f342bc28cf90306b5b8a9956ef507d5deb",
+        "training_modal.py_sha256": "473389b2777b2335a76c1ad56bdc823288e07af1b461891e0ff261758ac17dc6"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Closed-rank replay did not modify receipt; simulated rename-before-receipt interruption regenerated identical2pseudo clip artifact hashes.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T19:29:25.031991+00:00",
+      "finished_at_utc": "2026-10-03T19:29:44.915940+00:00",
+      "wall_time_seconds": 19.883971784,
+      "exit_code": 0
+    },
+    {
+      "run_id": "native-pseudo-recovery-v2",
+      "agent_ids": [
+        "cico-training-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::pseudo_probe --run-id native-pseudo-recovery-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-pseudo-recovery-codec",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T19:30:58.522573+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Native3video pseudo extraction then closed-rank replay and simulated post-directory/pre-receipt interruption recovery; exact artifact-hash equality required. Additional codec-open/nonempty/decode-output assertions.",
+        "manifest_sha256": "4974f59634d771679d32c7b7031115506286e9dd1247ba42d41900323cb8d53a",
+        "i3d_extract.py_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
+        "training_modal.py_sha256": "473389b2777b2335a76c1ad56bdc823288e07af1b461891e0ff261758ac17dc6"
       },
       "terminal": null
     }
