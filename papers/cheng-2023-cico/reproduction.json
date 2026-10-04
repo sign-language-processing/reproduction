@@ -7183,7 +7183,9 @@
         "max_gpu_hours": null,
         "max_cost_chf": 0.2
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-clcl-paired-native-metric-audit"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -7200,14 +7202,28 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-TmeLgfOiOCp3Scjii4vENh",
+        "function_call_id": "fc-01M43DC6DS71R80MX9PGYN00KT"
       },
       "configuration": {
         "scope": "CPUonly replay pinnednative metrics fromclosed642x1x642 similarities and verify latestmax-testselection/fullstatehistories. No model inference/training. Diagnostic2epochs remainnontarget. Newlyadded observational audit function; previous collector functions and fullCLCLdriver/wrapper unchanged.",
         "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c",
-        "purpose": "Native tiehandling and Torch lower-median semantics need exactsource replay; NumPy-only rank estimates can differ on16tiedqueries. Prepare this collector for finaltrainedmetric audit."
+        "purpose": "Native tiehandling and Torch lower-median semantics need exactsource replay; NumPy-only rank estimates can differ on16tiedqueries. Prepare this collector for finaltrainedmetric audit.",
+        "native_metrics_source_sha256": "103e93090de14f55d1db61e40ecf1fbc814670975bd9b9ab1fe341d0c95f0a6f"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "CPU replay of pinned native metrics exactlymatched all8diagnostic outputs including tiedqueryTorchsort/lower-median semantics. Verifiedclosedcheckpoint fullhistories,26updates and latestmaximum testselection (epoch1zero-based). No model execution orscientific target output.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T12:14:31.809466+00:00",
+      "finished_at_utc": "2026-10-04T12:14:36.892775+00:00",
+      "wall_time_seconds": 5.083345676,
+      "exit_code": 0
     }
   ],
   "artifacts": [
@@ -9302,6 +9318,13 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-paired-preflight-v1/staging.json",
       "sha256": "88d906252e174833fea179e61717540f6bff093a3140022cd82c0ab4950af5cf",
       "bytes": 897
+    },
+    {
+      "artifact_id": "training-phx-clcl-paired-native-metric-audit",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-paired-metric-audit-v1/report.json",
+      "sha256": "d9a390f130a4e2d4398215f05565cfcf8fc24a98d5675793b4934ddf1d078705",
+      "bytes": 2204
     }
   ],
   "gates": [
