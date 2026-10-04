@@ -78,10 +78,11 @@
       "agent_id": "cico-independent-launch-reviewer",
       "model": "GPT-6",
       "harness": "Codex",
-      "scope": "Independent read-only review of native CLCL source/patches, exact paired feature lineage, full-loader preflight and fresh-process recovery, nine local closed artifact hashes, runtime/storage/budget forecast and revised full-run proposal. No implementation or model/Modal execution. Exact model ID/version and harness version are not exposed.",
+      "scope": "Independent read-only review of native CLCL source/patches, exact paired feature lineage, full-loader preflight and fresh-process recovery, nine local closed artifact hashes, runtime/storage/budget forecast and revised full-run proposal. No implementation or model/Modal execution. Exact model ID/version and harness version are not exposed. Independent final closure, local selected similarities/metrics, native CPU replay/history and baseline comparison review; no experiment execution.",
       "evidence": [
         "2026-10-04 delegated reviewer /root/batch_final_report_audit explicitly attests GPT-6 using Codex; exact IDs/versions unavailable.",
-        "Read-only technical PASS for commit0ae059a: closed paired manifests and2epoch13+13update training/recovery evidence verified; proposed11600s forecast fits14400s/4GPUh/CHF14 and unchanged aggregate limits. Revisedrootauthorization remains separate; reviewer did not launch or run experiments."
+        "Read-only technical PASS for commit0ae059a: closed paired manifests and2epoch13+13update training/recovery evidence verified; proposed11600s forecast fits14400s/4GPUh/CHF14 and unchanged aggregate limits. Revisedrootauthorization remains separate; reviewer did not launch or run experiments.",
+        "2026-10-04 explicit reviewer attestation: final405-file manifest/receipt and downloaded small artifacts hash PASS; independent NumPy T2V replay; native Torch V2T tie handling report matches;200 finite histories/latest maximum epoch106 verified."
       ]
     }
   ],
@@ -303,7 +304,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "The 24 preserved released-checkpoint evaluation targets produced comparable values. At the prospectively declared one-decimal precision, all eight PHOENIX values match; two How2Sign recalls differ by +0.1 percentage point, and six CSL-Daily recalls differ by -0.6 to +0.1 points. All median ranks match. This evaluates released checkpoints, not training reproducibility.",
+    "numerical_agreement_basis": "32/48 in-scope values produced: all24 preserved released-checkpoint targets and8 independently trained PHOENIX targets;16 How2Sign/CSL training targets exceed the recorded continuation budget. Under prospectively declared exact one-decimal equality, trained PHOENIX six recalls differ and both median ranks match. Preserved checkpoint assessment remains unchanged: eight PHOENIX values match; two How2Sign recalls differ by+0.1pp and six CSL recalls by-0.6 to+0.1pp. All trained PHOENIX recalls exceed published SA-COMB, a separate comparative conclusion, not a new numerical tolerance.",
     "preference_level": 2,
     "blocker": null
   },
@@ -3060,10 +3061,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 69.5,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 69.31464174454828,
+        "difference": -0.18535825545171747,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-t2v-r5",
@@ -3077,10 +3094,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 86.6,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.22741433021807,
+        "difference": 0.6274143302180732,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-t2v-r10",
@@ -3094,10 +3127,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 92.1,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.43302180685359,
+        "difference": -0.6669781931464058,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-t2v-medianr",
@@ -3111,10 +3160,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 1,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 1.0,
+        "difference": 0.0,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-v2t-r1",
@@ -3128,10 +3193,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 70.2,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 68.06853485107422,
+        "difference": -2.131465148925784,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-v2t-r5",
@@ -3145,10 +3226,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 88,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 87.5389404296875,
+        "difference": -0.4610595703125,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-v2t-r10",
@@ -3162,10 +3259,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 92.8,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.27725982666016,
+        "difference": -1.522740173339841,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-phoenix2014t-v2t-medianr",
@@ -3179,10 +3292,26 @@
       "evidence": [
         "Paper Table 2 and official README Performance table"
       ],
-      "reproduction_plan": "Independent training: BSL5K initialization, target-domain pseudo-label adaptation15epochs, native CLCL200epochs and batch512; evaluate same Tables1\u20133 metrics. Full feasibility under investigation, no trained target value claimed.",
+      "reproduction_plan": "Independent BSL5K teacher, training-only pseudo labels, native15-epoch I3D adaptation and independently extracted paired features, native200-epoch CLCL/globalbatch512; native test-based selection disclosed. Completed without released retrieval checkpoint initialization.",
       "original_value": 1,
       "experiment_id": "trained-phoenix2014t-cico",
-      "result": null
+      "result": {
+        "status": "produced",
+        "reproduced_value": 1.0,
+        "difference": 0.0,
+        "run_ids": [
+          "phx-clcl-full-seed42-v1"
+        ],
+        "artifact_ids": [
+          "training-phx-clcl-full-best-metrics",
+          "training-phx-clcl-full-native-metric-audit",
+          "training-phx-clcl-full-closed-manifest"
+        ],
+        "reason": null,
+        "evidence": [
+          "Completed200 epochs/2600updates; selected zero-basedepoch106 by native maximum test T2V R1, latest tie. All642 test queries/videos evaluated. Closed native similarities replayed with pinned author metric code including Torch ties/lower median."
+        ]
+      }
     },
     {
       "target_id": "trained-csl-daily-t2v-r1",
@@ -7075,7 +7204,20 @@
         "max_gpu_hours": 4,
         "max_cost_chf": 14
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-clcl-full-complete",
+        "training-phx-clcl-full-execution",
+        "training-phx-clcl-full-plan",
+        "training-phx-clcl-full-best-metrics",
+        "training-phx-clcl-full-best-similarities",
+        "training-phx-clcl-full-staging",
+        "training-phx-clcl-full-hardware",
+        "training-phx-clcl-full-pip-freeze",
+        "training-phx-clcl-full-selected-model",
+        "training-phx-clcl-full-last-checkpoint",
+        "training-phx-clcl-full-closed-manifest",
+        "training-phx-clcl-full-native-metric-audit"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -7171,8 +7313,19 @@
         },
         "immutable_deadline_utc": "2026-10-04T16:50:28.149013+00:00"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T12:50:29.010112+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Completed native 200 epochs / 2600 updates, all 7096 training and 642 test examples, true global batch512. Selected epoch106 zero-based by native maximum test T2V R1/latest tie. One segment, native/driver exit0 before original immutable deadline. All eight final metrics passed pinned CPU replay.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T12:50:29.010112+00:00",
+      "finished_at_utc": "2026-10-04T14:33:19.928251+00:00",
+      "wall_time_seconds": 6170.03644908,
+      "exit_code": 0,
+      "gpu_hours": 1.7138990136333334
     },
     {
       "run_id": "phx-clcl-paired-metric-audit-v1",
@@ -7260,7 +7413,10 @@
         "max_gpu_hours": null,
         "max_cost_chf": 0.5
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-clcl-full-closed-manifest",
+        "training-phx-clcl-full-closure-report"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -7277,13 +7433,26 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-KVtFe1yloq2cyNrrXPHqv8",
+        "function_call_id": "fc-01M43NET2V0VCRPEWJAG1YKY54"
       },
       "configuration": {
         "scope": "Onlyafterfullnative200epoch/2600updateterminalsuccess: read-onlyclosedhashaudit ofeveryfullrun artifact/nativeweights/predictions/metrics/receipts. No pruning. WithinCPU4h/CHF8 andreviewed900sfinalcollectionreservation.",
         "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Closed all405 unique full-run files /28792764695 bytes with no missing directories. Every remote artifact hashed; downloaded small artifacts independently checked against closure. No model execution or deletion.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T14:35:37.974755+00:00",
+      "finished_at_utc": "2026-10-04T14:36:09.377269+00:00",
+      "wall_time_seconds": 31.402606177,
+      "exit_code": 0
     },
     {
       "run_id": "phx-clcl-full-native-metric-audit-v1",
@@ -7307,7 +7476,9 @@
         "max_gpu_hours": null,
         "max_cost_chf": 0.2
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-clcl-full-native-metric-audit"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -7324,14 +7495,27 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-1wnScAFWSXfL3uRviMmhHv",
+        "function_call_id": "fc-01M43NK7CFG9TP4413DP8VG5N7"
       },
       "configuration": {
         "scope": "CPUonly exactpinned native metricreplay/200epoch2600updatehistory/latestmax-testselection audit fromclosed fulltrainedsimiliarities/checkpoints. No model inference/training. Same audit function passed all8actualpairedpreflightmetrics.",
         "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c",
         "native_metrics_source_sha256": "103e93090de14f55d1db61e40ecf1fbc814670975bd9b9ab1fe341d0c95f0a6f"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All eight trained metrics exactly match pinned native CPU replay; verified 200 finite loss/test histories,2600 updates,last epoch199,and latest maximum selected epoch106. No model execution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T14:38:06.489122+00:00",
+      "finished_at_utc": "2026-10-04T14:38:14.171883+00:00",
+      "wall_time_seconds": 7.682805012,
+      "exit_code": 0
     }
   ],
   "artifacts": [
@@ -9433,6 +9617,97 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-paired-metric-audit-v1/report.json",
       "sha256": "d9a390f130a4e2d4398215f05565cfcf8fc24a98d5675793b4934ddf1d078705",
       "bytes": 2204
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-complete",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/complete.json",
+      "sha256": "48d6baf924f88d69d7a668581b9bf2371b2d0bbc71e9d35d9c2616a954107b3c",
+      "bytes": 8993
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-execution",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/segment-1-execution.json",
+      "sha256": "cc6cec27f27bf030da97fd04305be332d2a7d9d2ef1d2d50f25862bbf5a92920",
+      "bytes": 498
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-plan",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/plan.json",
+      "sha256": "b3aba6c78392142a6443bba22f21456869407a21e6674f588cabd85fea827592",
+      "bytes": 1298
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-best-metrics",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/native/best-metrics-106.json",
+      "sha256": "0ee7716d12da0570f089b662811f89bdedbb14e862b74cd6f9d1af0b2bfa0d31",
+      "bytes": 2329
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-best-similarities",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/native/best-similarities-106.npz",
+      "sha256": "70fe0afd0283185df9de2bf8317a0eb0aeda77e9f2a28d2008586e0cb8963fca",
+      "bytes": 3236028
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-staging",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/staging.json",
+      "sha256": "5f738d3c1876421f449f51d6b374db0187ebedea0cc090bce37e84281486a9b4",
+      "bytes": 902
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-hardware",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/segment-1-hardware.txt",
+      "sha256": "5fb49b78be1a1b4929299b16fb2728de78cb1fcd57d70afdf0fa8ce580ffb349",
+      "bytes": 1689
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-pip-freeze",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/segment-1-pip-freeze.txt",
+      "sha256": "18f3923231469e52a7fd51626a689e07b47817c9a53f9e627233081bab528b39",
+      "bytes": 7034
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-selected-model",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/native/best-model-106.pt",
+      "sha256": "40754b2a636eb012f53c4f3fac024bf8212657f962e0c12422ca36dd28711a4a",
+      "bytes": 350470173
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-last-checkpoint",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-seed42-v1/native/last-full-state.pt",
+      "sha256": "d5e739466ca589a7598f155917d83a5fc097327af5e4288abef872d5b9b45f63",
+      "bytes": 848649001
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-closed-manifest",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-closure-v1/manifest.json",
+      "sha256": "c0e256af1008491fb33f09a10598ed2e67c588e6929f7ebac957d79d99f92899",
+      "bytes": 77813
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-closure-report",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-closure-v1/report.json",
+      "sha256": "6f4f18d26421b8458515ab7f5bfd2c6151548a1f9c68fbb110926151de6bff63",
+      "bytes": 407
+    },
+    {
+      "artifact_id": "training-phx-clcl-full-native-metric-audit",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-clcl-full-native-metric-audit-v1/report.json",
+      "sha256": "92bd1762ed2fd296237cd15126432bfe95b469f4e2bfbd31ee8a58ed7a517826",
+      "bytes": 11641
     }
   ],
   "gates": [
@@ -9541,9 +9816,9 @@
   "contacts": [],
   "ethics": "Existing research datasets only; no new participants or human evaluation. Use published research/cloud permissions and prior institutional CSL grant; raw data and predictions remain in project volumes.",
   "conclusion_assessment": {
-    "assessed_on": "2026-10-02",
+    "assessed_on": "2026-10-04",
     "review_agent_id": "compute-inventory",
-    "scope": "Interpretation of the completed released-checkpoint evaluation; separate from the unchanged exact numerical-agreement assessment.",
+    "scope": "Preserved released-checkpoint evaluation plus completed independent PHOENIX encoder and CLCL training.",
     "claims": [
       {
         "claim": "CiCo substantially outperforms the reported SPOT-ALIGN retrieval baselines on How2Sign and PHOENIX.",
@@ -9559,16 +9834,16 @@
       },
       {
         "claim": "The training procedure and proposed components cause the reported gains.",
-        "assessment": "not assessed",
+        "assessment": "PHOENIX training comparative conclusion corroborated; component causality not assessed",
         "paper_evidence": "Section 4.3, Tables 4\u20139, and the training claim in Section 4.2.",
-        "basis": "This attempt evaluates released checkpoints and features. It does not repeat training, component ablations, baseline training/evaluation, or multiple training seeds."
+        "basis": "Independent15-epoch encoder adaptation plus200-epoch CLCL yields PHOENIX T2V/V2T R1=69.31464174454828/68.06853485107422, exceeding published SA-COMB55.8/53.1 by13.51464174454828/14.96853485107422pp. All six recalls exceed baseline; both medians tie. No released retrieval checkpoint initialized training. Baseline reruns, other datasets training, ablations and multiple seeds remain unassessed."
       }
     ],
-    "limits": "No new numerical tolerance or statistical significance criterion is introduced. Evaluation of one released checkpoint per dataset cannot estimate training-seed variability or establish end-to-end training reproducibility."
+    "limits": "One PHOENIX training seed with native test-based checkpoint selection; published comparison systems not rerun. How2Sign/CSL training, ablations, causal attribution and seed variability remain unassessed. Exact numerical assessment unchanged."
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_full_complete_final_metric_audit_pending",
+    "state": "completed_bounded_attempt",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -9729,7 +10004,7 @@
     },
     "full_clcl_revised_proposal": {
       "declared_at_utc": "2026-10-04T12:04:19.108942+00:00",
-      "state": "launched_original_deadline_frozen",
+      "state": "completed_within_original_deadline",
       "run_id": "phx-clcl-full-seed42-v1",
       "reason": "Actualpairedendtoendupperbound fails initial9000scondition; propose newunlaunched4GPUh/CHF14cap within24GPUh/CHF90, noexistingdeadline reset.",
       "cost_reallocation": "Approvedroot2026-10-04T12:48UTC: closedaware16\u219214,fullCLCL12\u219214,total90; executedoriginalstop policiesunchanged.",
@@ -9742,6 +10017,28 @@
       },
       "storage_bound_note": "All measured sizes belowearlierconservativebounds (laststate848645161, similaritiesfloat64upper6594624, pairedpreflight5GiB). Retain117.634GiBcomponentupper/150GiBreservation unchanged.",
       "authorization": "RootexplicitAPPROVAL2026-10-04T12:48UTC: NEWUNLAUNCHED14400s/4GPUh/CHF14,max3segments,forecast11600s withinwhole24GPUh/CHF90. IndependenttechnicalPASS0ae059a, actualnative2epoch/full642test/restoration/closedhash/nativeCPUmetricreplayverified. No freshrestart; immutabledeadlinebeginsfirstexecution. Thisprospectivelyreplacesfailedunlaunched3hproposal,notanyexecuteddeadline."
+    },
+    "final_assessment": {
+      "completed_at_utc": "2026-10-04T14:38:14.171883+00:00",
+      "produced_trained_targets": 8,
+      "not_produced_trained_targets": 16,
+      "full_run_id": "phx-clcl-full-seed42-v1",
+      "selected_epoch_zero_based": 106,
+      "comparative_conclusion": "Independent15-epoch encoder adaptation plus200-epoch CLCL yields PHOENIX T2V/V2T R1=69.31464174454828/68.06853485107422, exceeding published SA-COMB55.8/53.1 by13.51464174454828/14.96853485107422pp. All six recalls exceed baseline; both medians tie. No released retrieval checkpoint initialized training. Baseline reruns, other datasets training, ablations and multiple seeds remain unassessed.",
+      "human_action_required": false
+    },
+    "final_accounting": {
+      "known_gpu_seconds_including_full": 43414.840074456,
+      "conservative_pre_native_additional_gpu_seconds": 900,
+      "known_cpu_seconds_including_final_closure_and_audits": 2427.518646454,
+      "conservative_unknown_cpu_caps_seconds": 6000,
+      "gpu_ceiling_hours": 24,
+      "cpu_ceiling_hours": 4,
+      "cost_reservation_chf": 90,
+      "storage_reserved_gib": 150,
+      "storage_forecast_months": 1,
+      "actual_billed_cost": null,
+      "detail": "Original executed stop policies unchanged. Measured function/process time excludes provisioning; conservative unknown caps remain separately charged. CHF1/USD is a planning assumption. No native artifacts pruned."
     }
   }
 }
