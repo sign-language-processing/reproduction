@@ -7233,6 +7233,53 @@
       "finished_at_utc": "2026-10-04T12:14:36.892775+00:00",
       "wall_time_seconds": 5.083345676,
       "exit_code": 0
+    },
+    {
+      "run_id": "phx-clcl-full-closure-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::close_evidence --run-id phx-clcl-full-closure-v1 --source-runs phx-clcl-full-seed42-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-clcl-full-closure",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T12:50:40.213518+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Onlyafterfullnative200epoch/2600updateterminalsuccess: read-onlyclosedhashaudit ofeveryfullrun artifact/nativeweights/predictions/metrics/receipts. No pruning. WithinCPU4h/CHF8 andreviewed900sfinalcollectionreservation.",
+        "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
