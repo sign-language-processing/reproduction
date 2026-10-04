@@ -6254,7 +6254,9 @@
         "max_gpu_hours": null,
         "max_cost_chf": 0.1
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-how2-label-window-forecast"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -6271,13 +6273,26 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-97raWqb9hJB3G5454cdoHA",
+        "function_call_id": "fc-01M42ZSD3V7N6R0MD1EA2JHX3G"
       },
       "configuration": {
         "scope": "Count exact pinnedauthor How2Sign label frame/window totals to make lower-bound compute feasibility evidence explicit; no rawacquisition, decoding, GPU or model execution. Within originalCPU4h/CHF8 aggregate.",
         "source_sha256": "8760b0946216b91f65d7cbb5fd38df8377d8b98992472545505415e4de4ca6c2"
       },
-      "terminal": null
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Counted exact pinned native How2Sign train/test labels, frame counts and stride-one16frame windows; no raw acquisition or model execution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T08:16:57.238501+00:00",
+      "finished_at_utc": "2026-10-04T08:16:57.333950+00:00",
+      "wall_time_seconds": 0.09548118600000066,
+      "exit_code": 0
     }
   ],
   "artifacts": [
@@ -7259,6 +7274,13 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-i3d-adaptation-full-v1/native/checkpoint.pth.tar",
       "sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
       "bytes": 142681393
+    },
+    {
+      "artifact_id": "training-how2-label-window-forecast",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/how2-label-window-forecast-v1/report.json",
+      "sha256": "358e4f00756ddee7c318a644b5a3ef62abfd87506c6f6ced750b0fa351eb4949",
+      "bytes": 895
     }
   ],
   "gates": [
@@ -7425,6 +7447,17 @@
       "author_test_rows": 642,
       "frame_count_differences": 0,
       "method": "Read-only exact per-video native labelnum_frames versus closedrawmanifest frames; all7096train+642test match. No experiment rerun."
+    },
+    "how2_feasibility": {
+      "forecast_run_id": "how2-label-window-forecast-v1",
+      "train_videos": 31085,
+      "test_videos": 2348,
+      "train_windows": 4988373,
+      "test_windows": 376538,
+      "required_windows_three_passes": 15718195,
+      "forecast_extraction_gpu_hours": 45.57583036371543,
+      "forecast_basis": "Extrapolate native label window totals to completed PHOENIX full-stage throughput: teacher720914/7046.300241s andfeatures775911/8338.905985s. Two featurepasses covertrain+test,teacher covers train. This estimate excludes rawdownload/manualrealignment,encoderadaptation,CLCL,stagingdifference andextra evaluation. Not a measured How2Sign run.",
+      "limitation": "Exactraw correspondence and video decoding unmeasured; rawdataabsent and notacquired because fullchainforecast exceeds originalremaining24GPUh continuation ceiling. No SPOT-ALIGN substitute or shortenedrecipe."
     }
   }
 }
