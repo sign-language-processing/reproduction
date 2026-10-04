@@ -1,6 +1,6 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
-**Current work:** native 15-epoch PHOENIX sign-encoder training completed, and its adapted-feature probe/recovery checks passed. Full domain-aware extraction completed; both7738-file feature archives are now closed and verified. Actual paired-feature CLCL preflight and fresh-process recovery passed. The revised full training run is authorized and being launched.
+**Current work:** native 15-epoch PHOENIX sign-encoder training completed, and its adapted-feature probe/recovery checks passed. Full domain-aware extraction completed; both7738-file feature archives are now closed and verified. Actual paired-feature CLCL preflight and fresh-process recovery passed. Full native200epoch retrieval training is running.
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
@@ -187,3 +187,5 @@ Actual paired CLCL preflight completed two full-loader epochs (26 updates) with 
 Independent launch reviewer `cico-independent-launch-reviewer` identifies its session as GPT-6 using Codex; exact model and harness versions are unavailable. It independently checked the paired inputs, native source, closed two-epoch training and recovery receipts, runtime, storage and budget plan. Technical review passed for commit `0ae059a`; it performed no implementation or experiment execution. The orchestrator authorized the revised new full-run allocation at12:48UTC onOctober4, before launch; executed run deadlines remain unchanged.
 
 A separate5.083-second CPU audit replayed the pinned author metric functions on the closed preflight similarity matrices. All eight values matched exactly, including tied-query sorting and the lower median used by PyTorch. It verified the saved26-update history and latest maximum test-based checkpoint selection. This validated the final collection method; no model was executed and diagnostic scores remain outside the targets.
+
+Full native CLCL run `phx-clcl-full-seed42-v1` started onOctober4 at12:50:29UTC: app `ap-dZxnrcMB1x5YIYBEGFqamR`, call `fc-01M43FCG5PX4SY599MS0DSW71C`. Its original immutable deadline is16:50:28UTC, with at most three segments sharing the four-GPU-hour/CHF14 ceiling. It uses the independently trained encoder’s exact closed paired features, native200epochs/2,600updates/global512 batch, and the disclosed test-based selection. A submitted run is not a completed training reproduction.

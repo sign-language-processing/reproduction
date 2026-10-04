@@ -7092,7 +7092,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-dZxnrcMB1x5YIYBEGFqamR",
+        "function_call_id": "fc-01M43FCG5PX4SY599MS0DSW71C"
       },
       "configuration": {
         "scope": "Native200epochs/2600updates onexact independentlypreparedPHOENIXpairedfeatures,7096train642test,trueglobalbatch512,accumulation1,seed42,sampler0,alpha.9. Native max-testT2VR1 selection/latestties disclosed. No epoch/batch/protocol truncation.",
@@ -7166,9 +7168,11 @@
           "exact_source_and_patch_hashes_verified": true,
           "paired_closed_manifest_hashes_verified": true,
           "preserved_24_checkpoint_targets_equal": true
-        }
+        },
+        "immutable_deadline_utc": "2026-10-04T16:50:28.149013+00:00"
       },
-      "terminal": null
+      "terminal": null,
+      "started_at_utc": "2026-10-04T12:50:29.010112+00:00"
     },
     {
       "run_id": "phx-clcl-paired-metric-audit-v1",
@@ -9516,7 +9520,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "full_native_clcl_approved_launching",
+    "state": "full_native_clcl_running",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -9531,7 +9535,7 @@
       "Exact native labels match all7096PHOENIX train/642test and18401CSL train/1176test raw filenames. PHOENIX dev.pkl combines train+dev and cannot be interpreted as519held-out examples.",
       "Native PHOENIX decoder actual-dimension patch and simple-video-utils passed byte-exact RGB/frame-index equivalence with OpenCV across initial/interior/tail/short windows before full extraction."
     ],
-    "compute_policy": "Whole continuation24GPUh/CHF90 unchanged. Pseudo1.9573GPUh andagnostic2.3164GPUh completed. Native15epochadaptation2.15239GPUh andactualadaptedfeatureprobe passed; fullawarefeaturestage runs under original4h/CHF16 deadline. Native pairedCLCL full stillrequires representative full-loader preflight/forecast/review.",
+    "compute_policy": "Wholecontinuation24GPUh/CHF90 unchanged. Native15epochI3D andbothfeature streamsclosed; actualpaired2epochpreflight/exactrestoration/nativeCPUmetricspassed. RootauthorizednewfullCLCL4GPUh/CHF14,max3segments,originaldeadline2026-10-04T16:50:28.149013UTC; native200epochs2600updates/true512/testbasedselectionunchanged. No freshrestart ordeadlineextension.",
     "evidence": [
       "https://github.com/FangyunWei/SLRT/tree/38a4f7b00da7a858d59b7fabe5093876a84db8e0/CiCo",
       "https://how2sign.github.io/",
@@ -9677,7 +9681,7 @@
     },
     "full_clcl_revised_proposal": {
       "declared_at_utc": "2026-10-04T12:04:19.108942+00:00",
-      "state": "approved_before_launch",
+      "state": "launched_original_deadline_frozen",
       "run_id": "phx-clcl-full-seed42-v1",
       "reason": "Actualpairedendtoendupperbound fails initial9000scondition; propose newunlaunched4GPUh/CHF14cap within24GPUh/CHF90, noexistingdeadline reset.",
       "cost_reallocation": "Approvedroot2026-10-04T12:48UTC: closedaware16\u219214,fullCLCL12\u219214,total90; executedoriginalstop policiesunchanged.",
