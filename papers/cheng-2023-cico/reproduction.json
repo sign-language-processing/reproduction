@@ -6490,7 +6490,12 @@
         "max_gpu_hours": 4,
         "max_cost_chf": 16
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-aware-full-execution",
+        "training-phx-aware-full-complete",
+        "training-phx-aware-full-plan",
+        "training-phx-aware-collection-manifest"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -6568,7 +6573,11 @@
         "max_gpu_hours": null,
         "max_cost_chf": 1
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-aware-collection-report",
+        "training-phx-aware-collection-manifest",
+        "training-phx-aware-features-archive"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -6594,8 +6603,18 @@
         "source_sha256": "8760b0946216b91f65d7cbb5fd38df8377d8b98992472545505415e4de4ca6c2",
         "source_change_note": "Before this unlaunched CPU collection: append independent read-only How2Sign label forecast function; collect_features body and source/identity/hash assertions remain unchanged. Active GPU feature source untouched."
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T11:39:05.345443+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Closed7738native finitefloat32x1024feature files/775911windows, exact rawmembership,272rankreceipts, adaptedcheckpoint/source hashes; deterministic ZIP_STOREDreadback verified every picklebyte. Later local manifest/root/plan/count audit passes; local agent did not download wholearchive.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T11:39:05.345443+00:00",
+      "finished_at_utc": "2026-10-04T11:48:57.663914+00:00",
+      "wall_time_seconds": 592.3186550549999,
+      "exit_code": 0
     },
     {
       "run_id": "how2-label-window-forecast-v1",
@@ -6658,6 +6677,70 @@
       "finished_at_utc": "2026-10-04T08:16:57.333950+00:00",
       "wall_time_seconds": 0.09548118600000066,
       "exit_code": 0
+    },
+    {
+      "run_id": "phx-clcl-paired-preflight-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/clcl_full_modal.py::run --run-id phx-clcl-paired-preflight-v1 --agnostic-manifest /outputs/phx-agnostic-collection-v1/manifest.json --agnostic-sha 8a51ffe369071939d249d0b92f4f081d71e878d6db3f4597b6a21613046a3da3 --aware-manifest /outputs/phx-aware-collection-v1/manifest.json --aware-sha 60c86cecf796321310215aa7d465a73b93853d442a5665317155db2d3348b5b3 --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-clcl-paired-preflight",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T11:51:05.470819+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Actual closedpairedfeatures; all7096training rows/drop_last13updates and642test queries. Native trueglobalbatch512,accumulation1,configured200epoch/2600updateoptimizer horizon,seed42/sampler0/alpha.9. Stopafter1completeepoch,thenfreshprocessresume for2ndepoch within SAME original1800s deadline,max2segments. Diagnostic metrics never finalpaperresults.",
+        "source_sha256": "737c29d41c1c3b910c504542fa71661ead17445476e2cef6b48ba391d5f71e51",
+        "wrapper_sha256": "a198f8d9dd6e6de1afda86723f6f311772718ecff5c5cdea23d42c8e221d2d1a",
+        "patches_sha256": {
+          "0011-clcl-atomic-recovery-and-selection.patch": "8ee81760e80eaf5ea31426f8b7e934c80ef078d401d07927c4a94a6bf9fcb45d",
+          "0012-clcl-native-initialization-audit.patch": "7edad7b0c2da033ff4bdb1cdc726a4351080bc546fb4a6974ec4b376ded6b25b",
+          "0010-clcl-phoenix-aware-path.patch": "a2d3d5c60c4a8444c178741211c25afadf745f8b0566eee37604b505860cef28"
+        },
+        "agnostic_manifest_sha256": "8a51ffe369071939d249d0b92f4f081d71e878d6db3f4597b6a21613046a3da3",
+        "aware_manifest_sha256": "60c86cecf796321310215aa7d465a73b93853d442a5665317155db2d3348b5b3",
+        "aware_weights_sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
+        "forecast": "Two full-loader epochs plus fresh-process staging expected<=1200s; hardcombined1800s/0.5GPUh/CHF2 within existingdiagnostics2h/CHF10 andwhole24h/CHF90. Fullrunonlyafter actualendtoend epoch/staging/write/commit measurements and explicitindependentreview PASS.",
+        "review": "Root reviewed currentguards/pins and conditionally authorized actualpaired diagnostic; exactawareSHAassertion-onlydiff744f163 independentlyreviewedPASS2026-10-04. Reviewerbatch_final_report_audit reviewing eventual fullplan.",
+        "prelaunch_checks": {
+          "checked_at_utc": "2026-10-04T11:51:05.470819+00:00",
+          "no_existing_run_directory": true,
+          "no_live_clcl_app": true,
+          "canonical_volumes_confirmed": true
+        }
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
@@ -7646,6 +7729,48 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/how2-label-window-forecast-v1/report.json",
       "sha256": "358e4f00756ddee7c318a644b5a3ef62abfd87506c6f6ced750b0fa351eb4949",
       "bytes": 895
+    },
+    {
+      "artifact_id": "training-phx-aware-full-execution",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-features-full-v1/segment-1-execution.json",
+      "sha256": "57549ffc5b72f79493786728f08af00d084477784ab50437952c13b1775965bd",
+      "bytes": 393
+    },
+    {
+      "artifact_id": "training-phx-aware-full-complete",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-features-full-v1/complete.json",
+      "sha256": "15b853cde98391d7eff1dca1a92312d9a2eb5ce66952deb62fa3f497e9e43ed8",
+      "bytes": 141
+    },
+    {
+      "artifact_id": "training-phx-aware-full-plan",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-features-full-v1/plan.json",
+      "sha256": "3e24a9700a3db5ebc20e425746ce549ad161bb47a4cf6fb1719c3c4464124743",
+      "bytes": 1041
+    },
+    {
+      "artifact_id": "training-phx-aware-collection-report",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-collection-v1/report.json",
+      "sha256": "ebac7db94a002652068e78f4d5ab1d2c971e11f8993bc1cca94aafbe54609093",
+      "bytes": 508
+    },
+    {
+      "artifact_id": "training-phx-aware-collection-manifest",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-collection-v1/manifest.json",
+      "sha256": "60c86cecf796321310215aa7d465a73b93853d442a5665317155db2d3348b5b3",
+      "bytes": 2773628
+    },
+    {
+      "artifact_id": "training-phx-aware-features-archive",
+      "kind": "generated-features",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-aware-collection-v1/features.zip",
+      "sha256": "9ac9d90f134346d83ac32f18010b646ab61218848f3505e13320e07169ab47fa",
+      "bytes": 3181370649
     }
   ],
   "gates": [
@@ -7781,7 +7906,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_i3d_and_aware_features_complete_cpu_closure_running",
+    "state": "paired_features_closed_native_clcl_preflight_declared",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -7937,7 +8062,8 @@
       "driver_sha256": "737c29d41c1c3b910c504542fa71661ead17445476e2cef6b48ba391d5f71e51",
       "wrapper_sha256": "a198f8d9dd6e6de1afda86723f6f311772718ecff5c5cdea23d42c8e221d2d1a",
       "aware_weights_sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
-      "detail": "Before any paired preflight/full execution, tighten the existing provenance assertion from unequal encoders to the exact closed adapted checkpoint SHA. No training computation, optimizer horizon or feature contents changed. Closed aware manifest SHA and prospective run entry are still required before launch. Measure conservative whole wrapper time minus staging for one native epoch including full642-test evaluation, selected checkpoint/similarity writes, final hashing and volume commits; repeat a second epoch after fresh process resume within the same1800s deadline."
+      "detail": "Before any paired preflight/full execution, tighten the existing provenance assertion from unequal encoders to the exact closed adapted checkpoint SHA. No training computation, optimizer horizon or feature contents changed. Closed aware manifest SHA and prospective run entry are still required before launch. Measure conservative whole wrapper time minus staging for one native epoch including full642-test evaluation, selected checkpoint/similarity writes, final hashing and volume commits; repeat a second epoch after fresh process resume within the same1800s deadline.",
+      "root_assertion_review": "PASS2026-10-04T08:44UTC; exactSHAassertiononly, nativebehaviorunchanged."
     }
   }
 }

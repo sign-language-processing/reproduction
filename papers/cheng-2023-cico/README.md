@@ -1,6 +1,6 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
-**Current work:** native 15-epoch PHOENIX sign-encoder training completed, and its adapted-feature probe/recovery checks passed. Full domain-aware extraction completed; its CPU byte/hash closure is running, while agnostic features are already closed and verified. Actual paired-feature CLCL training remains pending.
+**Current work:** native 15-epoch PHOENIX sign-encoder training completed, and its adapted-feature probe/recovery checks passed. Full domain-aware extraction completed; both7738-file feature archives are now closed and verified. Actual paired-feature CLCL preflight is declared before fulltraining.
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
@@ -178,4 +178,6 @@ Compute reservation accounting remains CHF90: completed pseudo8, agnostic10, ada
 
 Before actual paired CLCL preflight, the driver pins the aware stream to the exact closed adapted-checkpoint SHA `c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35`, in addition to both closed feature manifests and archive hashes. The planned diagnostic runs one full 13-update epoch and all 642 test queries, then a second epoch after fresh-process restoration under the same 1,800-second ceiling. Its conservative epoch forecast includes evaluation, checkpoint/similarity writes, final hashes and volume commits; warm training throughput alone is insufficient.
 
-Domain-aware extraction finished on October4 at11:37:33UTC in13085.9996seconds (3.6350GPU-hours), one segment with native/stage exit0 before its original11:59:24deadline. The declared CPU collector started automatically at11:38 to verify every feature and build the closed archive. This completes encoder training and extraction, not trained retrieval evaluation.
+Domain-aware extraction finished on October4 at11:37:33UTC in13085.9996seconds (3.6350GPU-hours), one segment with native/stage exit0 before its original11:59:24deadline. The declared CPU collector was submitted automatically at11:38; its function started at11:39:05UTC to verify every feature and build the closed archive. This completes encoder training and extraction, not trained retrieval evaluation.
+
+Aware CPU closure completed at11:48:57UTC in592.319seconds: all7,738native feature files and775,911windows passed exact membership, finite shape/dtype, checkpoint/source identity and ZIP readback hashes. Its manifest SHA is `60c86cecf796321310215aa7d465a73b93853d442a5665317155db2d3348b5b3`; archive SHA is `9ac9d90f134346d83ac32f18010b646ab61218848f3505e13320e07169ab47fa`. Paired full-loader CLCL preflight `phx-clcl-paired-preflight-v1` has a prospectively declared combined1,800-second/0.5GPU-hour/CHF2 ceiling and at most two segments, within the unchanged diagnostic budget. It executes one native epoch and then one resumed epoch; full200epoch training still requires independent measured-path review.
