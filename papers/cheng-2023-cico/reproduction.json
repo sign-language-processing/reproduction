@@ -7096,7 +7096,7 @@
       },
       "configuration": {
         "scope": "Native200epochs/2600updates onexact independentlypreparedPHOENIXpairedfeatures,7096train642test,trueglobalbatch512,accumulation1,seed42,sampler0,alpha.9. Native max-testT2VR1 selection/latestties disclosed. No epoch/batch/protocol truncation.",
-        "launch_authorization": "PENDING revisedroot4h/CHF14authorization and explicit independentreviewPASS; nofullrunlaunched. Original unlaunched3h/CHF12proposal failed<=9000sforecast condition basedactualpaired measurements.",
+        "launch_authorization": "RootexplicitAPPROVAL2026-10-04T12:48UTC: NEWUNLAUNCHED14400s/4GPUh/CHF14,max3segments,forecast11600s withinwhole24GPUh/CHF90. IndependenttechnicalPASS0ae059a, actualnative2epoch/full642test/restoration/closedhash/nativeCPUmetricreplayverified. No freshrestart; immutabledeadlinebeginsfirstexecution. Thisprospectivelyreplacesfailedunlaunched3hproposal,notanyexecuteddeadline.",
         "source_sha256": "737c29d41c1c3b910c504542fa71661ead17445476e2cef6b48ba391d5f71e51",
         "wrapper_sha256": "528e6459952bcaa4b311e2f0cfa956f4681b5cad6ed1ad78dddd058f74c50a7a",
         "wrapper_change": "Onlynewfullfunctiontimeout and fullmax_seconds10800\u219214400; preflight1800s/2segments unchanged. Immutable deadline/claims/resume/completion-only/processgroupguards unchanged. Historicalpreflight sourcepin retained.",
@@ -7154,9 +7154,18 @@
         "independent_technical_review": {
           "reviewer_agent_id": "cico-independent-launch-reviewer",
           "reviewed_commit": "0ae059a",
-          "decision": "technical_pass_pending_root_authorization",
+          "decision": "pass",
           "recorded_at_utc": "2026-10-04T12:07:37.707222+00:00",
           "detail": "Exact native source/guards,lineage,closed actualpairedpreflight/restoration,memory/runtime/storage/aggregatebudget PASS. Root4h/CHF14authority andfinal noduplicatecheck stillrequired beforelaunch."
+        },
+        "prelaunch_checks": {
+          "checked_at_utc": "2026-10-04T12:49:17.936428+00:00",
+          "no_existing_run_directory": true,
+          "no_live_clcl_app": true,
+          "canonical_volumes_confirmed": true,
+          "exact_source_and_patch_hashes_verified": true,
+          "paired_closed_manifest_hashes_verified": true,
+          "preserved_24_checkpoint_targets_equal": true
         }
       },
       "terminal": null
@@ -9460,7 +9469,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "paired_preflight_complete_full_forecast_under_review",
+    "state": "full_native_clcl_approved_launching",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -9493,14 +9502,14 @@
       "gpu_diagnostics_max_cost_chf": 10,
       "detail": "Single GPU per execution; measured preflight and independently reviewed plan before any full training launch. No ordinary gradient accumulation substitute for512 global contrastive negative pool.",
       "reservation_reconciliation": {
-        "reviewed_at_utc": "2026-10-04T08:34:04.687206+00:00",
-        "detail": "Reconcile unused completed-stage planning reservations; original run stop policies/deadlines remain unchanged. No new compute ceiling or permission expansion.",
+        "reviewed_at_utc": "2026-10-04T12:49:17.936428+00:00",
+        "detail": "Reconcile unused completed-stage planning reservations; original run stop policies/deadlines remain unchanged. No new compute ceiling or permission expansion. Rootapprovedrevisedunlaunchedfull4h/CHF14 on2026-10-04T12:48UTC afterpairedforecastfailedoriginal3hcondition; alloriginalexecutedstop_policiesunchanged.",
         "cost_reservations_chf": {
           "closed_pseudo": 8,
           "closed_agnostic_features": 10,
           "closed_adaptation": 10,
-          "aware_features": 16,
-          "clcl": 12,
+          "aware_features": 14,
+          "clcl": 14,
           "diagnostics": 10,
           "cpu": 8,
           "storage": 16
@@ -9621,10 +9630,10 @@
     },
     "full_clcl_revised_proposal": {
       "declared_at_utc": "2026-10-04T12:04:19.108942+00:00",
-      "state": "awaiting_internal_review",
+      "state": "approved_before_launch",
       "run_id": "phx-clcl-full-seed42-v1",
       "reason": "Actualpairedendtoendupperbound fails initial9000scondition; propose newunlaunched4GPUh/CHF14cap within24GPUh/CHF90, noexistingdeadline reset.",
-      "cost_reallocation": "Proposed aware16\u219214,CLCL12\u219214; notyetactive untilrootapproval. Aware completed3.635h costs estimated10.23USD requestedresources plusload;14reserve retainsmargin.",
+      "cost_reallocation": "Approvedroot2026-10-04T12:48UTC: closedaware16\u219214,fullCLCL12\u219214,total90; executedoriginalstop policiesunchanged.",
       "closed_paired_manifest_sha256": "f1bfd95ee0a599e950fe9db08f877486bd510d1cccdc700792bf58fa21885479",
       "actual_paired_artifact_sizes": {
         "selected_model_bytes": 350470173,
@@ -9632,7 +9641,8 @@
         "largest_642_similarity_npz_bytes": 3127166,
         "closed_preflight_total_bytes": 2270868983
       },
-      "storage_bound_note": "All measured sizes belowearlierconservativebounds (laststate848645161, similaritiesfloat64upper6594624, pairedpreflight5GiB). Retain117.634GiBcomponentupper/150GiBreservation unchanged."
+      "storage_bound_note": "All measured sizes belowearlierconservativebounds (laststate848645161, similaritiesfloat64upper6594624, pairedpreflight5GiB). Retain117.634GiBcomponentupper/150GiBreservation unchanged.",
+      "authorization": "RootexplicitAPPROVAL2026-10-04T12:48UTC: NEWUNLAUNCHED14400s/4GPUh/CHF14,max3segments,forecast11600s withinwhole24GPUh/CHF90. IndependenttechnicalPASS0ae059a, actualnative2epoch/full642test/restoration/closedhash/nativeCPUmetricreplayverified. No freshrestart; immutabledeadlinebeginsfirstexecution. Thisprospectivelyreplacesfailedunlaunched3hproposal,notanyexecuteddeadline."
     }
   }
 }
