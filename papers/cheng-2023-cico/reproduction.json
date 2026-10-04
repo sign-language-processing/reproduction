@@ -5654,7 +5654,10 @@
         "max_gpu_hours": 4.5,
         "max_cost_chf": 18
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-adaptation-complete",
+        "training-phx-adaptation-execution"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -5673,7 +5676,8 @@
         },
         "gpu": "A100-80GB",
         "modal_app_id": "ap-CXTLdOIOuUQT49IWJ9Z2WL",
-        "function_call_id": "fc-01M42Q24B7MZ256SK13YP4N4ET"
+        "function_call_id": "fc-01M42Q24B7MZ256SK13YP4N4ET",
+        "gpu_hours": 2.152389286879722
       },
       "configuration": {
         "scope": "All8608 native teacher pseudo clips;15epochs,4batch,32280updates,SGD.01/momentum.9/wd0/seed0,5383teacher-classhead,workers0,finalepoch15 selection. Zero validation rows produce no scientificvalidationmetric.",
@@ -5724,10 +5728,21 @@
           "existing_live_adaptation_app": false,
           "canonical_volumes": "Both present; cico-features manifest verified through wrapper; version=2 enforced by unchanged launcher."
         },
-        "immutable_deadline_utc": "2026-10-04T10:14:24.703336+00:00"
+        "immutable_deadline_utc": "2026-10-04T10:14:24.703336+00:00",
+        "final_checkpoint_sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T05:44:27.485088+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native15epochs/32280SGDupdates completed on all8608teacher clips, finalepoch selection, zero validation rows; one segment before originaldeadline. Retrieval evaluation remains downstream.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T05:44:27.485088+00:00",
+      "finished_at_utc": "2026-10-04T07:53:37.138473+00:00",
+      "wall_time_seconds": 7748.601432767,
+      "exit_code": 0
     },
     {
       "run_id": "csl-feature-length-audit-v1",
@@ -5998,6 +6013,56 @@
         ],
         "source_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d",
         "budget": "Within original CPU4h/CHF8 and total24GPUh/CHF90 continuation ceilings."
+      },
+      "terminal": null
+    },
+    {
+      "run_id": "native-adapted-features-probe-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::pseudo_probe --run-id native-adapted-features-probe-v1 --mode features --weights-path /outputs/phx-i3d-adaptation-full-v1/native/checkpoint.pth.tar --weights-sha c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "native-adapted-features-probe",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T07:55:06.729989+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": 0.25,
+        "max_cost_chf": 1.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": "A100-80GB"
+      },
+      "configuration": {
+        "scope": "Actual finalepoch15 adapted encoder: native126window/3realvideo features, finite float32x1024, closedrankskip and incomplete-rank regeneration exacthash proof. No scientific retrievaltarget.",
+        "weights_sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
+        "source_sha256": "b6f991eba3c3a6988c5f260208fe667c18c37ab61e9533d2a6fc82b4202ded8c",
+        "wrapper_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d",
+        "budget": "Within original diagnostic2GPUh/CHF10 and whole24GPUh/CHF90 ceilings."
       },
       "terminal": null
     }
@@ -6925,6 +6990,20 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-collection-v1/features.zip",
       "sha256": "c60bdd14c7082015ac3e0d6b96ee03962654390915362d61b391dfdf9563db96",
       "bytes": 3181370649
+    },
+    {
+      "artifact_id": "training-phx-adaptation-complete",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-i3d-adaptation-full-v1/complete.json",
+      "sha256": "630ddfbc797ae3740119be81d7f151ac31bc5f2332d9598c4e79b6d65a1ec448",
+      "bytes": 320
+    },
+    {
+      "artifact_id": "training-phx-adaptation-execution",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-i3d-adaptation-full-v1/segment-1-execution.json",
+      "sha256": "b1c3ad0fbce4033dd61cb0208a08d8981380b0ec948755fd8235e2263e6ad133",
+      "bytes": 437
     }
   ],
   "gates": [
@@ -7012,7 +7091,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_i3d_adaptation_running_agnostic_archive_verified",
+    "state": "native_i3d_adaptation_complete_adapted_feature_preflight_pending",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
