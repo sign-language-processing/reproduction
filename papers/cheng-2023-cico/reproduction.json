@@ -7918,6 +7918,13 @@
       "forecast_extraction_gpu_hours": 45.57583036371543,
       "forecast_basis": "Extrapolate native label window totals to completed PHOENIX full-stage throughput: teacher720914/7046.300241s andfeatures775911/8338.905985s. Two featurepasses covertrain+test,teacher covers train. This estimate excludes rawdownload/manualrealignment,encoderadaptation,CLCL,stagingdifference andextra evaluation. Not a measured How2Sign run.",
       "limitation": "Exactraw correspondence and video decoding unmeasured; rawdataabsent and notacquired because fullchainforecast exceeds originalremaining24GPUh continuation ceiling. No SPOT-ALIGN substitute or shortenedrecipe."
+    },
+    "clcl_paired_preflight_preparation": {
+      "reviewed_at_utc": "2026-10-04T08:38:17.652396+00:00",
+      "driver_sha256": "737c29d41c1c3b910c504542fa71661ead17445476e2cef6b48ba391d5f71e51",
+      "wrapper_sha256": "a198f8d9dd6e6de1afda86723f6f311772718ecff5c5cdea23d42c8e221d2d1a",
+      "aware_weights_sha256": "c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
+      "detail": "Before any paired preflight/full execution, tighten the existing provenance assertion from unequal encoders to the exact closed adapted checkpoint SHA. No training computation, optimizer horizon or feature contents changed. Closed aware manifest SHA and prospective run entry are still required before launch. Measure conservative whole wrapper time minus staging for one native epoch including full642-test evaluation, selected checkpoint/similarity writes, final hashing and volume commits; repeat a second epoch after fresh process resume within the same1800s deadline."
     }
   }
 }
