@@ -6764,10 +6764,68 @@
           "first_epoch_loss": 6.3010077843299275,
           "next_action": "Resume unchangedsource for2ndepoch only after independently verified priorappstopped; same12:21:45.095785UTCdeadline, explicit priorappid, wrapper hashescheckpointbeforeload."
         },
-        "resume_authorized_at_utc": "2026-10-04T11:54:55.361249+00:00"
+        "resume_authorized_at_utc": "2026-10-04T11:54:55.361249+00:00",
+        "resume_execution": {
+          "started_at_utc": "2026-10-04T11:55:21.097059+00:00",
+          "deadline_epoch": 1791116505.0957854,
+          "modal_app_id": "ap-uDEAbHa4PU5CfM2KudTYNd",
+          "function_call_id": "fc-01M43C8XZNY5Z4W917WD3RGHW3",
+          "segment": 2,
+          "driver_exit_code": null,
+          "native_training_exit_code": null,
+          "resume_checkpoint_sha256": "01d68e35aa146685f030ff746f3c201bf2d8ce8a0ea55d7f5c1dea7a039bdb6a",
+          "prior_stopped_app_id": "ap-AmBO9pL7ZWfpMN9ZKMdpFM"
+        }
       },
       "terminal": null,
       "started_at_utc": "2026-10-04T11:51:46.131903+00:00"
+    },
+    {
+      "run_id": "phx-clcl-paired-closure-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::close_evidence --run-id phx-clcl-paired-closure-v1 --source-runs phx-clcl-paired-preflight-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-clcl-paired-closure",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T11:58:00.583416+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Read-only closure of terminal pairedtwoepoch/full-loaderpreflight, including allcheckpoint/state/rawmetric/consolebytes, no model execution. Onlyaftersecondsegmentnative0 and appstopped.",
+        "source_sha256": "8760b0946216b91f65d7cbb5fd38df8377d8b98992472545505415e4de4ca6c2"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
