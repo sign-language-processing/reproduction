@@ -25,7 +25,7 @@ for stream,manifest_path,expected in [('agnostic',a.agnostic_manifest,a.agnostic
    assert dest.stat().st_size==r['bytes'] and sha(dest)==r['sha256']
  staged[stream]=local;input_evidence[stream]={'manifest_sha256':expected,'archive_sha256':m['archive_sha256'],'source_run':m['source_run'],'weights_sha256':m['weights_sha256'],'files':len(m['features'])}
 assert input_evidence['agnostic']['weights_sha256']=='6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f'
-assert input_evidence['aware']['weights_sha256']!=input_evidence['agnostic']['weights_sha256']
+assert input_evidence['aware']['weights_sha256']=='c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35'
 clip=Path('/outputs/training-inputs/ViT-B-32.pt');assert sha(clip)=='40d365715913c9da98579312b702a82c18be219cc2a73407c4526f58eba950af';shutil.copyfile(clip,source/'modules/ViT-B-32.pt')
 import pickle
 for split,count in [('train',7096),('test',642)]:
