@@ -7146,7 +7146,10 @@
             "storage": 16
           },
           "new_full_resource_cost_4h_plus_3x120s_load_idle_usd": 12.0654144,
-          "actual_billed_cost": "Unavailable; conservativeCHF1/USDplanningassumption, noexchange-rateclaim."
+          "actual_billed_cost": "Unavailable; conservativeCHF1/USDplanningassumption, noexchange-rateclaim.",
+          "additional_cpu_metric_audit_caps_seconds": 600,
+          "remaining_cpu_seconds_after_terminal_collection_and_two_metric_audit_caps": 4516.650110411,
+          "note": "Additional300s paired+300s finalnative CPUmetrics audits are withinoriginal4h/CHF8; onlyone diagnostic CPU audit launched while root reviews GPUproposal."
         },
         "independent_technical_review": {
           "reviewer_agent_id": "cico-independent-launch-reviewer",
@@ -7155,6 +7158,54 @@
           "recorded_at_utc": "2026-10-04T12:07:37.707222+00:00",
           "detail": "Exact native source/guards,lineage,closed actualpairedpreflight/restoration,memory/runtime/storage/aggregatebudget PASS. Root4h/CHF14authority andfinal noduplicatecheck stillrequired beforelaunch."
         }
+      },
+      "terminal": null
+    },
+    {
+      "run_id": "phx-clcl-paired-metric-audit-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::audit_clcl --run-id phx-clcl-paired-metric-audit-v1 --source-run phx-clcl-paired-preflight-v1 --closure-manifest /outputs/phx-clcl-paired-closure-v1/manifest.json --closure-sha f1bfd95ee0a599e950fe9db08f877486bd510d1cccdc700792bf58fa21885479 --expected-epochs 2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-clcl-paired-metric-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T12:14:10.010619+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "CPUonly replay pinnednative metrics fromclosed642x1x642 similarities and verify latestmax-testselection/fullstatehistories. No model inference/training. Diagnostic2epochs remainnontarget. Newlyadded observational audit function; previous collector functions and fullCLCLdriver/wrapper unchanged.",
+        "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c",
+        "purpose": "Native tiehandling and Torch lower-median semantics need exactsource replay; NumPy-only rank estimates can differ on16tiedqueries. Prepare this collector for finaltrainedmetric audit."
       },
       "terminal": null
     }

@@ -152,6 +152,45 @@ def prepare_clip(run_id:str):
  report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'sha256':sha(target),'bytes':target.stat().st_size,'url':url,'permission':'Published OpenAI CLIP initialization used under upstream MIT license; no trained CiCo retrieval checkpoint used.'}
  (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
 
+@app.function(image=image,cpu=4,memory=8192,timeout=300,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def audit_clcl(run_id:str,source_run:str,closure_manifest:str,closure_sha:str,expected_epochs:int):
+ """Replay pinned native CPU metrics from closed similarities, without a model run."""
+ import json,hashlib,datetime,time,re,importlib.util
+ import numpy as np
+ import torch
+ if not all(re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',x) for x in [run_id,source_run]):raise ValueError('Invalid run IDs')
+ if not closure_manifest.startswith('/outputs/') or '..' in Path(closure_manifest).parts or not re.fullmatch(r'[0-9a-f]{64}',closure_sha) or expected_epochs not in [2,200]:raise ValueError('Invalid closed input identity')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);base=Path('/outputs')/source_run;t=time.monotonic()
+ report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'source_run':source_run,'source_revision':'38a4f7b00da7a858d59b7fabe5093876a84db8e0','purpose':'Closed CPU metric/selection audit only; no model inference, training or scientific target from diagnostic data.'}
+ (out/'started.json').write_text(json.dumps(report,indent=2));outputs.commit()
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ assert sha(closure_manifest)==closure_sha
+ manifest=json.loads(Path(closure_manifest).read_text());assert manifest['source_runs']==[source_run] and not manifest['missing_directories'];closed={r['path']:r for r in manifest['files']};assert len(closed)==len(manifest['files'])
+ def verified(relative):
+  path=base/relative;record=closed[source_run+'/'+relative];assert path.stat().st_size==record['bytes'] and sha(path)==record['sha256'];return path
+ completion_name='preflight-resumed.json' if expected_epochs==2 else 'complete.json'
+ completion=json.loads(verified(completion_name).read_text());assert completion['completed_epochs']==expected_epochs and completion['global_step']==expected_epochs*13
+ state=torch.load(verified('native/last-full-state.pt'),map_location='cpu',weights_only=True)
+ assert state['epoch']==expected_epochs-1 and state['global_step']==expected_epochs*13
+ assert len(state['loss_record'])==len(state['acc_record'])==expected_epochs and np.isfinite(state['loss_record']).all() and np.isfinite(state['acc_record']).all()
+ best=max(i for i,score in enumerate(state['acc_record']) if score==max(state['acc_record']))
+ assert best==state['best_epoch']==completion['best_epoch_zero_based'] and state['best_score']==state['acc_record'][best]
+ metrics_path=verified(f'native/best-metrics-{best}.json');similarities_path=verified(f'native/best-similarities-{best}.npz');selected=verified(f'native/best-model-{best}.pt')
+ assert sha(metrics_path)==completion['selected_metrics_sha256'] and sha(similarities_path)==completion['selected_similarities_sha256'] and sha(selected)==completion['selected_checkpoint_sha256']
+ matrices=np.load(similarities_path);assert set(matrices.files)=={'sim_matrix_i2t','sim_matrix_t2i'}
+ assert all(matrices[k].shape==(642,1,642) and np.isfinite(matrices[k]).all() for k in matrices.files)
+ source=Path('/upstream/CiCo/CLCL/metrics.py');spec=importlib.util.spec_from_file_location('native_cico_metrics',source);native=importlib.util.module_from_spec(spec);spec.loader.exec_module(native)
+ recalculated={'text_to_video':native.compute_metrics(native.tensor_video_to_text_sim(matrices['sim_matrix_t2i'].copy())),'video_to_text':native.tensor_text_to_video_metrics(matrices['sim_matrix_i2t'].copy())}
+ recorded=json.loads(metrics_path.read_text());checks={}
+ for direction in ['text_to_video','video_to_text']:
+  checks[direction]={}
+  for metric in ['R1','R5','R10','MedianR']:
+   actual=float(recalculated[direction][metric]);expected=float(recorded[direction][metric]);assert np.isclose(actual,expected,rtol=0,atol=1e-6),(direction,metric,actual,expected);checks[direction][metric]={'recorded':expected,'recomputed':actual}
+ assert recalculated['text_to_video']['cols']==recorded['text_to_video']['cols'] and len(recorded['text_to_video']['cols'])==642
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t,closure_manifest_sha256=closure_sha,native_metrics_sha256=sha(source),torch_version=torch.__version__,completed_epochs=expected_epochs,global_step=state['global_step'],best_epoch_zero_based=best,selection='Native maximum test T2V R1; latest epoch on ties.',loss_record=[float(x) for x in state['loss_record']],test_r1_record=[float(x) for x in state['acc_record']],metrics=checks,selected_checkpoint_sha256=sha(selected),similarities_sha256=sha(similarities_path),last_checkpoint_sha256=sha(base/'native/last-full-state.pt'),native_metric_agreement=True)
+ (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
+
 @app.function(image=native_image,cpu=4,memory=8192,timeout=1800,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
 def csl_forecast(run_id:str):
  import json,pickle,hashlib,datetime,time,re,concurrent.futures
