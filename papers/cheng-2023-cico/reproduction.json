@@ -5169,7 +5169,11 @@
         "max_gpu_hours": 4,
         "max_cost_chf": 16
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-agnostic-full-execution",
+        "training-phx-agnostic-full-complete",
+        "training-phx-agnostic-full-plan"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -6814,6 +6818,27 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/training-inputs/preparation-report.json",
       "sha256": "996680b81b1def706fb7f042413c195f519bb4ad4a7283a560e515c954623199",
       "bytes": 58716
+    },
+    {
+      "artifact_id": "training-phx-agnostic-full-execution",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-features-full-v1/segment-1-execution.json",
+      "sha256": "4185484e79e0c207d68555b69120b81c57506465f6bb29bf59eb6397311e00f1",
+      "bytes": 388
+    },
+    {
+      "artifact_id": "training-phx-agnostic-full-complete",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-features-full-v1/complete.json",
+      "sha256": "41cff662499ee4ff64787ac21b21ce937f615c71938333e8a04819a32effd142",
+      "bytes": 141
+    },
+    {
+      "artifact_id": "training-phx-agnostic-full-plan",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-features-full-v1/plan.json",
+      "sha256": "4cc43306558263ed26f34ab7746c38c9b1cef3292c58d9d75d4e6d14be79261d",
+      "bytes": 1017
     }
   ],
   "gates": [
@@ -6916,7 +6941,7 @@
       "Exact native labels match all7096PHOENIX train/642test and18401CSL train/1176test raw filenames. PHOENIX dev.pkl combines train+dev and cannot be interpreted as519held-out examples.",
       "Native PHOENIX decoder actual-dimension patch and simple-video-utils passed byte-exact RGB/frame-index equivalence with OpenCV across initial/interior/tail/short windows before full extraction."
     ],
-    "compute_policy": "Whole continuation24GPUh/CHF90; pseudo andagnostic full preparation each reserve4GPUh/CHF16. Native CLCL mechanics passed within diagnostics cap. Adaptation and paired-feature fullCLCL remain conditional on exactcloseddata, measuredforecasts, source review and prospective immutable policies; no independent trained target produced yet.",
+    "compute_policy": "Whole continuation 24 GPU-hours / CHF90. Pseudo completed in1.9573GPUh; agnostic completed in2.3164GPUh. Reviewed prospective adaptation4.5GPUh/CHF18 is running under its original first-launch deadline; closed feature collection runs within CPU4h/CHF8 aggregate. Adapted-feature and native paired CLCL stages still require actual checkpoint/features and measured preflights. No trained retrieval target yet.",
     "evidence": [
       "https://github.com/FangyunWei/SLRT/tree/38a4f7b00da7a858d59b7fabe5093876a84db8e0/CiCo",
       "https://how2sign.github.io/",
