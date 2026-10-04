@@ -5949,6 +5949,57 @@
       "finished_at_utc": "2026-10-04T05:56:03.527110+00:00",
       "wall_time_seconds": 685.4757512460001,
       "exit_code": 0
+    },
+    {
+      "run_id": "phx-adaptation-closure-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::close_evidence --run-id phx-adaptation-closure-v1 --source-runs phx-i3d-adaptation-full-v1",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-adaptation-closure",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T07:44:56.984019+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.5
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "After full15-epoch adaptation terminal native0 only: close all adaptation files/checkpoints with stable size/mtime and SHA256; no model execution. Retain epoch15 final selection and original run attribution.",
+        "source_runs": [
+          "phx-i3d-adaptation-full-v1"
+        ],
+        "source_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d",
+        "budget": "Within original CPU4h/CHF8 and total24GPUh/CHF90 continuation ceilings."
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
