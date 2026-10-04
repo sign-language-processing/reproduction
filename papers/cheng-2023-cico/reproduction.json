@@ -64,6 +64,15 @@
       "evidence": [
         "Delegated GPT-6/Codex review on2026-10-03 inspected pinned38a4f7b and patches0010\u20130012; approved bounded diagnostic scope after source/AST checks, not full training."
       ]
+    },
+    {
+      "agent_id": "cico-recovery-executor",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "2026-10-04 continuation recovery, later evidence collection and execution of newly launched adaptation/training stages. Not executor of the earlier pseudo or agnostic stages. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Active session explicitly identifies GPT-6 using Codex; delegated exclusive CiCo continuation after prior executor ended."
+      ]
     }
   ],
   "assignment": {
@@ -5179,7 +5188,8 @@
         },
         "gpu": "A100-80GB",
         "modal_app_id": "ap-4Lpt8BmHT5kvqaDKkdzfOI",
-        "function_call_id": "fc-01M41R78RCHNKWFWBBXJBRVFA9"
+        "function_call_id": "fc-01M41R78RCHNKWFWBBXJBRVFA9",
+        "gpu_hours": 2.3163627736641668
       },
       "configuration": {
         "scope": "Native domain-agnostic PHOENIX train/test feature extraction,7096train+642test,775911windows,1024float32 features. No scientific target produced by preparation.",
@@ -5195,8 +5205,18 @@
         "aggregate_budget": "Within continuation24GPUh/CHF90; reserve4h/CHF16 for this stage,4h/CHF16 already reservedpseudo; diagnosticsactual0.114h. Provisionaladapt3h+aware4h leaves8.886h for CLCL and futurediagnostics.",
         "immutable_deadline_utc": "2026-10-04T00:45:37.937545+00:00"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-03T20:45:38.555811+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both native feature splits completed with native/stage exit0 in one segment before immutable deadline. Later closed feature-byte collection recorded separately.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T20:45:38.555811+00:00",
+      "finished_at_utc": "2026-10-03T23:04:37.920780+00:00",
+      "wall_time_seconds": 8338.905985191,
+      "exit_code": 0
     },
     {
       "run_id": "clcl-native-mechanics-v1",
@@ -5611,7 +5631,7 @@
     {
       "run_id": "phx-i3d-adaptation-full-v1",
       "agent_ids": [
-        "cico-training-agent"
+        "cico-recovery-executor"
       ],
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/adapt_full_modal.py::run --run-id phx-i3d-adaptation-full-v1 --manifest-sha d0509e382d73920ccc6768a26cf0a3c531f714b957f53c5c288f9b2c9aa9539a",
       "recording": {
@@ -5666,7 +5686,7 @@
         "forecast_basis": "Representative32distinctclips warmbatch4=.361477375seconds;32280updates imply3.24125h. Forecast adds47.2min for exactbyteconcurrentstaging,15atomiccheckpoints,3snapshots andvariance;4.5h ceiling providesadditional28.3min. Dataset319278600bytes.",
         "original_provisional_cap_rejected": "Unlaunched3h proposal rejected beforeexecution because8608closedclips exceed it evenwithoutoverhead. This4.5h policy isprospective, not a runningdeadlineextension.",
         "resume_policy": "At most2segments share original16200s deadline. Neverfreshrestart; strictmodel/optimizer/RNGcheckpoint verification, priorapp independentlyconfirmedstopped,atomicclaims/checkpointhash/source/dataidentity. Completedepoch15 mayfinalizewithouttraining.",
-        "review": "IndependentGPT-6/Codex source andclosedmanifest auditPASS; root revised4.5h/CHF18 allowance pending, no launchyet.",
+        "review": "Independent prior source and closed-manifest audits passed. Root re-reviewed unchanged source and approved revised prospective 4.5 GPU-hour / CHF18 cap on 2026-10-04 before launch; original aggregate 24 GPU-hours / CHF90 unchanged.",
         "cost_basis": {
           "source": "https://modal.com/pricing",
           "verified_at": "2026-10-03",
@@ -5686,6 +5706,17 @@
           },
           "closed_pseudo_basis": "Native1.9573GPUh plusstartup/idle allowance to2.05h at~2.943USD/h,1CHF/USDplusmargin rounds8CHF; unused16CHFreservation not billedactual.",
           "aggregate_reserved_gpu_hours": 19.5
+        },
+        "planning_agent_ids": [
+          "cico-training-agent"
+        ],
+        "prelaunch_checks": {
+          "checked_at_utc": "2026-10-04T05:44:01.645997+00:00",
+          "closed_manifest_sha256": "d0509e382d73920ccc6768a26cf0a3c531f714b957f53c5c288f9b2c9aa9539a",
+          "closed_clip_count": 8608,
+          "existing_run_directory": false,
+          "existing_live_adaptation_app": false,
+          "canonical_volumes": "Both present; cico-features manifest verified through wrapper; version=2 enforced by unchanged launcher."
         }
       },
       "terminal": null
@@ -5846,6 +5877,53 @@
       "finished_at_utc": "2026-10-03T22:01:00.159210+00:00",
       "wall_time_seconds": 110.849552328,
       "exit_code": 0
+    },
+    {
+      "run_id": "phx-agnostic-collection-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::collect_features --run-id phx-agnostic-collection-v1 --source-run phx-agnostic-features-full-v1 --expected-weights-sha 6430592464a357dfdaa7f31973cb684663237655fdf23f3999608d162167fc6f",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-agnostic-collection",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T05:44:01.645997+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "Close all 7738 native feature bytes, identity/rank hashes and deterministic ZIP_STORED archive; no model execution. Within original CPU4h/CHF8 aggregate.",
+        "source_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [

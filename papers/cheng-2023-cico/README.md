@@ -1,6 +1,6 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
-**Current work:** training reproduction reopened on 2026-10-03. Native PHOENIX pseudo-label extraction completed; domain-agnostic feature extraction is running. True-batch-512 CLCL training mechanics passed; independent full-model training still awaits the closed encoder/feature chain.
+**Current work:** training reproduction reopened on 2026-10-03. Native PHOENIX pseudo-label extraction completed; domain-agnostic feature extraction completed at 23:04 UTC on October 3 (native exit 0). Its closed archive is being collected; the reviewed 15-epoch encoder adaptation is ready for launch. True-batch-512 CLCL training mechanics passed; independent full-model training still awaits the closed encoder/feature chain.
 
 **Completed evidence:** released-checkpoint evaluation only. The prior run did not train the visual encoders or CLCL model. The author archive contains test features, without train/dev features.
 
@@ -163,3 +163,5 @@ CSL investigation found a material input distinction. The shared raw videos cont
 The terminal preparation/diagnostic evidence is closed by `modal://repro-sign/main/cheng-2023-cico-results/training-evidence-closure-v1/manifest.json`, SHA-256 `e2dfc7f4feeb69c91311761d25cc141a5fa2840e2796f7897248f73c9c65a277` (684 files, 8,081,531,898 bytes). This CPU collection does not rerun models. Two failures before native launch have no output directories and retain their known CLI/build exits separately from null native exits. Pseudo clip bytes remain covered by the independently verified closed clip manifest and rank receipts.
 
 A further read-only check confirms all 7,096 PHOENIX training and 642 test frame counts exactly match the author labels. For CSL, the pinned README explicitly requires frame images passed through `gather_frames.py`, which encodes all supplied images at 25 fps and defines no trimming offsets. The separately distributed `csl-daily-frames-512x512` archive parts 00–09 remain the precise acquisition/version lead; their absence from the present Modal inventory does not establish that they are inherently unobtainable.
+
+A separate GPT-6/Codex recovery executor continues on 2026-10-04, collecting earlier evidence and launching subsequent stages. Earlier run attribution is preserved; exact model ID and harness version are unavailable. The full 8,608-clip adaptation has an approved prospective 4.5 GPU-hour / CHF18 ceiling within the unchanged 24 GPU-hour / CHF90 continuation budget.
