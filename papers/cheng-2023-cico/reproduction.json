@@ -6155,7 +6155,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": "A100-80GB"
+        "gpu": "A100-80GB",
+        "modal_app_id": "ap-9ft4aGcdrhpGchpd98FZ0S",
+        "function_call_id": "fc-01M42YRYH2A53J63EV5YS8RGMS"
       },
       "configuration": {
         "scope": "Native domain-aware PHOENIX train/test features from independently trained finalepoch15 I3D; all7096train+642test,775911windows,1024float32 channels. Preparation only; retrieval targets remain pending.",
@@ -6176,7 +6178,56 @@
           "no_live_feature_app": true,
           "canonical_volumes_checked": true,
           "closed_adaptation_manifest_sha256": "be5c9e8b80ee9aac2da67a9e7df4bd0c40c89226e923dda26301d70a8082bcc6"
-        }
+        },
+        "immutable_deadline_utc": "2026-10-04T11:59:24.819031+00:00"
+      },
+      "terminal": null,
+      "started_at_utc": "2026-10-04T07:59:25.947006+00:00"
+    },
+    {
+      "run_id": "phx-aware-collection-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::collect_features --run-id phx-aware-collection-v1 --source-run phx-aware-features-full-v1 --expected-weights-sha c89b5384ec86515cde41b7fbf3172bdeab8f170acb1a042677e8c2b9d4ca2c35",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-aware-collection",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T08:00:28.740353+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "After fullawarefeaturestage terminal only: close all7738nativefeature bytes/identity/rank/membership anddeterministicZIP_STORED withreadbackaudit; exact adaptedcheckpointSHA is mandatory. WithinCPU4h/CHF8 andwhole24GPUh/CHF90.",
+        "source_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d"
       },
       "terminal": null
     }
@@ -7247,7 +7298,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_adaptation_and_probe_complete_aware_features_launching",
+    "state": "native_i3d_complete_aware_features_running",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
@@ -7262,7 +7313,7 @@
       "Exact native labels match all7096PHOENIX train/642test and18401CSL train/1176test raw filenames. PHOENIX dev.pkl combines train+dev and cannot be interpreted as519held-out examples.",
       "Native PHOENIX decoder actual-dimension patch and simple-video-utils passed byte-exact RGB/frame-index equivalence with OpenCV across initial/interior/tail/short windows before full extraction."
     ],
-    "compute_policy": "Whole continuation 24 GPU-hours / CHF90. Pseudo completed in1.9573GPUh; agnostic completed in2.3164GPUh. Reviewed prospective adaptation4.5GPUh/CHF18 is running under its original first-launch deadline; closed feature collection runs within CPU4h/CHF8 aggregate. Adapted-feature and native paired CLCL stages still require actual checkpoint/features and measured preflights. No trained retrieval target yet.",
+    "compute_policy": "Whole continuation24GPUh/CHF90 unchanged. Pseudo1.9573GPUh andagnostic2.3164GPUh completed. Native15epochadaptation2.15239GPUh andactualadaptedfeatureprobe passed; fullawarefeaturestage runs under original4h/CHF16 deadline. Native pairedCLCL full stillrequires representative full-loader preflight/forecast/review.",
     "evidence": [
       "https://github.com/FangyunWei/SLRT/tree/38a4f7b00da7a858d59b7fabe5093876a84db8e0/CiCo",
       "https://how2sign.github.io/",
