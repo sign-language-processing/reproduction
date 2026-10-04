@@ -1,0 +1,56 @@
+Subject: Correct native metadata paths, split construction and dataset index mapping
+
+--- a/CiCo/I3D_trainer/datasets/phoenix2014.py
++++ b/CiCo/I3D_trainer/datasets/phoenix2014.py
+@@ -64,7 +64,7 @@
+             label, class_name = line.split(' ')
+             class_dict.append(class_name)
+ 
+-        self.json_info=load_dict('misc/phoenix2014T/train_val_info.json')
++        self.json_info=load_dict(os.environ['CICO_PSEUDO_INFO'])
+         self.train = list(np.where(np.asarray(self.json_info["split"]) == 'train')[0])
+         self.valid = list(np.where(np.asarray(self.json_info["split"]) == 'val')[0])
+         self.num_frames=self.json_info["frame"]
+@@ -81,7 +81,7 @@
+         self.datasetname = "phoenix2014T"
+ 
+     def _get_video_file(self, ind):
+-        return os.path.join('../bsl/pseudo_from_i3d',self.videos[ind])
++        return self.videos[ind]
+ 
+     def _get_sequence(self, ind):
+         return self.classes[ind], len(self.classes[ind])
+--- a/CiCo/I3D_trainer/datasets/multidataloader.py
++++ b/CiCo/I3D_trainer/datasets/multidataloader.py
+@@ -38,7 +38,7 @@
+                     }
+                 )
+ 
+-            elif dataset_name=="H2S":
++            if dataset_name=="H2S":
+                 dataset=datasets.H2S(**kwargs)
+ 
+             elif dataset_name == "phoenix2014":
+--- a/CiCo/I3D_trainer/datasets/videodataset.py
++++ b/CiCo/I3D_trainer/datasets/videodataset.py
+@@ -338,9 +338,9 @@
+                 "rgb": rgb,
+                 "index": index,
+                 "data_index": data_index,
+-                "class": self._get_class(index),
++                "class": self._get_class(data_index),
+                 "class_names": self.class_names,
+-                "video_path":self._get_video_file(index),
++                "video_path":self._get_video_file(data_index),
+                 "dataset": self.datasetname,
+             }
+             return data
+@@ -414,7 +414,7 @@
+         return data
+ 
+     def __getitem__(self, index):
+-        data_index=index
++        data_index=self.train[index] if self.setname == "train" else self.valid[index]
+ 
+         frame_ix = self._sample_frames(index, data_index)
+         return self._get_single_video(index, data_index, frame_ix)
