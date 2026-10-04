@@ -317,3 +317,16 @@ def close_evidence(run_id:str,source_runs:str):
   with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:records.extend(pool.map(read,paths))
  manifest={'source_runs':names,'missing_directories':missing,'excluded':'MP4 bytes remain in native rank receipts and independently closed pseudo manifest; no clip deletion or scientific re-execution.','files':records}
  target=out/'manifest.json';target.write_text(json.dumps(manifest,indent=2)+'\n');report={'started_at_utc':started,'finished_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'wall_seconds':time.monotonic()-t,'manifest_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'files':len(records),'bytes':sum(r['bytes'] for r in records),'missing_directories':missing};(out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
+
+@app.function(image=image,cpu=2,memory=4096,timeout=120,retries=0,volumes={'/datasets':data_volume.read_only(),'/cache/huggingface':cache_volume,'/outputs':outputs})
+def how2_label_window_forecast(run_id:str):
+ """Count pinned native How2Sign windows without acquiring or decoding videos."""
+ import json,pickle,hashlib,datetime,time,re
+ if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid run ID')
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=False);t=time.monotonic()
+ report={'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'modal_app_id':app.app_id,'function_call_id':modal.current_function_call_id(),'source_revision':'38a4f7b00da7a858d59b7fabe5093876a84db8e0','purpose':'Native-label lower-bound window forecast only; raw-video correspondence and decode cost remain unmeasured.','splits':{}}
+ for split in ['train','test']:
+  path=Path('/upstream/CiCo/CLCL/data_h2')/(split+'.pkl');payload=path.read_bytes();labels=pickle.loads(payload);rows=[v for group in labels.values() for v in group];names=[r['video_name'] for r in rows];assert len(names)==len(set(names));frames=[int(r['num_frames']) for r in rows];assert all(n>0 for n in frames)
+  report['splits'][split]={'label_sha256':hashlib.sha256(payload).hexdigest(),'queries':len(labels),'videos':len(rows),'frames':sum(frames),'windows16_stride1':sum(max(1,n-15) for n in frames)}
+ report.update(finished_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),wall_seconds=time.monotonic()-t)
+ (out/'report.json').write_text(json.dumps(report,indent=2));outputs.commit();print(json.dumps(report))
