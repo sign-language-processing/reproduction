@@ -5908,7 +5908,11 @@
         "max_gpu_hours": null,
         "max_cost_chf": 1
       },
-      "artifact_ids": [],
+      "artifact_ids": [
+        "training-phx-agnostic-collection-report",
+        "training-phx-agnostic-collection-manifest",
+        "training-phx-agnostic-features-archive"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -5933,8 +5937,18 @@
         "scope": "Close all 7738 native feature bytes, identity/rank hashes and deterministic ZIP_STORED archive; no model execution. Within original CPU4h/CHF8 aggregate.",
         "source_sha256": "5e5606e5fb08fb2cabec39a512820cdd6353f3be1b5713ba9fb051ffe1bd729d"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T05:44:38.051536+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Verified all7738 native float32 feature files/775911 windows, complete train/test membership,272rank receipts, source/weight identities; deterministic ZIP_STORED archive preserves every native pickle byte and was read back against per-file hashes. No model execution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T05:44:38.051536+00:00",
+      "finished_at_utc": "2026-10-04T05:56:03.527110+00:00",
+      "wall_time_seconds": 685.4757512460001,
+      "exit_code": 0
     }
   ],
   "artifacts": [
@@ -6839,6 +6853,27 @@
       "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-features-full-v1/plan.json",
       "sha256": "4cc43306558263ed26f34ab7746c38c9b1cef3292c58d9d75d4e6d14be79261d",
       "bytes": 1017
+    },
+    {
+      "artifact_id": "training-phx-agnostic-collection-report",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-collection-v1/report.json",
+      "sha256": "7eb25f803679ebc15b3a8bbd7c9b280d581a7093b4729a5744b9e4454c9617aa",
+      "bytes": 508
+    },
+    {
+      "artifact_id": "training-phx-agnostic-collection-manifest",
+      "kind": "run-evidence",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-collection-v1/manifest.json",
+      "sha256": "8a51ffe369071939d249d0b92f4f081d71e878d6db3f4597b6a21613046a3da3",
+      "bytes": 2773608
+    },
+    {
+      "artifact_id": "training-phx-agnostic-features-archive",
+      "kind": "generated-features",
+      "uri": "modal://repro-sign/main/cheng-2023-cico-results/phx-agnostic-collection-v1/features.zip",
+      "sha256": "c60bdd14c7082015ac3e0d6b96ee03962654390915362d61b391dfdf9563db96",
+      "bytes": 3181370649
     }
   ],
   "gates": [
@@ -6926,7 +6961,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_i3d_adaptation_running_agnostic_collection_running",
+    "state": "native_i3d_adaptation_running_agnostic_archive_verified",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
