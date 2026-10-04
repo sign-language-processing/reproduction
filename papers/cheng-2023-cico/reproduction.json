@@ -6533,8 +6533,18 @@
         },
         "immutable_deadline_utc": "2026-10-04T11:59:24.819031+00:00"
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T07:59:25.947006+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Native feature extraction completed both train/test splits using the exact closed final15epoch I3D checkpoint, native/stage exit0, one segment within original4h deadline. Independent CPU closed archive/hash audit runs separately; no retrieval metric claimed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T07:59:25.947006+00:00",
+      "finished_at_utc": "2026-10-04T11:37:33.011891+00:00",
+      "wall_time_seconds": 13085.999644280999,
+      "exit_code": 0
     },
     {
       "run_id": "phx-aware-collection-v1",
@@ -6575,14 +6585,17 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu": null
+        "gpu": null,
+        "modal_app_id": "ap-Gqvdav7tgmsjO8zysW68kP",
+        "function_call_id": "fc-01M43BBHQ1GE1PVTRV6XD43JQS"
       },
       "configuration": {
         "scope": "After fullawarefeaturestage terminal only: close all7738nativefeature bytes/identity/rank/membership anddeterministicZIP_STORED withreadbackaudit; exact adaptedcheckpointSHA is mandatory. WithinCPU4h/CHF8 andwhole24GPUh/CHF90.",
         "source_sha256": "8760b0946216b91f65d7cbb5fd38df8377d8b98992472545505415e4de4ca6c2",
         "source_change_note": "Before this unlaunched CPU collection: append independent read-only How2Sign label forecast function; collect_features body and source/identity/hash assertions remain unchanged. Active GPU feature source untouched."
       },
-      "terminal": null
+      "terminal": null,
+      "started_at_utc": "2026-10-04T11:39:05.345443+00:00"
     },
     {
       "run_id": "how2-label-window-forecast-v1",
@@ -7768,7 +7781,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "native_i3d_complete_aware_features_running",
+    "state": "native_i3d_and_aware_features_complete_cpu_closure_running",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
