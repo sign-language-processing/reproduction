@@ -7284,6 +7284,54 @@
         "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c"
       },
       "terminal": null
+    },
+    {
+      "run_id": "phx-clcl-full-native-metric-audit-v1",
+      "agent_ids": [
+        "cico-recovery-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/scripts/training_modal.py::audit_clcl --run-id phx-clcl-full-native-metric-audit-v1 --source-run phx-clcl-full-seed42-v1 --closure-manifest /outputs/phx-clcl-full-closure-v1/manifest.json --closure-sha c0e256af1008491fb33f09a10598ed2e67c588e6929f7ebac957d79d99f92899 --expected-epochs 200",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phx-clcl-full-native-metric-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-04T14:37:49.101075+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 0.2
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu": null
+      },
+      "configuration": {
+        "scope": "CPUonly exactpinned native metricreplay/200epoch2600updatehistory/latestmax-testselection audit fromclosed fulltrainedsimiliarities/checkpoints. No model inference/training. Same audit function passed all8actualpairedpreflightmetrics.",
+        "source_sha256": "b68b335bf8e869ac146bf249f620dc17a493c864bba5b7a8aa424d222a8ef53c",
+        "native_metrics_source_sha256": "103e93090de14f55d1db61e40ecf1fbc814670975bd9b9ab1fe341d0c95f0a6f"
+      },
+      "terminal": null
     }
   ],
   "artifacts": [
@@ -9520,7 +9568,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "full_native_clcl_running",
+    "state": "native_full_complete_final_metric_audit_pending",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
