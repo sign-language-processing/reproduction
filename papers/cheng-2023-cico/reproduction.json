@@ -6775,10 +6775,57 @@
           "native_training_exit_code": null,
           "resume_checkpoint_sha256": "01d68e35aa146685f030ff746f3c201bf2d8ce8a0ea55d7f5c1dea7a039bdb6a",
           "prior_stopped_app_id": "ap-AmBO9pL7ZWfpMN9ZKMdpFM"
-        }
+        },
+        "second_segment_execution": {
+          "started_at_utc": "2026-10-04T11:55:21.097059+00:00",
+          "deadline_epoch": 1791116505.0957854,
+          "modal_app_id": "ap-uDEAbHa4PU5CfM2KudTYNd",
+          "function_call_id": "fc-01M43C8XZNY5Z4W917WD3RGHW3",
+          "segment": 2,
+          "driver_exit_code": 0,
+          "native_training_exit_code": 0,
+          "resume_checkpoint_sha256": "01d68e35aa146685f030ff746f3c201bf2d8ce8a0ea55d7f5c1dea7a039bdb6a",
+          "prior_stopped_app_id": "ap-AmBO9pL7ZWfpMN9ZKMdpFM",
+          "completion_only": false,
+          "finished_at_utc": "2026-10-04T11:58:32.145027+00:00",
+          "wall_time_seconds": 183.829085228,
+          "terminal_checkpoint_sha256": "0a088dc93cd607e5affb0304ca255157a56b87720a29dfa389f761a95f0bff6d"
+        },
+        "recovery_proof": {
+          "model_exact": true,
+          "optimizer_exact": true,
+          "rng_exact": true,
+          "epoch": 1,
+          "global_step": 13
+        },
+        "observed_epoch_loss": [
+          6.3010077843299275,
+          5.780275088090163
+        ],
+        "peak_cuda_allocated_bytes": 45177945088,
+        "peak_cuda_reserved_bytes": 47857008640,
+        "staging_seconds": [
+          47.572349858,
+          104.140485344
+        ],
+        "conservative_end_to_end_epoch_seconds": [
+          37.764948,
+          48.145027
+        ],
+        "end_to_end_basis": "Timestamped native Numsteps2600 line beforetrainingloop through wholewrapper terminalreceipt includes train/full642testeval, selectedcheckpoint/similarity/laststatewrites, nativepostloopplots, finalhashes. Deliberately retains recovery/loading/finalization overhead in upperbound; actualfullforecastrequiresreview."
       },
-      "terminal": null,
-      "started_at_utc": "2026-10-04T11:51:46.131903+00:00"
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Actualpaired7096/642 full-loader preflight:2completeepochs/26nativeupdates, truebatch512; exactfreshprocess model/optimizer/RNG restoration withfinitecontinuation and nativefulltesteval. Bothsegmentsnative0 beforeoriginaldeadline. Diagnosticmetricsnot finaltargets. Conservative200epoch endtoendforecast exceedsinitial9000scondition; fullrunnotlaunched and revisedprospectiveplan under review.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-04T11:51:46.131903+00:00",
+      "finished_at_utc": "2026-10-04T11:58:32.145027+00:00",
+      "wall_time_seconds": 296.745273049,
+      "exit_code": 0
     },
     {
       "run_id": "phx-clcl-paired-closure-v1",
@@ -7991,7 +8038,7 @@
   },
   "training_continuation": {
     "requested_at": "2026-10-03",
-    "state": "paired_native_clcl_preflight_running",
+    "state": "paired_preflight_complete_full_forecast_under_review",
     "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
