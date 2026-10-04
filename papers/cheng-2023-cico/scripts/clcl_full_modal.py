@@ -35,7 +35,7 @@ image = (
 for name in ['0010-clcl-phoenix-aware-path.patch','0011-clcl-atomic-recovery-and-selection.patch','0012-clcl-native-initialization-audit.patch']:
  image=image.add_local_file(HERE.parent/'patches'/name,'/repro/'+name,copy=True).run_commands('cd /upstream && git apply /repro/'+name)
 image=image.add_local_file(HERE/'clcl_train.py','/repro/clcl_train.py')
-@app.function(image=image,gpu='A100-80GB',cpu=4,memory=32768,timeout=10800,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
+@app.function(image=image,gpu='A100-80GB',cpu=4,memory=32768,timeout=14400,retries=0,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/outputs':outputs})
 def run(run_id:str,agnostic_manifest:str,agnostic_sha:str,aware_manifest:str,aware_sha:str,preflight:bool=False,resume_after_stopped_app:str=''):
  import subprocess,json,datetime,time,re,threading,os,signal,hashlib
  if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}',run_id):raise ValueError('Invalid run ID')
@@ -43,7 +43,7 @@ def run(run_id:str,agnostic_manifest:str,agnostic_sha:str,aware_manifest:str,awa
   if not path.startswith('/outputs/') or '..' in Path(path).parts or not re.fullmatch(r'[0-9a-f]{64}',expected):raise ValueError('Invalid input identity')
  def sha(p):
   with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
- out=Path('/outputs')/run_id;out.mkdir(exist_ok=True);max_seconds=1800 if preflight else 10800;max_segments=2 if preflight else 3
+ out=Path('/outputs')/run_id;out.mkdir(exist_ok=True);max_seconds=1800 if preflight else 14400;max_segments=2 if preflight else 3
  identity={'upstream':REV,'source':sha('/repro/clcl_train.py'),'wrapper':sha(__file__),'patches':{p.name:sha(p) for p in sorted(Path('/repro').glob('*.patch'))},'agnostic_manifest':agnostic_manifest,'agnostic_sha':agnostic_sha,'aware_manifest':aware_manifest,'aware_sha':aware_sha,'preflight':preflight,'max_seconds':max_seconds,'max_segments':max_segments,'epochs':200,'batch':512,'accumulation':1,'seed':42,'sampler_seed':0,'alpha':.9}
  planfile=out/'plan.json'
  if (out/'complete.json').exists() or (preflight and (out/'preflight-resumed.json').exists()):raise ValueError('Already complete')
