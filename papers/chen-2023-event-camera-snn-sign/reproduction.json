@@ -1,0 +1,1377 @@
+{
+  "paper_id": "d4acd1f57be13675331b5da0fec400b8f794215d",
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "/Users/carlos/Downloads/papers-d4acd1f57be13675331b5da0fec400b8f794215d-2026-10-02.json",
+      "sha256": "37166a718a90ed5242a7a39b649ae3c4d9d773bba3fa819f2d5181a0a3442383"
+    },
+    "request": "On 2026-10-02 the user invoked /reproduce-paper and supplied this single-record survey export as the assignment. The file is one JSON object rather than the array the ingestion script expects, its `id` is a database row ID rather than the paper_id, and it has no `confirmation` field (it has status `final` and a `finalized_by` reviewer), so ingest_candidate.py rejects it and it is recorded as a direct user request. The record is preserved verbatim under `record` as research leads; no queue-review field was added or altered.",
+    "record": {
+      "area_of_slp": [
+        "Recognition"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "limited compute details, no hardware specifications, ambiguity in data split. Non-inclusive framing (\"people with speech impairments\" for sign language users), \"sign language\" often discussed generically despite being distinct languages, three volunteers recorded the dataset, but no consent or ethics information, participant demographics, or signing proficiency are reported\nNOTE: experiments require DVS camera that is currently rated at 4400EUR (https://shop.inivation.com/products/davis346)\nIt IS available, so not rejected ...",
+      "compute_requirements": "We trained it on the TITAN server by\nadjusting batch_size and the epochs.; Two hundred\nepochs only takes 15 hours.\nNOTE: experiments require DVS camera that is currently rated at 4400EUR (https://shop.inivation.com/products/davis346)\nIt IS available, so not rejected ...",
+      "copied_scores": "yes",
+      "datasets": [
+        "egzh5fllh61jvru",
+        "ld00dj2skcd0b4u",
+        "ogmzk93uoqpbpf5"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "\"dataset that converts traditional LSA sign language videos into event streams through the v2e method\"",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "egzh5fllh61jvru",
+            "license": "CC BY 4.0",
+            "name": "DVS_Sign_v2e",
+            "on_modal": "",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [],
+            "spoken_languages": [],
+            "url": [
+              "https://github.com/najie1314/DVS/tree/master"
+            ]
+          },
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "links to main of same repo as dataset above\n\"event-based sign language dataset using the event camera DAVIS346\"",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "ld00dj2skcd0b4u",
+            "license": "CC BY 4.0",
+            "name": "DVS_Sign",
+            "on_modal": "",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [],
+            "spoken_languages": [],
+            "url": [
+              "https://github.com/najie1314/DVS/tree/main"
+            ]
+          },
+          {
+            "assignees": [],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "LSA64 (Ronchetti et al., 2016) is the Argentine Sign Language dataset provided by III-\nLIDI (Informatics Institute) at the Informatics Faculty of the National University of La\nPlata (UNLP) available at: https://facundoq.github.io/datasets/lsa64/.",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "ogmzk93uoqpbpf5",
+            "license": "CC BY-NC-SA 4.0",
+            "name": "LSA64",
+            "on_modal": "yes",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [
+              "aed"
+            ],
+            "spoken_languages": [
+              "eng"
+            ],
+            "url": [
+              "https://facundoq.github.io/datasets/lsa64/",
+              "https://zenodo.org/record/6674324/files/LSA64_Full.zip?download=",
+              "https://zenodo.org/record/6674324/files/LSA64_Cut.zip?download=1"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "wzc6kxyuhls6lut",
+            "name": "Accuracy",
+            "url": []
+          }
+        ]
+      },
+      "finalized_by": "joni.dambre@gmail.com",
+      "flag_reason": "",
+      "id": "3k79loresp05nx7",
+      "includes_human_evaluation": "no",
+      "main_experiment_has_ranking": "yes",
+      "metrics": [
+        "wzc6kxyuhls6lut"
+      ],
+      "paper_id": "d4acd1f57be13675331b5da0fec400b8f794215d",
+      "pdf_url": "https://www.mdpi.com/2079-9292/12/4/786/pdf?version=1676520358",
+      "peer_reviewed": "yes",
+      "potential_ethical_concerns": "yes",
+      "rejection_reason": "",
+      "status": "final",
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "vera.czehmann@dfki.de",
+          "when": "2026-08-08T19:37:26.906Z"
+        }
+      ],
+      "sub_area_of_slp": [
+        "Isolated signing videos",
+        "Isolated signing spiking camera outputs"
+      ],
+      "textual_conclusion": "we trained on both datasets and the best result was 77% accuracy on the\nDVS_Sign_v2e dataset",
+      "title": "Sign Language Gesture Recognition and Classification Based on Event Camera with Spiking Neural Networks",
+      "venue": "Electronics 2023, 12, 786",
+      "what_to_reproduce": "Table 2: Comparison of the v2e dataset with the DAVIS346 acquisition dataset and other event-based and traditional video dataset-based action classification models",
+      "year": 2023
+    }
+  },
+  "paper": {
+    "title": "Sign Language Gesture Recognition and Classification Based on Event Camera with Spiking Neural Networks",
+    "citation": "Chen, X.; Su, L.; Zhao, J.; Qiu, K.; Jiang, N.; Zhai, G. Sign Language Gesture Recognition and Classification Based on Event Camera with Spiking Neural Networks. Electronics 2023, 12, 786. https://doi.org/10.3390/electronics12040786",
+    "url": "https://mdpi-res.com/d_attachment/electronics/electronics-12-00786/article_deploy/electronics-12-00786.pdf?version=1676520358",
+    "pdf_sha256": "f0c3010dcb17082256239abdb6cd5cf2b1d86661d077cc9bc953137989ee5567",
+    "accessed_at": "2026-10-02",
+    "note": "This is the version named by the assignment's pdf_url (version=1676520358, 14 pages). The publisher also serves a later electronics-12-00786-v2.pdf (SHA-256 396a283e09c87201b3de5c07566f3ea16523bb82a9ae73017fd39e5e54d8523a); it was not used. www.mdpi.com returned HTTP 403 to scripted access, so the PDF was taken from the publisher's static host."
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://mdpi-res.com/d_attachment/electronics/electronics-12-00786/article_deploy/electronics-12-00786.pdf?version=1676520358",
+      "revision_or_sha256": "f0c3010dcb17082256239abdb6cd5cf2b1d86661d077cc9bc953137989ee5567",
+      "role": "Target values and disclosed protocol",
+      "selected": true
+    },
+    {
+      "source_id": "dvs-master",
+      "kind": "dataset",
+      "url": "https://github.com/najie1314/DVS/tree/master",
+      "revision_or_sha256": "439682135dc126337cd1d7f60e50764ec771ad2f",
+      "role": "DVS_Sign_v2e event CSVs named by the paper's Data Availability Statement; the only data used",
+      "selected": true
+    },
+    {
+      "source_id": "dvs-main",
+      "kind": "dataset",
+      "url": "https://github.com/najie1314/DVS/tree/main",
+      "revision_or_sha256": "56a26f8f330540f62e09610704872981d2c66816",
+      "role": "Named by the paper as the DAVIS346 DVS_Sign dataset; rejected because it is a byte-identical 3-class subset of dvs-master",
+      "selected": false
+    },
+    {
+      "source_id": "stbp-simple",
+      "kind": "code",
+      "url": "https://github.com/thiswinex/STBP-simple",
+      "revision_or_sha256": "dca9590b465c5cb37b3828bf6888c6857ad4238b",
+      "role": "Third-party STBP implementation, not cited by the paper and not this paper's artifact. Selected as the LIF/surrogate-gradient base because its state_update is the paper's Algorithm 1 line for line (including the SpikeAct name) and its steps/dt/Vth hyperparameters and MSE-on-firing-rate loss match Table 3 and Eq. 6. Pinned to the last commit before the paper's 2022-11-30 submission. The repository has no license; it is cloned at image build and not redistributed.",
+      "selected": true
+    },
+    {
+      "source_id": "v2e-repo",
+      "kind": "other",
+      "url": "https://github.com/najie1314/v2e",
+      "revision_or_sha256": "74e658533bd59a346835419cf6c833e4a5a13c24",
+      "role": "Same GitHub account; README only ('v2e dataset for sign lanuage based event'), no code or data",
+      "selected": false
+    },
+    {
+      "source_id": "stbp-original",
+      "kind": "code",
+      "url": "https://github.com/yjwu17/STBP-for-training-SpikingNN",
+      "revision_or_sha256": "e3c0c93283cd76ac8af76f25cf52cb215aab7be8",
+      "role": "Reference STBP code for the paper's ref. [29]; considered and rejected as the base because its neuron update, naming and hyperparameters do not match Algorithm 1 / Table 3 as closely as stbp-simple",
+      "selected": false
+    },
+    {
+      "source_id": "he-2020",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2005.02183",
+      "revision_or_sha256": "arXiv:2005.02183 (accessed 2026-10-02)",
+      "role": "Not cited by the paper. Its DVS-Gesture CNN 'Input-MP4-64C3-128C3-AP2-128C3-AP2-256FC-11' has the same layout as Figure 3 and supports the 3x3-kernel reading; used only as supporting evidence for a guess",
+      "selected": false
+    },
+    {
+      "source_id": "tan-2022-dvs-lip",
+      "kind": "paper",
+      "url": "https://openaccess.thecvf.com/content/CVPR2022/papers/Tan_Multi-Grained_Spatio-Temporal_Features_Perceived_Network_for_Event-Based_Lip-Reading_CVPR_2022_paper.pdf",
+      "revision_or_sha256": "d1473d5c21c53d73f6c6c9e2d0b17af7865f0e83a3b81d5b5ec59447fbe2cfc3",
+      "role": "Origin of the copied DVS-Lip rows and of the Acc1/Acc2 caption wording in Table 2",
+      "selected": false
+    }
+  ],
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "No in-scope target produced a comparable value: the DVS_Sign_v2e accuracy rests on an unspecified model and training protocol, Acc1/Acc2 are undefined, and the DAVIS346 data is unpublished. Comparability was decided before the full runs were launched. The four conditional runs (final-epoch accuracy 6.67, 6.67, 74.67 and 63.33 against the paper's 77.00) are recorded as evidence and are not assessed for agreement.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "With no code and an underspecified network and training recipe, no run can be a comparable implementation of the requested pipeline; this independently prevents every Table 2 target, including the DAVIS346 row had its data been available. The other targets also carry their own earlier blockers: Acc1/Acc2 are undefined (metric_ambiguous) and the DAVIS346 recordings are unpublished (data_unavailable).",
+      "target_ids": [
+        "table2-v2e-acc"
+      ]
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "dvs-sign-v2e",
+      "name": "DVS_Sign_v2e",
+      "version_or_subset": "najie1314/DVS branch master @ 439682135dc126337cd1d7f60e50764ec771ad2f; 15 classes, pre-split 40 train + 10 test event CSVs per class",
+      "license_or_permission": "No LICENSE file in the repository. Basis used: the CC BY 4.0 paper's Data Availability Statement says the dataset 'has been open source' at this URL. The events are derived from LSA64 (non-commercial licence). Processed privately for non-commercial research; never redistributed. The user confirmed this basis for private project-cloud processing on 2026-10-02 (gate dvs-repo-no-license).",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "dvs-sign-v2e",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 600,
+          "files": [
+            {
+              "path": "MANIFEST.sha256",
+              "sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1",
+              "role": "SHA-256 of all 750 CSV files (train and test); verified against a fresh clone of the pinned commit"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 150,
+          "files": [
+            {
+              "path": "MANIFEST.sha256",
+              "sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1"
+            }
+          ]
+        }
+      ],
+      "format": "CSV rows `timestamp_seconds,x,y,polarity`; 23,297,875 events; x and y within 0..127; polarity 0/1; clip length 1.9-6.9 s; no file content is shared between train and test",
+      "known_mismatch": "The paper says 'the total training set has 600 and the test set has 150 and the validation set has 100'; the repository has no validation split and the 100 is unexplained. Table 1's vocabulary (e.g. '1', '5', 'right', 'left', 'mom', 'dad', 'take') does not all appear in the LSA64 sign list although the paper says the classes come from LSA64; class identity was not needed because labels are the published directory names 0-14."
+    },
+    {
+      "dataset_id": "dvs-sign-davis346",
+      "name": "DVS_Sign (DAVIS346 recordings)",
+      "version_or_subset": "Not published. The branch the paper names (najie1314/DVS main @ 56a26f8f330540f62e09610704872981d2c66816) holds 150 files for classes 0-2 that are byte-identical to the v2e data.",
+      "license_or_permission": "Not obtained; 'available on request from corresponding authors' per the paper. See gate davis346-recordings-unpublished.",
+      "cloud_processing_allowed": false,
+      "modal_volume": "datasets",
+      "modal_path": "dvs-sign-davis346 (not populated: data unavailable)",
+      "splits": [
+        {
+          "name": "published stand-in on branch main (not the DAVIS346 recordings)",
+          "sample_count": 150,
+          "files": [
+            {
+              "path": "git ls-tree -r origin/main",
+              "sha256": "55cb3ed63e846269d00aa6a5bbd5f28f200fe383b5362bc612b1970b678d4411",
+              "role": "SHA-256 of the branch's recursive tree listing, as a stable identifier of what was inspected"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Accuracy (Acc)",
+      "direction": "higher_is_better",
+      "implementation": "argmax of output firing rates equals label, native PyTorch in train.py; the paper names no implementation",
+      "version": "train.py in this directory",
+      "aggregation": "Correct test files divided by all test files, single run",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "accuracy-first-part",
+      "name": "Accuracy on the first part of the test set (Acc1)",
+      "direction": "higher_is_better",
+      "implementation": "Undefined by the paper; no implementation is possible without the partition",
+      "version": "not applicable",
+      "aggregation": "Correct divided by all files in an undefined 'first part'",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "accuracy-second-part",
+      "name": "Accuracy on the second part of the test set (Acc2)",
+      "direction": "higher_is_better",
+      "implementation": "Undefined by the paper; no implementation is possible without the partition",
+      "version": "not applicable",
+      "aggregation": "Correct divided by all files in an undefined 'second part'",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "snn-stbp-v2e",
+      "system": "SNN trained with STBP on DVS_Sign_v2e (Table 3 row 4: step 80, dt 40, Vth 0.3, lr 1e-3; batch 20, 200 epochs)",
+      "dataset_id": "dvs-sign-v2e",
+      "required_seeds": "The paper reports a single number and names no seed; the conditional runs use seed 1",
+      "checkpoint_rule": "Unspecified by the paper. The conditional runs report the final epoch (200) and record the best test epoch only as a diagnostic",
+      "paper_evidence": "Paper Secs. 3.3, 4.2, 4.3, 5; Fig. 3; Tables 2 and 3; PDF SHA-256 f0c3010dcb17082256239abdb6cd5cf2b1d86661d077cc9bc953137989ee5567"
+    },
+    {
+      "experiment_id": "snn-stbp-davis346",
+      "system": "SNN trained with STBP on DVS_Sign (Table 3 row 2: step 60, dt 30, Vth 0.2, lr 1e-4)",
+      "dataset_id": "dvs-sign-davis346",
+      "required_seeds": "Unspecified by the paper",
+      "checkpoint_rule": "Unspecified by the paper; not run",
+      "paper_evidence": "Paper Secs. 3.2, 4.1, 4.3, 5; Tables 2 and 3; PDF SHA-256 f0c3010dcb17082256239abdb6cd5cf2b1d86661d077cc9bc953137989ee5567"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table2-v2e-acc",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign_v2e / SNN+STBP', column Acc (%); same value as Table 3 row 4",
+      "experiment_id": "snn-stbp-v2e",
+      "metric_id": "accuracy",
+      "split": "Published test split: 150 files (15 classes x 10), najie1314/DVS master test/",
+      "original_value": 77.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper publishes no code and leaves the network (Figure 3 is a schematic without kernel sizes, pooling type or an unambiguous channel list), the event-to-frame encoding, the LIF decay constant, the surrogate gradient, the SGD settings, the seed and the checkpoint rule unspecified, and its text (lr 1e-4) contradicts Table 3 (lr 1e-3) for the 77% row. Any run therefore rests on invented behavior-changing choices and is conditional evidence only."
+        },
+        "run_ids": [
+          "full-sgd-avg",
+          "full-sgd-max",
+          "full-adam-avg",
+          "full-adam-max"
+        ],
+        "artifact_ids": [
+          "sgd-avg-run",
+          "sgd-avg-metrics",
+          "sgd-max-run",
+          "sgd-max-metrics",
+          "adam-avg-run",
+          "adam-avg-metrics",
+          "adam-max-run",
+          "adam-max-metrics"
+        ],
+        "gate_ids": [
+          "protocol-unspecified-model-and-training"
+        ],
+        "evidence": [
+          "Paper Fig. 3 (p. 6): block labels pooling32/conv32/LIF/conv32/pooling16/LIF/conv16/pooling8/fc1/fc2 with numbers 34, 34, 64, 64, 128, 128, 256, 15 and no kernel, stride or pooling type.",
+          "Paper Sec. 4.3 (pp. 9-10): 'optimized by SGD using standard settings', initial learning rate 1e-4, batch size 20, 200 epochs, Eq. 8 decay.",
+          "Paper Table 3 (p. 11): the DVS_v2e 77.00% row uses step 80, dt 40, Vth 0.3, lr 1e-3; the DVS_Sign 68.00% row uses step 60, dt 30, Vth 0.2, lr 1e-4.",
+          "Source search (sources[] and dead_ends[]) found no code for this paper."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-v2e-acc1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign_v2e / SNN+STBP', column Acc1 (%)",
+      "experiment_id": "snn-stbp-v2e",
+      "metric_id": "accuracy-first-part",
+      "split": "'First part of the test set'; the partition is undefined",
+      "original_value": 79.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The paper never defines which test samples form the 'first part'; the protocol is additionally unspecified (see table2-v2e-acc)."
+        },
+        "run_ids": [
+          "full-sgd-avg",
+          "full-sgd-max",
+          "full-adam-avg",
+          "full-adam-max"
+        ],
+        "artifact_ids": [
+          "sgd-avg-run",
+          "sgd-avg-metrics",
+          "sgd-max-run",
+          "sgd-max-metrics",
+          "adam-avg-run",
+          "adam-avg-metrics",
+          "adam-max-run",
+          "adam-max-metrics"
+        ],
+        "gate_ids": [
+          "acc1-acc2-partition",
+          "protocol-unspecified-model-and-training"
+        ],
+        "evidence": [
+          "Paper Table 2 caption (p. 10): 'Acc1 represents the accuracy of the first part of the test set; Acc2 represents the accuracy of the second part of the test set'; no partition of the 150-file test set is defined anywhere in the paper or the dataset repository.",
+          "Tan et al., CVPR 2022, Table 1: the same caption wording defines Acc1/Acc2 for DVS-Lip's two vocabulary parts, a partition that does not exist for DVS_Sign.",
+          "Paper Table 2: the DVS_Sign row reports Acc1 71.00 and Acc2 70.00 but Acc 68.00, which no partition of one test set can produce."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-v2e-acc2",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign_v2e / SNN+STBP', column Acc2 (%)",
+      "experiment_id": "snn-stbp-v2e",
+      "metric_id": "accuracy-second-part",
+      "split": "'Second part of the test set'; the partition is undefined",
+      "original_value": 76.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The paper never defines which test samples form the 'second part'; the protocol is additionally unspecified (see table2-v2e-acc)."
+        },
+        "run_ids": [
+          "full-sgd-avg",
+          "full-sgd-max",
+          "full-adam-avg",
+          "full-adam-max"
+        ],
+        "artifact_ids": [
+          "sgd-avg-run",
+          "sgd-avg-metrics",
+          "sgd-max-run",
+          "sgd-max-metrics",
+          "adam-avg-run",
+          "adam-avg-metrics",
+          "adam-max-run",
+          "adam-max-metrics"
+        ],
+        "gate_ids": [
+          "acc1-acc2-partition",
+          "protocol-unspecified-model-and-training"
+        ],
+        "evidence": [
+          "Paper Table 2 caption (p. 10): 'Acc1 represents the accuracy of the first part of the test set; Acc2 represents the accuracy of the second part of the test set'; no partition of the 150-file test set is defined anywhere in the paper or the dataset repository.",
+          "Tan et al., CVPR 2022, Table 1: the same caption wording defines Acc1/Acc2 for DVS-Lip's two vocabulary parts, a partition that does not exist for DVS_Sign.",
+          "Paper Table 2: the DVS_Sign row reports Acc1 71.00 and Acc2 70.00 but Acc 68.00, which no partition of one test set can produce."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-davis-acc",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign / SNN+STBP', column Acc (%); same value as Table 3 row 2",
+      "experiment_id": "snn-stbp-davis346",
+      "metric_id": "accuracy",
+      "split": "DVS_Sign (DAVIS346) test split; the recordings are not published",
+      "original_value": 68.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The DAVIS346 recordings were never published: the repository branch the paper names for DVS_Sign holds a 3-class copy of the v2e data. No run was attempted."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "davis346-recordings-unpublished"
+        ],
+        "evidence": [
+          "najie1314/DVS branch main @ 56a26f8f330540f62e09610704872981d2c66816: 150 CSV files in train_self/{0,1,2} and test_self/{0,1,2} only (3 of 15 classes).",
+          "All 150 blobs on main are byte-identical, path for path, to train/{0,1,2} and test/{0,1,2} on branch master @ 439682135dc126337cd1d7f60e50764ec771ad2f (the v2e dataset): zero differences between the two git ls-tree listings after removing the _self suffix.",
+          "The published files hold v2e-style timestamps in seconds on a 128x128 grid, not 346x260 DAVIS346 recordings.",
+          "Paper Data Availability Statement (p. 12): data 'available on request from corresponding authors'."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-davis-acc1",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign / SNN+STBP', column Acc1 (%)",
+      "experiment_id": "snn-stbp-davis346",
+      "metric_id": "accuracy-first-part",
+      "split": "DVS_Sign (DAVIS346) test split; the recordings are not published",
+      "original_value": 71.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The DAVIS346 recordings were never published: the repository branch the paper names for DVS_Sign holds a 3-class copy of the v2e data. No run was attempted."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "davis346-recordings-unpublished"
+        ],
+        "evidence": [
+          "najie1314/DVS branch main @ 56a26f8f330540f62e09610704872981d2c66816: 150 CSV files in train_self/{0,1,2} and test_self/{0,1,2} only (3 of 15 classes).",
+          "All 150 blobs on main are byte-identical, path for path, to train/{0,1,2} and test/{0,1,2} on branch master @ 439682135dc126337cd1d7f60e50764ec771ad2f (the v2e dataset): zero differences between the two git ls-tree listings after removing the _self suffix.",
+          "The published files hold v2e-style timestamps in seconds on a 128x128 grid, not 346x260 DAVIS346 recordings.",
+          "Paper Data Availability Statement (p. 12): data 'available on request from corresponding authors'."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-davis-acc2",
+      "in_scope": true,
+      "paper_location": "Table 2 (p. 10), row 'Ours / DVS_Sign / SNN+STBP', column Acc2 (%)",
+      "experiment_id": "snn-stbp-davis346",
+      "metric_id": "accuracy-second-part",
+      "split": "DVS_Sign (DAVIS346) test split; the recordings are not published",
+      "original_value": 70.0,
+      "copied_baseline": false,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_unavailable",
+          "detail": "The DAVIS346 recordings were never published: the repository branch the paper names for DVS_Sign holds a 3-class copy of the v2e data. No run was attempted."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "davis346-recordings-unpublished"
+        ],
+        "evidence": [
+          "najie1314/DVS branch main @ 56a26f8f330540f62e09610704872981d2c66816: 150 CSV files in train_self/{0,1,2} and test_self/{0,1,2} only (3 of 15 classes).",
+          "All 150 blobs on main are byte-identical, path for path, to train/{0,1,2} and test/{0,1,2} on branch master @ 439682135dc126337cd1d7f60e50764ec771ad2f (the v2e dataset): zero differences between the two git ls-tree listings after removing the _self suffix.",
+          "The published files hold v2e-style timestamps in seconds on a 128x128 grid, not 346x260 DAVIS346 recordings.",
+          "Paper Data Availability Statement (p. 12): data 'available on request from corresponding authors'."
+        ]
+      }
+    }
+  ],
+  "copied_baselines": {
+    "note": "The other six Table 2 rows are numbers from prior work on other datasets. They are comparison context, not results of this paper, and are out of scope; none was rerun.",
+    "rows": [
+      {
+        "method": "Ye et al. [42]",
+        "dataset": "ASL",
+        "values": {
+          "Acc": 69.2
+        },
+        "provenance": "Cited prior work; not verified against its source"
+      },
+      {
+        "method": "Zhang et al. [43]",
+        "dataset": "EgoGesture",
+        "values": {
+          "Acc": 68.9
+        },
+        "provenance": "Cited prior work; not verified against its source"
+      },
+      {
+        "method": "Xu et al. [24]",
+        "dataset": "ASL-DVS",
+        "values": {
+          "Acc": 51.4
+        },
+        "provenance": "Cited prior work; not verified against its source"
+      },
+      {
+        "method": "Monti et al. [44]",
+        "dataset": "ASL-DVS",
+        "values": {
+          "Acc": 86.7
+        },
+        "provenance": "Cited prior work; not verified against its source"
+      },
+      {
+        "method": "Martinez et al. [18]",
+        "dataset": "DVS-Lip",
+        "values": {
+          "Acc1": 55.6,
+          "Acc2": 75.46,
+          "Acc": 65.51
+        },
+        "provenance": "Identical to Tan et al. CVPR 2022 Table 1, where the row's input is 'video'; this paper labels it 'event'"
+      },
+      {
+        "method": "Liu et al. [45]",
+        "dataset": "DVS-Lip",
+        "values": {
+          "Acc1": 58.36,
+          "Acc2": 79.17,
+          "Acc": 68.74
+        },
+        "provenance": "Identical to the TANet row of Tan et al. CVPR 2022 Table 1"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "run_id": "full-sgd-avg",
+      "kind": "conditional_full_run",
+      "purpose": "Conditional reconstruction of the Table 2 DVS_Sign_v2e row with optimizer=sgd, 4x4 input pooling=avg; 200 epochs, final-epoch evaluation on the 150-file test split.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/chen-2023-event-camera-snn-sign/modal_app.py::train --optimizer sgd --input-pool avg",
+      "working_directory": "repository root",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-02T13:42:20Z",
+      "finished_at_utc": "2026-10-02T19:45:13Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sgd-avg",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T13:42:18Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0,
+        "detail": "The wall-time ceiling is the 12 h function timeout in modal_app.py; with one GPU it bounds GPU-hours at 12, and the cost ceiling was set from the A10G list rate with margin. One resume from the per-epoch checkpoint was allowed after an interruption; it was not needed."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 200 epochs ran and evaluation emitted final-epoch accuracy without interruption or resume. The network never produced an output spike: training loss was exactly 0.5 and test accuracy 10/150 in every epoch.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "sgd-avg-run",
+        "sgd-avg-metrics",
+        "sgd-avg-freeze",
+        "sgd-avg-checkpoint"
+      ],
+      "source_revision": "repository 7b12017c2b9630cca89bb93c4a3f26d729786969 plus uncommitted paper directory; train.py SHA-256 5944a985dc99a16d58ebb52cd9e88f865b12e497ea78a530b95510772c721f05, modal_app.py SHA-256 e764e99547f61be7a0c4290066a4423236db066506d6004a499085fb4b3ec255; upstream thiswinex/STBP-simple dca9590b465c5cb37b3828bf6888c6857ad4238b, unpatched",
+      "config": {
+        "data_root": "/datasets/dvs-sign-v2e",
+        "output_dir": "/results/sgd-avg",
+        "stbp_dir": "/opt/STBP-simple",
+        "optimizer": "sgd",
+        "input_pool": "avg",
+        "step": 80,
+        "dt": 40.0,
+        "vth": 0.3,
+        "lr": 0.001,
+        "batch_size": 20,
+        "epochs": 200,
+        "seed": 1,
+        "limit": 0
+      },
+      "dataset": {
+        "dataset_id": "dvs-sign-v2e",
+        "modal_path": "dvs-sign-v2e",
+        "mount": "/datasets (read-only)",
+        "manifest_sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1",
+        "train_count": 600,
+        "test_count": 150
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "modal_app_id": "ap-DnSVh6V2F2RHUhEUi6tFTC",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DnSVh6V2F2RHUhEUi6tFTC",
+        "modal_function_call_id": "not captured: the detached client's log stream ended before printing it",
+        "image": "Repository root Dockerfile (nvcr.io/nvidia/pytorch:26.04-py3) plus the pinned STBP-simple clone; Modal image ID not captured, resolved packages are in the run's freeze.txt",
+        "hardware": "one NVIDIA A10 (Modal gpu=\"A10G\"), 4 CPU, 16 GiB",
+        "gpu_count": 1,
+        "torch": "2.12.0a0+0291f960b6.nv26.04.48445190",
+        "cuda": "13.2",
+        "peak_gpu_memory_bytes": 5982619648,
+        "train_seconds": 21076.9,
+        "wall_time_hours": 6.048,
+        "gpu_hours": 6.048,
+        "estimated_cost_usd": 8.57,
+        "cost_note": "Upper estimate from Modal list rates on 2026-10-02 for the reserved A10G, 4 cores and 16 GiB over app wall time; the billing report for the day was not yet available.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "observed": {
+        "final_epoch": 200,
+        "final_test_acc": 6.666667014360428,
+        "best_test_acc_diagnostic": 6.666667014360428,
+        "best_epoch_diagnostic": 1
+      }
+    },
+    {
+      "run_id": "full-sgd-max",
+      "kind": "conditional_full_run",
+      "purpose": "Conditional reconstruction of the Table 2 DVS_Sign_v2e row with optimizer=sgd, 4x4 input pooling=max; 200 epochs, final-epoch evaluation on the 150-file test split.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/chen-2023-event-camera-snn-sign/modal_app.py::train --optimizer sgd --input-pool max",
+      "working_directory": "repository root",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-02T13:42:22Z",
+      "finished_at_utc": "2026-10-02T19:46:48Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sgd-max",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T13:42:18Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0,
+        "detail": "The wall-time ceiling is the 12 h function timeout in modal_app.py; with one GPU it bounds GPU-hours at 12, and the cost ceiling was set from the A10G list rate with margin. One resume from the per-epoch checkpoint was allowed after an interruption; it was not needed."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 200 epochs ran and evaluation emitted final-epoch accuracy without interruption or resume. The network never produced an output spike: training loss was exactly 0.5 and test accuracy 10/150 in every epoch.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "sgd-max-run",
+        "sgd-max-metrics",
+        "sgd-max-freeze",
+        "sgd-max-checkpoint"
+      ],
+      "source_revision": "repository 7b12017c2b9630cca89bb93c4a3f26d729786969 plus uncommitted paper directory; train.py SHA-256 5944a985dc99a16d58ebb52cd9e88f865b12e497ea78a530b95510772c721f05, modal_app.py SHA-256 e764e99547f61be7a0c4290066a4423236db066506d6004a499085fb4b3ec255; upstream thiswinex/STBP-simple dca9590b465c5cb37b3828bf6888c6857ad4238b, unpatched",
+      "config": {
+        "data_root": "/datasets/dvs-sign-v2e",
+        "output_dir": "/results/sgd-max",
+        "stbp_dir": "/opt/STBP-simple",
+        "optimizer": "sgd",
+        "input_pool": "max",
+        "step": 80,
+        "dt": 40.0,
+        "vth": 0.3,
+        "lr": 0.001,
+        "batch_size": 20,
+        "epochs": 200,
+        "seed": 1,
+        "limit": 0
+      },
+      "dataset": {
+        "dataset_id": "dvs-sign-v2e",
+        "modal_path": "dvs-sign-v2e",
+        "mount": "/datasets (read-only)",
+        "manifest_sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1",
+        "train_count": 600,
+        "test_count": 150
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "modal_app_id": "ap-WTlc4IOF2DwCdf676nDm2Y",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-WTlc4IOF2DwCdf676nDm2Y",
+        "modal_function_call_id": "not captured: the detached client's log stream ended before printing it",
+        "image": "Repository root Dockerfile (nvcr.io/nvidia/pytorch:26.04-py3) plus the pinned STBP-simple clone; Modal image ID not captured, resolved packages are in the run's freeze.txt",
+        "hardware": "one NVIDIA A10G (Modal gpu=\"A10G\"), 4 CPU, 16 GiB",
+        "gpu_count": 1,
+        "torch": "2.12.0a0+0291f960b6.nv26.04.48445190",
+        "cuda": "13.2",
+        "peak_gpu_memory_bytes": 5982619648,
+        "train_seconds": 21318.7,
+        "wall_time_hours": 6.074,
+        "gpu_hours": 6.074,
+        "estimated_cost_usd": 8.61,
+        "cost_note": "Upper estimate from Modal list rates on 2026-10-02 for the reserved A10G, 4 cores and 16 GiB over app wall time; the billing report for the day was not yet available.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "observed": {
+        "final_epoch": 200,
+        "final_test_acc": 6.666667014360428,
+        "best_test_acc_diagnostic": 6.666667014360428,
+        "best_epoch_diagnostic": 1
+      }
+    },
+    {
+      "run_id": "full-adam-avg",
+      "kind": "conditional_full_run",
+      "purpose": "Conditional reconstruction of the Table 2 DVS_Sign_v2e row with optimizer=adam, 4x4 input pooling=avg; 200 epochs, final-epoch evaluation on the 150-file test split.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/chen-2023-event-camera-snn-sign/modal_app.py::train --optimizer adam --input-pool avg",
+      "working_directory": "repository root",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-02T13:42:24Z",
+      "finished_at_utc": "2026-10-02T19:54:29Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-adam-avg",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T13:42:18Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0,
+        "detail": "The wall-time ceiling is the 12 h function timeout in modal_app.py; with one GPU it bounds GPU-hours at 12, and the cost ceiling was set from the A10G list rate with margin. One resume from the per-epoch checkpoint was allowed after an interruption; it was not needed."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 200 epochs ran and evaluation emitted final-epoch accuracy without interruption or resume. Final-epoch test accuracy 74.67%.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "adam-avg-run",
+        "adam-avg-metrics",
+        "adam-avg-freeze",
+        "adam-avg-checkpoint"
+      ],
+      "source_revision": "repository 7b12017c2b9630cca89bb93c4a3f26d729786969 plus uncommitted paper directory; train.py SHA-256 5944a985dc99a16d58ebb52cd9e88f865b12e497ea78a530b95510772c721f05, modal_app.py SHA-256 e764e99547f61be7a0c4290066a4423236db066506d6004a499085fb4b3ec255; upstream thiswinex/STBP-simple dca9590b465c5cb37b3828bf6888c6857ad4238b, unpatched",
+      "config": {
+        "data_root": "/datasets/dvs-sign-v2e",
+        "output_dir": "/results/adam-avg",
+        "stbp_dir": "/opt/STBP-simple",
+        "optimizer": "adam",
+        "input_pool": "avg",
+        "step": 80,
+        "dt": 40.0,
+        "vth": 0.3,
+        "lr": 0.001,
+        "batch_size": 20,
+        "epochs": 200,
+        "seed": 1,
+        "limit": 0
+      },
+      "dataset": {
+        "dataset_id": "dvs-sign-v2e",
+        "modal_path": "dvs-sign-v2e",
+        "mount": "/datasets (read-only)",
+        "manifest_sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1",
+        "train_count": 600,
+        "test_count": 150
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "modal_app_id": "ap-5ccCQryAYzWKX8HCM4c5sY",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-5ccCQryAYzWKX8HCM4c5sY",
+        "modal_function_call_id": "not captured: the detached client's log stream ended before printing it",
+        "image": "Repository root Dockerfile (nvcr.io/nvidia/pytorch:26.04-py3) plus the pinned STBP-simple clone; Modal image ID not captured, resolved packages are in the run's freeze.txt",
+        "hardware": "one NVIDIA A10G (Modal gpu=\"A10G\"), 4 CPU, 16 GiB",
+        "gpu_count": 1,
+        "torch": "2.12.0a0+0291f960b6.nv26.04.48445190",
+        "cuda": "13.2",
+        "peak_gpu_memory_bytes": 6009437184,
+        "train_seconds": 21354.0,
+        "wall_time_hours": 6.201,
+        "gpu_hours": 6.201,
+        "estimated_cost_usd": 8.79,
+        "cost_note": "Upper estimate from Modal list rates on 2026-10-02 for the reserved A10G, 4 cores and 16 GiB over app wall time; the billing report for the day was not yet available.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "observed": {
+        "final_epoch": 200,
+        "final_test_acc": 74.6666669845581,
+        "best_test_acc_diagnostic": 77.33333706855774,
+        "best_epoch_diagnostic": 46
+      }
+    },
+    {
+      "run_id": "full-adam-max",
+      "kind": "conditional_full_run",
+      "purpose": "Conditional reconstruction of the Table 2 DVS_Sign_v2e row with optimizer=adam, 4x4 input pooling=max; 200 epochs, final-epoch evaluation on the 150-file test split.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/chen-2023-event-camera-snn-sign/modal_app.py::train --optimizer adam --input-pool max",
+      "working_directory": "repository root",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-02T13:42:26Z",
+      "finished_at_utc": "2026-10-02T19:48:20Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-adam-max",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T13:42:18Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 15.0,
+        "detail": "The wall-time ceiling is the 12 h function timeout in modal_app.py; with one GPU it bounds GPU-hours at 12, and the cost ceiling was set from the A10G list rate with margin. One resume from the per-epoch checkpoint was allowed after an interruption; it was not needed."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 200 epochs ran and evaluation emitted final-epoch accuracy without interruption or resume. Final-epoch test accuracy 63.33%.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "adam-max-run",
+        "adam-max-metrics",
+        "adam-max-freeze",
+        "adam-max-checkpoint"
+      ],
+      "source_revision": "repository 7b12017c2b9630cca89bb93c4a3f26d729786969 plus uncommitted paper directory; train.py SHA-256 5944a985dc99a16d58ebb52cd9e88f865b12e497ea78a530b95510772c721f05, modal_app.py SHA-256 e764e99547f61be7a0c4290066a4423236db066506d6004a499085fb4b3ec255; upstream thiswinex/STBP-simple dca9590b465c5cb37b3828bf6888c6857ad4238b, unpatched",
+      "config": {
+        "data_root": "/datasets/dvs-sign-v2e",
+        "output_dir": "/results/adam-max",
+        "stbp_dir": "/opt/STBP-simple",
+        "optimizer": "adam",
+        "input_pool": "max",
+        "step": 80,
+        "dt": 40.0,
+        "vth": 0.3,
+        "lr": 0.001,
+        "batch_size": 20,
+        "epochs": 200,
+        "seed": 1,
+        "limit": 0
+      },
+      "dataset": {
+        "dataset_id": "dvs-sign-v2e",
+        "modal_path": "dvs-sign-v2e",
+        "mount": "/datasets (read-only)",
+        "manifest_sha256": "6c3e9ca5a71e5f0c9af2e1ec1e53dd0ba95a0c084648f70e4504ee6456c7f6f1",
+        "train_count": 600,
+        "test_count": 150
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "modal_app_id": "ap-TkDCGaAlnetQvgIltvsD2R",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TkDCGaAlnetQvgIltvsD2R",
+        "modal_function_call_id": "not captured: the detached client's log stream ended before printing it",
+        "image": "Repository root Dockerfile (nvcr.io/nvidia/pytorch:26.04-py3) plus the pinned STBP-simple clone; Modal image ID not captured, resolved packages are in the run's freeze.txt",
+        "hardware": "one NVIDIA A10 (Modal gpu=\"A10G\"), 4 CPU, 16 GiB",
+        "gpu_count": 1,
+        "torch": "2.12.0a0+0291f960b6.nv26.04.48445190",
+        "cuda": "13.2",
+        "peak_gpu_memory_bytes": 6009437184,
+        "train_seconds": 21074.2,
+        "wall_time_hours": 6.098,
+        "gpu_hours": 6.098,
+        "estimated_cost_usd": 8.64,
+        "cost_note": "Upper estimate from Modal list rates on 2026-10-02 for the reserved A10G, 4 cores and 16 GiB over app wall time; the billing report for the day was not yet available.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "observed": {
+        "final_epoch": 200,
+        "final_test_acc": 63.333332538604736,
+        "best_test_acc_diagnostic": 74.00000095367432,
+        "best_epoch_diagnostic": 51
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "sgd-avg-run",
+      "kind": "run_manifest",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-avg/run.json",
+      "sha256": "4ded9f900990c4166821a77a3cb179de1b1cedb1c0ed63c5ffa90a804c8fc83b",
+      "size_bytes": 4551
+    },
+    {
+      "artifact_id": "sgd-avg-metrics",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-avg/metrics.jsonl",
+      "sha256": "fa3a9e831857f5be741f7e9cc458c823ea2dfadf4eadd8107bef6918473269e8",
+      "size_bytes": 16912
+    },
+    {
+      "artifact_id": "sgd-avg-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-avg/freeze.txt",
+      "sha256": "3fc560faf397262a748fab01acc46e55f1c364c089076b9c618e5d3fc04738c9",
+      "size_bytes": 6587
+    },
+    {
+      "artifact_id": "sgd-avg-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-avg/checkpoint.pt",
+      "sha256": "6c88998a6af1d5982a3addf7bf5ccab5ea1ab689e5b864a6a32f5f70a935b8e9",
+      "size_bytes": 8791989
+    },
+    {
+      "artifact_id": "sgd-max-run",
+      "kind": "run_manifest",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-max/run.json",
+      "sha256": "7a146baa4a024638dd188bba30d8056dd953136ba407d45ae48b68a71cc86876",
+      "size_bytes": 4551
+    },
+    {
+      "artifact_id": "sgd-max-metrics",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-max/metrics.jsonl",
+      "sha256": "fa3a9e831857f5be741f7e9cc458c823ea2dfadf4eadd8107bef6918473269e8",
+      "size_bytes": 16912
+    },
+    {
+      "artifact_id": "sgd-max-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-max/freeze.txt",
+      "sha256": "3fc560faf397262a748fab01acc46e55f1c364c089076b9c618e5d3fc04738c9",
+      "size_bytes": 6587
+    },
+    {
+      "artifact_id": "sgd-max-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/sgd-max/checkpoint.pt",
+      "sha256": "6cf5471db327752b6f9484a35e817025b92fa82de4a89ce10a20bc92bc1da0ef",
+      "size_bytes": 8791989
+    },
+    {
+      "artifact_id": "adam-avg-run",
+      "kind": "run_manifest",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-avg/run.json",
+      "sha256": "a2bd7d061ce1c8adb17c61ac9c405dbaebc2fcc8e849827983416bcfce6354e2",
+      "size_bytes": 4592
+    },
+    {
+      "artifact_id": "adam-avg-metrics",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-avg/metrics.jsonl",
+      "sha256": "893520effce2831de8c4d3d64de705776886a5e8a37716e77d69218f222b7d51",
+      "size_bytes": 20050
+    },
+    {
+      "artifact_id": "adam-avg-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-avg/freeze.txt",
+      "sha256": "3fc560faf397262a748fab01acc46e55f1c364c089076b9c618e5d3fc04738c9",
+      "size_bytes": 6587
+    },
+    {
+      "artifact_id": "adam-avg-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-avg/checkpoint.pt",
+      "sha256": "9d7d33088e63be3783f948b3b0dab018fc0504ea9ec12c37f19967e5b8364467",
+      "size_bytes": 26363445
+    },
+    {
+      "artifact_id": "adam-max-run",
+      "kind": "run_manifest",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-max/run.json",
+      "sha256": "b3fe8a2838e9c3af1574d99891c672b8782cc11b0c0384bf1d61c58b62ae8d15",
+      "size_bytes": 4585
+    },
+    {
+      "artifact_id": "adam-max-metrics",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-max/metrics.jsonl",
+      "sha256": "e0b452bdd12a15dfe4f7bfd7670f9fbfd7feb303b0a875d8fee52409dbde02b0",
+      "size_bytes": 20264
+    },
+    {
+      "artifact_id": "adam-max-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-max/freeze.txt",
+      "sha256": "3fc560faf397262a748fab01acc46e55f1c364c089076b9c618e5d3fc04738c9",
+      "size_bytes": 6587
+    },
+    {
+      "artifact_id": "adam-max-checkpoint",
+      "kind": "model_checkpoint",
+      "uri": "modal://volume/chen-2023-event-camera-snn-sign-results/adam-max/checkpoint.pt",
+      "sha256": "b955d57609041dc2f1549629777c415b01679896e444f6f76cc61ce62aa03485",
+      "size_bytes": 26363445
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "protocol-unspecified-model-and-training",
+      "type": "protocol",
+      "status": "open",
+      "reason": "No code exists for this paper and the paper does not specify the network, event encoding, neuron constants, optimizer settings, seed or checkpoint rule; its text and Table 3 disagree on the learning rate.",
+      "evidence": [
+        "Paper Fig. 3 (p. 6): block labels pooling32/conv32/LIF/conv32/pooling16/LIF/conv16/pooling8/fc1/fc2 with numbers 34, 34, 64, 64, 128, 128, 256, 15 and no kernel, stride or pooling type.",
+        "Paper Sec. 4.3 (pp. 9-10): 'optimized by SGD using standard settings', initial learning rate 1e-4, batch size 20, 200 epochs, Eq. 8 decay.",
+        "Paper Table 3 (p. 11): the DVS_v2e 77.00% row uses step 80, dt 40, Vth 0.3, lr 1e-3; the DVS_Sign 68.00% row uses step 60, dt 30, Vth 0.2, lr 1e-4.",
+        "Source search (sources[] and dead_ends[]) found no code for this paper."
+      ],
+      "required_action": "Obtain the authors' training code or exact configuration (author contact is a human decision), or accept that the retained runs are reported only as conditional reconstructions."
+    },
+    {
+      "gate_id": "acc1-acc2-partition",
+      "type": "target",
+      "status": "open",
+      "reason": "Table 2 reports Acc1 and Acc2 for 'the first part' and 'the second part' of the test set without defining the partition.",
+      "evidence": [
+        "Paper Table 2 caption (p. 10): 'Acc1 represents the accuracy of the first part of the test set; Acc2 represents the accuracy of the second part of the test set'; no partition of the 150-file test set is defined anywhere in the paper or the dataset repository.",
+        "Tan et al., CVPR 2022, Table 1: the same caption wording defines Acc1/Acc2 for DVS-Lip's two vocabulary parts, a partition that does not exist for DVS_Sign.",
+        "Paper Table 2: the DVS_Sign row reports Acc1 71.00 and Acc2 70.00 but Acc 68.00, which no partition of one test set can produce."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "author-defined-partition",
+          "description": "Use the partition the authors actually used, if any.",
+          "paper_evidence": "Table 2 caption only; no definition.",
+          "decision_needed": "Obtain the definition from the authors."
+        },
+        {
+          "alternative_id": "file-index-halves",
+          "description": "Test files 0-4 versus 5-9 of each class (75 files each).",
+          "paper_evidence": "None; it is merely the simplest split of ten numbered files per class. The conditional runs report it as evidence.",
+          "decision_needed": "Approve reporting it only as a labelled conditional reading."
+        },
+        {
+          "alternative_id": "caption-copied-in-error",
+          "description": "Treat Acc1/Acc2 as not meaningful for this dataset: the caption wording comes from the DVS-Lip benchmark, and the DVS_Sign row (71/70 with overall 68) is arithmetically impossible for a partition.",
+          "paper_evidence": "Tan et al. 2022 Table 1 caption; Table 2 DVS_Sign row.",
+          "decision_needed": "Decide whether these four numbers should be dropped from the target list."
+        }
+      ],
+      "required_action": "Choose an alternative; until then the Acc1/Acc2 targets stay not produced."
+    },
+    {
+      "gate_id": "davis346-recordings-unpublished",
+      "type": "data",
+      "status": "open",
+      "reason": "The DAVIS346 DVS_Sign recordings are not in the repository the paper names; the branch holds a 3-class copy of the v2e data.",
+      "evidence": [
+        "najie1314/DVS branch main @ 56a26f8f330540f62e09610704872981d2c66816: 150 CSV files in train_self/{0,1,2} and test_self/{0,1,2} only (3 of 15 classes).",
+        "All 150 blobs on main are byte-identical, path for path, to train/{0,1,2} and test/{0,1,2} on branch master @ 439682135dc126337cd1d7f60e50764ec771ad2f (the v2e dataset): zero differences between the two git ls-tree listings after removing the _self suffix.",
+        "The published files hold v2e-style timestamps in seconds on a 128x128 grid, not 346x260 DAVIS346 recordings.",
+        "Paper Data Availability Statement (p. 12): data 'available on request from corresponding authors'."
+      ],
+      "required_action": "Route a data request to the corresponding author through Team S. Three volunteers were recorded and the paper reports no consent or ethics information, so access terms and cloud-processing basis must be settled with the request."
+    },
+    {
+      "gate_id": "dvs-repo-no-license",
+      "type": "data",
+      "status": "resolved",
+      "resolution": "On 2026-10-02 the user confirmed private project-cloud processing of this data for the study on the basis of the paper's open-source statement. The confirmation came after the Volume had been populated and the subset preflights had run, and before the full runs were launched.",
+      "reason": "najie1314/DVS carries no licence file and its events derive from LSA64. The agent populated the private shared Volume and trained on it on the strength of the paper's open-source statement, without a prior human decision; earlier papers in this study obtained explicit user authorization for unlicensed repositories.",
+      "evidence": [
+        "GitHub API for najie1314/DVS: license null; no LICENSE file on either branch.",
+        "Paper Data Availability Statement (p. 12): 'our dataset has been open source' with the two branch URLs; the paper itself is CC BY 4.0.",
+        "Survey record lists both DVS datasets as 'CC BY 4.0' and LSA64 as 'CC BY-NC-SA 4.0'; the official LSA64 page was recorded elsewhere in this study as CC BY-NC-ND 4.0.",
+        "Stored only at modal://volume/datasets/dvs-sign-v2e (private); no data, predictions or weights are published."
+      ],
+      "required_action": "None for private processing. Publishing data, predictions or trained weights would need a new decision."
+    }
+  ],
+  "guesses": [
+    {
+      "item": "LIF and surrogate-gradient code",
+      "choice": "thiswinex/STBP-simple layers.py @ dca9590b465c5cb37b3828bf6888c6857ad4238b, imported unchanged",
+      "basis": "Algorithm 1 equals its state_update, including the SpikeAct name; the paper does not cite it"
+    },
+    {
+      "item": "Spike threshold semantics",
+      "choice": "Upstream behaviour at the pinned commit: a neuron fires when u - Vth > Vth, i.e. effective threshold 2 x Vth = 0.6",
+      "basis": "This is what the code that existed before the paper's submission computes; upstream changed it to u > Vth on 2023-04-15, after publication. Algorithm 1 as printed implies u > Vth"
+    },
+    {
+      "item": "Decay constant and surrogate width",
+      "choice": "tau = 0.25, rectangular surrogate half-width 0.5",
+      "basis": "Upstream defaults; the paper gives no values"
+    },
+    {
+      "item": "Network",
+      "choice": "Pool4 - Conv(2->34, 3x3) - LIF - Conv(34->64, 3x3) - LIF - AvgPool2 - Conv(64->128, 3x3) - LIF - AvgPool2 - FC(8192->256) - LIF - FC(256->15) - LIF; output = mean firing rate",
+      "basis": "Figure 3 block order and its numbers 34/64/128/256/15 read as channel and unit counts, and 32/16/8 as feature-map sizes; 3x3 kernels and padding 1 keep those sizes and match He et al. 2020; 2x2 average pooling inside the network follows upstream's example nets; no spiking after pooling is a choice. The 4x4 input pooling type is a run factor (see Run grid)"
+    },
+    {
+      "item": "Event encoding",
+      "choice": "Binary frame [polarity, y, x, floor(t_ms / dt)] for the first step x dt = 3.2 s; later events dropped; 6 non-integer coordinates truncated",
+      "basis": "Follows upstream's N-MNIST preprocessing (1 for an event in a dt bin) with both polarities kept, matching its 2-channel input; the paper only says dt is 'the time interval of taking an event frame'"
+    },
+    {
+      "item": "dt unit",
+      "choice": "milliseconds (dt = 40 ms)",
+      "basis": "Sec. 4.2 (3): encoding window '40 ms or 60 ms'; upstream documents dt in ms"
+    },
+    {
+      "item": "Learning rate",
+      "choice": "1e-3",
+      "basis": "Table 3 row for the 77.00% result; Sec. 4.3's 1e-4 matches the DVS_Sign row instead"
+    },
+    {
+      "item": "Loss scaling",
+      "choice": "Eq. 6 literally: 0.5 x squared error summed over classes, averaged over the batch",
+      "basis": "Paper Eq. 6; upstream uses torch's element-mean MSE, which is 7.5 times smaller"
+    },
+    {
+      "item": "Run grid",
+      "choice": "Four full runs: optimizer in {`sgd` = torch.optim.SGD defaults with momentum 0, `adam` = torch.optim.Adam defaults} x 4x4 input pooling in {`avg`, `max`}",
+      "basis": "The paper says only 'SGD using standard settings' and 'pooling'. Plain SGD is the literal reading; Adam is the upstream base code's optimizer; average pooling is upstream's convention; max pooling is He et al. 2020's 'MP4'. The max-pooling factor was added after subset preflights showed a silent network (no output spikes) under average pooling. The user approved this grid on 2026-10-02 before launch; all four runs are reported and none is selected as the result. A third optimizer option (`sgd-momentum`, momentum 0.9) was exercised only in a subset preflight"
+    },
+    {
+      "item": "Seed, shuffling, initialisation",
+      "choice": "Seed 1, reshuffled every epoch, PyTorch default initialisation",
+      "basis": "Upstream default seed; the paper is silent"
+    },
+    {
+      "item": "Checkpoint rule",
+      "choice": "Final epoch (200); best test epoch recorded only as a diagnostic",
+      "basis": "The paper is silent; the upstream script prints test accuracy every epoch, so best-epoch reporting cannot be excluded"
+    },
+    {
+      "item": "Acc1 / Acc2",
+      "choice": "Test files 0-4 and 5-9 of each class, reported as conditional evidence only",
+      "basis": "No definition in the paper; see gate acc1-acc2-partition"
+    }
+  ],
+  "deviations": [
+    {
+      "item": "Hardware",
+      "detail": "One NVIDIA A10G on Modal instead of the paper's unspecified 'TITAN server'."
+    },
+    {
+      "item": "Software",
+      "detail": "Study base image (NGC PyTorch 26.04) instead of the paper's unspecified PyTorch version."
+    }
+  ],
+  "dead_ends": [
+    {
+      "what": "Search for this paper's code",
+      "detail": "No code link in the PDF (footnotes, Data Availability Statement, references). Web searches on 2026-10-02 for the exact title plus 'code github DVS_Sign', and for 'DVS_Sign' / 'DVS_Sign_v2e' / 'DVS-Sign' with STBP and the authors' affiliation, returned only the publisher and institutional pages. The dataset account najie1314 has five repositories (DVS, v2e, chenxuena, text, a Laravel fork); none contains code, DVS has no forks, releases or tags and one commit per branch. The MDPI landing page could not be fetched (HTTP 403; www2 mirror has an expired certificate), so a supplementary-files section could not be inspected beyond what the PDF states."
+    },
+    {
+      "what": "DAVIS346 data on branch main",
+      "detail": "Inspected and found to be a byte-identical 3-class subset of the v2e data; see gate davis346-recordings-unpublished."
+    }
+  ],
+  "author_contact": {
+    "status": "none",
+    "detail": "No author was contacted. Two gates recommend contact (training code/configuration and the DAVIS346 recordings); both are human decisions coordinated with Team S."
+  },
+  "ethics": {
+    "queue_flag": "potential_ethical_concerns: yes",
+    "investigation": "The flag concerns the paper's framing and the three volunteers recorded with the DAVIS346 without reported consent. This attempt used only the v2e event streams, which are sparse brightness-change events derived from the already-public LSA64 videos; no DAVIS346 recording of the volunteers was obtained or processed, no new participants were involved, and nothing was published. The survey note that the experiments require a DAVIS346 camera does not apply to rerunning training on published events."
+  },
+  "conditional_results": {
+    "note": "Conditional evidence only. These values come from invented protocol choices and are not target results; differences are computed mechanically against the paper's DVS_Sign_v2e row (Acc 77.00, Acc1 79.00, Acc2 76.00). The file-index halves are one unverified reading of Acc1/Acc2. Single seed (1); the 150-file test set makes one file worth 0.67 points.",
+    "runs": [
+      {
+        "run_id": "full-sgd-avg",
+        "optimizer": "sgd",
+        "input_pool": "avg",
+        "acc_final_epoch": 6.67,
+        "acc_difference_vs_paper": -70.33,
+        "acc_files_0_4": 6.67,
+        "acc_files_0_4_difference_vs_paper_acc1": -72.33,
+        "acc_files_5_9": 6.67,
+        "acc_files_5_9_difference_vs_paper_acc2": -69.33,
+        "best_epoch_acc_diagnostic": 6.67,
+        "best_epoch_diagnostic": 1,
+        "silent_network": true
+      },
+      {
+        "run_id": "full-sgd-max",
+        "optimizer": "sgd",
+        "input_pool": "max",
+        "acc_final_epoch": 6.67,
+        "acc_difference_vs_paper": -70.33,
+        "acc_files_0_4": 6.67,
+        "acc_files_0_4_difference_vs_paper_acc1": -72.33,
+        "acc_files_5_9": 6.67,
+        "acc_files_5_9_difference_vs_paper_acc2": -69.33,
+        "best_epoch_acc_diagnostic": 6.67,
+        "best_epoch_diagnostic": 1,
+        "silent_network": true
+      },
+      {
+        "run_id": "full-adam-avg",
+        "optimizer": "adam",
+        "input_pool": "avg",
+        "acc_final_epoch": 74.67,
+        "acc_difference_vs_paper": -2.33,
+        "acc_files_0_4": 72.0,
+        "acc_files_0_4_difference_vs_paper_acc1": -7.0,
+        "acc_files_5_9": 77.33,
+        "acc_files_5_9_difference_vs_paper_acc2": 1.33,
+        "best_epoch_acc_diagnostic": 77.33,
+        "best_epoch_diagnostic": 46,
+        "silent_network": false
+      },
+      {
+        "run_id": "full-adam-max",
+        "optimizer": "adam",
+        "input_pool": "max",
+        "acc_final_epoch": 63.33,
+        "acc_difference_vs_paper": -13.67,
+        "acc_files_0_4": 61.33,
+        "acc_files_0_4_difference_vs_paper_acc1": -17.67,
+        "acc_files_5_9": 65.33,
+        "acc_files_5_9_difference_vs_paper_acc2": -10.67,
+        "best_epoch_acc_diagnostic": 74.0,
+        "best_epoch_diagnostic": 51,
+        "silent_network": false
+      }
+    ],
+    "total_gpu_hours": 24.42,
+    "observations": [
+      "User observation, 2026-10-02: the best-epoch test accuracy of full-adam-avg (77.33% = 116/150 at epoch 46) is within one test file of the paper's 77.00%. This is consistent with, but does not establish, the hypothesis that the authors trained with the base code's Adam optimizer and reported the best test epoch. It is a maximum over 200 noisy epochs of one seed, chosen on the test set and after seeing four runs, so it stays a diagnostic and does not change any target status.",
+      "On a 150-file test set accuracy moves in steps of 0.67 points, so 77.00% is not attainable exactly (115/150 = 76.67, 116/150 = 77.33). All of the paper's own accuracies in Tables 2 and 3 are whole numbers printed with '.00', which suggests rounding to whole percent or a test set of a different size (the paper also mentions an unexplained 'validation set' of 100)."
+    ]
+  },
+  "preflights": {
+    "note": "Subset preflights (4 files per class and split: 60 train, 60 test) run on 2026-10-02 between 13:12 and 13:25 UTC on one A10G, about 15 GPU-minutes in total. No stop policy was declared for them, so they are documented here rather than retained as run entries. Their outputs remain under preflight*/ in the results Volume.",
+    "items": [
+      {
+        "modal_app_id": "ap-kbpOJorzVQioFnsWvHtapN",
+        "variant": "sgd / avg, 1 epoch",
+        "observed": "Image built; real data loaded; training, evaluation, checkpoint and run.json written; exit 0. Loss 0.5, accuracy 6.67% (silent network). Peak GPU memory 4.3 GB."
+      },
+      {
+        "modal_app_id": "ap-39k8ylxDfiF9oTtqLhIVGn",
+        "variant": "sgd / avg, resume to 3 epochs",
+        "observed": "Failed on resume: 'RNG state must be a torch.ByteTensor' (checkpointed generator state was mapped to the GPU). Fixed in train.py by moving it back to the CPU."
+      },
+      {
+        "modal_app_id": "ap-tPEWGteHTzoStTmhVzrGRs",
+        "variant": "sgd / avg, resume to 3 epochs",
+        "observed": "Resumed from epoch 1 and completed epochs 2-3; exit 0. Still silent."
+      },
+      {
+        "modal_app_id": "ap-Y6NYAun7D9jWreqIjdGtAd",
+        "variant": "adam / avg, 5 epochs",
+        "observed": "Silent for all 5 epochs (15 optimizer steps)."
+      },
+      {
+        "modal_app_id": "ap-WZpzC6YqFSl9oEaAliO5th",
+        "variant": "sgd-momentum / avg, 5 epochs",
+        "observed": "Silent for all 5 epochs."
+      },
+      {
+        "modal_app_id": "ap-ztf8fMmLwMnxqeS7ENxlRG",
+        "variant": "sgd / max, 5 epochs",
+        "observed": "Silent for all 5 epochs."
+      },
+      {
+        "modal_app_id": "ap-BPKJw39voU3QjAyopTaJUh",
+        "variant": "adam / max, 5 epochs",
+        "observed": "Loss left 0.5 at epoch 5 (0.463) and accuracy rose to 11.67%: the only subset preflight in which the network started to fire."
+      }
+    ]
+  }
+}
