@@ -156,10 +156,10 @@ done; done
 | --- | --- |
 | `protocol-unspecified-model-and-training` | the authors' code or exact configuration, or acceptance that the runs stay conditional |
 | `acc1-acc2-partition` | a definition of the two test-set parts, or a decision to drop those targets |
-| `davis346-recordings-unpublished` | a data request to the corresponding author through Team S, including consent and cloud-processing terms |
+| `davis346-recordings-unpublished` | the separate dataset-request email (standard template, sent by the user), including consent and cloud-processing terms |
 
 The data-permission gate `dvs-repo-no-license` is resolved (user confirmation, 2026-10-02).
 
 ## Author contact
 
-Drafted 2026-10-05, after the independent attempt and at the user's request; **not yet sent**. The email to the corresponding author (li.su@cnu.edu.cn) is in `author-contact-draft.md`. It asks for the code or exact training configuration, the Acc1/Acc2 definition and the DAVIS346 recordings, and it reports the four conditional runs. The data request in it is to be coordinated with Team S. Nothing has changed as a result of the contact so far.
+Drafted 2026-10-05, after the independent attempt and at the user's request; **not yet sent**. The email to the corresponding author (li.su@cnu.edu.cn) is in `author-contact-draft.md`. It asks for the code or exact training configuration and the Acc1/Acc2 definition, and it reports the four conditional runs. The DAVIS346 recordings are requested in a separate email, which the user sends using the study's standard dataset-request template. Nothing has changed as a result of the contact so far.
