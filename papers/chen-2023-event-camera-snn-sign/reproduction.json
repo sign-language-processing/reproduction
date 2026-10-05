@@ -1116,7 +1116,7 @@
         "Paper Table 3 (p. 11): the DVS_v2e 77.00% row uses step 80, dt 40, Vth 0.3, lr 1e-3; the DVS_Sign 68.00% row uses step 60, dt 30, Vth 0.2, lr 1e-4.",
         "Source search (sources[] and dead_ends[]) found no code for this paper."
       ],
-      "required_action": "Obtain the authors' training code or exact configuration (author contact is a human decision), or accept that the retained runs are reported only as conditional reconstructions."
+      "required_action": "Await the authors' reply to the protocol questions sent on 2026-10-05 (author-contact.md), or accept that the retained runs stay conditional."
     },
     {
       "gate_id": "acc1-acc2-partition",
@@ -1148,7 +1148,7 @@
           "decision_needed": "Decide whether these four numbers should be dropped from the target list."
         }
       ],
-      "required_action": "Choose an alternative; until then the Acc1/Acc2 targets stay not produced."
+      "required_action": "Await the authors' definition (asked in author-contact.md on 2026-10-05), or choose an alternative; until then the Acc1/Acc2 targets stay not produced."
     },
     {
       "gate_id": "davis346-recordings-unpublished",
@@ -1161,7 +1161,7 @@
         "The published files hold v2e-style timestamps in seconds on a 128x128 grid, not 346x260 DAVIS346 recordings.",
         "Paper Data Availability Statement (p. 12): data 'available on request from corresponding authors'."
       ],
-      "required_action": "The user sends the study's standard dataset-request email to the corresponding author (planned 2026-10-05). The request must also settle consent and cloud-processing terms, because three volunteers were recorded and the paper reports no consent information."
+      "required_action": "Await the reply to the standard dataset-request email sent to the corresponding author on 2026-10-05 11:23 (local time). Any access must also settle consent and cloud-processing terms, because three volunteers were recorded and the paper reports no consent information."
     },
     {
       "gate_id": "dvs-repo-no-license",
@@ -1261,17 +1261,28 @@
     }
   ],
   "author_contact": {
-    "status": "drafted_not_sent",
+    "status": "sent_awaiting_response",
     "drafted_at": "2026-10-05",
-    "email_path": "author-contact-draft.md",
+    "email_path": "author-contact.md",
     "recipients": [
       "li.su@cnu.edu.cn"
     ],
     "purpose": "Post-independent-attempt request covering gate protocol-unspecified-model-and-training (code, optimizer, checkpoint rule, seed, network, neuron constants, encoding, validation set) and gate acc1-acc2-partition (definition of the two test-set parts). It reports the four conditional runs.",
-    "sent_at": null,
-    "response": null,
+    "sent_at": "2026-10-05 11:23 (local time)",
+    "response": "None yet.",
     "changed": "Nothing yet; no author information has reached this attempt.",
-    "data_request": "The DAVIS346 recordings (gate davis346-recordings-unpublished) are requested separately by the user, using the study's standard dataset-request template; not yet sent as of 2026-10-05."
+    "data_request": {
+      "gate_id": "davis346-recordings-unpublished",
+      "sent_at": "2026-10-05 11:23 (local time)",
+      "sent_by": "Carlos Escolano",
+      "recipients": [
+        "li.su@cnu.edu.cn"
+      ],
+      "subject": "Request to use DAVIS346 “DVS_Sign” for the REPRO-SIGN reproducibility study",
+      "body": "The study's standard dataset-request template; its text is not stored in this repository.",
+      "response": "None yet."
+    },
+    "sent_by": "Carlos Escolano, from a personal mail client outside this repository; the text at author-contact.md is the email as drafted in this repository"
   },
   "ethics": {
     "queue_flag": "potential_ethical_concerns: yes",

@@ -154,12 +154,17 @@ done; done
 
 | Gate | Needed |
 | --- | --- |
-| `protocol-unspecified-model-and-training` | the authors' code or exact configuration, or acceptance that the runs stay conditional |
-| `acc1-acc2-partition` | a definition of the two test-set parts, or a decision to drop those targets |
-| `davis346-recordings-unpublished` | the separate dataset-request email (standard template, sent by the user), including consent and cloud-processing terms |
+| `protocol-unspecified-model-and-training` | reply to the protocol questions sent 2026-10-05, or acceptance that the runs stay conditional |
+| `acc1-acc2-partition` | the authors' definition (asked 2026-10-05), or a decision to drop those targets |
+| `davis346-recordings-unpublished` | reply to the dataset request sent 2026-10-05, including consent and cloud-processing terms |
 
 The data-permission gate `dvs-repo-no-license` is resolved (user confirmation, 2026-10-02).
 
 ## Author contact
 
-Drafted 2026-10-05, after the independent attempt and at the user's request; **not yet sent**. The email to the corresponding author (li.su@cnu.edu.cn) is in `author-contact-draft.md`. It asks for the code or exact training configuration and the Acc1/Acc2 definition, and it reports the four conditional runs. The DAVIS346 recordings are requested in a separate email, which the user sends using the study's standard dataset-request template. Nothing has changed as a result of the contact so far.
+After the independent attempt was complete, two emails were sent to the corresponding author (li.su@cnu.edu.cn) on 2026-10-05 at 11:23 (local time) by Carlos Escolano:
+
+- **Protocol questions:** the text is in `author-contact.md`. It asks for the code or exact training configuration and the Acc1/Acc2 definition, and it reports the four conditional runs.
+- **Dataset request:** sent with the study's standard template (subject "Request to use DAVIS346 "DVS_Sign" for the REPRO-SIGN reproducibility study"), asking for the DAVIS346 recordings.
+
+No reply yet. Nothing in this report has changed as a result of the contact.

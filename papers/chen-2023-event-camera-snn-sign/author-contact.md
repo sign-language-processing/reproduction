@@ -1,8 +1,8 @@
-# Author-contact email — DRAFT, NOT SENT
+# Author-contact email — SENT
 
-Status: drafted 2026-10-05 after the independent attempt was complete, at the user's request. It has not been sent. Send it from a personal mail client outside this repository, then rename this file to `author-contact.md` and record the send date in `reproduction.json.author_contact`.
+Status: drafted 2026-10-05 after the independent attempt was complete, and sent by Carlos Escolano on 2026-10-05 at 11:23 (local time) from a personal mail client outside this repository. The text below is the email as drafted here. No reply yet. See `reproduction.json.author_contact`.
 
-The DAVIS346 data request is not in this email. The user sends it separately using the study's standard dataset-request template.
+The DAVIS346 data request was sent separately at the same time, using the study's standard dataset-request template (subject: "Request to use DAVIS346 "DVS_Sign" for the REPRO-SIGN reproducibility study").
 
 **To:** li.su@cnu.edu.cn (corresponding author)
 **Subject:** Reproducing Table 2 of "Sign Language Gesture Recognition and Classification Based on Event Camera with Spiking Neural Networks" (Electronics 2023, 12, 786)
