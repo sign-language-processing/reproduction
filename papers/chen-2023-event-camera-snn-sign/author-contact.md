@@ -2,7 +2,7 @@
 
 Status: drafted 2026-10-05 after the independent attempt was complete, and sent by Carlos Escolano on 2026-10-05 at 11:23 (local time) from a personal mail client outside this repository. The text below is the email as drafted here. No reply yet. See `reproduction.json.author_contact`.
 
-The DAVIS346 data request was sent separately at the same time, using the study's standard dataset-request template (subject: "Request to use DAVIS346 "DVS_Sign" for the REPRO-SIGN reproducibility study").
+The DAVIS346 data request was sent separately at the same time, using the study's standard dataset-request template; its text is at the end of this file.
 
 **To:** li.su@cnu.edu.cn (corresponding author)
 **Subject:** Reproducing Table 2 of "Sign Language Gesture Recognition and Classification Based on Event Camera with Spiking Neural Networks" (Electronics 2023, 12, 786)
@@ -53,3 +53,42 @@ We will report your answers, and what they change, in our study, with acknowledg
 Kind regards,
 Carlos Escolano
 (on behalf of the REPRO-SIGN reproducibility study)
+
+---
+
+# Dataset-request email — SENT
+
+Sent by Carlos Escolano on 2026-10-05 at 11:23 (local time) to li.su@cnu.edu.cn, using the study's standard dataset-request template. The text below is as supplied by the sender.
+
+**Subject:** Request to use DAVIS346 “DVS_Sign" for the REPRO-SIGN reproducibility study
+
+---
+
+Dear Prof. Su, dear Ms. Chen and co-authors,
+
+I am writing on behalf of REPRO-SIGN, a collaborative research initiative coordinated by Mathias Müller at the University of Zurich and carried out by roughly 30 researchers from institutions including the University of Zurich, Northeastern University, the German Research Center for Artificial Intelligence (DFKI), Gallaudet University, Ghent University, Pompeu Fabra University, Tilburg University, Queen’s University Belfast, King Fahd University of Petroleum and Minerals, and Rylo.
+
+REPRO-SIGN investigates reproducibility in computational sign language processing. The project examines a representative selection of research and attempts to reproduce the main quantitative experiments reported in the selected papers. Our aim is to develop a broader understanding of reproducibility across computational sign language research and to identify ways in which reproducibility can be better supported in future work.
+
+We would like to request permission for the following uses of DAVIS346 “DVS_Sign":
+
+to carry out the reproduction experiments. 
+to publish model weights resulting from these experiments.
+
+You may consent only to 1), using the data to reproduce a scientific experiment, but decline 2), the publication of model weights.
+
+We will comply with all applicable access, ethical, and data-protection requirements. We will not redistribute the dataset or any restricted materials, and any public reporting would focus on the experimental results and the reproduction process.
+
+Please let us know whether you require any further information about the project. If access to the dataset cannot be granted for this purpose, a brief confirmation would also help us document the pertinent access conditions accurately.
+
+Thank you very much for your time and consideration.
+
+Kind regards,
+
+Carlos Escolano, UPC
+on behalf of the REPRO-SIGN collaboration
+
+Project coordination:
+Mathias Müller, UZH (Overall lead)
+Amit Moryossef, Rylo (Reproduction team lead)
+Kirill Semenov, UZH (Survey team lead)

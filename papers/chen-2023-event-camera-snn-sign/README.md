@@ -165,6 +165,6 @@ The data-permission gate `dvs-repo-no-license` is resolved (user confirmation, 2
 After the independent attempt was complete, two emails were sent to the corresponding author (li.su@cnu.edu.cn) on 2026-10-05 at 11:23 (local time) by Carlos Escolano:
 
 - **Protocol questions:** the text is in `author-contact.md`. It asks for the code or exact training configuration and the Acc1/Acc2 definition, and it reports the four conditional runs.
-- **Dataset request:** sent with the study's standard template (subject "Request to use DAVIS346 "DVS_Sign" for the REPRO-SIGN reproducibility study"), asking for the DAVIS346 recordings.
+- **Dataset request:** sent with the study's standard template; the text is at the end of `author-contact.md`. It asks for permission to use the DAVIS346 recordings for the reproduction and, optionally, to publish the resulting weights. If permission is granted, the files themselves, the volunteers' consent basis and cloud-processing terms still need confirming.
 
 No reply yet. Nothing in this report has changed as a result of the contact.
