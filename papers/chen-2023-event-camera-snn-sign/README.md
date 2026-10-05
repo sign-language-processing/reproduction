@@ -162,4 +162,4 @@ The data-permission gate `dvs-repo-no-license` is resolved (user confirmation, 2
 
 ## Author contact
 
-None. Two gates recommend it; both are human decisions.
+Drafted 2026-10-05, after the independent attempt and at the user's request; **not yet sent**. The email to the corresponding author (li.su@cnu.edu.cn) is in `author-contact-draft.md`. It asks for the code or exact training configuration, the Acc1/Acc2 definition and the DAVIS346 recordings, and it reports the four conditional runs. The data request in it is to be coordinated with Team S. Nothing has changed as a result of the contact so far.
