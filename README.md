@@ -77,28 +77,11 @@ and are referenced by immutable URI and checksum.
 These are independent on purpose. A reproduction can run perfectly and disagree with the paper;
 that is a complete, successful *attempt* and a finding in its own right. Likewise, a number that
 happens to land close is not a result if the experiment it came from was under-specified.
+`insufficient_information` is a frequent outcome and one of the study's more interesting
+signals: the attempt stopped because the paper and its artifacts never pinned down which
+experiment, split, or metric the published number came from.
 
-## Current attempts
-
-As recorded in each `reproduction.json` (last surveyed 2026-10-12):
-
-| Paper | Datasets | Pipeline | Numerical agreement |
-| --- | --- | --- | --- |
-| [Camgöz et al. — Neural Sign Language Translation](papers/camgoz-2018-nslt) | PHOENIX14T | `complete` | `agrees` |
-| [Camgöz et al. — Sign Language Transformers](papers/camgoz-2020-slt) | PHOENIX14T | `complete` | `does_not_agree` |
-| [Mohamed et al. — DenseNet121 with Harris Hawks Optimization](papers/mohamed-2024-densenet121-hho) | ArASL2018 | `complete` | `not_fully_reproduced` |
-| [Silanon et al. — Classification Layer Technique for ASL](papers/silanon-2023-asl-cnn) | ASL Alphabet | `complete` | `not_fully_reproduced` |
-| [Chen et al. — Sign Language-Gloss Translations With Pretrained Models](papers/chen-2026-gloss-pretrained) | PHOENIX14T, ASLG-PC12, CSL-Daily | `partial` | `not_fully_reproduced` |
-| [Partaourides et al. — Variational Bayesian Seq2Seq for SLT](papers/partaourides-2021-variational-bayesian-slt) | PHOENIX14T | `partial` | `does_not_agree` |
-| [Ahmad et al. — Intelligent Signs Language Understanding](papers/ahmad-2022-intelligent-landmarks) | ASL Alphabet, ISL-HS | `insufficient_information` | `not_assessed` |
-| [Ben Abderrahmane et al. — Temporal-to-Spatial Transmutation](papers/ben-abderrahmane-2025-temporal-to-spatial) | ArabSign | `insufficient_information` | `not_assessed` |
-| [Huang & Chouvatut — Video-Based SLR via ResNet and LSTM](papers/huang-chouvatut-2024-resnet-lstm) | LSA64 | `insufficient_information` | `not_assessed` |
-| [Sivamohan et al. — Hand Gesture Recognition and Translation](papers/sivamohan-2024-isl-cnn) | Author-supplied ISL landmarks | `insufficient_information` | `not_assessed` |
-
-`insufficient_information` is itself a frequent outcome, and one of the study's more interesting
-signals: the attempt stopped because the paper and its artifacts did not pin down which
-experiment, split, or metric the published number came from. Each of those reports documents
-exactly what was searched and what was missing.
+Browse [`papers/`](papers) for the attempts recorded so far.
 
 ## Repeating an attempt
 
@@ -134,6 +117,6 @@ Numbers here describe **our attempt**, not a judgment of the paper. A disagreeme
 an under-documented protocol, an unavailable dataset version, hardware nondeterminism, our own
 error, or a problem in the original work — the reports record the difference and the evidence,
 and leave the conclusion to human reviewers. Statuses also change as attempts are revisited;
-`reproduction.json` is always authoritative over this summary.
+each paper's `reproduction.json` is always authoritative.
 
 Licensed under [MIT](LICENSE). Papers, datasets, and upstream code keep their own licenses.
