@@ -74,7 +74,7 @@ python3 papers/eunice-2023-sign2pose/score_log.py full-wlasl100-keyframes-seed37
 
 | Dataset | Version/subset/splits | Source and access date | License/permission and cloud-use basis | Path in Volume `datasets` | Counts / manifest / checksum | Deviations |
 | --- | --- | --- | --- | --- | --- | --- |
-| WLASL | `WLASL_v0.3.json`; WLASL100/300/1000/2000 are the first K glosses; official train/validation/test labels from `index.csv` | https://dxli94.github.io/WLASL/, checked 2026-09-27 | Custom research-only terms. A project copy already exists (queue `on_modal: yes`). Missing videos require the authors' terms-of-use request form. | `WLASL/` | JSON `31ba5a5c…`, index `fba4a2c0…` (15,146 rows, 12,255 files). Local copies of all 12,255 videos matched their index MD5s. Instances used, train/val/test: 1001/242/200, 2491/650/530, 6509/1692/1432, 10089/2905/2152 | About 28% of instances have no stored video (gate `wlasl-missing-videos`, still open). Official split used instead of the paper's private split. |
+| WLASL | `WLASL_v0.3.json`; WLASL100/300/1000/2000 are the first K glosses; official train/validation/test labels from `index.csv` | https://dxli94.github.io/WLASL/, checked 2026-09-27 | Custom research-only terms. A project copy already exists (queue `on_modal: yes`). Missing videos require the authors' terms-of-use request form. | `WLASL/` | JSON `31ba5a5c…`, index `fba4a2c0…` (15,146 rows, 12,255 files). Local copies of all 12,255 videos matched their index MD5s. Instances used, train/val/test: 1001/242/200, 2491/650/530, 6509/1692/1432, 10089/2905/2152 | About 28% of instances have no stored video (gate `wlasl-missing-videos`, handed to Team S on 2026-10-05, still open). Official split used instead of the paper's private split. |
 
 The pose extraction processed all 15,146 instances with no per-instance errors (`export_csvs` output). The 12 key-frame CSVs that the training runs read are recorded as artifacts, with SHA-256 hashes and row counts, in `reproduction.json.artifacts` (`csv-wlasl*-keyframes`).
 
@@ -165,4 +165,4 @@ These are leads only; none of them was investigated further:
 
 ## Author and team contact
 
-None. The paper names a corresponding author (D. J. Hemanth). Since this independent attempt is now complete, author contact is permitted, but it was not made. Asking for the split, key-frame and YOLOv3 details is the remaining route to a faithful run. The request for the missing WLASL videos is routed to Team S through gate `wlasl-missing-videos`.
+None. The paper names a corresponding author (D. J. Hemanth). Since this independent attempt is now complete, author contact is permitted, but it was not made. Asking for the split, key-frame and YOLOv3 details is the remaining route to a faithful run. The request for the missing WLASL videos was handed to Team S on 2026-10-05 (gate `wlasl-missing-videos`, still open).
