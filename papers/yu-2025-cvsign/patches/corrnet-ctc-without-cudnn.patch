@@ -1,0 +1,31 @@
+CorrNet: compute the CTC loss without cuDNN
+
+Why: criterion_calculation passes CPU int32 targets, which makes current
+PyTorch (2.11, NGC 26.02, cuDNN 9.19) route nn.CTCLoss to cuDNN's CTC kernel.
+There it returns NaN gradients on most steps (runs diagnose-loss-004,
+diagnose-nan-001..003): under AMP the GradScaler then halves its scale on
+every step and upstream skips nearly every update, for pristine CorrNet as
+much as for CVSign. Disabling cuDNN for the CTC call alone restores normal
+training (scale settles at 256, no NaN after the first 5 calibration steps);
+disabling it for the LSTM, BatchNorm or Conv3d modules instead does not.
+PyTorch's native CTC kernel computes the same loss; nothing else changes.
+Applies to: CorrNet @ 5a361cc709ae8f697f4c9e23760e64c2daa8f744
+---
+diff --git a/slr_network.py b/slr_network.py
+index 9d49a0d..db14c05 100644
+--- a/slr_network.py
++++ b/slr_network.py
+@@ -129,6 +129,12 @@ class SLRModel(nn.Module):
+         return loss
+ 
+     def criterion_init(self):
+-        self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++        ctc_loss = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++
++        def ctc_loss_without_cudnn(*args):
++            with torch.backends.cudnn.flags(enabled=False):
++                return ctc_loss(*args)
++
++        self.loss['CTCLoss'] = ctc_loss_without_cudnn
+         self.loss['distillation'] = SeqKD(T=8)
+         return self.loss

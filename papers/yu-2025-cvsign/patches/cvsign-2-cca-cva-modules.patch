@@ -1,0 +1,185 @@
+CVSign 2/3: CCA and CVA modules (Eqs. 1-10) in place of CorrNet's correlation
+
+Why: no CVSign code is published (preference level 3 for these modules only).
+CVSign's visual encoder is CorrNet's 2D-as-3D ResNet (1x3x3 / 1x1x1 kernels,
+modules inserted after layers 2, 3 and 4 with zero-initialised residual gates)
+with Get_Correlation replaced by the paper's CCA + CVA and a ResNet34 backbone
+"pretrained on ImageNet" (Implementation Details). Upstream resnet34() builds
+the network without loading weights, so it now loads them exactly as
+resnet18() does. CCA's affinity is recomputed in backward (torch checkpoint)
+instead of stored; it contains no normalisation or randomness, so gradients
+are unchanged. Unstated values (C_hid, heads, Conv_Block norm/activation,
+boundary handling) are marked as guesses inline and in the README.
+Applies to: CorrNet @ 5a361cc709ae8f697f4c9e23760e64c2daa8f744
+---
+diff --git a/modules/resnet.py b/modules/resnet.py
+index 4650cc1..9ddbfe0 100644
+--- a/modules/resnet.py
++++ b/modules/resnet.py
+@@ -2,6 +2,7 @@ import torch
+ import torch.nn as nn
+ import torch.utils.model_zoo as model_zoo
+ import torch.nn.functional as F
++from torch.utils.checkpoint import checkpoint
+ __all__ = [
+     'ResNet', 'resnet10', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
+     'resnet152', 'resnet200'
+@@ -45,6 +46,113 @@ class Get_Correlation(nn.Module):
+         return features * (F.sigmoid(aggregated_x)-0.5)
+         
+ 
++# ---------------------------------------------------------------------------
++# CVSign (Yu et al., ICASSP 2025): CCA and CVA, reimplemented from the paper's
++# Sec. II (Eqs. 1-10) because no CVSign code is published. Values the paper
++# does not state are guesses, recorded in papers/yu-2025-cvsign/README.md.
++# ---------------------------------------------------------------------------
++CCA_CONTEXT_LENGTHS = (3, 5, 9)  # Table VI default, after layers 2/3/4
++CVA_CONTEXT_LENGTHS = (9, 9, 9)  # Table VII default, after layers 2/3/4
++HIDDEN_CHANNELS = 64  # C_hid: not stated in the paper (guess)
++CCA_HEADS = 8  # number of heads: not stated in the paper (guess)
++
++
++def shift_frames(x, m):
++    """X_(m) of Eq. 1: frame t+m for every t of x (N, C, T, H, W).
++
++    Boundary frames are repeated, as Get_Correlation above does; the paper does
++    not state its boundary handling.
++    """
++    index = (torch.arange(x.size(2), device=x.device) + m).clamp(0, x.size(2) - 1)
++    return x.index_select(2, index)
++
++
++def context_offsets(context_len):
++    # The current frame is compared with the other 2n frames of its window
++    # (Fig. 2: "Adjacent 4 Frames" for a context window of 5).
++    n = context_len // 2
++    return [m for m in range(-n, n + 1) if m != 0]
++
++
++class ContextualCorrespondenceAwareness(nn.Module):
++    """CCA, Eqs. 1-6, with the "Full" query area of Table V (Eq. 3 unmasked)."""
++
++    def __init__(self, channels, context_len, hidden_channels=HIDDEN_CHANNELS, heads=CCA_HEADS):
++        super().__init__()
++        self.offsets = context_offsets(context_len)
++        self.heads = heads
++        self.down_conv = nn.Conv3d(channels, hidden_channels, kernel_size=1, bias=False)
++        self.current_conv = nn.Conv3d(hidden_channels, hidden_channels, kernel_size=1, bias=False)
++        self.context_conv = nn.Conv3d(hidden_channels, hidden_channels, kernel_size=1, bias=False)
++        self.conv_back = nn.Conv3d(hidden_channels, channels, kernel_size=1, bias=False)
++
++    def aggregate(self, current, context):
++        """Eqs. 2, 4 and 5 for one context frame X_(m), over all heads."""
++        n, c, t, h, w = current.size()
++        d = c // self.heads
++        query = current.reshape(n, self.heads, d, t, h * w)
++        key = context.reshape(n, self.heads, d, t, h * w)
++        affinity = torch.einsum('nkdtp,nkdtq->nktpq', query, key) / d  # Eq. 2
++        affinity = torch.sigmoid(affinity) - 0.5  # Eq. 4
++        return torch.einsum('nktpq,nkdtq->nkdtp', affinity, key).reshape(n, c, t, h, w)  # Eq. 5
++
++    def forward(self, x):
++        x = self.down_conv(x)
++        current = self.current_conv(x)
++        context = self.context_conv(x)
++        enhanced = 0
++        for m in self.offsets:
++            if self.training:
++                # The affinity has (HW)^2 entries per frame and head. It is
++                # recomputed in backward rather than stored; aggregate() has no
++                # normalisation or randomness, so this is exact.
++                enhanced = enhanced + checkpoint(self.aggregate, current, shift_frames(context, m), use_reentrant=False)
++            else:
++                enhanced = enhanced + self.aggregate(current, shift_frames(context, m))
++        return self.conv_back(enhanced)  # Eq. 6
++
++
++class ContextualVariabilityAwareness(nn.Module):
++    """CVA, Eqs. 7-9."""
++
++    def __init__(self, channels, context_len, hidden_channels=HIDDEN_CHANNELS):
++        super().__init__()
++        self.offsets = context_offsets(context_len)
++        self.down_conv = nn.Conv3d(channels, hidden_channels, kernel_size=1, bias=False)
++        # "three CNNs with a kernel size of 1x3x3"; the normalisation and
++        # activation between them are not stated (guess).
++        self.conv_block = nn.Sequential(
++            nn.Conv3d(hidden_channels, hidden_channels, kernel_size=(1, 3, 3), padding=(0, 1, 1), bias=False),
++            nn.BatchNorm3d(hidden_channels),
++            nn.ReLU(inplace=True),
++            nn.Conv3d(hidden_channels, hidden_channels, kernel_size=(1, 3, 3), padding=(0, 1, 1), bias=False),
++            nn.BatchNorm3d(hidden_channels),
++            nn.ReLU(inplace=True),
++            nn.Conv3d(hidden_channels, hidden_channels, kernel_size=(1, 3, 3), padding=(0, 1, 1), bias=False),
++        )
++        self.conv_back = nn.Conv3d(hidden_channels * len(self.offsets), channels, kernel_size=1, bias=False)
++
++    def forward(self, x):
++        x = self.down_conv(x)
++        differences = torch.cat([x - shift_frames(x, m) for m in self.offsets], dim=0)  # Eq. 7
++        refined = self.conv_block(differences)  # Eq. 8, one Conv_Block shared by every m
++        return self.conv_back(torch.cat(refined.chunk(len(self.offsets), dim=0), dim=1))  # Eq. 9
++
++
++class CVSignBlock(nn.Module):
++    """Eq. 10: X_out = alpha * X_CCA + beta * X_CVA + X_in, alpha = beta = 0 at init."""
++
++    def __init__(self, channels, cca_context_len, cva_context_len):
++        super().__init__()
++        self.cca = ContextualCorrespondenceAwareness(channels, cca_context_len)
++        self.cva = ContextualVariabilityAwareness(channels, cva_context_len)
++        self.alpha = nn.Parameter(torch.zeros(1))
++        self.beta = nn.Parameter(torch.zeros(1))
++
++    def forward(self, x):
++        return self.alpha * self.cca(x) + self.beta * self.cva(x) + x
++
++
+ def conv3x3(in_planes, out_planes, stride=1):
+     # 3x3x3 convolution with padding
+     return nn.Conv3d(
+@@ -99,12 +207,11 @@ class ResNet(nn.Module):
+         self.maxpool = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding=(0,1,1))
+         self.layer1 = self._make_layer(block, 64, layers[0])
+         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
+-        self.corr1 = Get_Correlation(self.inplanes)
++        self.cvsign1 = CVSignBlock(self.inplanes, CCA_CONTEXT_LENGTHS[0], CVA_CONTEXT_LENGTHS[0])
+         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
+-        self.corr2 = Get_Correlation(self.inplanes)
+-        self.alpha = nn.Parameter(torch.zeros(3), requires_grad=True)
++        self.cvsign2 = CVSignBlock(self.inplanes, CCA_CONTEXT_LENGTHS[1], CVA_CONTEXT_LENGTHS[1])
+         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
+-        self.corr3 = Get_Correlation(self.inplanes)
++        self.cvsign3 = CVSignBlock(self.inplanes, CCA_CONTEXT_LENGTHS[2], CVA_CONTEXT_LENGTHS[2])
+         self.avgpool = nn.AvgPool2d(7, stride=1)
+         self.fc = nn.Linear(512 * block.expansion, num_classes)
+         
+@@ -141,12 +248,9 @@ class ResNet(nn.Module):
+         x = self.maxpool(x)
+ 
+         x = self.layer1(x)
+-        x = self.layer2(x) 
+-        x = x + self.corr1(x) * self.alpha[0]
+-        x = self.layer3(x)
+-        x = x + self.corr2(x) * self.alpha[1]
+-        x = self.layer4(x)
+-        x = x + self.corr3(x) * self.alpha[2]
++        x = self.cvsign1(self.layer2(x))
++        x = self.cvsign2(self.layer3(x))
++        x = self.cvsign3(self.layer4(x))
+         x = x.transpose(1,2).contiguous()
+         x = x.view((-1,)+x.size()[2:]) #bt,c,h,w
+ 
+@@ -173,6 +277,12 @@ def resnet34(**kwargs):
+     """Constructs a ResNet-34 model.
+     """
+     model = ResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
++    checkpoint = model_zoo.load_url(model_urls['resnet34'])
++    layer_name = list(checkpoint.keys())
++    for ln in layer_name :
++        if 'conv' in ln or 'downsample.0.weight' in ln:
++            checkpoint[ln] = checkpoint[ln].unsqueeze(2)
++    model.load_state_dict(checkpoint, strict=False)
+     return model
+ 
+ def test():

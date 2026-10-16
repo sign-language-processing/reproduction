@@ -1,0 +1,71 @@
+CVSign 3/3: training configuration from the paper
+
+Why: configs/baseline.yaml is CorrNet's own recipe. CVSign's Implementation
+Details change only: ResNet34 backbone; 70 epochs; learning rate reduced by
+80% (x0.2, CorrNet's MultiStepLR gamma) at epochs 25 and 40. Batch size 2,
+Adam, lr 1e-4, weight decay 1e-4 and the VAC/SMKD losses (ConvCTC 1, SeqCTC
+1, Dist 25 at temperature 8, shared weight-normalised classifier) already
+match. TLP's Cu/Cp weights come with TLP's decoder (cvsign-1 patch). The
+dataset is PHOENIX14-T, the only in-scope corpus.
+Applies to: CorrNet @ 5a361cc709ae8f697f4c9e23760e64c2daa8f744
+---
+diff --git a/configs/cvsign.yaml b/configs/cvsign.yaml
+new file mode 100644
+index 0000000..8521ef9
+--- /dev/null
++++ b/configs/cvsign.yaml
+@@ -0,0 +1,54 @@
++feeder: dataset.dataloader_video.BaseFeeder
++phase: train
++dataset: phoenix2014-T
++# dataset: phoenix14-si5
++num_epoch: 70
++work_dir: ./work_dir/cvsign/
++batch_size: 2
++random_seed: 0
++test_batch_size: 2
++num_worker: 10
++device: 0,1
++log_interval: 10000
++eval_interval: 1
++save_interval: 5
++# python in default
++evaluate_tool: sclite
++loss_weights:
++  SeqCTC: 1.0
++  # VAC
++  ConvCTC: 1.0
++  Dist: 25.0
++  # TLP lift-pooling regularisers (TLP configs/baseline.yaml)
++  Cu: 0.001
++  Cp: 0.001
++#load_weights: ''
++
++optimizer_args:
++  optimizer: Adam
++  base_lr: 0.0001
++  step: [ 25, 40]
++  learning_ratio: 1
++  weight_decay: 0.0001
++  start_epoch: 0
++  nesterov: False
++
++feeder_args:
++  mode: 'train'
++  datatype: 'video'
++  num_gloss: -1
++  drop_ratio: 1.0
++  frame_interval: 1
++  image_scale: 1.0  # 0-1 represents ratio, >1 represents absolute value
++  input_size: 224
++
++model: slr_network.SLRModel
++decode_mode: beam
++model_args:
++  num_classes: 1296
++  c2d_type: resnet34 #resnet18, mobilenet_v2, squeezenet1_1, shufflenet_v2_x1_0, efficientnet_b1, mnasnet1_0, regnet_y_800mf, vgg16_bn, vgg11_bn, regnet_x_800mf, regnet_x_400mf, densenet121, regnet_y_1_6gf
++  conv_type: 2
++  use_bn: 1
++  # SMKD
++  share_classifier: True
++  weight_norm: True
