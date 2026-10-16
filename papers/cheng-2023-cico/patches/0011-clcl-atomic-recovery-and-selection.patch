@@ -1,0 +1,130 @@
+Subject: Preserve native full training state and actual best-test checkpoint
+
+Keep the existing every-epoch test evaluation and latest-tie best-R1 rule.
+Add atomic last-state recovery and raw metrics; diagnostics may stop only at
+a completed epoch without changing the configured optimizer horizon.
+
+--- a/CiCo/CLCL/main_task_retrieval.py
++++ b/CiCo/CLCL/main_task_retrieval.py
+@@ -7,6 +7,8 @@
+ import numpy as np
+ import random
+ import os
++import json
++from pathlib import Path
+ from metrics import compute_metrics, tensor_text_to_video_metrics, tensor_video_to_text_sim
+ import time
+ import argparse
+@@ -389,6 +391,14 @@
+     for file in file_lists:
+         if '.py' in file:
+             shutil.copy(file,os.path.join(dst,file))
++
++def atomic_save(state, path):
++    temporary = path + '.partial'
++    with open(temporary, 'wb') as f:
++        torch.save(state, f)
++        f.flush()
++        os.fsync(f.fileno())
++    os.replace(temporary, path)
+ 
+ def save_model(epoch, args, model, optimizer, tr_loss, type_name=""):
+     # Only save the model it-self
+@@ -428,6 +438,9 @@
+     torch.cuda.empty_cache()
+     model.train()
+     log_step = args.n_display
++    torch.cuda.synchronize()
++    epoch_started = time.monotonic()
++    torch.cuda.reset_peak_memory_stats()
+     start_time = time.time()
+     total_loss = 0
+ 
+@@ -443,6 +456,10 @@
+             print("input allocated:")
+             print(torch.cuda.memory_allocated()/1024.0/1024)
+ 
++        if step == 0 and os.environ.get('CICO_DIAGNOSTIC_STOP_EPOCH'):
++            import hashlib
++            signatures = [hashlib.sha256(x.detach().cpu().numpy().tobytes()).hexdigest() for x in batch]
++            Path(args.output_dir, f'diagnostic-batch-{epoch}.json').write_text(json.dumps(signatures))
+         input_ids, input_mask, segment_ids, video, video_mask,pairs_text_aug,pairs_mask_aug = batch
+         loss = model(input_ids, segment_ids, input_mask, video, video_mask,pairs_text_aug,pairs_mask_aug)
+ 
+@@ -489,6 +506,8 @@
+                 start_time = time.time()
+ 
+     total_loss = total_loss / len(train_dataloader)
++    torch.cuda.synchronize()
++    Path(args.output_dir, f'epoch-training-{epoch}.json').write_text(json.dumps({'epoch': epoch, 'batches': len(train_dataloader), 'batch_size': args.batch_size, 'wall_seconds': time.monotonic()-epoch_started, 'peak_cuda_allocated': torch.cuda.max_memory_allocated(), 'peak_cuda_reserved': torch.cuda.max_memory_reserved(), 'loss': float(total_loss), 'global_step': global_step}))
+     return total_loss, global_step
+ 
+ 
+@@ -686,6 +705,8 @@
+                     format(vt_metrics['R1'], vt_metrics['R5'], vt_metrics['R10'], vt_metrics['MR'], vt_metrics['MeanR']))
+ 
+ 
++    Path(args.output_dir, 'latest-metrics.json').write_text(json.dumps({'text_to_video': {k: v if isinstance(v,list) else float(v) for k,v in tv_metrics.items()}, 'video_to_text': {k: float(v) for k,v in vt_metrics.items()}}))
++    np.savez_compressed(os.path.join(args.output_dir, 'latest-similarities.npz'), sim_matrix_i2t=sim_matrix_i2t, sim_matrix_t2i=sim_matrix_t2i)
+     R1 = tv_metrics['R1']
+     torch.cuda.empty_cache()
+     return R1
+@@ -785,6 +806,30 @@
+         global_step = 0
+         loss_record=[]
+         acc_record=[]
++        if args.resume_model:
++            restored = model.module if hasattr(model, 'module') else model
++            restored.load_state_dict(checkpoint['model_state_dict'], strict=True)
++            global_step = checkpoint['global_step']
++            best_score, best_epoch = checkpoint['best_score'], checkpoint['best_epoch']
++            loss_record, acc_record = checkpoint['loss_record'], checkpoint['acc_record']
++            rng = checkpoint['rng_state']
++            random.setstate(rng['python'])
++            ns = rng['numpy']
++            np.random.set_state((ns[0], np.asarray(ns[1], dtype=np.uint32), ns[2], ns[3], ns[4]))
++            torch.set_rng_state(rng['torch'].cpu())
++            torch.cuda.set_rng_state_all(rng['cuda'])
++            assert all(torch.equal(v.detach().cpu(), checkpoint['model_state_dict'][k].cpu()) for k,v in restored.state_dict().items())
++            current_opt = optimizer.state_dict()
++            assert current_opt['param_groups'] == checkpoint['optimizer_state_dict']['param_groups']
++            for key, entry in current_opt['state'].items():
++                for name, value in entry.items():
++                    expected = checkpoint['optimizer_state_dict']['state'][key][name]
++                    assert torch.equal(value.cpu(), expected.cpu()) if torch.is_tensor(value) else value == expected
++            assert random.getstate() == rng['python'] and torch.equal(torch.get_rng_state(), rng['torch'].cpu())
++            current_np = np.random.get_state()
++            assert current_np[0] == ns[0] and np.array_equal(current_np[1], ns[1]) and current_np[2:] == tuple(ns[2:])
++            assert all(torch.equal(a,b.cpu()) for a,b in zip(torch.cuda.get_rng_state_all(),rng['cuda']))
++            Path(args.output_dir, 'resume-proof.json').write_text(json.dumps({'model_exact': True, 'optimizer_exact': True, 'rng_exact': True, 'epoch': resumed_epoch, 'global_step': global_step}))
+         for epoch in range(resumed_epoch, args.epochs):
+             if args.distributed==True:
+                 train_sampler.set_epoch(epoch)
+@@ -803,15 +848,24 @@
+                 if best_score <= R1:
+                     best_score = R1
+                     best_epoch=epoch
+-                    # best_output_model_file = output_model_file
++                    selected = model.module if hasattr(model, 'module') else model
++                    atomic_save(selected.state_dict(), os.path.join(args.output_dir, f'best-model-{epoch}.pt'))
++                    import shutil
++                    shutil.copyfile(os.path.join(args.output_dir, 'latest-metrics.json'), os.path.join(args.output_dir, f'best-metrics-{epoch}.json'))
++                    shutil.copyfile(os.path.join(args.output_dir, 'latest-similarities.npz'), os.path.join(args.output_dir, f'best-similarities-{epoch}.npz'))
+                 logger.info("The best model is: {}{}, the R1 is: {:.4f}".format(args.output_dir,best_epoch, best_score))
+                 loss_record.append(tr_loss)
+                 acc_record.append(R1)
+                 print(loss_record)
+                 print(acc_record)
++                native = model.module if hasattr(model, 'module') else model
++                ns = np.random.get_state()
++                atomic_save({'epoch': epoch, 'model_state_dict': native.state_dict(), 'optimizer_state_dict': optimizer.state_dict(), 'loss': tr_loss, 'global_step': global_step, 'best_score': float(best_score), 'best_epoch': best_epoch, 'loss_record': loss_record, 'acc_record': [float(v) for v in acc_record], 'rng_state': {'python': random.getstate(), 'numpy': (ns[0],ns[1].tolist(),ns[2],ns[3],ns[4]), 'torch': torch.get_rng_state(), 'cuda': torch.cuda.get_rng_state_all()}}, os.path.join(args.output_dir, 'last-full-state.pt'))
++                if os.environ.get('CICO_DIAGNOSTIC_STOP_EPOCH') and epoch+1 >= int(os.environ['CICO_DIAGNOSTIC_STOP_EPOCH']):
++                    break
+         if args.local_rank == 0:
+-            save_acc_plot(args.epochs,acc_record,args)
+-            save_loss_plot(args.epochs,loss_record,args)
++            save_acc_plot(len(acc_record),acc_record,args)
++            save_loss_plot(len(loss_record),loss_record,args)
+ 
+ 
+ 

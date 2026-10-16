@@ -1,0 +1,17 @@
+Subject: Load the configured domain-aware feature stream in PHOENIX training
+
+The PHOENIX training loader aliases both streams to features_path. Other dataset
+loaders and PHOENIX evaluation use features_path_retrain for the adapted stream.
+Honor that existing argument without changing feature mixing or optimization.
+
+--- a/CiCo/CLCL/dataloaders/dataloader_ph_retrieval_train.py
++++ b/CiCo/CLCL/dataloaders/dataloader_ph_retrieval_train.py
+@@ -82,7 +82,7 @@
+         for sentance_id in sentance_ids:
+ 
+             video_path=os.path.join(self.features_path,captions[sentance_id]['video_name']+'.pkl')
+-            video_path_retrain=os.path.join(self.features_path,captions[sentance_id]['video_name']+'.pkl')
++            video_path_retrain=os.path.join(self.features_path_retrain,captions[sentance_id]['video_name']+'.pkl')
+ 
+             if sentance_id not in self.video_dict:
+                 self.video_dict[sentance_id]=[video_path]

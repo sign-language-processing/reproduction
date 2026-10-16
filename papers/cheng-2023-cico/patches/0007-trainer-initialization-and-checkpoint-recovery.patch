@@ -1,0 +1,67 @@
+Subject: Keep target optimizer fresh; atomically preserve RNG and never overwrite a resumed model
+
+--- a/CiCo/I3D_trainer/utils/misc.py
++++ b/CiCo/I3D_trainer/utils/misc.py
+@@ -1,5 +1,6 @@
+ import errno
+ import functools
++import random
+ import getpass
+ import os
+ import pickle as pkl
+@@ -47,7 +48,14 @@
+     state, checkpoint="checkpoint", filename="checkpoint.pth.tar", snapshot=1
+ ):
+     filepath = os.path.join(checkpoint, filename)
+-    torch.save(state, filepath)
++    ns = np.random.get_state()
++    state['rng_state'] = {'python': random.getstate(), 'numpy': (ns[0], ns[1].tolist(), ns[2], ns[3], ns[4]), 'torch': torch.get_rng_state(), 'cuda': torch.cuda.get_rng_state_all()}
++    temporary = filepath + '.partial'
++    with open(temporary, 'wb') as f:
++        torch.save(state, f)
++        f.flush()
++        os.fsync(f.fileno())
++    os.replace(temporary, filepath)
+ 
+     if snapshot and state["epoch"] % snapshot == 0:
+         dest = os.path.join(checkpoint, "checkpoint_%03d.pth.tar" % state["epoch"])
+--- a/CiCo/I3D_trainer/main.py
++++ b/CiCo/I3D_trainer/main.py
+@@ -2,6 +2,7 @@
+ """
+ 
+ import logging
++import random
+ import os
+ import sys
+ import time
+@@ -57,6 +58,7 @@
+ 
+ def main(args):
+     # Seed
++    random.seed(args.seed)
+     torch.manual_seed(args.seed)
+     torch.backends.cudnn.deterministic = True
+     torch.backends.cudnn.benchmark = True
+@@ -143,6 +145,12 @@
+             checkpoint = load_checkpoint(args.resume)
+             model.load_state_dict(checkpoint["state_dict"])
+             optimizer.load_state_dict(checkpoint["optimizer"])
++            rng = checkpoint['rng_state']
++            random.setstate(rng['python'])
++            ns = rng['numpy']
++            np.random.set_state((ns[0], np.asarray(ns[1], dtype=np.uint32), ns[2], ns[3], ns[4]))
++            torch.set_rng_state(rng['torch'].cpu())
++            torch.cuda.set_rng_state_all(rng['cuda'])
+             args.start_epoch = checkpoint["epoch"]
+             plog.info(
+                 f"=> loaded checkpoint '{args.resume}' (epoch {checkpoint['epoch']})"
+@@ -166,7 +174,7 @@
+ 
+         logger.set_names(logger_names)
+ 
+-    if args.pretrained:
++    if args.pretrained and not args.resume:
+         load_checkpoint_flexible(model, optimizer, args, plog)
+ 
+     param_count = humanize.intword(sum(p.numel() for p in model.parameters()))
