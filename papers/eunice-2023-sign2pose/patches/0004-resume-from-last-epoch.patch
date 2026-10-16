@@ -1,0 +1,58 @@
+Resume training from the last completed epoch (correctness: containerization / infrastructure limit).
+
+Why: Modal limits one function attempt to 24 h and may restart a container (preemption). WLASL2000 needs
+~32 h for 300 epochs, and run full-wlasl1000 already lost 125 epochs to a restart because train.py always
+starts from epoch 0.
+
+What: after every epoch, atomically write out-checkpoints/<experiment>/resume.pth with the model,
+optimizer, scheduler, loop bookkeeping (epoch, accuracy histories, per-window top accuracies, checkpoint
+index) and every RNG state train.py uses (random, numpy, torch CPU/CUDA, and the DataLoader generator g,
+which also drives validation/test shuffling). On start, if that file exists, restore it and continue with
+the next epoch. A run that is never interrupted executes exactly as before, plus one file write per epoch.
+
+diff --git a/train.py b/train.py
+index 746e59a..224ccab 100644
+--- a/train.py
++++ b/train.py
+@@ -170,7 +170,24 @@ def train(args):
+         print("Starting " + args.experiment_name + "...\n\n")
+         logging.info("Starting " + args.experiment_name + "...\n\n")
+ 
+-    for epoch in range(args.epochs):
++    resume_path = "out-checkpoints/" + args.experiment_name + "/resume.pth"
++    start_epoch = 0
++    if os.path.exists(resume_path):
++        state = torch.load(resume_path, weights_only=False)
++        slrt_model.load_state_dict(state["model"])
++        sgd_optimizer.load_state_dict(state["optimizer"])
++        scheduler.load_state_dict(state["scheduler"])
++        (start_epoch, train_acc, val_acc, losses, train_accs, val_accs, lr_progress, top_train_acc, top_val_acc,
++         checkpoint_index) = state["loop"]
++        random.setstate(state["rng"][0])
++        np.random.set_state(state["rng"][1])
++        torch.set_rng_state(state["rng"][2])
++        torch.cuda.set_rng_state_all(state["rng"][3])
++        g.set_state(state["rng"][4])
++        print("Resumed after epoch " + str(start_epoch))
++        logging.info("Resumed after epoch " + str(start_epoch))
++
++    for epoch in range(start_epoch, args.epochs):
+         train_loss, _, _, train_acc = train_epoch(slrt_model, train_loader, cel_criterion, sgd_optimizer, device)
+         losses.append(train_loss.item() / len(train_loader))
+         train_accs.append(train_acc)
+@@ -209,6 +226,15 @@ def train(args):
+ 
+         lr_progress.append(sgd_optimizer.param_groups[0]["lr"])
+ 
++        state = {"model": slrt_model.state_dict(), "optimizer": sgd_optimizer.state_dict(),
++                 "scheduler": scheduler.state_dict(),
++                 "loop": (epoch + 1, train_acc, val_acc, losses, train_accs, val_accs, lr_progress, top_train_acc,
++                          top_val_acc, checkpoint_index),
++                 "rng": (random.getstate(), np.random.get_state(), torch.get_rng_state(),
++                         torch.cuda.get_rng_state_all(), g.get_state())}
++        torch.save(state, resume_path + ".tmp")
++        os.replace(resume_path + ".tmp", resume_path)
++
+     # MARK: TESTING
+ 
+     print("\nTesting checkpointed models starting...\n")
