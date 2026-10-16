@@ -108,6 +108,8 @@ the [`repro-sign`](https://huggingface.co/repro-sign) organization on Hugging Fa
   (decord, FFmpeg, flash-attn). Read these before changing an environment.
 - **[`.agents/skills/reproduce-paper/`](.agents/skills/reproduce-paper)** — the agent workflow:
   candidate ingestion, the Modal wrapper, stopping criteria, and record templates.
+- **[`CONTRIBUTING.md`](CONTRIBUTING.md)** — how to prepare a reproduction PR and how to review
+  one.
 - **`repositories/`** — pre-study Dockerfiles for third-party repos, kept for reference. Not a
   template for new work.
 
