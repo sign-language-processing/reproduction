@@ -118,6 +118,20 @@ reviewer and assignee addresses stripped while keeping the source SHA-256. Publi
 names and contact details that the paper itself states are fine, and are the point of the
 author-contact section.
 
+**The paper is identifiable.** `README.md` must carry the report's identity line, and it must
+match `reproduction.json.paper_id`:
+
+```markdown
+**Paper ID:** `8526aecd1407305d815883725a864405e31a54c1`
+```
+
+For a queue-backed assignment this is the reviewing platform's own unique record ID — the value
+the record was selected by — so that a report can be traced back to the exact annotated
+candidate and matched up with Team S's pool during analysis. Do not substitute the directory
+slug there; the slug is the path, not the identity. A `direct_user_request` assignment has no
+platform record, and uses the paper slug instead. The validator does not cross-check this line
+against the JSON the way it does the statuses, so it is on the reviewer.
+
 **Pins are immutable.** Every Git source pinned to a full commit SHA, never a branch or tag;
 non-Git artifacts carrying a checksum; Hugging Face revisions pinned. A reviewer should be able
 to fetch exactly what ran.
