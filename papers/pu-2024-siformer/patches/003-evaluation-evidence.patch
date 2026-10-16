@@ -1,0 +1,44 @@
+# Record logits and labels from the exact existing evaluator pass; no prediction or aggregation change.
+--- a/siformer/utils.py
++++ b/siformer/utils.py
+@@ -2,6 +2,10 @@
+ 
+ 
+ import logging
++import os
++import json
++from pathlib import Path
++import numpy as np
+ import torch
+ import torch.nn.functional as F
+ import time
+@@ -51,6 +55,7 @@
+ def evaluate(model, dataloader, device, print_stats=False):
+     pred_correct, pred_all = 0, 0
+     stats = {i: [0, 0] for i in range(100)}
++    recorded_logits, recorded_labels = [], []
+ 
+     with torch.no_grad():
+         for i, data in enumerate(dataloader):
+@@ -69,6 +74,8 @@
+                 output = model(l_hand, r_hand, body, training=False)
+                 output = output.unsqueeze(0).expand(1, -1, -1)
+ 
++                recorded_logits.append(output.detach().cpu().numpy().reshape(-1))
++                recorded_labels.append(int(label.item()))
+                 # Statistics
+                 if int(torch.argmax(torch.nn.functional.softmax(output, dim=2))) == int(label):
+                     stats[int(labels[0][0])][0] += 1
+@@ -84,6 +91,12 @@
+         logging.info("Label accuracies statistics:")
+         logging.info(str(stats) + "\n")
+ 
++    evidence = os.environ.get("REPRO_EVIDENCE")
++    if evidence:
++        target = Path(evidence) / ("evaluation-epoch-" + os.environ["REPRO_EPOCH"] + ".npz")
++        np.savez(target, logits=np.asarray(recorded_logits), labels=np.asarray(recorded_labels))
++        with target.with_suffix(".json").open("w") as record:
++            json.dump({"correct": pred_correct, "total": pred_all, "accuracy": pred_correct / pred_all}, record)
+     return pred_correct, pred_all, (pred_correct / pred_all)
+ 
+ 
