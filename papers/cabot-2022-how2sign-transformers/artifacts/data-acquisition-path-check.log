@@ -1,0 +1,94 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-TJlD28CLSMZnsc2Zqx4yY9
+✓ Created objects.
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <checkout>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created function acquire_data.
+└── 🔨 Created function execute.
+{'name': 'Readme.txt', 'url': 'https://dataverse.csuc.cat/api/access/datafile/53890', 'bytes': 11823, 'sha256': '39082fe3109068ab29bb5a6fb0fe9370ceb48c32341c3951aeeaaed2f563fd31', 'npy_count': None}
+{'name': 'test.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/53222?format=original', 'bytes': 549672, 'sha256': 'd404cd64997f443cc6c05154511da9571cd1b897ef24500b75f5a96568ef647b', 'npy_count': None}
+{'name': 'train.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/51923?format=original', 'bytes': 6744324, 'sha256': '9e117ae049b83de9582bf39846d4094694f376fb59f4a0e5ad8f4bd3fe4ba65c', 'npy_count': None}
+{'name': 'val.tsv', 'url': 'https://dataverse.csuc.cat/api/access/datafile/51537?format=original', 'bytes': 367258, 'sha256': '3fd2a7006b6a54b9843dd9649b60010a51957364095ed128d42ce818021349b9', 'npy_count': None}
+Traceback (most recent call last):
+  File "<stdin>", line 16, in <module>
+ValueError: Unsafe archive path
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 57, in acquire_data
+    subprocess.run(['bash','/opt/data.sh'],check=True)
+  File "/usr/local/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['bash', '/opt/data.sh']' returned non-zero exit status 1.
+Stopping app - uncaught exception raised locally: CalledProcessError(1, ['bash', '/opt/data.sh']).
+Runner terminated.
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <checkout>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:63 in main                                                │
+│                                                                              │
+│   62 │   if mode=='acquire':                                                 │
+│ ❱ 63 │   │   acquire_data.remote(); return                                   │
+│   64 │   if mode not in ['preflight','full']:raise ValueError(mode)          │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python>/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VGN1HMT9WGY6E5ZW5AP5KR)...      │
+│                                                                              │
+│ /root/modal_app.py:57 in acquire_data                                        │
+│                                                                              │
+│ ❱ 57 subprocess.run(['bash','/opt/data.sh'],check=True)                      │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/subprocess.py:571 in run                           │
+│                                                                              │
+│ ❱ 571 raise CalledProcessError(retcode, process.args,                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+CalledProcessError: Command '['bash', '/opt/data.sh']' returned non-zero exit 
+status 1.

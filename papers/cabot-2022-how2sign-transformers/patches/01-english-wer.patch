@@ -1,0 +1,14 @@
+# Correctness: the released evaluator only knows German gloss datasets.
+# Add explicit English-transcript WER with whitespace normalization only.
+# Do not collapse repeated English words or rewrite German gloss markers.
+--- a/signjoey/prediction.py
++++ b/signjoey/prediction.py
+@@ -203,6 +203,8 @@
+                 gls_cln_fn = clean_phoenix_2014_trans
+             elif dataset_version == "phoenix_2014":
+                 gls_cln_fn = clean_phoenix_2014
++            elif dataset_version == "how2sign":
++                gls_cln_fn = lambda text: " ".join(text.split())
+             else:
+                 raise ValueError("Unknown Dataset Version: " + dataset_version)
+ 
