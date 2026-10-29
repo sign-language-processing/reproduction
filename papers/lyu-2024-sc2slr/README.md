@@ -137,13 +137,16 @@ Every command goes through the `repro-sign` wrapper. Every Modal function is ide
 ```bash
 W=.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh
 A=papers/lyu-2024-sc2slr/modal_app.py
-# data: 256x256 frames and Halpe-136 keypoints (48 A10G shards per dataset)
+# keypoint preflight: AlphaPose on 4 PHOENIX-2014 clips
+$W run --detach $A::launch_keypoint_preflight --dataset phoenix2014 --limit-clips 4
+# data: 256x256 frames and Halpe-136 keypoints (48 A10G shards per dataset; the default is 24)
 for ds in phoenix2014 phoenix2014-T; do
   $W run --detach $A::launch_prepare_frames --dataset $ds
-  $W run --detach $A::launch_keypoints --dataset $ds
+  $W run --detach $A::launch_keypoints --dataset $ds --num-shards 48
 done
 # preflight: 48 real clips, train one epoch, resume for a second, then test
 $W run $A::launch_preflight --run-id preflight-p14-1 --dataset phoenix2014
+$W run $A::launch_preflight --run-id preflight-p14t-1 --dataset phoenix2014-T
 # full training: 120 epochs in chained 20-epoch calls
 $W run --detach $A::launch_train --run-id full-p14-2 --dataset phoenix2014 --epochs 120 --chunk 20
 $W run --detach $A::launch_train --run-id full-p14t-2 --dataset phoenix2014-T --epochs 120 --chunk 20
