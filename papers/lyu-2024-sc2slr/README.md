@@ -117,7 +117,7 @@ Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`.
 - **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
 - **Shared Hugging Face cache:** every Modal function in `modal_app.py` mounts the v2 Volume `huggingface-cache` read-write at `/cache/huggingface`.
   - The training image (`Dockerfile`) sets `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub`. This covers the preflight, diagnose, train, and evaluate functions, plus `prepare_frames` and `pack_keypoints`.
-  - `alphapose.Dockerfile` does not set these two variables. In `extract_keypoints` (runs `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`) the cache is mounted but the variables are unset.
+  - `alphapose.Dockerfile` does not set these two variables. In `extract_keypoints` (runs `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`) the cache is mounted but the variables are unset. This is process deviation `hf-cache-env-not-set`.
   - No pipeline step downloads from the Hugging Face Hub: the AlphaPose weights come from the AlphaPose model zoo and are checksummed.
 
 | Patch | SHA-256 | Why |
@@ -221,6 +221,13 @@ How they are recorded:
 `attempt.max_attempts` is 4 for these runs. That is the transient-retry rule in AGENTS.md, not a declaration specific to each run.
 
 The validator rejects the nine GPU runs: 18 issues, a missing `max_gpu_hours` and a missing `max_cost_chf` for each. It accepts null GPU ceilings only in `retrospective` mode, and that mode is reserved for migrating committed records. The four full training runs (`full-p14{,t}-1`, `full-p14{,t}-2`) and the two evaluation runs did declare all three ceilings before launch.
+
+**Hugging Face cache variables not set** (`hf-cache-env-not-set`). Affected runs: `keypoints-preflight-1`, `keypoints-p14-1`, and `keypoints-p14t-1`.
+- **What happened:** these runs used the keypoint image, Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. They mounted the `huggingface-cache` Volume at `/cache/huggingface`, but `HF_HOME` and `HF_HUB_CACHE` were not set, because `alphapose.Dockerfile` does not define them. Their `compute.shared_cache.environment` records both as null.
+- **Effect:** no run downloads anything from the Hugging Face Hub. The AlphaPose weights come from the AlphaPose model zoo with recorded SHA-256 checksums, so no number is affected.
+- **Why the file is unchanged:** `alphapose.Dockerfile` is left as is, so that the committed file matches the image that ran.
+
+**Validator result: 21 issues.** These are the 18 above plus 3 for the invalid cache environment of these runs. All 21 are the same class of problem: a process requirement that was not met before launch, kept truthful in the record rather than backfilled.
 
 ## Guesses and deviations
 

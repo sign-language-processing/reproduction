@@ -1056,7 +1056,7 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 Halpe-136 (FastPose ResNet50 regression 256x192 + YOLOv3-SPP) over 4 PHOENIX-2014 clips (716 frames): 0 frames without a detection, 23.9 frames/s on one A10. Weights sha256 halpe136_fast50_regression_256x192.pth 6c02c87b23385902f6a065f1e0a677969e426b51b452ccbb8e7033ac56b764c2, yolov3-spp.weights 87a1e8c85c763316f34e428f2295e1db9ed4abcec59dd9544f8052f50de327b4. A sample (215,136,3) array had plausible 256-px coordinates. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600, retries=3) existed. The ceilings are recorded as null, not backfilled."
+        "detail": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 Halpe-136 (FastPose ResNet50 regression 256x192 + YOLOv3-SPP) over 4 PHOENIX-2014 clips (716 frames): 0 frames without a detection, 23.9 frames/s on one A10. Weights sha256 halpe136_fast50_regression_256x192.pth 6c02c87b23385902f6a065f1e0a677969e426b51b452ccbb8e7033ac56b764c2, yolov3-spp.weights 87a1e8c85c763316f34e428f2295e1db9ed4abcec59dd9544f8052f50de327b4. A sample (215,136,3) array had plausible 256-px coordinates. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600, retries=3) existed. The ceilings are recorded as null, not backfilled. Process omission: HF_HOME and HF_HUB_CACHE were not set in this run (alphapose.Dockerfile does not define them); the huggingface-cache Volume was mounted."
       },
       "source_revision": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 via alphapose.Dockerfile (sha256 f15690adf937e594b4e08a06ea081afcc7bd902aa590cadee8db7624fa1ac059)",
       "compute": {
@@ -1072,9 +1072,10 @@
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
           "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub"
-          }
+            "HF_HOME": null,
+            "HF_HUB_CACHE": null
+          },
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 0.13,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
@@ -1231,7 +1232,7 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 963664 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 32847 s; summed shard container time 17.1 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 41fa18bbeeb6bcb59a57ea2a1ac435c0e28953348018c7137b97a8b597d0de3b, 1582233600 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled."
+        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 963664 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 32847 s; summed shard container time 17.1 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 41fa18bbeeb6bcb59a57ea2a1ac435c0e28953348018c7137b97a8b597d0de3b, 1582233600 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled. Process omission: HF_HOME and HF_HUB_CACHE were not set in this run (alphapose.Dockerfile does not define them); the huggingface-cache Volume was mounted."
       },
       "artifact_ids": [
         "keypoints-p14"
@@ -1250,9 +1251,10 @@
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
           "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub"
-          }
+            "HF_HOME": null,
+            "HF_HUB_CACHE": null
+          },
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 33.04,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
@@ -1290,7 +1292,7 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 947756 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 31425 s; summed shard container time 11.9 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 edb3d978213ebdb33c20476102d5d939da7167214674ae7706a3f71c78200c43, 1554012160 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled."
+        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 947756 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 31425 s; summed shard container time 11.9 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 edb3d978213ebdb33c20476102d5d939da7167214674ae7706a3f71c78200c43, 1554012160 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled. Process omission: HF_HOME and HF_HUB_CACHE were not set in this run (alphapose.Dockerfile does not define them); the huggingface-cache Volume was mounted."
       },
       "artifact_ids": [
         "keypoints-p14t"
@@ -1309,9 +1311,10 @@
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
           "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub"
-          }
+            "HF_HOME": null,
+            "HF_HUB_CACHE": null
+          },
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 22.82,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
@@ -2342,7 +2345,15 @@
       "paper_or_evidence": "stopping-criteria.md requires a contemporaneous GPU run to declare GPU-hour and CHF ceilings before launch.",
       "used": "keypoints-preflight-1, keypoints-p14-1, keypoints-p14t-1, preflight-p14-1, preflight-p14t-1 and the four diagnose-p14t-* runs were launched with only the Modal function timeout/retries in modal_app.py. Their stop_policy keeps the real declaration time of those limits and null GPU-hour and CHF ceilings; nothing is backfilled. prepare-frames-* are CPU-only and declared only the timeout, which is all that applies.",
       "rationale": "Agent process error, disclosed rather than repaired after the fact.",
-      "effect": "The validator reports these nine GPU runs as missing ceilings. Their billed cost was USD 58.72 in total."
+      "effect": "The validator reports these nine GPU runs as missing ceilings (18 issues; 21 with the 3 from hf-cache-env-not-set). Their billed cost was USD 58.72 in total."
+    },
+    {
+      "id": "hf-cache-env-not-set",
+      "detail": "Shared Hugging Face cache environment (process deviation)",
+      "paper_or_evidence": "AGENTS.md requires every Modal reproduction run to mount huggingface-cache at /cache/huggingface and set at least HF_HOME=/cache/huggingface and HF_HUB_CACHE=/cache/huggingface/hub.",
+      "used": "keypoints-preflight-1, keypoints-p14-1 and keypoints-p14t-1 ran in the keypoint image (alphapose.Dockerfile, Modal image im-csO6ZMQ3cAFuADNidOTxqG), which mounts the Volume but does not define HF_HOME or HF_HUB_CACHE. Their shared_cache.environment records both as null. alphapose.Dockerfile is left unchanged so the committed file matches the recorded image that ran.",
+      "rationale": "Agent process error, disclosed rather than backfilled.",
+      "effect": "No run downloads anything from the Hugging Face Hub; the AlphaPose weights come from the AlphaPose model zoo with recorded sha256 checksums, so no number is affected. The validator reports the three runs as having an invalid cache environment (3 issues, 21 in total with the 18 from stop-ceilings-not-declared)."
     }
   ],
   "contacts": [],
