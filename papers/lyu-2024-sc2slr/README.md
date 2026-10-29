@@ -1,6 +1,6 @@
 # SC2SLR (Lyu, CNIOT 2024) reproduction
 
-**Summary.** The official code is incomplete. It imports two AlphaPose modules that were never released, and it has no contrastive loss at all. On the operator's decision, the missing keypoint glue and the paper's NT-Xent branch were written from the paper, and the full Table 3 pipeline was run on both PHOENIX-2014 and PHOENIX-2014T. All four numbers were obtained: 1.3 to 2.8 WER points worse than published. The heatmap rendering, the contrastive details, and the PHOENIX-2014T recipe had to be invented. As decided before training, these values are therefore conditional evidence. On gate `sc2slr-conditional-protocol-acceptance` the reviewer declined to accept those choices as the Table 3 protocol (2026-10-29), so no target is marked produced.
+**Summary.** The official code is incomplete. It imports two AlphaPose modules that were never released, and it has no contrastive loss at all. On the operator's decision, the missing keypoint glue and the paper's NT-Xent branch were written from the paper, and the full Table 3 pipeline was run on both PHOENIX-2014 and PHOENIX-2014T. All four numbers were obtained: 1.3 to 2.8 WER points higher than published (WER, lower is better). The heatmap rendering, the contrastive details, and the PHOENIX-2014T recipe had to be invented. As decided before training, these values are therefore conditional evidence. On gate `sc2slr-conditional-protocol-acceptance` the reviewer declined to accept those choices as the Table 3 protocol (2026-10-29), so no target is marked produced.
 
 **Paper ID:** `3ccdb5012eae349ef80750678cbe83dd9f51b868`
 
@@ -14,7 +14,7 @@
 
 **Numerical agreement:** `not_assessed` — no target is produced; the conditional values are reported below
 
-**Attempt dates:** 2026-10-26 to 2026-10-28
+**Attempt dates:** 2026-10-26 to 2026-10-29
 
 ## Reproduction agents
 
@@ -41,12 +41,12 @@ The metric is corpus-level gloss WER, (S+I+D)/N (Eq. 9), scored by the released 
 
 All values are WER (%), lower is better. Each is from one 120-epoch run with seed 0. The checkpoint is the one with the lowest dev WER (earliest on ties), and dev and test were each scored once. This selection rule is a guess: the paper does not state one (see `checkpoint-selection` under Guesses and deviations).
 
-| Target | Published | Conditional value | Difference | Status | Evidence |
-| --- | ---: | ---: | ---: | --- | --- |
-| PHOENIX-2014 dev | 20.8 | 22.7 | +1.9 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2`, epoch 42 of `full-p14-2` |
-| PHOENIX-2014 test | 21.2 | 22.8 | +1.6 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2` |
-| PHOENIX-2014T dev | 20.6 | 21.9 | +1.3 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2`, epoch 44 of `full-p14t-2` |
-| PHOENIX-2014T test | 21.0 | 23.8 | +2.8 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2` |
+| Target ID | Target | Published | Conditional value | Difference | Status | Evidence |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| `table3-sc2slr-p14-dev` | PHOENIX-2014 dev | 20.8 | 22.7 | +1.9 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2`, epoch 42 of `full-p14-2` |
+| `table3-sc2slr-p14-test` | PHOENIX-2014 test | 21.2 | 22.8 | +1.6 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2` |
+| `table3-sc2slr-p14t-dev` | PHOENIX-2014T dev | 20.6 | 21.9 | +1.3 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2`, epoch 44 of `full-p14t-2` |
+| `table3-sc2slr-p14t-test` | PHOENIX-2014T test | 21.0 | 23.8 | +2.8 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2` |
 
 sclite breakdowns (sub / del / ins):
 
@@ -63,7 +63,7 @@ sclite breakdowns (sub / del / ins):
 2. **Contrastive branch:** NT-Xent with τ = 0.5 and weight 1, applied to BiLSTM outputs mean-pooled over valid steps, with no projection head (`contrastive-branch`).
 3. **PHOENIX-2014T recipe:** the PHOENIX-2014 recipe reused unchanged (`p14t-recipe`).
 
-On 2026-10-29 the reviewer declined to accept them (gate `sc2slr-conditional-protocol-acceptance`, resolved). The four targets therefore stay `not_produced` / `protocol_ambiguous`, with the conditional runs, values, and differences kept above. Comparability was decided before the numbers were seen.
+On 2026-10-29 the reviewer declined to accept them (gate `sc2slr-conditional-protocol-acceptance`, resolved). The four targets therefore stay `not_produced` / `protocol_ambiguous`, with the conditional runs, values, and differences kept above. The conditional determination was recorded before training; the reviewer's decision of 2026-10-29 confirmed it.
 
 **Observation: dev WER after the first learning-rate drop** (`observations[0]` in `reproduction.json`). Both runs reached their dev minimum within five epochs of the drop at epoch 40, then rose:
 
@@ -115,14 +115,18 @@ Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`.
 
 - **Training image:** `Dockerfile` on `ghcr.io/sign-language-processing/reproduction:latest` (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19), Modal image `im-YmyymOTNJSOt1gD6faZSnW`. It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb`, and applies the patches below in order.
 - **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
+- **Shared Hugging Face cache:** every Modal function in `modal_app.py` mounts the v2 Volume `huggingface-cache` read-write at `/cache/huggingface`.
+  - The training image (`Dockerfile`) sets `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub`. This covers the preflight, diagnose, train, and evaluate functions, plus `prepare_frames` and `pack_keypoints`.
+  - `alphapose.Dockerfile` does not set these two variables. In `extract_keypoints` (runs `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`) the cache is mounted but the variables are unset.
+  - No pipeline step downloads from the Hugging Face Hub: the AlphaPose weights come from the AlphaPose model zoo and are checksummed.
 
 | Patch | SHA-256 | Why |
 | --- | --- | --- |
-| `patches/ctcdecode-cxx17.patch` | `783d8120…5335` | PyTorch ≥ 2.1 headers need C++17; copied from `yu-2025-cvsign` |
-| `patches/sc2slr-1-keypoint-glue.patch` | `06f7151d…f6f2` | Adds the two missing AlphaPose modules: precomputed Halpe-136 keypoints, 90-point subset, heatmap rendered before augmentation as a 4th channel |
-| `patches/sc2slr-2-contrastive-branch.patch` | `c4899959…838d` | Adds the paper's two-view NT-Xent branch and the missing imports for `deep_transform` |
-| `patches/sc2slr-3-no-horizontal-flip.patch` | `1f722d89…f8f5` | Removes the horizontal flip the paper excludes |
-| `patches/sc2slr-4-ctc-without-cudnn.patch` | `c8da4152…ef8b` | Computes CTC without cuDNN: cuDNN's CTC kernel gave non-finite gradients that collapsed the AMP scale (see Attempts) |
+| `patches/ctcdecode-cxx17.patch` | `783d81207ea1b14650388e59b380196e95f2dccf862d26dc82fb34ec0e455335` | PyTorch ≥ 2.1 headers need C++17; copied from `yu-2025-cvsign` |
+| `patches/sc2slr-1-keypoint-glue.patch` | `06f7151d2d7bf07d454a37f491a4ad0de946394d06d497ade0c708f1da7fb6f2` | Adds the two missing AlphaPose modules: precomputed Halpe-136 keypoints, 90-point subset, heatmap rendered before augmentation as a 4th channel |
+| `patches/sc2slr-2-contrastive-branch.patch` | `c48999597fc6d0227cffb84d56425380a8d993c0aa027e0f6487e509ca33838d` | Adds the paper's two-view NT-Xent branch and the missing imports for `deep_transform` |
+| `patches/sc2slr-3-no-horizontal-flip.patch` | `1f722d89ac547a097bdbba0a322a290cfeafaac4beeea4bfa272c77dbcd3b8f5` | Removes the horizontal flip the paper excludes |
+| `patches/sc2slr-4-ctc-without-cudnn.patch` | `c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b` | Computes CTC without cuDNN: cuDNN's CTC kernel gave non-finite gradients that collapsed the AMP scale (see Attempts) |
 
 Patches 1–3 change behaviour and were authorised by the gate decision. Patch 4 is an execution-correctness fix and leaves the loss unchanged.
 
@@ -167,7 +171,7 @@ $W run $A::launch_evaluate --train-run-id full-p14t-2 --eval-run-id eval-p14t-2 
 
 Modal app IDs, function-call IDs, image IDs, timestamps, and stop policies are in `reproduction.json.runs`. Training peaked at about 48 GiB of GPU memory.
 
-**Compute and cost.** Usage was about 47.5 + 52 A100-hours for the two full runs and about 29 A10-hours for keypoints. The cost below is Modal's own billing figure. I retrieved it through the `repro-sign` wrapper on 2026-10-29 with `modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json`, which reports in USD.
+**Compute and cost.** Usage was about 47.5 + 52 A100-hours for the two full runs and about 29 A10-hours for keypoints. The cost below is Modal's own billing figure. It was retrieved through the `repro-sign` wrapper on 2026-10-29 with `modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json`, which reports in USD.
 
 The total for all apps named `repro-lyu-2024-sc2slr` is **USD 492.28**. By resource:
 
@@ -198,7 +202,7 @@ The CHF ceilings in the stop policies were declared before launch at an assumed 
 - **What AGENTS.md requires:** any plan over 24 GPU-hours must be discussed in `#repro-sign-team-r` first.
 - **What happened:** it was not discussed. The assigning operator waived the discussion in the gate decision of 2026-10-26.
 
-**Runs launched without GPU-hour or CHF ceilings** (`stop-ceilings-not-declared`). Before these runs I wrote down only the Modal function limits in `modal_app.py`, never a GPU-hour or CHF ceiling.
+**Runs launched without GPU-hour or CHF ceilings** (`stop-ceilings-not-declared`). Before these runs, the Modal function limits in `modal_app.py` were written down, never a GPU-hour or CHF ceiling.
 
 How they are recorded:
 - **Ceilings:** null. Nothing was backfilled.
@@ -220,20 +224,20 @@ The validator rejects the nine GPU runs: 18 issues, a missing `max_gpu_hours` an
 
 ## Guesses and deviations
 
-| ID | Choice made | Effect |
-| --- | --- | --- |
-| `keypoints-precomputed` | AlphaPose once per original 210×260 frame, scaled to 256×256, carried through crop and temporal rescale as a heatmap channel | keypoints from uncropped frames |
-| `pose-model` | Halpe-136 FastPose ResNet50 regression 256×192 + YOLOv3-SPP; highest-scoring person per frame | another model would differ somewhat |
-| `keypoint-subset` | Halpe indices 18, 5–10 (upper body), 53–61 (nose), 62–73 (eyes), 74–93 (mouth), 94–135 (hands) = 90 | indexing convention only |
-| `heatmap-rendering` | max over keypoints of confidence-weighted Gaussians, σ = 4 px, in [0, 1], added to every RGB channel of the [−1, 1] video | **behaviour-changing** |
-| `contrastive-branch` | two views from the released (unused) SimCLR `deep_transform` after one shared crop/rescale; weight-shared network; all released losses on both views; NT-Xent τ = 0.5, weight 1, on BiLSTM outputs mean-pooled over valid steps, no projection head | **behaviour-changing** |
-| `schedule` | 120 epochs, batch 4; Adam 1e-4, ÷5 at 40 and 60, weight decay 1e-4 | follows the paper |
-| `no-horizontal-flip` | flip removed | follows the paper |
-| `ctc-without-cudnn` | CTC computed without cuDNN | same loss; execution fix |
-| `kept-released` | released loss weights (Dist 25, SeqKD T = 8), TemporalRescale(0.2), seed 0, AMP, beam 10 | may differ from the authors' runs |
-| `p14t-recipe` | same recipe as PHOENIX-2014 | **conditional** |
-| `checkpoint-selection` | lowest dev WER over all 120 epochs, earliest on ties, fixed before training; dev and test scored once | **guess**: the paper states no rule; released `main.py` keeps a best-dev checkpoint, but its counter resets on resume |
-| `train-split-2390` | released `train_info.npy` (5671 clips) | one clip fewer than the CSV |
+| ID | Paper/evidence says | This attempt used | Rationale | Effect on interpretation |
+| --- | --- | --- | --- | --- |
+| `keypoints-precomputed` | Released loader calls the missing `get_heatmap` on every augmented 224×224 frame | AlphaPose once per original 210×260 frame, scaled to 256×256, carried through crop and temporal rescale as a heatmap channel | Running detector + pose model inside the loader for 120 epochs is about 10⁸ extra passes; the crop is applied identically | Keypoints come from uncropped frames |
+| `pose-model` | Sec. 3.2: AlphaPose trained on Halpe | Halpe-136 FastPose ResNet50 regression 256×192 + YOLOv3-SPP; highest-scoring person per frame | The model the AlphaPose README uses for Halpe-136 inference | Another Halpe-136 model would differ somewhat |
+| `keypoint-subset` | Sec. 3.2: 7 upper body, 9 nose, 12 eye, 20 mouth, 42 hand = 90 | Halpe indices 18, 5–10, 53–61, 62–73, 74–93, 94–135 | Standard 68-point face layout inside Halpe (offset 26) | Indexing convention only |
+| `heatmap-rendering` | Sec. 3.2, Eq. 2: a normalized 2n-dim coordinate vector added to the image (dimensionally undefined); released code adds a (T, 224, 224) heatmap from a missing module; no σ anywhere | Max over keypoints of confidence-weighted Gaussians, σ = 4 px at 256×256, in [0, 1], added to every RGB channel of the [−1, 1] video (`sc2slr-1`) | Follows the released fusion; σ is invented | **Behaviour-changing**; one reason the values are conditional |
+| `contrastive-branch` | Sec. 3.3, Eq. 3, Eq. 8, Fig. 2: NT-Xent over two augmented views, summed with the CTC and KL losses; no temperature, projection head, pooling, weight sharing, or loss weight given; released code has no contrastive loss | Two views from the released (unused) SimCLR `deep_transform` after one shared crop/rescale; weight-shared network; all released losses on both views; NT-Xent τ = 0.5 (SimCLR default), weight 1, on BiLSTM outputs mean-pooled over valid steps, no projection head (`sc2slr-2`) | Smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations | **Behaviour-changing**; one reason the values are conditional |
+| `schedule` | Sec. 4.2: 120 epochs, batch 4; released config: 80 epochs, batch 1 | 120 epochs, batch 4; Adam 1e-4, ÷5 at 40 and 60, weight decay 1e-4 | Where the paper states a value for the Table 3 system, the paper wins | Follows the paper |
+| `no-horizontal-flip` | Sec. 4.3 and Table 2: flipping did not help and was excluded from the final scheme; released transform keeps RandomHorizontalFlip(0.5) | Flip removed (`sc2slr-3`) | Table 3's PHOENIX-2014 row equals Table 2's last row, which has no flip | Follows the paper |
+| `ctc-without-cudnn` | Released criterion passes CPU int32 targets, so current PyTorch uses cuDNN's CTC kernel; `full-p14-1`/`full-p14t-1` diverged | CTC computed with cuDNN disabled for that call only (`sc2slr-4`) | Execution-correctness fix, isolated by the paired diagnoses; same fix as `yu-2025-cvsign` | Same loss; not behaviour-changing |
+| `kept-released` | Eq. 8 sums the losses unweighted; Sec. 4.2 mentions "0.5 random frame dropout" | Released loss weights (Dist 25, SeqKD T = 8), TemporalRescale(0.2), seed 0, AMP, beam 10 | Eq. 8 does not rule out weights, and the dropout phrase maps onto no code parameter; the released code is the more specific evidence | May differ from the authors' runs |
+| `p14t-recipe` | Sec. 4.2 gives the schedule only for PHOENIX-2014, and the ablations (Tables 1–2) are PHOENIX-2014 only; released `configs/phoenix2014-T.yaml` sets only paths | Same recipe as PHOENIX-2014 | No other evidence | **Conditional** |
+| `checkpoint-selection` | Not stated in the paper (Sec. 4, Table 3 caption); released `main.py` saves a best-dev checkpoint, but its counter resets on resume | Lowest dev WER over all 120 epochs, earliest on ties, fixed before training; dev and test scored once | A guess informed by the released best-dev saving; the paper does not say whether it reports best-dev or final checkpoints | **Guess**; final-epoch checkpoints not scored on test (their dev WER was 23.9 and 22.5) |
+| `train-split-2390` | Paper: 5672 training samples; released preprocess drops CSV row 2390 (inherited from VAC) | Released `train_info.npy` (5671 clips) | Published recipe | One training clip fewer than the paper's count |
 
 Execution adaptations that leave the training semantics unchanged:
 - **Chunked training:** 20-epoch Modal calls stay under Modal's 24 h limit. `--num-epoch` only bounds the loop, and the LR milestones are epoch-indexed.
