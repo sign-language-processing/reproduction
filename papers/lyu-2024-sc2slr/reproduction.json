@@ -1,0 +1,2361 @@
+{
+  "paper_id": "3ccdb5012eae349ef80750678cbe83dd9f51b868",
+  "agents": [
+    {
+      "agent_id": "claude-code-opus-5-5",
+      "model": "Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "scope": "Assignment ingestion, target ledger, source search, released-code audit, Modal data checks, protocol gate, and, after the gate decision, patch authorship (patches/sc2slr-*.patch), container definitions, modal_app.py, and execution of all Modal runs on 2026-10-26 and later. Claude Code application version is not exposed in the session.",
+      "evidence": [
+        "Session system context on 2026-10-26 identifies the model as Opus 5.5 (model ID claude-opus-5-5) running in Claude Code; no Claude Code version string is exposed."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-3ccdb5012eae349ef80750678cbe83dd9f51b868-2026-10-26.json",
+      "sha256": "011701fca09aef694b627a9f66cb9ca7bf3ba4777c07f16667eab864fffc7a5d"
+    },
+    "detail": "The user supplied the paper PDF and a single tracker export of the 'reproductions' collection (status in_progress) whose expand.paper record has status final. The export has no confirmation field and is a single object, not an array, so ingest_candidate.py cannot apply; it is recorded as a direct assignment following the pu-2024-siformer precedent. paper_id differs intentionally from the tracker record id (frl5izvr9s46nku). Scope from the record: 'Table 3'. Original export preserved below with email addresses redacted.",
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "N/A",
+          "copied_scores": "yes",
+          "datasets": [
+            "3bo0mvnzlglpigr",
+            "wk5mci5wniesf1j"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "German Sign Language continuous recognition, weather domain",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "3bo0mvnzlglpigr",
+                "license": "CC BY-SA 3.0",
+                "name": "PHOENIX-2014",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "gsg"
+                ],
+                "spoken_languages": [
+                  "deu"
+                ],
+                "url": [
+                  "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/"
+                ]
+              },
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Extension of PHOENIX-2014 with German translation annotations",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "wk5mci5wniesf1j",
+                "license": "CC BY-SA 3.0",
+                "name": "PHOENIX-2014-T",
+                "on_modal": "yes",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "gsg"
+                ],
+                "spoken_languages": [
+                  "deu"
+                ],
+                "url": [
+                  "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "Word error rate",
+                "id": "q7nnxrx71w67jl9",
+                "name": "WER",
+                "url": []
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "frl5izvr9s46nku",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "q7nnxrx71w67jl9"
+          ],
+          "paper_id": "3ccdb5012eae349ef80750678cbe83dd9f51b868",
+          "pdf_url": "https://doi.org/10.1145/3670105.3670173",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "no",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-09-21T01:35:12.179Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Continuous signing videos"
+          ],
+          "textual_conclusion": "Our end-to-end model exhibits excellent performance comparable to other methods.",
+          "title": "SC2SLR: Skeleton-based Contrast for Sign Language Recognition",
+          "venue": "CNOIT",
+          "what_to_reproduce": "Table 3",
+          "year": 2024
+        }
+      },
+      "id": "9qyswoihe6lpcmz",
+      "paper": "frl5izvr9s46nku",
+      "status": "in_progress",
+      "url": []
+    }
+  },
+  "paper": {
+    "title": "SC2SLR: Skeleton-based Contrast for Sign Language Recognition",
+    "citation": "Silu Lyu. 2024. SC2SLR: Skeleton-based Contrast for Sign Language Recognition. In 2024 5th International Conference on Computing, Networks and Internet of Things (CNIOT 2024), May 24-26, 2024, Tokyo, Japan. ACM, pp. 404-410. https://doi.org/10.1145/3670105.3670173",
+    "url": "https://doi.org/10.1145/3670105.3670173",
+    "pdf_file": "3ccdb5012eae349ef80750678cbe83dd9f51b868.pdf",
+    "pdf_sha256": "2ad1879b2433ecf524bf3bb7a86be82d559a20b64aa4d244866590f1da86e62b",
+    "accessed_at": "2026-10-26",
+    "notes": "The tracker venue string is 'CNOIT'; the paper and Crossref give CNIOT 2024. The ACM landing page returned HTTP 403 to automated fetch; Crossref metadata (pages 404-410, single author, Shanghai University) was used instead."
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://doi.org/10.1145/3670105.3670173",
+      "revision_or_sha256": "2ad1879b2433ecf524bf3bb7a86be82d559a20b64aa4d244866590f1da86e62b",
+      "role": "Target values (Table 3) and protocol (Sections 3-4.2)."
+    },
+    {
+      "source_id": "sc2slr-official-code",
+      "kind": "code",
+      "url": "https://github.com/christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition",
+      "revision_or_sha256": "65c95fb03fa0c170dc3f1136265f4b97ec26d7fa",
+      "role": "Selected candidate. The author's own repository (GitHub user christianlsl, matching the paper's author email handle; description is the paper title). It is the only commit ('v1.1', 2024-04-15), with no tags, releases, forks, or issues. Apache-2.0. It derives from VAC and SEN_CSLR. It is incomplete; see gate sc2slr-released-code-incomplete.",
+      "committed_files_sha256": {
+        "Dockerfile": "7e6a096d935a46626246e7e4b0711e676a524345810c4354c27cbf63a79731d9",
+        "alphapose.Dockerfile": "f15690adf937e594b4e08a06ea081afcc7bd902aa590cadee8db7624fa1ac059",
+        "patches/ctcdecode-cxx17.patch": "783d81207ea1b14650388e59b380196e95f2dccf862d26dc82fb34ec0e455335",
+        "patches/sc2slr-1-keypoint-glue.patch": "06f7151d2d7bf07d454a37f491a4ad0de946394d06d497ade0c708f1da7fb6f2",
+        "patches/sc2slr-2-contrastive-branch.patch": "c48999597fc6d0227cffb84d56425380a8d993c0aa027e0f6487e509ca33838d",
+        "patches/sc2slr-3-no-horizontal-flip.patch": "1f722d89ac547a097bdbba0a322a290cfeafaac4beeea4bfa272c77dbcd3b8f5",
+        "patches/sc2slr-4-ctc-without-cudnn.patch": "c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b"
+      },
+      "patch_order": "ctcdecode-cxx17 is applied to ctcdecode; sc2slr-1..4 are applied in numeric order to the SC2SLR checkout"
+    },
+    {
+      "source_id": "alphapose-upstream",
+      "kind": "code",
+      "url": "https://github.com/MVIG-SJTU/AlphaPose",
+      "revision_or_sha256": "master tree inspected 2026-10-26 (not pinned; not used)",
+      "role": "Keypoint extractor named by the paper (Halpe-trained). Its tree does not contain the get_image_keypoint or keypoint_to_heatmap modules that the SC2SLR code imports."
+    },
+    {
+      "source_id": "alphapose",
+      "kind": "code",
+      "url": "https://github.com/MVIG-SJTU/AlphaPose",
+      "revision_or_sha256": "c60106d19afb443e964df6f06ed1842962f5f1f7",
+      "role": "Keypoint extractor the paper names (Halpe-trained). Built in alphapose.Dockerfile. Licensed for academic or non-profit non-commercial research use only; weights are kept in paper storage and not redistributed."
+    },
+    {
+      "source_id": "alphapose-halpe136-weights",
+      "kind": "weights",
+      "url": "https://drive.google.com/file/d/1_10JYI3O-VbrAiONfL36UxLf9UXMoUYA (halpe136_fast50_regression_256x192.pth, AlphaPose MODEL_ZOO); https://drive.google.com/open?id=1D47msNOOiJKvPOXlnpyzdKA3k6E97NTC (yolov3-spp.weights, AlphaPose docs/INSTALL.md)",
+      "revision_or_sha256": "halpe136_fast50_regression_256x192.pth sha256 6c02c87b23385902f6a065f1e0a677969e426b51b452ccbb8e7033ac56b764c2; yolov3-spp.weights sha256 87a1e8c85c763316f34e428f2295e1db9ed4abcec59dd9544f8052f50de327b4",
+      "role": "Halpe-136 FastPose (ResNet50, regression) and the YOLOv3-SPP detector, as used by the AlphaPose README full-body demo."
+    },
+    {
+      "source_id": "sctk",
+      "kind": "code",
+      "url": "https://github.com/usnistgov/SCTK",
+      "revision_or_sha256": "9688a26882a688132a5e414cadcb4c19b6fffaba",
+      "role": "sclite scorer the released evaluation calls."
+    },
+    {
+      "source_id": "ctcdecode",
+      "kind": "code",
+      "url": "https://github.com/parlance/ctcdecode",
+      "revision_or_sha256": "c90ad94a0b19554f80804fb7812f2a1447a34a70",
+      "role": "Beam-search decoder (width 10) that utils/decode.py imports. Built with patches/ctcdecode-cxx17.patch, reused from the yu-2025-cvsign reproduction."
+    }
+  ],
+  "source_search": {
+    "accessed_at": "2026-10-26",
+    "checked": [
+      "Paper PDF: no code, data, or supplement link appears anywhere in the 7 pages.",
+      "Crossref DOI metadata: no supplement relation. The ACM DL landing page returned 403 to automated fetch.",
+      "Web search: exact title 'SC2SLR Skeleton-based Contrast for Sign Language Recognition github' and author/affiliation queries found no code.",
+      "GitHub repository search 'SC2SLR' found christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition.",
+      "GitHub user christianlsl: 19 public repos. The homepage repo christianlsl.github.io is a blog, and no other SLR repo exists.",
+      "GitHub code search for the missing module names (get_image_keypoint, keypoint_to_heatmap/get_heatmap) found no SC2SLR-related hit.",
+      "Upstream MVIG-SJTU/AlphaPose master tree contains no file with either missing module name.",
+      "Official repo: one commit 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa (v1.1), one branch (master), no tags, releases, forks, or issues. .gitignore excludes AlphaPose/."
+    ],
+    "selected": "sc2slr-official-code",
+    "conclusion": "Official code exists but cannot execute as released, and it omits the paper's contrastive branch. See gate sc2slr-released-code-incomplete."
+  },
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no in-scope target is produced (reviewer decision on gate sc2slr-conditional-protocol-acceptance). The full pipeline ran on both datasets and emitted all four Table 3 numbers, but the protocol contains invented behaviour-changing choices, so by the determination recorded before training they are conditional evidence. Conditional values: PHOENIX-2014 dev 22.7 (+1.9) and test 22.8 (+1.6); PHOENIX-2014T dev 21.9 (+1.3) and test 23.8 (+2.8) WER points against the paper.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "Every in-scope SC2SLR value depends on invented keypoint-heatmap and contrastive-branch details; on gate sc2slr-conditional-protocol-acceptance the reviewer declined to accept them as the Table 3 protocol (2026-10-29).",
+      "target_ids": [
+        "table3-sc2slr-p14-dev",
+        "table3-sc2slr-p14-test",
+        "table3-sc2slr-p14t-dev",
+        "table3-sc2slr-p14t-test"
+      ]
+    },
+    "preference_level_basis": "The pinned upstream code is the base (preference 2 evidence: the import failure is demonstrated from source). The missing keypoint glue and the absent contrastive branch are reimplemented from the paper as patches, which makes this preference 3 for those components.",
+    "conditional_determination": "Decided before any training result: because tau, pooling, heatmap rendering, and the PHOENIX-2014T recipe are invented, the four SC2SLR values are conditional evidence and are recorded as not_produced (protocol_ambiguous) unless a human reviewer accepts these choices as the target protocol."
+  },
+  "datasets": [
+    {
+      "dataset_id": "phoenix-2014",
+      "name": "RWTH-PHOENIX-Weather 2014 (multisigner)",
+      "version_or_subset": "phoenix-2014.v3.tar.gz, phoenix-2014-multisigner, fullFrame-210x260px PNG frames (the release the SC2SLR README names)",
+      "source_url": "https://www-i6.informatik.rwth-aachen.de/ftp/pub/rwth-phoenix/2016/phoenix-2014.v3.tar.gz",
+      "license_or_permission": "CC BY-NC-SA 3.0 (per RWTH release; the queue record says CC BY-SA 3.0); non-commercial research use",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner",
+      "provenance": "Already populated in the shared Volume. rwth-phoenix-2014/raw/extraction_manifest.json records the source URL and 963673 extracted files.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 5672,
+          "files": [
+            {
+              "path": "annotations/manual/train.corpus.csv",
+              "sha256": "ebd3a83d0bb81b153e4c2acf2e6fcbc1ba6aa8211176017154a7213629a19947"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 540,
+          "files": [
+            {
+              "path": "annotations/manual/dev.corpus.csv",
+              "sha256": "42ba319d167b96c90832bb90cf5da9059042ebc826e400bba4f6674a5d840cef"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 629,
+          "files": [
+            {
+              "path": "annotations/manual/test.corpus.csv",
+              "sha256": "e8f05c6573d9546cd9f5b8528663b4924930800bc34b7f2fcc15708316166990"
+            }
+          ]
+        }
+      ],
+      "counts_match_paper": true
+    },
+    {
+      "dataset_id": "phoenix-2014-t",
+      "name": "RWTH-PHOENIX-Weather 2014 T",
+      "version_or_subset": "PHOENIX-2014-T-release-v3, fullFrame-210x260px PNG frames, gloss annotations",
+      "source_url": "https://www-i6.informatik.rwth-aachen.de/ftp/pub/rwth-phoenix/2016/phoenix-2014-T.v3.tar.gz",
+      "license_or_permission": "CC BY-NC-SA 3.0 (per RWTH release; the queue record says CC BY-SA 3.0); non-commercial research use",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rwth-phoenix-2014-t/raw/PHOENIX-2014-T-release-v3/PHOENIX-2014-T",
+      "provenance": "Already populated in the shared Volume on 2026-09-15 by an earlier REPRO-SIGN reproduction; see rwth-phoenix-2014-t/raw/PROVENANCE.txt. It uses the original lossless PNG frames, not the HEVC re-encoding under rwth-phoenix-2014-t/videos.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 7096,
+          "files": [
+            {
+              "path": "annotations/manual/PHOENIX-2014-T.train.corpus.csv",
+              "sha256": "cc3dc2461f0a222b92f3927c24ac21c1467f3e5428b406ee7fe40bca1b0b8d44"
+            }
+          ]
+        },
+        {
+          "name": "dev",
+          "sample_count": 519,
+          "files": [
+            {
+              "path": "annotations/manual/PHOENIX-2014-T.dev.corpus.csv",
+              "sha256": "1085141d0ed6f28c6de6196a271b72c07366ed3fe5470c9717bd44640737f00b"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 642,
+          "files": [
+            {
+              "path": "annotations/manual/PHOENIX-2014-T.test.corpus.csv",
+              "sha256": "632b19c9a87fb9c98b0821e04861750565348bce20a069c6dea1bba5bda27879"
+            }
+          ]
+        }
+      ],
+      "counts_match_paper": true
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "wer",
+      "name": "Word error rate over gloss sequences",
+      "direction": "lower_is_better",
+      "implementation": "Released repo evaluation/slr_eval (sclite from Kaldi SCTK via wer_calculation.py, preprocess.sh, mergectmstm.py), with python_wer_evaluation.py as the python_evaluate alternative. The paper defines it as (S+I+D)/N (Eq. 9).",
+      "version": "sclite from SCTK 2.4.10 per the released README, at repo commit 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa",
+      "aggregation": "Corpus-level over all sentences of the split; single run (the paper reports no seeds or variance).",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "sc2slr-phoenix2014",
+      "system": "SC2SLR (Ours): ResNet18 + 1D-CNN (K5,P2,K5,P2) + 2xBiLSTM(1024), keypoint early fusion, NT-Xent contrast, ConvCTC + SeqCTC + KL distillation",
+      "dataset_id": "phoenix-2014",
+      "checkpoint_rule": "Unspecified in the paper. Released main.py keeps the best-dev checkpoint ('_best_model.pt') and evaluates dev and test in phase=test.",
+      "paper_evidence": "Sections 3-4.2: 120 epochs, batch 4, Adam lr 1e-4 divided by 5 at epochs 40 and 60, 224 crop from 256x256, 0.5 random frame dropout."
+    },
+    {
+      "experiment_id": "sc2slr-phoenix2014t",
+      "system": "SC2SLR (Ours), same architecture",
+      "dataset_id": "phoenix-2014-t",
+      "checkpoint_rule": "Unspecified in the paper. Released main.py keeps the best-dev checkpoint.",
+      "paper_evidence": "Section 4.2 gives the training schedule only for PHOENIX-2014. No PHOENIX-2014T recipe is stated."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table3-sc2slr-p14-dev",
+      "in_scope": true,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SC2SLR(Ours)', column Phoenix-2014 Dev",
+      "system": "SC2SLR (Ours), end-to-end",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.8,
+      "copied_baseline": false,
+      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The run follows invented keypoint-heatmap and contrastive-branch choices that neither the paper nor the released code specifies. Per the determination recorded before training, and the reviewer's decision on gate sc2slr-conditional-protocol-acceptance (2026-10-29), the value is conditional evidence, not a produced target."
+        },
+        "run_ids": [
+          "full-p14-2",
+          "eval-p14-2"
+        ],
+        "artifact_ids": [
+          "eval-p14-dev-sys"
+        ],
+        "gate_ids": [
+          "sc2slr-conditional-protocol-acceptance"
+        ],
+        "evidence": [
+          "Conditional value 22.7 WER (sclite, run eval-p14-2, checkpoint selected by lowest dev WER in full-p14-2) against the published 20.8; difference +1.9 points.",
+          "Comparability was decided in status.conditional_determination before any training result was seen."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sc2slr-p14-test",
+      "in_scope": true,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SC2SLR(Ours)', column Phoenix-2014 Test",
+      "system": "SC2SLR (Ours), end-to-end",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.2,
+      "copied_baseline": false,
+      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The run follows invented keypoint-heatmap and contrastive-branch choices that neither the paper nor the released code specifies. Per the determination recorded before training, and the reviewer's decision on gate sc2slr-conditional-protocol-acceptance (2026-10-29), the value is conditional evidence, not a produced target."
+        },
+        "run_ids": [
+          "full-p14-2",
+          "eval-p14-2"
+        ],
+        "artifact_ids": [
+          "eval-p14-test-sys"
+        ],
+        "gate_ids": [
+          "sc2slr-conditional-protocol-acceptance"
+        ],
+        "evidence": [
+          "Conditional value 22.8 WER (sclite, run eval-p14-2, checkpoint selected by lowest dev WER in full-p14-2) against the published 21.2; difference +1.6 points.",
+          "Comparability was decided in status.conditional_determination before any training result was seen."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sc2slr-p14t-dev",
+      "in_scope": true,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SC2SLR(Ours)', column Phoenix-2014T Dev",
+      "system": "SC2SLR (Ours), end-to-end",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.6,
+      "copied_baseline": false,
+      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The run follows invented keypoint-heatmap and contrastive-branch choices that neither the paper nor the released code specifies. Per the determination recorded before training, and the reviewer's decision on gate sc2slr-conditional-protocol-acceptance (2026-10-29), the value is conditional evidence, not a produced target."
+        },
+        "run_ids": [
+          "full-p14t-2",
+          "eval-p14t-2"
+        ],
+        "artifact_ids": [
+          "eval-p14t-dev-sys"
+        ],
+        "gate_ids": [
+          "sc2slr-conditional-protocol-acceptance"
+        ],
+        "evidence": [
+          "Conditional value 21.9 WER (sclite, run eval-p14t-2, checkpoint selected by lowest dev WER in full-p14t-2) against the published 20.6; difference +1.3 points.",
+          "Comparability was decided in status.conditional_determination before any training result was seen."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sc2slr-p14t-test",
+      "in_scope": true,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SC2SLR(Ours)', column Phoenix-2014T Test",
+      "system": "SC2SLR (Ours), end-to-end",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.0,
+      "copied_baseline": false,
+      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The run follows invented keypoint-heatmap and contrastive-branch choices that neither the paper nor the released code specifies. Per the determination recorded before training, and the reviewer's decision on gate sc2slr-conditional-protocol-acceptance (2026-10-29), the value is conditional evidence, not a produced target."
+        },
+        "run_ids": [
+          "full-p14t-2",
+          "eval-p14t-2"
+        ],
+        "artifact_ids": [
+          "eval-p14t-test-sys"
+        ],
+        "gate_ids": [
+          "sc2slr-conditional-protocol-acceptance"
+        ],
+        "evidence": [
+          "Conditional value 23.8 WER (sclite, run eval-p14t-2, checkpoint selected by lowest dev WER in full-p14t-2) against the published 21.0; difference +2.8 points.",
+          "Comparability was decided in status.conditional_determination before any training result was seen."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-subunet-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SubUNet [1]', column Phoenix-2014 Dev",
+      "system": "SubUNet [1] (Camgoz et al., ICCV 2017)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 40.8,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SubUNet [1] (Camgoz et al., ICCV 2017); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-subunet-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SubUNet [1]', column Phoenix-2014 Test",
+      "system": "SubUNet [1] (Camgoz et al., ICCV 2017)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 40.7,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SubUNet [1] (Camgoz et al., ICCV 2017); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cnn-lstm-hmms-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CNN-LSTM-HMMs [15]', column Phoenix-2014 Dev",
+      "system": "CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 26.0,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cnn-lstm-hmms-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CNN-LSTM-HMMs [15]', column Phoenix-2014 Test",
+      "system": "CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.0,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cnn-lstm-hmms-p14t-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CNN-LSTM-HMMs [15]', column Phoenix-2014T Dev",
+      "system": "CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 22.1,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cnn-lstm-hmms-p14t-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CNN-LSTM-HMMs [15]', column Phoenix-2014T Test",
+      "system": "CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 24.1,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CNN-LSTM-HMMs [15] (Koller et al., TPAMI 2019; refs [14] and [15] are duplicates); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cma-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CMA [21]', column Phoenix-2014 Dev",
+      "system": "CMA [21] (Pu et al., ACM MM 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.3,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CMA [21] (Pu et al., ACM MM 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-cma-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'CMA [21]', column Phoenix-2014 Test",
+      "system": "CMA [21] (Pu et al., ACM MM 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.9,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to CMA [21] (Pu et al., ACM MM 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-stmc-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'STMC [25]', column Phoenix-2014 Dev",
+      "system": "STMC [25] (Zhou et al., 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.1,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to STMC [25] (Zhou et al., 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-stmc-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'STMC [25]', column Phoenix-2014 Test",
+      "system": "STMC [25] (Zhou et al., 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.7,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to STMC [25] (Zhou et al., 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-stmc-p14t-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'STMC [25]', column Phoenix-2014T Dev",
+      "system": "STMC [25] (Zhou et al., 2020)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 19.6,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to STMC [25] (Zhou et al., 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-stmc-p14t-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'STMC [25]', column Phoenix-2014T Test",
+      "system": "STMC [25] (Zhou et al., 2020)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 21.0,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to STMC [25] (Zhou et al., 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sfl-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SFL [20]', column Phoenix-2014 Dev",
+      "system": "SFL [20] (Niu and Mak, ECCV 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 24.9,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SFL [20] (Niu and Mak, ECCV 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sfl-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SFL [20]', column Phoenix-2014 Test",
+      "system": "SFL [20] (Niu and Mak, ECCV 2020)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 25.3,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SFL [20] (Niu and Mak, ECCV 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sfl-p14t-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SFL [20]', column Phoenix-2014T Dev",
+      "system": "SFL [20] (Niu and Mak, ECCV 2020)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 25.1,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SFL [20] (Niu and Mak, ECCV 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-sfl-p14t-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'SFL [20]', column Phoenix-2014T Test",
+      "system": "SFL [20] (Niu and Mak, ECCV 2020)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 26.1,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to SFL [20] (Niu and Mak, ECCV 2020); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-vac-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'VAC [19]', column Phoenix-2014 Dev",
+      "system": "VAC [19] (Min et al., ICCV 2021)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 21.2,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to VAC [19] (Min et al., ICCV 2021); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-vac-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'VAC [19]', column Phoenix-2014 Test",
+      "system": "VAC [19] (Min et al., ICCV 2021)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 22.3,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to VAC [19] (Min et al., ICCV 2021); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-c2slr-p14-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'C2SLR [26]', column Phoenix-2014 Dev",
+      "system": "C2SLR [26] (Zuo and Mak, CVPR 2022)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.5,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to C2SLR [26] (Zuo and Mak, CVPR 2022); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-c2slr-p14-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'C2SLR [26]', column Phoenix-2014 Test",
+      "system": "C2SLR [26] (Zuo and Mak, CVPR 2022)",
+      "experiment_id": "sc2slr-phoenix2014",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.4,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to C2SLR [26] (Zuo and Mak, CVPR 2022); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-c2slr-p14t-dev",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'C2SLR [26]', column Phoenix-2014T Dev",
+      "system": "C2SLR [26] (Zuo and Mak, CVPR 2022)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "dev",
+      "metric_id": "wer",
+      "original_value": 20.2,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to C2SLR [26] (Zuo and Mak, CVPR 2022); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    },
+    {
+      "target_id": "table3-c2slr-p14t-test",
+      "in_scope": false,
+      "paper_location": "Table 3, p. 409 (paper p. 6), row 'C2SLR [26]', column Phoenix-2014T Test",
+      "system": "C2SLR [26] (Zuo and Mak, CVPR 2022)",
+      "experiment_id": "sc2slr-phoenix2014t",
+      "split": "test",
+      "metric_id": "wer",
+      "original_value": 20.4,
+      "copied_baseline": true,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "copied_baseline",
+          "detail": "Prior-work comparison value cited by reference number in Table 3. The paper did not rerun it, and the queue record flags copied_scores=yes. It was not rerun or checked against the cited source paper in this attempt."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [],
+        "evidence": [
+          "Table 3 attributes this row to C2SLR [26] (Zuo and Mak, CVPR 2022); Section 4.4 describes these as comparisons with other methods."
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "keypoints-preflight-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_keypoint_preflight",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T13:45:43Z",
+      "finished_at_utc": "2026-10-26T13:49:43Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "keypoints-preflight",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600, retries=3), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 Halpe-136 (FastPose ResNet50 regression 256x192 + YOLOv3-SPP) over 4 PHOENIX-2014 clips (716 frames): 0 frames without a detection, 23.9 frames/s on one A10. Weights sha256 halpe136_fast50_regression_256x192.pth 6c02c87b23385902f6a065f1e0a677969e426b51b452ccbb8e7033ac56b764c2, yolov3-spp.weights 87a1e8c85c763316f34e428f2295e1db9ed4abcec59dd9544f8052f50de327b4. A sample (215,136,3) array had plausible 256-px coordinates. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600, retries=3) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "source_revision": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 via alphapose.Dockerfile (sha256 f15690adf937e594b4e08a06ea081afcc7bd902aa590cadee8db7624fa1ac059)",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-M0NiIZRC0LbNOFy0yoFAtY",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A10 (23028 MiB), driver 610.57.04, cpu=8, memory 32 GiB",
+        "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
+        "environment": "torch 1.13.1+cu117, CUDA 11.7, cuDNN 8.5 (alphapose.Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-M0NiIZRC0LbNOFy0yoFAtY",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.13,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "prepare-frames-p14-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_prepare_frames --dataset phoenix2014",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T13:51:02Z",
+      "finished_at_utc": "2026-10-26T14:24:16Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "prepare-frames-p14",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (prepare_frames timeout=12*3600, CPU only, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. CPU-only run: GPU-hour and CHF ceilings do not apply. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Upstream preprocess resize_dataset to 256x256 over the committed <split>_info.npy; clips (train/dev/test) 5671/540/629, frames 798990/75186/89472; checks against the official corpus CSVs passed (checks_passed true). Archive sha256 dca5370c6cb1bfde6d459c284d91d0e40449ab9fa2f40b1dc93b21955119f1d9, 70235658240 bytes."
+      },
+      "artifact_ids": [
+        "frames-p14"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-u4Gq4XroqqyHrAicvtGj7F",
+        "gpu_count": 0,
+        "hardware": "CPU only, cpu=32, memory 64 GiB",
+        "image_id": null,
+        "environment": "training image (Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-u4Gq4XroqqyHrAicvtGj7F",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 1.13,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      }
+    },
+    {
+      "run_id": "prepare-frames-p14t-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_prepare_frames --dataset phoenix2014-T",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T13:51:27Z",
+      "finished_at_utc": "2026-10-26T14:15:35Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "prepare-frames-p14t",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (prepare_frames timeout=12*3600, CPU only, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. CPU-only run: GPU-hour and CHF ceilings do not apply. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Upstream preprocess resize_dataset to 256x256 over the committed <split>_info.npy; clips (train/dev/test) 7096/519/642, frames 827354/55775/64627; checks against the official corpus CSVs passed (checks_passed true). Archive sha256 18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd, 68060743680 bytes."
+      },
+      "artifact_ids": [
+        "frames-p14t"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-wW0Zdm4IQZMNbJp4mmQvgd",
+        "gpu_count": 0,
+        "hardware": "CPU only, cpu=32, memory 64 GiB",
+        "image_id": null,
+        "environment": "training image (Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-wW0Zdm4IQZMNbJp4mmQvgd",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.83,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      }
+    },
+    {
+      "run_id": "keypoints-p14-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_keypoints --dataset phoenix2014",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T13:52:08Z",
+      "finished_at_utc": "2026-10-26T15:42:39Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "keypoints-p14",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 963664 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 32847 s; summed shard container time 17.1 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 41fa18bbeeb6bcb59a57ea2a1ac435c0e28953348018c7137b97a8b597d0de3b, 1582233600 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "artifact_ids": [
+        "keypoints-p14"
+      ],
+      "source_revision": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 via alphapose.Dockerfile; config configs/halpe_136/resnet/256x192_res50_lr1e-3_2x-regression.yaml",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-Kiv8bwvQg9zzUKEFJ45Rt0",
+        "gpu_count": 48,
+        "hardware": "48 x NVIDIA A10 (one per shard), cpu=8, memory 32 GiB each",
+        "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
+        "environment": "torch 1.13.1+cu117, CUDA 11.7, cuDNN 8.5 (alphapose.Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-Kiv8bwvQg9zzUKEFJ45Rt0",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 33.04,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      }
+    },
+    {
+      "run_id": "keypoints-p14t-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_keypoints --dataset phoenix2014-T",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T13:55:37Z",
+      "finished_at_utc": "2026-10-26T14:57:41Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "keypoints-p14t",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "48 A10G shards of AlphaPose Halpe-136 plus pack_keypoints: 947756 frames (every frame of every clip, including the PHOENIX-2014 train clip the released split drops), 0 frames without a detection; every clip's array has one row per frame. Summed AlphaPose inference 31425 s; summed shard container time 11.9 GPU-hours including frame copying (shards ran on A10 and A10G). Started = first shard start; finished = keypoint archive manifest. Archive sha256 edb3d978213ebdb33c20476102d5d939da7167214674ae7706a3f71c78200c43, 1554012160 bytes. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "artifact_ids": [
+        "keypoints-p14t"
+      ],
+      "source_revision": "AlphaPose c60106d19afb443e964df6f06ed1842962f5f1f7 via alphapose.Dockerfile; config configs/halpe_136/resnet/256x192_res50_lr1e-3_2x-regression.yaml",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-tDf1W24sU5MEi42SoJ19xB",
+        "gpu_count": 48,
+        "hardware": "48 x NVIDIA A10 (one per shard), cpu=8, memory 32 GiB each",
+        "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
+        "environment": "torch 1.13.1+cu117, CUDA 11.7, cuDNN 8.5 (alphapose.Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-tDf1W24sU5MEi42SoJ19xB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 22.82,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      }
+    },
+    {
+      "run_id": "preflight-p14-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_preflight --run-id preflight-p14-1 --dataset phoenix2014",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T15:47:37Z",
+      "finished_at_utc": "2026-10-26T15:49:49Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-p14",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Real data through upstream main.py on 48 train clips (the 8 longest + 40 seeded random) and 24 dev/test clips: one epoch, resume from the epoch-0 checkpoint for a second, then --phase test. All three steps exit 0; epoch times 40 and 41 s; peak 33427 MiB; 0 'loss is nan' skips; sclite scoring worked (dev 117.2 -> 96.6, test 96.5; meaningless at this size). It did not expose the cuDNN CTC problem found later: AMP scale collapse only shows after hundreds of steps. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (preflight timeout=4*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-EIDe4p81VLe3MPsJH4OWoD",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100 80GB PCIe, driver 610.57.04, cpu=16, memory 128 GiB",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-EIDe4p81VLe3MPsJH4OWoD",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.45,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "preflight-p14t-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_preflight --run-id preflight-p14t-1 --dataset phoenix2014-T",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T15:48:39Z",
+      "finished_at_utc": "2026-10-26T15:50:42Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-p14t",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T12:25:54Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Real data through upstream main.py on 48 train clips (the 8 longest + 40 seeded random) and 24 dev/test clips: one epoch, resume from the epoch-0 checkpoint for a second, then --phase test. All three steps exit 0; epoch times 36 and 33 s; peak 34323 MiB; 0 'loss is nan' skips; sclite scoring worked (dev 97.0 -> 97.0, test 96.6; meaningless at this size). It did not expose the cuDNN CTC problem found later: AMP scale collapse only shows after hundreds of steps. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (preflight timeout=4*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-2j3NdICEBpr5fIKTC9tVBc",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-2j3NdICEBpr5fIKTC9tVBc",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.49,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "full-p14-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_train --run-id full-p14-1 --dataset phoenix2014 --epochs 120 --chunk 20",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T15:52:36Z",
+      "finished_at_utc": "2026-10-26T16:22:08Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-p14",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T15:52:31Z",
+        "max_wall_time_seconds": 518400,
+        "max_gpu_hours": 110.0,
+        "max_cost_chf": 400.0
+      },
+      "stop_policy_basis": "Preflight preflight-p14-1 (48 clips biased to the longest, A100-80GB): 0.9-1.8 s per batch of 4 two-view clips, ~6 s per 24 dev clips. Full epoch estimate 25-45 min, so 120 epochs = 50-90 A100-hours. Ceilings allow ~20% over the upper estimate; Modal A100-80GB + 16 CPU + 128 GiB is taken as about CHF 3.4/h. Training runs as six chained 20-epoch Modal calls; Modal retries (max 3) resume from the newest checkpoint.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-HVSLYmhLrAAiHIfbOQfB1V",
+        "modal_function_call_ids": [
+          "fc-01M5WEKYH7XVSHJERQFBZWFTKR"
+        ],
+        "gpu_count": 1,
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-HVSLYmhLrAAiHIfbOQfB1V",
+        "end_evidence": "modal app stop at 2026-10-26T16:22:08Z",
+        "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 1.87,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "numerical_instability",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "detail": "Stopped by the agent at 2026-10-26T16:22:08Z during epoch 1. Epoch 0 took 20 min 39 s (1417 batches); its logged training loss rose from 282.8 (batch 200) to 1510.3 (batch 1400), mean 593.9, with 2 'loss is nan' skips and dev WER 94.5. Rising loss in the first epoch on a constant LR is not normal training, and the PHOENIX-2014T run with identical code was diverging the same way; stopped to diagnose before paying for 120 epochs. Diagnosed by diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2; restarted from scratch as full-p14-2 with patches/sc2slr-4-ctc-without-cudnn.patch (epoch-0 checkpoints were trained under the collapsing AMP scale and are not resumed).",
+        "next_run_id": "full-p14-2"
+      },
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "full-p14t-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_train --run-id full-p14t-1 --dataset phoenix2014-T --epochs 120 --chunk 20",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T15:52:52Z",
+      "finished_at_utc": "2026-10-26T16:22:08Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-p14t",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T15:52:31Z",
+        "max_wall_time_seconds": 518400,
+        "max_gpu_hours": 110.0,
+        "max_cost_chf": 400.0
+      },
+      "stop_policy_basis": "Preflight preflight-p14t-1 (48 clips biased to the longest, A100-80GB): 0.9-1.8 s per batch of 4 two-view clips, ~6 s per 24 dev clips. Full epoch estimate 25-45 min, so 120 epochs = 50-90 A100-hours. Ceilings allow ~20% over the upper estimate; Modal A100-80GB + 16 CPU + 128 GiB is taken as about CHF 3.4/h. Training runs as six chained 20-epoch Modal calls; Modal retries (max 3) resume from the newest checkpoint.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-wt1P6diKi4jUoM0IWLk2TW",
+        "modal_function_call_ids": [
+          "fc-01M5WEMCTX1SGMNJ9R31PZH4M6"
+        ],
+        "gpu_count": 1,
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-wt1P6diKi4jUoM0IWLk2TW",
+        "end_evidence": "modal app stop at 2026-10-26T16:22:08Z",
+        "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 2.04,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "numerical_instability",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "detail": "Stopped by the agent at 2026-10-26T16:22:08Z during epoch 1. Epoch 0 (1774 batches, 21 min 16 s): logged loss 357.5 -> 460.1 -> 1223.9 over batches 0-400, then 1608 of 1774 batches were skipped by upstream's 'loss is nan' guard; dev WER 99.5. Diverged; continuing would not train. Diagnosed by diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2; restarted from scratch as full-p14t-2 with patches/sc2slr-4-ctc-without-cudnn.patch (epoch-0 checkpoints were trained under the collapsing AMP scale and are not resumed).",
+        "next_run_id": "full-p14t-2"
+      },
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T",
+      "artifact_ids": []
+    },
+    {
+      "run_id": "diagnose-p14t-released-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_diagnose --run-id diagnose-p14t-released-1 --dataset phoenix2014-T --variant as-released",
+      "exit_code": 1,
+      "started_at_utc": "2026-10-26T16:26:55Z",
+      "finished_at_utc": "2026-10-26T16:26:58Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-p14t-released",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:22:46Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "diagnose-p14t-released-2",
+        "gate_ids": [],
+        "detail": "Agent bug in the diagnostic driver: it ran from /tmp, so 'import seq_scripts' failed (ModuleNotFoundError) before any step. Fixed by adding the upstream cwd to sys.path. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (diagnose timeout=2*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-AGo8uwBKzJFJ0AM8N8Nuhs",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-AGo8uwBKzJFJ0AM8N8Nuhs",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.29,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
+      "artifact_ids": [],
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+    },
+    {
+      "run_id": "diagnose-p14t-ctc-nocudnn-1",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_diagnose --run-id diagnose-p14t-ctc-nocudnn-1 --dataset phoenix2014-T --variant ctc-without-cudnn",
+      "exit_code": 1,
+      "started_at_utc": "2026-10-26T16:27:16Z",
+      "finished_at_utc": "2026-10-26T16:27:20Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-p14t-ctc-nocudnn",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:22:46Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "diagnose-p14t-ctc-nocudnn-2",
+        "gate_ids": [],
+        "detail": "Same driver import bug as diagnose-p14t-released-1. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (diagnose timeout=2*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-a5bAAt39VglXJle4sySryE",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-a5bAAt39VglXJle4sySryE",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.35,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
+      "artifact_ids": [],
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+    },
+    {
+      "run_id": "diagnose-p14t-released-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_diagnose --run-id diagnose-p14t-released-2 --dataset phoenix2014-T --variant as-released",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T16:32:55Z",
+      "finished_at_utc": "2026-10-26T16:36:40Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-p14t-released",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:22:46Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "200 steps on 800 PHOENIX-2014T training clips (8 longest + 792 seeded random), code as patched by sc2slr-1..3: 40 steps with non-finite gradients, 0 NaN-loss skips, AMP scale collapsed to 5.96e-8, mean loss per 50 steps 212.9 / 144.4 / 190.2 / 222.9. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (diagnose timeout=2*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-3rEg8GvmHM2KnQ7JQtUMRR",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-3rEg8GvmHM2KnQ7JQtUMRR",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.6,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
+      "artifact_ids": [],
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+    },
+    {
+      "run_id": "diagnose-p14t-ctc-nocudnn-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_diagnose --run-id diagnose-p14t-ctc-nocudnn-2 --dataset phoenix2014-T --variant ctc-without-cudnn",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T16:33:15Z",
+      "finished_at_utc": "2026-10-26T16:37:01Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-p14t-ctc-nocudnn",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:22:46Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Same 200 steps with only the CTC loss computed under torch.backends.cudnn.flags(enabled=False): 5 steps with non-finite gradients (AMP scale calibration from 65536), final scale 2048, mean loss per 50 steps 179.2 / 103.3 / 93.3 / 89.0. Supports the hypothesis; became patches/sc2slr-4-ctc-without-cudnn.patch. Process omission: no GPU-hour or CHF ceiling was declared before this run was launched; only the Modal function limit (diagnose timeout=2*3600, no retries) existed. The ceilings are recorded as null, not backfilled."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-6VlwUZJ2inqZyRyUuuxzxe",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-6VlwUZJ2inqZyRyUuuxzxe",
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.55,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
+      "artifact_ids": [],
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+    },
+    {
+      "run_id": "full-p14-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_train --run-id full-p14-2 --dataset phoenix2014 --epochs 120 --chunk 20",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T16:38:33Z",
+      "finished_at_utc": "2026-10-28T16:11:14Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-p14",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:38:26Z",
+        "max_wall_time_seconds": 518400,
+        "max_gpu_hours": 110.0,
+        "max_cost_chf": 400.0
+      },
+      "stop_policy_basis": "Measured on full-p14-1/full-p14t-1: epoch 0 took 20 min 39 s (PHOENIX-2014, 1417 batches) and 21 min 16 s (PHOENIX-2014T, 1774 batches) on one A100-80GB, so 120 epochs are about 42-45 A100-hours. The ceilings from attempt 1 are kept (about 2.5x the measured estimate) to absorb dev-evaluation slowdowns and Modal resumes; cost taken as about CHF 3.4/h for A100-80GB + 16 CPU + 128 GiB. Six chained 20-epoch Modal calls; Modal retries (max 3) resume from the newest checkpoint.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-6eTPQfJBzEhfH6rj0tUozb",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-80GB per call (SXM4, driver 610.57.04, for chunks 0-20, 87-107, 107-120; PCIe, driver 580.95.05, for 20-80), cpu=16, memory 128 GiB",
+        "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-6eTPQfJBzEhfH6rj0tUozb",
+        "modal_function_call_ids": [
+          "fc-01M5WHMJ8CWR40ZPDPWAG02BTM",
+          "fc-01M5XHPVNXYRBJSS4XRNYR1W0W",
+          "fc-01M5YA30PZD6R1W4GD73XTENMB",
+          "fc-01M5Z2A90PA1D238HMQ8W4NFFH",
+          "fc-01M5ZTK1DCDMR26M0GH7SPMCJ1",
+          "fc-01M6137C81GC7ER6W8EQW8XVAF"
+        ],
+        "end_evidence": "Final chunk 107-120 finished 2026-10-28T16:11:14Z (segments/107-120.json); app idle afterwards",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 203.44,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "artifact_ids": [
+        "ckpt-p14-epoch42",
+        "devlog-p14"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..4 (sha256 06f7151d, c4899959, 1f722d89, c8da4152); in-container dirty diff sha256 ba6b0014617a59486a6ac8fb9d858fd9c79d5d10f4a5497f45782e587c68744b; image im-YmyymOTNJSOt1gD6faZSnW",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "120 epochs (0-119) trained by upstream main.py in six chained calls with segment records under runs/full-p14-2/segments/. The 80-100 call was interrupted by Modal after epoch 86; Modal's retry resumed from dev_23.60_epoch86_model.pt (chunk 87-107), redoing at most part of one epoch; the LR milestones are epoch-indexed so the schedule is unchanged. Epoch times 21-28 min (first epochs slowest). Peak 48451 MiB. 9 of 170,040 batches skipped by upstream's 'loss is nan' guard (first at epoch 45). Lowest dev WER 22.7 at epoch 42 (dev.txt). Wall time about 47.5 h; GPU time about 47 A100-hours; Modal-billed cost USD 203.44 (compute.billed_cost_usd)."
+      }
+    },
+    {
+      "run_id": "full-p14t-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/lyu-2024-sc2slr/modal_app.py::launch_train --run-id full-p14t-2 --dataset phoenix2014-T --epochs 120 --chunk 20",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-26T16:45:38Z",
+      "finished_at_utc": "2026-10-28T20:39:33Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-p14t",
+        "number": 2,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-26T16:38:26Z",
+        "max_wall_time_seconds": 518400,
+        "max_gpu_hours": 110.0,
+        "max_cost_chf": 400.0
+      },
+      "stop_policy_basis": "Measured on full-p14-1/full-p14t-1: epoch 0 took 20 min 39 s (PHOENIX-2014, 1417 batches) and 21 min 16 s (PHOENIX-2014T, 1774 batches) on one A100-80GB, so 120 epochs are about 42-45 A100-hours. The ceilings from attempt 1 are kept (about 2.5x the measured estimate) to absorb dev-evaluation slowdowns and Modal resumes; cost taken as about CHF 3.4/h for A100-80GB + 16 CPU + 128 GiB. Six chained 20-epoch Modal calls; Modal retries (max 3) resume from the newest checkpoint.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-z5bJOYQuGTpDSyfgho4tyH",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-SXM4-80GB per call, driver 610.57.04, cpu=16, memory 128 GiB",
+        "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-z5bJOYQuGTpDSyfgho4tyH",
+        "modal_function_call_ids": [
+          "fc-01M5WHN0F8NCZG71JH9A2SXBC7",
+          "fc-01M5XEVPKTSSS1CS28QG93XCQJ",
+          "fc-01M5YC4J4V054PBBCXVMBY02P0",
+          "fc-01M60ESEBKQKER7QZG99GMXAQG",
+          "fc-01M61B5K8VQ377VG5YBVG5YZQC"
+        ],
+        "end_evidence": "Final chunk 103-120 finished 2026-10-28T20:39:33Z (segments/103-120.json)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 222.92,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "artifact_ids": [
+        "ckpt-p14t-epoch44",
+        "devlog-p14t"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..4 (sha256 06f7151d, c4899959, 1f722d89, c8da4152); in-container dirty diff sha256 ba6b0014617a59486a6ac8fb9d858fd9c79d5d10f4a5497f45782e587c68744b; image im-YmyymOTNJSOt1gD6faZSnW",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "120 epochs (0-119) trained by upstream main.py in chained calls with segment records under runs/full-p14t-2/segments/. The 40-60 call was interrupted by Modal after epoch 54 and its retry after epoch 62; Modal's retries resumed from dev_22.60_epoch54_model.pt and dev_22.90_epoch62_model.pt, redoing at most part of one epoch each, and the epoch-indexed LR schedule is unchanged. Epoch times about 24-27 min. Peak 47751 MiB. 0 'loss is nan' skips. Lowest dev WER 21.9 at epoch 44 (dev.txt). Wall time about 52 h; GPU time about 52 A100-hours; Modal-billed cost USD 222.92 (compute.billed_cost_usd)."
+      }
+    },
+    {
+      "run_id": "eval-p14-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_evaluate --train-run-id full-p14-2 --eval-run-id eval-p14-2 --dataset phoenix2014",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-28T16:57:35Z",
+      "finished_at_utc": "2026-10-28T17:04:24Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-p14-2",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-28T16:57:35Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 14.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-SAXONoSXmzSjw8etGd7Bq2",
+        "gpu_count": 1,
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-SAXONoSXmzSjw8etGd7Bq2",
+        "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
+        "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "end_evidence": "local entrypoint returned 2026-10-28T17:04:24Z",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.34,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Selected epoch 42 as the lowest dev WER among epochs 0-119 of full-p14-2 (22.7; earliest on ties, rule fixed in reproduction.json before training). Checkpoint dev_22.70_epoch42_model.pt sha256 81f61ebf360c0dd404c583207dd9f6ca779a393c351c3ed0a0b4e94e6405b832. Upstream --phase test (ctcdecode beam 10, sclite) scored dev and test once: dev 22.7 (540 sentences, 5540 glosses; sub 12.7, del 6.1, ins 4.0), test 22.8 (629, 6504; sub 13.2, del 5.9, ins 3.7). Peak 5443 MiB; 118.6 s upstream time."
+      },
+      "artifact_ids": [
+        "eval-p14-dev-sys",
+        "eval-p14-test-sys",
+        "eval-p14-dev-ctm",
+        "eval-p14-test-ctm"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..4 (sha256 06f7151d, c4899959, 1f722d89, c8da4152); in-container dirty diff sha256 ba6b0014617a59486a6ac8fb9d858fd9c79d5d10f4a5497f45782e587c68744b; image im-YmyymOTNJSOt1gD6faZSnW"
+    },
+    {
+      "run_id": "eval-p14t-2",
+      "agent_ids": [
+        "claude-code-opus-5-5"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/lyu-2024-sc2slr/modal_app.py::launch_evaluate --train-run-id full-p14t-2 --eval-run-id eval-p14t-2 --dataset phoenix2014-T",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-28T20:43:33Z",
+      "finished_at_utc": "2026-10-28T20:48:51Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-p14t-2",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-28T20:43:33Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 14.0
+      },
+      "artifact_ids": [
+        "eval-p14t-dev-sys",
+        "eval-p14t-test-sys",
+        "eval-p14t-dev-ctm",
+        "eval-p14t-test-ctm"
+      ],
+      "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..4 (sha256 06f7151d, c4899959, 1f722d89, c8da4152); in-container dirty diff sha256 ba6b0014617a59486a6ac8fb9d858fd9c79d5d10f4a5497f45782e587c68744b; image im-YmyymOTNJSOt1gD6faZSnW",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-FKAjjlRdDW7XBL3I6s2MSJ",
+        "gpu_count": 1,
+        "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
+        "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
+        "environment": "PyTorch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 9.19 (ghcr.io/sign-language-processing/reproduction:latest + Dockerfile)",
+        "start_evidence": "https://modal.com/apps/repro-sign/main/ap-FKAjjlRdDW7XBL3I6s2MSJ",
+        "end_evidence": "local entrypoint returned 2026-10-28T20:48:51Z",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "billed_cost_usd": 0.26,
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Selected epoch 44 as the lowest dev WER among epochs 0-119 of full-p14t-2 (21.9; earliest on ties). Checkpoint dev_21.90_epoch44_model.pt sha256 ff9717e3ff2e283d9371fe15e82d4d1fef0d9b031d6c0a530d392fbe7e944770. Upstream --phase test (ctcdecode beam 10, sclite) scored dev and test once: dev 21.9 (519 sentences, 3748 glosses; sub 12.1, del 5.8, ins 4.0), test 23.8 (642, 4264; sub 13.6, del 5.6, ins 4.6). Peak 6601 MiB; 85.1 s upstream time."
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "frames-p14",
+      "kind": "preprocessed_input",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/data/phoenix2014-fullFrame-256x256px.tar",
+      "sha256": "dca5370c6cb1bfde6d459c284d91d0e40449ab9fa2f40b1dc93b21955119f1d9",
+      "role": "PHOENIX-2014 fullFrame frames resized to 256x256 by the upstream preprocess; manifest at the same path + .json. Restricted data: not redistributed.",
+      "size_bytes": 70235658240
+    },
+    {
+      "artifact_id": "frames-p14t",
+      "kind": "preprocessed_input",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/data/phoenix2014-T-fullFrame-256x256px.tar",
+      "sha256": "18fe6809bf9b613e18c20887e1fceffcd0735ac544e7de06f3e13ab5de1693cd",
+      "role": "PHOENIX-2014T frames resized to 256x256; manifest at the same path + .json. Restricted data: not redistributed.",
+      "size_bytes": 68060743680
+    },
+    {
+      "artifact_id": "keypoints-p14",
+      "kind": "preprocessed_input",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/data/phoenix2014-keypoints-halpe136.tar",
+      "sha256": "41fa18bbeeb6bcb59a57ea2a1ac435c0e28953348018c7137b97a8b597d0de3b",
+      "role": "AlphaPose Halpe-136 keypoints, one (T,136,3) float32 .npy per clip in 256-px coordinates.",
+      "size_bytes": 1582233600
+    },
+    {
+      "artifact_id": "keypoints-p14t",
+      "kind": "preprocessed_input",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/data/phoenix2014-T-keypoints-halpe136.tar",
+      "sha256": "edb3d978213ebdb33c20476102d5d939da7167214674ae7706a3f71c78200c43",
+      "role": "AlphaPose Halpe-136 keypoints for PHOENIX-2014T.",
+      "size_bytes": 1554012160
+    },
+    {
+      "artifact_id": "ckpt-p14-epoch42",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/full-p14-2/dev_22.70_epoch42_model.pt",
+      "sha256": "81f61ebf360c0dd404c583207dd9f6ca779a393c351c3ed0a0b4e94e6405b832",
+      "role": "Selected PHOENIX-2014 checkpoint (lowest dev WER). Not published: trained on restricted data and the protocol is conditional."
+    },
+    {
+      "artifact_id": "ckpt-p14t-epoch44",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/full-p14t-2/dev_21.90_epoch44_model.pt",
+      "sha256": "ff9717e3ff2e283d9371fe15e82d4d1fef0d9b031d6c0a530d392fbe7e944770",
+      "role": "Selected PHOENIX-2014T checkpoint (lowest dev WER). Not published."
+    },
+    {
+      "artifact_id": "devlog-p14",
+      "kind": "log",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/full-p14-2/dev.txt",
+      "sha256": "cf8412929ef2f8970439e6019c96ee865d1660dfdcd4f16fdf423b95c8c3cc5e",
+      "role": "Per-epoch dev WER history used for checkpoint selection (full log: log.txt sha256 c7d0c978cde48d9b8722aeaa64a7fde49e6416690ec22e2b0a6555095c5c5f30)."
+    },
+    {
+      "artifact_id": "devlog-p14t",
+      "kind": "log",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/full-p14t-2/dev.txt",
+      "sha256": "e0d8e403335c1bf6f9b052369e83ff939baa2a1cba0f42a1ea82af88018b5843",
+      "role": "Per-epoch dev WER history (log.txt sha256 c77465db78a3b1982e659b3d929c6de356a9f33ace8e294ca4ba17ee823441ad)."
+    },
+    {
+      "artifact_id": "eval-p14-dev-sys",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14-2/epoch_6667_result/out.output-hypothesis-dev.ctm.sys",
+      "sha256": "7f59ef607b823525071f273836779fbba1b9d12c12a4d529a654c4df1301ce16",
+      "role": "sclite summary, PHOENIX-2014 dev: Sum/Avg 540 sentences, 5540 words, Err 22.7."
+    },
+    {
+      "artifact_id": "eval-p14-test-sys",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14-2/epoch_6667_result/out.output-hypothesis-test.ctm.sys",
+      "sha256": "bcd4cb33959d512c96472d97ee249e531e8e4c43fd4f2a4580cdd2b01ce4f823",
+      "role": "sclite summary, PHOENIX-2014 test: Sum/Avg 629 sentences, 6504 words, Err 22.8."
+    },
+    {
+      "artifact_id": "eval-p14-dev-ctm",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14-2/output-hypothesis-dev.ctm",
+      "sha256": "184456895f9e3f669cffbaa7b945a721ae4d470407cc3dd8ecfec046394816e5",
+      "role": "Decoded PHOENIX-2014 dev hypotheses.",
+      "size_bytes": 341618
+    },
+    {
+      "artifact_id": "eval-p14-test-ctm",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14-2/output-hypothesis-test.ctm",
+      "sha256": "2506857324bb2dc98d938721144e73b89121d2ef8ff62f423105500ae0460db6",
+      "role": "Decoded PHOENIX-2014 test hypotheses.",
+      "size_bytes": 403807
+    },
+    {
+      "artifact_id": "eval-p14t-dev-sys",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14t-2/epoch_6667_result/out.output-hypothesis-dev.ctm.sys",
+      "sha256": "04e388257cbd5ff66a0caa3ed40c16f59fd914ac4a36111508d98f210943c538",
+      "role": "sclite summary, PHOENIX-2014T dev: Sum/Avg 519 sentences, 3748 words, Err 21.9."
+    },
+    {
+      "artifact_id": "eval-p14t-test-sys",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14t-2/epoch_6667_result/out.output-hypothesis-test.ctm.sys",
+      "sha256": "ee4c4e7a84fe594ed8b1a29bbb4764e6484c9e7a1c00ed2b9afa8638798ffc35",
+      "role": "sclite summary, PHOENIX-2014T test: Sum/Avg 642 sentences, 4264 words, Err 23.8."
+    },
+    {
+      "artifact_id": "eval-p14t-dev-ctm",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14t-2/output-hypothesis-dev.ctm",
+      "sha256": "1cd8f621a338c510ab30da9d29451e4c29ed43daeb7ea66f1152f531a74040c1",
+      "role": "Decoded PHOENIX-2014T dev hypotheses.",
+      "size_bytes": 205868
+    },
+    {
+      "artifact_id": "eval-p14t-test-ctm",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/lyu-2024-sc2slr-results/runs/eval-p14t-2/output-hypothesis-test.ctm",
+      "sha256": "685ac5dd35aef6ae5a77fddd5324cef037fcfb962ff18b297e3ab25fcdd40e8f",
+      "role": "Decoded PHOENIX-2014T test hypotheses.",
+      "size_bytes": 237131
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "sc2slr-released-code-incomplete",
+      "type": "protocol",
+      "status": "resolved",
+      "opened_at": "2026-10-26",
+      "reason": "The official SC2SLR code at the pinned commit cannot run as released, and it does not implement the paper's method. Faithful SC2SLR numbers would require inventing behavior-changing components that neither paper nor code specifies, and the result would then be conditional evidence. AGENTS.md requires a human decision before such a behavior-changing patch or reimplementation.",
+      "evidence": [
+        "main.py:18 imports AlphaPose.get_image_keypoint and dataset/dataloader_video.py:23 imports AlphaPose.keypoint_to_heatmap.get_heatmap. AlphaPose/ is listed in .gitignore and absent from the commit. Neither module exists in upstream MVIG-SJTU/AlphaPose or anywhere GitHub code search reaches. Preference level 1 therefore fails at import.",
+        "There is no NT-Xent/contrastive loss, second view, projection head, or temperature anywhere in the code. slr_network.SLRModel.criterion_calculation implements only ConvCTC, SeqCTC, and Dist (SeqKD, T=8). The paper's Eq. 3/8 and Figure 2 require L_NT-Xent over two augmented views.",
+        "Paper-unspecified contrastive details: temperature tau, the representation contrasted (frame-level, sequence-pooled, or visual vs sequential features), projection head, whether the two encoders share weights, and the loss weight.",
+        "Keypoint fusion is under-specified. The paper (Eq. 2, Sec 3.2) adds a normalized 2n-dim coordinate vector point-wise to the RGB image, which is dimensionally undefined. The code instead adds a (T,224,224) heatmap from the missing get_heatmap to the normalized video. The heatmap rendering (sigma, keypoint subset of 90 from Halpe-136, normalization) is unknown.",
+        "Config conflicts with the paper: configs/baseline.yaml has num_epoch 80 (paper 120), batch_size 1 (paper 4), Dist weight 25.0 (Eq. 8 sums the terms unweighted), and RandomHorizontalFlip(0.5) in the training transform (paper Sec 4.3 excludes horizontal flip). TemporalRescale(0.2) is used where the paper says '0.5 random frame dropout'. Color jitter, grayscale, and blur appear only in an unused deep_transform().",
+        "The PHOENIX-2014T training recipe is not stated in the paper. configs/phoenix2014-T.yaml provides only paths.",
+        "dataloader_video.normalize calls torch.clamp(video, ...) without assigning the result, so the clamp has no effect. This is recorded as released behavior and is not proposed for change."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "A-released-code-minimal-glue",
+          "description": "Preference 2: run the released code and config as-is, adding only the two missing AlphaPose glue modules (Halpe-136 AlphaPose keypoints rendered as a heatmap, with documented guessed sigma and the paper's 90-keypoint subset). There is no contrastive loss because the code has none. The system is 'released SC2SLR code', not the paper's full method.",
+          "paper_evidence": "The README says it holds the paper's code. The configs give 80 epochs and batch 1, which conflict with the paper's 120 and 4.",
+          "decision_needed": "Accept that the result is conditional evidence about the released code (not a produced Table 3 target), and choose the released config or the paper's 120 epochs and batch 4."
+        },
+        {
+          "alternative_id": "B-paper-faithful-reimplementation",
+          "description": "Preference 3 on top of the released code: add the glue modules from A, plus a two-view NT-Xent branch with documented guesses (SimCLR tau=0.5, sequence-pooled BiLSTM features with a 2-layer MLP projection head, weight 1, shared encoder) and the paper's training settings (120 epochs, batch 4, no horizontal flip, SimCLR augmentations). Run on both PHOENIX-2014 and PHOENIX-2014T.",
+          "paper_evidence": "Sections 3.3, 3.4, and 4.2, Eq. 3 and Eq. 8, and Figure 2.",
+          "decision_needed": "Approve the listed inventions. Results would still be conditional evidence and could not be marked produced. A compute estimate and possibly the >24 GPU-hour discussion in #repro-sign-team-r would follow after a preflight."
+        },
+        {
+          "alternative_id": "C-close-without-training",
+          "description": "Spend no compute. Close all four SC2SLR targets as not_produced with protocol_ambiguous (pipeline insufficient_information), keeping the code audit as evidence.",
+          "paper_evidence": "Same evidence as this gate.",
+          "decision_needed": "Confirm that the missing code and unspecified contrastive and fusion details make the targets unresolvable for this study."
+        }
+      ],
+      "required_action": "A human reviewer chooses A, B, or C (or another bounded option). The agent then records the decision, builds the container, runs a representative preflight on Modal, estimates compute, and proceeds or opens a compute gate.",
+      "resolved_at": "2026-10-26",
+      "resolution": "Human reviewer (the assigning operator) chose alternative A extended with the minimal code needed to run the whole Table 3 SC2SLR pipeline: released code at the pinned commit, plus the missing AlphaPose keypoint glue, plus the paper's two-view NT-Xent contrastive loss, on both PHOENIX-2014 and PHOENIX-2014T. The reviewer waived the #repro-sign-team-r compute discussion for this attempt. Per the gate's stated terms, results depend on documented invented details and are classified as conditional evidence before any score is seen, unless a human reviewer later accepts these choices as the target protocol."
+    },
+    {
+      "gate_id": "sc2slr-conditional-protocol-acceptance",
+      "type": "protocol",
+      "status": "resolved",
+      "opened_at": "2026-10-28",
+      "reason": "The four SC2SLR numbers come from a pipeline whose keypoint heatmap rendering, keypoint indexing, contrastive branch (view construction, sequence pooling, temperature 0.5, unweighted sum), training schedule details and PHOENIX-2014T recipe are not specified by the paper or the released code and were invented (guesses_and_deviations). As decided in status.conditional_determination before any training result, the values are conditional evidence and no target is marked produced unless a human reviewer accepts these choices as the target protocol.",
+      "evidence": [
+        "Gate sc2slr-released-code-incomplete records why the released code cannot run as released and lacks the contrastive loss.",
+        "guesses_and_deviations entries keypoints-precomputed, pose-model, keypoint-subset, heatmap-rendering, contrastive-branch, schedule, p14t-recipe and checkpoint-selection are behaviour-changing inventions.",
+        "Conditional results (eval-p14-2, eval-p14t-2): PHOENIX-2014 dev 22.7 / test 22.8 vs 20.8 / 21.2; PHOENIX-2014T dev 21.9 / test 23.8 vs 20.6 / 21.0."
+      ],
+      "required_action": "A human reviewer decides whether the documented invented choices are accepted as the Table 3 protocol. If accepted, the four targets become produced with the recorded values and numerical agreement is assessed; otherwise they stay not_produced (protocol_ambiguous) with these values as conditional evidence.",
+      "resolved_at": "2026-10-29",
+      "resolution": "The human reviewer did not accept the invented choices as the Table 3 protocol. The contrastive-branch choices (temperature, the features it is applied to, no projection head, loss weight) and the keypoint-heatmap sigma are invented behaviour-changing choices, so the values are conditional evidence; comparability was decided before the numbers were seen. The four targets stay not_produced with reason protocol_ambiguous, keeping their conditional runs, values and differences."
+    }
+  ],
+  "guesses_and_deviations": [
+    {
+      "id": "keypoints-precomputed",
+      "detail": "Where keypoints are extracted",
+      "paper_or_evidence": "Released loader calls get_heatmap(video, Keypoint_getter) on every augmented 224x224 frame; the modules are missing.",
+      "used": "AlphaPose runs once on every original 210x260 frame; coordinates are scaled to 256x256 and carried through crop and temporal rescale as a heatmap channel.",
+      "rationale": "Running the detector and pose model inside the loader for 120 epochs is about 10^8 extra passes. Geometrically the crop is applied identically.",
+      "effect": "Keypoints come from uncropped frames, which can differ slightly from detection on crops."
+    },
+    {
+      "id": "pose-model",
+      "detail": "AlphaPose model",
+      "paper_or_evidence": "Paper: 'AlphaPose [5], trained on the Halpe Dataset'.",
+      "used": "configs/halpe_136/resnet/256x192_res50_lr1e-3_2x-regression.yaml with halpe136_fast50_regression_256x192.pth and YOLOv3-SPP; the highest-scoring person per frame.",
+      "rationale": "The model the AlphaPose README uses for Halpe-136 inference.",
+      "effect": "Another Halpe-136 model would give somewhat different keypoints."
+    },
+    {
+      "id": "keypoint-subset",
+      "detail": "The 90 keypoints",
+      "paper_or_evidence": "Sec. 3.2 counts: 7 upper body (neck, shoulders, elbows, wrists), 20 mouth, 9 nose, 12 eye, 42 hand.",
+      "used": "Halpe-136 indices 18,5,6,7,8,9,10; 53-61 (nose); 62-73 (eyes); 74-93 (mouth); 94-135 (hands).",
+      "rationale": "Standard 68-point face layout inside Halpe (offset 26).",
+      "effect": "None expected beyond the indexing convention."
+    },
+    {
+      "id": "heatmap-rendering",
+      "detail": "Keypoint fusion",
+      "paper_or_evidence": "Paper Eq. 2 adds a normalized 2n-dim coordinate vector to the image (dimensionally undefined); released code adds a (T,224,224) heatmap from missing code.",
+      "used": "Max over keypoints of confidence-weighted Gaussians, sigma 4 px at 256x256, values in [0,1], added to every RGB channel of the [-1,1] video, as the released normalize() does.",
+      "rationale": "Follows the released fusion; sigma is invented.",
+      "effect": "Behavior-changing; part of why results are conditional."
+    },
+    {
+      "id": "contrastive-branch",
+      "detail": "NT-Xent details",
+      "paper_or_evidence": "Sec. 3.3, Eq. 3, Eq. 8, Fig. 2; no temperature, head, pooling, or weight sharing given. The released code has no contrastive loss.",
+      "used": "Two views per clip from the released (unused) SimCLR deep_transform after one shared crop and temporal rescale; a weight-shared network on the 2B batch; all released losses on both views; NT-Xent with tau 0.5 and weight 1 on BiLSTM features mean-pooled over valid steps, no projection head.",
+      "rationale": "The smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations.",
+      "effect": "Behavior-changing; part of why results are conditional."
+    },
+    {
+      "id": "schedule",
+      "detail": "Epochs and batch size",
+      "paper_or_evidence": "Sec. 4.2: 120 epochs, mini-batch 4; released configs/baseline.yaml: 80 epochs, batch 1.",
+      "used": "120 epochs, batch 4 (command-line overrides); learning rate 1e-4, Adam, divided by 5 at epochs 40 and 60, weight decay 1e-4, as in both the paper and the config.",
+      "rationale": "Where the paper states a value for the Table 3 system, the paper wins.",
+      "effect": "Follows the paper."
+    },
+    {
+      "id": "no-horizontal-flip",
+      "detail": "Horizontal flip",
+      "paper_or_evidence": "Sec. 4.3 excludes it; released transform uses RandomHorizontalFlip(0.5).",
+      "used": "Removed (patches/sc2slr-3-no-horizontal-flip.patch).",
+      "rationale": "Paper statement about the final scheme.",
+      "effect": "Follows the paper."
+    },
+    {
+      "id": "ctc-without-cudnn",
+      "detail": "CTC loss backend",
+      "paper_or_evidence": "Released criterion passes CPU int32 targets, which makes current PyTorch use cuDNN's CTC kernel; runs full-p14-1/full-p14t-1 diverged and diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2 isolate the cause.",
+      "used": "CTC computed with cuDNN disabled for that call only (patches/sc2slr-4-ctc-without-cudnn.patch, sha256 c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b).",
+      "rationale": "Execution-correctness fix for the container's PyTorch/cuDNN; same fix as yu-2025-cvsign for the same criterion code.",
+      "effect": "Same loss function, PyTorch's native kernel; not behavior-changing."
+    },
+    {
+      "id": "kept-released",
+      "detail": "Released settings kept where the paper is silent or vague",
+      "paper_or_evidence": "Eq. 8 sums losses unweighted; Sec. 4.2 mentions '0.5 random frame dropout [20]'.",
+      "used": "Released loss weights (ConvCTC 1, SeqCTC 1, Dist 25 with SeqKD T=8), TemporalRescale(0.2), seed 0, AMP, beam width 10.",
+      "rationale": "Eq. 8 does not rule out weights, and the frame-dropout phrase does not map onto any code parameter; the released code is the more specific evidence.",
+      "effect": "Possible mismatch with the authors' actual runs."
+    },
+    {
+      "id": "p14t-recipe",
+      "detail": "PHOENIX-2014T training",
+      "paper_or_evidence": "No PHOENIX-2014T recipe in the paper.",
+      "used": "The same recipe as PHOENIX-2014, with the released configs/phoenix2014-T.yaml paths.",
+      "rationale": "No other evidence.",
+      "effect": "Conditional."
+    },
+    {
+      "id": "checkpoint-selection",
+      "detail": "Checkpoint selection",
+      "paper_or_evidence": "Not stated in the paper (no checkpoint rule in Sec. 4 or the Table 3 caption). Released main.py saves a '_best_model.pt' on the best dev WER seen since the process started (best_dev resets on resume).",
+      "used": "The lowest dev WER over all 120 epochs (earliest on ties), fixed before training; that checkpoint is scored once on dev and test with --phase test.",
+      "rationale": "A guess informed by the released code's best-dev saving; the paper does not say whether its numbers come from the best-dev or the final checkpoint.",
+      "effect": "Guess. The final-epoch checkpoints were not evaluated; their dev WER during training was 23.9 (PHOENIX-2014) and 22.5 (PHOENIX-2014T)."
+    },
+    {
+      "id": "train-split-2390",
+      "detail": "PHOENIX-2014 train size",
+      "paper_or_evidence": "Paper: 5672 train samples; the released preprocess drops CSV row 2390 as broken (inherited from VAC).",
+      "used": "The released committed train_info.npy.",
+      "rationale": "Published recipe.",
+      "effect": "One training clip fewer than the paper's count, as in all VAC-derived code."
+    },
+    {
+      "id": "compute-discussion-skipped",
+      "detail": "Compute gate (process deviation)",
+      "paper_or_evidence": "AGENTS.md requires discussing runs expected to exceed 24 GPU-hours in #repro-sign-team-r before launch.",
+      "used": "The two full runs were planned at 50-90 A100-hours each (stop ceilings 110 GPU-hours and CHF 400 per run) and launched without that discussion; the assigning operator waived it in the gate decision of 2026-10-26. Actual: about 47.5 + 52 A100-hours. Modal-billed cost of all apps named repro-lyu-2024-sc2slr from 2026-10-26 to 2026-10-28: USD 492.28 (A100-80GB 252.66, A10G 34.51, memory 112.45, CPU 92.66), of which full-p14-2 203.44, full-p14t-2 222.92, keypoints 55.86, everything else 10.06 (including USD 0.74 for apps not retained as runs: image builds and failed keypoint-preflight launches before keypoints-preflight-1).",
+      "rationale": "Operator waiver; recorded here because it departs from the team process.",
+      "effect": "Process only; no effect on the numbers."
+    },
+    {
+      "id": "stop-ceilings-not-declared",
+      "detail": "Stop ceilings (process deviation)",
+      "paper_or_evidence": "stopping-criteria.md requires a contemporaneous GPU run to declare GPU-hour and CHF ceilings before launch.",
+      "used": "keypoints-preflight-1, keypoints-p14-1, keypoints-p14t-1, preflight-p14-1, preflight-p14t-1 and the four diagnose-p14t-* runs were launched with only the Modal function timeout/retries in modal_app.py. Their stop_policy keeps the real declaration time of those limits and null GPU-hour and CHF ceilings; nothing is backfilled. prepare-frames-* are CPU-only and declared only the timeout, which is all that applies.",
+      "rationale": "Agent process error, disclosed rather than repaired after the fact.",
+      "effect": "The validator reports these nine GPU runs as missing ceilings. Their billed cost was USD 58.72 in total."
+    }
+  ],
+  "contacts": [],
+  "ethics_review": "Queue flags: potential_ethical_concerns=no, includes_human_evaluation=no. The work uses only the already-collected public PHOENIX corpora under their research license. There are no participants and no new data collection, so no ethics gate is needed.",
+  "observations": [
+    {
+      "id": "dev-wer-after-first-lr-drop",
+      "detail": "In both full runs dev WER reached its minimum within five epochs after the first learning-rate drop at epoch 40 and then rose. PHOENIX-2014 (full-p14-2): 25.7 at epoch 39, 23.0 at 40, minimum 22.7 at 42, 23.9 at 119, mean 23.9 over epochs 100-119. PHOENIX-2014T (full-p14t-2): 25.5 at 39, 22.5 at 40, minimum 21.9 at 44, 22.5 at 119, mean 22.7 over epochs 100-119. Under this recipe the 120-epoch schedule over-trains relative to dev.",
+      "evidence": [
+        "runs/full-p14-2/dev.txt (artifact devlog-p14)",
+        "runs/full-p14t-2/dev.txt (artifact devlog-p14t)"
+      ],
+      "action": "Recorded only. Nothing was relaunched or shortened; the schedule follows the paper (120 epochs) and the selection rule was fixed before training (guesses_and_deviations checkpoint-selection)."
+    }
+  ]
+}

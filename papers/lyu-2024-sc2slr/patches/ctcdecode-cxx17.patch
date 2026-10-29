@@ -1,0 +1,66 @@
+ctcdecode: build as C++17
+
+Why: PyTorch >= 2.1 headers require C++17 (the unpatched build fails with
+'#error C++17 or later compatible compiler is required to use PyTorch'), but
+ctcdecode c90ad94 hardcodes -std=c++14. Under C++17 its pinned KenLM
+submodule (35835f1) then fails with 'ISO C++17 does not allow dynamic
+exception specifications' at exactly these five declarations; the
+throw(SpecialWordMissingException) specifications are removed. They only
+constrain which exception may escape and change nothing for code that throws
+the listed type. KenLM is used only for LM rescoring, which CorrNet does not
+use. No decoder logic is touched.
+Applies to: https://github.com/parlance/ctcdecode @ c90ad94a0b19554f80804fb7812f2a1447a34a70 (patch -p1 from the repo root)
+---
+diff --git a/setup.py b/setup.py
+index a89f24a..5358408 100644
+--- a/setup.py
++++ b/setup.py
+@@ -54,7 +54,7 @@ def compile_test(header, library):
+     return os.system(command) == 0
+ 
+ 
+-compile_args = ["-O3", "-DKENLM_MAX_ORDER=6", "-std=c++14", "-fPIC"]
++compile_args = ["-O3", "-DKENLM_MAX_ORDER=6", "-std=c++17", "-fPIC"]
+ ext_libs = []
+ if compile_test("zlib.h", "z"):
+     compile_args.append("-DHAVE_ZLIB")
+diff --git a/third_party/kenlm/lm/vocab.cc b/third_party/kenlm/lm/vocab.cc
+index 5df5ca2..7996ec7 100644
+--- a/third_party/kenlm/lm/vocab.cc
++++ b/third_party/kenlm/lm/vocab.cc
+@@ -282,7 +282,7 @@ void ProbingVocabulary::LoadedBinary(bool have_words, int fd, EnumerateVocab *to
+   if (have_words) ReadWords(fd, to, bound_, offset);
+ }
+ 
+-void MissingUnknown(const Config &config) throw(SpecialWordMissingException) {
++void MissingUnknown(const Config &config) {
+   switch(config.unknown_missing) {
+     case SILENT:
+       return;
+@@ -294,7 +294,7 @@ void MissingUnknown(const Config &config) throw(SpecialWordMissingException) {
+   }
+ }
+ 
+-void MissingSentenceMarker(const Config &config, const char *str) throw(SpecialWordMissingException) {
++void MissingSentenceMarker(const Config &config, const char *str) {
+   switch (config.sentence_marker_missing) {
+     case SILENT:
+       return;
+diff --git a/third_party/kenlm/lm/vocab.hh b/third_party/kenlm/lm/vocab.hh
+index 99c0aa8..f36e62c 100644
+--- a/third_party/kenlm/lm/vocab.hh
++++ b/third_party/kenlm/lm/vocab.hh
+@@ -207,10 +207,10 @@ class ProbingVocabulary : public base::Vocabulary {
+     detail::ProbingVocabularyHeader *header_;
+ };
+ 
+-void MissingUnknown(const Config &config) throw(SpecialWordMissingException);
+-void MissingSentenceMarker(const Config &config, const char *str) throw(SpecialWordMissingException);
++void MissingUnknown(const Config &config);
++void MissingSentenceMarker(const Config &config, const char *str);
+ 
+-template <class Vocab> void CheckSpecials(const Config &config, const Vocab &vocab) throw(SpecialWordMissingException) {
++template <class Vocab> void CheckSpecials(const Config &config, const Vocab &vocab) {
+   if (!vocab.SawUnk()) MissingUnknown(config);
+   if (vocab.BeginSentence() == vocab.NotFound()) MissingSentenceMarker(config, "<s>");
+   if (vocab.EndSentence() == vocab.NotFound()) MissingSentenceMarker(config, "</s>");
