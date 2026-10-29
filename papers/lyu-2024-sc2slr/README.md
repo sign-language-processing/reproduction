@@ -97,7 +97,7 @@ The official code is incomplete: it imports two AlphaPose modules that were neve
 - **The config conflicts with the paper:** 80 vs 120 epochs; batch 1 vs 4; distillation weight 25 vs 1 (implied by Eq. 8); horizontal flip used, though the paper excludes it; TemporalRescale(0.2) vs "0.5 random frame dropout"; colour jitter, grayscale, and blur defined but unused (`deep_transform`). No PHOENIX-2014T recipe is stated.
 - `torch.clamp(video, ...)` in `normalize` discards its result. The best-dev counter resets on resume. The PHOENIX-2014 train list drops CSV row 2390, as in all VAC-derived code. All three are kept as released behaviour.
 
-Gate `sc2slr-released-code-incomplete` offered three bounded options. The operator chose the released code plus the minimal glue and the paper's contrastive branch, on both datasets, and waived the `#repro-sign-team-r` compute discussion.
+Gate `sc2slr-released-code-incomplete` offered three bounded options. The operator chose the released code plus the minimal glue and the paper's contrastive branch, on both datasets. The full runs were launched without the `#repro-sign-team-r` compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At this gate's resolution on 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This remains a process deviation.
 
 ## Data provenance and permissions
 
@@ -200,7 +200,7 @@ The CHF ceilings in the stop policies were declared before launch at an assumed 
 **Compute gate not discussed** (`guesses_and_deviations` → `compute-discussion-skipped`).
 - **Plan:** the two full runs were planned at 50–90 A100-hours each. Their stop ceilings were 110 GPU-hours and CHF 400 per run. They used about 100 A100-hours in total.
 - **What AGENTS.md requires:** any plan over 24 GPU-hours must be discussed in `#repro-sign-team-r` first.
-- **What happened:** it was not discussed. The assigning operator waived the discussion in the gate decision of 2026-10-26.
+- **What happened:** it was not discussed, and no request was posted for this paper. At the gate resolution of 2026-10-26, the operator decided not to wait for the discussion, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. The operator stated this reason on 2026-10-29. This remains a process deviation.
 
 **Runs launched without GPU-hour or CHF ceilings** (`stop-ceilings-not-declared`). Before these runs, the Modal function limits in `modal_app.py` were written down, never a GPU-hour or CHF ceiling.
 
@@ -279,4 +279,4 @@ The `copied_scores: yes` flag is confirmed: seven prior-work rows of Table 3 are
 
 ## Author and team contact
 
-None. The operator waived the `#repro-sign-team-r` compute discussion for this attempt (about 130 GPU-hours in total), which is recorded as a process deviation. Gate `sc2slr-conditional-protocol-acceptance` was resolved on 2026-10-29: the reviewer did not accept the invented choices as the protocol.
+None. The full runs (about 130 GPU-hours in total for the attempt) were launched without the `#repro-sign-team-r` compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At the gate resolution of 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This remains a process deviation. Gate `sc2slr-conditional-protocol-acceptance` was resolved on 2026-10-29: the reviewer did not accept the invented choices as the protocol.
