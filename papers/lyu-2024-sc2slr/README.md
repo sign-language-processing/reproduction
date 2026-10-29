@@ -1,7 +1,5 @@
 # SC2SLR (Lyu, CNIOT 2024) reproduction
 
-**Summary.** The official code is incomplete. It imports two AlphaPose modules that were never released, and it has no contrastive loss at all. On the operator's decision, the missing keypoint glue and the paper's NT-Xent branch were written from the paper, and the full Table 3 pipeline was run on both PHOENIX-2014 and PHOENIX-2014T. All four numbers were obtained: 1.3 to 2.8 WER points higher than published (WER, lower is better). The heatmap rendering, the contrastive details, and the PHOENIX-2014T recipe had to be invented. As decided before training, these values are therefore conditional evidence. On gate `sc2slr-conditional-protocol-acceptance` the reviewer declined to accept those choices as the Table 3 protocol (2026-10-29), so no target is marked produced.
-
 **Paper ID:** `3ccdb5012eae349ef80750678cbe83dd9f51b868`
 
 **Citation:** Silu Lyu. 2024. SC2SLR: Skeleton-based Contrast for Sign Language Recognition. In *2024 5th International Conference on Computing, Networks and Internet of Things (CNIOT 2024)*, Tokyo, Japan. ACM, pp. 404–410.
@@ -90,6 +88,8 @@ The 22 copied baselines are terminal (`not_produced`, `copied_baseline`).
 The tracker said `code_repos: N/A`, but the search found the official repository. It is owned by GitHub user `christianlsl`, which matches the email handle printed in the paper, and its description is the paper title. The full search is in `reproduction.json.source_search`.
 
 ## Released-code audit
+
+The official code is incomplete: it imports two AlphaPose modules that were never released, and it has no contrastive loss.
 
 - **It does not run as released.** `main.py:18` imports `AlphaPose.get_image_keypoint`, and `dataset/dataloader_video.py:23` imports `AlphaPose.keypoint_to_heatmap.get_heatmap`. `AlphaPose/` is in `.gitignore`, and neither module exists in the commit, in upstream AlphaPose, or anywhere GitHub code search reaches.
 - **The paper's contrastive learning is absent.** There is no NT-Xent loss, second view, projection head, or temperature. The training loss is ConvCTC + SeqCTC + 25 × KL distillation (`slr_network.py`), essentially VAC with an early-fusion heatmap.
