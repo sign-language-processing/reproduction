@@ -18,7 +18,7 @@
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
-| `claude-code-opus-5-5` | Opus 5.5 (`claude-opus-5-5`) | Claude Code (version not exposed) | Every stage: ingestion, target ledger, source search, code audit, gates, patches, containers, `modal_app.py`, all Modal runs, evaluation, and this report | Session system context. `harness_version` is null because the application version is not exposed. Every run records `agent_ids: ["claude-code-opus-5-5"]`. |
+| `claude-code-opus-5-5` | Opus 5.5 (`claude-opus-5-5`) | Claude Code (version not exposed) | Every stage: ingestion, target ledger, source search, code audit, gates, patches, containers, `modal_app.py`, all Modal runs, evaluation, and this report; also report maintenance on 2026-10-28 (finalizing the record and README after the evaluations) and 2026-10-29 (review corrections at the human reviewer's instruction) | Session system context on 2026-10-26 and again on 2026-10-29: same model, so there is no second agent entry. `harness_version` is null because the application version is not exposed. Every run records `agent_ids: ["claude-code-opus-5-5"]`. |
 
 ## Scope and target contract
 
@@ -82,7 +82,8 @@ The 22 copied baselines are terminal (`not_produced`, `copied_baseline`).
 | Published code | https://github.com/christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition | `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa` (only commit, "v1.1"; Apache-2.0) | Base of the pipeline, patched |
 | AlphaPose | https://github.com/MVIG-SJTU/AlphaPose | `c60106d19afb443e964df6f06ed1842962f5f1f7` | Halpe-136 keypoint extraction |
 | AlphaPose weights | AlphaPose model zoo | `halpe136_fast50_regression_256x192.pth` `6c02c87b…c2`; `yolov3-spp.weights` `87a1e8c8…27b4` (full hashes in `reproduction.json`) | Pose and person detector |
-| SCTK (sclite) | https://github.com/usnistgov/SCTK | `9688a26882a688132a5e414cadcb4c19b6fffaba` | WER scoring |
+| ResNet18 ImageNet weights | https://download.pytorch.org/models/resnet18-f37072fd.pth | `resnet18-f37072fd.pth` `f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec` | Frame-encoder initialization, loaded by released `modules/resnet.py` via `model_zoo.load_url` from `TORCH_HOME=/cache/huggingface/torch`; hash read from that cached file |
+| SCTK (sclite) | https://github.com/usnistgov/SCTK | `9688a26882a688132a5e414cadcb4c19b6fffaba` (v2.4.12 plus 27 commits; sclite 2.10) | WER scoring |
 | ctcdecode | https://github.com/parlance/ctcdecode | `c90ad94a0b19554f80804fb7812f2a1447a34a70` | Beam search (width 10) |
 
 The tracker said `code_repos: N/A`, but the search found the official repository. It is owned by GitHub user `christianlsl`, which matches the email handle printed in the paper, and its description is the paper title. The full search is in `reproduction.json.source_search`.
@@ -113,7 +114,10 @@ Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`.
 
 ## Environment and patches
 
-- **Training image:** `Dockerfile` on `ghcr.io/sign-language-processing/reproduction:latest` (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19), Modal image `im-YmyymOTNJSOt1gD6faZSnW`. It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa`, and applies the patches below in order.
+- **Training image:** `Dockerfile` on `ghcr.io/sign-language-processing/reproduction:latest` (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19). It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa`, and applies every `patches/sc2slr-*.patch` in order. Two Modal images were built from it:
+  - `im-md9qNepxamfLdxNWadit2T`, with patches 1–3 only, before patch 4 existed. It ran `prepare-frames-*`, the `pack_keypoints` step of `keypoints-p14-1` and `keypoints-p14t-1`, `preflight-*`, `full-p14-1`, `full-p14t-1`, and all four `diagnose-p14t-*` runs. `preflight-*` and `diagnose-*` logged this ID themselves. For the others it is inferred: the build context did not change between 12:23 and 16:37 UTC on 2026-10-26 (`compute.image_id_basis` in each run).
+  - `im-YmyymOTNJSOt1gD6faZSnW`, with patches 1–4. It ran `full-p14-2`, `full-p14t-2`, `eval-p14-2`, and `eval-p14t-2`, each logging the ID.
+  - The committed `Dockerfile` builds the second image. To repeat a run from the first group exactly, build without patch 4, for example by moving `patches/sc2slr-4-ctc-without-cudnn.patch` out of `patches/` before launching.
   - **Base image pin:** `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291`.
   - **How it was verified:** the amd64 manifest of that index has the image config `sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2`, which is the config the Modal build logged. `pu-2024-siformer` records the same index digest.
 - **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d19afb443e964df6f06ed1842962f5f1f7` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
@@ -162,7 +166,12 @@ $W run $A::launch_evaluate --train-run-id full-p14-2 --eval-run-id eval-p14-2 --
 $W run $A::launch_evaluate --train-run-id full-p14t-2 --eval-run-id eval-p14t-2 --dataset phoenix2014-T
 ```
 
-`launch_diagnose --variant as-released|ctc-without-cudnn` reruns the 200-step CTC diagnosis.
+The 200-step CTC diagnosis ran on image `im-md9qNepxamfLdxNWadit2T` (patches 1–3), and the as-released variant can only be repeated on an image built without patch 4. With the committed `Dockerfile`, CTC already runs without cuDNN in both variants, so they compute the same thing. On an image without patch 4:
+
+```bash
+$W run $A::launch_diagnose --run-id diagnose-p14t-released-2 --dataset phoenix2014-T --variant as-released
+$W run $A::launch_diagnose --run-id diagnose-p14t-ctc-nocudnn-2 --dataset phoenix2014-T --variant ctc-without-cudnn
+```
 
 ## Execution evidence
 
@@ -252,6 +261,7 @@ The validator rejects the nine GPU runs: 18 issues, a missing `max_gpu_hours` an
 | `no-horizontal-flip` | Sec. 4.3 and Table 2: flipping did not help and was excluded from the final scheme; released transform keeps RandomHorizontalFlip(0.5) | Flip removed (`sc2slr-3`) | Table 3's PHOENIX-2014 row equals Table 2's last row, which has no flip | Follows the paper |
 | `ctc-without-cudnn` | Released criterion passes CPU int32 targets, so current PyTorch uses cuDNN's CTC kernel; `full-p14-1`/`full-p14t-1` diverged | CTC computed with cuDNN disabled for that call only (`sc2slr-4`) | Execution-correctness fix, isolated by the paired diagnoses; same fix as `yu-2025-cvsign` | Same loss; not behaviour-changing |
 | `kept-released` | Eq. 8 sums the losses unweighted; Sec. 4.2 mentions "0.5 random frame dropout" | Released loss weights (Dist 25, SeqKD T = 8), TemporalRescale(0.2), seed 0, AMP, beam 10 | Eq. 8 does not rule out weights, and the dropout phrase maps onto no code parameter; the released code is the more specific evidence | May differ from the authors' runs |
+| `sctk-version` | The released README names SCTK 2.4.10; the paper names no scorer version | SCTK `9688a26882a688132a5e414cadcb4c19b6fffaba` (v2.4.12 plus 27 commits; sclite 2.10), the same pin as `yu-2025-cvsign` | The SCTK repository has no 2.4.10 tag; the pinned commit builds with the image's toolchain | Expected none on WER: gloss alignment and S/D/I counting are the same; later commits are build, documentation, language-support, and backtrace-index fixes. Not verified by scoring with 2.4.10 |
 | `p14t-recipe` | Sec. 4.2 gives the schedule only for PHOENIX-2014, and the ablations (Tables 1–2) are PHOENIX-2014 only; released `configs/phoenix2014-T.yaml` sets only paths | Same recipe as PHOENIX-2014 | No other evidence | **Conditional** |
 | `checkpoint-selection` | Not stated in the paper (Sec. 4, Table 3 caption); released `main.py` saves a best-dev checkpoint, but its counter resets on resume | Lowest dev WER over all 120 epochs, earliest on ties, fixed before training; dev and test scored once | A guess informed by the released best-dev saving; the paper does not say whether it reports best-dev or final checkpoints | **Guess**; final-epoch checkpoints not scored on test (their dev WER was 23.9 and 22.5) |
 | `train-split-2390` | Paper: 5672 training samples; released preprocess drops CSV row 2390 (inherited from VAC) | Released `train_info.npy` (5671 clips) | Published recipe | One training clip fewer than the paper's count |

@@ -6,9 +6,10 @@
       "model": "Opus 5.5",
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
-      "scope": "Assignment ingestion, target ledger, source search, released-code audit, Modal data checks, protocol gate, and, after the gate decision, patch authorship (patches/sc2slr-*.patch), container definitions, modal_app.py, and execution of all Modal runs on 2026-10-26 and later. Claude Code application version is not exposed in the session.",
+      "scope": "Assignment ingestion, target ledger, source search, released-code audit, Modal data checks, protocol gate, and, after the gate decision, patch authorship (patches/sc2slr-*.patch), container definitions, modal_app.py, and execution of all Modal runs on 2026-10-26 and later. Also later report maintenance by the same agent: on 2026-10-28, finalization of reproduction.json and README.md after the evaluations; on 2026-10-29, review corrections to README.md and reproduction.json at the human reviewer's instruction (gate decision, billed cost, stop policies, process deviations, commands, pins, wording). Claude Code application version is not exposed in the session.",
       "evidence": [
-        "Session system context on 2026-10-26 identifies the model as Opus 5.5 (model ID claude-opus-5-5) running in Claude Code; no Claude Code version string is exposed."
+        "Session system context on 2026-10-26 identifies the model as Opus 5.5 (model ID claude-opus-5-5) running in Claude Code; no Claude Code version string is exposed.",
+        "Session system context on 2026-10-29 still identifies the model as Opus 5.5 (model ID claude-opus-5-5) running in Claude Code, so no new agents entry is needed for the report maintenance."
       ]
     }
   ],
@@ -197,6 +198,13 @@
       "role": "Halpe-136 FastPose (ResNet50, regression) and the YOLOv3-SPP detector, as used by the AlphaPose README full-body demo."
     },
     {
+      "source_id": "resnet18-imagenet-weights",
+      "kind": "weights",
+      "url": "https://download.pytorch.org/models/resnet18-f37072fd.pth",
+      "revision_or_sha256": "resnet18-f37072fd.pth sha256 f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec",
+      "role": "ImageNet initialization of the ResNet18 frame encoder: released modules/resnet.py calls torch.utils.model_zoo.load_url on this URL (without check_hash), which reads it from TORCH_HOME=/cache/huggingface/torch, i.e. hub/checkpoints/resnet18-f37072fd.pth on the shared huggingface-cache Volume. The SHA-256 was read from that cached file on 2026-10-29 through the repro-sign wrapper (read-only volume get); its first 8 hex characters match the f37072fd in the filename (torchvision's hash-prefix convention)."
+    },
+    {
       "source_id": "sctk",
       "kind": "code",
       "url": "https://github.com/usnistgov/SCTK",
@@ -340,7 +348,7 @@
       "name": "Word error rate over gloss sequences",
       "direction": "lower_is_better",
       "implementation": "Released repo evaluation/slr_eval (sclite from Kaldi SCTK via wer_calculation.py, preprocess.sh, mergectmstm.py), with python_wer_evaluation.py as the python_evaluate alternative. The paper defines it as (S+I+D)/N (Eq. 9).",
-      "version": "sclite from SCTK 2.4.10 per the released README, at repo commit 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa",
+      "version": "SCTK 9688a26882a688132a5e414cadcb4c19b6fffaba (2023-11-27; tag v2.4.12 plus 27 commits; sclite 2.10 per SCLITE_VERSION in src/sclite/sclite.c), built in Dockerfile, inside the released evaluation/slr_eval pipeline at repo commit 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa. The released README names SCTK 2.4.10; see guesses_and_deviations sctk-version.",
       "aggregation": "Corpus-level over all sentences of the split; single run (the paper reports no seeds or variance).",
       "unit_or_scale": "percent"
     }
@@ -438,7 +446,7 @@
       "metric_id": "wer",
       "original_value": 20.6,
       "copied_baseline": false,
-      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "evidence": "Table 3, row 'SC2SLR(Ours)', Phoenix-2014T columns: 20.6 (dev) and 21.0 (test). The SC2SLR PHOENIX-2014T values are reported only in Table 3; Tables 1 and 2 are PHOENIX-2014 ablations (the 21.0 in Table 2 is the PHOENIX-2014 dev value of an intermediate augmentation row, not this target). No seeds or variance are reported.",
       "result": {
         "status": "not_produced",
         "reason": {
@@ -471,7 +479,7 @@
       "metric_id": "wer",
       "original_value": 21.0,
       "copied_baseline": false,
-      "evidence": "Table 3 row equals Table 1 last row and Table 2 last row (20.8/21.2) for PHOENIX-2014. No seeds or variance are reported.",
+      "evidence": "Table 3, row 'SC2SLR(Ours)', Phoenix-2014T columns: 20.6 (dev) and 21.0 (test). The SC2SLR PHOENIX-2014T values are reported only in Table 3; Tables 1 and 2 are PHOENIX-2014 ablations (the 21.0 in Table 2 is the PHOENIX-2014 dev value of an intermediate augmentation row, not this target). No seeds or variance are reported.",
       "result": {
         "status": "not_produced",
         "reason": {
@@ -1079,7 +1087,8 @@
         },
         "billed_cost_usd": 0.13,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace"
+        "base_image": "nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "artifact_ids": []
     },
@@ -1127,7 +1136,7 @@
         "modal_app_id": "ap-u4Gq4XroqqyHrAicvtGj7F",
         "gpu_count": 0,
         "hardware": "CPU only, cpu=32, memory 64 GiB",
-        "image_id": null,
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
         "environment": "training image (Dockerfile)",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-u4Gq4XroqqyHrAicvtGj7F",
         "shared_cache": {
@@ -1140,7 +1149,8 @@
         },
         "billed_cost_usd": 1.13,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
     },
     {
@@ -1187,7 +1197,7 @@
         "modal_app_id": "ap-wW0Zdm4IQZMNbJp4mmQvgd",
         "gpu_count": 0,
         "hardware": "CPU only, cpu=32, memory 64 GiB",
-        "image_id": null,
+        "image_id": "im-md9qNepxamfLdxNWadit2T",
         "environment": "training image (Dockerfile)",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-wW0Zdm4IQZMNbJp4mmQvgd",
         "shared_cache": {
@@ -1200,7 +1210,8 @@
         },
         "billed_cost_usd": 0.83,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
     },
     {
@@ -1261,7 +1272,9 @@
         },
         "billed_cost_usd": 33.04,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "pack_keypoints_image_id": "im-md9qNepxamfLdxNWadit2T",
+        "image_id_basis": "image_id is the keypoint image used by the 48 extract_keypoints shards: alphapose.Dockerfile was unchanged since 2026-10-26T13:33:31Z, and keypoints-preflight-1 (13:45) logged im-csO6ZMQ3cAFuADNidOTxqG. pack_keypoints ran on the training image: pack_keypoints_image_id. Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
     },
     {
@@ -1322,7 +1335,9 @@
         },
         "billed_cost_usd": 22.82,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "pack_keypoints_image_id": "im-md9qNepxamfLdxNWadit2T",
+        "image_id_basis": "image_id is the keypoint image used by the 48 extract_keypoints shards: alphapose.Dockerfile was unchanged since 2026-10-26T13:33:31Z, and keypoints-preflight-1 (13:45) logged im-csO6ZMQ3cAFuADNidOTxqG. pack_keypoints ran on the training image: pack_keypoints_image_id. Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
     },
     {
@@ -1379,7 +1394,8 @@
         },
         "billed_cost_usd": 0.45,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "artifact_ids": []
     },
@@ -1437,7 +1453,8 @@
         },
         "billed_cost_usd": 0.49,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "artifact_ids": []
     },
@@ -1490,7 +1507,8 @@
         },
         "billed_cost_usd": 1.87,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       },
       "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
       "terminal": {
@@ -1554,7 +1572,8 @@
         },
         "billed_cost_usd": 2.04,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       },
       "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
       "terminal": {
@@ -1622,7 +1641,8 @@
         },
         "billed_cost_usd": 0.29,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1682,7 +1702,8 @@
         },
         "billed_cost_usd": 0.35,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1741,7 +1762,8 @@
         },
         "billed_cost_usd": 0.6,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1800,7 +1822,8 @@
         },
         "billed_cost_usd": 0.55,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1861,7 +1884,8 @@
         },
         "billed_cost_usd": 203.44,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged in every chunk record under runs/full-p14-2/segments/ (MODAL_IMAGE_ID)."
       },
       "artifact_ids": [
         "ckpt-p14-epoch42",
@@ -1930,7 +1954,8 @@
         },
         "billed_cost_usd": 222.92,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged in every chunk record under runs/full-p14t-2/segments/ (MODAL_IMAGE_ID)."
       },
       "artifact_ids": [
         "ckpt-p14t-epoch44",
@@ -1991,7 +2016,8 @@
         },
         "billed_cost_usd": 0.34,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "terminal": {
         "state": "succeeded",
@@ -2061,7 +2087,8 @@
         },
         "billed_cost_usd": 0.26,
         "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
-        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
+        "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "terminal": {
         "state": "succeeded",
@@ -2323,6 +2350,14 @@
       "used": "Released loss weights (ConvCTC 1, SeqCTC 1, Dist 25 with SeqKD T=8), TemporalRescale(0.2), seed 0, AMP, beam width 10.",
       "rationale": "Eq. 8 does not rule out weights, and the frame-dropout phrase does not map onto any code parameter; the released code is the more specific evidence.",
       "effect": "Possible mismatch with the authors' actual runs."
+    },
+    {
+      "id": "sctk-version",
+      "detail": "sclite version",
+      "paper_or_evidence": "The released SC2SLR README names SCTK 2.4.10 for sclite; the paper does not name a scorer version.",
+      "used": "SCTK commit 9688a26882a688132a5e414cadcb4c19b6fffaba (tag v2.4.12 plus 27 commits; sclite 2.10), the same pin as yu-2025-cvsign.",
+      "rationale": "The usnistgov/SCTK repository has no 2.4.10 tag; a recent pinned commit builds with the image's toolchain.",
+      "effect": "Expected none on the reported WER: sclite aligns hypothesis and reference glosses and counts substitutions, deletions and insertions the same way in both versions; the commits after v2.4.12 are build, documentation, language-support and backtrace-index fixes. Not verified by scoring with 2.4.10."
     },
     {
       "id": "p14t-recipe",
