@@ -359,7 +359,7 @@
       "system": "SC2SLR (Ours): ResNet18 + 1D-CNN (K5,P2,K5,P2) + 2xBiLSTM(1024), keypoint early fusion, NT-Xent contrast, ConvCTC + SeqCTC + KL distillation",
       "dataset_id": "phoenix-2014",
       "checkpoint_rule": "Unspecified in the paper. Released main.py keeps the best-dev checkpoint ('_best_model.pt') and evaluates dev and test in phase=test.",
-      "paper_evidence": "Sections 3-4.2: 120 epochs, batch 4, Adam lr 1e-4 divided by 5 at epochs 40 and 60, 224 crop from 256x256, 0.5 random frame dropout."
+      "paper_evidence": "Sections 3-4.2: 120 epochs, batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60 (stated for PHOENIX-2014 only; optimizer and weight decay not stated), 224 crop from 256x256, 0.5 random frame dropout."
     },
     {
       "experiment_id": "sc2slr-phoenix2014t",
@@ -1055,7 +1055,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600, retries=3), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
@@ -1237,7 +1239,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
@@ -1300,7 +1304,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
@@ -1363,7 +1369,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 14400,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (14400 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
@@ -1422,7 +1430,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 14400,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (14400 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
@@ -1611,7 +1621,9 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "terminal": {
         "state": "failed",
@@ -1672,7 +1684,9 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "terminal": {
         "state": "failed",
@@ -1733,7 +1747,9 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "terminal": {
         "state": "succeeded",
@@ -1793,7 +1809,9 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null
+        "max_cost_chf": null,
+        "ceilings_declared": false,
+        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
       },
       "terminal": {
         "state": "succeeded",
@@ -2322,10 +2340,10 @@
     {
       "id": "schedule",
       "detail": "Epochs and batch size",
-      "paper_or_evidence": "Sec. 4.2: 120 epochs, mini-batch 4; released configs/baseline.yaml: 80 epochs, batch 1.",
-      "used": "120 epochs, batch 4 (command-line overrides); learning rate 1e-4, Adam, divided by 5 at epochs 40 and 60, weight decay 1e-4, as in both the paper and the config.",
+      "paper_or_evidence": "Sec. 4.2, for PHOENIX-2014 only: 120 epochs, mini-batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60. The optimizer and weight decay are not stated in the paper. Released configs/baseline.yaml: 80 epochs, batch 1, Adam, base_lr 1e-4, steps 40 and 60, weight_decay 1e-4.",
+      "used": "120 epochs and batch 4 (command-line overrides of the released config); learning rate 1e-4 divided by 5 at epochs 40 and 60; Adam with weight decay 1e-4, which are the released config's values.",
       "rationale": "Where the paper states a value for the Table 3 system, the paper wins.",
-      "effect": "Follows the paper."
+      "effect": "Follows the paper where stated; optimizer and weight decay from the released code."
     },
     {
       "id": "no-horizontal-flip",

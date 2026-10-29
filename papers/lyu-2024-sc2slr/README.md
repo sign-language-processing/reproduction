@@ -228,14 +228,15 @@ How they are recorded:
 - **`declared_at_utc`:** the real time those limits were written.
 - **`recording.mode`:** `contemporaneous`, with empty `unknown_fields`.
 - **`terminal.detail`:** ends with the omission.
+- **`stop_policy.ceilings_declared`:** `false` on the nine GPU runs. A non-empty `stop_policy.ceilings_note` says that only the Modal function timeout existed before launch and that the GPU-hour and CHF ceilings were never declared. The current validator ignores these two fields; the contract change proposed alongside this PR makes them the way to record such a run.
 
-| Run(s) | GPU | `declared_at_utc` | `max_wall_time_seconds` (source) | `max_gpu_hours` / `max_cost_chf` | Billed USD |
-| --- | --- | --- | --- | --- | ---: |
-| `keypoints-preflight-1` | A10 | 2026-10-26T12:25:54Z | 21600 (`extract_keypoints` timeout) | null / null | 0.13 |
-| `keypoints-p14-1`, `keypoints-p14t-1` | 48 × A10G | 2026-10-26T12:25:54Z | 21600 per shard call (`extract_keypoints`; `pack_keypoints` 4 h) | null / null | 33.04, 22.82 |
-| `preflight-p14-1`, `preflight-p14t-1` | A100-80GB | 2026-10-26T12:25:54Z | 14400 (`preflight` timeout) | null / null | 0.45, 0.49 |
-| `diagnose-p14t-*-1`, `diagnose-p14t-*-2` | A100-80GB | 2026-10-26T16:22:46Z | 7200 (`diagnose` timeout) | null / null | 0.29, 0.35, 0.60, 0.55 |
-| `prepare-frames-p14-1`, `-p14t-1` | CPU only | 2026-10-26T12:25:54Z | 43200 (`prepare_frames` timeout) | not applicable (null) | 1.13, 0.83 |
+| Run(s) | GPU | `declared_at_utc` | `max_wall_time_seconds` (source) | `max_gpu_hours` / `max_cost_chf` | `ceilings_declared` / `ceilings_note` | Billed USD |
+| --- | --- | --- | --- | --- | --- | ---: |
+| `keypoints-preflight-1` | A10 | 2026-10-26T12:25:54Z | 21600 (`extract_keypoints` timeout) | null / null | `false` / set | 0.13 |
+| `keypoints-p14-1`, `keypoints-p14t-1` | 48 × A10G | 2026-10-26T12:25:54Z | 21600 per shard call (`extract_keypoints`; `pack_keypoints` 4 h) | null / null | `false` / set | 33.04, 22.82 |
+| `preflight-p14-1`, `preflight-p14t-1` | A100-80GB | 2026-10-26T12:25:54Z | 14400 (`preflight` timeout) | null / null | `false` / set | 0.45, 0.49 |
+| `diagnose-p14t-*-1`, `diagnose-p14t-*-2` | A100-80GB | 2026-10-26T16:22:46Z | 7200 (`diagnose` timeout) | null / null | `false` / set | 0.29, 0.35, 0.60, 0.55 |
+| `prepare-frames-p14-1`, `-p14t-1` | CPU only | 2026-10-26T12:25:54Z | 43200 (`prepare_frames` timeout) | not applicable (null) | absent: nothing was missing | 1.13, 0.83 |
 
 `attempt.max_attempts` is 4 for these runs. That is the transient-retry rule in AGENTS.md, not a declaration specific to each run.
 
@@ -257,7 +258,7 @@ The validator rejects the nine GPU runs: 18 issues, a missing `max_gpu_hours` an
 | `keypoint-subset` | Sec. 3.2: 7 upper body, 9 nose, 12 eye, 20 mouth, 42 hand = 90 | Halpe indices 18, 5–10, 53–61, 62–73, 74–93, 94–135 | Standard 68-point face layout inside Halpe (offset 26) | Indexing convention only |
 | `heatmap-rendering` | Sec. 3.2, Eq. 2: a normalized 2n-dim coordinate vector added to the image (dimensionally undefined); released code adds a (T, 224, 224) heatmap from a missing module; no σ anywhere | Max over keypoints of confidence-weighted Gaussians, σ = 4 px at 256×256, in [0, 1], added to every RGB channel of the [−1, 1] video (`sc2slr-1`) | Follows the released fusion; σ is invented | **Behaviour-changing**; one reason the values are conditional |
 | `contrastive-branch` | Sec. 3.3, Eq. 3, Eq. 8, Fig. 2: NT-Xent over two augmented views, summed with the CTC and KL losses; no temperature, projection head, pooling, weight sharing, or loss weight given; released code has no contrastive loss | Two views from the released (unused) SimCLR `deep_transform` after one shared crop/rescale; weight-shared network; all released losses on both views; NT-Xent τ = 0.5 (SimCLR default), weight 1, on BiLSTM outputs mean-pooled over valid steps, no projection head (`sc2slr-2`) | Smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations | **Behaviour-changing**; one reason the values are conditional |
-| `schedule` | Sec. 4.2: 120 epochs, batch 4; released config: 80 epochs, batch 1 | 120 epochs, batch 4; Adam 1e-4, ÷5 at 40 and 60, weight decay 1e-4 | Where the paper states a value for the Table 3 system, the paper wins | Follows the paper |
+| `schedule` | Sec. 4.2, for PHOENIX-2014 only: 120 epochs, batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60. The optimizer and weight decay are not stated. Released config: 80 epochs, batch 1, Adam, weight decay 1e-4 | 120 epochs, batch 4, learning rate 1e-4 ÷5 at 40 and 60; Adam and weight decay 1e-4, which are the released config's values | Where the paper states a value for the Table 3 system, the paper wins | Follows the paper where stated; optimizer and weight decay from the released code |
 | `no-horizontal-flip` | Sec. 4.3 and Table 2: flipping did not help and was excluded from the final scheme; released transform keeps RandomHorizontalFlip(0.5) | Flip removed (`sc2slr-3`) | Table 3's PHOENIX-2014 row equals Table 2's last row, which has no flip | Follows the paper |
 | `ctc-without-cudnn` | Released criterion passes CPU int32 targets, so current PyTorch uses cuDNN's CTC kernel; `full-p14-1`/`full-p14t-1` diverged | CTC computed with cuDNN disabled for that call only (`sc2slr-4`) | Execution-correctness fix, isolated by the paired diagnoses; same fix as `yu-2025-cvsign` | Same loss; not behaviour-changing |
 | `kept-released` | Eq. 8 sums the losses unweighted; Sec. 4.2 mentions "0.5 random frame dropout" | Released loss weights (Dist 25, SeqKD T = 8), TemporalRescale(0.2), seed 0, AMP, beam 10 | Eq. 8 does not rule out weights, and the dropout phrase maps onto no code parameter; the released code is the more specific evidence | May differ from the authors' runs |
