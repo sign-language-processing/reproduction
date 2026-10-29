@@ -113,8 +113,13 @@ Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`.
 
 ## Environment and patches
 
-- **Training image:** `Dockerfile` on `ghcr.io/sign-language-processing/reproduction:latest` (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19), Modal image `im-YmyymOTNJSOt1gD6faZSnW`. It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb`, and applies the patches below in order.
-- **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
+- **Training image:** `Dockerfile` on `ghcr.io/sign-language-processing/reproduction:latest` (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19), Modal image `im-YmyymOTNJSOt1gD6faZSnW`. It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa`, and applies the patches below in order.
+  - **Base image pin:** `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291`.
+  - **How it was verified:** the amd64 manifest of that index has the image config `sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2`, which is the config the Modal build logged. `pu-2024-siformer` records the same index digest.
+- **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d19afb443e964df6f06ed1842962f5f1f7` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
+  - **Base image:** `nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04`. The Modal build on 2026-10-26 logged the image config `sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea`.
+  - **The tag has moved:** on 2026-10-29 it resolved to a different image (index `sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc`, amd64 config `sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1`). So no pullable digest of the base that ran is known.
+  - **What survives:** the built image is still available as the Modal image above, and the run records give both digests (`compute.base_image`).
 - **Shared Hugging Face cache:** every Modal function in `modal_app.py` mounts the v2 Volume `huggingface-cache` read-write at `/cache/huggingface`.
   - The training image (`Dockerfile`) sets `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub`. This covers the preflight, diagnose, train, and evaluate functions, plus `prepare_frames` and `pack_keypoints`.
   - `alphapose.Dockerfile` does not set these two variables. In `extract_keypoints` (runs `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`) the cache is mounted but the variables are unset. This is process deviation `hf-cache-env-not-set`.
@@ -129,6 +134,8 @@ Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`.
 | `patches/sc2slr-4-ctc-without-cudnn.patch` | `c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b` | Computes CTC without cuDNN: cuDNN's CTC kernel gave non-finite gradients that collapsed the AMP scale (see Attempts) |
 
 Patches 1–3 change behaviour and were authorised by the gate decision. Patch 4 is an execution-correctness fix and leaves the loss unchanged.
+
+Level 3 delivered as patches: as in `yu-2025-cvsign`, the components reimplemented from the paper (patches 1 and 2) are expressed as ordered patches against the pinned upstream so a reviewer sees exactly what was added; the level reflects the reimplementation, not the diff shape.
 
 ## How to repeat this
 
@@ -256,7 +263,7 @@ Execution adaptations that leave the training semantics unchanged:
 
 ## Attempts, failures, and dead ends
 
-1. **Assignment format.** The tracker export is a single `reproductions` object with no `confirmation` field, so `ingest_candidate.py` cannot apply. It is recorded as a direct assignment, following `pu-2024-siformer`.
+1. **Assignment format.** The tracker export is a single `reproductions` object with no `confirmation` field, so `ingest_candidate.py` cannot apply. It is recorded as a direct assignment, following `pu-2024-siformer`. The Paper ID is the tracker's `paper_id` rather than the directory slug: the assignment kind is `direct_user_request`, but a platform record for this paper does exist, so its ID is what traces the report back to it, as in `pu-2024-siformer`.
 2. **AlphaPose image builds.** Several failed before one worked:
    - a non-existent PyTorch base tag;
    - a conda `nvcc` without `cusolverDn.h`;

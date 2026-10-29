@@ -179,7 +179,7 @@
       "source_id": "alphapose-upstream",
       "kind": "code",
       "url": "https://github.com/MVIG-SJTU/AlphaPose",
-      "revision_or_sha256": "master tree inspected 2026-10-26 (not pinned; not used)",
+      "revision_or_sha256": "c60106d19afb443e964df6f06ed1842962f5f1f7 (master tree inspected 2026-10-26; git ls-remote on 2026-10-29 shows HEAD and master at this commit, committed 2023-01-12, so the inspected tree is this commit; searched, not used beyond the pinned alphapose source)",
       "role": "Keypoint extractor named by the paper (Halpe-trained). Its tree does not contain the get_image_keypoint or keypoint_to_heatmap modules that the SC2SLR code imports."
     },
     {
@@ -1078,7 +1078,8 @@
           "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 0.13,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace"
       },
       "artifact_ids": []
     },
@@ -1138,7 +1139,8 @@
           }
         },
         "billed_cost_usd": 1.13,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       }
     },
     {
@@ -1197,7 +1199,8 @@
           }
         },
         "billed_cost_usd": 0.83,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       }
     },
     {
@@ -1257,7 +1260,8 @@
           "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 33.04,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       }
     },
     {
@@ -1317,7 +1321,8 @@
           "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
         },
         "billed_cost_usd": 22.82,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       }
     },
     {
@@ -1373,7 +1378,8 @@
           }
         },
         "billed_cost_usd": 0.45,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "artifact_ids": []
     },
@@ -1430,7 +1436,8 @@
           }
         },
         "billed_cost_usd": 0.49,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "artifact_ids": []
     },
@@ -1482,7 +1489,8 @@
           }
         },
         "billed_cost_usd": 1.87,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
       "terminal": {
@@ -1545,7 +1553,8 @@
           }
         },
         "billed_cost_usd": 2.04,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "exit_code_note": "Exit code of the recorded command, which only spawns the detached training call. The training container was then terminated by the agent with modal app stop -y; upstream main.py never exited on its own.",
       "terminal": {
@@ -1612,7 +1621,8 @@
           }
         },
         "billed_cost_usd": 0.29,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1671,7 +1681,8 @@
           }
         },
         "billed_cost_usd": 0.35,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1729,7 +1740,8 @@
           }
         },
         "billed_cost_usd": 0.6,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1787,7 +1799,8 @@
           }
         },
         "billed_cost_usd": 0.55,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
@@ -1847,7 +1860,8 @@
           }
         },
         "billed_cost_usd": 203.44,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "artifact_ids": [
         "ckpt-p14-epoch42",
@@ -1915,7 +1929,8 @@
           }
         },
         "billed_cost_usd": 222.92,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "artifact_ids": [
         "ckpt-p14t-epoch44",
@@ -1975,7 +1990,8 @@
           }
         },
         "billed_cost_usd": 0.34,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "terminal": {
         "state": "succeeded",
@@ -2044,7 +2060,8 @@
           }
         },
         "billed_cost_usd": 0.26,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it"
+        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)"
       },
       "terminal": {
         "state": "succeeded",
