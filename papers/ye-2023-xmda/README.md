@@ -380,7 +380,16 @@ All runs used Modal profile `repro-sign`, app `repro-ye-2023-xmda`, and agent `c
 - **Attempt 1** (run directory `runs/phoenix14t-xmda-seed56/`, app `ap-FNsuLjdoB4QBQHVy7ehfgr`, input `in-01M64DPNGN8AZ30K5PTYGSPW3N`). It ran 18:10 → 23:16 UTC on 2026-10-29 and was interrupted at epoch 101, step 28,000, after about 5.1 GPU-h. Cause: the local client's session token expired while it waited in `.remote()`, and the input was cancelled. Its best dev BLEU-4 was 25.46 (greedy) at step 9,000, the only checkpoint on the Volume. Retained evidence: `train.log` `552dafc5…`, `validations.txt` `034c0257…`, `9000.ckpt` `01cbedb5…`.
 - **Attempt 2** (`phoenix14t-xmda-seed56-attempt-2`, a restart from scratch approved by the assignee). It was launched with `--spawn` at 09:44 UTC on 2026-10-30 as app `ap-0wipLeafqGhD0UEUZQAYAo` / `fc-01M6635FNYF7FQ8FDV7H5M3QMT`, and is estimated at about 7.7 GPU-h. It is still running.
 
-Both attempts will be recorded in `reproduction.json.runs` together when attempt 2 ends. Attempt 1 will be `interrupted / external_interruption / interrupted_full_run`, with `retry_decision: retry`, and its `next_run_id` must point to an existing entry.
+Both attempts will be recorded in `reproduction.json.runs` together when attempt 2 ends.
+
+**Ceiling amendments (2026-10-30T13:25:49Z, assignee decision).** These were made before any metric of the affected runs was inspected; only epoch progress was read. The original values are kept as superseded.
+- XmDA seed 56 attempt 2 and XmDA seed 58: 9.0 → 11.0 GPU-h.
+- KD seeds 57 and 58: 8.0 → 10.5 GPU-h.
+- Wall time and the CHF caps were raised in proportion.
+
+Reason: the compute gate's estimate had noted that the mix-up/XmDA per-step cost was unmeasured, and the 2-epoch preflights did not measure full-dev validation cost. The measured pace then projected about 9.0 GPU-h for XmDA attempt 2 and about 9.4 for KD seed 57. From now on, ceilings carry at least 30% margin over the measured estimate.
+
+**CSL-Daily teachers moved from T4 to A10G (assignee decision, 2026-10-30T13:23Z).** On T4, each full-dev validation in the teacher's gloss path took about 152 s, projecting about 22 h per teacher against Modal's 24 h cap. A teacher writes its outputs only at the end, so hitting the cap would lose everything. The four T4 runs were stopped at epochs 13–15 and relaunched on A10G in the cu110 image, with a ceiling of 21 h / 21 GPU-h each. The estimate of about 16 h each is extrapolated and will be updated from the measured A10G validation time. Attempt 1 will be `interrupted / external_interruption / interrupted_full_run`, with `retry_decision: retry`, and its `next_run_id` must point to an existing entry.
 
 **Throughput and cost (T4, batch 128).**
 
