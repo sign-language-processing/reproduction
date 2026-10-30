@@ -8738,6 +8738,146 @@
       },
       "hypothesis_supported": false,
       "artifact_ids": []
+    },
+    {
+      "run_id": "phoenix14t-kd-seed58",
+      "kind": "full_run",
+      "experiment_id": "phoenix14t-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 58) of the PHOENIX-2014T kd row: same image, Table 10 config and teachers as seed 56; only the student seed differs. Reported as part of the mean and std over seeds 56-58; never swapped in for the seed-56 value.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset phoenix14t --kind kd --seed 58 --teachers phoenix14t-teacher-seed56 --run-id phoenix14t-kd-seed58",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phoenix14t-kd-seed58",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:18:26Z",
+        "max_wall_time_seconds": 37800,
+        "max_gpu_hours": 10.5,
+        "max_cost_chf": 7.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:21:48Z",
+      "finished_at_utc": "2026-10-30T13:33:13Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped early because the learning rate fell below learning_rate_min (upstream rule) (last logged step 30,000); the best dev-BLEU checkpoint (step 25,400) was reloaded by prediction_XmDA.test, which selected beam 1 and alpha -2 on dev and reported dev and test metrics. Wall time 11,485 s, within the 37,800 s ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times. Ceiling amended at 2026-10-30T13:25:49Z (assignee decision, before any metric of this run was inspected): 37800 s / 10.5 GPU-h / CHF 7; superseded 28800 s / 8.0 GPU-h / CHF 5 declared 2026-10-30T10:18:26Z.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol",
+          "teacher-gloss-decoding"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (MODAL_IMAGE_ID logged by the function).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-74pQNzCs6Ykh2WHUILdo0t",
+        "function_call_id": "fc-01M66563N6Y0QC73685BSA8MF3",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-74pQNzCs6Ykh2WHUILdo0t",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 3.19,
+        "gpu_hours": 3.19,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "hparams": "table10",
+        "seed": 58,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 3,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "sign",
+        "mixup_ratio": 0.6,
+        "train_pickle": "phoenix14t.smkd.train.teachers.pickle (sha256 8cb07db22fae434389f589ad0433622bed26a4a36ac2fa8aa9fa550384433a65)"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 6538,
+        "last_logged_step": 30000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/",
+        "best_step": 25400,
+        "dev": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -2,
+          "wer": 22.84,
+          "bleu4": 25.06,
+          "chrf": 47.44,
+          "rouge_l": 50.9
+        },
+        "test": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -2,
+          "wer": 23.27,
+          "bleu4": 24.39,
+          "chrf": 48.44,
+          "rouge_l": 50.55
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "phoenix14t-kd-seed58-dev-translations",
+        "phoenix14t-kd-seed58-test-translations",
+        "phoenix14t-kd-seed58-dev-results",
+        "phoenix14t-kd-seed58-test-results",
+        "phoenix14t-kd-seed58-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -9342,6 +9482,46 @@
       "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-mixup-seed58/train.log",
       "sha256": "149688f2337807e55e485802bddebc541b0dc766164971c27c0477f826fe938c",
       "produced_by": "phoenix14t-mixup-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-kd-seed58-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/best.IT_00025400.BW_01.A_-2.dev.txt",
+      "sha256": "ed038e94814dff822ff7e83da70baf3b9c5e973fb07d148a61fef6db5b43120f",
+      "produced_by": "phoenix14t-kd-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-kd-seed58-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/best.IT_00025400.BW_01.A_-2.test.txt",
+      "sha256": "9c83f5e60a5cfc8098300a9f92a93bf503951d29e89993ffa1b8f440258b55a6",
+      "produced_by": "phoenix14t-kd-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-kd-seed58-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/best.IT_00025400.dev_results.pkl",
+      "sha256": "3bfad47867a5d14955a5aa8daf377715110f13c0412b0e9a172d13a852f0a3b3",
+      "produced_by": "phoenix14t-kd-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-kd-seed58-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/best.IT_00025400.test_results.pkl",
+      "sha256": "854f19c727cd698fc72de8af30e28cb0e84d0e776760359d2b8f07fea0f38622",
+      "produced_by": "phoenix14t-kd-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-kd-seed58-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-kd-seed58/train.log",
+      "sha256": "e50872a2fa82d66e3e75994e4f8d2b874689b636491ee3fa379b31fbbf7d0020",
+      "produced_by": "phoenix14t-kd-seed58",
       "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
     }
   ],
