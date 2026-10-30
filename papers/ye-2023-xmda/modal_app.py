@@ -190,6 +190,13 @@ XMDA_IMAGE = (
     .add_local_file(PAPER_DIR / "build_pickles.py", "/repro/build_pickles.py")
     .add_local_file(PAPER_DIR / "dump_gloss_embedding.py", "/repro/dump_gloss_embedding.py")
 )
+# Environment trial (Dockerfile.cu110): torch 1.7.1+cu110 / torchtext 0.8.1, so Ampere can run it.
+XMDA_CU110_IMAGE = (
+    modal.Image.from_dockerfile(PAPER_DIR / "Dockerfile.cu110", context_dir=PAPER_DIR, add_python="3.11")
+    .pip_install("pyyaml==6.0.2")
+    .add_local_file(PAPER_DIR / "build_pickles.py", "/repro/build_pickles.py")
+    .add_local_file(PAPER_DIR / "dump_gloss_embedding.py", "/repro/dump_gloss_embedding.py")
+)
 CONDA_PYTHON = "/root/miniconda3/bin/python"
 RUNS_DIR = Path("/outputs/runs")
 PGEN_PAIRS = {
@@ -412,6 +419,18 @@ def _commit_periodically(stop) -> None:
 def train(dataset: str, kind: str, run_id: str, seed: int = 56, teachers: str = "",
           preflight: bool = False, hparams: str = "table10") -> dict:
     """Train with signjoey.training_XmDA (which ends with prediction_XmDA.test)."""
+    return _train(dataset, kind, run_id, seed, teachers, preflight, hparams)
+
+
+@APP.function(image=XMDA_CU110_IMAGE, gpu="T4", volumes=VOLUMES, timeout=24 * 3600, cpu=4, memory=65536)
+def train_cu110(dataset: str, kind: str, run_id: str, seed: int = 56, teachers: str = "",
+                preflight: bool = False, hparams: str = "table10") -> dict:
+    """train() in the torch 1.7.1+cu110 image."""
+    return _train(dataset, kind, run_id, seed, teachers, preflight, hparams)
+
+
+def _train(dataset: str, kind: str, run_id: str, seed: int, teachers: str,
+           preflight: bool, hparams: str) -> dict:
     import threading
     import time
 
@@ -443,6 +462,10 @@ def train(dataset: str, kind: str, run_id: str, seed: int = 56, teachers: str = 
         "peak_gpu_memory_mib": peak[0],
         "gpu": _gpu(),
         "image_id": os.environ.get("MODAL_IMAGE_ID"),
+        "torch": subprocess.run([CONDA_PYTHON, "-c", "import torch, torchtext; print(torch.__version__, "
+                                 "torch.version.cuda, torch.backends.cudnn.version(), torchtext.__version__)"],
+                                capture_output=True, text=True).stdout.strip(),
+        "freeze_sha256": _sha256(Path("/SignXmDA.freeze.txt")),
         "last_logged_step": _last_step(log),
         "artifacts": {p.name: _sha256(p) for p in sorted(run.glob("best.IT_*")) if p.is_file()},
     }
@@ -511,12 +534,16 @@ def _last_step(log: str) -> int:
 @APP.local_entrypoint()
 def main(step: str, split: str = "dev", limit: int = 0, dataset: str = "phoenix14t",
          kind: str = "baseline", run_id: str = "", seed: int = 56, teachers: str = "",
-         preflight: bool = False, hparams: str = "table10", spawn: bool = False) -> None:
+         preflight: bool = False, hparams: str = "table10", spawn: bool = False,
+         image: str = "torch14", gpu: str = "T4") -> None:
+    trainer = {"torch14": train, "cu110": train_cu110}[image]
+    if gpu != "T4":
+        trainer = trainer.with_options(gpu=gpu)
     if step == "train" and spawn:
         # A client blocked in .remote() was cancelled with its call when its session token
         # expired after about 5 h (phoenix14t-xmda-seed56-attempt-1). With run --detach,
         # spawn returns at once and the run's result is runs/RUN_ID/summary.json.
-        call = train.spawn(dataset, kind, run_id, seed, teachers, preflight, hparams)
+        call = trainer.spawn(dataset, kind, run_id, seed, teachers, preflight, hparams)
         print(json.dumps({"run_id": run_id, "function_call_id": call.object_id,
                           "summary": f"/outputs/runs/{run_id}/summary.json"}, indent=2))
         return
@@ -529,7 +556,7 @@ def main(step: str, split: str = "dev", limit: int = 0, dataset: str = "phoenix1
     elif step == "smkd_features":
         result = smkd_features.remote(dataset, split, limit)
     elif step == "train":
-        result = train.remote(dataset, kind, run_id, seed, teachers, preflight, hparams)
+        result = trainer.remote(dataset, kind, run_id, seed, teachers, preflight, hparams)
     elif step == "decode_grid":
         result = decode_grid.remote(run_id)
     elif step == "teacher_pickle":

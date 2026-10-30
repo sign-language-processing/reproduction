@@ -6829,6 +6829,357 @@
         "phoenix14t-smkd-dev-pickle",
         "phoenix14t-smkd-test-pickle"
       ]
+    },
+    {
+      "run_id": "preflight-cu110-phoenix14t-baseline",
+      "kind": "preflight",
+      "experiment_id": "phoenix14t-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The torch 1.7.1+cu110 / torchtext 0.8.1 image (Dockerfile.cu110), with no SignXmDA code changes, builds and runs the PHOENIX-2014T baseline end to end on T4: training, validation, checkpoint reload and prediction_XmDA.test.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --image cu110 --dataset phoenix14t --kind baseline --run-id preflight-cu110-phoenix14t-baseline --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-cu110-phoenix14t-baseline",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:24:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 2.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:29:51Z",
+      "finished_at_utc": "2026-10-30T10:30:57Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image built; two epochs (110 steps) trained, validated, reloaded the best checkpoint and evaluated: dev BLEU-4 5.67 (32-sentence subset), test 5.18. The old-image preflight at the same point gave dev 6.30, test 5.17, and both show WER 100 (all-deletion CTC output) this early. Warnings are only torchtext 'moved to torchtext.legacy' and the nonzero overload deprecation. Scores after 2 of 150 epochs are not results. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 (Dockerfile with torch 1.7.1+cu110, torchvision 0.8.2+cu110, torchtext 0.8.1) with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-mEaGvMS0JMlDkT8AhKvRSp",
+        "function_call_id": "fc-01M665QAJMBPY75G353P4H280N",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mEaGvMS0JMlDkT8AhKvRSp",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.02,
+        "gpu_hours": 0.02,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [],
+      "measurements": {
+        "peak_gpu_memory_mib": 4627,
+        "logged_steps": 110,
+        "duration_seconds": 66
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-cu110-phoenix14t-baseline/",
+        "train_log_sha256": "77e817b4723da805cfe5d9515b9fe6213a2eafbfec28c113ef5b8ffbb35384df",
+        "dev": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 100.0,
+          "bleu4": 5.67,
+          "chrf": 22.35,
+          "rouge_l": 23.57
+        },
+        "test": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 100.0,
+          "bleu4": 5.18,
+          "chrf": 21.61,
+          "rouge_l": 22.2
+        }
+      }
+    },
+    {
+      "run_id": "preflight-csl-daily-teacher",
+      "kind": "preflight",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily teacher path (forward_type=gloss, G2T_pretraining on PGen DA_paralle_sample Zh pairs, patches 0001 and 0002, Table 10 CSL-Daily) trains, validates, reloads its best checkpoint and decodes the 18,400-clip training set through the gloss path.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --dataset csl-daily --kind teacher --run-id preflight-csl-daily-teacher --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-csl-daily-teacher",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:20:52Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 2.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:21:53Z",
+      "finished_at_utc": "2026-10-30T11:17:47Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two epochs (570 logged steps; real and PGen batches interleaved, so about 285 steps per epoch at about 93 s per epoch) trained and validated; the best checkpoint (step 450) was reloaded; the dev grid (32-sentence subset) selected beam 2; and the 18,400-clip training set was decoded through the gloss path. Dev BLEU-4 18.09; training set BLEU-4 26.44, ChrF 22.86, ROUGE-L 56.39. The training-set decode took about 50 minutes (10:27 to 11:17 UTC), which sets the full-teacher estimate. Scores after 2 of 150 epochs are not results. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-N7LCQmjXi2j3V2c1WfYHiN",
+        "function_call_id": "fc-01M6657C8W1TKCGE6MSB6BH7YG",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-N7LCQmjXi2j3V2c1WfYHiN",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.93,
+        "gpu_hours": 0.93,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 12263,
+        "seconds_per_epoch": 93,
+        "train_set_decode_seconds_18400": 3035
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "csl-daily-smkd-train-pickle",
+        "csl-daily-smkd-dev-pickle",
+        "csl-daily-smkd-test-pickle"
+      ],
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-csl-daily-teacher/",
+        "image_id": "im-x0vni1AxwKaBoFixz4bQRH",
+        "train_log_sha256": "4d7885bb53d1022d327ad9015284066f189850d66c67a367ddf37ca55750417b",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "configuration": {
+        "seed": 56,
+        "epochs": 2,
+        "batch_size": 128,
+        "random_dev_subset": 32,
+        "translation_beam_sizes": [
+          1,
+          2
+        ],
+        "translation_beam_alphas": [
+          -1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "gloss",
+        "G2T_pretraining": true,
+        "gloss2text_data": "/PGen/data/DA_paralle_sample/Zh",
+        "test_split": "train pickle (teacher outputs)"
+      }
+    },
+    {
+      "run_id": "phoenix14t-baseline-seed57",
+      "kind": "full_run",
+      "experiment_id": "phoenix14t-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 57) of the PHOENIX-2014T baseline row: same image, Table 10 config and teachers as seed 56; only the student seed differs. Reported as part of the mean and std over seeds 56-58; never swapped in for the seed-56 value.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset phoenix14t --kind baseline --seed 57 --run-id phoenix14t-baseline-seed57",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phoenix14t-baseline-seed57",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:18:26Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:18:40Z",
+      "finished_at_utc": "2026-10-30T11:07:41Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training ran to the end (last logged step 8,000); the best dev-BLEU checkpoint (step 6,100) was reloaded by prediction_XmDA.test, which selected beam 4 and alpha 1 on dev and reported dev and test metrics. Wall time 2,941 s, within the 14,400 s ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (MODAL_IMAGE_ID logged by the function).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-pTMGNCge1WQVRUE1TXvXM0",
+        "function_call_id": "fc-01M6652X8JR7BJWQWTZGBQSABD",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-pTMGNCge1WQVRUE1TXvXM0",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.82,
+        "gpu_hours": 0.82,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 57,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 3,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 30,
+        "forward_type": "sign"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 4732,
+        "last_logged_step": 8000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/",
+        "best_step": 6100,
+        "dev": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 23.06,
+          "bleu4": 24.33,
+          "chrf": 47.32,
+          "rouge_l": 49.77
+        },
+        "test": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 24.61,
+          "bleu4": 23.36,
+          "chrf": 47.23,
+          "rouge_l": 49.23
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "phoenix14t-baseline-seed57-dev-translations",
+        "phoenix14t-baseline-seed57-test-translations",
+        "phoenix14t-baseline-seed57-dev-results",
+        "phoenix14t-baseline-seed57-test-results",
+        "phoenix14t-baseline-seed57-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -7234,6 +7585,46 @@
       "sha256": "cd06a7b44e9e62daca82fba8807448340df495d071dd616280e21318b5e5bf93",
       "produced_by": "phoenix14t-kd-seed56",
       "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed57-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/best.IT_00006100.BW_04.A_1.dev.txt",
+      "sha256": "1b6dc5197e3b968cc0b237fc4387c199dd2113f073871d4008b883ad38002768",
+      "produced_by": "phoenix14t-baseline-seed57",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed57-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/best.IT_00006100.BW_04.A_1.test.txt",
+      "sha256": "e4b62797b6656d75c0ba85f3ba0246dc038736491dd20aee742205b1532bbf24",
+      "produced_by": "phoenix14t-baseline-seed57",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed57-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/best.IT_00006100.dev_results.pkl",
+      "sha256": "aa7497654fa902ae84d700e3a2d72360eb2a98a923469a4a45ed1100e6b6ec9f",
+      "produced_by": "phoenix14t-baseline-seed57",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed57-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/best.IT_00006100.test_results.pkl",
+      "sha256": "d77deaa05263b0b66f1fb2d9288dd07c5b1fa47a009d991e3e9ba7a65d448b39",
+      "produced_by": "phoenix14t-baseline-seed57",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed57-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed57/train.log",
+      "sha256": "b59342ca8a02d8cce090921b9aec7ffea345b343303797bccc71dc74c60786c3",
+      "produced_by": "phoenix14t-baseline-seed57",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
     }
   ],
   "gates": [
@@ -7402,6 +7793,34 @@
       "required_action": "None.",
       "resolved_at": "2026-10-30",
       "resolution": "Resolved by the assignee on 2026-10-30 on the project lead's standing instruction in #repro-sign-team-r (2026-10-29) to use more Modal compute. No discussion specific to this plan took place in the channel. The CSL-Daily chain, two extra PHOENIX-2014T seeds per row and a bounded environment trial are approved. The technical limits stand: Modal's 24 h function cap, and no real resume in the published code (code_observations). An interrupted run is re-run in full, and a CSL-Daily XmDA run killed by the 24 h cap is recorded as stopped / wall_time_ceiling_reached with no retry."
+    },
+    {
+      "gate_id": "environment-cu110",
+      "type": "protocol",
+      "status": "open",
+      "opened_at": "2026-10-30",
+      "reason": "Trial of a second image (Dockerfile.cu110: torch 1.7.1+cu110, torchtext 0.8.1, same Python 3.7 and other pins, no SignXmDA code changes) so the CSL-Daily student rows can run on A10G. torch 1.4/CUDA 10.1 has no Ampere kernels. This is a dependency-compatibility change under the patch policy and is recorded as a deviation if adopted.",
+      "evidence": [
+        "SUPERSEDED at 2026-10-30T10:59:47Z (kept for the record). Comparability criterion, written 2026-10-30T10:27:43Z (before the cu110 validation run phoenix14t-baseline-cu110-seed56 finished, and before it was launched): the seed-56 PHOENIX-2014T baseline in the new image (Table 10, T4) is accepted as comparable if its dev BLEU-4 and its test BLEU-4 both fall within the min-max range of the three old-image baseline seeds (phoenix14t-baseline-seed56, -seed57, -seed58). If any of those three has not finished when the cu110 run finishes, the judgement waits for it rather than using fewer seeds. Comparability is decided before closeness to the paper is considered, and the criterion is applied as written.",
+        "Amended comparability criterion, written 2026-10-30T10:59:47Z, before phoenix14t-baseline-cu110-seed56 finished (at 2026-10-30T10:59:47Z its run directory held no summary.json and no best.IT_* outputs). Reason for the amendment: with n = 3 old-image seeds, a fourth sample from the same distribution falls outside their min-max range with probability 1/2 per metric. The original rule therefore rejects an equivalent environment most of the time. Amended rule: accept the new image if the new-image seed-56 PHOENIX-2014T baseline's dev BLEU-4 and test BLEU-4 are each within max(1.0 BLEU, the old-image three-seed min-max range) of the old-image three-seed mean (phoenix14t-baseline-seed56, -seed57, -seed58). Otherwise reject and fall back to T4 with the old image. The judgement still waits for all three old-image seeds, is made before closeness to the paper is considered, and is applied as written.",
+        "Scope of this check: the CSL-Daily student rows will in any case share one environment with their own in-image reference baseline (run in that environment), so the environment cannot confound within-table deltas. This check only guards against a broken environment.",
+        "Semantics audit torch 1.4 -> 1.7 (code_observations): no demonstrated behavior change; nothing patched.",
+        "Time box: about half a day from 2026-10-30T10:10Z. If the trial is not adopted, the CSL-Daily students run on T4 in the old image.",
+        "Image built 2026-10-30: im-zcYV3stvhV0g565br8nSMZ, torch 1.7.1+cu110 11.0 8005 0.8.1 (version, CUDA, cuDNN, torchtext), pip freeze sha256 17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c; preflight-cu110-phoenix14t-baseline ran end to end on T4. Validation run phoenix14t-baseline-cu110-seed56 spawned 2026-10-30T10:31Z."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "adopt-cu110",
+          "description": "Criterion met: run the CSL-Daily Table 2 student rows (a new within-table baseline, Mix-up, KD and XmDA) in the cu110 image on A10G. The produced CSL-Daily baseline from the old image remains the produced target.",
+          "decision_needed": "Assignee resolution with the criterion's evidence."
+        },
+        {
+          "alternative_id": "keep-torch14-t4",
+          "description": "Criterion not met, or time box exceeded: keep T4 and the old image for CSL-Daily Mix-up, KD and XmDA, and record the trial.",
+          "decision_needed": "Assignee resolution with the criterion's evidence."
+        }
+      ],
+      "required_action": "Apply the amended comparability criterion (evidence, 2026-10-30T10:59:47Z) once phoenix14t-baseline-cu110-seed56 and all three old-image baseline seeds have finished; the assignee resolves the gate with that evidence."
     }
   ],
   "guesses": [
@@ -7437,7 +7856,8 @@
     "patches/0002-test-pass-forward-type.patch (SHA-256 c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312) is a correctness patch kept by the assignee on 2026-10-29: prediction_XmDA.test() passes forward_type to the dev decodes (L415, L479) but not to the final test decode (L581), which falls back to 'sign'. It is a no-op for every sign-path model. Without it, a gloss teacher's KD references come from the sign path (run preflight-phoenix14t-teacher-attempt-2). test_model_average (L1029) has the same omission but is never called and is left unpatched.",
     "Image equivalence (2026-10-29, probe app ap-3EK5d2cgJY0qOUUCwqxaxX): the pre-patch XmDA image, rebuilt from the Dockerfile without the patches/ lines, was a full cache hit (no layer built), so its content-addressed ID im-XO3R32x9PQI2frjfVefGye is the image the two baselines ran on; the patched image is im-x0vni1AxwKaBoFixz4bQRH. Both report SignXmDA b6e2ca4 and pip freeze ad27af91…; the pre-patch tree is clean, and the patched tree differs only in signjoey/batch.py, model.py and prediction_XmDA.py, with hashes identical to applying patches 0001 and 0002 to b6e2ca4. Neither patch changes the sign path: 0001 only adds gls_input fields and changes run_batch(forward_type='gloss'), and 0002 passes testing.forward_type, which is 'sign' for baselines and the default. Empirically, decode-grid-phoenix14t-baseline-seed56 on the patched image reloaded the PHOENIX baseline checkpoint and reproduced the original run exactly: greedy dev BLEU-4 23.91 (the step-8,100 validation value) and, at beam 4 / alpha 1, dev 24.78/51.15/47.43 and test 24.53/50.88/48.23. The baselines were therefore not re-run.",
     "Mix-up branch (training_XmDA.py @ b6e2ca4, _train_batch L857-958 and ctc_alignment L968-1029): ctc_alignment returns label_at_pos, which holds the target gloss index of each frame inside the valid length and target[-1] as padding; it never emits the CTC blank. mix_mask_sgn = gloss_predict.ge(1 - mixup_ratio) = ge(0.4) is therefore true at every frame unless a target gloss is the silence token (index 0), so masked_select picks sign_embedding everywhere and no gloss embedding enters the encoder input. sign_embedding is recomputed by a second sgn_embed call in train mode, so the mix branch is a second dropout pass of the same features, trained with cross-entropy plus a x15 JSD consistency term against the first pass; the embedding JS term compares mix_sign_embedding with the sign_embedding it was selected from, i.e. a tensor with itself. The branch runs only when recognition_loss < 5 or random.randint(0, 10) < 5 (5/11). Net effect: a gated dropout-consistency regularizer. Recorded as evidence; not changed.",
-    "Resume semantics (training_XmDA.py @ b6e2ca4; helpers.py): (1) _save_checkpoint (L260-301) is called only on a new best dev score (L631-641), and keep_last_ckpts: 1 (configs/Sign_XmDA.yaml L63) makes ckpt_queue maxsize 1, so the run directory only ever holds the best-so-far checkpoint; there is no periodic or last-step checkpoint. (2) init_from_checkpoint (L303-359), reached via training.load_model (L208-219), restores model, optimizer and scheduler state, steps, token counts and best-score tracking. It does not restore the epoch counter, the data-iterator position, the torch/numpy/random RNG state, last_best_lr or the stop flag. (3) train_and_validate always runs for epoch_no in range(self.epochs) from 0 (L392), so a 'resumed' run trains a further full 150 epochs on top of the restored step count. (4) make_model_dir (helpers.py L26-40) deletes the run directory when overwrite: true and raises FileExistsError when false; it runs in TrainManager.__init__ (L72) before load_model, so a resume needs a new model_dir with load_model pointing at the old checkpoint. Conclusion: no real resume of an interrupted run exists without changing the epoch loop or the checkpoint policy, both behavior changes. Reloading the best checkpoint restarts from the last improvement, not from the interruption (phoenix14t-xmda-seed56 attempt 1: interrupted at step 28,000, latest checkpoint 9000.ckpt). For CSL-Daily the recovery path for an interrupted run is a full re-run: about 18 GPU-h for KD and 20 GPU-h for XmDA, and about 8 GPU-h per teacher."
+    "Resume semantics (training_XmDA.py @ b6e2ca4; helpers.py): (1) _save_checkpoint (L260-301) is called only on a new best dev score (L631-641), and keep_last_ckpts: 1 (configs/Sign_XmDA.yaml L63) makes ckpt_queue maxsize 1, so the run directory only ever holds the best-so-far checkpoint; there is no periodic or last-step checkpoint. (2) init_from_checkpoint (L303-359), reached via training.load_model (L208-219), restores model, optimizer and scheduler state, steps, token counts and best-score tracking. It does not restore the epoch counter, the data-iterator position, the torch/numpy/random RNG state, last_best_lr or the stop flag. (3) train_and_validate always runs for epoch_no in range(self.epochs) from 0 (L392), so a 'resumed' run trains a further full 150 epochs on top of the restored step count. (4) make_model_dir (helpers.py L26-40) deletes the run directory when overwrite: true and raises FileExistsError when false; it runs in TrainManager.__init__ (L72) before load_model, so a resume needs a new model_dir with load_model pointing at the old checkpoint. Conclusion: no real resume of an interrupted run exists without changing the epoch loop or the checkpoint policy, both behavior changes. Reloading the best checkpoint restarts from the last improvement, not from the interruption (phoenix14t-xmda-seed56 attempt 1: interrupted at step 28,000, latest checkpoint 9000.ckpt). For CSL-Daily the recovery path for an interrupted run is a full re-run: about 18 GPU-h for KD and 20 GPU-h for XmDA, and about 8 GPU-h per teacher.",
+    "torch 1.4 -> 1.7 semantics audit of signjoey @ b6e2ca4 plus patches 0001/0002 (2026-10-30, before any run in the cu110 image). Division: every torch.div call (loss.py L131, L139; training_XmDA.py L927, L937, L947, L957) is on float probability tensors. Every '/' operator is Python arithmetic or a float tensor divided by a number: loss and ppl normalisation (training_XmDA.py L1099, L1109; prediction_XmDA.py L243), throughput logging, the length penalty, attention scaling and the metrics. No integer tensor goes through '/' or torch.div, so 1.7's true division changes nothing. Floor division: '//' on tensors appears only in batch.py L291 (and the same line in patch 0001: sum(sgn_lengths) // sum(gls_lengths)) and search.py L355 (topk_ids // vocab size). Both operands are non-negative, so 1.4's integer division and 1.7's floor_divide (which truncates) give the same result. Masks: torch.where (attention.py L79, L182), masked_fill with ~mask (transformer_layers.py L75), masked_select/masked_scatter (embeddings.py L61-65; training_XmDA.py L892) and the patch 0001 masks all take masks built from comparisons (!=, ge, == 0), which are already bool in torch 1.4. No uint8 mask reaches ~, masked_* or indexing. The only uint8 tensors are the greedy-search 'finished' counters (search.py L94, L163; finished += is_eos; finished >= 1). Under 1.7's type promotion the bool-into-uint8 in-place add gives the same counts. torchtext: SignXmDA imports only torchtext.data Field, RawField, Dataset and Iterator (data.py, dataset.py, training_XmDA.py), all still in torchtext.data in 0.8.1. Conclusion: no demonstrated behavior change; nothing patched."
   ],
   "dead_ends": [
     "The repository's candidate ingestion script does not accept this PocketBase export layout (the record nests the paper under expand.paper and has no confirmation field), so the assignment is recorded as a direct user request with the export's SHA-256, following papers/pu-2024-siformer.",
