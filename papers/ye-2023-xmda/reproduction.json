@@ -7452,6 +7452,608 @@
         "phoenix14t-baseline-cu110-seed56-test-results",
         "phoenix14t-baseline-cu110-seed56-train-log"
       ]
+    },
+    {
+      "run_id": "preflight-cu110-csl-daily-baseline",
+      "kind": "preflight",
+      "experiment_id": "csl-daily-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The cu110 image runs the CSL-Daily baseline end to end on A10G (Ampere, sm_86), which the torch 1.4 image cannot.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --image cu110 --gpu A10G --dataset csl-daily --kind baseline --run-id preflight-cu110-csl-daily-baseline --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-cu110-csl-daily-baseline",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:22:19Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:22:31Z",
+      "finished_at_utc": "2026-10-30T11:24:21Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two epochs trained on an NVIDIA A10 (about 12 s per epoch, against about 22 s on T4 in preflight-csl-daily-baseline), validated, reloaded the best checkpoint and evaluated: dev BLEU-4 5.03 (32-sentence subset), test 3.71. The old-image T4 preflight gave 5.03 and 3.56. Scores after 2 of 150 epochs are not results. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 (Dockerfile with torch 1.7.1+cu110, torchvision 0.8.2+cu110, torchtext 0.8.1) with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-ct80hfNiUwWA2DNL0i8BDb",
+        "function_call_id": "fc-01M668QXY6WZGHJ9EHYK1Z8SKS",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ct80hfNiUwWA2DNL0i8BDb",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.03,
+        "gpu_hours": 0.03,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [],
+      "measurements": {
+        "peak_gpu_memory_mib": 6560,
+        "seconds_per_epoch": 12,
+        "duration_seconds": 109
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-cu110-csl-daily-baseline/",
+        "train_log_sha256": "27bad54ed4aed7cdcae265b2649db5fe0e2a83c0500db8c4aa3259826405a16b",
+        "dev": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 48.31,
+          "bleu4": 5.03,
+          "chrf": 6.88,
+          "rouge_l": 27.45
+        },
+        "test": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 52.08,
+          "bleu4": 3.71,
+          "chrf": 5.97,
+          "rouge_l": 26.03
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      }
+    },
+    {
+      "kind": "data_preparation",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "run_id": "preflight-csl-daily-gloss-embedding",
+      "experiment_id": "csl-daily-xmda",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step gloss_embedding --teachers preflight-csl-daily-teacher",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:22:21Z",
+      "finished_at_utc": "2026-10-30T11:22:36Z",
+      "attempt": {
+        "group_id": "preflight-csl-daily-gloss-embedding",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:22:19Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Dumped the preflight CSL-Daily teacher's GlossEmbeddings from its best checkpoint, only so the CSL-Daily Mix-up and XmDA student preflights can run before the full teachers finish. To be replaced by the best full teacher. Start and finish are the Modal app's creation and stop times; the summary did not include a function-call ID.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-rQCH65YA2K7eCkENC78WLB",
+        "function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-rQCH65YA2K7eCkENC78WLB",
+        "hardware": "CPU only (4 vCPU, no GPU)",
+        "gpu_count": 0,
+        "wall_time_hours": 0.005,
+        "gpu_hours": 0.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outputs": {
+        "gloss_embedding": {
+          "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-csl-daily-teacher/gloss_embedding.pt",
+          "sha256": "71f6713f931d816235b42340c5ce075b721d12101bfb2e11bdea3d5def99b86e"
+        },
+        "gls_vocab_sha256": "0baf2faf08931fdb87970096d0ae69df5b64e8cc4b8c07dacc5c8f3412f250d0",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "artifact_ids": []
+    },
+    {
+      "kind": "data_preparation",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "run_id": "preflight-csl-daily-teacher-pickle",
+      "experiment_id": "csl-daily-kd",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step teacher_pickle --dataset csl-daily --teachers preflight-csl-daily-teacher,preflight-csl-daily-teacher,preflight-csl-daily-teacher,preflight-csl-daily-teacher",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:22:38Z",
+      "finished_at_utc": "2026-10-30T11:23:43Z",
+      "attempt": {
+        "group_id": "preflight-csl-daily-teacher-pickle",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:22:19Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Wrote a 92,000-entry multi-reference CSL-Daily training pickle (18,400 originals plus four copies of the preflight teacher's translations), only for the KD and XmDA student preflights. It will be overwritten by the full four-teacher pickle. Start and finish are the Modal app's creation and stop times; the summary did not include a function-call ID.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-XPhclIvEOaNi35AHW1jzA6",
+        "function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-XPhclIvEOaNi35AHW1jzA6",
+        "hardware": "CPU only (4 vCPU, no GPU)",
+        "gpu_count": 0,
+        "wall_time_hours": 0.008,
+        "gpu_hours": 0.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outputs": {
+        "teacher_pickle": {
+          "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/features/csl-daily.smkd.train.teachers.pickle",
+          "sha256": "f3711c7f25b187505dd404c1d3dbe9ff7796fa1c2e0bd569b5565b0674d54f51"
+        },
+        "entries": 92000,
+        "note": "Preflight only; overwritten by the full chain.",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "preflight-cu110-csl-daily-mixup",
+      "kind": "preflight",
+      "experiment_id": "csl-daily-mixup",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily mixup student path runs end to end in the cu110 image on A10G, using stand-in teacher artifacts from preflight-csl-daily-teacher (its gloss embedding and a 4x-repeated teacher pickle) until the full teachers finish.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --image cu110 --gpu A10G --dataset csl-daily --kind mixup --teachers preflight-csl-daily-teacher --run-id preflight-cu110-csl-daily-mixup --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-cu110-csl-daily-mixup",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:24:51Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:25:17Z",
+      "finished_at_utc": "2026-10-30T11:29:03Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two epochs (280 logged steps, about 22 s per epoch including tiny validations) trained, validated, reloaded the best checkpoint and evaluated: dev BLEU-4 0.0 (32-sentence subset), test 0.4. The teacher artifacts are preflight stand-ins, so the scores are not results. Peak GPU memory 16,350 MiB. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110",
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 (Dockerfile with torch 1.7.1+cu110, torchvision 0.8.2+cu110, torchtext 0.8.1) with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-qjqKDwcqUns3J2cEJT9tsL",
+        "function_call_id": "fc-01M668WZW6F4HZ2GDVKV8W094F",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-qjqKDwcqUns3J2cEJT9tsL",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.06,
+        "gpu_hours": 0.06,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [],
+      "measurements": {
+        "peak_gpu_memory_mib": 16350,
+        "seconds_per_epoch": 22,
+        "logged_steps": 280
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-cu110-csl-daily-mixup/",
+        "train_log_sha256": "cea0f7779c8a54c397b50e1ce3d4077ac6f8d5f9fc0dab795deca927075c34f1",
+        "dev": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -1,
+          "wer": 100.0,
+          "bleu4": 0.0,
+          "chrf": 3.23,
+          "rouge_l": 18.68
+        },
+        "test": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -1,
+          "wer": 100.0,
+          "bleu4": 0.4,
+          "chrf": 3.45,
+          "rouge_l": 19.63
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      }
+    },
+    {
+      "run_id": "preflight-cu110-csl-daily-kd",
+      "kind": "preflight",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily kd student path runs end to end in the cu110 image on A10G, using stand-in teacher artifacts from preflight-csl-daily-teacher (its gloss embedding and a 4x-repeated teacher pickle) until the full teachers finish.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --image cu110 --gpu A10G --dataset csl-daily --kind kd --teachers preflight-csl-daily-teacher --run-id preflight-cu110-csl-daily-kd --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-cu110-csl-daily-kd",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:24:51Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:25:19Z",
+      "finished_at_utc": "2026-10-30T11:31:10Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two epochs (1430 logged steps, about 77 s per epoch including tiny validations) trained, validated, reloaded the best checkpoint and evaluated: dev BLEU-4 14.57 (32-sentence subset), test 11.35. The teacher artifacts are preflight stand-ins, so the scores are not results. Peak GPU memory 6,327 MiB. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110",
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 (Dockerfile with torch 1.7.1+cu110, torchvision 0.8.2+cu110, torchtext 0.8.1) with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-CXxPeMrdSFISAjOGif0r9B",
+        "function_call_id": "fc-01M668X01ZQ05196M2H2B73HHE",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-CXxPeMrdSFISAjOGif0r9B",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.1,
+        "gpu_hours": 0.1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [],
+      "measurements": {
+        "peak_gpu_memory_mib": 6327,
+        "seconds_per_epoch": 77,
+        "logged_steps": 1430
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-cu110-csl-daily-kd/",
+        "train_log_sha256": "d35786cb5608b919d93758f51ad856575b6351b57da43f3b5c2643869fab8b51",
+        "dev": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -1,
+          "wer": 33.05,
+          "bleu4": 14.57,
+          "chrf": 13.38,
+          "rouge_l": 38.1
+        },
+        "test": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -1,
+          "wer": 42.07,
+          "bleu4": 11.35,
+          "chrf": 11.67,
+          "rouge_l": 37.79
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      }
+    },
+    {
+      "run_id": "preflight-cu110-csl-daily-xmda",
+      "kind": "preflight",
+      "experiment_id": "csl-daily-xmda",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily xmda student path runs end to end in the cu110 image on A10G, using stand-in teacher artifacts from preflight-csl-daily-teacher (its gloss embedding and a 4x-repeated teacher pickle) until the full teachers finish.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step train --image cu110 --gpu A10G --dataset csl-daily --kind xmda --teachers preflight-csl-daily-teacher --run-id preflight-cu110-csl-daily-xmda --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-cu110-csl-daily-xmda",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:24:51Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T11:25:17Z",
+      "finished_at_utc": "2026-10-30T11:38:05Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Two epochs (1430 logged steps, about 181 s per epoch including tiny validations) trained, validated, reloaded the best checkpoint and evaluated: dev BLEU-4 15.58 (32-sentence subset), test 10.59. The teacher artifacts are preflight stand-ins, so the scores are not results. Peak GPU memory 11,725 MiB. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110",
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 (Dockerfile with torch 1.7.1+cu110, torchvision 0.8.2+cu110, torchtext 0.8.1) with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-EkKqcBXmEHaWDuHso8GtuZ",
+        "function_call_id": "fc-01M668WZXEW0MVZWP2W7R0FNFV",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-EkKqcBXmEHaWDuHso8GtuZ",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.21,
+        "gpu_hours": 0.21,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [],
+      "measurements": {
+        "peak_gpu_memory_mib": 11725,
+        "seconds_per_epoch": 181,
+        "logged_steps": 1430
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/preflight-cu110-csl-daily-xmda/",
+        "train_log_sha256": "482500a8fb3067f4522cdac76403f95598a570c2a01ad0b2fb39acb52520b485",
+        "dev": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 35.32,
+          "bleu4": 15.58,
+          "chrf": 14.35,
+          "rouge_l": 45.29
+        },
+        "test": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": -1,
+          "wer": 43.18,
+          "bleu4": 10.59,
+          "chrf": 10.77,
+          "rouge_l": 37.2
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      }
     }
   ],
   "artifacts": [
