@@ -162,10 +162,10 @@ On test, the gain over our baseline is −0.45 BLEU-4 for Mix-up (paper +1.08) a
 | --- | --- | --- | --- | --- |
 | Baseline | 24.78 / 24.33 / 23.98 | 24.36 ± 0.40 | 24.53 / 23.36 / 23.04 | 23.64 ± 0.78 |
 | + Mix-up | 25.36 / 24.94 / 25.16 | 25.15 ± 0.21 | 24.08 / 24.95 / 24.79 | 24.61 ± 0.46 |
-| + KD | 25.45 / pending / pending | — | 25.59 / pending / pending | — |
+| + KD | 25.45 / 24.84 / 25.06 | 25.12 ± 0.31 | 25.59 / 24.98 / 24.39 | 24.99 ± 0.60 |
 | + XmDA | pending (attempt 2) / pending / pending | — | — | — |
 
-Across seeds, the seed-56 Mix-up result of −0.45 on test (note b) is within seed variation. The three-seed means put Mix-up at +0.79 dev and +0.97 test BLEU-4 above the baseline, against +0.70 and +1.08 in the paper. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
+Across seeds, the seed-56 Mix-up result of −0.45 on test (note b) is within seed variation. The three-seed means put Mix-up at +0.79 dev and +0.97 test BLEU-4 above the baseline, against +0.70 and +1.08 in the paper. On the same basis KD is +0.76 dev and +1.35 test above the baseline, against +1.92 and +1.98 in the paper. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
 
 **Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). The PHOENIX-2014T Mix-up and KD rows carry the conditional values above. The XmDA rows wait for its attempt 2, and the CSL-Daily rows wait for gate `compute-full-plan`.
 
@@ -397,7 +397,7 @@ Both attempts will be recorded in `reproduction.json.runs` together when attempt
 - KD seeds 57 and 58: 8.0 → 10.5 GPU-h.
 - Wall time and the CHF caps were raised in proportion.
 
-Reason: the compute gate's estimate had noted that the mix-up/XmDA per-step cost was unmeasured, and the 2-epoch preflights did not measure full-dev validation cost. The measured pace then projected about 9.0 GPU-h for XmDA attempt 2 and about 9.4 for KD seed 57. From now on, ceilings carry at least 30% margin over the measured estimate.
+Reason: the compute gate's estimate had noted that the mix-up/XmDA per-step cost was unmeasured, and the 2-epoch preflights did not measure full-dev validation cost. The measured pace then projected about 9.0 GPU-h for XmDA attempt 2 and about 9.4 for KD seed 57. From now on, ceilings carry at least 30% margin over the measured estimate. Correction: the ~9.4 GPU-h projection for KD seed 57 was wrong. It counted from the spawn time, but the function started 1 h 47 min later, after a queue or preemption delay that the evidence cannot distinguish. It actually took 2.57 GPU-h. The ~8.4 GPU-h projection for XmDA seed 57 used the same basis. The amended ceilings stand; they are maxima.
 
 **CSL-Daily teachers moved from T4 to A10G (assignee decision, 2026-10-30T13:23Z).** On T4, each full-dev validation in the teacher's gloss path took about 152 s, projecting about 22 h per teacher against Modal's 24 h cap. A teacher writes its outputs only at the end, so hitting the cap would lose everything. The four T4 runs were stopped at epochs 13–15 (about 2.1 GPU-h each) and relaunched on A10G in the cu110 image, with a ceiling of 21 h / 21 GPU-h each. The run contract does not allow a stop on a human decision to point a retry at a new attempt, so the T4 runs are recorded as single-attempt groups: `stopped / no_new_hypothesis / budget_protocol / stop`, citing gate `compute-full-plan`, with the A10G successor named in the detail. The A10G runs `csl-daily-teacher-seed56..59-attempt-2` are each attempt 1 of 3 in their own group. The first estimate of about 16 h each was extrapolated. Measured A10G validations take about 112 s, which puts each teacher at about 14–17 h, central about 15.5 h, against a 21 h ceiling. This will be re-checked from the observed epoch rate. Attempt 1 will be `interrupted / external_interruption / interrupted_full_run`, with `retry_decision: retry`, and its `next_run_id` must point to an existing entry.
 
