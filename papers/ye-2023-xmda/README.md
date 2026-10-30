@@ -147,6 +147,17 @@ On test, the gain over our baseline is −0.45 BLEU-4 for Mix-up (paper +1.08) a
 - **(b) Mix-up's −0.45 on test fits what the published code does.** In `training_XmDA.py` at `b6e2ca4`, the mix mask `gloss_predict.ge(1 - mixup_ratio)` is applied to target gloss indices from `ctc_alignment`, which never emits the blank. The mask is therefore true at every frame, and no gloss embedding enters the encoder. The "mixed" input is the sign embedding from a second `sgn_embed` pass with a fresh dropout mask, trained with cross-entropy plus a ×15 JSD consistency term. The branch is gated by `recognition_loss < 5` or `random.randint(0, 10) < 5`. So as released, the Mix-up row is a gated dropout-consistency regularizer, not cross-modality mix-up; the details are in `code_observations`.
 - **(c) KD's early stop is upstream scheduler behaviour.** KD stopped in epoch 104, at step 28,000, because the plateau scheduler took the learning rate below `learning_rate_min` (1e-7). `_add_report` then sets `stop`. The same rule is applied to every row; the baseline, the teachers and Mix-up simply never reached the floor within 150 epochs.
 
+**PHOENIX-2014T replicates (pre-declared; evidence only, never swapped in).** Each row adds student seeds 57 and 58 to seed 56, in the same image with the same config. Only the student seed varies: the four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference pickle are the same for every seed. Values are BLEU-4, given as the three seeds, then mean ± sample std (n = 3). Rows fill in as runs finish.
+
+| Row | Dev BLEU-4 (56 / 57 / 58) | Dev mean ± std | Test BLEU-4 (56 / 57 / 58) | Test mean ± std |
+| --- | --- | --- | --- | --- |
+| Baseline | 24.78 / 24.33 / 23.98 | 24.36 ± 0.40 | 24.53 / 23.36 / 23.04 | 23.64 ± 0.78 |
+| + Mix-up | 25.36 / 24.94 / 25.16 | 25.15 ± 0.21 | 24.08 / 24.95 / 24.79 | 24.61 ± 0.46 |
+| + KD | 25.45 / pending / pending | — | 25.59 / pending / pending | — |
+| + XmDA | pending (attempt 2) / pending / pending | — | — | — |
+
+Across seeds, the seed-56 Mix-up result of −0.45 on test (note b) is within seed variation. The three-seed means put Mix-up at +0.79 dev and +0.97 test BLEU-4 above the baseline, against +0.70 and +1.08 in the paper. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
+
 **Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). The PHOENIX-2014T Mix-up and KD rows carry the conditional values above. The XmDA rows wait for its attempt 2, and the CSL-Daily rows wait for gate `compute-full-plan`.
 
 | Target IDs | System | Dataset | Original dev (BLEU-4 / ROUGE-L / ChrF) | Original test |
