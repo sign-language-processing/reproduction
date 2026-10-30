@@ -7180,6 +7180,278 @@
         "phoenix14t-baseline-seed57-test-results",
         "phoenix14t-baseline-seed57-train-log"
       ]
+    },
+    {
+      "run_id": "phoenix14t-baseline-seed58",
+      "kind": "full_run",
+      "experiment_id": "phoenix14t-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 58) of the PHOENIX-2014T baseline row: same image, Table 10 config and teachers as seed 56; only the student seed differs. Reported as part of the mean and std over seeds 56-58; never swapped in for the seed-56 value.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset phoenix14t --kind baseline --seed 58 --run-id phoenix14t-baseline-seed58",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phoenix14t-baseline-seed58",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:18:26Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:19:01Z",
+      "finished_at_utc": "2026-10-30T11:09:01Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training ran to the end (last logged step 8,000); the best dev-BLEU checkpoint (step 8,300) was reloaded by prediction_XmDA.test, which selected beam 2 and alpha 1 on dev and reported dev and test metrics. Wall time 3,000 s, within the 14,400 s ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (MODAL_IMAGE_ID logged by the function).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-So9ZnXpFe9Ymk3rozSRGAS",
+        "function_call_id": "fc-01M6653F14E2BJBQ2EG4PW479Y",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-So9ZnXpFe9Ymk3rozSRGAS",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.83,
+        "gpu_hours": 0.83,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 58,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 3,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 30,
+        "forward_type": "sign"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 4479,
+        "last_logged_step": 8000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/",
+        "best_step": 8300,
+        "dev": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": 1,
+          "wer": 22.47,
+          "bleu4": 23.98,
+          "chrf": 46.97,
+          "rouge_l": 49.88
+        },
+        "test": {
+          "translation_beam_size": 2,
+          "translation_beam_alpha": 1,
+          "wer": 23.74,
+          "bleu4": 23.04,
+          "chrf": 46.9,
+          "rouge_l": 49.02
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "phoenix14t-baseline-seed58-dev-translations",
+        "phoenix14t-baseline-seed58-test-translations",
+        "phoenix14t-baseline-seed58-dev-results",
+        "phoenix14t-baseline-seed58-test-results",
+        "phoenix14t-baseline-seed58-train-log"
+      ]
+    },
+    {
+      "run_id": "phoenix14t-baseline-cu110-seed56",
+      "kind": "full_run",
+      "experiment_id": "phoenix14t-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Environment trial (gate environment-cu110): the PHOENIX-2014T baseline with Table 10 settings and seed 56, in the torch 1.7.1+cu110 / torchtext 0.8.1 image (Dockerfile.cu110, no SignXmDA code changes) on T4, for comparison with the three old-image seeds under the gate's amended criterion.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --dataset phoenix14t --kind baseline --seed 56 --run-id phoenix14t-baseline-cu110-seed56",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "phoenix14t-baseline-cu110-seed56",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T10:31:30Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 3.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T10:31:48Z",
+      "finished_at_utc": "2026-10-30T11:20:19Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training ran to the end (last logged step 8,000); the best dev-BLEU checkpoint (step 7,300) was reloaded by prediction_XmDA.test, which selected beam 4 and alpha 1 on dev and reported dev and test metrics. Wall time 2,911 s, within the 14,400 s ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-6cEz833iJPsGR6wpOuHf7r",
+        "function_call_id": "fc-01M665TTD8X6VN4KA7065KZ0Z9",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-6cEz833iJPsGR6wpOuHf7r",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 0.81,
+        "gpu_hours": 0.81,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 56,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 3,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 30,
+        "forward_type": "sign"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 4752,
+        "last_logged_step": 8000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/",
+        "best_step": 7300,
+        "dev": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 23.57,
+          "bleu4": 24.68,
+          "chrf": 47.54,
+          "rouge_l": 50.53
+        },
+        "test": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 24.49,
+          "bleu4": 23.9,
+          "chrf": 47.9,
+          "rouge_l": 50.38
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "phoenix14t-baseline-cu110-seed56-dev-translations",
+        "phoenix14t-baseline-cu110-seed56-test-translations",
+        "phoenix14t-baseline-cu110-seed56-dev-results",
+        "phoenix14t-baseline-cu110-seed56-test-results",
+        "phoenix14t-baseline-cu110-seed56-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -7625,6 +7897,86 @@
       "sha256": "b59342ca8a02d8cce090921b9aec7ffea345b343303797bccc71dc74c60786c3",
       "produced_by": "phoenix14t-baseline-seed57",
       "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed58-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/best.IT_00008300.BW_02.A_1.dev.txt",
+      "sha256": "5c862641da770c5f67b4bbdf75b97c72675a18c048c082d961d47ef840db2981",
+      "produced_by": "phoenix14t-baseline-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed58-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/best.IT_00008300.BW_02.A_1.test.txt",
+      "sha256": "dc15704fa7c105d5a19739cebd58d315164d006b85caed95cbc49dd61244d6c4",
+      "produced_by": "phoenix14t-baseline-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed58-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/best.IT_00008300.dev_results.pkl",
+      "sha256": "65ce908e8a1277c370cebe4ad88edfbc42611df5cb2de65092927f4ad4c9ef22",
+      "produced_by": "phoenix14t-baseline-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed58-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/best.IT_00008300.test_results.pkl",
+      "sha256": "994d25e6144272810a3298b7b30b426bcae4f93933803e321c3e6abb34d9c187",
+      "produced_by": "phoenix14t-baseline-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-seed58-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-seed58/train.log",
+      "sha256": "540a5bdfb3cdfbb550875157b3a00aae158426232286b225ccd702ab6082de76",
+      "produced_by": "phoenix14t-baseline-seed58",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-cu110-seed56-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/best.IT_00007300.BW_04.A_1.dev.txt",
+      "sha256": "1f6d50954d37c4d1875b0c7c45374aca1c17619f97acc78d5bd7657aad7291f1",
+      "produced_by": "phoenix14t-baseline-cu110-seed56",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-cu110-seed56-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/best.IT_00007300.BW_04.A_1.test.txt",
+      "sha256": "5385d2f4c468fa8ba37cc39e4845bd170ab3e3cd5bf4d4b672137a512e5eb04c",
+      "produced_by": "phoenix14t-baseline-cu110-seed56",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-cu110-seed56-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/best.IT_00007300.dev_results.pkl",
+      "sha256": "d8161bdef6ce5ad6bc7a0ade5adbdd378c9c066dfbf218c34418bfc8ca259534",
+      "produced_by": "phoenix14t-baseline-cu110-seed56",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-cu110-seed56-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/best.IT_00007300.test_results.pkl",
+      "sha256": "9067fa427e2a9d8c84ee8d3a0039f57d078c12a50db27a32432109b31c4ef9fa",
+      "produced_by": "phoenix14t-baseline-cu110-seed56",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "phoenix14t-baseline-cu110-seed56-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/phoenix14t-baseline-cu110-seed56/train.log",
+      "sha256": "29440ad67eed67223b697e7204d82fcad9677f57ba900f79ce1aeda28b2f9bcb",
+      "produced_by": "phoenix14t-baseline-cu110-seed56",
+      "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
     }
   ],
   "gates": [
@@ -7797,7 +8149,7 @@
     {
       "gate_id": "environment-cu110",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "opened_at": "2026-10-30",
       "reason": "Trial of a second image (Dockerfile.cu110: torch 1.7.1+cu110, torchtext 0.8.1, same Python 3.7 and other pins, no SignXmDA code changes) so the CSL-Daily student rows can run on A10G. torch 1.4/CUDA 10.1 has no Ampere kernels. This is a dependency-compatibility change under the patch policy and is recorded as a deviation if adopted.",
       "evidence": [
@@ -7806,21 +8158,24 @@
         "Scope of this check: the CSL-Daily student rows will in any case share one environment with their own in-image reference baseline (run in that environment), so the environment cannot confound within-table deltas. This check only guards against a broken environment.",
         "Semantics audit torch 1.4 -> 1.7 (code_observations): no demonstrated behavior change; nothing patched.",
         "Time box: about half a day from 2026-10-30T10:10Z. If the trial is not adopted, the CSL-Daily students run on T4 in the old image.",
-        "Image built 2026-10-30: im-zcYV3stvhV0g565br8nSMZ, torch 1.7.1+cu110 11.0 8005 0.8.1 (version, CUDA, cuDNN, torchtext), pip freeze sha256 17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c; preflight-cu110-phoenix14t-baseline ran end to end on T4. Validation run phoenix14t-baseline-cu110-seed56 spawned 2026-10-30T10:31Z."
+        "Image built 2026-10-30: im-zcYV3stvhV0g565br8nSMZ, torch 1.7.1+cu110 11.0 8005 0.8.1 (version, CUDA, cuDNN, torchtext), pip freeze sha256 17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c; preflight-cu110-phoenix14t-baseline ran end to end on T4. Validation run phoenix14t-baseline-cu110-seed56 spawned 2026-10-30T10:31Z.",
+        "Criterion applied 2026-10-30 once all four runs had finished (comparability decided before closeness to the paper was looked at). Old-image PHOENIX-2014T baseline seeds 56, 57, 58 (phoenix14t-baseline-seed56, -seed57, -seed58): dev BLEU-4 24.78, 24.33, 23.98 (mean 24.363, range 0.80, sample sd 0.40); test BLEU-4 24.53, 23.36, 23.04 (mean 23.643, range 1.49, sample sd 0.78). New image, seed 56 (phoenix14t-baseline-cu110-seed56, T4, im-zcYV3stvhV0g565br8nSMZ): dev 24.68, test 23.90. Amended rule: dev |24.68 - 24.363| = 0.32 <= max(1.0, 0.80) = 1.00, pass; test |23.90 - 23.643| = 0.26 <= max(1.0, 1.49) = 1.49, pass. Result: accept. The superseded min-max rule would also have accepted (dev 24.68 in [23.98, 24.78]; test 23.90 in [23.04, 24.53])."
       ],
       "alternatives": [
         {
           "alternative_id": "adopt-cu110",
           "description": "Criterion met: run the CSL-Daily Table 2 student rows (a new within-table baseline, Mix-up, KD and XmDA) in the cu110 image on A10G. The produced CSL-Daily baseline from the old image remains the produced target.",
-          "decision_needed": "Assignee resolution with the criterion's evidence."
+          "decision_needed": "Selected: the amended criterion passed."
         },
         {
           "alternative_id": "keep-torch14-t4",
           "description": "Criterion not met, or time box exceeded: keep T4 and the old image for CSL-Daily Mix-up, KD and XmDA, and record the trial.",
-          "decision_needed": "Assignee resolution with the criterion's evidence."
+          "decision_needed": "Not selected: the amended criterion passed."
         }
       ],
-      "required_action": "Apply the amended comparability criterion (evidence, 2026-10-30T10:59:47Z) once phoenix14t-baseline-cu110-seed56 and all three old-image baseline seeds have finished; the assignee resolves the gate with that evidence."
+      "required_action": "None.",
+      "resolved_at": "2026-10-30",
+      "resolution": "Resolved 2026-10-30 by applying the assignee's pre-stated decision rule (criterion met -> adopt for CSL-Daily on A10G). The amended comparability criterion passed on both dev and test BLEU-4. The CSL-Daily Table 2 student rows (a new in-image reference baseline, Mix-up, KD and XmDA) run in the cu110 image on A10G. The already-produced Table 10 CSL-Daily baseline from the old image remains the produced target. The CSL-Daily teachers stay in the old image on T4: they only produce translations and the frozen embedding. PHOENIX-2014T stays entirely in the old image."
     }
   ],
   "guesses": [
@@ -7839,7 +8194,8 @@
     "Conditional runs only: the teacher seed and subset policy (four teachers with seeds 56-59 on the same data) is invented. The paper does not say how its four teachers (Table 15, dev BLEU 27.35/27.24/27.11/27.02) differ.",
     "Conditional runs only: the frozen gloss_pre_embedding is the best teacher's GlossEmbeddings state_dict, with that teacher's gls.vocab as data.gls_vocab. The paper and repository do not ship this file or say how it was produced.",
     "CSL-Daily train uses 18,400 of the 18,401 split_1.txt clips. Train clip S000005_P0004_T00 has an mp4 but no annotation in csl2020ct_v2.pkl or video_map.txt; the annotation file instead holds S000007_P0003_T00, which has no video and is in no split. The clip is skipped rather than given an inferred label. Dev and test are complete.",
-    "Conditional runs only: forward_type=gloss teachers are validated and decoded with patches/0001-gloss-decoding-mirror-training.patch (SHA-256 7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c), an invented behavior choice. Validation and test batches repeat each gloss by sum(sgn_lengths) // sum(gls_lengths) (min 1), as Batch_Sign does in training, and run_batch(gloss) reads the repeated input, mask and lengths. The published code cannot validate or decode these models at all, and the authors' fork (Atrewin/slt 9ecb427) gives no evidence of how this was done. Teacher dev BLEU (used to pick checkpoints and the best teacher) and the teachers' train-set translations (the KD references) depend on this choice."
+    "Conditional runs only: forward_type=gloss teachers are validated and decoded with patches/0001-gloss-decoding-mirror-training.patch (SHA-256 7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c), an invented behavior choice. Validation and test batches repeat each gloss by sum(sgn_lengths) // sum(gls_lengths) (min 1), as Batch_Sign does in training, and run_batch(gloss) reads the repeated input, mask and lengths. The published code cannot validate or decode these models at all, and the authors' fork (Atrewin/slt 9ecb427) gives no evidence of how this was done. Teacher dev BLEU (used to pick checkpoints and the best teacher) and the teachers' train-set translations (the KD references) depend on this choice.",
+    "CSL-Daily student rows (conditional; Mix-up, KD, XmDA, and their in-image reference baseline) run in a second image, Dockerfile.cu110, on A10G instead of the old image on T4. That image swaps torch 1.4.0 / torchvision 0.5.0 / torchtext 0.5.0 for torch 1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5) / torchvision 0.8.2+cu110 / torchtext 0.8.1, with the same Python 3.7, the same other pins and no SignXmDA code changes: Modal image im-zcYV3stvhV0g565br8nSMZ, pip freeze sha256 17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c. Reason: torch 1.4 / CUDA 10.1 has no Ampere kernels; this is a dependency-compatibility change under the patch policy ('prefer a small compatibility patch over downgrading CUDA'). Evidence: the torch 1.4 -> 1.7 semantics audit found no behavior change (code_observations), and gate environment-cu110's pre-declared criterion passed. Scope: the produced CSL-Daily baseline target stays the old-image T4 run. Within-table deltas for the CSL-Daily student rows are taken against the in-image reference baseline, so the environment cannot confound them."
   ],
   "code_observations": [
     "The README's 'python -m signjoey train_XmDA' is rejected by signjoey/__main__.py, which accepts only train/test. The module entry point 'python -m signjoey.training_XmDA --config ...' is used instead; no code change.",
