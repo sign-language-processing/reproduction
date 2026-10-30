@@ -123,6 +123,15 @@ The grids ran on the patched image and reproduce the training runs' own selected
 
 The fork's experiment name `081_cslt_char_sign_ratio0.6_baseline_S2T_seed56_bsz64_drop15_len30_freq100` also implies batch 64, dropout 0.15 and max length 30, which the released config does not set. That variant was not run.
 
+**CSL-Daily in-image reference baseline (not a target value).** `csl-daily-baseline-cu110-seed56`: Table 10, seed 56, run in the cu110 image on A10G, the same environment as the CSL-Daily student rows. Best step 20,300, with beam 2 / alpha 1 selected on dev. BLEU-4 / ROUGE-L / ChrF:
+
+| Run | Dev | Test |
+| --- | --- | --- |
+| In-image reference (cu110, A10G) | 17.74 / 47.16 / 16.59 | 18.11 / 47.05 / 16.83 |
+| Produced target (`csl-daily-baseline-seed56`, old image, T4) | 17.40 / 46.25 / 16.18 | 17.45 / 46.18 / 16.28 |
+
+The CSL-Daily student rows' within-table deltas are taken against this reference. The produced target stays the old-image T4 run. One seed each, so the 0.34 / 0.66 BLEU-4 difference between the two runs is not attributed to the environment.
+
 **PHOENIX-2014T teachers (conditional; not targets).** These are signjoey `forward_type=gloss` teachers with PGen pseudo-pairs and patches 0001 and 0002, one per seed. Table 15's teachers are PGen fairseq models, so they are a different system; their numbers are shown only for orientation, paired with the runs by seed order only (the paper does not say which of its teachers it used). Seed 56 has the highest dev BLEU-4 and supplies the frozen gloss embedding.
 
 | Run | Best step | Dev beam / alpha | Dev BLEU-4 / ROUGE-L / ChrF | Table 15 teacher dev BLEU-4 | Training-set BLEU-4 (KD references) |
