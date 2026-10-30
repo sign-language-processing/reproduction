@@ -8366,6 +8366,378 @@
         "phoenix14t-mixup-seed58-test-results",
         "phoenix14t-mixup-seed58-train-log"
       ]
+    },
+    {
+      "run_id": "csl-daily-teacher-seed56",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 56 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on T4 in the old image within the declared 20 h ceiling and Modal's 24 h cap.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset csl-daily --kind teacher --seed 56 --run-id csl-daily-teacher-seed56",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed56",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:18:25Z",
+        "max_wall_time_seconds": 72000,
+        "max_gpu_hours": 20.0,
+        "max_cost_chf": 12.0
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-30T11:18:27Z",
+      "finished_at_utc": "2026-10-30T13:23:46Z",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": [
+          "compute-full-plan"
+        ],
+        "detail": "Stopped by the agent at 2026-10-30T13:23:41Z on the assignee's decision, at about epoch 15 of 150. Each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap would have lost everything. Continuing on T4 could not test anything new, so the run was replaced by csl-daily-teacher-seed56-attempt-2 (a separate attempt group, A10G, cu110 image; function call fc-01M66FPKXA1BBN2J38AWWM0K73). No outputs were produced, and it is not a result. The app was stopped with modal app stop; exit_code 1 records that cancellation, not a process exit status, as for decode-grid-csl-daily-baseline-seed56-attempt-1. Start and finish are the Modal app's creation and stop times."
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (same image as preflight-csl-daily-teacher, which logged this ID).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-7d7JmYAaKIEqbsHXjr2EOI",
+        "function_call_id": "fc-01M668GQMY55B3SA1AMV4M86NX",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7d7JmYAaKIEqbsHXjr2EOI",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 2.09,
+        "gpu_hours": 2.09,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "measurements": {
+        "full_dev_validation_seconds_t4": 152,
+        "epochs_completed": 15
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56/",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": false,
+      "artifact_ids": []
+    },
+    {
+      "run_id": "csl-daily-teacher-seed57",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 57 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on T4 in the old image within the declared 20 h ceiling and Modal's 24 h cap.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset csl-daily --kind teacher --seed 57 --run-id csl-daily-teacher-seed57",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed57",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:18:25Z",
+        "max_wall_time_seconds": 72000,
+        "max_gpu_hours": 20.0,
+        "max_cost_chf": 12.0
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-30T11:18:41Z",
+      "finished_at_utc": "2026-10-30T13:23:48Z",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": [
+          "compute-full-plan"
+        ],
+        "detail": "Stopped by the agent at 2026-10-30T13:23:41Z on the assignee's decision, at about epoch 15 of 150. Each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap would have lost everything. Continuing on T4 could not test anything new, so the run was replaced by csl-daily-teacher-seed57-attempt-2 (a separate attempt group, A10G, cu110 image; function call fc-01M66FQ2K9WWETCVKG1A0ETNNP). No outputs were produced, and it is not a result. The app was stopped with modal app stop; exit_code 1 records that cancellation, not a process exit status, as for decode-grid-csl-daily-baseline-seed56-attempt-1. Start and finish are the Modal app's creation and stop times."
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (same image as preflight-csl-daily-teacher, which logged this ID).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-HU3fS11PGMMBuCwmy6jzJM",
+        "function_call_id": "fc-01M668H62YDCAXMXCY8NDM8NKZ",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-HU3fS11PGMMBuCwmy6jzJM",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 2.09,
+        "gpu_hours": 2.09,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "measurements": {
+        "full_dev_validation_seconds_t4": 152,
+        "epochs_completed": 15
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57/",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": false,
+      "artifact_ids": []
+    },
+    {
+      "run_id": "csl-daily-teacher-seed58",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 58 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on T4 in the old image within the declared 20 h ceiling and Modal's 24 h cap.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset csl-daily --kind teacher --seed 58 --run-id csl-daily-teacher-seed58",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed58",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:18:25Z",
+        "max_wall_time_seconds": 72000,
+        "max_gpu_hours": 20.0,
+        "max_cost_chf": 12.0
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-30T11:18:56Z",
+      "finished_at_utc": "2026-10-30T13:23:53Z",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": [
+          "compute-full-plan"
+        ],
+        "detail": "Stopped by the agent at 2026-10-30T13:23:41Z on the assignee's decision, at about epoch 13 of 150. Each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap would have lost everything. Continuing on T4 could not test anything new, so the run was replaced by csl-daily-teacher-seed58-attempt-2 (a separate attempt group, A10G, cu110 image; function call fc-01M66FQH4SDVF5JRGBXGQZ2Q7Q). No outputs were produced, and it is not a result. The app was stopped with modal app stop; exit_code 1 records that cancellation, not a process exit status, as for decode-grid-csl-daily-baseline-seed56-attempt-1. Start and finish are the Modal app's creation and stop times."
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (same image as preflight-csl-daily-teacher, which logged this ID).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-bSl6c9KtjeQ1KAqlKuGGGc",
+        "function_call_id": "fc-01M668HMARGJ10A7F71VN41BYB",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-bSl6c9KtjeQ1KAqlKuGGGc",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 2.08,
+        "gpu_hours": 2.08,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "measurements": {
+        "full_dev_validation_seconds_t4": 152,
+        "epochs_completed": 13
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58/",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": false,
+      "artifact_ids": []
+    },
+    {
+      "run_id": "csl-daily-teacher-seed59",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 59 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on T4 in the old image within the declared 20 h ceiling and Modal's 24 h cap.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --dataset csl-daily --kind teacher --seed 59 --run-id csl-daily-teacher-seed59",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed59",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T11:18:25Z",
+        "max_wall_time_seconds": 72000,
+        "max_gpu_hours": 20.0,
+        "max_cost_chf": 12.0
+      },
+      "exit_code": 1,
+      "started_at_utc": "2026-10-30T11:19:11Z",
+      "finished_at_utc": "2026-10-30T13:23:54Z",
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": [
+          "compute-full-plan"
+        ],
+        "detail": "Stopped by the agent at 2026-10-30T13:23:41Z on the assignee's decision, at about epoch 13 of 150. Each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap would have lost everything. Continuing on T4 could not test anything new, so the run was replaced by csl-daily-teacher-seed59-attempt-2 (a separate attempt group, A10G, cu110 image; function call fc-01M66FQZGY56G4J1KMF9V0DYV0). No outputs were produced, and it is not a result. The app was stopped with modal app stop; exit_code 1 records that cancellation, not a process exit status, as for decode-grid-csl-daily-baseline-seed56-attempt-1. Start and finish are the Modal app's creation and stop times."
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-x0vni1AxwKaBoFixz4bQRH: papers/ye-2023-xmda/Dockerfile with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper (same image as preflight-csl-daily-teacher, which logged this ID).",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.4.0 (CUDA 10.1)",
+          "torchtext": "0.5.0",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "ad27af9123c8d2a10d06c4c800c749bce40f7c58e8a3562a033a285ff8137e2d"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-1DnvIVCeHJdcHYHhXkL0Hf",
+        "function_call_id": "fc-01M668J2FZA28MWVAVANSEZE9W",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-1DnvIVCeHJdcHYHhXkL0Hf",
+        "hardware": "Tesla T4 15360 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 2.08,
+        "gpu_hours": 2.08,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "measurements": {
+        "full_dev_validation_seconds_t4": 152,
+        "epochs_completed": 13
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59/",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": false,
+      "artifact_ids": []
     }
   ],
   "artifacts": [
@@ -9118,7 +9490,7 @@
         "2026-10-30: phoenix14t-mixup-seed56 (1.85 GPU-h) and phoenix14t-kd-seed56 (2.64) finished. phoenix14t-xmda-seed56 attempt 1 was cancelled after 5.1 GPU-h when the local client's session token expired while it waited in .remote(). The assignee approved a from-scratch restart (about 7.6 GPU-h; PHOENIX chain about 28 GPU-h, noted in the channel) and rejected resuming from 9000.ckpt, because it predates the interruption by 19,000 steps and the row would not be protocol-comparable with Mix-up and KD. Attempt 2 was launched with --spawn on 2026-10-30 (fc-01M6635FNYF7FQ8FDV7H5M3QMT).",
         "Resume finding (2026-10-30), from code_observations: the published code has no real resume. Checkpoints are saved only on a new best (keep_last_ckpts 1), load_model does not restore the epoch counter, RNG or iterator position, and the epoch loop always runs 150 epochs from 0. Any interruption of a CSL-Daily run therefore costs a full re-run: about 8 GPU-h per teacher, 18 for KD and 20 for XmDA. The launcher now uses --spawn so a run does not depend on the client; Modal preemption still restarts a call from scratch.",
         "2026-10-30: the project lead posted a standing instruction in #repro-sign-team-r on 2026-10-29 to use more Modal compute. No discussion specific to this plan took place in the channel.",
-        "Ceiling amendments (2026-10-30T13:25:49Z, assignee decision; made before any metric of these runs was inspected, only epoch progress was read; original values kept here as superseded). phoenix14t-xmda-seed56-attempt-2: 9.0 -> 11.0 GPU-h (wall 32400 -> 39600 s, CHF 6 -> 8; superseded values declared 2026-10-30T09:44:53Z). phoenix14t-kd-seed57 and -seed58: 8.0 -> 10.5 GPU-h (wall 28800 -> 37800 s, CHF 5 -> 7; superseded values declared 2026-10-30T10:18:26Z). phoenix14t-xmda-seed58: 9.0 -> 11.0 GPU-h as for seed 56 (superseded values declared 2026-10-30T10:18:26Z). Reason: this gate's revised estimate records that the mix-up/XmDA per-step cost was unmeasured and assumed, and the 2-epoch student preflights (32-sentence dev) did not measure full-dev validation cost. The measured pace projected about 9.0 GPU-h for XmDA seed 56 attempt 2, the final attempt, against a 9.0 ceiling, and about 9.4 GPU-h for KD seed 57 at 150 epochs against 8.0. Going forward, ceilings are declared with at least 30% margin over the measured estimate.",
+        "Ceiling amendments (2026-10-30T13:25:49Z, assignee decision; made before any metric of these runs was inspected, only epoch progress was read; original values kept here as superseded). phoenix14t-xmda-seed56-attempt-2: 9.0 -> 11.0 GPU-h (wall 32400 -> 39600 s, CHF 6 -> 8; superseded values declared 2026-10-30T09:44:53Z). phoenix14t-kd-seed57 and -seed58: 8.0 -> 10.5 GPU-h (wall 28800 -> 37800 s, CHF 5 -> 7; superseded values declared 2026-10-30T10:18:26Z). phoenix14t-xmda-seed58: 9.0 -> 11.0 GPU-h as for seed 56 (superseded values declared 2026-10-30T10:18:26Z). Reason: this gate's revised estimate records that the mix-up/XmDA per-step cost was unmeasured and assumed, and the 2-epoch student preflights (32-sentence dev) did not measure full-dev validation cost. The measured pace projected about 9.0 GPU-h for XmDA seed 56 attempt 2, the final attempt, against a 9.0 ceiling, and about 9.4 GPU-h for KD seed 57 at 150 epochs against 8.0. Going forward, ceilings are declared with at least 30% margin over the measured estimate. Further amendment at 2026-10-30T13:30:59Z (assignee decision; the run had not finished and none of its metrics had been inspected): phoenix14t-xmda-seed57 also 9.0 -> 11.0 GPU-h (wall 32400 -> 39600 s, CHF 6 -> 8; superseded values declared 2026-10-30T10:18:26Z), so all three XmDA seeds share one ceiling.",
         "CSL-Daily teachers on T4 stopped at 2026-10-30T13:23:41Z (assignee decision): at epoch 13-15, each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap loses everything. They were relaunched on A10G in the cu110 image (csl-daily-teacher-seed56..59-attempt-2, declared 2026-10-30T13:23:58Z, ceiling 21 h / 21 GPU-h / CHF 24 each). The estimate of about 16 A10G GPU-h each is extrapolated from the baseline's A10G/T4 validation ratio (31/45 s) and will be updated from the measured teacher-path validation time on A10G."
       ],
       "alternatives": [

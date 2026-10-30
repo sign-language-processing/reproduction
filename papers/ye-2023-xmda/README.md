@@ -374,6 +374,7 @@ All runs used Modal profile `repro-sign`, app `repro-ye-2023-xmda`, and agent `c
 
 | `phoenix14t-mixup-seed56` | 1/2 | full run (conditional) | T4 | 18:11 → 20:01 | 0 / succeeded / completed | — | 10800 / 3 / 2 | ap-KTzbLXBYkXAAc6FmSHc6qX / fc-01M64DPNBTPWPDWKHD15F60DCM |
 | `phoenix14t-kd-seed56` | 1/2 | full run (conditional) | T4 | 18:10 → 20:48 | 0 / succeeded / completed (stopped at `learning_rate_min`, step 28,000) | — | 28800 / 8 / 5 | ap-NSXQb5PKC42B4E6FjgrCva / fc-01M64DPNBWEQSJ0EFTHM5D483F |
+| `csl-daily-teacher-seed56` … `-seed59` (2026-10-30) | 1/1 each | full run (conditional), T4 | T4 | 11:18 → 13:23 | 1 / stopped / no_new_hypothesis (projected 22 h against the 24 h cap; replaced by the A10G runs) | budget_protocol | 72000 / 20 / 12 | ap-7d7JmYAaKIEqbsHXjr2EOI, ap-HU3fS11PGMMBuCwmy6jzJM, ap-bSl6c9KtjeQ1KAqlKuGGGc, ap-1DnvIVCeHJdcHYHhXkL0Hf |
 | `preflight-phoenix14t-xmda-spawn` (2026-10-30) | 1/3 | preflight (`--spawn`) | T4 | 09:40 → 09:44 | 0 / succeeded / completed | — | 7200 / 2 / 2 | ap-ZYXKS0UqAhwZ8ukb63a3KX / fc-01M662X1QT5DD3MZ5XNBAW8SPN |
 
 **XmDA (group `phoenix14t-xmda-seed56`, ceilings 32400 s / 9 GPU-h / CHF 6 per attempt).**
@@ -383,13 +384,13 @@ All runs used Modal profile `repro-sign`, app `repro-ye-2023-xmda`, and agent `c
 Both attempts will be recorded in `reproduction.json.runs` together when attempt 2 ends.
 
 **Ceiling amendments (2026-10-30T13:25:49Z, assignee decision).** These were made before any metric of the affected runs was inspected; only epoch progress was read. The original values are kept as superseded.
-- XmDA seed 56 attempt 2 and XmDA seed 58: 9.0 → 11.0 GPU-h.
+- XmDA seed 56 attempt 2 and XmDA seed 58: 9.0 → 11.0 GPU-h. XmDA seed 57 followed at 2026-10-30T13:30:59Z, so all three XmDA seeds share one ceiling.
 - KD seeds 57 and 58: 8.0 → 10.5 GPU-h.
 - Wall time and the CHF caps were raised in proportion.
 
 Reason: the compute gate's estimate had noted that the mix-up/XmDA per-step cost was unmeasured, and the 2-epoch preflights did not measure full-dev validation cost. The measured pace then projected about 9.0 GPU-h for XmDA attempt 2 and about 9.4 for KD seed 57. From now on, ceilings carry at least 30% margin over the measured estimate.
 
-**CSL-Daily teachers moved from T4 to A10G (assignee decision, 2026-10-30T13:23Z).** On T4, each full-dev validation in the teacher's gloss path took about 152 s, projecting about 22 h per teacher against Modal's 24 h cap. A teacher writes its outputs only at the end, so hitting the cap would lose everything. The four T4 runs were stopped at epochs 13–15 and relaunched on A10G in the cu110 image, with a ceiling of 21 h / 21 GPU-h each. The estimate of about 16 h each is extrapolated and will be updated from the measured A10G validation time. Attempt 1 will be `interrupted / external_interruption / interrupted_full_run`, with `retry_decision: retry`, and its `next_run_id` must point to an existing entry.
+**CSL-Daily teachers moved from T4 to A10G (assignee decision, 2026-10-30T13:23Z).** On T4, each full-dev validation in the teacher's gloss path took about 152 s, projecting about 22 h per teacher against Modal's 24 h cap. A teacher writes its outputs only at the end, so hitting the cap would lose everything. The four T4 runs were stopped at epochs 13–15 (about 2.1 GPU-h each) and relaunched on A10G in the cu110 image, with a ceiling of 21 h / 21 GPU-h each. The run contract does not allow a stop on a human decision to point a retry at a new attempt, so the T4 runs are recorded as single-attempt groups: `stopped / no_new_hypothesis / budget_protocol / stop`, citing gate `compute-full-plan`, with the A10G successor named in the detail. The A10G runs `csl-daily-teacher-seed56..59-attempt-2` are each attempt 1 of 3 in their own group. The estimate of about 16 h each is extrapolated and will be updated from the measured A10G validation time. Attempt 1 will be `interrupted / external_interruption / interrupted_full_run`, with `retry_decision: retry`, and its `next_run_id` must point to an existing entry.
 
 **Throughput and cost (T4, batch 128).**
 
