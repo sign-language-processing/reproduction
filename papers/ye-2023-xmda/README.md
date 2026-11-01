@@ -150,7 +150,20 @@ The CSL-Daily student rows' within-table deltas are taken against this reference
 | `csl-daily-teacher-seed58-attempt-2` | 26,800 | 4 / 1 | 28.55 / 61.14 / 25.20 | 98.60 | 106 (`learning_rate_min`) | 14.03 |
 | `csl-daily-teacher-seed59-attempt-2` | 11,400 | 3 / 1 | 27.90 / 60.15 / 24.54 | 98.10 | 96 (`learning_rate_min`) | 13.1 |
 
-**PHOENIX-2014T conditional students (conditional evidence; the targets stay `not_produced / protocol_ambiguous`).** These are single runs at seed 56 with Table 10 settings and the substitute teachers above. Selection is the same as for the baseline: best dev-BLEU checkpoint, then beam and alpha chosen on dev. Values are BLEU-4 / ROUGE-L / ChrF.
+**PHOENIX-2014T conditional students (conditional evidence; the targets stay `not_produced / protocol_ambiguous`).**
+
+**Three-seed finding.** Run as released, the XmDA row lands within about 0.1 BLEU-4 of the paper: three-seed means of 25.99 dev / 25.28 test against 25.86 / 25.36 (+0.13 / −0.08). Its gain over our baseline, however, is only a little over half the paper's: +1.63 dev / +1.64 test against +2.96 / +2.57. The reason is that our baseline is stronger than the paper's: by 1.9 dev BLEU-4 for the produced seed-56 baseline and 1.5 on the three-seed mean (note a). With n = 3, only the XmDA delta clearly exceeds the seed spread: every XmDA seed beats every baseline seed, by at least 1.02 BLEU-4 on dev and 0.29 on test. The Mix-up and KD seeds clear the best baseline seed on dev only narrowly (by 0.16 and 0.06) and overlap the baseline seeds on test. Single-seed Mix-up gave −0.45 BLEU-4 on test, while the three-seed mean gives +0.97. In the released code the Mix-up branch never mixes gloss embeddings into the encoder input, so this row's gain comes from a gated dropout-consistency regularizer (JSD ×15), not from cross-modal input (note b).
+
+The three seeds are pre-declared replicates: student seeds 56, 57 and 58, in the same image with the same config. Only the student seed varies: the four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference pickle are the same for every seed. Values are BLEU-4, given as the three seeds, then mean ± sample std (n = 3). The replicates are evidence only and are never swapped in for the attached seed-56 values below. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
+
+| Row | Dev BLEU-4 (56 / 57 / 58) | Dev mean ± std | Test BLEU-4 (56 / 57 / 58) | Test mean ± std | Gain over baseline mean, dev / test (paper) |
+| --- | --- | --- | --- | --- | --- |
+| Baseline | 24.78 / 24.33 / 23.98 | 24.36 ± 0.40 | 24.53 / 23.36 / 23.04 | 23.64 ± 0.78 | — |
+| + Mix-up | 25.36 / 24.94 / 25.16 | 25.15 ± 0.21 | 24.08 / 24.95 / 24.79 | 24.61 ± 0.46 | +0.79 / +0.97 (+0.70 / +1.08) |
+| + KD | 25.45 / 24.84 / 25.06 | 25.12 ± 0.31 | 25.59 / 24.98 / 24.39 | 24.99 ± 0.60 | +0.76 / +1.35 (+1.92 / +1.98) |
+| + XmDA | 25.99 / 26.17 / 25.80 | 25.99 ± 0.19 | 25.57 / 25.46 / 24.82 | 25.28 ± 0.41 | +1.63 / +1.64 (+2.96 / +2.57) |
+
+**Attached conditional values (seed 56).** These are the values attached to the targets: single runs at seed 56 with Table 10 settings and the substitute teachers above. Selection is the same as for the baseline: best dev-BLEU checkpoint, then beam and alpha chosen on dev. Values are BLEU-4 / ROUGE-L / ChrF.
 
 | Row | Run | Dev | Test | Paper dev | Paper test | Dev BLEU-4 gain over baseline (ours / paper) |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -159,24 +172,13 @@ The CSL-Daily student rows' within-table deltas are taken against this reference
 | + Cross-modality KD | `phoenix14t-kd-seed56` (step 14,400; beam 3, alpha 1) | 25.45 / 52.13 / 48.21 | 25.59 / 51.85 / 49.25 | 24.82 / 50.04 / 47.98 | 24.77 / 49.53 / 48.04 | +0.67 / +1.92 |
 | + XmDA | `phoenix14t-xmda-seed56-attempt-2` (step 9,000; beam 4, alpha 1) | 25.99 / 52.24 / 48.67 | 25.57 / 51.60 / 48.85 | 25.86 / 52.42 / 50.10 | 25.36 / 49.87 / 51.49 | +1.21 / +2.96 |
 
-On test, the gain over our baseline is −0.45 BLEU-4 for Mix-up (paper +1.08), +1.06 for KD (paper +1.98) and +1.04 for XmDA (paper +2.57). XmDA's absolute scores are within 0.25 BLEU-4 of the paper's (dev +0.13, test +0.21), but its gain over the baseline is less than half the paper's, because our baseline is 1.9 dev BLEU-4 stronger (note a). Three notes for the reviewer:
+At seed 56, the test gain over our baseline is −0.45 BLEU-4 for Mix-up (paper +1.08), +1.06 for KD (paper +1.98) and +1.04 for XmDA (paper +2.57). Three notes for the reviewer:
 
-- **(a) Smaller KD gain: the teacher–student margin is the leading explanation.** The substitute teachers match Table 15 to within 0.7 dev BLEU-4: 26.60–26.66 against 27.02–27.35. Our baseline, however, is 1.9 BLEU-4 stronger than the paper's (24.78 against 22.90 dev). So the margin a teacher can transfer to the student is about 1.9 dev BLEU-4 here, against 4.1–4.5 in the paper. That smaller margin is the leading explanation for the smaller KD gain (+0.67 against +1.92 dev).
-- **(b) Mix-up's −0.45 on test fits what the published code does.** In `training_XmDA.py` at `b6e2ca4`, the mix mask `gloss_predict.ge(1 - mixup_ratio)` is applied to target gloss indices from `ctc_alignment`, which never emits the blank. The mask is therefore true at every frame, and no gloss embedding enters the encoder. The "mixed" input is the sign embedding from a second `sgn_embed` pass with a fresh dropout mask, trained with cross-entropy plus a ×15 JSD consistency term. The branch is gated by `recognition_loss < 5` or `random.randint(0, 10) < 5`. So as released, the Mix-up row is a gated dropout-consistency regularizer, not cross-modality mix-up; the details are in `code_observations`.
+- **(a) Smaller KD gain: the teacher–student margin is the leading explanation.** The substitute teachers match Table 15 to within 0.7 dev BLEU-4: 26.60–26.66 against 27.02–27.35. Our baseline, however, is 1.9 BLEU-4 stronger than the paper's (24.78 against 22.90 dev). So the margin a teacher can transfer to the student is about 1.9 dev BLEU-4 here, against 4.1–4.5 in the paper. That smaller margin is the leading explanation for the smaller KD gain (+0.67 against +1.92 dev). On three-seed means the KD gain is +0.76 dev / +1.35 test against +1.92 / +1.98.
+- **(b) The Mix-up row is a gated dropout-consistency regularizer, not cross-modality mix-up.** In `training_XmDA.py` at `b6e2ca4`, the mix mask `gloss_predict.ge(1 - mixup_ratio)` is applied to target gloss indices from `ctc_alignment`, which never emits the blank. The mask is therefore true at every frame, and no gloss embedding enters the encoder. The "mixed" input is the sign embedding from a second `sgn_embed` pass with a fresh dropout mask, trained with cross-entropy plus a ×15 JSD consistency term. The branch is gated by `recognition_loss < 5` or `random.randint(0, 10) < 5`. The details are in `code_observations` (the "Mix-up branch" entry, and the ×15 and gating entries). Its seed-56 −0.45 on test is within seed variation; the three-seed mean is +0.97.
 - **(c) KD's early stop is upstream scheduler behaviour.** KD stopped in epoch 104, at step 28,000, because the plateau scheduler took the learning rate below `learning_rate_min` (1e-7). `_add_report` then sets `stop`. The same rule is applied to every row. All three XmDA seeds stopped the same way (epochs 104, 98 and 119 for seeds 56, 57 and 58), as did all three KD seeds; the baseline, the teachers and Mix-up never reached the floor within 150 epochs.
 
-**PHOENIX-2014T replicates (pre-declared; evidence only, never swapped in).** Each row adds student seeds 57 and 58 to seed 56, in the same image with the same config. Only the student seed varies: the four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference pickle are the same for every seed. Values are BLEU-4, given as the three seeds, then mean ± sample std (n = 3).
-
-| Row | Dev BLEU-4 (56 / 57 / 58) | Dev mean ± std | Test BLEU-4 (56 / 57 / 58) | Test mean ± std |
-| --- | --- | --- | --- | --- |
-| Baseline | 24.78 / 24.33 / 23.98 | 24.36 ± 0.40 | 24.53 / 23.36 / 23.04 | 23.64 ± 0.78 |
-| + Mix-up | 25.36 / 24.94 / 25.16 | 25.15 ± 0.21 | 24.08 / 24.95 / 24.79 | 24.61 ± 0.46 |
-| + KD | 25.45 / 24.84 / 25.06 | 25.12 ± 0.31 | 25.59 / 24.98 / 24.39 | 24.99 ± 0.60 |
-| + XmDA | 25.99 / 26.17 / 25.80 | 25.99 ± 0.19 | 25.57 / 25.46 / 24.82 | 25.28 ± 0.41 |
-
-Across seeds, the seed-56 Mix-up result of −0.45 on test (note b) is within seed variation. The three-seed means put Mix-up at +0.79 dev and +0.97 test BLEU-4 above the baseline, against +0.70 and +1.08 in the paper. On the same basis KD is +0.76 dev and +1.35 test above the baseline, against +1.92 and +1.98 in the paper, and XmDA is +1.63 dev and +1.64 test, against +2.96 and +2.57. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
-
-**Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). The PHOENIX-2014T Mix-up, KD and XmDA rows carry the conditional values above. The CSL-Daily rows wait for the A10G teachers, then their students.
+**Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). The PHOENIX-2014T Mix-up, KD and XmDA rows carry the conditional values above. The CSL-Daily rows wait for their students, launched on 2026-11-01.
 
 | Target IDs | System | Dataset | Original dev (BLEU-4 / ROUGE-L / ChrF) | Original test |
 | --- | --- | --- | --- | --- |
