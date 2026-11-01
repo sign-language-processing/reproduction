@@ -10524,6 +10524,144 @@
         "phoenix14t-xmda-seed58-test-results",
         "phoenix14t-xmda-seed58-train-log"
       ]
+    },
+    {
+      "run_id": "csl-daily-baseline-cu110-seed57",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-baseline",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 57) of the in-image CSL-Daily reference baseline (csl-daily-baseline-cu110-seed56): Table 10 CSL-Daily in the cu110 image on A10G (gate environment-cu110); only the seed differs. Reported in the mean and std over seeds 56-58; the produced baseline target stays csl-daily-baseline-seed56.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind baseline --seed 57 --run-id csl-daily-baseline-cu110-seed57",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-baseline-cu110-seed57",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:39:32Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 5.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:40:35Z",
+      "finished_at_utc": "2026-11-01T13:09:47Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training ran all 150 epochs (last logged step 21,000); the best dev-BLEU checkpoint (step 12,800) was reloaded by prediction_XmDA.test, which selected beam 3 and alpha 1 on dev and reported dev and test metrics. Wall time 8,952 s (2.49 GPU-h), within the 14,400 s / 4.0 GPU-h ceiling declared 2026-11-01T10:39:32Z. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-4nBkfyrUnP3jzKteEOTW99",
+        "function_call_id": "fc-01M6BB4KXM9MKZY3HAKFJ1Z754",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-4nBkfyrUnP3jzKteEOTW99",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 2.49,
+        "gpu_hours": 2.49,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 57,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 50,
+        "forward_type": "sign",
+        "level": "word (space-joined label_char, so character tokens)"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 6279,
+        "last_logged_step": 21000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/",
+        "best_step": 12800,
+        "dev": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 33.27,
+          "bleu4": 17.28,
+          "chrf": 16.2,
+          "rouge_l": 46.42
+        },
+        "test": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 32.4,
+          "bleu4": 17.62,
+          "chrf": 16.44,
+          "rouge_l": 46.56
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "csl-daily-baseline-cu110-seed57-dev-translations",
+        "csl-daily-baseline-cu110-seed57-test-translations",
+        "csl-daily-baseline-cu110-seed57-dev-results",
+        "csl-daily-baseline-cu110-seed57-test-results",
+        "csl-daily-baseline-cu110-seed57-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -11520,6 +11658,46 @@
       "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/train.log",
       "sha256": "6625cae0c51f71fe5a845cc2cc125512102255852a0bf17f7b40d255a7b6eafb",
       "produced_by": "csl-daily-teacher-seed59-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-baseline-cu110-seed57-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/best.IT_00012800.BW_03.A_1.dev.txt",
+      "sha256": "d83ff22b0bff88c77b9b7c9300dec41390a8f59f1833e013782bcf8554b14d74",
+      "produced_by": "csl-daily-baseline-cu110-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-baseline-cu110-seed57-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/best.IT_00012800.BW_03.A_1.test.txt",
+      "sha256": "397d5e833fb253a61f05db96df5182e9fa763fd6723a4340c27d2124a63e1213",
+      "produced_by": "csl-daily-baseline-cu110-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-baseline-cu110-seed57-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/best.IT_00012800.dev_results.pkl",
+      "sha256": "6bf695bfb2aea7b7810e89428941f49683bf52e61445563523492ec7d9ff13a9",
+      "produced_by": "csl-daily-baseline-cu110-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-baseline-cu110-seed57-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/best.IT_00012800.test_results.pkl",
+      "sha256": "b717b97e9b5bfd1a525108dcb4d7fa87c9d8bde73040f14e40d7044eced221bf",
+      "produced_by": "csl-daily-baseline-cu110-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-baseline-cu110-seed57-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-baseline-cu110-seed57/train.log",
+      "sha256": "3c358d99373a300155b77c9192e8759f69b31bbe722628d159274dcc2a8a540d",
+      "produced_by": "csl-daily-baseline-cu110-seed57",
       "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
     }
   ],
