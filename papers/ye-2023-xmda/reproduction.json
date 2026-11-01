@@ -2218,10 +2218,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 17.55 (+0.50 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-dev-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2229,8 +2235,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 dev bleu4 = 17.55 (raw artifact csl-daily-kd-seed56-dev-results; train.log [DEV] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 17.55 / 17.82 / 17.66, mean 17.68, sample std 0.14 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 17.55
       }
     },
     {
@@ -2254,10 +2263,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 47.27 (+3.10 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-dev-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2265,8 +2280,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 dev rouge_l = 47.27 (raw artifact csl-daily-kd-seed56-dev-results; train.log [DEV] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 47.27 / 46.82 / 46.89, mean 46.99, sample std 0.24 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 47.27
       }
     },
     {
@@ -2290,10 +2308,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 16.54 (+0.80 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-dev-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2301,8 +2325,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 dev chrf = 16.54 (raw artifact csl-daily-kd-seed56-dev-results; train.log [DEV] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 16.54 / 16.56 / 16.47, mean 16.52, sample std 0.05 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 16.54
       }
     },
     {
@@ -2326,10 +2353,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 17.87 (+0.95 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-test-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2337,8 +2370,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 test bleu4 = 17.87 (raw artifact csl-daily-kd-seed56-test-results; train.log [TEST] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 17.87 / 18.17 / 18.17, mean 18.07, sample std 0.17 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 17.87
       }
     },
     {
@@ -2362,10 +2398,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 47.06 (+3.16 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-test-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2373,8 +2415,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 test rouge_l = 47.06 (raw artifact csl-daily-kd-seed56-test-results; train.log [TEST] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 47.06 / 47.12 / 47.1, mean 47.09, sample std 0.03 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 47.06
       }
     },
     {
@@ -2398,10 +2443,16 @@
         "status": "not_produced",
         "reason": {
           "code": "protocol_ambiguous",
-          "detail": "Conditional kd run not launched. Its teachers use invented substitutions (signjoey gloss teachers in place of PGen fairseq, released DA_paralle_sample pseudo-pairs, invented seed/subset policy; gate xmda-protocol), and the published code cannot validate or decode forward_type=gloss teachers (gate teacher-gloss-decoding). Even when run, the value stays conditional evidence."
+          "detail": "Conditional run csl-daily-kd-seed56 finished: 16.66 (+1.01 vs the paper), beam 4 / alpha 1 selected on dev. It stays conditional evidence: the teachers are invented substitutions (signjoey gloss teachers instead of PGen fairseq models, released DA_paralle_sample pseudo-pairs, seeds 56-59 on the same data; gate xmda-protocol), teacher decoding uses the invented patches/0001 (gate teacher-gloss-decoding), and it ran in the cu110 image on A10G (gate environment-cu110)."
         },
-        "run_ids": [],
-        "artifact_ids": [],
+        "run_ids": [
+          "csl-daily-kd-seed56",
+          "csl-daily-kd-seed57",
+          "csl-daily-kd-seed58"
+        ],
+        "artifact_ids": [
+          "csl-daily-kd-seed56-test-results"
+        ],
         "gate_ids": [
           "teacher-gloss-decoding",
           "xmda-protocol",
@@ -2409,8 +2460,11 @@
         ],
         "evidence": [
           "preflight-phoenix14t-teacher failed in validation with AttributeError: 'Batch' object has no attribute 'gls_input_mask' (gate teacher-gloss-decoding).",
-          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations."
-        ]
+          "Gate xmda-protocol lists the teacher substitutions the assignment accepted as conditional deviations.",
+          "Conditional value: csl-daily-kd-seed56 test chrf = 16.66 (raw artifact csl-daily-kd-seed56-test-results; train.log [TEST] block). Within-table reference: the in-image baseline csl-daily-baseline-cu110-seed56 (same image and GPU).",
+          "Pre-declared replicates (student seeds 56, 57, 58; only the student seed varies): 16.66 / 16.83 / 16.8, mean 16.76, sample std 0.09 (n = 3). Evidence only; the reported value stays seed 56."
+        ],
+        "conditional_value": 16.66
       }
     },
     {
@@ -11102,6 +11156,148 @@
         "csl-daily-kd-seed57-test-results",
         "csl-daily-kd-seed57-train-log"
       ]
+    },
+    {
+      "run_id": "csl-daily-kd-seed56",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The pinned SignXmDA entry point with forward_type=sign on the multi-reference training pickle (originals plus the four CSL-Daily teachers' training-set translations), Table 10 CSL-Daily settings (seed 56), cu110 image on A10G (gate environment-cu110), trains the + Cross-modality KD student; conditional evidence for table2-kd-*.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind kd --seed 56 --teachers csl-daily-teacher-seed58-attempt-2 --run-id csl-daily-kd-seed56",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-kd-seed56",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:39:32Z",
+        "max_wall_time_seconds": 61200,
+        "max_gpu_hours": 17.0,
+        "max_cost_chf": 20.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:40:04Z",
+      "finished_at_utc": "2026-11-01T14:53:02Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 52 because the learning rate fell below learning_rate_min (upstream _add_report rule, same for every row) (last logged step 37,000); the best dev-BLEU checkpoint (step 23,800) was reloaded by prediction_XmDA.test, which selected beam 4 and alpha 1 on dev and reported dev and test metrics. Wall time 15,178 s (4.22 GPU-h), within the 61,200 s / 17.0 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol",
+          "teacher-gloss-decoding",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-P7mkiIU5SbEkWgZDo6w5eK",
+        "function_call_id": "fc-01M6BB3PJ541ZPCC32YHMT4Q00",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-P7mkiIU5SbEkWgZDo6w5eK",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 4.22,
+        "gpu_hours": 4.22,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 56,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 50,
+        "forward_type": "sign",
+        "level": "word (space-joined label_char, so character tokens)",
+        "mixup_ratio": 0.6,
+        "train_pickle": "csl-daily.smkd.train.teachers.pickle (sha256 a6f195f586e62627c63b63a3b3e8579245c9c288e1211acafa7db2106feb38b1)"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 6687,
+        "last_logged_step": 37000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/",
+        "best_step": 23800,
+        "dev": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 31.28,
+          "bleu4": 17.55,
+          "chrf": 16.54,
+          "rouge_l": 47.27
+        },
+        "test": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 31.06,
+          "bleu4": 17.87,
+          "chrf": 16.66,
+          "rouge_l": 47.06
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "csl-daily-kd-seed56-dev-translations",
+        "csl-daily-kd-seed56-test-translations",
+        "csl-daily-kd-seed56-dev-results",
+        "csl-daily-kd-seed56-test-results",
+        "csl-daily-kd-seed56-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -12258,6 +12454,46 @@
       "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed57/train.log",
       "sha256": "faee913a2bed7bb4a3aaf68996db9fd20438676ce67f26857930f56b84d281c1",
       "produced_by": "csl-daily-kd-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-kd-seed56-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/best.IT_00023800.BW_04.A_1.dev.txt",
+      "sha256": "a0d124289d18a0ccc96e52c22feaa2fc112c3a2191cd4bab3eed4beccd709cda",
+      "produced_by": "csl-daily-kd-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-kd-seed56-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/best.IT_00023800.BW_04.A_1.test.txt",
+      "sha256": "c21bf0fcebcad538ddc72bfdf358d18f11af0e39a2510f404a178739de9f4649",
+      "produced_by": "csl-daily-kd-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-kd-seed56-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/best.IT_00023800.dev_results.pkl",
+      "sha256": "73397ad7ec623fcc25a922fd3cabb1bc82c820767d4ed427f57663d14c587780",
+      "produced_by": "csl-daily-kd-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-kd-seed56-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/best.IT_00023800.test_results.pkl",
+      "sha256": "8df0dabbf4b4befdc690c3c8007854912ede40520958337e0534107a9c1396e3",
+      "produced_by": "csl-daily-kd-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-kd-seed56-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-kd-seed56/train.log",
+      "sha256": "90f33a5a646e650e2c819cdeb8454932eab8823dcb9446cfe6de8543714e1c3b",
+      "produced_by": "csl-daily-kd-seed56",
       "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
     }
   ],
