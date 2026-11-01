@@ -391,6 +391,18 @@ def pickles(dataset: str, teacher_runs: list = ()) -> list:
 @APP.function(image=XMDA_IMAGE, volumes=VOLUMES, timeout=1800)
 def gloss_embedding(teacher_run: str) -> dict:
     """Dump the best teacher checkpoint's GlossEmbeddings for gloss_pre_embedding."""
+    return _gloss_embedding(teacher_run)
+
+
+# Teachers trained in the cu110 image save torch >= 1.6 zip-format checkpoints,
+# which torch 1.4 cannot read.
+@APP.function(image=XMDA_CU110_IMAGE, volumes=VOLUMES, timeout=1800)
+def gloss_embedding_cu110(teacher_run: str) -> dict:
+    """gloss_embedding() in the torch 1.7.1+cu110 image."""
+    return _gloss_embedding(teacher_run)
+
+
+def _gloss_embedding(teacher_run: str) -> dict:
     import glob
 
     run = RUNS_DIR / teacher_run
@@ -562,7 +574,7 @@ def main(step: str, split: str = "dev", limit: int = 0, dataset: str = "phoenix1
     elif step == "teacher_pickle":
         result = pickles.remote(dataset, teachers.split(","))
     elif step == "gloss_embedding":
-        result = gloss_embedding.remote(teachers)
+        result = {"torch14": gloss_embedding, "cu110": gloss_embedding_cu110}[image].remote(teachers)
     else:
         raise ValueError(step)
     print(json.dumps(result, indent=2))

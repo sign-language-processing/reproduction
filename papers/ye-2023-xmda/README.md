@@ -23,7 +23,7 @@
 - **Gate `teacher-gloss-decoding` (resolved 2026-10-29 by the assignee as `patch-mirror-training`).** The conditional teachers are signjoey `forward_type=gloss` models, which the pinned code cannot validate or decode. `patches/0001-gloss-decoding-mirror-training.patch` builds the validation/test gloss input exactly as `Batch_Sign` does in training. This is an **invented behavior choice**: the authors' fork (Atrewin/slt `9ecb427`, "all extend gloss") added the repetition to the training batches only, so no author evidence exists for the decoding side. `patches/0002-test-pass-forward-type.patch` is a correctness patch that the assignee kept: `test()` passes `forward_type` to both dev passes but omits it on the final test pass. Both patches touch only the gloss path.
 - **Gate `compute-full-plan` (resolved 2026-10-30 by the assignee).** The assignee resolved it on the project lead's standing instruction of 2026-10-29 in `#repro-sign-team-r` to use more Modal compute. No discussion specific to this plan took place in the channel. Approved scope:
   - **PHOENIX-2014T:** the four teachers, Mix-up, KD and XmDA are done (Results). XmDA attempt 1 was cancelled after 5 h by a client-token expiry; attempt 2, a from-scratch restart launched with `--spawn`, finished. Two extra student seeds (57, 58) run for all four rows; seed 56 stays the reported value. The replicates vary only the student seed. The four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference training pickle are identical across student seeds. The replicate policy was pre-declared at 2026-10-30T10:18:26Z, before any replicate launched: replicates are reported as mean and sample standard deviation over seeds 56, 57 and 58, attached as evidence and never swapped in.
-  - **CSL-Daily:** the four teachers, then the Mix-up, KD and XmDA students.
+  - **CSL-Daily:** the four teachers (done on A10G, Results), then the Mix-up, KD and XmDA students. The students and pre-declared replicates (seeds 57 and 58 of the in-image reference baseline, Mix-up, KD and XmDA) were declared at 2026-11-01T10:39:32Z and launched together on A10G in the cu110 image. Ceilings, each at least 30% above its estimate and under the 24 h function cap: baseline 4.0, Mix-up 5.0, KD 17.0 and XmDA 22.5 GPU-h, against estimates of 2.5, about 3.2, 12.7 and 17.0. Seed 56 stays the attached conditional value; replicates are mean and sample std over three seeds, evidence only.
   - **Environment trial (gate `environment-cu110`, resolved 2026-10-30: adopt).** `Dockerfile.cu110` swaps in torch 1.7.1+cu110 / torchtext 0.8.1, with no SignXmDA code changes (image `im-zcYV3stvhV0g565br8nSMZ`, freeze `17115c8c…`). The comparability criterion was first written at 10:27:43Z and amended at 10:59:47Z, both before the validation run finished; the original is kept in the gate as superseded. The reason for the amendment: with three seeds, a fourth draw from the same distribution falls outside their range with probability 1/2 per metric. Amended rule: the new-image seed-56 PHOENIX-2014T baseline must be within max(1.0 BLEU, the three-seed range) of the old-image mean on dev and on test BLEU-4. Result: old-image seeds 56/57/58 give dev 24.78 / 24.33 / 23.98 (mean 24.36) and test 24.53 / 23.36 / 23.04 (mean 23.64). The new image gives dev 24.68 (difference 0.32, allowed 1.00) and test 23.90 (difference 0.26, allowed 1.49), so it passes. It would also have passed the superseded rule. So the CSL-Daily student rows (Mix-up, KD, XmDA, plus their own in-image reference baseline) run in the new image on A10G. The produced CSL-Daily baseline stays the old-image T4 run, the CSL-Daily teachers stay in the old image, and PHOENIX-2014T stays in the old image. Because the student rows share an environment with their own reference baseline, the environment cannot confound within-table deltas; this check only guarded against a broken environment.
 
   The technical limits stand: Modal's 24 h function cap, and no real resume in the code (see How to repeat this). Validation frequency stays at every 100 steps.
@@ -284,7 +284,25 @@ $M run --detach modal_app.py --step train --spawn --dataset phoenix14t --kind xm
   --teachers phoenix14t-teacher-seed56 --run-id phoenix14t-xmda-seed56-attempt-2
 ```
 
-**Conditional chain and resume.** The PHOENIX-2014T chain is step 8 above, with `--spawn` for every run expected to take more than a few hours. For CSL-Daily, run the same commands with `--dataset csl-daily` and run IDs (gate `compute-full-plan`, resolved 2026-10-30).
+**Conditional chain and resume.** The PHOENIX-2014T chain is step 8 above, with `--spawn` for every run expected to take more than a few hours. The CSL-Daily chain (gate `compute-full-plan`, resolved 2026-10-30; gate `environment-cu110`) runs on A10G in the cu110 image:
+
+```bash
+for seed in 56 57 58 59; do
+  $M run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind teacher --seed $seed --run-id csl-daily-teacher-seed$seed-attempt-2
+done
+$M run modal_app.py --step gloss_embedding --image cu110 --teachers csl-daily-teacher-seed58-attempt-2
+$M run modal_app.py --step teacher_pickle --dataset csl-daily \
+  --teachers csl-daily-teacher-seed56-attempt-2,csl-daily-teacher-seed57-attempt-2,csl-daily-teacher-seed58-attempt-2,csl-daily-teacher-seed59-attempt-2
+for seed in 56 57 58; do
+  for kind in mixup kd xmda; do
+    $M run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind $kind --seed $seed \
+      --teachers csl-daily-teacher-seed58-attempt-2 --run-id csl-daily-$kind-seed$seed
+  done
+done
+for seed in 56 57 58; do
+  $M run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind baseline --seed $seed --run-id csl-daily-baseline-cu110-seed$seed
+done
+```
 
 **No real resume exists in the published code.** This is from reading `training_XmDA.py` at `b6e2ca4`; details are in `code_observations`.
 - **Only the best checkpoint is ever saved.** A checkpoint is written only on a new best dev score, and `keep_last_ckpts: 1` keeps only that one. There is no last-step checkpoint.
@@ -338,7 +356,7 @@ So an interrupted CSL-Daily run can only be recovered by a full re-run. That cos
   - `modal_app.py` applies config values at runtime.
   - `extract_smkd_features.py` extracts features with SLTUNet's own `SignEmbedding`.
   - `build_pickles.py` writes neccam/slt-format pickles.
-  - `dump_gloss_embedding.py` dumps the best teacher's `GlossEmbeddings` for the Mix-up and XmDA students.
+  - `dump_gloss_embedding.py` dumps the best teacher's `GlossEmbeddings` for the Mix-up and XmDA students. For CSL-Daily it runs in the cu110 image (`modal_app.py:gloss_embedding_cu110`, `--image cu110`), a glue change: the CSL-Daily teachers were trained with torch 1.7.1, which saves torch ≥ 1.6 zip-format checkpoints that torch 1.4 cannot read.
   - `modal_app.py:decode_grid` re-decodes a finished run's best checkpoint one beam/alpha setting at a time through the upstream `prediction_XmDA.test`.
 - **Changes to SLTUNet's extractor at runtime (features unaffected).**
   - The extractor stubs `ctcdecode` and replaces the CTC decoder with a no-op, because MaxDecode fails on float lengths under torch 2.11.

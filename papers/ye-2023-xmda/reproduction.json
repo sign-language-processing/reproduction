@@ -9654,6 +9654,170 @@
       ]
     },
     {
+      "kind": "data_preparation",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "run_id": "csl-daily-gloss-embedding",
+      "experiment_id": "csl-daily-xmda",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step gloss_embedding --image cu110 --teachers csl-daily-teacher-seed58-attempt-2",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:36:57Z",
+      "finished_at_utc": "2026-11-01T10:37:36Z",
+      "attempt": {
+        "group_id": "csl-daily-gloss-embedding",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:36:55Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Dumped the GlossEmbeddings (lut 8398 x 512 plus feature map and batch norm) of the best CSL-Daily teacher, csl-daily-teacher-seed58-attempt-2 (highest dev BLEU-4 of the four, 28.55), from its best checkpoint 26800.ckpt, for model.gloss_pre_embedding of the CSL-Daily Mix-up and XmDA students. Run in the cu110 image (gloss_embedding_cu110, a glue change in modal_app.py): the teachers were trained with torch 1.7.1, which saves torch >= 1.6 zip-format checkpoints that torch 1.4 in the old image cannot read. dump_gloss_embedding.py is unchanged. Start and finish are the Modal app's creation and stop times; the summary did not include a function-call ID.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-1FjqXp0c1ka87GWkZFBdtc",
+        "function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-1FjqXp0c1ka87GWkZFBdtc",
+        "hardware": "CPU only (4 vCPU, no GPU)",
+        "gpu_count": 0,
+        "wall_time_hours": 0.011,
+        "gpu_hours": 0.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outputs": {
+        "gloss_embedding": {
+          "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/gloss_embedding.pt",
+          "sha256": "47df14f29c4760b0a63659f98a20b1df0fe47cfbc6d0fdcf187edd53b1d513c9"
+        },
+        "gls_vocab_sha256": "0baf2faf08931fdb87970096d0ae69df5b64e8cc4b8c07dacc5c8f3412f250d0",
+        "checkpoint": "runs/csl-daily-teacher-seed58-attempt-2/26800.ckpt",
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "artifact_ids": [],
+      "environment": {
+        "image": "Modal image from papers/ye-2023-xmda/Dockerfile.cu110 (torch 1.7.1+cu110), plus Modal add_python 3.11, pyyaml 6.0.2 and dump_gloss_embedding.py.",
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      }
+    },
+    {
+      "kind": "data_preparation",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "run_id": "csl-daily-teacher-pickle",
+      "experiment_id": "csl-daily-kd",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run modal_app.py --step teacher_pickle --dataset csl-daily --teachers csl-daily-teacher-seed56-attempt-2,csl-daily-teacher-seed57-attempt-2,csl-daily-teacher-seed58-attempt-2,csl-daily-teacher-seed59-attempt-2",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:37:45Z",
+      "finished_at_utc": "2026-11-01T10:38:21Z",
+      "attempt": {
+        "group_id": "csl-daily-teacher-pickle",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:36:55Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Wrote the 92,000-entry multi-reference CSL-Daily training pickle: 18,400 originals plus the training-set translations of the four A10G teachers (seeds 56-59, attempt-2 runs), read from each run's best.IT_*.test.txt. It overwrote the preflight pickle (f3711c7f...). Text-only, so it ran in the old image. Start and finish are the Modal app's creation and stop times; the summary did not include a function-call ID.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-dF2pzZHhx6eqV8TCZ246su",
+        "function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-dF2pzZHhx6eqV8TCZ246su",
+        "hardware": "CPU only (4 vCPU, no GPU)",
+        "gpu_count": 0,
+        "wall_time_hours": 0.01,
+        "gpu_hours": 0.0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "outputs": {
+        "teacher_pickle": {
+          "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/features/csl-daily.smkd.train.teachers.pickle",
+          "sha256": "a6f195f586e62627c63b63a3b3e8579245c9c288e1211acafa7db2106feb38b1"
+        },
+        "entries": 92000,
+        "teachers": 4,
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "artifact_ids": []
+    },
+    {
       "run_id": "phoenix14t-kd-seed58",
       "kind": "full_run",
       "experiment_id": "phoenix14t-kd",
@@ -11503,7 +11667,8 @@
         "Measured A10G teacher-path validation (2026-10-30T13:36Z, csl-daily-teacher-seed56-attempt-2, first four full-dev validations): 104, 115, 115 and 110 s, so about 112 s against the extrapolated 105 s. Epoch 3 was reached 9.7 min after start. Updated estimate per A10G teacher: about 429 validations x 112 s = 13.3 h, plus training of about 1-2 h, plus a final dev grid and training-set decode of about 1.5 h, so about 14-17 h (central about 15.5 h) against the declared 21 h ceiling and the 24 h cap. The ceiling leaves about 35% margin at the central estimate and about 24% at the upper end; it cannot be raised much without reaching the cap. To be re-measured from the observed epoch rate after a few hours.",
         "Correction (2026-10-30T14:45Z): the 13:15Z projection of about 9.4 GPU-h for phoenix14t-kd-seed57, cited as a reason for its ceiling amendment, was wrong. It measured progress from the spawn time (10:19Z), but the function only started at 12:06:29Z, after a delay of unknown cause (queueing or preemption). The run actually took 2.57 GPU-h and stopped early at learning_rate_min. The phoenix14t-xmda-seed57 projection (about 8.4 GPU-h) used the same spawn-time basis, so it may also be overstated. The amended ceilings stand as declared; they are maxima.",
         "Re-measured A10G teacher epoch rate (2026-10-30T16:37Z, train.log EPOCH lines of csl-daily-teacher-seed56..59-attempt-2): epoch 1 at 13:24-13:28Z and epoch 30-31 at 16:32-16:35Z, i.e. 6.25-6.46 min per epoch across the four seeds (validation included; validation frequency unchanged). 150 epochs therefore take about 15.6-16.2 h, plus the final dev grid and training-set decode of about 1.5 h: about 17.1-17.7 h per teacher, finishing around 06:30-07:10Z on 2026-10-31. This supersedes the 14-17 h estimate above. The declared 21 h ceiling stays (no amendment): it leaves about 19-23% margin, below the 30% declaration rule but not threatened, and Modal's 24 h cap leaves about 6 h beyond the upper estimate. A learning_rate_min stop, as in the PHOENIX KD/XmDA students, would only shorten the runs.",
-        "Outcome of the A10G CSL-Daily teachers (2026-10-31): all four succeeded at 13.10 / 15.29 / 14.03 / 14.33 GPU-h (seeds 59 / 57 / 58 / 56), 56.75 GPU-h in total, below the 17.1-17.7 h re-measured estimate because each stopped early on learning_rate_min (epochs 96-116). The final dev grid plus training-set decode took 2.5-2.9 h against the 1.5 h estimated."
+        "Outcome of the A10G CSL-Daily teachers (2026-10-31): all four succeeded at 13.10 / 15.29 / 14.03 / 14.33 GPU-h (seeds 59 / 57 / 58 / 56), 56.75 GPU-h in total, below the 17.1-17.7 h re-measured estimate because each stopped early on learning_rate_min (epochs 96-116). The final dev grid plus training-set decode took 2.5-2.9 h against the 1.5 h estimated.",
+        "CSL-Daily students and replicates (assignee instruction 2026-11-01), declared at 2026-11-01T10:39:32Z before launch and launched 10:40-10:47Z with --spawn on A10G in the cu110 image: csl-daily-{mixup,kd,xmda}-seed56, and pre-declared replicates csl-daily-baseline-cu110-seed{57,58} and csl-daily-{mixup,kd,xmda}-seed{57,58}. Estimates from the cu110 preflights: baseline 2.5, Mix-up ~3.2, KD ~12.7, XmDA ~17.0 A10G GPU-h each. Ceilings (>= 30% margin, all under the 24 h function cap): 4.0 / 5.0 / 17.0 / 22.5 GPU-h (14400 / 18000 / 61200 / 81000 s; CHF 5 / 6 / 20 / 26). Total estimate ~104 A10G GPU-h, ceilings sum 141.5 GPU-h. An XmDA run that reaches its ceiling or the 24 h cap is recorded as stopped / wall_time_ceiling_reached / stop. Replicate policy as for PHOENIX: only the student seed varies; seed 56 stays the attached conditional value; mean and sample std over seeds 56-58 (n = 3) are evidence only."
       ],
       "alternatives": [
         {
