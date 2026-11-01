@@ -11476,6 +11476,148 @@
         "csl-daily-mixup-seed56-test-results",
         "csl-daily-mixup-seed56-train-log"
       ]
+    },
+    {
+      "run_id": "csl-daily-mixup-seed57",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-mixup",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 57) of the CSL-Daily mixup row: same image, Table 10 config, teachers, gloss embedding and pickle as csl-daily-mixup-seed56; only the student seed differs. Reported in the mean and std over seeds 56-58; never swapped in for the seed-56 value.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind mixup --seed 57 --teachers csl-daily-teacher-seed58-attempt-2 --run-id csl-daily-mixup-seed57",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-mixup-seed57",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:39:32Z",
+        "max_wall_time_seconds": 45000,
+        "max_gpu_hours": 12.5,
+        "max_cost_chf": 14.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:40:50Z",
+      "finished_at_utc": "2026-11-01T20:26:47Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training ran all 150 epochs (last logged step 21,000); the best dev-BLEU checkpoint (step 19,200) was reloaded by prediction_XmDA.test, which selected beam 3 and alpha 1 on dev and reported dev and test metrics. Wall time 35,157 s (9.77 GPU-h), within the 45,000 s / 12.5 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times. Ceiling amended at 2026-11-01T14:25:45Z (assignee decision, before any Mix-up validation score was inspected): 45,000 s / 12.5 GPU-h / CHF 14; superseded 18,000 s / 5.0 GPU-h / CHF 6 declared 2026-11-01T10:39:32Z. Reason: full-dev validation on the mix-up path takes about 125 s on A10G, not the about 31 s the estimate assumed (the preflight validated on a 32-sentence dev subset); see gate compute-full-plan.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol",
+          "teacher-gloss-decoding",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-pzWg9UF1BiSCRfKxk5GxnC",
+        "function_call_id": "fc-01M6BB52TSQ7JS8T34F41TRQTZ",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-pzWg9UF1BiSCRfKxk5GxnC",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 9.77,
+        "gpu_hours": 9.77,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 57,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 50,
+        "forward_type": "mixup",
+        "level": "word (space-joined label_char, so character tokens)",
+        "mixup_ratio": 0.6,
+        "gloss_pre_embedding": "runs/csl-daily-teacher-seed58-attempt-2/gloss_embedding.pt (sha256 47df14f29c4760b0a63659f98a20b1df0fe47cfbc6d0fdcf187edd53b1d513c9)"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 13745,
+        "last_logged_step": 21000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/",
+        "best_step": 19200,
+        "dev": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 35.68,
+          "bleu4": 18.11,
+          "chrf": 16.35,
+          "rouge_l": 46.66
+        },
+        "test": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 35.38,
+          "bleu4": 18.86,
+          "chrf": 16.92,
+          "rouge_l": 47.45
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "csl-daily-mixup-seed57-dev-translations",
+        "csl-daily-mixup-seed57-test-translations",
+        "csl-daily-mixup-seed57-dev-results",
+        "csl-daily-mixup-seed57-test-results",
+        "csl-daily-mixup-seed57-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -12712,6 +12854,46 @@
       "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed56/train.log",
       "sha256": "c230492a748cbd72c5951c5acc72943788b983fe222463b39d35f0cdf5086956",
       "produced_by": "csl-daily-mixup-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-mixup-seed57-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/best.IT_00019200.BW_03.A_1.dev.txt",
+      "sha256": "6b8431826964fe70599e7e0bd0d9eccc3c0e9661053777be43b3e830d28d45a0",
+      "produced_by": "csl-daily-mixup-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-mixup-seed57-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/best.IT_00019200.BW_03.A_1.test.txt",
+      "sha256": "9aded904eb5b1804f2335f1777dfe7540c96965718b058fcff3022cd5c67b310",
+      "produced_by": "csl-daily-mixup-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-mixup-seed57-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/best.IT_00019200.dev_results.pkl",
+      "sha256": "a09f9482f128ea8b7c821124ca43c810a42ba81e48da2bf83a19f67e26924608",
+      "produced_by": "csl-daily-mixup-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-mixup-seed57-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/best.IT_00019200.test_results.pkl",
+      "sha256": "afe55185902bec8c177b7bfd3c919e164c5d8e7c804f01328d5487842e8ae87f",
+      "produced_by": "csl-daily-mixup-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-mixup-seed57-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-mixup-seed57/train.log",
+      "sha256": "678807a0b535f06189d7ee7d3bb431d535afccebcd1e58a6b9f09fb847239e6e",
+      "produced_by": "csl-daily-mixup-seed57",
       "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
     }
   ],
