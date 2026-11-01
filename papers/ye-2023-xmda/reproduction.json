@@ -9078,6 +9078,582 @@
       "artifact_ids": []
     },
     {
+      "run_id": "csl-daily-teacher-seed56-attempt-2",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 56 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on A10G in the cu110 image (gate environment-cu110) within the declared 21 h ceiling and writes its training-set translations for the KD references. Successor of the stopped T4 run csl-daily-teacher-seed56.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind teacher --seed 56 --run-id csl-daily-teacher-seed56-attempt-2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed56-attempt-2",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T13:23:58Z",
+        "max_wall_time_seconds": 75600,
+        "max_gpu_hours": 21.0,
+        "max_cost_chf": 24.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T13:24:08Z",
+      "finished_at_utc": "2026-10-31T03:43:41Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 111 at 2026-10-31 01:14:24Z because the learning rate fell below learning_rate_min (upstream _add_report rule, last logged step 31,000). The best dev-BLEU checkpoint (step 14,600) was reloaded by prediction_XmDA.test, which selected beam 1 and alpha -2 on dev and decoded the training set (data.test = train pickle) for the KD references; the 16-setting dev grid plus the training-set decode took about 2.5 h. Wall time 51,573 s (14.33 GPU-h), within the 75,600 s / 21 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "teacher-gloss-decoding",
+          "xmda-protocol",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-NkzUaulWqYooiML6dIy6I3",
+        "function_call_id": "fc-01M66FPKXA1BBN2J38AWWM0K73",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NkzUaulWqYooiML6dIy6I3",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 14.33,
+        "gpu_hours": 14.33,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 56,
+        "epochs": 150,
+        "batch_size": 128,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "gloss",
+        "G2T_pretraining": true,
+        "gloss2text_data": "/PGen/data/DA_paralle_sample/Zh",
+        "test_split": "train pickle (teacher outputs)",
+        "validation_freq": 100
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 19481,
+        "last_logged_step": 31000,
+        "last_epoch": 111
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56-attempt-2/",
+        "best_step": 14600,
+        "dev": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -2,
+          "wer": 2.92,
+          "bleu4": 27.87,
+          "chrf": 24.54,
+          "rouge_l": 59.49
+        },
+        "train_set_decode": {
+          "translation_beam_size": 1,
+          "translation_beam_alpha": -2,
+          "wer": 3.2,
+          "bleu4": 98.3,
+          "chrf": 97.79,
+          "rouge_l": 99.2
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": true,
+      "observation": "Teacher dev BLEU-4 27.87. Table 15 names no dataset and its values (26.82-27.35) match the PHOENIX-2014T teachers' range, so the paper gives no CSL-Daily teacher number to compare. Training-set BLEU-4 98.3 is the fit to the KD references, not a test score.",
+      "artifact_ids": [
+        "csl-daily-teacher-seed56-attempt-2-dev-translations",
+        "csl-daily-teacher-seed56-attempt-2-train-translations",
+        "csl-daily-teacher-seed56-attempt-2-dev-results",
+        "csl-daily-teacher-seed56-attempt-2-train-log"
+      ]
+    },
+    {
+      "run_id": "csl-daily-teacher-seed57-attempt-2",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 57 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on A10G in the cu110 image (gate environment-cu110) within the declared 21 h ceiling and writes its training-set translations for the KD references. Successor of the stopped T4 run csl-daily-teacher-seed57.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind teacher --seed 57 --run-id csl-daily-teacher-seed57-attempt-2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed57-attempt-2",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T13:23:58Z",
+        "max_wall_time_seconds": 75600,
+        "max_gpu_hours": 21.0,
+        "max_cost_chf": 24.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T13:24:23Z",
+      "finished_at_utc": "2026-10-31T04:41:48Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 116 at 2026-10-31 02:08:57Z because the learning rate fell below learning_rate_min (upstream _add_report rule, last logged step 33,000). The best dev-BLEU checkpoint (step 27,000) was reloaded by prediction_XmDA.test, which selected beam 3 and alpha 1 on dev and decoded the training set (data.test = train pickle) for the KD references; the 16-setting dev grid plus the training-set decode took about 2.5 h. Wall time 55,045 s (15.29 GPU-h), within the 75,600 s / 21 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "teacher-gloss-decoding",
+          "xmda-protocol",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-YGI2AQNOeL3ZcWQGLfJGvi",
+        "function_call_id": "fc-01M66FQ2K9WWETCVKG1A0ETNNP",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YGI2AQNOeL3ZcWQGLfJGvi",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 15.29,
+        "gpu_hours": 15.29,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 57,
+        "epochs": 150,
+        "batch_size": 128,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "gloss",
+        "G2T_pretraining": true,
+        "gloss2text_data": "/PGen/data/DA_paralle_sample/Zh",
+        "test_split": "train pickle (teacher outputs)",
+        "validation_freq": 100
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 14049,
+        "last_logged_step": 33000,
+        "last_epoch": 116
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57-attempt-2/",
+        "best_step": 27000,
+        "dev": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 3.69,
+          "bleu4": 28.24,
+          "chrf": 25.1,
+          "rouge_l": 60.33
+        },
+        "train_set_decode": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 4.08,
+          "bleu4": 98.71,
+          "chrf": 98.33,
+          "rouge_l": 99.44
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": true,
+      "observation": "Teacher dev BLEU-4 28.24. Table 15 names no dataset and its values (26.82-27.35) match the PHOENIX-2014T teachers' range, so the paper gives no CSL-Daily teacher number to compare. Training-set BLEU-4 98.71 is the fit to the KD references, not a test score.",
+      "artifact_ids": [
+        "csl-daily-teacher-seed57-attempt-2-dev-translations",
+        "csl-daily-teacher-seed57-attempt-2-train-translations",
+        "csl-daily-teacher-seed57-attempt-2-dev-results",
+        "csl-daily-teacher-seed57-attempt-2-train-log"
+      ]
+    },
+    {
+      "run_id": "csl-daily-teacher-seed58-attempt-2",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 58 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on A10G in the cu110 image (gate environment-cu110) within the declared 21 h ceiling and writes its training-set translations for the KD references. Successor of the stopped T4 run csl-daily-teacher-seed58.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind teacher --seed 58 --run-id csl-daily-teacher-seed58-attempt-2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed58-attempt-2",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T13:23:58Z",
+        "max_wall_time_seconds": 75600,
+        "max_gpu_hours": 21.0,
+        "max_cost_chf": 24.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T13:24:37Z",
+      "finished_at_utc": "2026-10-31T03:26:23Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 106 at 2026-10-31 00:31:06Z because the learning rate fell below learning_rate_min (upstream _add_report rule, last logged step 30,000). The best dev-BLEU checkpoint (step 26,800) was reloaded by prediction_XmDA.test, which selected beam 4 and alpha 1 on dev and decoded the training set (data.test = train pickle) for the KD references; the 16-setting dev grid plus the training-set decode took about 2.9 h. Wall time 50,506 s (14.03 GPU-h), within the 75,600 s / 21 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "teacher-gloss-decoding",
+          "xmda-protocol",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-ygRzfqZDp2UrMtTXZ6JSKv",
+        "function_call_id": "fc-01M66FQH4SDVF5JRGBXGQZ2Q7Q",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ygRzfqZDp2UrMtTXZ6JSKv",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 14.03,
+        "gpu_hours": 14.03,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 58,
+        "epochs": 150,
+        "batch_size": 128,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "gloss",
+        "G2T_pretraining": true,
+        "gloss2text_data": "/PGen/data/DA_paralle_sample/Zh",
+        "test_split": "train pickle (teacher outputs)",
+        "validation_freq": 100
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 14545,
+        "last_logged_step": 30000,
+        "last_epoch": 106
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/",
+        "best_step": 26800,
+        "dev": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 7.38,
+          "bleu4": 28.55,
+          "chrf": 25.2,
+          "rouge_l": 61.14
+        },
+        "train_set_decode": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 6.06,
+          "bleu4": 98.6,
+          "chrf": 98.19,
+          "rouge_l": 99.37
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": true,
+      "observation": "Teacher dev BLEU-4 28.55. Table 15 names no dataset and its values (26.82-27.35) match the PHOENIX-2014T teachers' range, so the paper gives no CSL-Daily teacher number to compare. Training-set BLEU-4 98.6 is the fit to the KD references, not a test score.",
+      "artifact_ids": [
+        "csl-daily-teacher-seed58-attempt-2-dev-translations",
+        "csl-daily-teacher-seed58-attempt-2-train-translations",
+        "csl-daily-teacher-seed58-attempt-2-dev-results",
+        "csl-daily-teacher-seed58-attempt-2-train-log"
+      ]
+    },
+    {
+      "run_id": "csl-daily-teacher-seed59-attempt-2",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-kd",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "The CSL-Daily gloss-to-text teacher with seed 59 (Table 10 CSL-Daily, forward_type=gloss, G2T_pretraining on PGen Zh pairs, patches 0001 and 0002) trains on A10G in the cu110 image (gate environment-cu110) within the declared 21 h ceiling and writes its training-set translations for the KD references. Successor of the stopped T4 run csl-daily-teacher-seed59.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind teacher --seed 59 --run-id csl-daily-teacher-seed59-attempt-2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-teacher-seed59-attempt-2",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-30T13:23:58Z",
+        "max_wall_time_seconds": 75600,
+        "max_gpu_hours": 21.0,
+        "max_cost_chf": 24.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-10-30T13:27:13Z",
+      "finished_at_utc": "2026-10-31T02:33:03Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 96 at 2026-10-30 23:37:36Z because the learning rate fell below learning_rate_min (upstream _add_report rule, last logged step 27,000). The best dev-BLEU checkpoint (step 11,400) was reloaded by prediction_XmDA.test, which selected beam 3 and alpha 1 on dev and decoded the training set (data.test = train pickle) for the KD references; the 16-setting dev grid plus the training-set decode took about 2.9 h. Wall time 47,150 s (13.1 GPU-h), within the 75,600 s / 21 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "teacher-gloss-decoding",
+          "xmda-protocol",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ],
+        "pgen_revision": "2b8a2329d196aead731e4dc7a1449cd57247708c"
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-OmVerDOh0D2T9QNd0TmkpL",
+        "function_call_id": "fc-01M66FQZGY56G4J1KMF9V0DYV0",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OmVerDOh0D2T9QNd0TmkpL",
+        "hardware": "NVIDIA A10G (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 13.1,
+        "gpu_hours": 13.1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 59,
+        "epochs": 150,
+        "batch_size": 128,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "forward_type": "gloss",
+        "G2T_pretraining": true,
+        "gloss2text_data": "/PGen/data/DA_paralle_sample/Zh",
+        "test_split": "train pickle (teacher outputs)",
+        "validation_freq": 100
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 19599,
+        "last_logged_step": 27000,
+        "last_epoch": 96
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/",
+        "best_step": 11400,
+        "dev": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 6.98,
+          "bleu4": 27.9,
+          "chrf": 24.54,
+          "rouge_l": 60.15
+        },
+        "train_set_decode": {
+          "translation_beam_size": 3,
+          "translation_beam_alpha": 1,
+          "wer": 6.64,
+          "bleu4": 98.1,
+          "chrf": 97.57,
+          "rouge_l": 99.1
+        },
+        "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+      },
+      "hypothesis_supported": true,
+      "observation": "Teacher dev BLEU-4 27.9. Table 15 names no dataset and its values (26.82-27.35) match the PHOENIX-2014T teachers' range, so the paper gives no CSL-Daily teacher number to compare. Training-set BLEU-4 98.1 is the fit to the KD references, not a test score.",
+      "artifact_ids": [
+        "csl-daily-teacher-seed59-attempt-2-dev-translations",
+        "csl-daily-teacher-seed59-attempt-2-train-translations",
+        "csl-daily-teacher-seed59-attempt-2-dev-results",
+        "csl-daily-teacher-seed59-attempt-2-train-log"
+      ]
+    },
+    {
       "run_id": "phoenix14t-kd-seed58",
       "kind": "full_run",
       "experiment_id": "phoenix14t-kd",
@@ -10647,6 +11223,134 @@
       "sha256": "934985b3b05a6efe7348548e6b1d3e4440a37474ce7184e136fcb1116d3edf4f",
       "produced_by": "phoenix14t-xmda-seed58",
       "access": "Contains PHOENIX-2014-T-derived text (CC BY-NC-SA); kept on the project Volume."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed56-attempt-2-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56-attempt-2/best.IT_00014600.BW_01.A_-2.dev.txt",
+      "sha256": "2dccc3fcca21485e31ab314327d52bbce71adb3ba53b6580069f92468e4eff23",
+      "produced_by": "csl-daily-teacher-seed56-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed56-attempt-2-train-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56-attempt-2/best.IT_00014600.BW_01.A_-2.test.txt",
+      "sha256": "f796bc9eaf6e4cd69cea61d77dd4c15d04b7ecdf7b1ed3448a3747b80b1d9442",
+      "produced_by": "csl-daily-teacher-seed56-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed56-attempt-2-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56-attempt-2/best.IT_00014600.dev_results.pkl",
+      "sha256": "5c9fce9ae97f6f7ed4df9d281e02c77099e8c9b9c1896170016733ff7ac94392",
+      "produced_by": "csl-daily-teacher-seed56-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed56-attempt-2-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed56-attempt-2/train.log",
+      "sha256": "9f0306cba4df781a2e4eae3ee3176ba1daaa43f79f6a086e1836b4464c91fc2e",
+      "produced_by": "csl-daily-teacher-seed56-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed57-attempt-2-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57-attempt-2/best.IT_00027000.BW_03.A_1.dev.txt",
+      "sha256": "9ad7fac1ce478e437ad149030cc8713772b18681b3da0c1c64bb30aaa5d1644b",
+      "produced_by": "csl-daily-teacher-seed57-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed57-attempt-2-train-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57-attempt-2/best.IT_00027000.BW_03.A_1.test.txt",
+      "sha256": "1aef0476c35110414859d80e711c23f7f72df0f5d84b57660dc7fc7dc628d5e5",
+      "produced_by": "csl-daily-teacher-seed57-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed57-attempt-2-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57-attempt-2/best.IT_00027000.dev_results.pkl",
+      "sha256": "a19429882c07506b56325db2ef26c7accdd7a6163c83a1ec382631358e122a60",
+      "produced_by": "csl-daily-teacher-seed57-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed57-attempt-2-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed57-attempt-2/train.log",
+      "sha256": "de140acaac96a2c3ab6dc759fcea555a8d86606a43535087f3d7eb0afe83f531",
+      "produced_by": "csl-daily-teacher-seed57-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed58-attempt-2-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/best.IT_00026800.BW_04.A_1.dev.txt",
+      "sha256": "a70b14bbdf300ffb4b0ef9199233d2cdd1115eb47a18043b4888e059e5b53932",
+      "produced_by": "csl-daily-teacher-seed58-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed58-attempt-2-train-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/best.IT_00026800.BW_04.A_1.test.txt",
+      "sha256": "ee986eb77a9f16fe7950a7713e5ecc0e20ac06f1df821f336f54171727a4ccfd",
+      "produced_by": "csl-daily-teacher-seed58-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed58-attempt-2-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/best.IT_00026800.dev_results.pkl",
+      "sha256": "a816b16e6c96093da5b65a68deceb0d0ed3476e7b8c98a7788b0a4f63875c5e8",
+      "produced_by": "csl-daily-teacher-seed58-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed58-attempt-2-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed58-attempt-2/train.log",
+      "sha256": "7a904042f8fa8c4ace9c78fe4e28c805012072f4433d5e946f76a053eaad80fc",
+      "produced_by": "csl-daily-teacher-seed58-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed59-attempt-2-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/best.IT_00011400.BW_03.A_1.dev.txt",
+      "sha256": "1cfde1b73f9cb569e7cd389f74f2982db58a2ada6b8ee6c551dab2a74dce26a4",
+      "produced_by": "csl-daily-teacher-seed59-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed59-attempt-2-train-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/best.IT_00011400.BW_03.A_1.test.txt",
+      "sha256": "8fdc7fa73ffeab7e20c0a55107f428ee390bc5d891baeea043eef10cc2a7fbc9",
+      "produced_by": "csl-daily-teacher-seed59-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed59-attempt-2-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/best.IT_00011400.dev_results.pkl",
+      "sha256": "beb87d914df3c536daa7182685a6ff36c8d46fb2ef27c33e5cddc6eef0e38d89",
+      "produced_by": "csl-daily-teacher-seed59-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-teacher-seed59-attempt-2-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-teacher-seed59-attempt-2/train.log",
+      "sha256": "6625cae0c51f71fe5a845cc2cc125512102255852a0bf17f7b40d255a7b6eafb",
+      "produced_by": "csl-daily-teacher-seed59-attempt-2",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
     }
   ],
   "gates": [
@@ -10798,7 +11502,8 @@
         "CSL-Daily teachers on T4 stopped at 2026-10-30T13:23:41Z (assignee decision): at epoch 13-15, each full-dev validation in the teacher's gloss path took about 152 s on T4 (against 45 s for the baseline), with about 429 validations. That projected about 22 h per teacher against a 20 h declared ceiling and Modal's 24 h function cap, and a teacher writes its outputs only at the end, so hitting the cap loses everything. They were relaunched on A10G in the cu110 image (csl-daily-teacher-seed56..59-attempt-2, declared 2026-10-30T13:23:58Z, ceiling 21 h / 21 GPU-h / CHF 24 each). The estimate of about 16 A10G GPU-h each is extrapolated from the baseline's A10G/T4 validation ratio (31/45 s) and will be updated from the measured teacher-path validation time on A10G.",
         "Measured A10G teacher-path validation (2026-10-30T13:36Z, csl-daily-teacher-seed56-attempt-2, first four full-dev validations): 104, 115, 115 and 110 s, so about 112 s against the extrapolated 105 s. Epoch 3 was reached 9.7 min after start. Updated estimate per A10G teacher: about 429 validations x 112 s = 13.3 h, plus training of about 1-2 h, plus a final dev grid and training-set decode of about 1.5 h, so about 14-17 h (central about 15.5 h) against the declared 21 h ceiling and the 24 h cap. The ceiling leaves about 35% margin at the central estimate and about 24% at the upper end; it cannot be raised much without reaching the cap. To be re-measured from the observed epoch rate after a few hours.",
         "Correction (2026-10-30T14:45Z): the 13:15Z projection of about 9.4 GPU-h for phoenix14t-kd-seed57, cited as a reason for its ceiling amendment, was wrong. It measured progress from the spawn time (10:19Z), but the function only started at 12:06:29Z, after a delay of unknown cause (queueing or preemption). The run actually took 2.57 GPU-h and stopped early at learning_rate_min. The phoenix14t-xmda-seed57 projection (about 8.4 GPU-h) used the same spawn-time basis, so it may also be overstated. The amended ceilings stand as declared; they are maxima.",
-        "Re-measured A10G teacher epoch rate (2026-10-30T16:37Z, train.log EPOCH lines of csl-daily-teacher-seed56..59-attempt-2): epoch 1 at 13:24-13:28Z and epoch 30-31 at 16:32-16:35Z, i.e. 6.25-6.46 min per epoch across the four seeds (validation included; validation frequency unchanged). 150 epochs therefore take about 15.6-16.2 h, plus the final dev grid and training-set decode of about 1.5 h: about 17.1-17.7 h per teacher, finishing around 06:30-07:10Z on 2026-10-31. This supersedes the 14-17 h estimate above. The declared 21 h ceiling stays (no amendment): it leaves about 19-23% margin, below the 30% declaration rule but not threatened, and Modal's 24 h cap leaves about 6 h beyond the upper estimate. A learning_rate_min stop, as in the PHOENIX KD/XmDA students, would only shorten the runs."
+        "Re-measured A10G teacher epoch rate (2026-10-30T16:37Z, train.log EPOCH lines of csl-daily-teacher-seed56..59-attempt-2): epoch 1 at 13:24-13:28Z and epoch 30-31 at 16:32-16:35Z, i.e. 6.25-6.46 min per epoch across the four seeds (validation included; validation frequency unchanged). 150 epochs therefore take about 15.6-16.2 h, plus the final dev grid and training-set decode of about 1.5 h: about 17.1-17.7 h per teacher, finishing around 06:30-07:10Z on 2026-10-31. This supersedes the 14-17 h estimate above. The declared 21 h ceiling stays (no amendment): it leaves about 19-23% margin, below the 30% declaration rule but not threatened, and Modal's 24 h cap leaves about 6 h beyond the upper estimate. A learning_rate_min stop, as in the PHOENIX KD/XmDA students, would only shorten the runs.",
+        "Outcome of the A10G CSL-Daily teachers (2026-10-31): all four succeeded at 13.10 / 15.29 / 14.03 / 14.33 GPU-h (seeds 59 / 57 / 58 / 56), 56.75 GPU-h in total, below the 17.1-17.7 h re-measured estimate because each stopped early on learning_rate_min (epochs 96-116). The final dev grid plus training-set decode took 2.5-2.9 h against the 1.5 h estimated."
       ],
       "alternatives": [
         {
