@@ -23,7 +23,7 @@ import yaml
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--arm", choices=["as-is", "ctc-without-cudnn"], required=True)
+    parser.add_argument("--arm", choices=["as-is", "ctc-without-cudnn", "compare-grads"], required=True)
     parser.add_argument("--batches", type=int, default=60)
     parser.add_argument("--work-dir", required=True)
     parser.add_argument("--output", required=True)
@@ -43,8 +43,13 @@ def main():
         args.dataset_info = yaml.load(f, Loader=yaml.FullLoader)
     processor = upstream.Processor(args)
     model, optimizer = processor.model, processor.optimizer
+    if ours.arm == "compare-grads":
+        with open(ours.output, "w") as f:
+            json.dump(compare_grads(processor), f, indent=2)
+        return
 
     stats = {"finite_loss_batches": 0, "nonfinite_loss_batches": 0, "applied_steps": 0, "nonfinite_grad_applied_steps": 0}
+    losses = []
     criterion = model.criterion_calculation
 
     def counted_criterion(*a, **k):
@@ -54,7 +59,10 @@ def main():
         else:
             out = criterion(*a, **k)
         loss = out[0] if isinstance(out, tuple) else out
-        stats["finite_loss_batches" if bool(torch.isfinite(loss).all()) else "nonfinite_loss_batches"] += 1
+        finite = bool(torch.isfinite(loss).all())
+        stats["finite_loss_batches" if finite else "nonfinite_loss_batches"] += 1
+        if finite:
+            losses.append(float(loss))
         return out
 
     model.criterion_calculation = counted_criterion
@@ -73,13 +81,50 @@ def main():
     subset = torch.utils.data.Subset(dataset, range(min(len(dataset), 2 * ours.batches)))
     loader = processor.build_dataloader(subset, "train", True)
     kwargs = {"loss_weights": args.loss_weights} if "loss_weights" in inspect.signature(seq_train).parameters else {}
-    losses = seq_train(loader, model, optimizer, processor.device, 0, processor.recoder, **kwargs)
+    seq_train(loader, model, optimizer, processor.device, 0, processor.recoder, **kwargs)  # CorrNet's returns None
     stats.update(arm=ours.arm, batches=len(loader),
                  skipped_by_grad_scaler=stats["finite_loss_batches"] - stats["applied_steps"],
                  mean_loss=float(np.mean(losses)) if len(losses) else None,
                  torch=torch.__version__, cudnn=torch.backends.cudnn.version())
     with open(ours.output, "w") as f:
         json.dump(stats, f, indent=2)
+
+
+def compare_grads(processor, batches=5):
+    """CTC loss and its gradient w.r.t. the sequence logits on fixed real batches:
+    the repo's own call with cuDNN allowed, the same call with cuDNN disabled,
+    and a float64 CPU reference. Logits come from one forward pass per batch."""
+    model, device = processor.model, processor.device
+    ctc = torch.nn.CTCLoss(reduction="none", zero_infinity=False)
+    model.eval()
+    results = []
+    for index, data in enumerate(processor.data_loader["train"]):
+        if index == batches:
+            break
+        vid, vid_lgt = device.data_to_device(data[0]), device.data_to_device(data[1])
+        label, label_lgt = device.data_to_device(data[2]), device.data_to_device(data[3])
+        with torch.no_grad():
+            ret = model(vid, vid_lgt, label=label, label_lgt=label_lgt)
+        logits, feat_len = ret["sequence_logits"].detach().float(), ret["feat_len"]
+        out = {"feat_len": [int(x) for x in feat_len], "label_len": [int(x) for x in label_lgt]}
+        grads = {}
+        for mode in ("cudnn_allowed", "cudnn_disabled", "cpu_float64"):
+            x = (logits.double().cpu() if mode == "cpu_float64" else logits.clone()).requires_grad_(True)
+            args = (x.log_softmax(-1), label.cpu().int(), feat_len.cpu().int(), label_lgt.cpu().int())
+            with torch.backends.cudnn.flags(enabled=mode == "cudnn_allowed"):
+                loss = ctc(*args).mean()
+                loss.backward()
+            out[f"loss_{mode}"] = float(loss)
+            grads[mode] = x.grad.double().cpu().flatten()
+        reference = grads["cpu_float64"]
+        for mode in ("cudnn_allowed", "cudnn_disabled"):
+            diff = (grads[mode] - reference).abs().max()
+            cosine = torch.nn.functional.cosine_similarity(grads[mode], reference, dim=0)
+            out[f"{mode}_vs_cpu"] = {"max_abs_diff": float(diff), "cosine": float(cosine),
+                                     "reference_max_abs": float(reference.abs().max())}
+        results.append(out)
+    return {"arm": "compare-grads", "batches": results, "torch": torch.__version__,
+            "cudnn": torch.backends.cudnn.version()}
 
 
 if __name__ == "__main__":

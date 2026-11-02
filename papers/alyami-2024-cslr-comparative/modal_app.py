@@ -283,12 +283,14 @@ def inspect_environment():
         "image_id": os.environ.get("MODAL_IMAGE_ID"),
     }
     committed = {}
-    for name in REPOS:
-        base = Path(REPOS[name]) / "preprocess/phoenix2014"
+    for name, base in [*((n, Path(REPOS[n]) / "preprocess/phoenix2014") for n in REPOS),
+                       ("generated_by_dataset_preprocess", VAC_PHOENIX_PREPROCESS)]:
         if not (base / "gloss_dict.npy").exists():
             committed[name] = "no committed phoenix2014 lists"
             continue
-        entry = {"gloss_dict_size": len(np.load(base / "gloss_dict.npy", allow_pickle=True).item())}
+        gloss = np.load(base / "gloss_dict.npy", allow_pickle=True).item()
+        entry = {"gloss_dict_size": len(gloss), "gloss_dict_sha256": hashlib.sha256(
+            json.dumps(sorted((k, [int(x) for x in v]) for k, v in gloss.items()), ensure_ascii=False).encode()).hexdigest()}
         for split in ("train", "dev", "test"):
             info = np.load(base / f"{split}_info.npy", allow_pickle=True).item()
             clips = [info[k] for k in sorted(k for k in info if isinstance(k, int))]
@@ -534,33 +536,35 @@ def _gsl_lists(setting):
 
 
 def _arabsign_rows():
-    """Author split-list rows that have a video, with the sign-language sentence as gloss label."""
+    """Author split-list rows that have a video. The gloss label is the dataset's published
+    'Sign Language Sentence' (ArabSignGroundTruth.txt), which equals the CSVs' 'caption'
+    column for every row; the CSVs' 'procCaption' column is the author's processed variant
+    (definite article stripped from some words) and is not used."""
     rows, _ = _arabsign_split_lists()
-    truth = {}
+    signed = {}
     for line in (ARABSIGN_RGB / "ArabSignGroundTruth.txt").read_text(encoding="utf-16").splitlines()[1:]:
         if line.strip():
-            sentence, arabic, signed = (part.strip() for part in line.split("\t"))
-            truth[int(sentence)] = (" ".join(arabic.split()), " ".join(signed.split()))
+            sentence, _arabic, sign_sentence = (part.strip() for part in line.split("\t"))
+            signed[int(sentence)] = " ".join(sign_sentence.split())
     available = {p.relative_to(ARABSIGN_VIDEOS).as_posix() for p in ARABSIGN_VIDEOS.rglob("*.mp4")}
     out = []
     for relative, row in sorted(rows.items()):
         if relative not in available:
             continue
-        fields = row["fields"]
+        fields = row["fields"]  # index, sentId, sPath, framesNo, signerID, caption, procCaption
         sentence = int(fields[1])
-        arabic, signed = " ".join(fields[5].split()), " ".join(fields[6].split())
-        if (arabic, signed) != truth[sentence]:
-            raise RuntimeError(f"{relative}: CSV sentence columns differ from ArabSignGroundTruth.txt")
+        if " ".join(fields[5].split()) != signed[sentence]:
+            raise RuntimeError(f"{relative}: CSV caption differs from ArabSignGroundTruth.txt")
         sample = _arabsign_sample_id(relative)
         out.append({"fileid": sample, "folder": f"all/{sample}/*.png",
-                    "signer": relative.split("/")[0], "split": relative.split("/")[1], "label": signed})
+                    "signer": relative.split("/")[0], "split": relative.split("/")[1], "label": signed[sentence]})
     return out
 
 
 def _arabsign_lists(setting, dev_rule):
     """ArabSign Signer-Dep (author train/test lists) or one leave-one-signer-out fold.
 
-    dev_rule decides the unpublished validation subset (gate arabsign-protocol).
+    dev_rule decides the unpublished validation subset (gates arabsign-sd-validation and arabsign-loso-checkpoint).
     'preflight-random-709' is only for cost measurement and never for a target.
     """
     import random
@@ -574,7 +578,7 @@ def _arabsign_lists(setting, dev_rule):
         train = [r for r in rows if r["signer"] != held]
         test = [r for r in rows if r["signer"] == held]
     if dev_rule != "preflight-random-709":
-        raise ValueError(f"ArabSign dev rule {dev_rule!r} is not decided (gate arabsign-protocol)")
+        raise ValueError(f"ArabSign dev rule {dev_rule!r} is not decided (gates arabsign-sd-validation and arabsign-loso-checkpoint)")
     dev = random.Random(0).sample(train, 709)
     chosen = {r["fileid"] for r in dev}
     return {"train": [r for r in train if r["fileid"] not in chosen], "dev": dev, "test": test}
@@ -705,8 +709,14 @@ def _prepare_code(model, setting, run_dir, epochs, steps, dev_rule=None, lists=N
 
 # ---------------------------------------------------------------------------
 # Running upstream main.py.
-LOG_LINE = re.compile(r"^\[ (?P<time>[^\]]+) \] Epoch (?P<epoch>\d+), (?P<split>\w+) .*?(?P<wer>[\d.]+)%")
+# VAC/CorrNet: 'Epoch 3, dev  24.10%'; TLP: 'Epoch 3, dev Percent Total Error = 24.1% (n)'; SEN: 'Epoch 3, dev 24.1'.
+LOG_LINE = re.compile(r"^\[ (?P<time>[^\]]+) \] Epoch (?P<epoch>\d+), (?P<split>\w+)\s+(?:Percent Total Error\s*=\s*)?(?P<wer>[\d.]+)")
 TRAIN_RESOURCES = dict(gpu=GPU, cpu=16, memory=65536, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES)
+# Full runs: preflight host peaks were <= 19.5 GiB, so 32 GiB. VAC/SMKD peaked at 45.2 of
+# 46 GB GPU memory with the longest clips; expandable segments change only how the
+# allocator reuses freed blocks (fragmentation), not what is computed.
+FULL_RUN_RESOURCES = dict(gpu=GPU, cpu=16, memory=32768, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES,
+                          env={"PYTORCH_ALLOC_CONF": "expandable_segments:True"})
 
 
 def _environment(code):
@@ -742,8 +752,10 @@ def _run_upstream(command, cwd, work_dir):
     def sample_memory():
         while not stop.wait(3):
             used = _out("nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits").split()
-            if used:
+            if used and used[0].isdigit():
                 peak["gpu_mib"] = max(peak["gpu_mib"], int(used[0]))
+            elif used:
+                peak["nvidia_smi_errors"] = peak.get("nvidia_smi_errors", 0) + 1
             peak["host_mib"] = max(peak["host_mib"], _host_memory_used_mib())
 
     threads = [threading.Thread(target=f, daemon=True) for f in (commit_periodically, sample_memory)]
@@ -763,7 +775,8 @@ def _run_upstream(command, cwd, work_dir):
     return {"command": command, "cwd": str(cwd), "exit_code": proc.returncode, "scoring_failed": scoring_failed,
             "started_at_utc": started_at, "finished_at_utc": _now(),
             "duration_seconds": round(time.monotonic() - started, 1),
-            "peak_gpu_memory_mib_nvidia_smi": peak["gpu_mib"], "peak_host_memory_mib": peak["host_mib"]}
+            "peak_gpu_memory_mib_nvidia_smi": peak["gpu_mib"], "peak_host_memory_mib": peak["host_mib"],
+            "nvidia_smi_errors": peak.get("nvidia_smi_errors", 0)}
 
 
 def _log_entries(work_dir, split):
@@ -826,13 +839,14 @@ def _preflight_subset(lists, frames_root, n_train=120, n_long=16, n_eval=40, n_l
     return subset, full_frames
 
 
-@APP.function(image=IMAGE, **TRAIN_RESOURCES, timeout=4 * 3600)
+@APP.function(image=IMAGE, **TRAIN_RESOURCES, timeout=2 * 3600)
 def preflight(model: str, setting: str, run_id: str):
     """Real clips through upstream main.py: 2 epochs, resume a 3rd, then the test phase.
 
     Also runs ctc_check.py (both arms) on the same subset. Returns the
     measurements the full-run estimate is built from.
     """
+    function_started_at = _now()
     run_dir = Path("/results/runs") / run_id
     frames_root, _ = _stage_frames(SETTINGS[setting]["frames"])
     if setting == "phoenix-sd":
@@ -842,17 +856,11 @@ def preflight(model: str, setting: str, run_id: str):
     subset, full_frames = _preflight_subset(full_lists, frames_root)
     preflight_setting = "phoenix-sd-preflight" if setting == "phoenix-sd" else setting  # subset as generated lists
     code, record = _prepare_code(model, preflight_setting, run_dir, epochs=40, steps=(20, 35), lists=subset)
-    record.update({"setting": setting, "model": model, "full_split_frames": full_frames,
+    record.update({"function_started_at_utc": function_started_at, "setting": setting, "model": model, "full_split_frames": full_frames,
                    "full_split_clips": {s: len(r) for s, r in full_lists.items()},
                    "environment": _environment(code), "steps": []})
     work = str(run_dir / "work")
-    for arm in ("as-is", "ctc-without-cudnn"):
-        out = run_dir / f"ctc_check-{arm}.json"
-        proc = subprocess.run(["python", "/opt/ctc_check.py", "--arm", arm, "--batches", "60",
-                               "--work-dir", f"{run_dir}/ctc-{arm}/", "--output", str(out)],
-                              cwd=code, input="n\n", capture_output=True, text=True)
-        record[f"ctc_check_{arm}"] = json.loads(out.read_text()) if out.exists() else {"exit_code": proc.returncode,
-                                                                                         "tail": proc.stdout[-2000:] + proc.stderr[-2000:]}
+    record.update(_ctc_checks(code, run_dir))
     steps = (
         lambda: ["--num-epoch", "2"],
         lambda: ["--num-epoch", "3", "--load-checkpoints", str(_epoch_checkpoints(work)[1])],
@@ -874,12 +882,68 @@ def preflight(model: str, setting: str, run_id: str):
     record["epoch1_seconds"] = dev[1][1] - dev[0][1]
     record["eval_seconds_per_frame"] = (test[6667][1] - dev[6667][1]) / record["subset_frames"]["test"]
     record["checkpoint_bytes"] = _epoch_checkpoints(work)[2].stat().st_size
+    record["function_finished_at_utc"] = _now()
     (run_dir / "preflight.json").write_text(json.dumps(record, indent=2, default=str, ensure_ascii=False))
     RESULTS.commit()
     return record
 
 
-@APP.function(image=IMAGE, **TRAIN_RESOURCES, timeout=24 * 3600, retries=modal.Retries(max_retries=3, initial_delay=60.0))
+def _ctc_checks(code, run_dir):
+    record = {}
+    for arm in ("as-is", "ctc-without-cudnn", "compare-grads"):
+        out = run_dir / f"ctc_check-{arm}.json"
+        proc = subprocess.run(["python", "/opt/ctc_check.py", "--arm", arm, "--batches", "60",
+                               "--work-dir", f"{run_dir}/ctc-{arm}/", "--output", str(out)],
+                              cwd=code, input="n\n", capture_output=True, text=True)
+        record[f"ctc_check_{arm}"] = json.loads(out.read_text()) if out.exists() else {"exit_code": proc.returncode,
+                                                                                         "tail": proc.stdout[-2000:] + proc.stderr[-2000:]}
+    RESULTS.commit()
+    return record
+
+
+@APP.function(image=IMAGE, **TRAIN_RESOURCES, timeout=3600)
+def ctc_diagnostics(model: str, setting: str, run_id: str):
+    """Only the ctc_check.py arms, on the same preflight subset (for models whose preflight steps already passed)."""
+    function_started_at = _now()
+    run_dir = Path("/results/runs") / run_id
+    frames_root, _ = _stage_frames(SETTINGS[setting]["frames"])
+    full_lists = _phoenix_multisigner_lists() if setting == "phoenix-sd" else _setting_lists(setting, dev_rule="preflight-random-709")
+    subset, _ = _preflight_subset(full_lists, frames_root)
+    code, record = _prepare_code(model, "phoenix-sd-preflight" if setting == "phoenix-sd" else setting, run_dir,
+                                 epochs=40, steps=(20, 35), lists=subset)
+    record.update({"function_started_at_utc": function_started_at, "model": model, "setting": setting,
+                   "environment": _environment(code), **_ctc_checks(code, run_dir), "function_finished_at_utc": _now()})
+    (run_dir / "ctc_diagnostics.json").write_text(json.dumps(record, indent=2, default=str, ensure_ascii=False))
+    RESULTS.commit()
+    return record
+
+
+@APP.local_entrypoint()
+def launch_ctc_diagnostics(setting: str, tag: str, models: str):
+    calls = {m: ctc_diagnostics.spawn(m, setting, f"ctc-diagnostics-{m}-{tag}") for m in models.split(",")}
+    print(json.dumps({m: c.object_id for m, c in calls.items()}))
+    for model, call in calls.items():
+        try:
+            result = call.get()
+        except Exception as error:
+            result = {"error": repr(error)}
+        print(json.dumps({"model": model, "function_call_id": call.object_id, **result}, default=str, ensure_ascii=False))
+
+
+def _prune_checkpoints(work_dir):
+    """Keeps only the newest epoch checkpoint (resume) and the dev-best one (selection,
+    earliest on ties); superseded epoch checkpoints are deleted. Declared before launch."""
+    checkpoints = _epoch_checkpoints(work_dir)
+    history = {e: w for e, (w, _) in _log_entries(work_dir, "dev").items() if e in checkpoints}
+    if not checkpoints or not history:
+        return
+    keep = {max(checkpoints), min(history, key=lambda e: (history[e], e))}
+    for epoch, path in checkpoints.items():
+        if epoch not in keep:
+            path.unlink(missing_ok=True)
+
+
+@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=24 * 3600, retries=modal.Retries(max_retries=3, initial_delay=60.0))
 def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = "20,35", dev_rule: str = ""):
     """Trains to `epochs`, resuming from the newest epoch checkpoint when one exists."""
     run_dir = Path("/results/runs") / run_id
@@ -893,7 +957,18 @@ def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = 
         if max(checkpoints) + 1 >= epochs:
             return {**record, "already_complete": True, "dev_wer_by_epoch": {e: w for e, (w, _) in _log_entries(work, "dev").items()}}
         extra = ["--load-checkpoints", str(checkpoints[max(checkpoints)])]
+    stop = threading.Event()
+
+    def prune_periodically():
+        while not stop.wait(300):
+            _prune_checkpoints(work)
+
+    pruner = threading.Thread(target=prune_periodically, daemon=True)
+    pruner.start()
     record.update(_run_upstream(_command(work, *extra), code, work))
+    stop.set()
+    pruner.join()
+    _prune_checkpoints(work)
     record["dev_wer_by_epoch"] = {e: w for e, (w, _) in _log_entries(work, "dev").items()}
     with open(run_dir / "train_calls.jsonl", "a") as f:
         f.write(json.dumps(record, default=str, ensure_ascii=False) + "\n")
@@ -903,7 +978,22 @@ def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = 
     return record
 
 
-@APP.function(image=IMAGE, **TRAIN_RESOURCES, timeout=4 * 3600)
+def _sclite_counts(work_dir, split):
+    """Raw counts from sclite's rsum report (upstream logs WER to one decimal only)."""
+    raw = [p for p in Path(work_dir).glob(f"epoch_6667_result/*hypothesis-{split}.ctm.raw") if "-conv" not in p.name]
+    if len(raw) != 1:
+        return None
+    for line in raw[0].read_text(errors="replace").splitlines():
+        cells = [c.split() for c in line.split("|")]
+        if len(cells) > 3 and cells[1] and cells[1][0] == "Sum":
+            sentences, words = (int(x) for x in cells[2])
+            corr, sub, dele, ins, err, sentence_err = (int(x) for x in cells[3])
+            return {"sentences": sentences, "words": words, "substitutions": sub, "deletions": dele,
+                    "insertions": ins, "errors": err, "wer_percent_exact": 100.0 * err / words, "file": str(raw[0])}
+    return None
+
+
+@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=4 * 3600)
 def evaluate(train_run_id: str, eval_run_id: str):
     """Scores the lowest-dev-WER epoch (earliest on ties) once on dev and test."""
     train_dir, run_dir = Path("/results/runs") / train_run_id, Path("/results/runs") / eval_run_id
@@ -919,6 +1009,7 @@ def evaluate(train_run_id: str, eval_run_id: str):
               **_environment(code)}
     record.update(_run_upstream(_command(work, "--phase", "test", "--load-weights", str(checkpoint)), code, work))
     record["wer"] = {split: _log_entries(work, split)[6667][0] for split in ("dev", "test")}
+    record["sclite_counts"] = {split: _sclite_counts(work, split) for split in ("dev", "test")}
     for split in ("dev", "test"):
         hypothesis = Path(work) / f"out.output-hypothesis-{split}.ctm"
         record[f"{split}_hypothesis_ctm_sha256"] = _sha256(hypothesis) if hypothesis.exists() else None
@@ -927,9 +1018,117 @@ def evaluate(train_run_id: str, eval_run_id: str):
     return record
 
 
+@APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
+def setting_frame_totals():
+    """Clips and frames per split for every setting, for the compute estimate (no frames staged).
+
+    ArabSign train counts include the unpublished validation share (gates arabsign-sd-validation and arabsign-loso-checkpoint).
+    """
+    import zipfile
+
+    import numpy as np
+
+    phoenix = {}
+    for split in ("train", "dev", "test"):
+        info = np.load(VAC_PHOENIX_PREPROCESS / f"{split}_info.npy", allow_pickle=True).item()
+        phoenix.update({v["fileid"]: v["num_frames"] for k, v in info.items() if isinstance(k, int)})
+    gsl = {}
+    for key in json.loads((GSL_ROOT / "manifest.json").read_text())["zenodo_files"]:
+        if key != "supplementary.zip":
+            for name in zipfile.ZipFile(GSL_ROOT / "zenodo-3941811" / key).namelist():
+                if name.lower().endswith(".jpg"):
+                    folder = name.rsplit("/", 1)[0]
+                    gsl[folder] = gsl.get(folder, 0) + 1
+    arabsign = json.loads(Path(f"{FRAMES_TAR['arabsign']}.json").read_text())["frames_per_sample"]
+    rows = _arabsign_rows()
+
+    def summary(lists, frames_of):
+        return {split: {"clips": len(r), "frames": sum(frames_of(x) for x in r)} for split, r in lists.items()}
+
+    totals = {
+        "phoenix-sd": summary(_phoenix_multisigner_lists(), lambda r: phoenix[r["fileid"]]),
+        "phoenix-si": summary(_phoenix_si5_lists(), lambda r: phoenix[r["fileid"]]),
+        "grsl-si": summary(_gsl_lists("grsl-si"), lambda r: gsl[r["folder"][4:-6]]),
+        "grsl-unseen": summary(_gsl_lists("grsl-unseen"), lambda r: gsl[r["folder"][4:-6]]),
+        "arabsign-sd": summary({"train+val": [r for r in rows if r["split"] == "train"],
+                                "test": [r for r in rows if r["split"] == "test"]}, lambda r: arabsign[r["fileid"]]),
+    }
+    for signer in ARABSIGN_SIGNERS:
+        totals[f"arabsign-loso-{signer}"] = summary({"train+val": [r for r in rows if r["signer"] != signer],
+                                                     "test": [r for r in rows if r["signer"] == signer]},
+                                                    lambda r: arabsign[r["fileid"]])
+    return totals
+
+
+@APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
+def score_check(setting: str, repo: str = "corrnet"):
+    """Upstream scoring on non-Latin glosses: a perfect CTM must give 0% WER, and dropping
+    each sentence's first gloss must give exactly sentences / reference words."""
+    import importlib.util
+    import sys
+
+    import numpy as np
+
+    work = Path("/tmp/score-check") / setting
+    shutil.copytree(REPOS[repo], work / "code", symlinks=True)
+    code = work / "code"
+    test = (_setting_lists(setting, dev_rule="preflight-random-709") if setting.startswith("arabsign")
+            else _setting_lists(setting))["test"]
+    spec = importlib.util.spec_from_file_location("upstream_preprocess", code / "preprocess/dataset_preprocess.py")
+    upstream = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(upstream)
+    evaluation = code / "evaluation/check"
+    evaluation.mkdir(parents=True)
+    for name in ("preprocess.sh", "mergectmstm.py"):
+        shutil.copy(code / "evaluation/slr_eval" / name, evaluation / name)
+    info = {i: {"fileid": r["fileid"], "signer": r["signer"], "label": r["label"]} for i, r in enumerate(test)}
+    upstream.generate_gt_stm(info, evaluation / "check-groundtruth-test.stm")
+    os.chdir(code)
+    sys.path.insert(0, str(code))
+    from evaluation.slr_eval.wer_calculation import evaluate
+    from seq_scripts import write2file
+
+    ids = [r["fileid"] for r in test]
+    glosses = [r["label"].split() for r in test]
+    result = {"setting": setting, "repo": repo, "sentences": len(ids), "reference_words": sum(map(len, glosses))}
+    for name, hypotheses in (("perfect", glosses), ("first_gloss_dropped", [g[1:] for g in glosses])):
+        out = work / f"{name}/"
+        out.mkdir()
+        write2file(f"{out}/output-hypothesis-test.ctm", ids, [[(w,) for w in h] for h in hypotheses])
+        wer = evaluate(prefix=f"{out}/", mode="test", output_file="output-hypothesis-test.ctm",
+                       evaluate_dir=str(evaluation), evaluate_prefix="check-groundtruth", output_dir="result/")
+        result[name] = float(str(wer).split("=")[1].split("%")[0]) if "=" in str(wer) else float(wer)
+    result["expected_first_gloss_dropped"] = round(100 * len(ids) / result["reference_words"], 2)
+    return result
+
+
+@APP.local_entrypoint()
+def launch_score_check(settings: str = "phoenix-si,grsl-si,grsl-unseen,arabsign-sd"):
+    for result in score_check.map(settings.split(",")):
+        print(json.dumps(result, ensure_ascii=False))
+
+
+@APP.local_entrypoint()
+def launch_setting_frame_totals():
+    print(json.dumps(setting_frame_totals.remote(), indent=2))
+
+
 @APP.local_entrypoint()
 def launch_preflight(model: str, setting: str, run_id: str):
     print(json.dumps(preflight.remote(model, setting, run_id), indent=2, default=str, ensure_ascii=False)[:30000])
+
+
+@APP.local_entrypoint()
+def launch_preflights(setting: str, tag: str, models: str = "vac,smkd,tlp,sen,corrnet"):
+    """One preflight per model on `setting`, run in parallel; run IDs preflight-<model>-<tag>."""
+    calls = {m: preflight.spawn(m, setting, f"preflight-{m}-{tag}") for m in models.split(",")}
+    print(json.dumps({m: c.object_id for m, c in calls.items()}))
+    for model, call in calls.items():
+        try:
+            result = call.get()
+        except Exception as error:  # report every model, even when one fails
+            result = {"error": repr(error)}
+        print(json.dumps({"model": model, "function_call_id": call.object_id, **result}, default=str, ensure_ascii=False))
 
 
 @APP.local_entrypoint()

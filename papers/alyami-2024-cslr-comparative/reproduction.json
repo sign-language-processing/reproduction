@@ -253,7 +253,7 @@
     "numerical_agreement_basis": "Not assessed: no full run has completed yet.",
     "preference_level": 2,
     "blocker": null,
-    "preference_level_basis": "Every model has pinned official code (level 1), but the sibling yu-2025-cvsign attempt on the same CorrNet/VAC code family showed it needs minimal correctness patches on current PyTorch (ctcdecode C++17 build, CTC loss without cuDNN), plus dataset adapters for ArabSign and GrSL; expected level 2, to be confirmed by this paper's own preflight.",
+    "preference_level_basis": "Level 2, confirmed by this paper's own build and preflights: all five systems run their pinned official code through its own main.py, with two kinds of correctness patch and dependency/environment fixes only. (1) patches/ctcdecode-cxx17.patch: ctcdecode does not compile against current PyTorch (image build im-zwwdoz4GF7RwJO4BnSPdG6). (2) patches/<repo>-ctc-without-cudnn.patch for VAC_CSLR, TLP, SEN and CorrNet: on PyTorch 2.11/cuDNN 9.19, nn.CTCLoss uses cuDNN for unequal-length batches and returns wrong gradients (cosine 0.06-0.96 vs a float64 reference; runs ctc-diagnostics-*-001, preflight-*-002/003); disabling cuDNN for the CTC call restores the native computation PyTorch 1.x used. Dependencies: lmdb (imported by TLP/SEN), simple-video-utils 0.7.4 with av 18.1.0. New datasets and Phoenix SI5 enter only as data files and dataset configs written with the repos' own preprocess helpers; no upstream code is changed for them.",
     "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). pipeline and blocker stay null until targets have terminal results."
   },
   "datasets": [
@@ -591,68 +591,68 @@
   "experiments": [
     {
       "experiment_id": "vac-phoenix2014",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss SeqCTC 1 + ConvCTC 1 (+ Dist per VAC README); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "phoenix2014",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV Datasets: multi-signer set for Signer-Dep, signer-5 held out for Signer-Indep; Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "vac-arabsign",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss SeqCTC 1 + ConvCTC 1 (+ Dist per VAC README); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "arabsign",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "vac-grsl",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss SeqCTC 1 + ConvCTC 1 (+ Dist per VAC README); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "grsl",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV: GrSL Signer-Indep (signer-3 held out) and Unseen-Sent (10% of sentences held out); Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "smkd-phoenix2014",
-      "system": "SMKD: VAC_CSLR with share_classifier: True, weight_norm: True (README VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "phoenix2014",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV Datasets: multi-signer set for Signer-Dep, signer-5 held out for Signer-Indep; Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "smkd-arabsign",
-      "system": "SMKD: VAC_CSLR with share_classifier: True, weight_norm: True (README VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "arabsign",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "smkd-grsl",
-      "system": "SMKD: VAC_CSLR with share_classifier: True, weight_norm: True (README VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
       "source_id": "vac-cslr",
       "dataset_id": "grsl",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV: GrSL Signer-Indep (signer-3 held out) and Unseen-Sent (10% of sentences held out); Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -663,7 +663,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV Datasets: multi-signer set for Signer-Dep, signer-5 held out for Signer-Indep; Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -674,7 +674,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -685,7 +685,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV: GrSL Signer-Indep (signer-3 held out) and Unseen-Sent (10% of sentences held out); Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -696,7 +696,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV Datasets: multi-signer set for Signer-Dep, signer-5 held out for Signer-Indep; Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -707,7 +707,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -718,7 +718,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV: GrSL Signer-Indep (signer-3 held out) and Unseen-Sent (10% of sentences held out); Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -729,7 +729,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV Datasets: multi-signer set for Signer-Dep, signer-5 held out for Signer-Indep; Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -740,7 +740,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -751,7 +751,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations (upstream main.py rule); for ArabSign leave-one-signer-out folds, which have no published dev set, the rule is still to be fixed before launch. Paper states no rule.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule.",
       "paper_evidence": "arXiv v1 Sec. IV: GrSL Signer-Indep (signer-3 held out) and Unseen-Sent (10% of sentences held out); Table I; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     }
   ],
@@ -1177,7 +1177,1770 @@
       "original_value": 64.7
     }
   ],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "preflight-vac-gsl-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of vac on GrSL (grsl-si lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T12:49:37Z",
+      "finished_at_utc": "2026-11-02T12:58:10Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-vac-gsl",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:49:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py on real gsl clips: 2 epochs, resume from the epoch-1 checkpoint to a 3rd, test phase; all exit 0, sclite scoring parsed (dev WER by epoch {'0': 100.8, '1': 100.8, '2': 100.8, '6667': 100.8}, test-phase dev/test 100.8/102.5). Epoch-1 wall time 26.0 s on 22266 train + 7390 dev frames; eval 2.13 ms/frame; peak GPU 36673 MiB (nvidia-smi, incl. allocator cache), peak host 16709 MiB; checkpoint 384850637 bytes. ctc_check.py: no non-finite loss or gradient in 60 steps with cuDNN allowed or disabled. Function start not recorded by this harness version; started_at is the local launch time.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-x7facU1wkjeSB5TqFQHti4",
+        "function_call_id": "fc-01M6E4XX6DWPJS2DVR2GZ5Y0GZ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-smkd-gsl-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of smkd on GrSL (grsl-si lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T12:49:37Z",
+      "finished_at_utc": "2026-11-02T12:59:42Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-smkd-gsl",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:49:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "interrupted",
+        "reason_code": "external_interruption",
+        "detail": "First upstream step trained epoch 0 (mean loss 98.0), then dev evaluation failed with 'torch.AcceleratorError: CUDA error: unknown error' while nvidia-smi stopped reporting the device ('No ...' instead of memory.used) - the GPU dropped out. The ctc_check arms before it had passed. Classified as a transient infrastructure failure; retried unchanged.",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-smkd-gsl-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-x7facU1wkjeSB5TqFQHti4",
+        "function_call_id": "fc-01M6E4XXC41XNJS1HWN5P236ZW",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-gsl-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of tlp on GrSL (grsl-si lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T12:49:37Z",
+      "finished_at_utc": "2026-11-02T13:00:01Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-gsl",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:49:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "TLP's dataset/dataloader_video.py imports lmdb at module level and the image lacked it: 'ModuleNotFoundError: No module named lmdb' within 5 s, before any data loaded. Fix: pip install lmdb==1.5.1 in the Dockerfile (dependency only; no config uses the lmdb datatype).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-tlp-gsl-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-x7facU1wkjeSB5TqFQHti4",
+        "function_call_id": "fc-01M6E4XXHY1G7230Z1NKSHZ98P",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-gsl-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of sen on GrSL (grsl-si lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T12:49:37Z",
+      "finished_at_utc": "2026-11-02T13:05:01Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-gsl",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:49:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "SEN's dataset/dataloader_video.py imports lmdb at module level and the image lacked it: 'ModuleNotFoundError: No module named lmdb' within 5 s, before any data loaded. Fix: pip install lmdb==1.5.1 in the Dockerfile (dependency only; no config uses the lmdb datatype).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-gsl-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-x7facU1wkjeSB5TqFQHti4",
+        "function_call_id": "fc-01M6E4XXR3ESNBJ733KETF5JHQ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-corrnet-gsl-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of corrnet on GrSL (grsl-si lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T12:49:37Z",
+      "finished_at_utc": "2026-11-02T13:07:22Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-corrnet-gsl",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:49:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py on real gsl clips: 2 epochs, resume from the epoch-1 checkpoint to a 3rd, test phase; all exit 0, sclite scoring parsed (dev WER by epoch {'0': 99.2, '1': 99.2, '2': 99.2, '6667': 99.2}, test-phase dev/test 99.2/100.0). Epoch-1 wall time 25.0 s on 22266 train + 7390 dev frames; eval 1.28 ms/frame; peak GPU 29753 MiB (nvidia-smi, incl. allocator cache), peak host 19287 MiB; checkpoint 387176194 bytes. ctc_check.py itself raised (helper bug: CorrNet's seq_train returns None); the upstream steps are unaffected and the CTC arms were rerun separately. Function start not recorded by this harness version; started_at is the local launch time.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-x7facU1wkjeSB5TqFQHti4",
+        "function_call_id": "fc-01M6E4XXY1WZ74DQZGS84TT9SW",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-vac-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of vac on Phoenix2014 multisigner (subset written as generated lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T12:56:37Z",
+      "finished_at_utc": "2026-11-02T13:04:03Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-vac-phoenix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:56:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py on real phoenix clips: 2 epochs, resume from the epoch-1 checkpoint to a 3rd, test phase; all exit 0, sclite scoring parsed (dev WER by epoch {'0': 97.2, '1': 91.2, '2': 90.8, '6667': 90.8}, test-phase dev/test 90.8/92.2). Epoch-1 wall time 23.0 s on 21434 train + 7345 dev frames; eval 1.01 ms/frame; peak GPU 45191 MiB (nvidia-smi, incl. allocator cache), peak host 12992 MiB; checkpoint 389721014 bytes. ctc_check.py: no non-finite loss or gradient in 60 steps with cuDNN allowed or disabled. Function start not recorded by this harness version; started_at is the local launch time.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-KW1kx6SLaiKrkDJPa2uAez",
+        "function_call_id": "fc-01M6E5APGV34AQJ8G8RW8VNKCQ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-smkd-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of smkd on Phoenix2014 multisigner (subset written as generated lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T12:56:37Z",
+      "finished_at_utc": "2026-11-02T13:04:00Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-smkd-phoenix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:56:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py on real phoenix clips: 2 epochs, resume from the epoch-1 checkpoint to a 3rd, test phase; all exit 0, sclite scoring parsed (dev WER by epoch {'0': 96.9, '1': 89.9, '2': 90.8, '6667': 90.8}, test-phase dev/test 90.8/91.2). Epoch-1 wall time 23.0 s on 21434 train + 7345 dev frames; eval 1.01 ms/frame; peak GPU 42919 MiB (nvidia-smi, incl. allocator cache), peak host 14078 MiB; checkpoint 384755866 bytes. ctc_check.py: no non-finite loss or gradient in 60 steps with cuDNN allowed or disabled. Function start not recorded by this harness version; started_at is the local launch time.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-KW1kx6SLaiKrkDJPa2uAez",
+        "function_call_id": "fc-01M6E5APP8CB0ZGPBQDB2TD3QQ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of tlp on Phoenix2014 multisigner (subset written as generated lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T12:56:37Z",
+      "finished_at_utc": "2026-11-02T13:02:10Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-phoenix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:56:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "TLP's dataset/dataloader_video.py imports lmdb at module level and the image lacked it: 'ModuleNotFoundError: No module named lmdb' within 5 s, before any data loaded. Fix: pip install lmdb==1.5.1 in the Dockerfile (dependency only; no config uses the lmdb datatype).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-tlp-phoenix-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-KW1kx6SLaiKrkDJPa2uAez",
+        "function_call_id": "fc-01M6E5APVSK6SWM6PNP61A92ER",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of sen on Phoenix2014 multisigner (subset written as generated lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T12:56:37Z",
+      "finished_at_utc": "2026-11-02T13:05:07Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-phoenix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:56:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "SEN's dataset/dataloader_video.py imports lmdb at module level and the image lacked it: 'ModuleNotFoundError: No module named lmdb' within 5 s, before any data loaded. Fix: pip install lmdb==1.5.1 in the Dockerfile (dependency only; no config uses the lmdb datatype).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-phoenix-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-KW1kx6SLaiKrkDJPa2uAez",
+        "function_call_id": "fc-01M6E5AQ1F934J40Z23BRV547Z",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-corrnet-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of corrnet on Phoenix2014 multisigner (subset written as generated lists): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips, real frames through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py both arms; measures epoch time, eval time per frame and peak GPU/host memory.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T12:56:37Z",
+      "finished_at_utc": "2026-11-02T13:07:11Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-corrnet-phoenix",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T12:56:37Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py on real phoenix clips: 2 epochs, resume from the epoch-1 checkpoint to a 3rd, test phase; all exit 0, sclite scoring parsed (dev WER by epoch {'0': 100.0, '1': 100.0, '2': 95.2, '6667': 95.2}, test-phase dev/test 95.2/95.4). Epoch-1 wall time 25.0 s on 21434 train + 7345 dev frames; eval 0.88 ms/frame; peak GPU 19717 MiB (nvidia-smi, incl. allocator cache), peak host 19067 MiB; checkpoint 389609282 bytes. ctc_check.py itself raised (helper bug: CorrNet's seq_train returns None); the upstream steps are unaffected and the CTC arms were rerun separately. Function start not recorded by this harness version; started_at is the local launch time.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-KW1kx6SLaiKrkDJPa2uAez",
+        "function_call_id": "fc-01M6E5AQC2NF2EDMW0EQXRH1SX",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-smkd-gsl-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the smkd gsl preflight (same subset and steps; ctc_check.py now also compares CTC gradients on fixed batches).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-002 --models smkd,tlp,sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:22:47Z",
+      "finished_at_utc": "2026-11-02T13:28:47Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-smkd-gsl",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 97.6, '1': 98.8, '2': 99.2, '6667': 99.2}, test-phase {'dev': 99.2, 'test': 100.0}). Epoch-1 wall 25.0 s on 22266+7390 frames; eval 1.85 ms/frame; peak GPU 39563 MiB, host 16016 MiB; checkpoint 382322778 B. ctc_check (unpatched code): cuDNN allowed -> 60/60 updates applied (0 skipped by GradScaler), CTC without cuDNN -> 60/60 (0 skipped); no non-finite loss or applied gradient. Fixed-batch CTC gradient vs float64 CPU: cosine with cuDNN [0.963, 0.417, 1.0, 1.0, 0.306], without cuDNN [1.0, 1.0, 1.0, 1.0, 1.0] (feat_len per batch [[30, 24], [58, 8], [58, 58], [49, 8], [27, 17]]).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-O1WDrmdZtAWqsZtMPCSv69",
+        "function_call_id": "fc-01M6E6MEF5G8T03H0XESAF91JP",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-gsl-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the tlp gsl preflight (same subset and steps; ctc_check.py now also compares CTC gradients on fixed batches).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-002 --models smkd,tlp,sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:22:47Z",
+      "finished_at_utc": "2026-11-02T13:29:19Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-gsl",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 97.6, '1': 97.6, '2': 97.6, '6667': 97.6}, test-phase {'dev': 97.6, 'test': 97.5}). Epoch-1 wall 24.0 s on 22266+7390 frames; eval 0.85 ms/frame; peak GPU 22625 MiB, host 19483 MiB; checkpoint 687423850 B. ctc_check (unpatched code): cuDNN allowed -> 34/60 updates applied (26 skipped by GradScaler), CTC without cuDNN -> 53/60 (7 skipped); no non-finite loss or applied gradient. Fixed-batch CTC gradient vs float64 CPU: cosine with cuDNN [0.218, 0.92, 0.123, 0.866, 0.152], without cuDNN [1.0, 1.0, 1.0, 1.0, 1.0] (feat_len per batch [[23, 9], [58, 41], [24, 8], [22, 8], [48, 27]]).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-O1WDrmdZtAWqsZtMPCSv69",
+        "function_call_id": "fc-01M6E6MEN5SYBHC2FE8NYVKT8Z",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-gsl-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the sen gsl preflight (same subset and steps; ctc_check.py now also compares CTC gradients on fixed batches).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-002 --models smkd,tlp,sen",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:09:33Z",
+      "finished_at_utc": "2026-11-02T13:31:46Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-gsl",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Upstream steps ran, but the harness raised KeyError(6667) parsing SEN's log: SEN writes 'Epoch N, dev 24.1' without a percent sign and the LOG_LINE regex required one. Regex fixed for all three log formats (VAC/CorrNet, TLP, SEN). Start/finish are local launch-log times (the exception discarded the function's own timestamps).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-gsl-003",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-O1WDrmdZtAWqsZtMPCSv69",
+        "function_call_id": "fc-01M6E6METZKFM7V1RFMRQKKR1P",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-phoenix-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the tlp phoenix preflight (same subset and steps; ctc_check.py now also compares CTC gradients on fixed batches).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-002 --models tlp,sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:22:49Z",
+      "finished_at_utc": "2026-11-02T13:30:51Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-phoenix",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 98.3, '1': 98.3, '2': 97.4, '6667': 97.4}, test-phase {'dev': 97.4, 'test': 97.9}). Epoch-1 wall 20.0 s on 21434+7345 frames; eval 0.63 ms/frame; peak GPU 19386 MiB, host 18415 MiB; checkpoint 692294506 B. ctc_check (unpatched code): cuDNN allowed -> 13/60 updates applied (47 skipped by GradScaler), CTC without cuDNN -> 53/60 (7 skipped); no non-finite loss or applied gradient. Fixed-batch CTC gradient vs float64 CPU: cosine with cuDNN [1.0, 0.778, 1.0, 0.172, 0.131], without cuDNN [1.0, 1.0, 1.0, 1.0, 1.0] (feat_len per batch [[58, 53], [34, 29], [58, 58], [49, 29], [39, 27]]).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-L8oDGMJlkWUdpYyurQI06s",
+        "function_call_id": "fc-01M6E6MEAF0JWA599RZFVSZ534",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-phoenix-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the sen phoenix preflight (same subset and steps; ctc_check.py now also compares CTC gradients on fixed batches).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-002 --models tlp,sen",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:16:05Z",
+      "finished_at_utc": "2026-11-02T13:30:59Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-phoenix",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Upstream steps ran, but the harness raised KeyError(6667) parsing SEN's log: SEN writes 'Epoch N, dev 24.1' without a percent sign and the LOG_LINE regex required one. Regex fixed for all three log formats (VAC/CorrNet, TLP, SEN). Start/finish are local launch-log times (the exception discarded the function's own timestamps).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-phoenix-003",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-L8oDGMJlkWUdpYyurQI06s",
+        "function_call_id": "fc-01M6E6MEK9SVK6MCF8NK0DPBA0",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "ctc-diagnostics-vac-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Hypothesis test for the yu-2025-cvsign CTC patch on this paper's stack: ctc_check.py arms (as-is vs CTC without cuDNN: non-finite losses, skipped/non-finite steps over 60 real batches) and a fixed-batch gradient comparison against a float64 CPU reference, with vac's own Processor and seq_train.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_ctc_diagnostics --setting phoenix-sd --tag phoenix-001 --models vac,corrnet",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:22:45Z",
+      "finished_at_utc": "2026-11-02T13:25:57Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "ctc-diagnostics-vac-phoenix",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "ctc_check (unpatched code): cuDNN allowed -> 60/60 updates applied (0 skipped by GradScaler), CTC without cuDNN -> 60/60 (0 skipped); no non-finite loss or applied gradient. Fixed-batch CTC gradient vs float64 CPU: cosine with cuDNN [0.311, 0.944, 0.96, 0.652, 0.101], without cuDNN [1.0, 1.0, 1.0, 1.0, 1.0] (feat_len per batch [[28, 16], [55, 49], [29, 23], [32, 27], [39, 28]]).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-UPEu3mVMGhsiw0Wud2QQEm",
+        "function_call_id": "fc-01M6E6MEAGZWW3ZADT7R6YZRYC",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "ctc-diagnostics-corrnet-phoenix-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Hypothesis test for the yu-2025-cvsign CTC patch on this paper's stack: ctc_check.py arms (as-is vs CTC without cuDNN: non-finite losses, skipped/non-finite steps over 60 real batches) and a fixed-batch gradient comparison against a float64 CPU reference, with corrnet's own Processor and seq_train.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_ctc_diagnostics --setting phoenix-sd --tag phoenix-001 --models vac,corrnet",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:23:04Z",
+      "finished_at_utc": "2026-11-02T13:28:16Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "ctc-diagnostics-corrnet-phoenix",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:09:33Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "ctc_check (unpatched code): cuDNN allowed -> 10/60 updates applied (50 skipped by GradScaler), CTC without cuDNN -> 52/60 (8 skipped); no non-finite loss or applied gradient. Fixed-batch CTC gradient vs float64 CPU: cosine with cuDNN [0.233, 0.083, 0.556, 0.064, 0.102], without cuDNN [1.0, 1.0, 1.0, 1.0, 1.0] (feat_len per batch [[58, 55], [47, 29], [26, 22], [57, 20], [47, 34]]).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-UPEu3mVMGhsiw0Wud2QQEm",
+        "function_call_id": "fc-01M6E6MEK7M23WAD3BAPSMQFJZ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-vac-arabsign-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of vac on ArabSign Signer-Dep frames (cost measurement only: the dev list is a provisional random 709 of the training rows, 'preflight-random-709', pending gate arabsign-sd-validation): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py arms.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:23:10Z",
+      "finished_at_utc": "2026-11-02T13:26:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-vac-arabsign",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:23:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Harness bug before any upstream step: _arabsign_rows() checked the CSVs' two text columns against the ground-truth file's Arabic and sign-language sentences, but the columns are 'caption' and 'procCaption' (EncoderDec/generator.py), so the check raised on the first row. Found by score_check (app ap-KcrIWUrzHeRYOQbuw2fxzc); the app was stopped at 13:26:25Z. Fix: label = the published 'Sign Language Sentence', checked equal to 'caption' for every row.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-vac-arabsign-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CJ41oIRBmpsfVIddGiLUgS",
+        "function_call_id": "fc-01M6E6VA8GJ4NTHPDDXBGG10RT",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-smkd-arabsign-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of smkd on ArabSign Signer-Dep frames (cost measurement only: the dev list is a provisional random 709 of the training rows, 'preflight-random-709', pending gate arabsign-sd-validation): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py arms.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:23:10Z",
+      "finished_at_utc": "2026-11-02T13:26:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-smkd-arabsign",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:23:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Harness bug before any upstream step: _arabsign_rows() checked the CSVs' two text columns against the ground-truth file's Arabic and sign-language sentences, but the columns are 'caption' and 'procCaption' (EncoderDec/generator.py), so the check raised on the first row. Found by score_check (app ap-KcrIWUrzHeRYOQbuw2fxzc); the app was stopped at 13:26:25Z. Fix: label = the published 'Sign Language Sentence', checked equal to 'caption' for every row.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-smkd-arabsign-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CJ41oIRBmpsfVIddGiLUgS",
+        "function_call_id": "fc-01M6E6VAEDZAND661TP0Z9VKD4",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-arabsign-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of tlp on ArabSign Signer-Dep frames (cost measurement only: the dev list is a provisional random 709 of the training rows, 'preflight-random-709', pending gate arabsign-sd-validation): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py arms.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:23:10Z",
+      "finished_at_utc": "2026-11-02T13:26:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-arabsign",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:23:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Harness bug before any upstream step: _arabsign_rows() checked the CSVs' two text columns against the ground-truth file's Arabic and sign-language sentences, but the columns are 'caption' and 'procCaption' (EncoderDec/generator.py), so the check raised on the first row. Found by score_check (app ap-KcrIWUrzHeRYOQbuw2fxzc); the app was stopped at 13:26:25Z. Fix: label = the published 'Sign Language Sentence', checked equal to 'caption' for every row.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-tlp-arabsign-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CJ41oIRBmpsfVIddGiLUgS",
+        "function_call_id": "fc-01M6E6VAM0A7DQ1FPHZT0Y4XVX",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-arabsign-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of sen on ArabSign Signer-Dep frames (cost measurement only: the dev list is a provisional random 709 of the training rows, 'preflight-random-709', pending gate arabsign-sd-validation): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py arms.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:23:10Z",
+      "finished_at_utc": "2026-11-02T13:26:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-arabsign",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:23:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Harness bug before any upstream step: _arabsign_rows() checked the CSVs' two text columns against the ground-truth file's Arabic and sign-language sentences, but the columns are 'caption' and 'procCaption' (EncoderDec/generator.py), so the check raised on the first row. Found by score_check (app ap-KcrIWUrzHeRYOQbuw2fxzc); the app was stopped at 13:26:25Z. Fix: label = the published 'Sign Language Sentence', checked equal to 'caption' for every row.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-arabsign-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CJ41oIRBmpsfVIddGiLUgS",
+        "function_call_id": "fc-01M6E6VASV116867PYMYD1FDNF",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-corrnet-arabsign-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Representative preflight of corrnet on ArabSign Signer-Dep frames (cost measurement only: the dev list is a provisional random 709 of the training rows, 'preflight-random-709', pending gate arabsign-sd-validation): 120 random + 16 longest train clips, 40 random + 8 longest dev and test clips through upstream main.py for 2 epochs, resume to a 3rd, test phase; ctc_check.py arms.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:23:10Z",
+      "finished_at_utc": "2026-11-02T13:26:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-corrnet-arabsign",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:23:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Harness bug before any upstream step: _arabsign_rows() checked the CSVs' two text columns against the ground-truth file's Arabic and sign-language sentences, but the columns are 'caption' and 'procCaption' (EncoderDec/generator.py), so the check raised on the first row. Found by score_check (app ap-KcrIWUrzHeRYOQbuw2fxzc); the app was stopped at 13:26:25Z. Fix: label = the published 'Sign Language Sentence', checked equal to 'caption' for every row.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-corrnet-arabsign-002",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CJ41oIRBmpsfVIddGiLUgS",
+        "function_call_id": "fc-01M6E6VAZCMW7AX3RJ9N0SR31V",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-vac-arabsign-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the vac ArabSign preflight (cost measurement only; provisional dev list 'preflight-random-709' pending gate arabsign-sd-validation), with the corrected gloss label.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-002",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:32:13Z",
+      "finished_at_utc": "2026-11-02T13:41:09Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-vac-arabsign",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:28:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RIi8tVA02rupjGhXTzm404 (unpatched upstream). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 99.4, '1': 92.3, '2': 89.9, '6667': 89.9}, test-phase {'dev': 89.9, 'test': 91.3}). Epoch-1 wall 21.0 s on 18756+6439 frames; eval 1.01 ms/frame; peak GPU 45033 MiB, host 12491 MiB; checkpoint 382095158 B. ctc_check: as-is 60/60 updates applied (0 skipped by GradScaler), CTC without cuDNN 60/60 (0 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [1.0, 0.578, 0.969, 0.718, 0.695], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2EnEz7cHg6rtQ7B9sPsNwZ",
+        "function_call_id": "fc-01M6E74AFRFSB5BEEMA7ZSNT5B",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-smkd-arabsign-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the smkd ArabSign preflight (cost measurement only; provisional dev list 'preflight-random-709' pending gate arabsign-sd-validation), with the corrected gloss label.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-002",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:32:13Z",
+      "finished_at_utc": "2026-11-02T13:41:09Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-smkd-arabsign",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:28:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RIi8tVA02rupjGhXTzm404 (unpatched upstream). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 100.0, '1': 100.0, '2': 100.0, '6667': 100.0}, test-phase {'dev': 100.0, 'test': 99.4}). Epoch-1 wall 21.0 s on 18756+6439 frames; eval 1.01 ms/frame; peak GPU 36669 MiB, host 12244 MiB; checkpoint 380946789 B. ctc_check: as-is 60/60 updates applied (0 skipped by GradScaler), CTC without cuDNN 60/60 (0 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [1.0, 0.652, 0.553, 0.968, 0.995], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2EnEz7cHg6rtQ7B9sPsNwZ",
+        "function_call_id": "fc-01M6E74ANVH3A2K8V3ABHJVKC8",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-tlp-arabsign-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the tlp ArabSign preflight (cost measurement only; provisional dev list 'preflight-random-709' pending gate arabsign-sd-validation), with the corrected gloss label.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-002",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:32:43Z",
+      "finished_at_utc": "2026-11-02T13:43:38Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-tlp-arabsign",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:28:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RIi8tVA02rupjGhXTzm404 (unpatched upstream). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 100.0, '1': 100.0, '2': 100.0, '6667': 100.0}, test-phase {'dev': 100.0, 'test': 100.0}). Epoch-1 wall 19.0 s on 18756+6439 frames; eval 0.58 ms/frame; peak GPU 19875 MiB, host 18160 MiB; checkpoint 684669189 B. ctc_check: as-is 35/60 updates applied (25 skipped by GradScaler), CTC without cuDNN 53/60 (7 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [0.962, 0.814, 1.0, 1.0, 1.0], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2EnEz7cHg6rtQ7B9sPsNwZ",
+        "function_call_id": "fc-01M6E74AVSTA5Z01N2HZXNY0EY",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-arabsign-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the sen ArabSign preflight (cost measurement only; provisional dev list 'preflight-random-709' pending gate arabsign-sd-validation), with the corrected gloss label.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-002",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T13:28:05Z",
+      "finished_at_utc": "2026-11-02T13:46:23Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-arabsign",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:28:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Upstream steps ran, but the harness raised KeyError(6667) parsing SEN's log (SEN writes WER without a percent sign); this attempt was launched before the LOG_LINE fix. Start/finish are local launch-log times.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-sen-arabsign-003",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2EnEz7cHg6rtQ7B9sPsNwZ",
+        "function_call_id": "fc-01M6E74B1PPF28N7JY92DY6A0B",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-corrnet-arabsign-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the corrnet ArabSign preflight (cost measurement only; provisional dev list 'preflight-random-709' pending gate arabsign-sd-validation), with the corrected gloss label.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-002",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:36:55Z",
+      "finished_at_utc": "2026-11-02T13:46:14Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-corrnet-arabsign",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:28:05Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RIi8tVA02rupjGhXTzm404 (unpatched upstream). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 100.0, '1': 100.0, '2': 100.0, '6667': 100.0}, test-phase {'dev': 100.0, 'test': 100.0}). Epoch-1 wall 22.0 s on 18756+6439 frames; eval 1.01 ms/frame; peak GPU 22859 MiB, host 18015 MiB; checkpoint 385800341 B. ctc_check: as-is 30/60 updates applied (30 skipped by GradScaler), CTC without cuDNN 49/60 (11 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [0.823, 0.991, 0.887, 0.882, 0.785], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2EnEz7cHg6rtQ7B9sPsNwZ",
+        "function_call_id": "fc-01M6E74B7K6WFGZ7WD6H349J0T",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-gsl-003",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Third attempt of the SEN gsl preflight, with the fixed log parser and the patched image (CTC without cuDNN).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting grsl-si --tag gsl-003 --models sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:43:27Z",
+      "finished_at_utc": "2026-11-02T13:51:51Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-gsl",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:34:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX (patched: CTC without cuDNN). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 100.0, '1': 97.6, '2': 97.6, '6667': 97.6}, test-phase {'dev': 97.6, 'test': 97.5}). Epoch-1 wall 26.0 s on 22266+7390 frames; eval 1.14 ms/frame; peak GPU 21795 MiB, host 16438 MiB; checkpoint 387801815 B. ctc_check: as-is 55/60 updates applied (5 skipped by GradScaler), CTC without cuDNN 55/60 (5 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [0.861, 0.288, 0.471, 0.58, 0.968], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-4eH6KTnYORw9QXKBvUncM2",
+        "function_call_id": "fc-01M6E7ZTMVYEVE6575HXENF3NA",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-phoenix-003",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Third attempt of the SEN phoenix preflight, with the fixed log parser and the patched image (CTC without cuDNN).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting phoenix-sd --tag phoenix-003 --models sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:43:53Z",
+      "finished_at_utc": "2026-11-02T13:52:18Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-phoenix",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:34:10Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX (patched: CTC without cuDNN). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 97.4, '1': 96.3, '2': 91.0, '6667': 91.0}, test-phase {'dev': 91.0, 'test': 92.2}). Epoch-1 wall 27.0 s on 21434+7345 frames; eval 0.76 ms/frame; peak GPU 20975 MiB, host 17090 MiB; checkpoint 392672471 B. ctc_check: as-is 55/60 updates applied (5 skipped by GradScaler), CTC without cuDNN 55/60 (5 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [1.0, 0.594, 0.933, 0.193, 0.559], without [1.0, 1.0, 1.0, 1.0, 1.0].",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-UEqVqOBKl5ksFK5NOQdmO7",
+        "function_call_id": "fc-01M6E80GN8H5D755GJN761X19C",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "ctc-diagnostics-vac-phoenix-patched-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Confirms patches/vac-ctc-without-cudnn.patch takes effect: with the patched image, the as-is arm must match the CTC-without-cuDNN arm (only GradScaler calibration skips under AMP).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_ctc_diagnostics --setting phoenix-sd --tag phoenix-patched-001 --models vac,tlp,corrnet",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:43:50Z",
+      "finished_at_utc": "2026-11-02T13:48:53Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "ctc-diagnostics-vac-phoenix-patched",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:34:10Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX with patches/vac-ctc-without-cudnn.patch applied. ctc_check: as-is 60/60 updates applied (0 skipped by GradScaler), CTC without cuDNN 60/60 (0 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [0.311, 0.944, 0.96, 0.652, 0.101], without [1.0, 1.0, 1.0, 1.0, 1.0]. The as-is arm now matches the CTC-without-cuDNN arm, so the patch takes effect; the fixed-batch comparison calls nn.CTCLoss directly and so still shows the unpatched op.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-68UAXkxNzuce4cCwPZE4fh",
+        "function_call_id": "fc-01M6E80GPKETM1CEQQQZZZGC07",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "ctc-diagnostics-tlp-phoenix-patched-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Confirms patches/tlp-ctc-without-cudnn.patch takes effect: with the patched image, the as-is arm must match the CTC-without-cuDNN arm (only GradScaler calibration skips under AMP).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_ctc_diagnostics --setting phoenix-sd --tag phoenix-patched-001 --models vac,tlp,corrnet",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:43:51Z",
+      "finished_at_utc": "2026-11-02T13:49:24Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "ctc-diagnostics-tlp-phoenix-patched",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:34:10Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX with patches/tlp-ctc-without-cudnn.patch applied. ctc_check: as-is 53/60 updates applied (7 skipped by GradScaler), CTC without cuDNN 53/60 (7 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [1.0, 0.778, 1.0, 0.172, 0.131], without [1.0, 1.0, 1.0, 1.0, 1.0]. The as-is arm now matches the CTC-without-cuDNN arm, so the patch takes effect; the fixed-batch comparison calls nn.CTCLoss directly and so still shows the unpatched op.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-68UAXkxNzuce4cCwPZE4fh",
+        "function_call_id": "fc-01M6E80GWGKQRNQDTS0NDHDZQC",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "ctc-diagnostics-corrnet-phoenix-patched-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Confirms patches/corrnet-ctc-without-cudnn.patch takes effect: with the patched image, the as-is arm must match the CTC-without-cuDNN arm (only GradScaler calibration skips under AMP).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_ctc_diagnostics --setting phoenix-sd --tag phoenix-patched-001 --models vac,tlp,corrnet",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:43:51Z",
+      "finished_at_utc": "2026-11-02T13:48:58Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "ctc-diagnostics-corrnet-phoenix-patched",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:34:10Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 3.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX with patches/corrnet-ctc-without-cudnn.patch applied. ctc_check: as-is 52/60 updates applied (8 skipped by GradScaler), CTC without cuDNN 52/60 (8 skipped); fixed-batch gradient cosine vs float64 CPU with cuDNN [0.233, 0.083, 0.556, 0.064, 0.102], without [1.0, 1.0, 1.0, 1.0, 1.0]. The as-is arm now matches the CTC-without-cuDNN arm, so the patch takes effect; the fixed-batch comparison calls nn.CTCLoss directly and so still shows the unpatched op.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-68UAXkxNzuce4cCwPZE4fh",
+        "function_call_id": "fc-01M6E80H427WKC6X9A0BPWS0Q9",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "preflight-sen-arabsign-003",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Third attempt of the SEN ArabSign preflight (cost measurement only; provisional dev list), with the fixed log parser and the patched image.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_preflights --setting arabsign-sd --tag arabsign-003 --models sen",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T13:53:28Z",
+      "finished_at_utc": "2026-11-02T14:02:58Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-sen-arabsign",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T13:53:04Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_chf": 5.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX (patched). Upstream main.py: 2 epochs, resume to a 3rd, test phase, all exit 0 (dev WER {'0': 100.0, '1': 100.0, '2': 100.0, '6667': 100.0}, test-phase {'dev': 100.0, 'test': 100.0}). Epoch-1 wall 25.0 s on 18756+6439 frames; eval 0.87 ms/frame; peak GPU 20833 MiB, host 16701 MiB. ctc_check: as-is 55/60 (5 skipped), without cuDNN 54/60 (6 skipped)."
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-xNlgKfUNt5IyTLyV6QwjTV",
+        "function_call_id": "fc-01M6E8J2HZ0DDA0K1VGMB053FH",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 64 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    }
+  ],
   "artifacts": [],
   "gates": [
     {
@@ -1252,8 +3015,568 @@
           "max_gpu_hours_l40s_approx": 620,
           "rate_usd_per_l40s_hour": 3.22,
           "note": "USD 2,000 is an absolute ceiling for this reproduction (preflights, full runs, evaluation and retries together). Cumulative spend is tracked per block against it; the GPU-hour figure is the ceiling divided by the L40S rate."
-        }
+        },
+        "measured_estimate": {
+          "measured_at": "2026-11-02",
+          "basis": "Per-frame training and evaluation rates from the 15 model x dataset preflights (runs preflight-<model>-<phoenix|gsl|arabsign>-00N): epoch-1 wall time minus dev-eval time over train-subset frames, and test-phase eval time per frame, from upstream's 1-second log timestamps on 136-clip epochs (so worker start-up is included and per-frame rates are, if anything, overstated). Frame totals per split from setting_frame_totals (app ap-uk5or6L2iWQcQdc7VCAKxr). Per run: epochs x (train frames x train rate + dev frames x eval rate + 5 s checkpoint) + final dev/test scoring + 15 min staging/start-up. Rate USD 2.96/h: L40S 1.95 + 16 cores x 0.0473 + 32 GiB x 0.008 (modal billing rates 2026-11-02; host-memory peaks <= 19.5 GiB, so 32 GiB instead of 64). No retry margin included.",
+          "rate_usd_per_hour": 2.9628,
+          "per_model_rates_ms_per_frame": {
+            "vac/phoenix": {
+              "train": 0.727,
+              "eval": 1.009,
+              "peak_gpu_mib": 45191,
+              "peak_host_mib": 12992
+            },
+            "smkd/phoenix": {
+              "train": 0.727,
+              "eval": 1.009,
+              "peak_gpu_mib": 42919,
+              "peak_host_mib": 14078
+            },
+            "corrnet/phoenix": {
+              "train": 0.864,
+              "eval": 0.883,
+              "peak_gpu_mib": 19717,
+              "peak_host_mib": 19067
+            },
+            "tlp/phoenix": {
+              "train": 0.717,
+              "eval": 0.631,
+              "peak_gpu_mib": 19386,
+              "peak_host_mib": 18415
+            },
+            "sen/phoenix": {
+              "train": 1.0,
+              "eval": 0.757,
+              "peak_gpu_mib": 20975,
+              "peak_host_mib": 17090
+            },
+            "vac/gsl": {
+              "train": 0.461,
+              "eval": 2.131,
+              "peak_gpu_mib": 36673,
+              "peak_host_mib": 16709
+            },
+            "corrnet/gsl": {
+              "train": 0.698,
+              "eval": 1.278,
+              "peak_gpu_mib": 29753,
+              "peak_host_mib": 19287
+            },
+            "smkd/gsl": {
+              "train": 0.51,
+              "eval": 1.847,
+              "peak_gpu_mib": 39563,
+              "peak_host_mib": 16016
+            },
+            "tlp/gsl": {
+              "train": 0.795,
+              "eval": 0.852,
+              "peak_gpu_mib": 22625,
+              "peak_host_mib": 19483
+            },
+            "sen/gsl": {
+              "train": 0.791,
+              "eval": 1.136,
+              "peak_gpu_mib": 21795,
+              "peak_host_mib": 16438
+            },
+            "vac/arabsign": {
+              "train": 0.772,
+              "eval": 1.014,
+              "peak_gpu_mib": 45033,
+              "peak_host_mib": 12491
+            },
+            "smkd/arabsign": {
+              "train": 0.772,
+              "eval": 1.014,
+              "peak_gpu_mib": 36669,
+              "peak_host_mib": 12244
+            },
+            "tlp/arabsign": {
+              "train": 0.814,
+              "eval": 0.579,
+              "peak_gpu_mib": 19875,
+              "peak_host_mib": 18160
+            },
+            "corrnet/arabsign": {
+              "train": 0.825,
+              "eval": 1.014,
+              "peak_gpu_mib": 22859,
+              "peak_host_mib": 18015
+            },
+            "sen/arabsign": {
+              "train": 1.035,
+              "eval": 0.869,
+              "peak_gpu_mib": 20833,
+              "peak_host_mib": 16701
+            }
+          },
+          "blocks_40_epochs_usd": {
+            "phoenix-sd": 121.9,
+            "phoenix-si": 88.2,
+            "grsl-si": 114.7,
+            "grsl-unseen": 123.1,
+            "arabsign-sd (stratified-709-seed42 / no-validation-final-epoch / test-as-dev)": [
+              129.2,
+              129.2,
+              161.4
+            ],
+            "arabsign-loso 30 runs (final-epoch / heldout-validation-dev-best / test-signer-best)": [
+              803.2,
+              804.4,
+              965.2
+            ]
+          },
+          "per_run": {
+            "phoenix-sd": {
+              "vac": {
+                "epoch_min": 11.0,
+                "hours_40": 7.65,
+                "usd_40": 22.7,
+                "hours_80": 15.01,
+                "usd_80": 44.5
+              },
+              "smkd": {
+                "epoch_min": 11.0,
+                "hours_40": 7.65,
+                "usd_40": 22.7,
+                "hours_80": 15.01,
+                "usd_80": 44.5
+              },
+              "tlp": {
+                "epoch_min": 10.4,
+                "hours_40": 7.23,
+                "usd_40": 21.4,
+                "hours_80": 14.17,
+                "usd_80": 42.0
+              },
+              "sen": {
+                "epoch_min": 14.4,
+                "hours_40": 9.85,
+                "usd_40": 29.2,
+                "hours_80": 19.42,
+                "usd_80": 57.5
+              },
+              "corrnet": {
+                "epoch_min": 12.7,
+                "hours_40": 8.75,
+                "usd_40": 25.9,
+                "hours_80": 17.21,
+                "usd_80": 51.0
+              }
+            },
+            "phoenix-si": {
+              "vac": {
+                "epoch_min": 7.8,
+                "hours_40": 5.45,
+                "usd_40": 16.1,
+                "hours_80": 10.63,
+                "usd_80": 31.5
+              },
+              "smkd": {
+                "epoch_min": 7.8,
+                "hours_40": 5.45,
+                "usd_40": 16.1,
+                "hours_80": 10.63,
+                "usd_80": 31.5
+              },
+              "tlp": {
+                "epoch_min": 7.6,
+                "hours_40": 5.3,
+                "usd_40": 15.7,
+                "hours_80": 10.35,
+                "usd_80": 30.7
+              },
+              "sen": {
+                "epoch_min": 10.5,
+                "hours_40": 7.26,
+                "usd_40": 21.5,
+                "hours_80": 14.25,
+                "usd_80": 42.2
+              },
+              "corrnet": {
+                "epoch_min": 9.1,
+                "hours_40": 6.35,
+                "usd_40": 18.8,
+                "hours_80": 12.44,
+                "usd_80": 36.9
+              }
+            },
+            "grsl-si": {
+              "vac": {
+                "epoch_min": 9.1,
+                "hours_40": 6.39,
+                "usd_40": 18.9,
+                "hours_80": 12.43,
+                "usd_80": 36.8
+              },
+              "smkd": {
+                "epoch_min": 9.5,
+                "hours_40": 6.66,
+                "usd_40": 19.7,
+                "hours_80": 12.99,
+                "usd_80": 38.5
+              },
+              "tlp": {
+                "epoch_min": 12.7,
+                "hours_40": 8.72,
+                "usd_40": 25.8,
+                "hours_80": 17.16,
+                "usd_80": 50.8
+              },
+              "sen": {
+                "epoch_min": 12.9,
+                "hours_40": 8.89,
+                "usd_40": 26.3,
+                "hours_80": 17.48,
+                "usd_80": 51.8
+              },
+              "corrnet": {
+                "epoch_min": 11.7,
+                "hours_40": 8.09,
+                "usd_40": 24.0,
+                "hours_80": 15.88,
+                "usd_80": 47.0
+              }
+            },
+            "grsl-unseen": {
+              "vac": {
+                "epoch_min": 11.1,
+                "hours_40": 7.77,
+                "usd_40": 23.0,
+                "hours_80": 15.14,
+                "usd_80": 44.9
+              },
+              "smkd": {
+                "epoch_min": 11.0,
+                "hours_40": 7.74,
+                "usd_40": 22.9,
+                "hours_80": 15.1,
+                "usd_80": 44.7
+              },
+              "tlp": {
+                "epoch_min": 12.4,
+                "hours_40": 8.6,
+                "usd_40": 25.5,
+                "hours_80": 16.88,
+                "usd_80": 50.0
+              },
+              "sen": {
+                "epoch_min": 13.0,
+                "hours_40": 9.02,
+                "usd_40": 26.7,
+                "hours_80": 17.71,
+                "usd_80": 52.5
+              },
+              "corrnet": {
+                "epoch_min": 12.2,
+                "hours_40": 8.45,
+                "usd_40": 25.0,
+                "hours_80": 16.56,
+                "usd_80": 49.1
+              }
+            },
+            "arabsign-sd/stratified-709-seed42": {
+              "vac": {
+                "epoch_min": 11.8,
+                "hours_40": 8.21,
+                "usd_40": 24.3,
+                "hours_80": 16.08,
+                "usd_80": 47.7
+              },
+              "smkd": {
+                "epoch_min": 11.8,
+                "hours_40": 8.21,
+                "usd_40": 24.3,
+                "hours_80": 16.08,
+                "usd_80": 47.7
+              },
+              "tlp": {
+                "epoch_min": 11.8,
+                "hours_40": 8.15,
+                "usd_40": 24.1,
+                "hours_80": 16.0,
+                "usd_80": 47.4
+              },
+              "sen": {
+                "epoch_min": 15.1,
+                "hours_40": 10.41,
+                "usd_40": 30.8,
+                "hours_80": 20.49,
+                "usd_80": 60.7
+              },
+              "corrnet": {
+                "epoch_min": 12.5,
+                "hours_40": 8.68,
+                "usd_40": 25.7,
+                "hours_80": 17.03,
+                "usd_80": 50.5
+              }
+            },
+            "arabsign-sd/no-validation-final-epoch": {
+              "vac": {
+                "epoch_min": 11.6,
+                "hours_40": 8.03,
+                "usd_40": 23.8,
+                "hours_80": 15.74,
+                "usd_80": 46.6
+              },
+              "smkd": {
+                "epoch_min": 11.6,
+                "hours_40": 8.03,
+                "usd_40": 23.8,
+                "hours_80": 15.74,
+                "usd_80": 46.6
+              },
+              "tlp": {
+                "epoch_min": 12.2,
+                "hours_40": 8.39,
+                "usd_40": 24.9,
+                "hours_80": 16.5,
+                "usd_80": 48.9
+              },
+              "sen": {
+                "epoch_min": 15.4,
+                "hours_40": 10.6,
+                "usd_40": 31.4,
+                "hours_80": 20.89,
+                "usd_80": 61.9
+              },
+              "corrnet": {
+                "epoch_min": 12.4,
+                "hours_40": 8.55,
+                "usd_40": 25.3,
+                "hours_80": 16.79,
+                "usd_80": 49.8
+              }
+            },
+            "arabsign-sd/test-as-dev": {
+              "vac": {
+                "epoch_min": 15.2,
+                "hours_40": 10.49,
+                "usd_40": 31.1,
+                "hours_80": 20.6,
+                "usd_80": 61.0
+              },
+              "smkd": {
+                "epoch_min": 15.2,
+                "hours_40": 10.49,
+                "usd_40": 31.1,
+                "hours_80": 20.6,
+                "usd_80": 61.0
+              },
+              "tlp": {
+                "epoch_min": 14.2,
+                "hours_40": 9.8,
+                "usd_40": 29.0,
+                "hours_80": 19.27,
+                "usd_80": 57.1
+              },
+              "sen": {
+                "epoch_min": 18.5,
+                "hours_40": 12.71,
+                "usd_40": 37.6,
+                "hours_80": 25.06,
+                "usd_80": 74.2
+              },
+              "corrnet": {
+                "epoch_min": 16.0,
+                "hours_40": 11.01,
+                "usd_40": 32.6,
+                "hours_80": 21.65,
+                "usd_80": 64.1
+              }
+            },
+            "arabsign-loso/final-epoch": {
+              "vac": {
+                "hours_40_6folds": 49.9,
+                "usd_40_6folds": 147.8,
+                "hours_80_6folds": 97.98,
+                "usd_80_6folds": 290.3
+              },
+              "smkd": {
+                "hours_40_6folds": 49.9,
+                "usd_40_6folds": 147.8,
+                "hours_80_6folds": 97.98,
+                "usd_80_6folds": 290.3
+              },
+              "tlp": {
+                "hours_40_6folds": 52.2,
+                "usd_40_6folds": 154.7,
+                "hours_80_6folds": 102.72,
+                "usd_80_6folds": 304.4
+              },
+              "sen": {
+                "hours_40_6folds": 65.94,
+                "usd_40_6folds": 195.4,
+                "hours_80_6folds": 130.1,
+                "usd_80_6folds": 385.5
+              },
+              "corrnet": {
+                "hours_40_6folds": 53.17,
+                "usd_40_6folds": 157.5,
+                "hours_80_6folds": 104.53,
+                "usd_80_6folds": 309.7
+              }
+            },
+            "arabsign-loso/heldout-validation-dev-best": {
+              "vac": {
+                "hours_40_6folds": 51.05,
+                "usd_40_6folds": 151.2,
+                "hours_80_6folds": 100.13,
+                "usd_80_6folds": 296.7
+              },
+              "smkd": {
+                "hours_40_6folds": 51.05,
+                "usd_40_6folds": 151.2,
+                "hours_80_6folds": 100.13,
+                "usd_80_6folds": 296.7
+              },
+              "tlp": {
+                "hours_40_6folds": 50.69,
+                "usd_40_6folds": 150.2,
+                "hours_80_6folds": 99.62,
+                "usd_80_6folds": 295.2
+              },
+              "sen": {
+                "hours_40_6folds": 64.75,
+                "usd_40_6folds": 191.8,
+                "hours_80_6folds": 127.61,
+                "usd_80_6folds": 378.1
+              },
+              "corrnet": {
+                "hours_40_6folds": 54.01,
+                "usd_40_6folds": 160.0,
+                "hours_80_6folds": 106.06,
+                "usd_80_6folds": 314.2
+              }
+            },
+            "arabsign-loso/test-signer-best": {
+              "vac": {
+                "hours_40_6folds": 62.25,
+                "usd_40_6folds": 184.4,
+                "hours_80_6folds": 122.37,
+                "usd_80_6folds": 362.6
+              },
+              "smkd": {
+                "hours_40_6folds": 62.25,
+                "usd_40_6folds": 184.4,
+                "hours_80_6folds": 122.37,
+                "usd_80_6folds": 362.6
+              },
+              "tlp": {
+                "hours_40_6folds": 59.26,
+                "usd_40_6folds": 175.6,
+                "hours_80_6folds": 116.66,
+                "usd_80_6folds": 345.6
+              },
+              "sen": {
+                "hours_40_6folds": 76.52,
+                "usd_40_6folds": 226.7,
+                "hours_80_6folds": 151.0,
+                "usd_80_6folds": 447.4
+              },
+              "corrnet": {
+                "hours_40_6folds": 65.52,
+                "usd_40_6folds": 194.1,
+                "hours_80_6folds": 128.92,
+                "usd_80_6folds": 381.9
+              }
+            }
+          }
+        },
+        "spend_ledger": [
+          {
+            "date": "2026-11-02",
+            "scope": "data population, frame archives, image builds, 15 preflights and CTC diagnostics (apps of repro-alyami-2024-cslr up to ~14:05 UTC)",
+            "usd": 16.08,
+            "source": "modal billing report --for today --json (sum over this paper's app IDs)"
+          }
+        ]
       }
+    },
+    {
+      "gate_id": "arabsign-sd-validation",
+      "type": "protocol",
+      "status": "open",
+      "reason": "Every upstream recipe evaluates a dev split each epoch and (TLP/SEN/CorrNet; VAC/SMKD via per-epoch checkpoints) keeps the dev-best model, but the ArabSign Signer-Dep validation subset is unpublished. The choice decides which clips are trained on and which checkpoint is scored for 5 targets.",
+      "evidence": [
+        "ICCVW 2025 Sec. 3.2: 'The official Signer-Dep split consists of 6,783 training samples, 709 validation samples, and 1,843 testing samples.'",
+        "arXiv v1 Sec. IV (the assigned version) describes ArabSign without any validation subset.",
+        "The dataset author's per-signer split CSVs (ArabSign-EncoderDec.zip, sha256 6980aec2...) publish only train (7,492 rows) and test (1,843 rows) lists; 7,492 = 6,783 + 709. No list of the 709 clips was found on the ArabSign site, its GitHub repository, the paper pages or the ICCVW page.",
+        "The author's own code in that zip (EncoderDec/generator.py, CustomCSVDataset) draws validation with sklearn train_test_split(test_size=0.2, random_state=42, stratify=sentence ID) from the training CSV; on 7,492 rows that is 1,499 clips, not 709, so it does not reproduce the stated split.",
+        "Five training-list videos are absent from the RGB release, so 7,489 training rows are usable; the test list has 1,841 of 1,843 videos.",
+        "Measured cost (compute-full-table measured_estimate): 5 Signer-Dep runs at 40 epochs about USD 129 with a 709-clip dev list or a token dev list, USD 161 with the 1,841-clip test list evaluated every epoch."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "stratified-709-seed42",
+          "description": "Hold out exactly 709 of the usable training rows, stratified by sentence ID with random_state 42 (the dataset author's seed and stratification), train on the other 6,780 and select the dev-best epoch as in every other setting.",
+          "paper_evidence": "ICCVW split sizes; author's generator.py convention; upstream dev-best rule.",
+          "decision_needed": "Accept a guessed but size-matched, sentence-stratified validation subset.",
+          "estimated_cost_usd_5_runs_40_epochs": 129.2
+        },
+        {
+          "alternative_id": "random-709-seed0",
+          "description": "Hold out a uniformly random 709 of the usable training rows (seed 0), otherwise as above.",
+          "paper_evidence": "ICCVW split sizes only.",
+          "decision_needed": "Accept an unstratified guessed subset.",
+          "estimated_cost_usd_5_runs_40_epochs": 129.2
+        },
+        {
+          "alternative_id": "no-validation-final-epoch",
+          "description": "Train on all 7,489 usable training rows and score the final (40th) epoch; no checkpoint selection. A token dev list only keeps upstream's per-epoch loop running and is not used for selection.",
+          "paper_evidence": "v1 mentions no validation subset; deviates from the ICCVW 6,783/709 partition (about 10% more training data).",
+          "decision_needed": "Accept training on the full training list without selection.",
+          "estimated_cost_usd_5_runs_40_epochs": 129.2
+        },
+        {
+          "alternative_id": "test-as-dev",
+          "description": "Use the 1,841-clip test list as upstream's dev split and report the best epoch on it.",
+          "paper_evidence": "Not excluded by either paper text; selects on the test set, so the reported WER is optimistically biased. Not recommended.",
+          "decision_needed": "Accept test-set checkpoint selection.",
+          "estimated_cost_usd_5_runs_40_epochs": 161.4
+        }
+      ],
+      "required_action": "Operator chooses the ArabSign Signer-Dep validation rule before the ArabSign SD block (5 runs) launches."
+    },
+    {
+      "gate_id": "arabsign-loso-checkpoint",
+      "type": "protocol",
+      "status": "open",
+      "reason": "The 30 leave-one-signer-out runs (6 folds x 5 models) have no published dev set, yet upstream evaluates dev every epoch and selects the dev-best model. A checkpoint rule (and what upstream's dev loader reads) must be fixed for 5 targets averaged over 6 folds.",
+      "evidence": [
+        "arXiv v1 Sec. V: 'since the ArabSign dataset does not have a specific set for Signer-Indep evaluation, we follow the same setup used in [8], where we leave out one signer for testing in each trial. This is repeated six times ... We also report the average WER amongst all signers.'",
+        "arXiv v1 Sec. V on CorrNet's Signer-Indep result: 'Better results are likely to be obtained by fine-tuning the training parameters using a smaller learning rate and adopting early stopping' — which suggests no dev-based early stopping or selection was used for these folds.",
+        "ICCVW 2025 Sec. 3.2 describes the same leave-one-signer-out protocol without a validation set.",
+        "Upstream main.py: TLP/SEN/CorrNet save '_best_model.pt' on dev WER each epoch; VAC saves every save_interval epochs and has no best-model rule; the phoenix loader path always builds a dev loader.",
+        "Measured cost (compute-full-table measured_estimate): 30 LOSO runs at 40 epochs about USD 803 (final-epoch, token dev list), USD 804 (held-out validation subset), USD 965 (held-out signer evaluated every epoch)."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "final-epoch",
+          "description": "Train 40 epochs on every clip of the five training signers and score the final-epoch checkpoint on the held-out signer. Upstream's per-epoch dev loop reads a small fixed list (not used for selection), so per-epoch evaluation cost is minimal.",
+          "paper_evidence": "v1's 'adopting early stopping' remark; fixed 40-epoch schedule with LR steps at 20/35.",
+          "decision_needed": "Accept final-epoch scoring for the LOSO folds.",
+          "estimated_cost_usd_30_runs_40_epochs": 803.2
+        },
+        {
+          "alternative_id": "heldout-validation-dev-best",
+          "description": "Carve a validation subset (same rule as chosen for Signer-Dep, about 9.5%) from the five training signers and select the dev-best epoch, as in every other setting.",
+          "paper_evidence": "Consistent with the upstream dev-best rule; not described in either paper; trains on about 9.5% fewer clips.",
+          "decision_needed": "Accept an invented validation subset per fold.",
+          "estimated_cost_usd_30_runs_40_epochs": 804.4
+        },
+        {
+          "alternative_id": "test-signer-best",
+          "description": "Use the held-out signer's clips as upstream's dev split and report the best epoch on them.",
+          "paper_evidence": "Not excluded by the papers; selects on the test signer, so WERs are optimistically biased. Not recommended.",
+          "decision_needed": "Accept test-set checkpoint selection.",
+          "estimated_cost_usd_30_runs_40_epochs": 965.2
+        }
+      ],
+      "required_action": "Operator chooses the LOSO checkpoint rule before the ArabSign LOSO block (30 runs) launches."
     }
   ]
 }

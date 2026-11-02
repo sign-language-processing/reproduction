@@ -25,7 +25,7 @@ RUN git clone https://github.com/usnistgov/SCTK.git /opt/SCTK \
 # ctcdecode, the beam-search decoder all four repos import in utils/decode.py.
 # Unpatched it does not compile against current PyTorch (see the patch header).
 ARG CTCDECODE_COMMIT=c90ad94a0b19554f80804fb7812f2a1447a34a70
-COPY ctcdecode-cxx17.patch /tmp/ctcdecode-cxx17.patch
+COPY patches/ctcdecode-cxx17.patch /tmp/ctcdecode-cxx17.patch
 RUN git clone https://github.com/parlance/ctcdecode.git /opt/ctcdecode \
     && cd /opt/ctcdecode && git checkout ${CTCDECODE_COMMIT} \
     && git submodule update --init --recursive \
@@ -42,7 +42,10 @@ RUN pip install --no-cache-dir \
     pandas==2.2.3 \
     matplotlib==3.9.2 \
     six==1.16.0 \
-    gdown==5.2.0
+    gdown==5.2.0 \
+    lmdb==1.5.1
+# lmdb: TLP's and SEN's dataset/dataloader_video.py import it at module level
+# (preflight-{tlp,sen}-*-001: ModuleNotFoundError); no config uses the lmdb datatype.
 
 # ArabSign is the only video source (Phoenix and GSL ship frames). The root
 # Dockerfile pins simple-video-utils 0.7.4, but the published
@@ -54,7 +57,9 @@ RUN pip install --no-cache-dir \
 # 'metadata_errors'"), so av is pinned to the newest 18.x release.
 RUN pip install --no-cache-dir simple-video-utils==0.7.4 av==18.1.0
 
-# The four published implementations, pristine. Each run works on its own copy.
+# The four published implementations at their pinned commits, each with one
+# correctness patch (patches/<repo>-ctc-without-cudnn.patch: cuDNN's CTC
+# gradient is wrong for unequal lengths on this stack). Each run works on its own copy.
 ARG VAC_COMMIT=71f3e0334fbc8cecc7ce9816ec69781068abaac0
 ARG TLP_COMMIT=21be215c6ba749d98ce6a51f4b84cc9d5029bfe6
 ARG SEN_COMMIT=c9a4c7ebd0489e22496c00f9f31d930c0d968ad8
@@ -66,8 +71,11 @@ RUN git clone https://github.com/VIPL-SLP/VAC_CSLR.git /opt/repos/vac \
     && git clone https://github.com/hulianyuyy/SEN_CSLR.git /opt/repos/sen \
     && git -C /opt/repos/sen checkout ${SEN_COMMIT} \
     && git clone https://github.com/hulianyuyy/CorrNet.git /opt/repos/corrnet \
-    && git -C /opt/repos/corrnet checkout ${CORRNET_COMMIT} \
-    && python -c "import scipy.misc, cv2, pandas, ctcdecode, simple_video_utils"
+    && git -C /opt/repos/corrnet checkout ${CORRNET_COMMIT}
+COPY patches/vac-ctc-without-cudnn.patch patches/tlp-ctc-without-cudnn.patch \
+     patches/sen-ctc-without-cudnn.patch patches/corrnet-ctc-without-cudnn.patch /tmp/patches/
+RUN for r in vac tlp sen corrnet; do git -C /opt/repos/$r apply /tmp/patches/$r-ctc-without-cudnn.patch; done \
+    && python -c "import scipy.misc, cv2, pandas, ctcdecode, lmdb, simple_video_utils"
 
 # ./software/sclite is the path every evaluation/slr_eval/wer_calculation.py hardcodes.
 RUN for r in vac tlp sen corrnet; do \

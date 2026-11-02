@@ -136,25 +136,126 @@ Frames for all three datasets are resized to 256×256 PNG with the upstream `res
 
 ## Environment and patches
 
-Nothing has been built yet. The plan is to start from `ghcr.io/sign-language-processing/reproduction:latest`, reusing the patches from `papers/yu-2025-cvsign` that are needed on current PyTorch: `ctcdecode` built as C++17, and the CTC loss computed without cuDNN. Each patch will be re-justified by this paper's own preflight.
+`Dockerfile` starts from `ghcr.io/sign-language-processing/reproduction:latest` (NGC PyTorch 26.02: torch 2.11.0a0, CUDA 13.1, cuDNN 9.19, Python 3.12, numpy 2.1). On top of that it adds:
+
+- SCTK `sclite` (`9688a26`);
+- `ctcdecode` (`c90ad94`);
+- `simple-video-utils` 0.7.4 with `av` 18.1.0;
+- `lmdb` 1.5.1, which TLP's and SEN's `dataset/dataloader_video.py` import at module level;
+- the four repos at their pinned commits under `/opt/repos/{vac,tlp,sen,corrnet}`, each with one correctness patch (`patches/<repo>-ctc-without-cudnn.patch`, below).
+
+The repos' own Python pins (numpy 1.20, scipy 1.7, opencv 4.5.5) have no Python 3.12 wheels. They are replaced by the oldest releases that do and that still ship `scipy.misc`, as in `papers/yu-2025-cvsign`.
+
+Each run works on its own copy of one repo. The harness adds only data files and configs to that copy:
+
+- the setting's info lists, gloss dict and STMs, written with the repo's own `generate_gt_stm` and `sign_dict_update`;
+- a `configs/<dataset>.yaml`;
+- `configs/run.yaml`. This is the pinned `configs/baseline.yaml` with only the gate-approved keys changed, and each run records the exact delta.
+
+Tracked upstream files stay unchanged, and each run records the hash of `git diff HEAD`.
+
+Phoenix Signer-Dep uses each repo's own `phoenix2014` dataset config. SEN and CorrNet use their committed lists, which are identical to each other. VAC and TLP commit no lists, so they use the output of the byte-identical `preprocess/dataset_preprocess.py`.
+
+Every other setting is written in the same format under a dataset name containing `phoenix`. In TLP, SEN and CorrNet that substring is the only thing that selects the train/dev/test loaders and the frame-folder glob. VAC always reads `./preprocess/phoenix2014/`. So no upstream code needs changing for the new datasets.
+
+Patches and environment fixes, each justified by this paper's own build or preflight:
+
+| Item | Why | Evidence |
+| --- | --- | --- |
+| `patches/ctcdecode-cxx17.patch` | Unpatched `ctcdecode` does not compile against current PyTorch: `#error C++17 or later compatible compiler is required to use PyTorch`. The patch builds as C++17 and drops five KenLM dynamic exception specifications. No decoder logic changes. It is identical to the yu-2025-cvsign patch. | Image build `im-zwwdoz4GF7RwJO4BnSPdG6` failed 2026-11-02 |
+| `simple-video-utils==0.7.4` installed in the Dockerfile | The published `reproduction:latest` image lacks it, although the root Dockerfile pins it. | Build `im-L4hfuloTR54towJj5WD1nD`: `ModuleNotFoundError` |
+| `av==18.1.0` | `simple-video-utils` requires `av>=18`, which resolved to 19.0.2. That version rejects the `metadata_errors` argument `simple-video-utils` passes. | App `ap-OMIRjJ8IzhzSco6yzVHx7u`: `open() got an unexpected keyword argument 'metadata_errors'` |
+| `patches/{vac,tlp,sen,corrnet}-ctc-without-cudnn.patch` | On this stack `nn.CTCLoss` sends the repos' CTC call (CPU int32 targets) to cuDNN even when the two clips in a batch differ in length. PyTorch 1.x used cuDNN only when every input length equalled T. cuDNN's loss value is right, but its gradient is wrong for unequal lengths. Disabling cuDNN for the CTC call alone restores the native computation; nothing else changes. Same change as yu-2025-cvsign. | Fixed-batch gradients vs a float64 CPU reference: cosine 0.06–0.96 with cuDNN, 1.0000 without, and equal-length batches match. Under AMP, GradScaler skipped 26–50 of 60 updates with cuDNN against 5–8 without. With the patch, the as-is and cuDNN-off arms coincide (`ctc-diagnostics-*-phoenix-001`, `-patched-001`, `preflight-*-002/003`). |
+| `lmdb==1.5.1` | TLP's and SEN's loaders `import lmdb`; no config uses the lmdb datatype. | `preflight-{tlp,sen}-*-001`: `ModuleNotFoundError` |
+| `TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1` | Upstream resumes with a bare `torch.load` of checkpoints that hold numpy RNG state. PyTorch ≥ 2.6 refuses these by default. This is an environment variable, not a code change. | As in yu-2025-cvsign |
+
+Two full-run settings change no computation:
+
+- `PYTORCH_ALLOC_CONF=expandable_segments:True`. VAC and SMKD reached 45.2 GB of the L40S's 46 GB with the longest clips, and this setting only changes how freed memory is reused.
+- 32 GiB of host memory instead of 64. Preflight host peaks were at most 19.5 GiB.
+
+`ctc_check.py` is a diagnostic only. It builds each repo's own `Processor` from `main.py`, runs its own `seq_train` on real preflight batches, and compares CTC gradients on fixed batches.
 
 ## Execution evidence
 
-No runs.
+All runs are in `reproduction.json.runs`, with Modal app and function-call IDs, image IDs, timestamps and declared ceilings. Outputs live under `runs/<run_id>/` on the Modal Volume `alyami-2024-cslr-results`.
+
+**Data jobs, 2026-11-02:**
+
+| Job | App | Result |
+| --- | --- | --- |
+| `extract_arabsign` | `ap-3EEqRJGxaxKfMN9NLO8W1O` | 9,330 mp4 |
+| `populate_gsl` | `ap-Sg1meM9jpuHIbOLcF5I5bd` | 40.17 GB |
+| Phoenix frames | `ap-Iew7yQSxjZSIdEXuS1iphB` | 70.2 GB, sha256 `3833a87f…` |
+| ArabSign frames | `ap-0LKt5eSKIfpberp3xYdJon` | 1,104,581 frames, 91.5 GB, sha256 `27bf5694…` |
+| GSL frames | `ap-RIAXU8Tv7XUNX8wBsYkvB3` | 1,036,155 frames, 91.1 GB, sha256 `09f596dd…` |
+
+**Preflights (15, one per model × dataset).** Each uses 120 random plus the 16 longest training clips, and 40 random plus the 8 longest dev and test clips. It runs upstream `main.py` for 2 epochs, resumes from the epoch-1 checkpoint for a 3rd, then runs the test phase with sclite scoring. Every model × dataset passed. ArabSign used a provisional random 709-clip dev list, for cost measurement only.
+
+Rates per model (train / eval ms per frame, with peak GPU memory from nvidia-smi):
+
+| Model | Phoenix | GrSL | ArabSign | Peak GPU (GB) |
+| --- | --- | --- | --- | --- |
+| VAC | 0.73 / 1.01 | 0.46 / 2.13 | 0.77 / 1.01 | 45.2 |
+| SMKD | 0.73 / 1.01 | 0.51 / 1.85 | 0.77 / 1.01 | 42.9 |
+| TLP | 0.72 / 0.63 | 0.80 / 0.85 | 0.81 / 0.58 | 22.6 |
+| SEN | 1.00 / 0.76 | 0.79 / 1.14 | 1.04 / 0.87 | 21.8 |
+| CorrNet | 0.86 / 0.88 | 0.70 / 1.28 | 0.83 / 1.01 | 29.8 |
+
+Each upstream checkpoint is about 385 MB.
+
+**Scoring check (`score_check`).** A perfect hypothesis CTM scores 0.0% on Phoenix SI5, both GrSL splits, ArabSign SD and one LOSO fold. Dropping each sentence's first gloss gives exactly sentences ÷ reference words, so upstream's `preprocess.sh` plus sclite handles Greek and Arabic glosses unchanged. Apps are `ap-KcrIWUrzHeRYOQbuw2fxzc` and `ap-INgCesOLEX4oXS0KpfsCMZ`. Because sclite logs WER to one decimal and the paper reports ArabSign Signer-Dep WERs like 0.2787, evaluation also records sclite's raw error and word counts.
+
+**Measured estimate (`compute-full-table.resolution.measured_estimate`).** This assumes 40 epochs for all models at USD 2.96/h (L40S, 16 cores, 32 GiB), 15 min overhead per run, and no retry margin:
+
+| Block | Runs | USD |
+| --- | ---: | ---: |
+| Phoenix SD | 5 | 122 |
+| Phoenix SI | 5 | 88 |
+| GrSL SI | 5 | 115 |
+| GrSL Unseen-Sent | 5 | 123 |
+| ArabSign SD | 5 | 129–161 (by dev rule) |
+| ArabSign LOSO | 30 | 803–965 (by checkpoint rule) |
+| **Total** | 55 | **about 1,380** (cheapest rules) |
+
+Per run this is 5.3–10.6 h. The paper reports about 10 h per Phoenix/GrSL run on an RTX A6000. The per-frame rates come from 136-clip epochs with worker start-up included, so they are more likely high than low.
+
+**Spend so far:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
 
 ## Guesses and deviations
 
-| Detail | Paper/evidence says | This attempt will use | Rationale |
+| Detail | Paper/evidence says | This attempt uses | Rationale |
 | --- | --- | --- | --- |
 | Learning rate, TLP/SEN epochs | arXiv v1: lr 1e-3, 40 epochs (steps 20/35) for all. Upstream: lr 1e-4, TLP/SEN 80 epochs (steps 40/60). ICCVW 2025: lr 1e-3, TLP/SEN 80 epochs (steps 30/60). | arXiv v1 values for all five models | Operator decision at gate `protocol-lr-epochs`; arXiv v1 is the assigned paper |
-| TLP/SEN schedule evidence across versions | Table I vs ICCVW Table 1 (checked 2026-11-02 from both PDFs). All six TLP cells and five of six SEN cells are identical at one decimal. SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08→43.0, SEN GrSL SI 8.09→8.0, CorrNet ArabSign SI 7.65→7.6), and 1 differs (SMKD Phoenix SD 22.31→22.1). | 40 epochs (arXiv v1) | The numbers did not change when the stated schedule went from 40 to 80 epochs, so the evidence does not show which schedule produced them. The 80-epoch cost will be measured and put to the operator before the TLP/SEN full runs. |
+| TLP/SEN schedule evidence across versions | Table I vs ICCVW Table 1 (checked 2026-11-02 from both PDFs). All six TLP cells and five of six SEN cells are identical at one decimal. SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08→43.0, SEN GrSL SI 8.09→8.0, CorrNet ArabSign SI 7.65→7.6), and 1 differs (SMKD Phoenix SD 22.31→22.1). | 40 epochs (arXiv v1) | The numbers did not change when the stated schedule went from 40 to 80 epochs, so the evidence does not show which schedule produced them. The measured 80-epoch cost has been put to the operator before the TLP/SEN full runs. |
+| VAC / SMKD loss | The paper says each study's settings were followed. The VAC_CSLR README states "The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`", and VAC+SMKD adds `share_classifier`/`weight_norm: True`. `baseline.yaml` comments out ConvCTC and a `Dist: 10.0`. | SeqCTC 1 + ConvCTC 1; SMKD adds share_classifier and weight_norm | The README's own mapping of config to result; Dist is not part of it |
 | Seed | Not stated | 0 (upstream default) | Single reported number per cell |
-| Checkpoint selection | Not stated | Dev-best per upstream `main.py`; the rule for ArabSign LOSO folds (no dev set) is to be fixed before launch | Upstream behavior |
-| ArabSign Signer-Dep validation | 709 samples, unpublished | To be decided before launch | Split not released |
+| Checkpoint selection | Not stated | Lowest dev WER, earliest epoch on ties. This is TLP/SEN/CorrNet's `_best_model.pt` rule. VAC_CSLR has no best-model rule, so per-epoch checkpoints (`--save-interval 1`) let the same rule apply. | Upstream behavior; uniform across models |
+| GPUs | v1: "RTX A6000 with two 48GB GPUs". ICCVW: batch 2 "on a single GPU". | One L40S (48 GB) | Matches ICCVW and avoids VAC's documented multi-GPU BatchNorm issue |
+| Phoenix SI5 lists | SI5 corpus files. Upstream drops pandas row 2390 of the multisigner train CSV, the broken clip `13April_2011_Wednesday_tagesschau_default-14`, which has 16 frames and is not resized. | SI5 lists drop that clip by ID | In the SI5 file row 2390 is a different, valid clip, so dropping by index would drop the wrong clip |
+| ArabSign gloss labels | ArabSignGroundTruth.txt "Sign Language Sentence". The author's CSVs carry it as `caption`, plus a processed `procCaption` that strips the definite article from some words. 155 sign tokens over 50 sentences, as the dataset site says, for both; vocabulary 93 (`caption`) or 90 (`procCaption`) against the site's "95 signs". | The published "Sign Language Sentence" (= `caption`) | Published annotation, and closer to the stated vocabulary; the papers do not say |
+| ArabSign videos | 9,335 samples | 9,330 (5 absent from the RGB release; test 1,841 of 1,843) | Data as released; listed in `reproduction.json.datasets` |
+| ArabSign Signer-Dep validation | 709 samples (ICCVW only), unpublished | Open gate `arabsign-sd-validation` | Split not released |
+| ArabSign LOSO checkpoint | No dev set; v1 suggests no early stopping was used | Open gate `arabsign-loso-checkpoint` | Not stated |
+| Frame resizing for ArabSign/GrSL | "Resized to 256x256" | Upstream `resize_img` (`cv2.resize`, `INTER_LANCZOS4`) to 256×256 PNG, the Phoenix pipeline's own operation | Same operation the repos apply to Phoenix |
+| Checkpoint retention | Not applicable | Full runs keep only the newest epoch checkpoint (for resume) and the current dev-best (for selection), and delete superseded ones during training | Declared before launch. About 385 MB × 40 epochs × 55 runs would otherwise cost about USD 75 per month in Volume storage. |
 
 ## Attempts, failures, and dead ends
 
-None yet. The operator chose to stop before data population and preflight until the compute plan is approved.
+The 2026-10-26 session stopped before data work at the compute gate. On 2026-11-02 the following happened, in order:
+
+- **Image build: `ctcdecode`.** The first build failed in `ctcdecode`, which justified reusing the C++17 patch.
+- **Image build: `simple-video-utils`.** The second build failed because `reproduction:latest` lacks `simple-video-utils`.
+- **ArabSign frames, first two failures.** The first failed on PyAV 19 (`metadata_errors`), which led to the pin `av==18.1.0`. The second failed on 35 file stems whose prefixes differ from their folders, so sample IDs now come from the path.
+- **First preflights:**
+  - `preflight-smkd-gsl-001` lost its GPU mid-run (`CUDA error: unknown error`, and `nvidia-smi` stopped reporting the device), and was retried unchanged.
+  - TLP and SEN failed on the missing `lmdb` module.
+  - The CorrNet runs passed, but the helper `ctc_check.py` itself raised, because CorrNet's `seq_train` returns `None`.
+- **CTC diagnostics.** These found the cuDNN gradient error, which led to the four `ctc-without-cudnn` patches.
+- **ArabSign labels.** `preflight-*-arabsign-001` was stopped after `score_check` showed that the harness compared the wrong CSV columns with the ground-truth file. The CSV columns are `caption` and `procCaption`, not an Arabic sentence and a sign sentence.
+- **SEN log parsing.** SEN's preflights then failed twice in the harness's log parser, because SEN logs WER without a percent sign.
+
+Every model × dataset preflight passed within its declared attempt limit.
 
 ## Candidate flags, ethics, and human evaluation
 
@@ -164,7 +265,9 @@ The queue record flags no human evaluation and no ethical concerns, and `copied_
 
 None. The ArabSign access shown in the queue record was coordinated earlier by Team S.
 
-## Compute gate (resolved)
+## Gates
+
+### Compute gate (resolved)
 
 `compute-full-table` covers about 55 single-GPU trainings: Phoenix 10, ArabSign Signer-Dep 5, ArabSign LOSO 30, GrSL 10.
 
@@ -182,3 +285,12 @@ The project lead approved the full Table I on 2026-11-02, including the 30 ArabS
 6. ArabSign LOSO
 
 Each block declares its own ceilings, and cumulative spend is tracked against USD 2,000.
+
+### Open gates
+
+- `arabsign-sd-validation` covers the 709-clip Signer-Dep validation subset.
+- `arabsign-loso-checkpoint` covers the checkpoint rule for the 30 leave-one-signer-out runs.
+
+Both have alternatives, evidence and measured costs in `reproduction.json.gates`, and both must be decided before the ArabSign blocks launch.
+
+TLP/SEN at 80 epochs (steps 30/60, as ICCVW states) has been put to the operator, with the measured cost, before their full runs.
