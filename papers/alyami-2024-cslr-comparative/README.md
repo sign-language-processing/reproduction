@@ -10,9 +10,9 @@
 
 The preference level is expected rather than confirmed; see `status.preference_level_basis`.
 
-**Pipeline status:** not yet set. It stays null until targets have terminal results. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
+**Pipeline status:** `partial` — interim: 3 of 30 in-scope targets have been produced while the blocks run. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
 
-**Numerical agreement:** `not_assessed` — no target has been produced.
+**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. SMKD is within it. VAC (+7.73) and TLP (+4.58) are not. This will be reassessed as targets complete; see `status.numerical_agreement_basis`.
 
 **Attempt dates:** 2026-10-26 (intake and gates); continued from 2026-11-02
 

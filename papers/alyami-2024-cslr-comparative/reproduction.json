@@ -248,13 +248,13 @@
     ]
   },
   "status": {
-    "pipeline": null,
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "Not assessed: no full run has completed yet.",
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Interim, 2026-11-02 21:00 UTC; 3 of 30 in-scope targets produced (Phoenix2014 Signer-Dep: VAC, SMKD, TLP), the rest running or not yet launched. Tolerance: +/-1.0 WER point, taken from the paper's own statement about its Phoenix2014 re-runs ('We achieved similar results with around 1% fluctuations in WERs', arXiv v1 Sec. V). Assessed on sclite's exact test WER against arXiv v1 Table I: SMKD 22.14 vs 22.31 (-0.17, within); VAC 29.67 vs 21.94 (+7.73) and TLP 26.58 vs 22.0 (+4.58) are outside, so the produced set does not agree. This is a mechanical comparison; it will be reassessed as targets complete, and the scientific interpretation is for a human reviewer.",
     "preference_level": 2,
     "blocker": null,
     "preference_level_basis": "Level 2, confirmed by this paper's own build and preflights: all five systems run their pinned official code through its own main.py, with two kinds of correctness patch and dependency/environment fixes only. (1) patches/ctcdecode-cxx17.patch: ctcdecode does not compile against current PyTorch (image build im-zwwdoz4GF7RwJO4BnSPdG6). (2) patches/<repo>-ctc-without-cudnn.patch for VAC_CSLR, TLP, SEN and CorrNet: on PyTorch 2.11/cuDNN 9.19, nn.CTCLoss uses cuDNN for unequal-length batches and returns wrong gradients (cosine 0.06-0.96 vs a float64 reference; runs ctc-diagnostics-*-001, preflight-*-002/003); disabling cuDNN for the CTC call restores the native computation PyTorch 1.x used. Dependencies: lmdb (imported by TLP/SEN), simple-video-utils 0.7.4 with av 18.1.0. New datasets and Phoenix SI5 enter only as data files and dataset configs written with the repos' own preprocess helpers; no upstream code is changed for them.",
-    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). pipeline and blocker stay null until targets have terminal results."
+    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). pipeline is 'partial' while blocks run: 3 of 30 in-scope targets have produced values so far; the others are in progress in blocks Phoenix SD, Phoenix SI, GrSL SI, GrSL Unseen-Sent, ArabSign SD, ArabSign LOSO."
   },
   "datasets": [
     {
