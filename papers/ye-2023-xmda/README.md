@@ -10,7 +10,7 @@
 
 **Pipeline status:** `partial` — the 12 baseline targets are produced; the 36 mix-up/KD/XmDA targets are not produced (`protocol_ambiguous`). Their conditional runs finished on both datasets, each row with three student seeds (seed 56 attached as the conditional value, seeds 57 and 58 as evidence; gate `compute-full-plan` resolved 2026-10-30)
 
-**Numerical agreement:** `does_not_agree` — all 12 produced values are above the published ones: PHOENIX-2014T by 1.74 to 3.87 points, CSL-Daily by 5.04 to 9.93 points (one seed each; see Results)
+**Numerical agreement:** `does_not_agree` — all 12 produced values are above the published ones: PHOENIX-2014T by 1.74 to 3.87 points, CSL-Daily by 5.04 to 9.93 points (pre-declared seed-56 runs; every gap exceeds the measured three-seed spread; see Results)
 
 **Attempt dates:** 2026-10-28 to 2026-11-02
 
@@ -19,7 +19,7 @@
 - **Done.** Both Sign Language Transformers baselines (Table 1 and Table 2, "SMKD features" rows) were trained for the full 150 epochs on T4 at seed 56 and evaluated with the published code. These runs produce the 12 comparable targets.
 - **CSL-Daily gap.** CSL-Daily text is character-level, as in the authors' own pickle builder (Atrewin/slt `video2tensor/concat_data.py`), so tokenization is not the main candidate explanation. Two candidate explanations are recorded and left open for downstream analysis (see Open questions):
   - **Hyperparameters.** The paper's CSL-Daily baseline may not have been trained with Table 10. One CSL-Daily baseline with the released config as is was run as conditional evidence (gate `hyperparameters`). It is closer to the paper but still above it (dev BLEU-4 14.30 against 11.55).
-  - **Sign features.** The authors' development fork built its CSL-Daily pickles from VAC_CSLR `checkpoints/cslt/gloss30check2` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L168–170), a VAC_CSLR CSLR model. This attempt uses SLTUNet's released SMKD checkpoint. This attempt did not locate those weights, so this was not tested. The Table 10 run stays the produced target. Greedy (beam 1) scores and the full dev beam/alpha grid are recorded next to the grid-selected values for both baselines.
+  - **Sign features.** The authors' development fork built its CSL-Daily pickles from VAC_CSLR `checkpoints/cslt/gloss30check2` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L168–170), a VAC_CSLR CSLR model. This attempt uses SLTUNet's released SMKD checkpoint instead; it did not locate those weights, so this was not tested. The Table 10 run stays the produced target. Greedy (beam 1) scores and the full dev beam/alpha grid are recorded next to the grid-selected values for both baselines.
 - **Gate `teacher-gloss-decoding` (resolved 2026-10-29 by the assignee as `patch-mirror-training`).** The conditional teachers are signjoey `forward_type=gloss` models, which the pinned code cannot validate or decode. `patches/0001-gloss-decoding-mirror-training.patch` builds the validation/test gloss input exactly as `Batch_Sign` does in training. This is an **invented behavior choice**: the authors' fork (Atrewin/slt `9ecb427`, "all extend gloss") added the repetition to the training batches only, so no author evidence exists for the decoding side. `patches/0002-test-pass-forward-type.patch` is a correctness patch that the assignee kept: `test()` passes `forward_type` to both dev passes but omits it on the final test pass. Both patches touch only the gloss path.
 - **Gate `compute-full-plan` (resolved 2026-10-30 by the assignee).** The assignee resolved it on the project lead's standing instruction of 2026-10-29 in `#repro-sign-team-r` to use more Modal compute. No discussion specific to this plan took place in the channel. Approved scope:
   - **PHOENIX-2014T:** the four teachers, Mix-up, KD and XmDA are done (Results). XmDA attempt 1 was cancelled after 5 h by a client-token expiry; attempt 2, a from-scratch restart launched with `--spawn`, finished. Two extra student seeds (57, 58) run for all four rows; seed 56 stays the reported value. The replicates vary only the student seed. The four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference training pickle are identical across student seeds. The replicate policy was pre-declared at 2026-10-30T10:18:26Z, before any replicate launched: replicates are reported as mean and sample standard deviation over seeds 56, 57 and 58, attached as evidence and never swapped in.
@@ -53,7 +53,7 @@ The assignment was a REPRO-SIGN tracker export (PocketBase `reproductions` recor
   - ChrF is corpus chrF ×100.
   - CSL-Daily text is space-separated characters, so CSL-Daily metrics are character-level.
 - **Checkpoint and decoding.** Greedy dev validation runs every 100 steps for 150 epochs; upstream disables early stopping. The best dev-BLEU checkpoint is used. `prediction_XmDA.test` selects beam ∈ {1,2,3,4} × alpha ∈ {−2,−1,0,1} on dev and applies the choice to test. This is the published code, unchanged.
-- **Seeds.** One seed per cell, seed 56 (the released config's seed). The paper gives no seed policy.
+- **Seeds.** One reported seed per cell, seed 56 (the released config's seed). The paper gives no seed policy. Seeds 57 and 58 ran as pre-declared replicates for the PHOENIX-2014T baseline and every conditional row, and for the CSL-Daily in-image reference baseline. They are reported as mean and sample std, as evidence only, and never replace the seed-56 values.
 - **Protocol resolution.** Gate `xmda-protocol` was resolved by the assignee as `baseline-plus-conditional`:
   - The SLT baseline rows are the produced pipeline.
   - Mix-up, KD, and XmDA run only as conditional evidence, using invented teacher substitutions (see the deviations). Their 36 targets stay `not_produced / protocol_ambiguous`, with conditional values attached once run. The teachers are validated and decoded with the two patches described under Environment and patches.
@@ -102,7 +102,7 @@ Run details:
 | `phoenix14t-baseline-seed56` | 8,100 (23.91) | 4 / 1 | 23.06 / 23.81 |
 | `csl-daily-baseline-seed56` | 13,100 (16.99) | 2 / 1 | 32.07 / 32.39 |
 
-**Assessment basis.** The paper gives one number per cell, with no seed count or variance, and this attempt ran one seed. So nothing supports treating the gaps as run-to-run noise, and all twelve are recorded as numerical disagreement for the reviewer to judge. CSL-Daily is scored on character tokens, as in the authors' builder, which writes `'text': char` and saves `cslt.word.{split}.pickle.char` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L181 and L189). The SMKD features remain a guess (see Guesses and deviations).
+**Assessment basis.** The paper gives one number per cell, with no seed count or variance. The produced values are the pre-declared seed-56 runs. The seed spread has since been measured with pre-declared replicates (seeds 56–58), which are evidence only. The PHOENIX-2014T baseline, in the same old image, has sample std 0.40 dev / 0.78 test BLEU-4. The CSL-Daily in-image baseline (cu110, A10G) has 0.31 / 0.31. Across BLEU-4, ROUGE-L and ChrF, the largest std is 1.02 (PHOENIX-2014T test ROUGE-L, where the gap is 3.55). The smallest produced gap is 1.74 BLEU-4, so every gap exceeds the measured seed spread. All twelve are recorded as numerical disagreement for the reviewer to judge. CSL-Daily is scored on character tokens, as in the authors' builder, which writes `'text': char` and saves `cslt.word.{split}.pickle.char` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L181 and L189). The SMKD features remain a guess (see Guesses and deviations).
 
 **Decoding setting.** The paper does not say how it decoded. The dev beam/alpha grid was therefore re-decoded setting by setting from each best checkpoint (`--step decode_grid`), and test was also decoded greedily. Alpha −2, −1 and 0 give identical outputs at each beam size. Each setting's test pass is in the grid logs, but test scores at non-selected settings other than greedy are deliberately left out of the report: choosing among them would mean selecting on test.
 
@@ -487,7 +487,7 @@ Reason: the compute gate's estimate had noted that the mix-up/XmDA per-step cost
 
 Each preflight trained on full data, saved a checkpoint, and had `prediction_XmDA.test` reload it and emit dev and test metrics. The final decode of the full runs (16-setting dev grid plus one test pass) took 314 s on PHOENIX and 1,343 s on CSL-Daily. Decoding the teacher's 7,096-sentence training set took 228 s.
 
-**Compute used.** Finished runs so far used about 34.5 GPU-hours: 4.1 on L4 for SMKD extraction and about 30.4 on T4, about USD 18 for the T4 part at the list price of about USD 0.59/h. The T4 part breaks down into:
+**Compute for the seed-56 chain through 2026-10-29.** Everything run through 2026-10-29 used about 34.5 GPU-hours (the attempt's total is in the table below). That covers SMKD extraction, the preflights, both produced baselines, the released-config baseline, the decode grids and the PHOENIX-2014T seed-56 chain up to XmDA attempt 1: 4.1 on L4 for SMKD extraction and about 30.4 on T4, about USD 18 for the T4 part at the list price of about USD 0.59/h. The T4 part breaks down into:
 - the two baselines, 4.93;
 - the four teachers, 11.06;
 - the released-config baseline, 3.12;
@@ -526,7 +526,7 @@ The 11 CSL-Daily student and replicate runs used 87.1 GPU-h, against an estimate
 | --- | --- | --- | --- | --- |
 | Sign features | "SMKD features", 1024-d; checkpoint and layer not stated | SLTUNet's released SMKD checkpoints; TemporalConv `visual_features` | The paper says it follows Zhang et al. 2023a; WER control matches SLTUNet Table 12 closely on PHOENIX | Guess; feature differences propagate to every target |
 | ff_size | Not in Table 10 | 2048 | Authors' earlier fork `Atrewin/slt` `configs/jizhi/default.yaml` | Guess |
-| Seeds | Not stated | Seed 56, one per cell | Released config's `random_seed` | Guess; no variance estimate |
+| Seeds | Not stated | Seed 56 reported per cell; seeds 57 and 58 as pre-declared replicates (evidence only) | Released config's `random_seed` | Guess; the replicates measure seed variance but do not replace seed 56 |
 | Config precedence | Table 10 conflicts with `configs/Sign_XmDA.yaml` | Table 10 wherever stated; upstream values elsewhere | Gate `hyperparameters` | Guess; released config kept as alternative |
 | Embedding activation | Table 10 "activation gelu" | GELU for encoder and decoder embeddings | Table 10 | Guess |
 | CSL-Daily text | Level not stated in the paper | `label_char` joined by spaces, level `word` | Evidence, not a guess: the authors' builder writes `'text': char` and saves `cslt.word.{split}.pickle.char` (Atrewin/slt `concat_data.py` L181, L189), matching the upstream config's `.pickle.char` files | CSL metrics are character-level, as the authors computed them |
@@ -583,4 +583,4 @@ These are stated as questions only; this attempt does not investigate them.
 
 - No authors were contacted.
 - The CSL-Daily license gate was resolved by the assignee on precedent, without consulting Team S.
-- Gates `teacher-gloss-decoding` and `compute-full-plan` were handled in `#repro-sign-team-r` through the assignee. Both are resolved. `compute-full-plan` was resolved on a standing instruction from the project lead to use more Modal compute; no discussion specific to this plan took place.
+- Gates `teacher-gloss-decoding` and `compute-full-plan` were both resolved by the assignee without channel discussion. `compute-full-plan` rests on the project lead's standing instruction of 2026-10-29 to use more Modal compute.
