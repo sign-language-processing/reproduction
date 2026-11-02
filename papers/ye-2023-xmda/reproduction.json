@@ -11957,6 +11957,149 @@
         "csl-daily-xmda-seed56-test-results",
         "csl-daily-xmda-seed56-train-log"
       ]
+    },
+    {
+      "run_id": "csl-daily-xmda-seed57",
+      "kind": "full_run",
+      "experiment_id": "csl-daily-xmda",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code"
+      ],
+      "hypothesis": "Pre-declared replicate (seed 57) of the CSL-Daily xmda row: same image, Table 10 config, teachers, gloss embedding and pickle as csl-daily-xmda-seed56; only the student seed differs. Reported in the mean and std over seeds 56-58; never swapped in for the seed-56 value.",
+      "command": "../../.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach modal_app.py --step train --spawn --image cu110 --gpu A10G --dataset csl-daily --kind xmda --seed 57 --teachers csl-daily-teacher-seed58-attempt-2 --run-id csl-daily-xmda-seed57",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "csl-daily-xmda-seed57",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-01T10:39:32Z",
+        "max_wall_time_seconds": 81000,
+        "max_gpu_hours": 22.5,
+        "max_cost_chf": 26.0
+      },
+      "exit_code": 0,
+      "started_at_utc": "2026-11-01T10:41:20Z",
+      "finished_at_utc": "2026-11-02T01:01:29Z",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training stopped in epoch 46 because the learning rate fell below learning_rate_min (upstream _add_report rule, same for every row) (last logged step 32,000); the best dev-BLEU checkpoint (step 23,500) was reloaded by prediction_XmDA.test, which selected beam 4 and alpha 1 on dev and reported dev and test metrics. Wall time 51,609 s (14.34 GPU-h), within the 81,000 s / 22.5 GPU-h ceiling. Launched with --spawn; result read from summary.json. Start and finish are the function's times.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "xmda-protocol",
+          "teacher-gloss-decoding",
+          "environment-cu110"
+        ]
+      },
+      "source": {
+        "signxmda_revision": "b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5",
+        "patches": [
+          {
+            "path": "patches/0001-gloss-decoding-mirror-training.patch",
+            "sha256": "7df063f36c8ad27adcfcb62da0787ed2314c1ed6b3b38d1e77c66a681912c33c"
+          },
+          {
+            "path": "patches/0002-test-pass-forward-type.patch",
+            "sha256": "c0d00eadc7a96edd464fe48bb45c37ac4ba16390f8c56685e48f0ad9545f0312"
+          }
+        ]
+      },
+      "environment": {
+        "image": "Modal image im-zcYV3stvhV0g565br8nSMZ: papers/ye-2023-xmda/Dockerfile.cu110 with patches/0001 and 0002, plus Modal add_python 3.11 and pyyaml 6.0.2 for the wrapper.",
+        "software": {
+          "python": "3.7 (conda)",
+          "torch": "1.7.1+cu110 (CUDA 11.0, cuDNN 8.0.5)",
+          "torchtext": "0.8.1",
+          "transformers": "3.0.2",
+          "metrics": "vendored sacrebleu 1.4.2"
+        },
+        "freeze_sha256": "17115c8c3f6c282f870a983f13b69e207dbcfba82b504c51677ccd4424cc7f6c"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-FjLgrauLhxqVzuf8T1fy1L",
+        "function_call_id": "fc-01M6BB5ZP58EQN3TKAF7ZNGT8M",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-FjLgrauLhxqVzuf8T1fy1L",
+        "hardware": "NVIDIA A10 (Modal A10G) 23028 MiB, driver 610.57.04",
+        "gpu_count": 1,
+        "wall_time_hours": 14.34,
+        "gpu_hours": 14.34,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "configuration": {
+        "seed": 57,
+        "epochs": 150,
+        "batch_size": 128,
+        "validation_freq": 100,
+        "translation_beam_sizes": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "translation_beam_alphas": [
+          -2,
+          -1,
+          0,
+          1
+        ],
+        "layers": 1,
+        "hidden_size": 512,
+        "ff_size": 2048,
+        "translation_max_output_length": 50,
+        "forward_type": "mixup",
+        "level": "word (space-joined label_char, so character tokens)",
+        "mixup_ratio": 0.6,
+        "train_pickle": "csl-daily.smkd.train.teachers.pickle (sha256 a6f195f586e62627c63b63a3b3e8579245c9c288e1211acafa7db2106feb38b1)",
+        "gloss_pre_embedding": "runs/csl-daily-teacher-seed58-attempt-2/gloss_embedding.pt (sha256 47df14f29c4760b0a63659f98a20b1df0fe47cfbc6d0fdcf187edd53b1d513c9)"
+      },
+      "measurements": {
+        "peak_gpu_memory_mib": 14359,
+        "last_logged_step": 32000
+      },
+      "outputs": {
+        "run_dir": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/",
+        "best_step": 23500,
+        "dev": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 35.67,
+          "bleu4": 18.2,
+          "chrf": 16.36,
+          "rouge_l": 46.98
+        },
+        "test": {
+          "translation_beam_size": 4,
+          "translation_beam_alpha": 1,
+          "wer": 35.57,
+          "bleu4": 19.07,
+          "chrf": 16.89,
+          "rouge_l": 47.69
+        }
+      },
+      "hypothesis_supported": true,
+      "artifact_ids": [
+        "csl-daily-xmda-seed57-dev-translations",
+        "csl-daily-xmda-seed57-test-translations",
+        "csl-daily-xmda-seed57-dev-results",
+        "csl-daily-xmda-seed57-test-results",
+        "csl-daily-xmda-seed57-train-log"
+      ]
     }
   ],
   "artifacts": [
@@ -13313,6 +13456,46 @@
       "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed56/train.log",
       "sha256": "7b018f5f30955f16cd7a3cd51ba73e37fdc16422a509f5703a8df1e5da97101c",
       "produced_by": "csl-daily-xmda-seed56",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-xmda-seed57-dev-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/best.IT_00023500.BW_04.A_1.dev.txt",
+      "sha256": "23639bd44c26e47160721d4c5d58c7c3aea2bcab9da7d8c7c9a752a52810fb0d",
+      "produced_by": "csl-daily-xmda-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-xmda-seed57-test-translations",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/best.IT_00023500.BW_04.A_1.test.txt",
+      "sha256": "206d56c1fb754306e3f70a4d9a6466d2dfeb1dc190134086414b5440d78438ad",
+      "produced_by": "csl-daily-xmda-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-xmda-seed57-dev-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/best.IT_00023500.dev_results.pkl",
+      "sha256": "0abbc96051cfd62e201e0b96014229ceeb446990f301913aab8c0bfe96b4bdaf",
+      "produced_by": "csl-daily-xmda-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-xmda-seed57-test-results",
+      "kind": "raw_metric_output",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/best.IT_00023500.test_results.pkl",
+      "sha256": "06881bf1c8e35ca3d161d079603428a0082c15034c74b1456ec7a87e14fa880c",
+      "produced_by": "csl-daily-xmda-seed57",
+      "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
+    },
+    {
+      "artifact_id": "csl-daily-xmda-seed57-train-log",
+      "kind": "log",
+      "uri": "modal://repro-sign/volumes/ye-2023-xmda-results/runs/csl-daily-xmda-seed57/train.log",
+      "sha256": "a9be74af6e4042ea06415dc4afb757644835d4e151696a61d7fb66aaa72e66eb",
+      "produced_by": "csl-daily-xmda-seed57",
       "access": "CSL-Daily-derived (restricted research licence); kept on the project Volume only and never uploaded to any public host."
     }
   ],
