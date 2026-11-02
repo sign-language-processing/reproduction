@@ -91,7 +91,15 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-No target has been produced yet. All 30 targets are open, and no full run has completed.
+Three of the 30 targets have been produced so far; the other 27 are still running or not yet launched. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error.
+
+| Target | Published | Reproduced | Difference | Selected epoch (dev WER) | Runs |
+| --- | ---: | ---: | ---: | --- | --- |
+| VAC, Phoenix2014 Signer-Dep | 21.94 | 29.67 | +7.73 | 35 (29.64) | `full-vac-phoenix-sd-001`, `eval-vac-phoenix-sd-001` |
+| SMKD, Phoenix2014 Signer-Dep | 22.31 | 22.14 | −0.17 | 36 (21.57) | `full-smkd-phoenix-sd-001`, `eval-smkd-phoenix-sd-001` |
+| TLP, Phoenix2014 Signer-Dep | 22.0 | 26.58 | +4.58 | 39 (26.19) | `full-tlp-phoenix-sd-001`, `eval-tlp-phoenix-sd-002` |
+
+Counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729. VAC and SMKD come from the same repository, data, lists and scoring; they differ only in `share_classifier` and `weight_norm`. Both use SeqCTC 1 + ConvCTC 1, the loss weights recorded as a guess. TLP's dev WER was still falling at the last of its 40 epochs (26.7, 26.8, 26.5, 26.2 over epochs 36–39). The 80-epoch schedule that ICCVW states for TLP was not adopted (see Guesses and deviations). These numbers are recorded as produced and not interpreted.
 
 ## How to repeat this
 
@@ -230,7 +238,7 @@ Per run this is 5.3–10.6 h. The paper reports about 10 h per Phoenix/GrSL run 
 
 **Spend so far:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
 
-**Block 1, Phoenix SD (running).** The block ceiling is USD 228. That is the sum of the per-run GPU-hour ceilings (14 + 14 + 16 + 14 + 18 GPU-h) at USD 3.0/h, against an estimate of USD 122.
+**Block 1, Phoenix SD (running; VAC, SMKD and TLP done).** Training took 6.15 h for VAC, 6.16 h for SMKD (estimates 7.65 each) and 4.61 h for TLP (estimate 7.23). The first TLP evaluation hit a GPU hardware fault (XID 154, CUDA unknown error) before loading anything. It was retried unchanged as `eval-tlp-phoenix-sd-002`. Spend was USD 102.94 cumulative at 20:35 UTC, from Modal billing. The block ceiling is USD 228. That is the sum of the per-run GPU-hour ceilings (14 + 14 + 16 + 14 + 18 GPU-h) at USD 3.0/h, against an estimate of USD 122.
 
 | Run | Launched (UTC) | App | Declared ceiling |
 | --- | --- | --- | --- |

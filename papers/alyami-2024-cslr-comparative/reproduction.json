@@ -604,7 +604,7 @@
       "name": "Word error rate (gloss level)",
       "direction": "lower_is_better",
       "implementation": "Each pinned upstream repo's evaluation: NIST SCTK sclite over CTM hypotheses vs STM references (evaluation/slr_eval), as selected by evaluate_tool: sclite in configs/baseline.yaml",
-      "version": "SCTK commit to be pinned in the Dockerfile (yu-2025-cvsign uses 9688a26882a688132a5e414cadcb4c19b6fffaba)",
+      "version": "NIST SCTK sclite at commit 9688a26882a688132a5e414cadcb4c19b6fffaba (built in the Dockerfile and symlinked to each repo's ./software/sclite), invoked by each repo's evaluation/slr_eval/wer_calculation.py; the reported value is (S+D+I)/N from sclite's Sum row in the .raw report, which upstream logs to one decimal",
       "aggregation": "corpus-level (S+D+I)/N over the split (paper Eq. 1); ArabSign Signer-Indep = arithmetic mean of 6 per-fold WERs (Table II)",
       "unit_or_scale": "percent"
     }
@@ -789,7 +789,25 @@
       "copied_baseline_note": "Phoenix2014 Signer-Dep values are re-runs by the authors ('we reproduced the results ... around 1% fluctuations'), not copied from the original papers; all other columns are new benchmarks.",
       "reproduction_plan": "Train with the pinned upstream repo and its configs/baseline.yaml, overriding only base_lr=0.001, num_epoch=40, step=[20,35] for every model (gate protocol-lr-epochs); batch 2, Adam, upstream augmentation (256->224 random crop, temporal rescale, hflip) and beam-search decoding; evaluate the dev-best checkpoint on the test split with the repo's sclite WER. Seed 0 (upstream default; paper states none).",
       "experiment_id": "vac-phoenix2014",
-      "original_value": 21.94
+      "original_value": 21.94,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 29.67,
+        "difference": 7.73,
+        "run_ids": [
+          "full-vac-phoenix-sd-001",
+          "eval-vac-phoenix-sd-001"
+        ],
+        "artifact_ids": [
+          "eval-vac-phoenix-sd-001-sclite-test",
+          "eval-vac-phoenix-sd-001-evaluation",
+          "full-vac-phoenix-sd-001-checkpoint-epoch35"
+        ],
+        "evidence": [
+          "sclite Sum test: 1930 errors / 6504 words over 629 sentences = 29.6740% (sub 1123, del 588, ins 219); upstream log 29.7",
+          "Checkpoint epoch 35 of 40 by dev-best (dev WER 29.64 on rescoring: 1642/5540)"
+        ]
+      }
     },
     {
       "target_id": "vac-phoenix2014-signer-indep",
@@ -873,7 +891,25 @@
       "copied_baseline_note": "Phoenix2014 Signer-Dep values are re-runs by the authors ('we reproduced the results ... around 1% fluctuations'), not copied from the original papers; all other columns are new benchmarks.",
       "reproduction_plan": "Train with the pinned upstream repo and its configs/baseline.yaml, overriding only base_lr=0.001, num_epoch=40, step=[20,35] for every model (gate protocol-lr-epochs); batch 2, Adam, upstream augmentation (256->224 random crop, temporal rescale, hflip) and beam-search decoding; evaluate the dev-best checkpoint on the test split with the repo's sclite WER. Seed 0 (upstream default; paper states none).",
       "experiment_id": "smkd-phoenix2014",
-      "original_value": 22.31
+      "original_value": 22.31,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 22.14,
+        "difference": -0.17,
+        "run_ids": [
+          "full-smkd-phoenix-sd-001",
+          "eval-smkd-phoenix-sd-001"
+        ],
+        "artifact_ids": [
+          "eval-smkd-phoenix-sd-001-sclite-test",
+          "eval-smkd-phoenix-sd-001-evaluation",
+          "full-smkd-phoenix-sd-001-checkpoint-epoch36"
+        ],
+        "evidence": [
+          "sclite Sum test: 1440 errors / 6504 words over 629 sentences = 22.1402% (sub 819, del 460, ins 161); upstream log 22.1",
+          "Checkpoint epoch 36 of 40 by dev-best (dev WER 21.57 on rescoring: 1195/5540)"
+        ]
+      }
     },
     {
       "target_id": "smkd-phoenix2014-signer-indep",
@@ -957,7 +993,25 @@
       "copied_baseline_note": "Phoenix2014 Signer-Dep values are re-runs by the authors ('we reproduced the results ... around 1% fluctuations'), not copied from the original papers; all other columns are new benchmarks.",
       "reproduction_plan": "Train with the pinned upstream repo and its configs/baseline.yaml, overriding only base_lr=0.001, num_epoch=40, step=[20,35] for every model (gate protocol-lr-epochs); batch 2, Adam, upstream augmentation (256->224 random crop, temporal rescale, hflip) and beam-search decoding; evaluate the dev-best checkpoint on the test split with the repo's sclite WER. Seed 0 (upstream default; paper states none).",
       "experiment_id": "tlp-phoenix2014",
-      "original_value": 22.0
+      "original_value": 22.0,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 26.58,
+        "difference": 4.58,
+        "run_ids": [
+          "full-tlp-phoenix-sd-001",
+          "eval-tlp-phoenix-sd-002"
+        ],
+        "artifact_ids": [
+          "eval-tlp-phoenix-sd-002-sclite-test",
+          "eval-tlp-phoenix-sd-002-evaluation",
+          "full-tlp-phoenix-sd-001-checkpoint-epoch39"
+        ],
+        "evidence": [
+          "sclite Sum test: 1729 errors / 6504 words over 629 sentences = 26.5836% (sub 1024, del 504, ins 201); upstream log 26.6",
+          "Checkpoint epoch 39 of 40 by dev-best (dev WER 26.19 on rescoring: 1451/5540)"
+        ]
+      }
     },
     {
       "target_id": "tlp-phoenix2014-signer-indep",
@@ -2968,9 +3022,9 @@
       ],
       "purpose": "Full training of vac on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; upstream phoenix2014 lists and config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). Measured estimate 7.65 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model vac --setting phoenix-sd --run-id full-vac-phoenix-sd-001",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T14:23:10Z",
+      "finished_at_utc": "2026-11-02T20:32:20Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -2987,8 +3041,17 @@
         "max_gpu_hours": 14.0,
         "max_cost_chf": 35.0
       },
-      "terminal": null,
-      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "One Modal attempt (no retries), image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6EA265406DHQ203BSHGJYJR, NVIDIA L40S, 46068 MiB, 610.57.04; torch 2.11.0a0+eb65b36914.nv26.02 13.1 91900. Upstream main.py trained 40 epochs and exited 0 (scoring_failed False) in 22149 s = 6.15 GPU-h of upstream time (measured estimate 7.65 GPU-h); about 18.2 USD at USD 2.96/h plus staging; the container waited about 15 min for an L40S. Dev WER by epoch logged for 40 epochs: epoch 0 91.2, lowest 29.6 first at epoch 35, final epoch 39 30.3. Peak GPU memory 18643 MiB, peak host memory 26578 MiB of 32 GiB. Repo diff sha256 481cd6ea11fb... (CTC-without-cuDNN patch); frames tar sha256 3833a87f.... Record: runs/full-vac-phoenix-sd-001/train_calls.jsonl on Volume alyami-2024-cslr-results."
+      },
+      "artifact_ids": [
+        "full-vac-phoenix-sd-001-checkpoint-epoch35"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -3014,9 +3077,9 @@
       ],
       "purpose": "Full training of smkd on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; upstream phoenix2014 lists and config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). Measured estimate 7.65 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model smkd --setting phoenix-sd --run-id full-smkd-phoenix-sd-001",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T14:10:20Z",
+      "finished_at_utc": "2026-11-02T20:19:38Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -3033,8 +3096,17 @@
         "max_gpu_hours": 14.0,
         "max_cost_chf": 35.0
       },
-      "terminal": null,
-      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "One Modal attempt (no retries), image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6E99M898DSZJWHCXDCHGS4R, NVIDIA L40S, 46068 MiB, 610.57.04; torch 2.11.0a0+eb65b36914.nv26.02 13.1 91900. Upstream main.py trained 40 epochs and exited 0 (scoring_failed False) in 22158 s = 6.16 GPU-h of upstream time (measured estimate 7.65 GPU-h); about 18.2 USD at USD 2.96/h plus staging. Dev WER by epoch logged for 40 epochs: epoch 0 87.4, lowest 21.6 first at epoch 36, final epoch 39 21.6. Peak GPU memory 20303 MiB, peak host memory 26761 MiB of 32 GiB. Repo diff sha256 481cd6ea11fb... (CTC-without-cuDNN patch); frames tar sha256 3833a87f.... Record: runs/full-smkd-phoenix-sd-001/train_calls.jsonl on Volume alyami-2024-cslr-results."
+      },
+      "artifact_ids": [
+        "full-smkd-phoenix-sd-001-checkpoint-epoch36"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -3106,9 +3178,9 @@
       ],
       "purpose": "Full training of tlp on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; dataset_preprocess.py lists and the repo config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). 40 epochs per the operator decision of 2026-11-02 (gate protocol-lr-epochs follow-up). Measured estimate 7.23 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model tlp --setting phoenix-sd --run-id full-tlp-phoenix-sd-001",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T15:33:15Z",
+      "finished_at_utc": "2026-11-02T20:10:06Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -3125,8 +3197,17 @@
         "max_gpu_hours": 14.0,
         "max_cost_chf": 35.0
       },
-      "terminal": null,
-      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "One Modal attempt (no retries), image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6EE1MVQFNDDD873WKW63ATR, NVIDIA L40S, 46068 MiB, 610.57.04; torch 2.11.0a0+eb65b36914.nv26.02 13.1 91900. Upstream main.py trained 40 epochs and exited 0 (scoring_failed False) in 16612 s = 4.61 GPU-h of upstream time (measured estimate 7.23 GPU-h); about 13.7 USD at USD 2.96/h plus staging. Dev WER by epoch logged for 40 epochs: epoch 0 86.9, lowest 26.2 first at epoch 39, final epoch 39 26.2. Peak GPU memory 7525 MiB, peak host memory 22120 MiB of 32 GiB. Repo diff sha256 de18ea70a922... (CTC-without-cuDNN patch); frames tar sha256 3833a87f.... Record: runs/full-tlp-phoenix-sd-001/train_calls.jsonl on Volume alyami-2024-cslr-results."
+      },
+      "artifact_ids": [
+        "full-tlp-phoenix-sd-001-checkpoint-epoch39"
+      ],
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -3190,9 +3271,370 @@
           }
         }
       }
+    },
+    {
+      "run_id": "eval-smkd-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Evaluation of full-smkd-phoenix-sd-001: upstream main.py --phase test on the dev-best epoch checkpoint (lowest dev WER, earliest on ties), scoring Phoenix2014 dev and test with the repo's sclite pipeline; records sclite's raw counts and hypothesis CTM hashes.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_evaluate --train-run-id full-smkd-phoenix-sd-001 --eval-run-id eval-smkd-phoenix-sd-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T20:28:59Z",
+      "finished_at_utc": "2026-11-02T20:30:24Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-smkd-phoenix-sd",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T20:23:16Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 10.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6EYZAG8QPXM01M59J50W2GR. Upstream main.py --phase test on epoch 36 (dev-best; dev WER during training 21.6). Logged WER dev 21.6, test 22.1. sclite test: 1440 errors (sub 819, del 460, ins 161) over 6504 words, 629 sentences = 22.1402%. Upstream time 85 s."
+      },
+      "artifact_ids": [
+        "eval-smkd-phoenix-sd-001-evaluation",
+        "eval-smkd-phoenix-sd-001-sclite-dev",
+        "eval-smkd-phoenix-sd-001-hypothesis-dev",
+        "eval-smkd-phoenix-sd-001-sclite-test",
+        "eval-smkd-phoenix-sd-001-hypothesis-test",
+        "full-smkd-phoenix-sd-001-checkpoint-epoch36"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-weOXlM8y8B85YaCtzBgw1b",
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "eval-tlp-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Evaluation of full-tlp-phoenix-sd-001: upstream main.py --phase test on the dev-best epoch checkpoint (lowest dev WER, earliest on ties), scoring Phoenix2014 dev and test with the repo's sclite pipeline; records sclite's raw counts and hypothesis CTM hashes.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_evaluate --train-run-id full-tlp-phoenix-sd-001 --eval-run-id eval-tlp-phoenix-sd-001",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-02T20:26:25Z",
+      "finished_at_utc": "2026-11-02T20:27:00Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-tlp-phoenix-sd",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T20:23:16Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 10.0
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "detail": "The container's GPU reported '[gpu-health] [CRITICAL] ... XID 154, GPU recovery action changed from 0x0 (None) to 0x2 (OS Reboot)'; upstream main.py then failed at torch.zeros(1).cuda() with 'RuntimeError: CUDA unknown error' before loading the checkpoint, and evaluate() raised KeyError(6667) parsing the absent test-phase log. No code or data involved; retried unchanged on a new container as eval-tlp-phoenix-sd-002. evaluate() now raises on a non-zero upstream exit instead of failing in the log parser.",
+        "next_run_id": "eval-tlp-phoenix-sd-002"
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-YeSErCDA69hwjnZnSatgMN",
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "eval-tlp-phoenix-sd-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Second attempt of the TLP Phoenix SD evaluation after a GPU hardware fault (XID 154) in attempt 1: upstream main.py --phase test on the dev-best epoch checkpoint, Phoenix2014 dev and test with the repo's sclite pipeline.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_evaluate --train-run-id full-tlp-phoenix-sd-001 --eval-run-id eval-tlp-phoenix-sd-002",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T20:38:33Z",
+      "finished_at_utc": "2026-11-02T20:39:39Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-tlp-phoenix-sd",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T20:31:26Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 10.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6EZGWBP9PWSB84YM2VVJ3FR. Upstream main.py --phase test on epoch 39 (dev-best; dev WER during training 26.2). Logged WER dev 26.2, test 26.6. sclite test: 1729 errors (sub 1024, del 504, ins 201) over 6504 words, 629 sentences = 26.5836%. Upstream time 66 s."
+      },
+      "artifact_ids": [
+        "eval-tlp-phoenix-sd-002-evaluation",
+        "eval-tlp-phoenix-sd-002-sclite-dev",
+        "eval-tlp-phoenix-sd-002-hypothesis-dev",
+        "eval-tlp-phoenix-sd-002-sclite-test",
+        "eval-tlp-phoenix-sd-002-hypothesis-test",
+        "full-tlp-phoenix-sd-001-checkpoint-epoch39"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-sxQfjYR6d0mdNlQFNePzws",
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "eval-vac-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Evaluation of full-vac-phoenix-sd-001: upstream main.py --phase test on the dev-best epoch checkpoint (lowest dev WER, earliest on ties), scoring Phoenix2014 dev and test with the repo's sclite pipeline; records sclite's raw counts and hypothesis CTM hashes.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_evaluate --train-run-id full-vac-phoenix-sd-001 --eval-run-id eval-vac-phoenix-sd-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-02T20:45:14Z",
+      "finished_at_utc": "2026-11-02T20:46:25Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "eval-vac-phoenix-sd",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T20:41:18Z",
+        "max_wall_time_seconds": 14400,
+        "max_gpu_hours": 4.0,
+        "max_cost_chf": 10.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Image im-RRhJE2W44Meiwq3PVXQMMX, task ta-01M6EZXK2H9VYD958A219KSCWR. Upstream main.py --phase test on epoch 35 (dev-best; dev WER during training 29.6). Logged WER dev 29.6, test 29.7. sclite test: 1930 errors (sub 1123, del 588, ins 219) over 6504 words, 629 sentences = 29.6740%. Upstream time 71 s."
+      },
+      "artifact_ids": [
+        "eval-vac-phoenix-sd-001-evaluation",
+        "eval-vac-phoenix-sd-001-sclite-dev",
+        "eval-vac-phoenix-sd-001-hypothesis-dev",
+        "eval-vac-phoenix-sd-001-sclite-test",
+        "eval-vac-phoenix-sd-001-hypothesis-test",
+        "full-vac-phoenix-sd-001-checkpoint-epoch35"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-t8xh9lFNAjACRNpESkdaaT",
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
-  "artifacts": [],
+  "artifacts": [
+    {
+      "artifact_id": "eval-smkd-phoenix-sd-001-evaluation",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-smkd-phoenix-sd-001/evaluation.json",
+      "sha256": "ed124bae87cf55c994b30280ca9dffa873f34d804b4222ad5e29052f39ffd495",
+      "size_bytes": 2286
+    },
+    {
+      "artifact_id": "eval-smkd-phoenix-sd-001-sclite-dev",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-smkd-phoenix-sd-001/work/epoch_6667_result/out.output-hypothesis-dev.ctm.raw",
+      "sha256": "243dcc0a971f0d7a9d42a6b4ca46c815637e57e46e93019ebca4b5d2545677ea",
+      "size_bytes": 2347
+    },
+    {
+      "artifact_id": "eval-smkd-phoenix-sd-001-hypothesis-dev",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-smkd-phoenix-sd-001/work/out.output-hypothesis-dev.ctm",
+      "sha256": "9aba94b45f1d7f36a639b3661a6cff737edc950626d1d08afb92e20ae16ac32f",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "eval-smkd-phoenix-sd-001-sclite-test",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-smkd-phoenix-sd-001/work/epoch_6667_result/out.output-hypothesis-test.ctm.raw",
+      "sha256": "51ab8925f723b9b6e2c4698ee0616909e1266e8c0094cb0ea462424122f07ff3",
+      "size_bytes": 2376
+    },
+    {
+      "artifact_id": "eval-smkd-phoenix-sd-001-hypothesis-test",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-smkd-phoenix-sd-001/work/out.output-hypothesis-test.ctm",
+      "sha256": "72d346750abb7dff6dd995a74418d2bdae76798d3d8ce25591d808295b891f3d",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "full-smkd-phoenix-sd-001-checkpoint-epoch36",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-phoenix-sd-001/work/dev_21.60_epoch36_model.pt",
+      "sha256": "b4387b56d33dc9e967801451ff5dd16e1dce94fb7e1bb537adcb0952163232f5",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "eval-tlp-phoenix-sd-002-evaluation",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-tlp-phoenix-sd-002/evaluation.json",
+      "sha256": "8379d1bef017d606117fda9fad822bc860cdf5bca096edb94eea2358840b2af0",
+      "size_bytes": 2279
+    },
+    {
+      "artifact_id": "eval-tlp-phoenix-sd-002-sclite-dev",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-tlp-phoenix-sd-002/work/epoch_6667_result/out.output-hypothesis-dev.ctm.raw",
+      "sha256": "3f37129bca514a90873504856dd10a4c1281de37e8d2538a6effef2d3d327139",
+      "size_bytes": 2347
+    },
+    {
+      "artifact_id": "eval-tlp-phoenix-sd-002-hypothesis-dev",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-tlp-phoenix-sd-002/work/out.output-hypothesis-dev.ctm",
+      "sha256": "a8803513a0cfff67deaf541ff0584ff170d5fd8579fbb404ae8d764ad10612d4",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "eval-tlp-phoenix-sd-002-sclite-test",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-tlp-phoenix-sd-002/work/epoch_6667_result/out.output-hypothesis-test.ctm.raw",
+      "sha256": "ddda04f32377b2739d1de1549a201fcfa8630a992158081349963153a1aa9cf2",
+      "size_bytes": 2347
+    },
+    {
+      "artifact_id": "eval-tlp-phoenix-sd-002-hypothesis-test",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-tlp-phoenix-sd-002/work/out.output-hypothesis-test.ctm",
+      "sha256": "479f02e03b6a6a03703e4f05c3fd1b826ce92c0c6ad87a913a963fe24f3d4e25",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "full-tlp-phoenix-sd-001-checkpoint-epoch39",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-phoenix-sd-001/work/dev_26.20_epoch39_model.pt",
+      "sha256": "4da825d77459a1d91b78dfdd6b7cc3c570fe23b47315a0efbf1b15ff0aae71b9",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "eval-vac-phoenix-sd-001-evaluation",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-vac-phoenix-sd-001/evaluation.json",
+      "sha256": "c8184d486387fda2bbfb388653d60372f3de65bdda2036fc659865e554c23f6c",
+      "size_bytes": 2281
+    },
+    {
+      "artifact_id": "eval-vac-phoenix-sd-001-sclite-dev",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-vac-phoenix-sd-001/work/epoch_6667_result/out.output-hypothesis-dev.ctm.raw",
+      "sha256": "8307286f678634a790d5afae060112c6f0fe7228caa7267940f748eda5a8145c",
+      "size_bytes": 2347
+    },
+    {
+      "artifact_id": "eval-vac-phoenix-sd-001-hypothesis-dev",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-vac-phoenix-sd-001/work/out.output-hypothesis-dev.ctm",
+      "sha256": "f23a68057af12bcfb75b2c5191871ee0d3dde1f195197111c4e2ed334611170b",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "eval-vac-phoenix-sd-001-sclite-test",
+      "kind": "raw_metric",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-vac-phoenix-sd-001/work/epoch_6667_result/out.output-hypothesis-test.ctm.raw",
+      "sha256": "55457896ae15e89ffe8f81f76907910d7a2a63caedb4d5811ac96f8a84169c06",
+      "size_bytes": 2347
+    },
+    {
+      "artifact_id": "eval-vac-phoenix-sd-001-hypothesis-test",
+      "kind": "predictions",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/eval-vac-phoenix-sd-001/work/out.output-hypothesis-test.ctm",
+      "sha256": "ca57aa217914fd1c5f3e1e7852dcd344c59c06c894233b0d0972277392875cc7",
+      "size_bytes": null
+    },
+    {
+      "artifact_id": "full-vac-phoenix-sd-001-checkpoint-epoch35",
+      "kind": "checkpoint",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-phoenix-sd-001/work/dev_29.60_epoch35_model.pt",
+      "sha256": "974386116bc7ff3aa765db7fa1988a87f37b33f3ef27e0c33230c313ea716061",
+      "size_bytes": null
+    }
+  ],
   "gates": [
     {
       "gate_id": "target-table-version",
@@ -3749,6 +4191,20 @@
             "scope": "data population, frame archives, image builds, 15 preflights and CTC diagnostics (apps of repro-alyami-2024-cslr up to ~14:05 UTC)",
             "usd": 16.08,
             "source": "modal billing report --for today --json (sum over this paper's app IDs)"
+          },
+          {
+            "date": "2026-11-02",
+            "as_of_utc": "2026-11-02T20:35Z",
+            "scope": "cumulative: every app of this paper on 2026-11-02 (data jobs, builds, preflights, diagnostics, block 1 so far: SMKD and TLP complete, VAC/CorrNet/SEN still running, SMKD/TLP evaluations)",
+            "usd": 102.94,
+            "source": "modal billing report --for today --json (sum over apps described repro-alyami-2024-cslr*)",
+            "largest_items_usd": {
+              "full-corrnet-phoenix-sd-001 (running)": 19.44,
+              "full-smkd-phoenix-sd-001": 18.54,
+              "full-vac-phoenix-sd-001 (running)": 18.48,
+              "full-sen-phoenix-sd-001 (running)": 15.32,
+              "full-tlp-phoenix-sd-001": 13.95
+            }
           }
         ],
         "block_ledger": [

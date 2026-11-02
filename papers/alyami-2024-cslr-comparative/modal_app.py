@@ -1034,7 +1034,11 @@ def evaluate(train_run_id: str, eval_run_id: str):
               "epochs_logged": len(history), "checkpoint": str(checkpoint), "checkpoint_sha256": _sha256(checkpoint),
               **_environment(code)}
     record.update(_run_upstream(_command(work, "--phase", "test", "--load-weights", str(checkpoint)), code, work))
-    record["wer"] = {split: _log_entries(work, split)[6667][0] for split in ("dev", "test")}
+    if record["exit_code"] or record["scoring_failed"]:
+        (run_dir / "evaluation.json").write_text(json.dumps(record, indent=2, default=str))
+        RESULTS.commit()
+        raise RuntimeError(f"upstream test phase exited {record['exit_code']} (scoring_failed {record['scoring_failed']})")
+    record["wer"] ={split: _log_entries(work, split)[6667][0] for split in ("dev", "test")}
     record["sclite_counts"] = {split: _sclite_counts(work, split) for split in ("dev", "test")}
     for split in ("dev", "test"):
         hypothesis = Path(work) / f"out.output-hypothesis-{split}.ctm"
