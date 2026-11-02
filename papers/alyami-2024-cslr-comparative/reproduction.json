@@ -2939,6 +2939,144 @@
           }
         }
       }
+    },
+    {
+      "run_id": "full-vac-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full training of vac on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; upstream phoenix2014 lists and config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). Measured estimate 7.65 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model vac --setting phoenix-sd --run-id full-vac-phoenix-sd-001",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-phoenix-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T14:05:25Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-Bq2sMC5UcEDiiAY8EoOOXV",
+        "function_call_id": "fc-01M6E98Q9125CM2CF0K0V57XR8",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full training of smkd on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; upstream phoenix2014 lists and config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). Measured estimate 7.65 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model smkd --setting phoenix-sd --run-id full-smkd-phoenix-sd-001",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-phoenix-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T14:05:25Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-HCnhtQKUVw36UvqaRMevLa",
+        "function_call_id": "fc-01M6E995JN2JQ95SFZZK2RWXX6",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full training of corrnet on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; upstream phoenix2014 lists and config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). Measured estimate 8.75 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model corrnet --setting phoenix-sd --run-id full-corrnet-phoenix-sd-001",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-phoenix-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T14:05:25Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-LpdMiHskC3BGNTMPJhaVmR",
+        "function_call_id": "fc-01M6E99KXR1S56KN43C0YQ6CVQ",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
   "artifacts": [],
@@ -3492,6 +3630,20 @@
             "scope": "data population, frame archives, image builds, 15 preflights and CTC diagnostics (apps of repro-alyami-2024-cslr up to ~14:05 UTC)",
             "usd": 16.08,
             "source": "modal billing report --for today --json (sum over this paper's app IDs)"
+          }
+        ],
+        "block_ledger": [
+          {
+            "block": "1 phoenix-sd",
+            "launched_at": "2026-11-02T14:05Z",
+            "runs": [
+              "full-vac-phoenix-sd-001",
+              "full-smkd-phoenix-sd-001",
+              "full-corrnet-phoenix-sd-001"
+            ],
+            "estimated_usd": 71.3,
+            "declared_ceiling_usd": 132,
+            "note": "TLP and SEN Phoenix SD runs wait for the operator's 40- vs 80-epoch decision (gate protocol-lr-epochs follow-up). First-epoch timings: SMKD 9.2 min (estimate 11.0), CorrNet about 12 min (estimate 12.7); VAC waited about 15 min for an L40S before starting."
           }
         ]
       }
