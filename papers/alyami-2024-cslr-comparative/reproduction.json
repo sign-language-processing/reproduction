@@ -358,7 +358,7 @@
         {
           "name": "signer-dep-trainval",
           "sample_count": 7492,
-          "note": "union of <signer>_train.csv; paper's 6,783 train / 709 val partition unpublished",
+          "note": "union of <signer>_train.csv (7,489 usable); the paper's 6,783 train / 709 val partition is unpublished, and this attempt uses 6,780 train / 709 dev from gate arabsign-sd-validation (stratified-709-seed42)",
           "files": [
             {
               "path": "ArabSign-EncoderDec.zip:EncoderDec/data/01_train.csv",
@@ -420,7 +420,7 @@
         {
           "name": "leave-one-signer-out",
           "sample_count": 9335,
-          "note": "6 folds, one signer held out per fold",
+          "note": "6 folds, one signer held out per fold; final-epoch scoring with a 50-clip token dev list drawn from the training signers (gate arabsign-loso-checkpoint)",
           "files": [
             {
               "path": "ArabSign-EncoderDec.zip:EncoderDec/data/01_train.csv",
@@ -473,11 +473,32 @@
           ]
         }
       ],
-      "verification": "RGB per-signer archives 01-06.7z on the Volume (import manifest arab-sign/_drive_imports/72178996f6c31e6c/manifest.json). Extracted 2026-11-02 by data.sh -> modal_app.py::extract_arabsign (app ap-3EEqRJGxaxKfMN9NLO8W1O): each archive re-hashed against the import manifest, 9,330 mp4 written to arab-sign/RGB/videos/<signer>/<split>/<sentence>/<stem>.mp4 with per-file sha256 in videos/<signer>.manifest.json, reconciliation in videos/manifest.json. Split lists: the dataset author's per-signer <signer>_{train,test}.csv from ArabSign-EncoderDec.zip (github.com/Hamzah-Luqman/ArabSign @ 8f6e127a054052228027d6da98005f991d300a7b, zip sha256 6980aec2beea93fb2299198f7031991f684bb064c8093343128eb13789318eb0): 9,335 rows; 5 rows have no video in the RGB release, 0 videos lack a row, and every archive train/test folder agrees with its CSV. Effective counts: author train lists 7,489 (7,492 listed), author test lists 1,841 (1,843 listed, the count the ICCVW version states). Labels: the CSVs' last column (sign-language sentence), checked equal to the 'Sign Language Sentence' column of ArabSignGroundTruth.txt for every row at list-generation time. The 709-sample validation subset of the 7,492 training rows is unpublished (gate arabsign-protocol).",
+      "verification": "RGB per-signer archives 01-06.7z on the Volume (import manifest arab-sign/_drive_imports/72178996f6c31e6c/manifest.json). Extracted 2026-11-02 by data.sh -> modal_app.py::extract_arabsign (app ap-3EEqRJGxaxKfMN9NLO8W1O): each archive re-hashed against the import manifest, 9,330 mp4 written to arab-sign/RGB/videos/<signer>/<split>/<sentence>/<stem>.mp4 with per-file sha256 in videos/<signer>.manifest.json, reconciliation in videos/manifest.json. Split lists: the dataset author's per-signer <signer>_{train,test}.csv from ArabSign-EncoderDec.zip (github.com/Hamzah-Luqman/ArabSign @ 8f6e127a054052228027d6da98005f991d300a7b, zip sha256 6980aec2beea93fb2299198f7031991f684bb064c8093343128eb13789318eb0): 9,335 rows; 5 rows have no video in the RGB release, 0 videos lack a row, and every archive train/test folder agrees with its CSV. Effective counts: author train lists 7,489 (7,492 listed), author test lists 1,841 (1,843 listed, the count the ICCVW version states). Labels: the CSVs' 'caption' column (sixth of seven; the seventh, 'procCaption', is the author's processed variant and is not used), checked equal to the 'Sign Language Sentence' column of ArabSignGroundTruth.txt for every row at list-generation time. The 709-sample validation subset of the 7,492 training rows is unpublished; the selection used here is gate arabsign-sd-validation's resolution.",
       "deviations": [
         "Five videos listed by the author's split CSVs are absent from the RGB release (also found by papers/ben-abderrahmane-2025-temporal-to-spatial): 01/test/0006/01_0006_(16_02_21_19_36_11)_c, 01/test/0044/01_0044_(20_03_21_20_09_50)_c, 01/train/0020/01_0020_(17_03_21_21_36_28)_c, 02/train/0020/02_0020_(02_03_21_21_01_08)_c, 05/train/0042/05_0042_(20_03_21_19_25_26)_c. Signer-Dep test therefore has 1,841 of 1,843 clips and the leave-one-signer-out folds for signers 01, 02 and 05 lose 3, 1 and 1 clips (0.05% of the data overall).",
-        "35 file stems carry a signer/sentence prefix that differs from their folder (e.g. 02/test/0007/03_01_0007_(16_02_21_21_01_01)_c.mp4); the folder path, which the author's CSVs list, defines signer, split and sentence, and sample IDs are <signer>_<sentence>_<timestamp> from the path."
-      ]
+        "35 file stems carry a signer/sentence prefix that differs from their folder (e.g. 02/test/0007/03_01_0007_(16_02_21_21_01_01)_c.mp4); the folder path, which the author's CSVs list, defines signer, split and sentence, and sample IDs are <signer>_<sentence>_<timestamp> from the path.",
+        "The labels give 93 distinct glosses, two fewer than the 95 the ArabSign paper (FG 2023, Sec. III-B and Table II) states; the 155 sign tokens and 3.1 signs per sentence match exactly (vocabulary_check)."
+      ],
+      "vocabulary_check": {
+        "labels_used": "ArabSignGroundTruth.txt 'Sign Language Sentence' (= CSV 'caption')",
+        "sentences": 50,
+        "sign_tokens_over_sentences": 155,
+        "mean_signs_per_sentence": 3.1,
+        "distinct_glosses": 93,
+        "distinct_glosses_procCaption": 90,
+        "arabsign_paper": {
+          "citation": "H. Luqman, ArabSign: A Multi-modality Dataset and Benchmark for Continuous Arabic Sign Language Recognition, FG 2023 (arXiv 2210.03951v1)",
+          "url": "https://arxiv.org/pdf/2210.03951v1",
+          "sha256": "7be6d45db9a17116201957bae100940d95b0f7fe36cf587b59b6aaa5ea94ccc8",
+          "accessed_at": "2026-11-02",
+          "statements": [
+            "Sec. III-B: 'The dataset's sentences consist of 155 signs, and the dataset's vocabulary consists of 95 signs.'",
+            "Sec. III-B: 'The average sentence length is 3.1 signs.'",
+            "Table II: 'Vocab. size 95', 'Average words/sample 3.1'"
+          ]
+        },
+        "comparison": "The labels used reproduce the paper's 155 signs over 50 sentences and 3.1 signs per sentence exactly; they give 93 distinct glosses against the paper's 95 (procCaption gives 90, further from it). The two-gloss difference is not explained by either label column; it is supporting evidence for the 'Sign Language Sentence' labels, not proof that they are what the paper's authors used. Every split of every setting covers all 93 glosses and 50 sentences (modal_app.py::arabsign_split_record, app ap-4HwGUsgGtScHCYmacWBOAP)."
+      }
     },
     {
       "dataset_id": "grsl",
@@ -591,7 +612,7 @@
   "experiments": [
     {
       "experiment_id": "vac-phoenix2014",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "phoenix2014",
       "required_seeds": [
@@ -602,18 +623,18 @@
     },
     {
       "experiment_id": "vac-arabsign",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "arabsign",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign Signer-Dep: dev-best on the 709-clip sentence-stratified dev list (gate arabsign-sd-validation). ArabSign leave-one-signer-out: final epoch (epoch 39), no dev-based selection (gate arabsign-loso-checkpoint).",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "vac-grsl",
-      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "VAC: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier/weight_norm False (the README's VAC setting: 'The VAC result is corresponding to the setting of loss_weights: SeqCTC: 1.0, ConvCTC: 1.0'); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "grsl",
       "required_seeds": [
@@ -624,7 +645,7 @@
     },
     {
       "experiment_id": "smkd-phoenix2014",
-      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "phoenix2014",
       "required_seeds": [
@@ -635,18 +656,18 @@
     },
     {
       "experiment_id": "smkd-arabsign",
-      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "arabsign",
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign Signer-Dep: dev-best on the 709-clip sentence-stratified dev list (gate arabsign-sd-validation). ArabSign leave-one-signer-out: final epoch (epoch 39), no dev-based selection (gate arabsign-loso-checkpoint).",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
       "experiment_id": "smkd-grsl",
-      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs)",
+      "system": "SMKD: VAC_CSLR configs/baseline.yaml with loss_weights SeqCTC 1.0 + ConvCTC 1.0 and share_classifier: True, weight_norm: True (the README's VAC+SMKD setting); overridden only to Adam base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2 (gate protocol-lr-epochs). Guess: the loss weights follow VAC_CSLR README.md line 36 at 71f3e03 ('The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`. In addition to that, the VAC+SMKD adopt the setting of `model_args: share_classifier: True, weight_norm: True`.'), and line 33 labels the VAC row 'ResNet18+VAC (CTC only)'; the commented `Dist: 10.0` in configs/baseline.yaml is not used. The paper names no loss weights.",
       "source_id": "vac-cslr",
       "dataset_id": "grsl",
       "required_seeds": [
@@ -674,7 +695,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign Signer-Dep: dev-best on the 709-clip sentence-stratified dev list (gate arabsign-sd-validation). ArabSign leave-one-signer-out: final epoch (epoch 39), no dev-based selection (gate arabsign-loso-checkpoint).",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -707,7 +728,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign Signer-Dep: dev-best on the 709-clip sentence-stratified dev list (gate arabsign-sd-validation). ArabSign leave-one-signer-out: final epoch (epoch 39), no dev-based selection (gate arabsign-loso-checkpoint).",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -740,7 +761,7 @@
       "required_seeds": [
         0
       ],
-      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign: Signer-Dep dev list and LOSO checkpoint rule are open gates arabsign-sd-validation and arabsign-loso-checkpoint.",
+      "checkpoint_rule": "Lowest dev WER across per-epoch evaluations, earliest epoch on ties (the _best_model.pt rule of TLP/SEN/CorrNet main.py; VAC_CSLR main.py has no best-model rule, so per-epoch checkpoints are kept with --save-interval 1 and the same rule is applied). Paper states no rule. ArabSign Signer-Dep: dev-best on the 709-clip sentence-stratified dev list (gate arabsign-sd-validation). ArabSign leave-one-signer-out: final epoch (epoch 39), no dev-based selection (gate arabsign-loso-checkpoint).",
       "paper_evidence": "arXiv v1 Sec. IV: ArabSign Signer-Dep, and leave-one-signer-out following [8], six trials averaged; Tables I and II; Sec. III model description; Experiments Setup paragraph (Adam, 40 epochs, batch 2, lr 1e-3 steps 20/35, 256->224 crop, 20% temporal scaling, 50% hflip)."
     },
     {
@@ -3077,6 +3098,98 @@
           }
         }
       }
+    },
+    {
+      "run_id": "full-tlp-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full training of tlp on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; dataset_preprocess.py lists and the repo config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). 40 epochs per the operator decision of 2026-11-02 (gate protocol-lr-epochs follow-up). Measured estimate 7.23 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model tlp --setting phoenix-sd --run-id full-tlp-phoenix-sd-001",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-phoenix-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T15:28:57Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-brLTkY5v3XGxA5aUMV3ioZ",
+        "function_call_id": "fc-01M6EE1MM3VCXGNY3TC5TQ8X0C",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-phoenix-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full training of sen on Phoenix2014 Signer-Dep (multisigner train 5,671 / dev 540 clips; dataset_preprocess.py lists and the repo config), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation; block 1 (Phoenix SD). 40 epochs per the operator decision of 2026-11-02 (gate protocol-lr-epochs follow-up). Measured estimate 9.85 GPU-h. Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model sen --setting phoenix-sd --run-id full-sen-phoenix-sd-001",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-phoenix-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-02T15:28:57Z",
+        "max_wall_time_seconds": 64800,
+        "max_gpu_hours": 18.0,
+        "max_cost_chf": 45.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-q7NTK645rUEFQURf7rlJGn",
+        "function_call_id": "fc-01M6EE22Y6G2KJHZ67R3XM8J0K",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
   "artifacts": [],
@@ -3129,7 +3242,13 @@
         "decided_at": "2026-10-26",
         "decision": "Use the arXiv v1 stated protocol for every model: Adam, base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2. Each model otherwise runs its pinned upstream config unchanged (loss weights, augmentation, decoding).",
         "basis": "Operator decision at the protocol gate after reviewing the paper text and the pinned upstream configs.",
-        "follow_up": "2026-11-02: decision kept (arXiv v1 is the assigned paper; its text states 40 epochs, steps 20/35 for all five models). The ICCVW 80-epoch (steps 30/60) statement for TLP/SEN is recorded as evidence and as a README deviation note. Before the full TLP and SEN runs launch, the measured cost of training them for 80 epochs, and whether it fits under the USD 2,000 ceiling, is reported to the operator for a decision."
+        "follow_up": "2026-11-02: decision kept (arXiv v1 is the assigned paper; its text states 40 epochs, steps 20/35 for all five models). The measured cost of 80 epochs for TLP/SEN (about USD +578 over all blocks, +238 outside LOSO; see compute-full-table.resolution.measured_estimate.per_run usd_80) was reported to the operator, who decided on 2026-11-02 that TLP and SEN stay at 40 epochs, lr steps 20/35, in every block including ArabSign LOSO. The ICCVW 2025 statement (TLP/SEN 80 epochs, steps 30/60) is a known alternative that was not adopted because the assigned paper (arXiv v1) states 40 epochs.",
+        "tlp_sen_epochs_decision": {
+          "decided_at": "2026-11-02",
+          "decision": "40 epochs, steps 20/35, all blocks",
+          "not_adopted": "ICCVW 80 epochs, steps 30/60",
+          "basis": "Operator decision after the measured 80-epoch cost was reported; arXiv v1 is the assigned paper."
+        }
       }
     },
     {
@@ -3142,7 +3261,7 @@
         "papers/yu-2025-cvsign run full-phoenix14t-002: CorrNet-family model on PHOENIX14-T, one L40S, ~33 min/epoch incl. dev eval (heavier ResNet34 variant, 7096 train clips vs 5672 here)",
         "Pre-preflight projection presented in #repro-sign-team-r on 2026-10-30 (40 epochs for all models): about 420-610 L40S GPU-hours including about 15 GPU-hours of preflights and a 10% retry margin, i.e. about USD 1,350-2,000 at USD 3.22/h effective (L40S with 16 CPU cores and 64 GiB, as measured in papers/yu-2025-cvsign); the 30 ArabSign leave-one-signer-out runs account for about USD 550-1,050. This supersedes the earlier GPU-only figure of USD 800-1,600, which omitted CPU/memory charges, preflights and retries."
       ],
-      "required_action": "None outstanding. Launch blocks in the order Phoenix SD, Phoenix SI, GrSL SI, GrSL Unseen-Sent, ArabSign SD, ArabSign LOSO, each with declared ceilings and cumulative spend tracked against USD 2,000; ArabSign blocks wait for their protocol gates.",
+      "required_action": "None outstanding. Launch blocks in the order Phoenix SD, Phoenix SI, GrSL SI, GrSL Unseen-Sent, ArabSign SD, ArabSign LOSO, each with declared ceilings and cumulative spend tracked against USD 2,000. The ArabSign protocol gates were resolved on 2026-11-02.",
       "resolution": {
         "decided_at": "2026-11-02",
         "decision": "Approved: the full arXiv v1 Table I, including the 30 ArabSign leave-one-signer-out runs.",
@@ -3639,19 +3758,28 @@
             "runs": [
               "full-vac-phoenix-sd-001",
               "full-smkd-phoenix-sd-001",
-              "full-corrnet-phoenix-sd-001"
+              "full-corrnet-phoenix-sd-001",
+              "full-tlp-phoenix-sd-001",
+              "full-sen-phoenix-sd-001"
             ],
-            "estimated_usd": 71.3,
-            "declared_ceiling_usd": 132,
-            "note": "TLP and SEN Phoenix SD runs wait for the operator's 40- vs 80-epoch decision (gate protocol-lr-epochs follow-up). First-epoch timings: SMKD 9.2 min (estimate 11.0), CorrNet about 12 min (estimate 12.7); VAC waited about 15 min for an L40S before starting."
+            "estimated_usd": 121.9,
+            "declared_ceiling_usd": 228,
+            "note": "VAC, SMKD and CorrNet launched 14:05 UTC; TLP and SEN launched 15:28 UTC after the operator's 40-epoch decision. Ceiling = sum of the per-run GPU-hour ceilings x USD 3.0 (14+14+16+14+18 GPU-h). First-epoch timings: SMKD 9.2 min (estimate 11.0), CorrNet about 12 min (estimate 12.7); VAC waited about 15 min for an L40S before starting."
           }
-        ]
+        ],
+        "projection_after_decisions": {
+          "at": "2026-11-02",
+          "usd_40_epochs_all_blocks_before_retries": 1380.3,
+          "usd_spent_before_full_runs": 16.08,
+          "usd_projected_total": 1396.4,
+          "basis": "measured_estimate blocks at 40 epochs with the decided ArabSign rules (stratified-709-seed42: 129.2; final-epoch: 803.2)."
+        }
       }
     },
     {
       "gate_id": "arabsign-sd-validation",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "Every upstream recipe evaluates a dev split each epoch and (TLP/SEN/CorrNet; VAC/SMKD via per-epoch checkpoints) keeps the dev-best model, but the ArabSign Signer-Dep validation subset is unpublished. The choice decides which clips are trained on and which checkpoint is scored for 5 targets.",
       "evidence": [
         "ICCVW 2025 Sec. 3.2: 'The official Signer-Dep split consists of 6,783 training samples, 709 validation samples, and 1,843 testing samples.'",
@@ -3691,12 +3819,49 @@
           "estimated_cost_usd_5_runs_40_epochs": 161.4
         }
       ],
-      "required_action": "Operator chooses the ArabSign Signer-Dep validation rule before the ArabSign SD block (5 runs) launches."
+      "required_action": "None outstanding.",
+      "resolution": {
+        "decided_at": "2026-11-02",
+        "decision": "stratified-709-seed42: hold out 709 of the 7,489 usable Signer-Dep training rows, stratified by sentence ID with random_state 42; train on the other 6,780 and select the dev-best epoch (lowest dev WER, earliest on ties) as in every other setting.",
+        "basis": "Operator decision at this gate on 2026-11-02 after reviewing the alternatives: size from ICCVW Sec. 3.2 (6,783/709/1,843), seed and stratification from the dataset author's EncoderDec/generator.py convention.",
+        "selection_procedure": [
+          "Rows: the dataset author's <signer>_train.csv rows of ArabSign-EncoderDec.zip (sha256 6980aec2...) that have a video in the RGB release (7,489 of 7,492), in sorted archive-path order (<signer>/train/<sentence>/<stem>.mp4).",
+          "Stratum per row: the CSV's sentId (50 sentences).",
+          "sklearn.model_selection.train_test_split(rows, test_size=709, random_state=42, stratify=sentence IDs) with scikit-learn 1.8.0 (the container image's version); the 709-row part is the dev list, the rest the train list, both kept in sorted order for train and in the returned order for dev.",
+          "Implemented in papers/alyami-2024-cslr-comparative/modal_app.py::_arabsign_lists (dev_rule 'stratified-709-seed42'); the result depends on the input order and the scikit-learn version, both fixed above."
+        ],
+        "split_record": {
+          "function": "modal_app.py::arabsign_split_record",
+          "modal_app_id": "ap-4HwGUsgGtScHCYmacWBOAP",
+          "recorded_at": "2026-11-02",
+          "lists_sha256": "1d36ba9667493e99b63eb89c8986e69b217bd51851a4f45f037e0350bf6238a8",
+          "lists_sha256_definition": "sha256 of json.dumps(lists, sort_keys=True, ensure_ascii=False), as _write_dataset records it in every run's record",
+          "fileid_list_sha256_definition": "sha256 of the split's fileids joined by newlines, in list order",
+          "train": {
+            "clips": 6780,
+            "sentences": 50,
+            "glosses": 93,
+            "fileid_list_sha256": "bd960085f959a1b602db048366da0f69a68f707f8e1a39a62e7665419dd2efd6"
+          },
+          "dev": {
+            "clips": 709,
+            "sentences": 50,
+            "glosses": 93,
+            "fileid_list_sha256": "6407bcd9873b0b270f4b7b48b6bb2f50b02ea3cfac0de2676c55ff2db5741910"
+          },
+          "test": {
+            "clips": 1841,
+            "sentences": 50,
+            "glosses": 93,
+            "fileid_list_sha256": "d19c5fdc7e11ae1db864cadf01962a80ba4936097134b032276d86f81d26917e"
+          }
+        }
+      }
     },
     {
       "gate_id": "arabsign-loso-checkpoint",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "The 30 leave-one-signer-out runs (6 folds x 5 models) have no published dev set, yet upstream evaluates dev every epoch and selects the dev-best model. A checkpoint rule (and what upstream's dev loader reads) must be fixed for 5 targets averaged over 6 folds.",
       "evidence": [
         "arXiv v1 Sec. V: 'since the ArabSign dataset does not have a specific set for Signer-Indep evaluation, we follow the same setup used in [8], where we leave out one signer for testing in each trial. This is repeated six times ... We also report the average WER amongst all signers.'",
@@ -3728,7 +3893,151 @@
           "estimated_cost_usd_30_runs_40_epochs": 965.2
         }
       ],
-      "required_action": "Operator chooses the LOSO checkpoint rule before the ArabSign LOSO block (30 runs) launches."
+      "required_action": "None outstanding.",
+      "resolution": {
+        "decided_at": "2026-11-02",
+        "decision": "final-epoch: each fold trains 40 epochs (steps 20/35) on every usable clip of the five training signers and scores the final-epoch (epoch 39) checkpoint on the held-out signer; no dev-based selection.",
+        "basis": "Operator decision at this gate on 2026-11-02. arXiv v1 Sec. V, on CorrNet's Signer-Indep ArabSign result: 'Better results are likely to be obtained by fine-tuning the training parameters using a smaller learning rate and adopting early stopping', which indicates that no early stopping or dev-based selection was used for the leave-one-signer-out folds.",
+        "selection_procedure": [
+          "Train list: every usable row of the five training signers (author train and test CSVs together), in sorted archive-path order; test list: every usable row of the held-out signer.",
+          "Upstream main.py always evaluates a dev split each epoch, so the dev list is a fixed token list that is never used for selection: the first training row of each of the 50 sentences in sorted order (these clips are also trained on; no held-out-signer clip is seen before the final scoring).",
+          "evaluate() scores the newest checkpoint and refuses to run unless it is the final epoch (num_epoch - 1).",
+          "Implemented in papers/alyami-2024-cslr-comparative/modal_app.py::_arabsign_lists (dev_rule 'final-epoch') and evaluate()."
+        ],
+        "split_record": {
+          "function": "modal_app.py::arabsign_split_record",
+          "modal_app_id": "ap-4HwGUsgGtScHCYmacWBOAP",
+          "recorded_at": "2026-11-02",
+          "folds": {
+            "arabsign-loso-01": {
+              "lists_sha256": "34813aa27c8f8ef580f6034900f1a5df5df0f92f23f61f3f96b0d758c3feb74e",
+              "train": {
+                "clips": 7798,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "a4f490a93fe3e3fa7e37a823e6d93ef8567ecc4d7d7985a0912551c827953506"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "070ef833c2749249cdaeaa26cd75c69abbea6138a66ff82786b0178a8033766d"
+              },
+              "test": {
+                "clips": 1532,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "973bba5aa62fbc25e12578019229f58708cc686fb8d1a4d30b5a678657b00119"
+              }
+            },
+            "arabsign-loso-02": {
+              "lists_sha256": "0a54fcfba1085355d3e0ae487c9e76cb92e5432deda905a11b7183a07256055f",
+              "train": {
+                "clips": 7733,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "ec6f9054a696ef111812b27b97556587c14d9513c9bc4a824dd84167c4224a4d"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c3cfc7e2a53924a4e08ecb78a72f110e7c68b29ae372aa86a88b2747468faa39"
+              },
+              "test": {
+                "clips": 1597,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "f3ead8c64ea0efe27f096ad686e7e15f0a1e7d8da6a222b73b5769ba702c7de1"
+              }
+            },
+            "arabsign-loso-03": {
+              "lists_sha256": "a85b05ecbfef5eaaaddad91372a35af0a84f00b6eb6a264dd08b010fb0dfaa8d",
+              "train": {
+                "clips": 7690,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "179215c3c9c9854bcd605d559870ea019be5d4c53cd05b8fa989005b38d955af"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c3cfc7e2a53924a4e08ecb78a72f110e7c68b29ae372aa86a88b2747468faa39"
+              },
+              "test": {
+                "clips": 1640,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "f697c25a40cb5532b6d18e4972ead5a1878cf41ebf685e773486da31a78d8d76"
+              }
+            },
+            "arabsign-loso-04": {
+              "lists_sha256": "a68691f1bc51b2508c154f4b8424692ea54152a3e36139c38c51f71566ef1257",
+              "train": {
+                "clips": 7780,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "833acbe37497906e21714e41f4ab8033b88092262947ef67681f2e0b09cb1fe2"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c3cfc7e2a53924a4e08ecb78a72f110e7c68b29ae372aa86a88b2747468faa39"
+              },
+              "test": {
+                "clips": 1550,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "7e8d93deab3e7624a88971e20260fd7669500918c3a73077c80ca3464cdb9598"
+              }
+            },
+            "arabsign-loso-05": {
+              "lists_sha256": "58bdd1e77bda998d8c1c71b12065bedff4663e089eec7d2426f6ef923382de5a",
+              "train": {
+                "clips": 7831,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c4db1d410b578697f7b7db4e00b1cfeafed4958b71995e448be5f7e998d09020"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c3cfc7e2a53924a4e08ecb78a72f110e7c68b29ae372aa86a88b2747468faa39"
+              },
+              "test": {
+                "clips": 1499,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "bdec25a0d28dca82bd45d7555b5a5e1102362190f56accc30d405ca2bdf41d37"
+              }
+            },
+            "arabsign-loso-06": {
+              "lists_sha256": "9db47e8f24751bc565384a16910292ffd479c47597bb716b790e55085ca718af",
+              "train": {
+                "clips": 7818,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "73e826abcbd47ac9b0073f07c110ff21cdee97c1b8eac3025a703bfa0a5bc624"
+              },
+              "dev": {
+                "clips": 50,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "c3cfc7e2a53924a4e08ecb78a72f110e7c68b29ae372aa86a88b2747468faa39"
+              },
+              "test": {
+                "clips": 1512,
+                "sentences": 50,
+                "glosses": 93,
+                "fileid_list_sha256": "ba88063479cb4b5fb510a06cf021b92c593fe3df215f360932f89e182cc62d85"
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

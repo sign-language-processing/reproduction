@@ -107,7 +107,15 @@ $W run $A::launch_prepare_frames --dataset arabsign
 $W run $A::launch_prepare_frames --dataset gsl
 ```
 
-The preflight, training and evaluation commands are listed per run in `reproduction.json.runs`.
+The preflight, training and evaluation commands are listed per run in `reproduction.json.runs`. Full runs and their evaluation have this form:
+
+```bash
+$W run --detach $A::launch_train --model {vac|smkd|tlp|sen|corrnet} --setting {setting} --run-id {run_id} [--dev-rule {rule}]
+$W run $A::launch_evaluate --train-run-id {run_id} --eval-run-id {eval_run_id}
+$W run $A::launch_arabsign_split_record   # re-derives the ArabSign split hashes recorded in the gates
+```
+
+The settings are `phoenix-sd`, `phoenix-si`, `grsl-si`, `grsl-unseen`, `arabsign-sd` (`--dev-rule stratified-709-seed42`) and `arabsign-loso-01` … `-06` (`--dev-rule final-epoch`).
 
 ## Data provenance and permissions
 
@@ -222,21 +230,31 @@ Per run this is 5.3–10.6 h. The paper reports about 10 h per Phoenix/GrSL run 
 
 **Spend so far:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
 
+**Block 1, Phoenix SD (running).** The block ceiling is USD 228. That is the sum of the per-run GPU-hour ceilings (14 + 14 + 16 + 14 + 18 GPU-h) at USD 3.0/h, against an estimate of USD 122.
+
+| Run | Launched (UTC) | App | Declared ceiling |
+| --- | --- | --- | --- |
+| `full-vac-phoenix-sd-001` | 14:05 | `ap-Bq2sMC5UcEDiiAY8EoOOXV` | 14 GPU-h |
+| `full-smkd-phoenix-sd-001` | 14:05 | `ap-HCnhtQKUVw36UvqaRMevLa` | 14 GPU-h |
+| `full-corrnet-phoenix-sd-001` | 14:05 | `ap-LpdMiHskC3BGNTMPJhaVmR` | 16 GPU-h |
+| `full-tlp-phoenix-sd-001` | 15:28 | `ap-brLTkY5v3XGxA5aUMV3ioZ` | 14 GPU-h |
+| `full-sen-phoenix-sd-001` | 15:28 | `ap-q7NTK645rUEFQURf7rlJGn` | 18 GPU-h |
+
 ## Guesses and deviations
 
 | Detail | Paper/evidence says | This attempt uses | Rationale |
 | --- | --- | --- | --- |
-| Learning rate, TLP/SEN epochs | arXiv v1: lr 1e-3, 40 epochs (steps 20/35) for all. Upstream: lr 1e-4, TLP/SEN 80 epochs (steps 40/60). ICCVW 2025: lr 1e-3, TLP/SEN 80 epochs (steps 30/60). | arXiv v1 values for all five models | Operator decision at gate `protocol-lr-epochs`; arXiv v1 is the assigned paper |
-| TLP/SEN schedule evidence across versions | Table I vs ICCVW Table 1 (checked 2026-11-02 from both PDFs). All six TLP cells and five of six SEN cells are identical at one decimal. SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08→43.0, SEN GrSL SI 8.09→8.0, CorrNet ArabSign SI 7.65→7.6), and 1 differs (SMKD Phoenix SD 22.31→22.1). | 40 epochs (arXiv v1) | The numbers did not change when the stated schedule went from 40 to 80 epochs, so the evidence does not show which schedule produced them. The measured 80-epoch cost has been put to the operator before the TLP/SEN full runs. |
-| VAC / SMKD loss | The paper says each study's settings were followed. The VAC_CSLR README states "The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`", and VAC+SMKD adds `share_classifier`/`weight_norm: True`. `baseline.yaml` comments out ConvCTC and a `Dist: 10.0`. | SeqCTC 1 + ConvCTC 1; SMKD adds share_classifier and weight_norm | The README's own mapping of config to result; Dist is not part of it |
+| Learning rate, TLP/SEN epochs | arXiv v1: lr 1e-3, 40 epochs (steps 20/35) for all. Upstream: lr 1e-4, TLP/SEN 80 epochs (steps 40/60). ICCVW 2025: lr 1e-3, TLP/SEN 80 epochs (steps 30/60). | arXiv v1 values for all five models, in every block including ArabSign LOSO | Operator decision at gate `protocol-lr-epochs`, confirmed on 2026-11-02 for TLP/SEN after the measured 80-epoch cost was reported (about USD +578 over all blocks). arXiv v1 is the assigned paper. ICCVW's 80 epochs (steps 30/60) is a known alternative that was not adopted. |
+| TLP/SEN schedule evidence across versions | Table I vs ICCVW Table 1 (checked 2026-11-02 from both PDFs). All six TLP cells and five of six SEN cells are identical at one decimal. SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08→43.0, SEN GrSL SI 8.09→8.0, CorrNet ArabSign SI 7.65→7.6), and 1 differs (SMKD Phoenix SD 22.31→22.1). | 40 epochs (arXiv v1) | The numbers did not change when the stated schedule went from 40 to 80 epochs, so the evidence does not show which schedule produced them. Recorded as a known alternative, not adopted. |
+| VAC / SMKD loss (guess) | The paper says each study's settings were followed and names no loss weights. VAC_CSLR `README.md` line 36 at `71f3e03` states "The VAC result is corresponding to the setting of `loss_weights: SeqCTC: 1.0, ConvCTC: 1.0`", and VAC+SMKD adds `share_classifier`/`weight_norm: True`. `baseline.yaml` comments out ConvCTC and a `Dist: 10.0`. | SeqCTC 1 + ConvCTC 1; SMKD adds share_classifier and weight_norm | A guess from the README's own mapping of config to result. Line 33 also labels the VAC row "ResNet18+VAC (CTC only)". Dist is not part of either. |
 | Seed | Not stated | 0 (upstream default) | Single reported number per cell |
 | Checkpoint selection | Not stated | Lowest dev WER, earliest epoch on ties. This is TLP/SEN/CorrNet's `_best_model.pt` rule. VAC_CSLR has no best-model rule, so per-epoch checkpoints (`--save-interval 1`) let the same rule apply. | Upstream behavior; uniform across models |
 | GPUs | v1: "RTX A6000 with two 48GB GPUs". ICCVW: batch 2 "on a single GPU". | One L40S (48 GB) | Matches ICCVW and avoids VAC's documented multi-GPU BatchNorm issue |
 | Phoenix SI5 lists | SI5 corpus files. Upstream drops pandas row 2390 of the multisigner train CSV, the broken clip `13April_2011_Wednesday_tagesschau_default-14`, which has 16 frames and is not resized. | SI5 lists drop that clip by ID | In the SI5 file row 2390 is a different, valid clip, so dropping by index would drop the wrong clip |
-| ArabSign gloss labels | ArabSignGroundTruth.txt "Sign Language Sentence". The author's CSVs carry it as `caption`, plus a processed `procCaption` that strips the definite article from some words. 155 sign tokens over 50 sentences, as the dataset site says, for both; vocabulary 93 (`caption`) or 90 (`procCaption`) against the site's "95 signs". | The published "Sign Language Sentence" (= `caption`) | Published annotation, and closer to the stated vocabulary; the papers do not say |
+| ArabSign gloss labels | ArabSignGroundTruth.txt "Sign Language Sentence". The author's CSVs carry it as `caption`, plus a processed `procCaption` that strips the definite article from some words. The ArabSign paper (Luqman, FG 2023; arXiv 2210.03951v1, sha256 `7be6d45d…`) states in Sec. III-B "The dataset's sentences consist of 155 signs, and the dataset's vocabulary consists of 95 signs" and "The average sentence length is 3.1 signs" (Table II: "Vocab. size 95"). | The published "Sign Language Sentence" (= `caption`) | Neither version of the paper says which labels were used. The chosen labels give 50 sentences, 155 sign tokens and 3.1 signs per sentence, matching the ArabSign paper exactly, and 93 distinct glosses against its 95. `procCaption` gives 90, further away. The two-gloss gap is not explained by either column, so this supports the choice but does not prove it. Details: `reproduction.json.datasets[arabsign].vocabulary_check`. |
 | ArabSign videos | 9,335 samples | 9,330 (5 absent from the RGB release; test 1,841 of 1,843) | Data as released; listed in `reproduction.json.datasets` |
-| ArabSign Signer-Dep validation | 709 samples (ICCVW only), unpublished | Open gate `arabsign-sd-validation` | Split not released |
-| ArabSign LOSO checkpoint | No dev set; v1 suggests no early stopping was used | Open gate `arabsign-loso-checkpoint` | Not stated |
+| ArabSign Signer-Dep validation | 6,783 train / 709 validation (ICCVW only). The subset itself is unpublished. The dataset author's code draws validation with `train_test_split(random_state=42, stratify=sentence ID)`. | 709 of the 7,489 usable training rows, from `train_test_split(test_size=709, random_state=42, stratify=sentence ID)` with scikit-learn 1.8.0 on rows in sorted archive-path order. That gives 6,780 train / 709 dev / 1,841 test, all 50 sentences in each. Dev-best selection. | Operator decision at gate `arabsign-sd-validation`, 2026-11-02. Split hashes are in the gate's resolution. |
+| ArabSign LOSO checkpoint | No dev set. arXiv v1 Sec. V, on CorrNet: "Better results are likely to be obtained by … adopting early stopping". | Train 40 epochs on all clips of the five training signers and score the final epoch (39). Upstream's per-epoch dev loop reads a fixed 50-clip token list (the first training clip of each sentence), which is never used for selection. | Operator decision at gate `arabsign-loso-checkpoint`, 2026-11-02, based on the early-stopping remark. Per-fold hashes are in the gate's resolution. |
 | Frame resizing for ArabSign/GrSL | "Resized to 256x256" | Upstream `resize_img` (`cv2.resize`, `INTER_LANCZOS4`) to 256×256 PNG, the Phoenix pipeline's own operation | Same operation the repos apply to Phoenix |
 | Checkpoint retention | Not applicable | Full runs keep only the newest epoch checkpoint (for resume) and the current dev-best (for selection), and delete superseded ones during training | Declared before launch. About 385 MB × 40 epochs × 55 runs would otherwise cost about USD 75 per month in Volume storage. |
 
@@ -286,11 +304,18 @@ The project lead approved the full Table I on 2026-11-02, including the 30 ArabS
 
 Each block declares its own ceilings, and cumulative spend is tracked against USD 2,000.
 
-### Open gates
+### Protocol decisions of 2026-11-02 (resolved)
 
-- `arabsign-sd-validation` covers the 709-clip Signer-Dep validation subset.
-- `arabsign-loso-checkpoint` covers the checkpoint rule for the 30 leave-one-signer-out runs.
+- **TLP/SEN epochs** (`protocol-lr-epochs` follow-up). The measured cost of 80 epochs for TLP and SEN was reported: about USD +578 over all blocks, or +238 outside LOSO. TLP and SEN stay at 40 epochs with steps 20/35 in every block, as arXiv v1 states. ICCVW's 80 epochs (steps 30/60) is recorded as a known alternative that was not adopted.
+- **`arabsign-sd-validation`: `stratified-709-seed42`.** 709 dev clips, sentence-stratified, seed 42, as in the guesses table. Split record: app `ap-4HwGUsgGtScHCYmacWBOAP`.
 
-Both have alternatives, evidence and measured costs in `reproduction.json.gates`, and both must be decided before the ArabSign blocks launch.
+  | Split | Clips | fileid-list sha256 |
+  | --- | ---: | --- |
+  | train | 6,780 | `bd960085…` |
+  | dev | 709 | `6407bcd9…` |
+  | test | 1,841 | `d19c5fdc…` |
 
-TLP/SEN at 80 epochs (steps 30/60, as ICCVW states) has been put to the operator, with the measured cost, before their full runs.
+  The lists hash is `1d36ba96…`.
+- **`arabsign-loso-checkpoint`: `final-epoch`.** No dev-based selection, based on v1's early-stopping remark. The per-fold train/test/token-dev hashes are in the gate's resolution.
+
+No gate is open. With these decisions the projected total is about USD 1,396 before retries, including the USD 16 already spent (`compute-full-table.resolution.projection_after_decisions`).

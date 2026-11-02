@@ -556,7 +556,7 @@ def _arabsign_rows():
         if " ".join(fields[5].split()) != signed[sentence]:
             raise RuntimeError(f"{relative}: CSV caption differs from ArabSignGroundTruth.txt")
         sample = _arabsign_sample_id(relative)
-        out.append({"fileid": sample, "folder": f"all/{sample}/*.png",
+        out.append({"fileid": sample, "folder": f"all/{sample}/*.png", "sentence": sentence,
                     "signer": relative.split("/")[0], "split": relative.split("/")[1], "label": signed[sentence]})
     return out
 
@@ -564,7 +564,14 @@ def _arabsign_rows():
 def _arabsign_lists(setting, dev_rule):
     """ArabSign Signer-Dep (author train/test lists) or one leave-one-signer-out fold.
 
-    dev_rule decides the unpublished validation subset (gates arabsign-sd-validation and arabsign-loso-checkpoint).
+    Rows are in sorted archive-path order, which the selections below depend on.
+    'stratified-709-seed42' (Signer-Dep, gate arabsign-sd-validation): the dataset author's
+    validation convention (EncoderDec/generator.py: train_test_split(random_state=42,
+    stratify=sentence ID)) at the ICCVW size of 709 clips.
+    'final-epoch' (LOSO folds, gate arabsign-loso-checkpoint): train on every clip of the
+    five training signers and score the final epoch. The dev list only keeps upstream's
+    per-epoch loop running: the first training clip of each sentence (also trained on),
+    never used for selection.
     'preflight-random-709' is only for cost measurement and never for a target.
     """
     import random
@@ -577,9 +584,19 @@ def _arabsign_lists(setting, dev_rule):
         held = setting.rsplit("-", 1)[1]
         train = [r for r in rows if r["signer"] != held]
         test = [r for r in rows if r["signer"] == held]
-    if dev_rule != "preflight-random-709":
-        raise ValueError(f"ArabSign dev rule {dev_rule!r} is not decided (gates arabsign-sd-validation and arabsign-loso-checkpoint)")
-    dev = random.Random(0).sample(train, 709)
+    if dev_rule == "final-epoch" and setting != "arabsign-sd":
+        first = {}
+        for row in train:
+            first.setdefault(row["sentence"], row)
+        return {"train": train, "dev": list(first.values()), "test": test}
+    if dev_rule == "stratified-709-seed42" and setting == "arabsign-sd":
+        from sklearn.model_selection import train_test_split
+
+        _, dev = train_test_split(train, test_size=709, random_state=42, stratify=[r["sentence"] for r in train])
+    elif dev_rule == "preflight-random-709":
+        dev = random.Random(0).sample(train, 709)
+    else:
+        raise ValueError(f"ArabSign dev rule {dev_rule!r} does not apply to {setting}")
     chosen = {r["fileid"] for r in dev}
     return {"train": [r for r in train if r["fileid"] not in chosen], "dev": dev, "test": test}
 
@@ -950,7 +967,8 @@ def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = 
     RESULTS.reload()
     code, record = _prepare_code(model, setting, run_dir, epochs, tuple(int(s) for s in steps.split(",")), dev_rule or None)
     work = str(run_dir / "work")
-    record.update({"environment": _environment(code), "model": model, "setting": setting})
+    record.update({"environment": _environment(code), "model": model, "setting": setting, "dev_rule": dev_rule or None,
+                   "epochs": epochs})
     checkpoints = _epoch_checkpoints(work)
     extra = []
     if checkpoints:
@@ -995,16 +1013,24 @@ def _sclite_counts(work_dir, split):
 
 @APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=4 * 3600)
 def evaluate(train_run_id: str, eval_run_id: str):
-    """Scores the lowest-dev-WER epoch (earliest on ties) once on dev and test."""
+    """Scores the lowest-dev-WER epoch (earliest on ties) once on dev and test; for the
+    ArabSign LOSO folds (dev_rule 'final-epoch') the final epoch instead."""
     train_dir, run_dir = Path("/results/runs") / train_run_id, Path("/results/runs") / eval_run_id
     first_call = json.loads((train_dir / "train_calls.jsonl").read_text().splitlines()[0])
     code = train_dir / "code"
     _stage_frames(SETTINGS[first_call["setting"]]["frames"])
     history = {e: w for e, (w, _) in _log_entries(train_dir / "work", "dev").items()}
-    best = min(history, key=lambda e: (history[e], e))
-    checkpoint = _epoch_checkpoints(train_dir / "work")[best]
+    checkpoints = _epoch_checkpoints(train_dir / "work")
+    if first_call.get("dev_rule") == "final-epoch":
+        rule, best = "final-epoch", max(checkpoints)
+        if best != first_call["epochs"] - 1:
+            raise RuntimeError(f"newest checkpoint is epoch {best}, not the final epoch {first_call['epochs'] - 1}")
+    else:
+        rule, best = "dev-best", min(history, key=lambda e: (history[e], e))
+    checkpoint = checkpoints[best]
     work = str(run_dir / "work")
-    record = {"train_run_id": train_run_id, "selected_epoch": best, "selected_dev_wer_during_training": history[best],
+    record = {"train_run_id": train_run_id, "selection_rule": rule, "selected_epoch": best,
+              "selected_dev_wer_during_training": history.get(best),
               "epochs_logged": len(history), "checkpoint": str(checkpoint), "checkpoint_sha256": _sha256(checkpoint),
               **_environment(code)}
     record.update(_run_upstream(_command(work, "--phase", "test", "--load-weights", str(checkpoint)), code, work))
@@ -1058,6 +1084,38 @@ def setting_frame_totals():
                                                      "test": [r for r in rows if r["signer"] == signer]},
                                                     lambda r: arabsign[r["fileid"]])
     return totals
+
+
+@APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
+def arabsign_split_record():
+    """The decided ArabSign lists (gates arabsign-sd-validation and arabsign-loso-checkpoint):
+    counts, hashes and vocabulary, recorded before the ArabSign blocks launch. lists_sha256
+    is computed as _write_dataset computes it, so each run's record can be checked against it."""
+    import sklearn
+
+    record = {"scikit_learn": sklearn.__version__, "settings": {},
+              "fileid_list_sha256": "sha256 of the split's fileids joined by newlines, in list order"}
+    rules = {"arabsign-sd": "stratified-709-seed42", **{f"arabsign-loso-{s}": "final-epoch" for s in ARABSIGN_SIGNERS}}
+    for setting, rule in rules.items():
+        lists = _setting_lists(setting, rule)
+        record["settings"][setting] = {
+            "dev_rule": rule,
+            "lists_sha256": hashlib.sha256(json.dumps(lists, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
+            **{split: {"clips": len(rows), "sentences": len({r["sentence"] for r in rows}),
+                       "glosses": len({g for r in rows for g in r["label"].split()}),
+                       "fileid_list_sha256": hashlib.sha256("\n".join(r["fileid"] for r in rows).encode()).hexdigest()}
+               for split, rows in lists.items()}}
+    rows = _arabsign_rows()
+    csv_rows, _ = _arabsign_split_lists()
+    record["vocabulary"] = {"sentences": len({r["sentence"] for r in rows}),
+                            "sign_language_sentence_glosses": len({g for r in rows for g in r["label"].split()}),
+                            "procCaption_glosses": len({g for row in csv_rows.values() for g in row["fields"][6].split()})}
+    return record
+
+
+@APP.local_entrypoint()
+def launch_arabsign_split_record():
+    print(json.dumps(arabsign_split_record.remote(), indent=2, ensure_ascii=False))
 
 
 @APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
