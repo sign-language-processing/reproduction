@@ -333,7 +333,7 @@
           ]
         }
       ],
-      "verification": "Verified 2026-10-26: multisigner train/dev/test frame folders 5672/540/629 present; SI5 corpus files (train 4376, dev 111, test 180 = Signer05 only) all resolve to existing multisigner frame folders in the matching split, so the SI5 split needs no extra data.",
+      "verification": "Verified 2026-10-26: multisigner train/dev/test frame folders 5672/540/629 present; SI5 corpus files (train 4376, dev 111, test 180 = Signer05 only) all resolve to existing multisigner frame folders in the matching split, so the SI5 split needs no extra data. check_modal_dataset.sh rwth-phoenix-2014 (SI5 train corpus) passes 2026-11-02. Dev/test corpus labels in this release are already clean (no loc-/cl-/__EMOTION__ tokens; train keeps them), and STMs generated from them by upstream generate_gt_stm equal the repos' official evaluation STMs up to signer-ID case and whitespace (540/540 dev, 629/629 test), so the SI5 references are generated the same way. Upstream csv2dict drops pandas row 2390 of train.corpus.csv, the broken clip 13April_2011_Wednesday_tagesschau_default-14; in train.SI5.corpus.csv that row index is a different, valid clip, so the SI5 lists drop the broken clip by ID instead.",
       "deviations": []
     },
     {
@@ -353,7 +353,7 @@
       "license_or_permission": "Non-commercial; obtained from the dataset author on request (Team S); queue record states permission to reproduce and to publish weights",
       "cloud_processing_allowed": true,
       "modal_volume": "datasets",
-      "modal_path": "arab-sign",
+      "modal_path": "arab-sign (RGB/videos extracted from RGB/0X.7z)",
       "splits": [
         {
           "name": "signer-dep-trainval",
@@ -473,8 +473,11 @@
           ]
         }
       ],
-      "verification": "RGB per-signer archives 01-06.7z (3.07-3.47 GB each) + ArabSignGroundTruth.txt on Volume, not yet extracted. Signer-Dep test split: union of the dataset author's per-signer <signer>_test.csv files from ArabSign-EncoderDec.zip (github.com/Hamzah-Luqman/ArabSign @ 8f6e127a054052228027d6da98005f991d300a7b, zip sha256 6980aec2beea93fb2299198f7031991f684bb064c8093343128eb13789318eb0) = 1843 samples, matching the 1843 test count stated in the ICCVW version; train csvs total 7492 = 6783 train + 709 val, but the 709-sample validation subset is not published (guess required).",
-      "deviations": []
+      "verification": "RGB per-signer archives 01-06.7z on the Volume (import manifest arab-sign/_drive_imports/72178996f6c31e6c/manifest.json). Extracted 2026-11-02 by data.sh -> modal_app.py::extract_arabsign (app ap-3EEqRJGxaxKfMN9NLO8W1O): each archive re-hashed against the import manifest, 9,330 mp4 written to arab-sign/RGB/videos/<signer>/<split>/<sentence>/<stem>.mp4 with per-file sha256 in videos/<signer>.manifest.json, reconciliation in videos/manifest.json. Split lists: the dataset author's per-signer <signer>_{train,test}.csv from ArabSign-EncoderDec.zip (github.com/Hamzah-Luqman/ArabSign @ 8f6e127a054052228027d6da98005f991d300a7b, zip sha256 6980aec2beea93fb2299198f7031991f684bb064c8093343128eb13789318eb0): 9,335 rows; 5 rows have no video in the RGB release, 0 videos lack a row, and every archive train/test folder agrees with its CSV. Effective counts: author train lists 7,489 (7,492 listed), author test lists 1,841 (1,843 listed, the count the ICCVW version states). Labels: the CSVs' last column (sign-language sentence), checked equal to the 'Sign Language Sentence' column of ArabSignGroundTruth.txt for every row at list-generation time. The 709-sample validation subset of the 7,492 training rows is unpublished (gate arabsign-protocol).",
+      "deviations": [
+        "Five videos listed by the author's split CSVs are absent from the RGB release (also found by papers/ben-abderrahmane-2025-temporal-to-spatial): 01/test/0006/01_0006_(16_02_21_19_36_11)_c, 01/test/0044/01_0044_(20_03_21_20_09_50)_c, 01/train/0020/01_0020_(17_03_21_21_36_28)_c, 02/train/0020/02_0020_(02_03_21_21_01_08)_c, 05/train/0042/05_0042_(20_03_21_19_25_26)_c. Signer-Dep test therefore has 1,841 of 1,843 clips and the leave-one-signer-out folds for signers 01, 02 and 05 lose 3, 1 and 1 clips (0.05% of the data overall).",
+        "35 file stems carry a signer/sentence prefix that differs from their folder (e.g. 02/test/0007/03_01_0007_(16_02_21_21_01_01)_c.mp4); the folder path, which the author's CSVs list, defines signer, split and sentence, and sample IDs are <signer>_<sentence>_<timestamp> from the path."
+      ]
     },
     {
       "dataset_id": "grsl",
@@ -568,9 +571,9 @@
         "gsl_dev_unseen.txt": "eace26ce6cafb95a8b8dfc707ff2dbbe0404b69262e85e107c1961cd89fd6033",
         "gsl_test_unseen.txt": "17f551c749843580cd79bb13fbe73d9b00618dff38d79a9e9f36ca67d8c3fff8"
       },
-      "verification": "Absent from datasets Volume; acquisition permitted (data.sh to /datasets/gsl-continuous). Split files from the dataset's public Drive folder: 'GSL SI' gsl_split_SI_{train,dev,test}.csv = 8821/587/880 lines (train signers 1,2,4,5,6,7; dev/test signer 3) = paper's Signer-Indep; 'GSL SD' folder gsl_{train,dev,test}_unseen.txt = 8189/1063/1043 lines, 0 of 1043 test sentences occur in train (45 unique test sentences) = paper's Unseen-Sent.",
+      "verification": "Populated 2026-11-02 by data.sh -> modal_app.py::populate_gsl (app ap-Sg1meM9jpuHIbOLcF5I5bd) at /datasets/gsl-continuous: the 15 RGB zips (health1-5, kep1-5, police1-5) and supplementary.zip of Zenodo record 3941811 (DOI 10.5281/zenodo.3941811, license cc-by-4.0), 40.17 GB, each verified against Zenodo's md5 with sha256 recorded in gsl-continuous/manifest.json; depth zips not needed and not fetched. Split files fetched from the dataset's public Drive folder 18ruYi9MULMm1KQtUgdIhN0m-XilRhncg into gsl-continuous/splits/ and verified against the sha256 recorded on 2026-10-26. Row format '<scenario>_signer<k>_rep<r>_sentences/sentences<NNNN>|GLOSS ...'; zip entries '<that folder>/frame_<i>.jpg'. 'GSL SI' gsl_split_SI_{train,dev,test}.csv = 8821/588/881 rows (train signers 1,2,4,5,6,7; dev/test signer 3) = paper's Signer-Indep; 'GSL SD' gsl_{train,dev,test}_unseen.txt = 8189/1063/1043 rows, 0 of 1043 test sentences occur in train (45 unique test sentences) = paper's Unseen-Sent. check_modal_dataset.sh gsl-continuous manifest.json passes.",
       "deviations": [
-        "Not yet populated: /datasets/gsl-continuous is absent; acquisition deferred at the compute gate (operator chose to stop before data work). Line counts above are split-file lines; the SI dev/test files lack a trailing newline so they hold 588/881 entries, matching Zenodo's stated 588/881."
+        "The SI dev/test files lack a trailing newline, so 'wc -l' reports 587/880 lines for the 588/881 entries Zenodo states; all entries are used."
       ]
     }
   ],

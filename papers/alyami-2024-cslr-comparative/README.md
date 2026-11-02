@@ -95,17 +95,44 @@ No target has been produced yet. All 30 targets are open, and no full run has co
 
 ## How to repeat this
 
-Nothing is executable yet. The container, data population (`data.sh` for GrSL and ArabSign extraction) and Modal entry points will be added after the compute gate is decided.
+Run from the repository root. Every Modal command goes through the `repro-sign` wrapper.
+
+```bash
+W=.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh
+A=papers/alyami-2024-cslr-comparative/modal_app.py
+
+papers/alyami-2024-cslr-comparative/data.sh       # populate/verify the datasets Volume (idempotent)
+$W run $A::launch_prepare_frames --dataset phoenix2014   # 256x256 frame archives on the results Volume
+$W run $A::launch_prepare_frames --dataset arabsign
+$W run $A::launch_prepare_frames --dataset gsl
+```
+
+The preflight, training and evaluation commands are listed per run in `reproduction.json.runs`.
 
 ## Data provenance and permissions
 
 | Dataset | Splits | License / cloud basis | Path in Volume `datasets` | State |
 | --- | --- | --- | --- | --- |
-| Phoenix2014 v3 | multisigner 5672/540/629; SI5 4376/111/180 | CC BY-NC-SA (RWTH), non-commercial research | `rwth-phoenix-2014/raw/phoenix2014-release` | Present. All SI5 ids resolve to multisigner frame folders. Corpus CSV hashes are in `reproduction.json`. |
-| ArabSign (RGB) | Signer-Dep test 1843 (union of per-signer test CSVs); train+val 7492; 6 LOSO folds | Non-commercial; author-granted permission via Team S | `arab-sign` | 7z archives present, not extracted. The paper's 709-sample validation subset is unpublished. |
-| Continuous GSL | SI (signer 3) 8821/588/881; unseen-sentence 8189/1063/1043 | CC BY 4.0 (Zenodo 3941811) | `gsl-continuous` (planned) | Absent. Acquisition is permitted but deferred. Split files from the dataset's Drive are hashed in `reproduction.json`. |
+| Phoenix2014 v3 | multisigner 5672/540/629; SI5 4376/111/180 | CC BY-NC-SA (RWTH), non-commercial research | `rwth-phoenix-2014/raw/phoenix2014-release` | Present; checked. All SI5 IDs resolve to multisigner frame folders. Corpus CSV hashes are in `reproduction.json`. |
+| ArabSign (RGB) | Signer-Dep 7,489 train+val / 1,841 test (of 7,492 / 1,843 listed); 6 LOSO folds | Non-commercial; author-granted permission via Team S | `arab-sign/RGB/videos` | Extracted 2026-11-02 by `data.sh`: 9,330 mp4 with per-file SHA-256. 5 listed videos are absent from the RGB release. The 709-sample validation subset is unpublished. |
+| Continuous GSL | SI (signer 3) 8821/588/881; unseen-sentence 8189/1063/1043 | CC BY 4.0 (Zenodo 3941811) | `gsl-continuous` | Populated 2026-11-02 by `data.sh`: 15 RGB zips plus `supplementary.zip`, 40.17 GB, md5-verified. The 6 split files match their recorded SHA-256. |
 
-The GSL Drive folder labelled "GSL SD" actually holds the `*_unseen` files. None of its 1,043 test sentences occurs in training, and they cover 45 unique sentences. This folder matches the paper's Unseen-Sent split. "GSL SI" holds signer 3 out with seen sentences, matching the paper's Signer-Indep split.
+`data.sh` runs two population steps:
+
+- `populate_gsl` downloads the Zenodo RGB zips and the Drive split files into `gsl-continuous/`. It writes nothing elsewhere.
+- `extract_arabsign` extracts the six RGB 7z archives already on the Volume to `arab-sign/RGB/videos/`. It checks each archive against the import manifest and reconciles the videos with the dataset author's split CSVs.
+
+Both steps are the only ones that mount `datasets` writable. Every other function mounts it read-only.
+
+The GSL Drive folder labelled "GSL SD" actually holds the `*_unseen` files. None of its 1,043 test sentences occurs in training, and they cover 45 unique sentences, so this folder matches the paper's Unseen-Sent split. "GSL SI" holds signer 3 out with seen sentences, matching the paper's Signer-Indep split.
+
+The five ArabSign videos missing from the RGB release are `01/test/0006`, `01/test/0044`, `01/train/0020`, `02/train/0020` and `05/train/0042`, all with `(timestamp)_c.mp4` stems. Signer-Dep test therefore has 1,841 of 1,843 clips. In addition, 35 file stems carry a signer/sentence prefix that differs from their folder. The folder path is what the author's CSVs list, so it defines signer, split and sentence.
+
+Frames for all three datasets are resized to 256×256 PNG with the upstream `resize_img` operation (`cv2.resize`, `INTER_LANCZOS4`) and archived on the paper's results Volume `alyami-2024-cslr-results`:
+
+- **Phoenix2014:** VAC's `preprocess/dataset_preprocess.py`, byte-identical in all four repos, runs unchanged on a local copy.
+- **ArabSign:** mp4s are decoded with `simple-video-utils` 0.7.4 (rgb24, checked against PyAV), then converted to BGR and resized.
+- **GSL:** jpg frames are decoded from the zips and resized.
 
 ## Environment and patches
 

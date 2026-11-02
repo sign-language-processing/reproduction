@@ -393,10 +393,14 @@ def prepare_frames_phoenix2014():
 
 
 def _arabsign_sample_id(relative):
-    """'01/train/0001/01_0001_(10_03_21_20_37_17)_c.mp4' -> '01_0001_10_03_21_20_37_17'."""
-    stem = ARABSIGN_ENTRY.match(relative)["stem"]
-    signer, sentence, stamp = re.fullmatch(r"(\d{2})_(\d{4})_\(([\d_]+)\)_c", stem).groups()
-    return f"{signer}_{sentence}_{stamp}"
+    """'01/train/0001/01_0001_(10_03_21_20_37_17)_c.mp4' -> '01_0001_10_03_21_20_37_17'.
+
+    Signer and sentence come from the path, which the author's split lists use;
+    35 file stems carry a different prefix (e.g. 02/test/0007/03_01_0007_(...)_c.mp4).
+    """
+    match = ARABSIGN_ENTRY.match(relative)
+    stamp = re.fullmatch(r".*_\(([\d_]+)\)_c", match["stem"]).group(1)
+    return f"{match['signer']}_{match['sentence']}_{stamp}"
 
 
 def _decode_arabsign(job):
