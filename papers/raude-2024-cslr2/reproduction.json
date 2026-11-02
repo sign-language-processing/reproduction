@@ -1,0 +1,1327 @@
+{
+  "paper_id": "13195df56368306dc1c1f9733cebb8dd694c94af",
+  "agents": [
+    {
+      "agent_id": "claude-opus-5-5-claude-code",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.316",
+      "scope": "Assignment intake, paper verification against arXiv, target-ledger resolution from the paper, source search and pinning, read-only inspection of the Modal repro-sign Volumes, and preparation of the target and data gates. No data download, container build, or experiment run.",
+      "evidence": [
+        "Session system context on 2026-11-02 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
+        "`claude --version` in the session returned 2.1.316 (Claude Code)."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-13195df56368306dc1c1f9733cebb8dd694c94af-2026-10-30.json",
+      "sha256": "6e64ca02825163fc0cec6d3f1093bff374c939181d49e1f00a76171830cdc487"
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition",
+            "Retrieval"
+          ],
+          "code_repos": [
+            "https://github.com/gulvarol/cslr2"
+          ],
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "4x NVIDIA 32 GB V100 GPUs, 4x NVIDIA A40 GPUs",
+          "copied_scores": "no",
+          "datasets": [
+            "qzrj91d5rphubkd",
+            "5t6qflueg8r13mg"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "British Sign Language sentences from BBC programmes",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "qzrj91d5rphubkd",
+                "license": "Custom (research only)",
+                "name": "BOBSL",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [],
+                "spoken_languages": [],
+                "url": [
+                  "https://www.robots.ox.ac.uk/~vgg/data/bobsl/"
+                ]
+              },
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Manually annotated subset of BOBSL introduced by Raude et al. (2024), with time-aligned sign-level labels.",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "5t6qflueg8r13mg",
+                "license": "Creative Commons Attribution 4.0 International License",
+                "name": "BOBSL-CSLR",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "bfi"
+                ],
+                "spoken_languages": [
+                  "eng"
+                ],
+                "url": []
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "Word error rate",
+                "id": "q7nnxrx71w67jl9",
+                "name": "WER",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "398630tq0zlaufq",
+                "name": "F1",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "89xqke8qlyqq6mb",
+                "name": "Recall",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "l0mgdibtnx55aux",
+                "name": "mean intersection over union (mIoU)",
+                "url": null
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "funxabitmckwv4q",
+                "name": "MedianRank",
+                "url": null
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "7bsf8hsxch75r32",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "q7nnxrx71w67jl9",
+            "398630tq0zlaufq",
+            "89xqke8qlyqq6mb",
+            "l0mgdibtnx55aux",
+            "funxabitmckwv4q"
+          ],
+          "paper_id": "13195df56368306dc1c1f9733cebb8dd694c94af",
+          "pdf_url": "https://arxiv.org/abs/2405.10266",
+          "peer_reviewed": "no",
+          "potential_ethical_concerns": "no",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-10-17T03:55:46.854Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Continuous signing videos"
+          ],
+          "textual_conclusion": "By leveraging weak supervision, we train a single model which outperforms strong baselines on both our new CSLR benchmark and existing retrieval benchmarks.",
+          "title": "A Tale of Two Languages: Large-Vocabulary Continuous Sign Language Recognition from Spoken Language Supervision",
+          "venue": "",
+          "what_to_reproduce": "Table 4",
+          "year": 2024
+        }
+      },
+      "id": "3gfjvbdpi0rhj5e",
+      "paper": "7bsf8hsxch75r32",
+      "status": "in_progress",
+      "url": []
+    },
+    "detail": "Direct user-authorized tracker assignment (2026-11-02). The export is a single 'reproductions'-collection record whose own status 'in_progress' belongs to the reproduction task; the final paper record is nested under expand.paper (status 'final'). It has no confirmation field and its id values are internal queue record IDs, not the paper_id, so it was not run through ingest_candidate.py. Preserved unchanged except that every email address (assignees, finalized_by, status_history) is replaced by '[redacted]'. Requested scope: what_to_reproduce = 'Table 4'."
+  },
+  "repository": {
+    "base_revision": "1b1f8fdc85e5d48b9818a278c0611e088defe661",
+    "branch": "reproduce/raude-2024-cslr2",
+    "state": "clean main checkout at start of attempt (2026-11-02)"
+  },
+  "paper": {
+    "title": "A Tale of Two Languages: Large-Vocabulary Continuous Sign Language Recognition from Spoken Language Supervision",
+    "citation": "Charles Raude, K R Prajwal, Liliane Momeni, Hannah Bull, Samuel Albanie, Andrew Zisserman, Gül Varol. A Tale of Two Languages: Large-Vocabulary Continuous Sign Language Recognition from Spoken Language Supervision. arXiv:2405.10266v1, 2024.",
+    "url": "https://arxiv.org/abs/2405.10266v1",
+    "pdf_url": "https://arxiv.org/pdf/2405.10266v1",
+    "pdf_sha256": "246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4",
+    "accessed_at": "2026-11-02",
+    "verification": "The supplied PDF (13195df56368306dc1c1f9733cebb8dd694c94af.pdf) is byte-identical (same SHA-256) to https://arxiv.org/pdf/2405.10266 and https://arxiv.org/pdf/2405.10266v1 downloaded 2026-11-02. The arXiv abstract page lists only v1 (submitted 2024-05-16). 23 pages including the appendix.",
+    "version_search": "No venue version found on 2026-11-02: the queue venue field is empty (peer_reviewed 'no'), the DBLP record surfaced by OpenReview search is CoRR 2024 only, and a web search for the title found no conference version."
+  },
+  "sources": [
+    {
+      "source_id": "paper-arxiv",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2405.10266v1",
+      "revision_or_sha256": "246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4",
+      "role": "Target values and protocol (Table 4, Sec. 3-5, App. A-D)."
+    },
+    {
+      "source_id": "cslr2-code",
+      "kind": "code",
+      "url": "https://github.com/gulvarol/cslr2",
+      "revision_or_sha256": "5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "role": "Official implementation (MIT): training (main.py), retrieval test, CSLR extraction (extract_for_eval.py) and evaluation (frame_level_evaluation.py); also supports evaluating a Swin classifier head (swin=True) and spotting-format pickles (automatic_annotations=True). No tags, releases or other branches; 60 files; selected as the reproduction recipe."
+    },
+    {
+      "source_id": "cslr2-checkpoint",
+      "kind": "weights",
+      "url": "https://drive.google.com/file/d/1qyFHSFnxmy1rRGjlKEBfsjC8yt2kdalx/view?usp=sharing",
+      "revision_or_sha256": "unpinned: mutable Google Drive file, replaced by the owner on 2024-07-02 after a corruption report (cslr2 issue #1); SHA-256 to be recorded at acquisition",
+      "role": "Released CSLR² checkpoint (README 'Test'); evaluation-only cross-check for the CSLR² rows. Not downloaded: behind the BOBSL data gate because it is only usable with BOBSL features."
+    },
+    {
+      "source_id": "cslr2-bobsl-zip",
+      "kind": "data",
+      "url": "https://drive.google.com/file/d/13pp83GCoy1SVScvZRmNsoFxtNm8ogI7h/view?usp=sharing",
+      "revision_or_sha256": "unpinned: mutable Google Drive file (1.9G, 15G decompressed per README); SHA-256 to be recorded at acquisition",
+      "role": "Annotations and metadata required by config/paths/public.yaml (splits, 8,697-word vocabulary, pseudo-label LMDB, T5 word embeddings, automatic and manual subtitle pickles, synonyms, processed CSLR CSVs). The data page links the same file as 'CSLR annotations for BOBSL'. Not downloaded: data gate."
+    },
+    {
+      "source_id": "cslr2-t5-zip",
+      "kind": "weights",
+      "url": "https://drive.google.com/file/d/1hxkb8KAC0sgSYKefOLue1wyO2fJmmqxT/view?usp=sharing",
+      "revision_or_sha256": "unpinned: mutable Google Drive file (1.4G); SHA-256 to be recorded at acquisition",
+      "role": "t5-large checkpoint loaded from paths.lm_root by models/t5.py."
+    },
+    {
+      "source_id": "bobsl-features",
+      "kind": "data",
+      "url": "https://thor.robots.ox.ac.uk/~vgg/data/bobsl/features/lmdb/feats_vswin_t-bs256_float16/data.mdb",
+      "revision_or_sha256": "not accessed: requires BOBSL credentials; SHA-256 to be recorded at acquisition",
+      "role": "Pre-extracted Video-Swin-T sign features (262G) used for all CSLR² training and evaluation."
+    },
+    {
+      "source_id": "bobsl-rgb",
+      "kind": "data",
+      "url": "https://thor.robots.ox.ac.uk/~vgg/data/bobsl/videos/lmdb/rgb_anon-public_1962/data.mdb",
+      "revision_or_sha256": "not accessed: requires BOBSL credentials",
+      "role": "Raw RGB frames LMDB (1.5T). README: only for visualisation, but main.py opens it when vis=True (default). Needed for any I3D baseline inference."
+    },
+    {
+      "source_id": "bobsl-release",
+      "kind": "data",
+      "url": "https://www.robots.ox.ac.uk/~vgg/data/bobsl/",
+      "revision_or_sha256": "not accessed: site refused TLS connections from this machine on 2026-11-02 (curl error 35; HTTP 503); WebFetch also failed",
+      "role": "Official BOBSL release: access request, licence, videos, and (per [4], [43]) released spotting annotations and I3D weights needed only by the non-CSLR² CSLR rows."
+    },
+    {
+      "source_id": "bobsl-paper",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2111.03635v1",
+      "revision_or_sha256": "0e75ee96bd548c0946a3a0737040d58ad7e44c0582e3b1e85b82a95789e29006",
+      "role": "Dataset definitions: non-commercial research availability via a BBC data-sharing agreement (Sec. 2); SENT-VAL_H 1,973 and SENT-TEST 20,870 sentences (Table 4); 2,281-sign vocabulary of the I3D-2K model."
+    },
+    {
+      "source_id": "cslr2-project-pages",
+      "kind": "web",
+      "url": "https://gulvarol.github.io/cslr2/data.html",
+      "revision_or_sha256": "data.html 3cea110c26dc40d23f11330f5dfc0c4c2943a473713901bec1aa101ed2d834d0; license.txt 65b0727d46007674085ace601a29bafeee27b7bf02e1da4cfe0172debfafadbf; index.html f40dd3c870b230332bf71793045ab6e86230da3cef7ea8b277f63a455f81ac7e",
+      "role": "BOBSL-CSLR licence (CC BY 4.0 for textual annotations; videos remain under the BOBSL non-commercial licence). The paper's URL https://imagine.enpc.fr/~varolg/cslr2/ redirects here; the README's imagine.enpc.fr license.txt link returns 404."
+    },
+    {
+      "source_id": "transpeller",
+      "kind": "code",
+      "url": "https://github.com/prajwalkr/transpeller",
+      "revision_or_sha256": "dca7c8e3d463ca3c5909d9ee47c0ae8aeba4c0ff",
+      "role": "Considered, not selected. Official code of [44]; releases a Video-Swin-S checkpoint (video-swin-s.pth, features 'video-swin-s_c8697'). Table 4's Swin-8K row is the authors' own Video-Swin-Tiny model (paper Sec. 5.2, App. A), so this is a different model. Pointed to from cslr2 issue #2."
+    },
+    {
+      "source_id": "bbc-bobsl-terms",
+      "kind": "web",
+      "url": "https://www.bbc.co.uk/rd/projects/extol-dataset",
+      "revision_or_sha256": "d4b006f61e1e0996c1645f2571c1398700ca859e1c527931173f5c9ee4949fe8 (HTML fetched 2026-11-02; page reports build of 2026-10-22)",
+      "role": "First-party BBC R&D access terms for BOBSL (the Oxford page was unreachable). The signed 'Permission to Use' form itself is distributed as a Word document and was not downloaded."
+    }
+  ],
+  "source_search": {
+    "accessed_at": "2026-11-02",
+    "locations": [
+      "arXiv abs/PDF 2405.10266 (v1 only); paper footnote URL https://imagine.enpc.fr/~varolg/cslr2/ -> https://gulvarol.github.io/cslr2/ (links: arXiv, video, data.html, BOBSL page, GitHub)",
+      "https://gulvarol.github.io/cslr2/data.html and license.txt (BOBSL-CSLR download = same Google Drive bobsl.zip; datasheet and annotation-instruction Google Docs)",
+      "GitHub gulvarol/cslr2: main@5f3bd697 only, no tags/releases/submodules; issues #1 (checkpoint re-uploaded 2024-07-02) and #2 (pointer to transpeller for the Swin ISLR model)",
+      "GitHub repository search 'cslr2' (only gulvarol/cslr2 and an unrelated 2022 repo) and 'BOBSL' (no official baseline code found)",
+      "GitHub prajwalkr/transpeller@dca7c8e3 (Video-Swin-S checkpoint of [44])",
+      "BOBSL page https://www.robots.ox.ac.uk/~vgg/data/bobsl/ (unreachable 2026-11-02; Wayback availability API rate-limited); BOBSL paper arXiv 2111.03635v1 read instead",
+      "OpenReview/DBLP title search and web search for a venue version (none found)"
+    ],
+    "conclusion": "Official code and a CSLR² checkpoint exist (preference level 1 expected for the CSLR² rows and for the InfoNCE baseline as a config variant). The cslr2 release contains no I3D inference code, no converter from BOBSL spotting releases to its prediction-pickle format, and no documented Swin-T classifier-head checkpoint, so the I3D and spotting rows would need preference-level-3 glue around third-party artifacts, and the Swin-8K row depends on whether bobsl.zip contains usable per-frame Swin predictions for test episodes (unverifiable before data access)."
+  },
+  "protocol_notes": [
+    "Sec. 5.1 lists SENT-VAL/SENT-TEST as 20,870/1,973 sentences; Table 4 headers, App. D.2 and the BOBSL paper (Table 4: SENT-VAL_H 1,973; SENT-TEST 20,870) give the opposite assignment. Targets follow Table 4 and BOBSL.",
+    "Sec. 5.1 says CSLR-TEST corresponds to 4,950 test subtitles; Tables 1 and A.2 give 4,518 sentences. Sec. 4 says the annotations cover all 35 SENT-TEST episodes; the BOBSL paper lists 36 SENT-TEST episodes.",
+    "cslr2 README calls the retrieval test set the '25K manually aligned test set'; the paper calls SENT-TEST 20K.",
+    "Post-processing θ and m: paper Sec. 5.2 tunes them 'on unseen manually annotated CSLR sequences from the validation set'; frame_level_evaluation.py searches them on 0/train/*.csv unless test_search is set.",
+    "Checkpoint selection: paper App. A selects best T2V R@1 on manually aligned validation subtitles; upstream main.py passes best_t2v=-1 to log_and_save every epoch, so model_best.pth is the last epoch, and validation retrieval uses a random 2,000-sentence subset of the automatic subtitles file for val episodes.",
+    "Upstream exposes no command for SENT-VAL retrieval of a fixed checkpoint (test=True evaluates only public_test with manually aligned subtitles).",
+    "main.py test=True references rgb_lmdb_env, which is only opened when vis=True; vis=True opens the 1.5T RGB LMDB.",
+    "Training compute: paper/README report under 20 h on 4 x V100-32GB for 20 epochs (about 80 V100 GPU-hours) at batch size 512 per App. A, while config/dataloader batch_size is 128 per process (4 processes = 512). Recorded at gate compute-training-runs."
+  ],
+  "status": {
+    "pipeline": null,
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no target has been produced; the attempt is paused at open gates data-bobsl-access and compute-training-runs before any download, build or run.",
+    "preference_level": 1,
+    "preference_level_basis": "Provisional. Official code and a released CSLR² checkpoint exist for the in-scope CSLR² and InfoNCE cells (level 1, expected container/path adaptation only); Swin-8K† depends on released artifacts only (no retraining).",
+    "blocker": null,
+    "pipeline_note": "Attempt paused 2026-11-02 at two open gates for the team: data-bobsl-access (BOBSL absent from the datasets Volume; BBC terms are per-person, no-redistribution and secure-holding) and compute-training-runs (two 4-GPU training runs of about 80 V100 GPU-hours each by the paper's figure, above the 24 GPU-hour autonomous ceiling). Target scope resolved at gate target-table4-rows (22 in scope, 19 out of scope). pipeline and blocker are left null deliberately: no target has a terminal result yet, and AGENTS.md forbids blocked_on_compute before the team discussion."
+  },
+  "datasets": [
+    {
+      "dataset_id": "bobsl",
+      "name": "BBC-Oxford British Sign Language Dataset (BOBSL)",
+      "version_or_subset": "Files named by cslr2 config/paths/public.yaml: Video-Swin-T feature LMDB feats_vswin_t-bs256_float16 (262G), Swin pseudo-label LMDB, automatic signing-aligned subtitles [10] (689K training pairs of 1-20 s), manually aligned SENT-VAL/SENT-TEST subtitles, splits/subset2episode.json; RGB LMDB rgb_anon-public_1962 (1.5T) only for visualisation/I3D",
+      "sources": [
+        {
+          "url": "https://www.robots.ox.ac.uk/~vgg/data/bobsl/",
+          "accessed_at": "2026-11-02",
+          "note": "unreachable from this machine on the access date"
+        },
+        {
+          "url": "https://www.bbc.co.uk/rd/projects/extol-dataset",
+          "accessed_at": "2026-11-02",
+          "note": "BBC R&D access terms page"
+        }
+      ],
+      "license_or_permission": "BBC-owned; non-commercial academic research only, for researchers at universities, reputable academic institutions and relevant public organisations (not independent researchers or companies). Access is per person: each researcher signs the BBC 'Permission to Use' form from an official academic email and receives a countersigned agreement and an individual download password. The BBC page states the data is 'for your use only', must not be distributed to anyone else, must be held securely under the BBC BOBSL Terms of Use, and permission lasts 12 months (renewal on request). Source: https://www.bbc.co.uk/rd/projects/extol-dataset (2026-11-02).",
+      "cloud_processing_allowed": false,
+      "cloud_processing_note": "Not established. The per-person, no-redistribution and secure-holding terms leave open whether BOBSL may be stored in the shared repro-sign Volume datasets/bobsl, which other workspace members can read, and processed on Modal. Kept false pending gate data-bobsl-access.",
+      "modal_volume": "datasets",
+      "modal_path": "bobsl",
+      "volume_check": "2026-11-02 via modal_repro_sign.sh volume ls datasets /: no bobsl (or bobsl-cslr) directory among the 30 dataset roots; huggingface-cache present (datasets, hub, keras, torch, xet, yolov5-v6.0).",
+      "splits": [
+        {
+          "name": "SENT-VAL (manually aligned, H)",
+          "sample_count": 1973,
+          "files": []
+        },
+        {
+          "name": "SENT-TEST (manually aligned)",
+          "sample_count": 20870,
+          "files": []
+        }
+      ]
+    },
+    {
+      "dataset_id": "bobsl-cslr",
+      "name": "BOBSL-CSLR (CSLR-TEST plus small train/val CSLR annotation sets)",
+      "version_or_subset": "Processed lexical-gloss CSVs at bobsl/cslr/manual_glosses_extended_boundaries_fix_alignment/0/{train,val,test} (paths.heuristic_aligned_csv_root), distributed inside the cslr2 bobsl.zip",
+      "sources": [
+        {
+          "url": "https://gulvarol.github.io/cslr2/data.html",
+          "accessed_at": "2026-11-02"
+        }
+      ],
+      "license_or_permission": "CC BY 4.0 for the textual annotations (license.txt SHA-256 65b0727d...); the videos and features they index remain under the BOBSL non-commercial licence.",
+      "cloud_processing_allowed": true,
+      "cloud_processing_note": "Allowed for the CC BY 4.0 annotations themselves, but they ship in bobsl.zip together with BOBSL-licensed files and are unusable without BOBSL features, so acquisition waits for gate data-bobsl-access.",
+      "modal_volume": "datasets",
+      "modal_path": "bobsl/cslr",
+      "splits": [
+        {
+          "name": "CSLR-TEST (test)",
+          "sample_count": 4518,
+          "files": []
+        },
+        {
+          "name": "CSLR val",
+          "sample_count": 1153,
+          "files": []
+        },
+        {
+          "name": "CSLR train",
+          "sample_count": 1463,
+          "files": []
+        }
+      ],
+      "count_note": "Sentence counts from paper Table A.2 (all 7,134 = 1,463 + 1,153 + 4,518). Sec. 5.1 gives 4,950 test subtitles; to be checked against the CSV files after acquisition."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "wer",
+      "name": "Word error rate (CSLR-TEST, lexical glosses, synonyms counted correct)",
+      "direction": "lower_is_better",
+      "implementation": "frame_level_evaluation.py optimal_eval: utils/cslr_metrics.levenstein between the post-processed predicted word sequence and the ground-truth lexical gloss sequence of each CSLR-TEST subtitle, with synonym matching (synonym_pickle_english_and_signdict_and_signbank.pkl)",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "corpus level: sum of edit distances / sum of ground-truth lengths x 100, over CSLR-TEST subtitles with at least one lexical ground-truth segment (paper Sec. 5.1)",
+      "unit_or_scale": "percent; can exceed 100 (e.g. 453.5 for raw I3D-2K)"
+    },
+    {
+      "metric_id": "miou",
+      "name": "mIoU between predicted and ground-truth word sets (no temporal component)",
+      "direction": "higher_is_better",
+      "implementation": "utils/cslr_metrics.segment_iou per subtitle (reported as 'Segment IoU' by optimal_eval), synonyms counted correct",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "mean over CSLR-TEST subtitles x 100",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "f1-iou0.1",
+      "name": "F1@0.1: segment detection F1 with temporal IoU threshold 0.1",
+      "direction": "higher_is_better",
+      "implementation": "utils/cslr_metrics.f_score with overlap=0.1; a predicted segment is correct if its word matches the ground truth up to synonyms and its temporal IoU with the ground-truth segment exceeds the threshold (paper Sec. 5.1); reported by optimal_eval as mF1@0.1",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "pooled over CSLR-TEST subtitles: 2*sum(TP) / (2*sum(TP) + sum(FP) + sum(FN)) x 100",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "f1-iou0.25",
+      "name": "F1@0.25: segment detection F1 with temporal IoU threshold 0.25",
+      "direction": "higher_is_better",
+      "implementation": "utils/cslr_metrics.f_score with overlap=0.25; a predicted segment is correct if its word matches the ground truth up to synonyms and its temporal IoU with the ground-truth segment exceeds the threshold (paper Sec. 5.1); reported by optimal_eval as mF1@0.25",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "pooled over CSLR-TEST subtitles: 2*sum(TP) / (2*sum(TP) + sum(FP) + sum(FN)) x 100",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "f1-iou0.5",
+      "name": "F1@0.5: segment detection F1 with temporal IoU threshold 0.5",
+      "direction": "higher_is_better",
+      "implementation": "utils/cslr_metrics.f_score with overlap=0.5; a predicted segment is correct if its word matches the ground truth up to synonyms and its temporal IoU with the ground-truth segment exceeds the threshold (paper Sec. 5.1); reported by optimal_eval as mF1@0.5",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "pooled over CSLR-TEST subtitles: 2*sum(TP) / (2*sum(TP) + sum(FP) + sum(FN)) x 100",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "t2v-r1",
+      "name": "text-to-video recall at rank 1 (R@1)",
+      "direction": "higher_is_better",
+      "implementation": "loops/retrieval.py t2v_metrics on the cosine-similarity matrix between sentence video embeddings and T5 sentence embeddings (ties averaged); T2V queries against the full gallery",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "fraction of queries whose ground-truth match ranks within the top k, x 100, over the full gallery",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "t2v-r5",
+      "name": "text-to-video recall at rank 5 (R@5)",
+      "direction": "higher_is_better",
+      "implementation": "loops/retrieval.py t2v_metrics on the cosine-similarity matrix between sentence video embeddings and T5 sentence embeddings (ties averaged); T2V queries against the full gallery",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "fraction of queries whose ground-truth match ranks within the top k, x 100, over the full gallery",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "v2t-r1",
+      "name": "video-to-text recall at rank 1 (R@1)",
+      "direction": "higher_is_better",
+      "implementation": "loops/retrieval.py t2v_metrics on the cosine-similarity matrix between sentence video embeddings and T5 sentence embeddings (ties averaged); V2T queries against the full gallery",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "fraction of queries whose ground-truth match ranks within the top k, x 100, over the full gallery",
+      "unit_or_scale": "percent"
+    },
+    {
+      "metric_id": "v2t-r5",
+      "name": "video-to-text recall at rank 5 (R@5)",
+      "direction": "higher_is_better",
+      "implementation": "loops/retrieval.py t2v_metrics on the cosine-similarity matrix between sentence video embeddings and T5 sentence embeddings (ties averaged); V2T queries against the full gallery",
+      "version": "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28",
+      "aggregation": "fraction of queries whose ground-truth match ranks within the top k, x 100, over the full gallery",
+      "unit_or_scale": "percent"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "cslr2-cslr",
+      "system": "CSLR² (Ours) with optimal post-processing (†): 6-layer Transformer over frozen Video-Swin-T sign features, T5-large frozen text encoder, joint HN-NCE SentRet + SignRet training; CSLR by nearest-neighbour word retrieval over the 8K (8,697-word) vocabulary, then synonym combination, threshold θ and minimum repetition count m",
+      "source_id": "cslr2-code",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "Paper App. A: checkpoint with best T2V R@1 on a manually aligned subset of validation subtitles. Upstream main.py does not carry best_t2v across epochs, so model_best.pth is overwritten every epoch; to be handled as a protocol item before any retraining. θ and m tuned on held-out manually annotated CSLR sequences (paper Sec. 5.2 says validation; code searches train CSVs).",
+      "paper_evidence": "Table 4 (top), Table 2 last row, Table A.4 last row, Sec. 3.3, 3.4, 5.1, App. A"
+    },
+    {
+      "experiment_id": "swin8k-pp-cslr",
+      "system": "ISLR Swin-8K [44] † : the authors' Video-Swin-Tiny ISLR model trained on [43] annotations (8K vocabulary) 'in a similar fashion as in [44]', applied in a sliding window (16 frames, stride 2) with the same post-processing",
+      "source_id": "cslr2-code",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "No retraining of Video-Swin-T. Evaluate the authors' model only from released per-frame predictions for CSLR-TEST or from released features plus the trained classifier head (extract_for_eval.py swin=True needs module.generator.* weights, not among the documented downloads). θ and m tuned on held-out CSLR sequences as for CSLR².",
+      "paper_evidence": "Table 4 row 'ISLR Swin-8K [44]†', Table 2 row 'ISLR BASELINE', Sec. 5.2, App. A (Video-Swin-Tiny training: 4 x A40, 3 days)"
+    },
+    {
+      "experiment_id": "i3d8k-pp-cslr",
+      "system": "ISLR I3D-8K [43] † : I3D sign classifier with 8K vocabulary from [43], sliding window plus the paper's post-processing",
+      "source_id": "bobsl-release",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "Weights from [43] as used by the authors (exact file not identified in the paper or cslr2 repo); θ and m tuned on held-out CSLR sequences.",
+      "paper_evidence": "Table 4 row 'ISLR I3D-8K [43]†', Table A.4, Sec. 5.2"
+    },
+    {
+      "experiment_id": "i3d2k-pp-cslr",
+      "system": "ISLR I3D-2K [4] † : I3D weights released with BOBSL [4] (2,281-sign vocabulary), sliding window plus the paper's post-processing",
+      "source_id": "bobsl-release",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "'I3D weights released in [4]' (Sec. 5.2); θ and m tuned on held-out CSLR sequences.",
+      "paper_evidence": "Table 4 row 'ISLR I3D-2K [4] †', Table A.4, Sec. 5.2, Sec. 5.4"
+    },
+    {
+      "experiment_id": "i3d2k-raw-cslr",
+      "system": "ISLR I3D-2K [4] without † : raw sliding-window predictions; consecutive repetitions still collapsed (Table 4 caption)",
+      "source_id": "bobsl-release",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "Same I3D-2K weights released in [4]; no threshold filtering.",
+      "paper_evidence": "Table 4 row 'ISLR I3D-2K [4]', Table 4 caption, Table A.4"
+    },
+    {
+      "experiment_id": "spot43-cslr",
+      "system": "Subtitle-based spotting [43]: released dense automatic annotations of [43] for the CSLR-TEST subtitles, filtered with thresholds [M*.8 D*.8 A.0 P.5] (Table A.4). Uses subtitles at inference.",
+      "source_id": "bobsl-release",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "No model; existing annotation files evaluated with frame_level_evaluation.py automatic_annotations=True. F1 not reported (point annotations).",
+      "paper_evidence": "Table 4 row 'Subtitle-based spotting [43]', Table A.4 row [M∗.8D∗.8A.0P.5], Sec. 5.2"
+    },
+    {
+      "experiment_id": "spot4-cslr",
+      "system": "Subtitle-based spotting [4]: automatic spottings released with BOBSL [4] (mouthing M and dictionary D) for the CSLR-TEST subtitles, filtered with thresholds [M.8 D.8] (Table A.4). Uses subtitles at inference.",
+      "source_id": "bobsl-release",
+      "dataset_id": "bobsl-cslr",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "No model; existing annotation files evaluated with frame_level_evaluation.py automatic_annotations=True. F1 not reported (point annotations).",
+      "paper_evidence": "Table 4 row 'Subtitle-based spotting [4]', Table A.4 row [M.8D.8], Sec. 5.2"
+    },
+    {
+      "experiment_id": "cslr2-retrieval",
+      "system": "CSLR² (Ours), same checkpoint as cslr2-cslr: max-pooled sentence video embedding vs T5-large sentence embedding",
+      "source_id": "cslr2-code",
+      "dataset_id": "bobsl",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "Same checkpoint as cslr2-cslr (paper App. A rule; see that experiment for the upstream best-checkpoint caveat).",
+      "paper_evidence": "Table 4 (bottom), Table 3 last row, Table A.8 last row"
+    },
+    {
+      "experiment_id": "infonce-retrieval",
+      "system": "InfoNCE retrieval baseline: same architecture without the CSLR objective, learnable cls-token pooling, standard InfoNCE (HN-NCE with alpha=1, beta=0), T5-large, trained on automatically signing-aligned subtitles [10]",
+      "source_id": "cslr2-code",
+      "dataset_id": "bobsl",
+      "required_seeds": [
+        0
+      ],
+      "checkpoint_rule": "No checkpoint released; would require training with config overrides (pooling=cls, sent_ret beta=0, lda_sign_ret=0). Checkpoint selection as for CSLR² (best SENT-VAL T2V R@1).",
+      "paper_evidence": "Table 4 row 'InfoNCE', Table 3 row 1 (cls, InfoNCE), Table A.8 row 2 (cls, T5-large, InfoNCE), Sec. 5.2"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "t4-spot4-wer",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'Subtitle-based spotting [4]', column WER",
+      "experiment_id": "spot4-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 93.8,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-spot4-miou",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'Subtitle-based spotting [4]', column mIOU",
+      "experiment_id": "spot4-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 7.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-spot43-wer",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'Subtitle-based spotting [43]', column WER",
+      "experiment_id": "spot43-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 85.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-spot43-miou",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'Subtitle-based spotting [43]', column mIOU",
+      "experiment_id": "spot43-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 18.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-raw-wer",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4]', column WER",
+      "experiment_id": "i3d2k-raw-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 453.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-raw-miou",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4]', column mIOU",
+      "experiment_id": "i3d2k-raw-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 8.6,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-raw-f1-iou0.1",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4]', column F1@0.1",
+      "experiment_id": "i3d2k-raw-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.1",
+      "original_value": 10.6,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-raw-f1-iou0.25",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4]', column F1@0.25",
+      "experiment_id": "i3d2k-raw-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.25",
+      "original_value": 8.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-raw-f1-iou0.5",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4]', column F1@0.5",
+      "experiment_id": "i3d2k-raw-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.5",
+      "original_value": 5.4,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-pp-wer",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4] †', column WER",
+      "experiment_id": "i3d2k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 82.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-pp-miou",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4] †', column mIOU",
+      "experiment_id": "i3d2k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 18.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-pp-f1-iou0.1",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4] †', column F1@0.1",
+      "experiment_id": "i3d2k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.1",
+      "original_value": 25.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-pp-f1-iou0.25",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4] †', column F1@0.25",
+      "experiment_id": "i3d2k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.25",
+      "original_value": 23.8,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d2k-pp-f1-iou0.5",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-2K [4] †', column F1@0.5",
+      "experiment_id": "i3d2k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.5",
+      "original_value": 16.0,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d8k-pp-wer",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-8K [43] †', column WER",
+      "experiment_id": "i3d8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 74.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d8k-pp-miou",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-8K [43] †', column mIOU",
+      "experiment_id": "i3d8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 27.0,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d8k-pp-f1-iou0.1",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-8K [43] †', column F1@0.1",
+      "experiment_id": "i3d8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.1",
+      "original_value": 36.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d8k-pp-f1-iou0.25",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-8K [43] †', column F1@0.25",
+      "experiment_id": "i3d8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.25",
+      "original_value": 35.4,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-i3d8k-pp-f1-iou0.5",
+      "in_scope": false,
+      "scope_alternatives": [
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR I3D-8K [43] †', column F1@0.5",
+      "experiment_id": "i3d8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.5",
+      "original_value": 26.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+    },
+    {
+      "target_id": "t4-swin8k-pp-wer",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR Swin-8K [44] †', column WER",
+      "experiment_id": "swin8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 71.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+    },
+    {
+      "target_id": "t4-swin8k-pp-miou",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR Swin-8K [44] †', column mIOU",
+      "experiment_id": "swin8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 30.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+    },
+    {
+      "target_id": "t4-swin8k-pp-f1-iou0.1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR Swin-8K [44] †', column F1@0.1",
+      "experiment_id": "swin8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.1",
+      "original_value": 40.0,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+    },
+    {
+      "target_id": "t4-swin8k-pp-f1-iou0.25",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR Swin-8K [44] †', column F1@0.25",
+      "experiment_id": "swin8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.25",
+      "original_value": 37.9,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+    },
+    {
+      "target_id": "t4-swin8k-pp-f1-iou0.5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'ISLR Swin-8K [44] †', column F1@0.5",
+      "experiment_id": "swin8k-pp-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.5",
+      "original_value": 27.2,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+    },
+    {
+      "target_id": "t4-cslr2-wer",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'CSLR² (Ours) †', column WER",
+      "experiment_id": "cslr2-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "wer",
+      "original_value": 65.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-miou",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'CSLR² (Ours) †', column mIOU",
+      "experiment_id": "cslr2-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "miou",
+      "original_value": 35.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-f1-iou0.1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'CSLR² (Ours) †', column F1@0.1",
+      "experiment_id": "cslr2-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.1",
+      "original_value": 47.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-f1-iou0.25",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'CSLR² (Ours) †', column F1@0.25",
+      "experiment_id": "cslr2-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.25",
+      "original_value": 46.0,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-f1-iou0.5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (CSLR, top), row 'CSLR² (Ours) †', column F1@0.5",
+      "experiment_id": "cslr2-cslr",
+      "split": "BOBSL CSLR-TEST: manually annotated continuous lexical glosses on a subset of BOBSL SENT-TEST (4,518 subtitle sentences, 6.0 h, 32.4K glosses per Tables 1/A.2; Sec. 5.1 says 4,950 subtitles); non-lexical sign types and *U removed",
+      "metric_id": "f1-iou0.5",
+      "original_value": 37.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-sentval-t2v-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-VAL (2K) T2V R@1",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-VAL: manually aligned validation sentences, gallery of about 2K (BOBSL paper Table 4: SENT-VAL_H 1,973). To verify after data access: upstream evaluates validation retrieval on a random 2,000-sentence subset of the subtitles_path file, not aligned_subtitles_path.",
+      "metric_id": "t2v-r1",
+      "original_value": 38.9,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-sentval-v2t-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-VAL (2K) V2T R@1",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-VAL: manually aligned validation sentences, gallery of about 2K (BOBSL paper Table 4: SENT-VAL_H 1,973). To verify after data access: upstream evaluates validation retrieval on a random 2,000-sentence subset of the subtitles_path file, not aligned_subtitles_path.",
+      "metric_id": "v2t-r1",
+      "original_value": 39.2,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-senttest-t2v-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-TEST (20K) T2V R@1",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "t2v-r1",
+      "original_value": 19.5,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-senttest-t2v-r5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-TEST (20K) T2V R@5",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "t2v-r5",
+      "original_value": 35.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-senttest-v2t-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-TEST (20K) V2T R@1",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "v2t-r1",
+      "original_value": 18.9,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-infonce-senttest-v2t-r5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'InfoNCE', column SENT-TEST (20K) V2T R@5",
+      "experiment_id": "infonce-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "v2t-r5",
+      "original_value": 33.8,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-sentval-t2v-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-VAL (2K) T2V R@1",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-VAL: manually aligned validation sentences, gallery of about 2K (BOBSL paper Table 4: SENT-VAL_H 1,973). To verify after data access: upstream evaluates validation retrieval on a random 2,000-sentence subset of the subtitles_path file, not aligned_subtitles_path.",
+      "metric_id": "t2v-r1",
+      "original_value": 51.7,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-sentval-v2t-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-VAL (2K) V2T R@1",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-VAL: manually aligned validation sentences, gallery of about 2K (BOBSL paper Table 4: SENT-VAL_H 1,973). To verify after data access: upstream evaluates validation retrieval on a random 2,000-sentence subset of the subtitles_path file, not aligned_subtitles_path.",
+      "metric_id": "v2t-r1",
+      "original_value": 50.2,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-senttest-t2v-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-TEST (20K) T2V R@1",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "t2v-r1",
+      "original_value": 29.4,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-senttest-t2v-r5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-TEST (20K) T2V R@5",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "t2v-r5",
+      "original_value": 45.2,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-senttest-v2t-r1",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-TEST (20K) V2T R@1",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "v2t-r1",
+      "original_value": 28.1,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    },
+    {
+      "target_id": "t4-cslr2-senttest-v2t-r5",
+      "in_scope": true,
+      "scope_alternatives": [
+        "A-cslr2-only",
+        "B-cslr2-plus-self-trained-baselines",
+        "C-full-table"
+      ],
+      "paper_location": "arXiv v1 p.8 Table 4 (Retrieval, bottom), row 'CSLR² (Ours)', column SENT-TEST (20K) V2T R@5",
+      "experiment_id": "cslr2-retrieval",
+      "split": "BOBSL SENT-TEST: 20,870 manually aligned test sentences (BOBSL paper Table 4; CSLR² App. D.2 '20K'); upstream README calls this the '25K manually aligned test set'",
+      "metric_id": "v2t-r5",
+      "original_value": 44.9,
+      "copied_baseline": false,
+      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+    }
+  ],
+  "runs": [],
+  "artifacts": [],
+  "gates": [
+    {
+      "gate_id": "target-table4-rows",
+      "type": "target",
+      "status": "resolved",
+      "reason": "what_to_reproduce is 'Table 4'. Table 4 holds 41 numbers in 9 rows that differ materially in what reproducing them means: the authors' own model, two baselines the authors trained themselves, and five rows that evaluate artifacts released with [4] and [43] on the new CSLR-TEST. None of the numbers is copied from earlier papers (CSLR-TEST is new here), so the copied-score rule does not settle scope. The skill's default for a whole-table assignment is every row needed for the table's claimed comparison (caption: 'Our joint model significantly outperforms both CSLR (top) and retrieval (bottom) baselines'), which is alternative C; the operator asked to be consulted if this remained ambiguous.",
+      "evidence": [
+        "arXiv v1 p.8 Table 4 and caption; Sec. 5.2 (baselines: 'we use the I3D weights released in [4] and train a Video-Swin-Tiny model in a similar fashion as in [44]'; InfoNCE baseline 'We train this vanilla model'); Sec. 5.4",
+        "Table A.4 (spotting thresholds per [4]/[43], raw vs † ISLR variants); Table 2 ISLR BASELINE = Swin-8K† row; Table 3 row 1 and Table A.8 row 2 = InfoNCE row",
+        "gulvarol/cslr2@5f3bd697 README and extract_for_eval.py / frame_level_evaluation.py: CSLR² train/eval, swin=True classifier-head path, automatic_annotations=True pickle path; no I3D or spotting-conversion code, no InfoNCE or Swin-head checkpoint documented",
+        "Queue record: copied_scores 'no', what_to_reproduce 'Table 4'"
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "A-cslr2-only",
+          "description": "The two CSLR² (Ours) rows: 11 numbers (CSLR WER, mIoU, F1@0.1/0.25/0.5 on CSLR-TEST; SENT-VAL T2V/V2T R@1; SENT-TEST T2V/V2T R@1/R@5). Needs BOBSL features, bobsl.zip, T5; official code end to end (training, plus the released checkpoint as a cross-check).",
+          "paper_evidence": "Table 4 rows 'CSLR² (Ours) †' and 'CSLR² (Ours)'",
+          "decision_needed": "Choose if the study target is the paper's own method only."
+        },
+        {
+          "alternative_id": "B-cslr2-plus-self-trained-baselines",
+          "description": "A plus the two baselines the authors produced themselves: ISLR Swin-8K [44]† (5 numbers) and InfoNCE retrieval (6 numbers): 22 numbers. InfoNCE needs a second training run of the official code with config overrides. Swin-8K† needs the authors' Swin-T classifier outputs: possible only if bobsl.zip's pseudo-label LMDB covers the test episodes, otherwise the row would be retraining a Video-Swin-T ISLR model (paper: 3 days on 4 x A40 on raw video), far above the compute gate.",
+          "paper_evidence": "Sec. 5.2 ('train a Video-Swin-Tiny model in a similar fashion as in [44]'; 'We train this vanilla model'); Table 2 ISLR BASELINE; Table 3 row 1",
+          "decision_needed": "Choose if the target is the paper's method plus the baselines its authors trained."
+        },
+        {
+          "alternative_id": "C-full-table",
+          "description": "All 9 rows, 41 numbers: B plus Subtitle-based spotting [4] and [43] (2 + 2), ISLR I3D-2K [4] raw and † (5 + 5), and ISLR I3D-8K [43]† (5). These evaluate third-party released spottings and I3D weights on CSLR-TEST; they need the BOBSL release artifacts, I3D inference over the 1.5T raw-video LMDB, and new conversion code (preference level 3 for those rows). Rows whose artifacts cannot be obtained would close as not_produced with evidence rather than block the rest.",
+          "paper_evidence": "Table 4 caption ('We also compare to raw ISLR outputs from sign classification models from [4, 43, 44]'); Table A.4; Sec. 5.2 and 5.4",
+          "decision_needed": "Choose to reproduce the table's full claimed comparison (skill default for a whole-table assignment)."
+        }
+      ],
+      "required_action": "Operator chooses A, B or C. Done 2026-11-02 (see resolution).",
+      "resolution": {
+        "decided_at": "2026-11-02",
+        "decided_by": "operator",
+        "decision": "B-cslr2-plus-self-trained-baselines, with a conditional rule for ISLR Swin-8K†",
+        "detail": [
+          "In scope, official cslr2 code: the 11 CSLR² cells (CSLR row and retrieval row) and the 6 InfoNCE retrieval cells.",
+          "ISLR Swin-8K† (5 cells): in scope; evaluated only if released artifacts provide the per-frame Video-Swin predictions, or the features plus classifier head, needed on CSLR-TEST without retraining the backbone. Otherwise they stay in scope and close as not_produced with a compute reason (compute_budget_blocked plus a compute gate) and evidence. Video-Swin-T is not retrained.",
+          "Out of scope: the other 19 cells (Subtitle-based spotting [4] and [43], ISLR I3D-2K raw and †, ISLR I3D-8K †). They stay in the ledger with their published values and in_scope false; they evaluate prior-work models and annotations on CSLR-TEST and are not needed to test the paper's claimed comparison.",
+          "Next step set by the operator: proceed to the BOBSL data gate."
+        ],
+        "contract_gap": "The controlled target reason codes have no value for a non-copied cell that the operator excluded from scope (copied_baseline requires copied_baseline true, which would be false here). The 19 out-of-scope targets therefore have no result yet; their terminal reason must be settled with the maintainers before handoff rather than by misusing an existing code."
+      }
+    },
+    {
+      "gate_id": "data-bobsl-access",
+      "type": "data",
+      "status": "open",
+      "reason": "All 22 in-scope targets need BOBSL: the 262G Video-Swin-T feature LMDB and the BOBSL-derived annotations, subtitles and pseudo-labels in the cslr2 bobsl.zip. BOBSL is absent from the datasets Volume. Under the first-party BBC terms, access is an individual signed agreement with a personal password, the data is 'for your use only' and must not be distributed, it must be held securely, and permission lasts 12 months. Whether any study member holds a valid agreement, and whether those terms allow a copy in the shared repro-sign datasets Volume and processing on Modal, needs a human decision.",
+      "evidence": [
+        "check_modal_dataset.sh bobsl and bobsl-cslr (2026-11-02T10:19Z): 'path \"/bobsl/\" does not exist' / 'path \"/bobsl-cslr/\" does not exist'; no BOBSL root among the 30 dataset directories",
+        "https://www.bbc.co.uk/rd/projects/extol-dataset (2026-11-02, HTML SHA-256 d4b006f6...): non-commercial academic research only; per-person Permission to Use form and individual password; 'The dataset is for your use only. You mustn't distribute the data to anyone else.'; other team members must sign their own form; 'The datasets must be held securely'; permission valid for 12 months",
+        "cslr2 README: 'Make sure you have the permission to use the BOBSL dataset... With the username/password obtained, you can download...' (features 262G, raw frames 1.5T); bobsl.zip and the checkpoint are on public Google Drive but contain or depend on BOBSL-derived files",
+        "BOBSL paper arXiv 2111.03635v1 Sec. 2: available for non-commercial research usage through a data-sharing agreement with the BBC",
+        "Queue dataset record qzrj91d5rphubkd (BOBSL): license 'Custom (research only)', available 'yes', on_modal and permission fields empty",
+        "robots.ox.ac.uk BOBSL page unreachable from this machine on 2026-11-02 (TLS reset, HTTP 503)",
+        "No BOBSL handling in any papers/ directory or branch of the study repository"
+      ],
+      "required_action": "Team S (data access): (1) confirm whether an eligible study member holds, or will apply for, a current BBC BOBSL Permission to Use agreement; (2) decide, with the BBC if needed, whether the terms allow storing the BOBSL features and bobsl.zip contents in the shared repro-sign Volume datasets/bobsl and processing them on Modal, or whether another permitted location and compute is required; (3) supply the access path through an approved channel, never as a credential in chat or in committed files. Until then no BOBSL file, bobsl.zip, CSLR² checkpoint or T5 bundle is downloaded and nothing is built or run."
+    },
+    {
+      "gate_id": "compute-training-runs",
+      "type": "compute",
+      "status": "open",
+      "opened_at": "2026-11-02",
+      "reason": "The in-scope cells need two full training runs of the official code: CSLR² (11 cells) and the InfoNCE baseline (6 cells). The paper and README report under 20 h on 4 x V100-32GB for the 20-epoch CSLR² run, about 80 V100 GPU-hours per run, so up to about 160 V100 GPU-hours if InfoNCE costs the same (its training time is not stated). Each run exceeds the 24 GPU-hour autonomous ceiling in AGENTS.md, so it needs a #repro-sign-team-r discussion. Opened before any measurement at the operator's request so it reaches the team together with gate data-bobsl-access.",
+      "estimate": {
+        "basis": "paper_reported_unmeasured",
+        "paper_evidence": "arXiv v1 App. A: 'Training takes less than 20 hours on 4 NVIDIA 32 GB V100 GPUs'; cslr2 README: 'Using 4 x V100-32Gb, training for 20 epochs should take less than 20 hours'",
+        "runs": [
+          {
+            "run": "CSLR² training (20 epochs, seed 0)",
+            "v100_gpu_hours_upper": 80,
+            "wall_hours_upper_on_4_v100": 20
+          },
+          {
+            "run": "InfoNCE baseline training (cls pooling, InfoNCE, no sign-level loss)",
+            "v100_gpu_hours_upper": 80,
+            "note": "assumed equal to CSLR²; not stated in the paper"
+          }
+        ],
+        "total_v100_gpu_hours_upper": 160,
+        "excluded": "Video-Swin-T retraining (operator decision: Swin-8K† is evaluated from released artifacts only). Evaluation-only work (released-checkpoint cross-check, SENT-TEST retrieval, CSLR extraction and scoring) is expected to be small but is not yet measured.",
+        "modal_cost_bracket_usd": {
+          "assumption": "No speed-up over V100 per GPU-hour, so an upper bracket. Modal list prices read 2026-11-02 from https://modal.com/pricing: A100 80GB $0.000694/s (about $2.50/h), H100 $0.001097/s (about $3.95/h), CPU $0.0000131/physical core/s, memory $0.00000222/GiB/s.",
+          "a100_80gb_gpu_only_per_run": 200,
+          "h100_gpu_only_per_run": 316,
+          "two_runs_gpu_only_a100_to_h100": [
+            400,
+            632
+          ],
+          "cpu_and_memory_per_run_approx": 60,
+          "cpu_and_memory_assumption": "40 physical cores (4 processes x 10 dataloader workers, as in config/example_job_train.sh) and about 128 GiB for 20 h"
+        },
+        "storage": "About 280 GiB in Volume datasets (262G feature LMDB, bobsl.zip 15G decompressed, T5 1.4G), within or near the workspace's 1 TiB/month free Volume allowance ($0.09/GiB/month beyond). The 1.5T RGB LMDB is not needed for the in-scope cells if main.py's vis path is avoided."
+      },
+      "configuration_note": "Exact replay needs 4-process DDP on one node (e.g. one Modal container with 4 x A100-80GB or 4 x H100), batch_size 128 per process. loops/train_loop.py all-gathers sentence embeddings, so SentRet negatives span the global 512 batch, but SignRet is computed per process over its local 128-subtitle batch. A single GPU at batch 512 would change the SignRet negatives, which would be a behavior-changing protocol deviation; it is not proposed.",
+      "evidence": [
+        "arXiv v1 App. A (batch size 512, Adam lr 5e-5, under 20 h on 4 x V100-32GB) and gulvarol/cslr2 README 'Training' section",
+        "gulvarol/cslr2@5f3bd697 config/dataloader/defaults.yaml batch_size 128; config/example_job_train.sh 4 tasks x 10 CPUs, 20 h limit; loops/train_loop.py all_gather for SentRet only",
+        "AGENTS.md compute gate: discuss runs expected to exceed 24 GPU-hours in #repro-sign-team-r before launch; do not mark blocked_on_compute before that discussion",
+        "https://modal.com/pricing read 2026-11-02 (GPU, CPU, memory and Volume list prices quoted in estimate)"
+      ],
+      "required_action": "#repro-sign-team-r: decide whether the study funds two single-node 4-GPU training runs (CSLR² and InfoNCE), roughly 80 V100 GPU-hours each by the paper's figure (about USD 400-650 GPU-only for both on A100/H100 under the no-speed-up assumption), and set per-run wall-time, GPU-hour and cost ceilings plus the restart allowance. The estimate is replaced by a measured one from the representative preflight once gate data-bobsl-access clears and before any full run is launched."
+    }
+  ]
+}
