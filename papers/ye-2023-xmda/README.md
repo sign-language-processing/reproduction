@@ -8,22 +8,22 @@
 
 **Preference level:** 2
 
-**Pipeline status:** `partial` — the 12 baseline targets are produced; the 36 mix-up/KD/XmDA targets are not produced (`protocol_ambiguous`). Their conditional runs are in progress on both datasets (gate `compute-full-plan` resolved 2026-10-30)
+**Pipeline status:** `partial` — the 12 baseline targets are produced; the 36 mix-up/KD/XmDA targets are not produced (`protocol_ambiguous`). Their conditional runs finished on both datasets, each row with three student seeds (seed 56 attached as the conditional value, seeds 57 and 58 as evidence; gate `compute-full-plan` resolved 2026-10-30)
 
 **Numerical agreement:** `does_not_agree` — all 12 produced values are above the published ones: PHOENIX-2014T by 1.74 to 3.87 points, CSL-Daily by 5.04 to 9.93 points (one seed each; see Results)
 
-**Attempt dates:** 2026-10-28 to 2026-10-29
+**Attempt dates:** 2026-10-28 to 2026-11-02
 
 ## Where this attempt stands
 
 - **Done.** Both Sign Language Transformers baselines (Table 1 and Table 2, "SMKD features" rows) were trained for the full 150 epochs on T4 at seed 56 and evaluated with the published code. These runs produce the 12 comparable targets.
-- **CSL-Daily gap.** CSL-Daily text is character-level, as in the authors' own pickle builder (Atrewin/slt `video2tensor/concat_data.py`), so tokenization is not the main candidate explanation. There are two candidate explanations:
-  - **Hyperparameters (leading).** The paper's CSL-Daily baseline may not have been trained with Table 10. One CSL-Daily baseline with the released config as is was run as conditional evidence (gate `hyperparameters`). It is closer to the paper but still above it (dev BLEU-4 14.30 against 11.55).
-  - **Sign features (second candidate).** The authors' development fork built its CSL-Daily pickles from VAC_CSLR `checkpoints/cslt/gloss30check2` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L168–170), a VAC_CSLR CSLR model. This attempt uses SLTUNet's released SMKD checkpoint. This attempt did not locate those weights, so this was not tested. The Table 10 run stays the produced target. Greedy (beam 1) scores and the full dev beam/alpha grid are recorded next to the grid-selected values for both baselines.
+- **CSL-Daily gap.** CSL-Daily text is character-level, as in the authors' own pickle builder (Atrewin/slt `video2tensor/concat_data.py`), so tokenization is not the main candidate explanation. Two candidate explanations are recorded and left open for downstream analysis (see Open questions):
+  - **Hyperparameters.** The paper's CSL-Daily baseline may not have been trained with Table 10. One CSL-Daily baseline with the released config as is was run as conditional evidence (gate `hyperparameters`). It is closer to the paper but still above it (dev BLEU-4 14.30 against 11.55).
+  - **Sign features.** The authors' development fork built its CSL-Daily pickles from VAC_CSLR `checkpoints/cslt/gloss30check2` (Atrewin/slt `4b47598`, `video2tensor/concat_data.py` L168–170), a VAC_CSLR CSLR model. This attempt uses SLTUNet's released SMKD checkpoint. This attempt did not locate those weights, so this was not tested. The Table 10 run stays the produced target. Greedy (beam 1) scores and the full dev beam/alpha grid are recorded next to the grid-selected values for both baselines.
 - **Gate `teacher-gloss-decoding` (resolved 2026-10-29 by the assignee as `patch-mirror-training`).** The conditional teachers are signjoey `forward_type=gloss` models, which the pinned code cannot validate or decode. `patches/0001-gloss-decoding-mirror-training.patch` builds the validation/test gloss input exactly as `Batch_Sign` does in training. This is an **invented behavior choice**: the authors' fork (Atrewin/slt `9ecb427`, "all extend gloss") added the repetition to the training batches only, so no author evidence exists for the decoding side. `patches/0002-test-pass-forward-type.patch` is a correctness patch that the assignee kept: `test()` passes `forward_type` to both dev passes but omits it on the final test pass. Both patches touch only the gloss path.
 - **Gate `compute-full-plan` (resolved 2026-10-30 by the assignee).** The assignee resolved it on the project lead's standing instruction of 2026-10-29 in `#repro-sign-team-r` to use more Modal compute. No discussion specific to this plan took place in the channel. Approved scope:
   - **PHOENIX-2014T:** the four teachers, Mix-up, KD and XmDA are done (Results). XmDA attempt 1 was cancelled after 5 h by a client-token expiry; attempt 2, a from-scratch restart launched with `--spawn`, finished. Two extra student seeds (57, 58) run for all four rows; seed 56 stays the reported value. The replicates vary only the student seed. The four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference training pickle are identical across student seeds. The replicate policy was pre-declared at 2026-10-30T10:18:26Z, before any replicate launched: replicates are reported as mean and sample standard deviation over seeds 56, 57 and 58, attached as evidence and never swapped in.
-  - **CSL-Daily:** the four teachers (done on A10G, Results), then the Mix-up, KD and XmDA students. The students and pre-declared replicates (seeds 57 and 58 of the in-image reference baseline, Mix-up, KD and XmDA) were declared at 2026-11-01T10:39:32Z and launched together on A10G in the cu110 image. Ceilings, each at least 30% above its estimate and under the 24 h function cap: baseline 4.0, Mix-up 5.0, KD 17.0 and XmDA 22.5 GPU-h, against estimates of 2.5, about 3.2, 12.7 and 17.0. Seed 56 stays the attached conditional value; replicates are mean and sample std over three seeds, evidence only.
+  - **CSL-Daily:** the four teachers, then the Mix-up, KD and XmDA students, all done on A10G (Results). The students and pre-declared replicates (seeds 57 and 58 of the in-image reference baseline, Mix-up, KD and XmDA) were declared at 2026-11-01T10:39:32Z and launched together on A10G in the cu110 image. Ceilings, each at least 30% above its estimate and under the 24 h function cap: baseline 4.0, Mix-up 5.0, KD 17.0 and XmDA 22.5 GPU-h, against estimates of 2.5, about 3.2, 12.7 and 17.0. Seed 56 stays the attached conditional value; replicates are mean and sample std over three seeds, evidence only.
     - *Re-estimate from the running logs (2026-11-01).* The student preflights validated on a 32-sentence dev subset, so the estimates assumed the baseline's 31 s full-dev validation. Measured: KD 31 s, but Mix-up and XmDA about 127 s.
       - **Mix-up:** ceiling amended at 14:25:45Z, before any Mix-up validation score was inspected, to 12.5 GPU-h (45,000 s, CHF 14) per seed against a re-estimate of about 9.5 GPU-h; the 5.0 GPU-h ceiling is kept as superseded. Plan ceilings rise from 141.5 to 164 GPU-h.
       - **KD:** unchanged. Seed 58 stopped at the learning-rate floor at step 31,000 in 3.57 GPU-h; even 150 full epochs would take about 11.5 h.
@@ -32,13 +32,14 @@
     - *Post-hoc observation (2026-11-01), separate from the pre-declared criterion, which alone decided adoption:* the three-seed in-image CSL-Daily reference baseline (cu110, A10G) gives dev BLEU-4 17.74 / 17.28 / 17.14 (17.39 ± 0.31) and test 18.11 / 17.62 / 17.53 (17.75 ± 0.31). The old-image seed-56 produced baseline (T4) gives 17.40 dev and 17.45 test, a difference of 0.01 on dev and 0.30 (about one std) on test. So the environment change (image and GPU together) had no measurable effect on the CSL-Daily baseline at this resolution; the old image has only one CSL-Daily seed, so its own spread is not measured.
 
   The technical limits stand: Modal's 24 h function cap, and no real resume in the code (see How to repeat this). Validation frequency stays at every 100 steps.
-- **Hardware.** The pinned stack (torch 1.4.0, CUDA 10.1, cuDNN 7.6.3) ships kernels only up to sm_75 (cuobjdump on the built image: SASS for sm_35/37/50/60/61/70/75, PTX only for sm_37). It cannot run on Ampere (A10G/A100) without a torch/CUDA upgrade, which would also move torchtext off the 0.5 API SignXmDA uses. Runs therefore stay on T4, and no A10G re-measurement was made.
+- **Hardware.** The pinned stack (torch 1.4.0, CUDA 10.1, cuDNN 7.6.3) ships kernels only up to sm_75 (cuobjdump on the built image: SASS for sm_35/37/50/60/61/70/75, PTX only for sm_37). It cannot run on Ampere (A10G/A100) without a torch/CUDA upgrade, which would also move torchtext off the 0.5 API SignXmDA uses. So the two produced baselines, the released-config baseline and the whole PHOENIX-2014T chain ran on T4 in the pinned image, and SMKD extraction ran on L4. The CSL-Daily teachers, students and in-image reference baselines ran on A10G in the cu110 image (gate `environment-cu110`).
+- **Not pursued.** A paper-faithful Eq. 5 Mix-up variant (planned as `patches/0003`, PHOENIX-2014T only) was closed as out of scope (gate `mixup-eq5-variant`, 2026-11-02). No patch 0003 was written and no such run was made. This attempt produces numbers and documents the process; interpretation is left to downstream analysis, so no teacher-diversity analysis was done either.
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
-| `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.312 | Assignment ingestion, target resolution, source search and pinning, data verification, all glue code and both upstream patches, execution of every recorded run (2026-10-28 and 2026-10-29), gate preparation, and this report | Session system metadata exposes the model and model ID; `claude --version` in the session reports 2.1.312. Every run in `reproduction.json.runs` lists this agent in `agent_ids`. |
+| `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.312 | Assignment ingestion, target resolution, source search and pinning, data verification, all glue code and both upstream patches, execution of every recorded run (2026-10-28 to 2026-11-02, one continuous session), gate preparation, and this report | Session system metadata exposes the model and model ID; `claude --version` in the session reports 2.1.312. Every run in `reproduction.json.runs` lists this agent in `agent_ids`. |
 
 ## Scope and target contract
 
@@ -135,7 +136,7 @@ The fork's experiment name `081_cslt_char_sign_ratio0.6_baseline_S2T_seed56_bsz6
 | In-image reference (cu110, A10G) | 17.74 / 47.16 / 16.59 | 18.11 / 47.05 / 16.83 |
 | Produced target (`csl-daily-baseline-seed56`, old image, T4) | 17.40 / 46.25 / 16.18 | 17.45 / 46.18 / 16.28 |
 
-The CSL-Daily student rows' within-table deltas are taken against this reference. The produced target stays the old-image T4 run. One seed each, so the 0.34 / 0.66 BLEU-4 difference between the two runs is not attributed to the environment.
+The CSL-Daily student rows' within-table deltas are taken against this reference; its seeds 57 and 58 are in the CSL-Daily section below. The produced target stays the old-image T4 run. The three-seed comparison with the produced target is a post-hoc note on gate `environment-cu110` (Where this attempt stands).
 
 **PHOENIX-2014T teachers (conditional; not targets).** These are signjoey `forward_type=gloss` teachers with PGen pseudo-pairs and patches 0001 and 0002, one per seed. Table 15's teachers are PGen fairseq models, so they are a different system; their numbers are shown only for orientation, paired with the runs by seed order only (the paper does not say which of its teachers it used). Seed 56 has the highest dev BLEU-4 and supplies the frozen gloss embedding.
 
@@ -157,7 +158,7 @@ The CSL-Daily student rows' within-table deltas are taken against this reference
 
 **PHOENIX-2014T conditional students (conditional evidence; the targets stay `not_produced / protocol_ambiguous`).**
 
-**Three-seed finding.** Run as released, the XmDA row lands within about 0.1 BLEU-4 of the paper: three-seed means of 25.99 dev / 25.28 test against 25.86 / 25.36 (+0.13 / −0.08). Its gain over our baseline, however, is only a little over half the paper's: +1.63 dev / +1.64 test against +2.96 / +2.57. The reason is that our baseline is stronger than the paper's: by 1.9 dev BLEU-4 for the produced seed-56 baseline and 1.5 on the three-seed mean (note a). With n = 3, only the XmDA delta clearly exceeds the seed spread: every XmDA seed beats every baseline seed, by at least 1.02 BLEU-4 on dev and 0.29 on test. The Mix-up and KD seeds clear the best baseline seed on dev only narrowly (by 0.16 and 0.06) and overlap the baseline seeds on test. Single-seed Mix-up gave −0.45 BLEU-4 on test, while the three-seed mean gives +0.97. In the released code the Mix-up branch never mixes gloss embeddings into the encoder input, so this row's gain comes from a gated dropout-consistency regularizer (JSD ×15), not from cross-modal input (note b).
+**Three-seed finding.** Run as released, the XmDA row lands within about 0.1 BLEU-4 of the paper: three-seed means of 25.99 dev / 25.28 test against 25.86 / 25.36 (+0.13 / −0.08). Its gain over our baseline, however, is only a little over half the paper's: +1.63 dev / +1.64 test against +2.96 / +2.57. Our baseline is also stronger than the paper's: by 1.9 dev BLEU-4 for the produced seed-56 baseline and 1.5 on the three-seed mean (note a). With n = 3, only the XmDA delta clearly exceeds the seed spread: every XmDA seed beats every baseline seed, by at least 1.02 BLEU-4 on dev and 0.29 on test. The Mix-up and KD seeds clear the best baseline seed on dev only narrowly (by 0.16 and 0.06) and overlap the baseline seeds on test. Single-seed Mix-up gave −0.45 BLEU-4 on test, while the three-seed mean gives +0.97. In the released code the Mix-up branch never mixes gloss embeddings into the encoder input, so this row's gain comes from a gated dropout-consistency regularizer (JSD ×15), not from cross-modal input (note b).
 
 The three seeds are pre-declared replicates: student seeds 56, 57 and 58, in the same image with the same config. Only the student seed varies: the four teachers (seeds 56–59), the frozen gloss embedding from teacher 56 and the multi-reference pickle are the same for every seed. Values are BLEU-4, given as the three seeds, then mean ± sample std (n = 3). The replicates are evidence only and are never swapped in for the attached seed-56 values below. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
 
@@ -179,11 +180,49 @@ The three seeds are pre-declared replicates: student seeds 56, 57 and 58, in the
 
 At seed 56, the test gain over our baseline is −0.45 BLEU-4 for Mix-up (paper +1.08), +1.06 for KD (paper +1.98) and +1.04 for XmDA (paper +2.57). Three notes for the reviewer:
 
-- **(a) Smaller KD gain: the teacher–student margin is the leading explanation.** The substitute teachers match Table 15 to within 0.7 dev BLEU-4: 26.60–26.66 against 27.02–27.35. Our baseline, however, is 1.9 BLEU-4 stronger than the paper's (24.78 against 22.90 dev). So the margin a teacher can transfer to the student is about 1.9 dev BLEU-4 here, against 4.1–4.5 in the paper. That smaller margin is the leading explanation for the smaller KD gain (+0.67 against +1.92 dev). On three-seed means the KD gain is +0.76 dev / +1.35 test against +1.92 / +1.98.
+- **(a) Teacher–student margin: a PHOENIX-2014T observation, not a mechanism.** The substitute teachers match Table 15 to within 0.7 dev BLEU-4: 26.60–26.66 against 27.02–27.35. Our baseline is 1.9 BLEU-4 stronger than the paper's (24.78 against 22.90 dev), so the teacher's dev BLEU-4 lead over the baseline is about 1.9 here, against 4.1–4.5 in the paper, and the KD gain is also smaller (+0.67 against +1.92 dev at seed 56; +0.76 dev / +1.35 test against +1.92 / +1.98 on three-seed means). The pattern does not hold on CSL-Daily: there the teachers reach 27.87–28.55 dev BLEU-4 against an in-image baseline of 17.39, a lead of about 10.5–11, yet KD gains only +0.29 dev / +0.32 test. No causal link between the margin and the KD gain is claimed or tested here.
 - **(b) The Mix-up row is a gated dropout-consistency regularizer, not cross-modality mix-up.** In `training_XmDA.py` at `b6e2ca4`, the mix mask `gloss_predict.ge(1 - mixup_ratio)` is applied to target gloss indices from `ctc_alignment`, which never emits the blank. The mask is therefore true at every frame, and no gloss embedding enters the encoder. The "mixed" input is the sign embedding from a second `sgn_embed` pass with a fresh dropout mask, trained with cross-entropy plus a ×15 JSD consistency term. The branch is gated by `recognition_loss < 5` or `random.randint(0, 10) < 5`. The details are in `code_observations` (the "Mix-up branch" entry, and the ×15 and gating entries). Its seed-56 −0.45 on test is within seed variation; the three-seed mean is +0.97.
-- **(c) KD's early stop is upstream scheduler behaviour.** KD stopped in epoch 104, at step 28,000, because the plateau scheduler took the learning rate below `learning_rate_min` (1e-7). `_add_report` then sets `stop`. The same rule is applied to every row. All three XmDA seeds stopped the same way (epochs 104, 98 and 119 for seeds 56, 57 and 58), as did all three KD seeds; the baseline, the teachers and Mix-up never reached the floor within 150 epochs.
+- **(c) KD's early stop is upstream scheduler behaviour.** KD stopped in epoch 104, at step 28,000, because the plateau scheduler took the learning rate below `learning_rate_min` (1e-7). `_add_report` then sets `stop`. The same rule is applied to every row. All three XmDA seeds stopped the same way (epochs 104, 98 and 119 for seeds 56, 57 and 58), as did all three KD seeds; the baseline, the teachers and Mix-up never reached the floor within 150 epochs. On CSL-Daily, all KD and XmDA seeds and all four teachers stopped at the floor; the in-image baselines and Mix-up ran all 150 epochs.
 
-**Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). The PHOENIX-2014T Mix-up, KD and XmDA rows carry the conditional values above. The CSL-Daily rows wait for their students, launched on 2026-11-01.
+**CSL-Daily conditional students (conditional evidence; the targets stay `not_produced / protocol_ambiguous`).** Same recipe as PHOENIX-2014T: Table 10 CSL-Daily settings, the frozen gloss embedding from teacher seed 58, and the multi-reference pickle from the four CSL-Daily teachers. Unlike PHOENIX-2014T, everything ran in the cu110 image on A10G (gate `environment-cu110`), so gains are taken against the in-image reference baseline, not the produced old-image T4 baseline. All 11 runs were declared at 2026-11-01T10:39:32Z, launched together, and finished within their ceilings; the Mix-up ceiling was amended before any Mix-up score was inspected (Where this attempt stands).
+
+**Three-seed numbers.**
+- **Against the paper:** XmDA lands at 18.33 dev / 19.13 test BLEU-4 against 21.69 / 21.58 (−3.36 / −2.45). Mix-up and KD land above the paper (Mix-up +2.50 / +3.20, KD +0.63 / +1.15), as does the in-image baseline (+5.84 / +6.14 against the paper's baseline).
+- **Gains over our baseline:** +0.78 / +0.92 for Mix-up, +0.29 / +0.32 for KD and +0.94 / +1.38 for XmDA, against +4.12 / +3.86, +5.50 / +5.31 and +10.14 / +9.97 in the paper.
+- **Against the seed spread:**
+  - every Mix-up and every XmDA seed beats every baseline seed: Mix-up by at least 0.35 dev / 0.46 test, XmDA by at least 0.14 dev / 0.70 test;
+  - the KD seeds overlap the baseline seeds on both splits.
+- **Row order:** Mix-up is above KD on both splits here, whereas the paper has KD above Mix-up.
+- **The Mix-up row:** it is the released code's branch (note b above), not Eq. 5 mix-up.
+
+The replicate policy is the same as for PHOENIX-2014T. Seeds 56, 57 and 58 are pre-declared, and only the student seed varies: the teachers, gloss embedding and pickle are the same for every seed. Values are BLEU-4, given as the three seeds, then mean ± sample std (n = 3). Replicates are evidence only and never replace the seed-56 values. ROUGE-L and ChrF for every seed are in each run entry and in the targets' evidence.
+
+| Row | Dev BLEU-4 (56 / 57 / 58) | Dev mean ± std | Test BLEU-4 (56 / 57 / 58) | Test mean ± std | Gain over in-image baseline mean, dev / test (paper) |
+| --- | --- | --- | --- | --- | --- |
+| In-image baseline (`csl-daily-baseline-cu110-seed*`) | 17.74 / 17.28 / 17.14 | 17.39 ± 0.31 | 18.11 / 17.62 / 17.53 | 17.75 ± 0.31 | — |
+| + Mix-up | 18.09 / 18.11 / 18.30 | 18.17 ± 0.12 | 18.58 / 18.86 / 18.57 | 18.67 ± 0.16 | +0.78 / +0.92 (+4.12 / +3.86) |
+| + KD | 17.55 / 17.82 / 17.66 | 17.68 ± 0.14 | 17.87 / 18.17 / 18.17 | 18.07 ± 0.17 | +0.29 / +0.32 (+5.50 / +5.31) |
+| + XmDA | 18.91 / 18.20 / 17.88 | 18.33 ± 0.53 | 19.52 / 19.07 / 18.81 | 19.13 ± 0.36 | +0.94 / +1.38 (+10.14 / +9.97) |
+
+Run time per seed:
+- in-image baseline: about 2.5 GPU-h, all 150 epochs;
+- Mix-up: 9.76–9.79 GPU-h, all 150 epochs;
+- KD: 3.57–4.22 GPU-h, stopped at the learning-rate floor in epochs 44–52;
+- XmDA: 13.16–14.34 GPU-h, stopped at the floor in epochs 42–46.
+
+**Attached conditional values (seed 56).** Selection is the same as for the baselines: best dev-BLEU checkpoint, then beam and alpha chosen on dev. Values are BLEU-4 / ROUGE-L / ChrF.
+
+| Row | Run | Dev | Test | Paper dev | Paper test | Dev BLEU-4 gain over baseline (ours / paper) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Baseline (produced, old image, T4) | `csl-daily-baseline-seed56` | 17.40 / 46.25 / 16.18 | 17.45 / 46.18 / 16.28 | 11.55 / 36.32 / 11.14 | 11.61 / 36.43 / 11.15 | — |
+| In-image reference (cu110, A10G) | `csl-daily-baseline-cu110-seed56` (step 20,300; beam 2, alpha 1) | 17.74 / 47.16 / 16.59 | 18.11 / 47.05 / 16.83 | — | — | — |
+| + Cross-modality Mix-up | `csl-daily-mixup-seed56` (step 19,300; beam 4, alpha 1) | 18.09 / 46.55 / 16.41 | 18.58 / 47.75 / 16.92 | 15.67 / 42.36 / 14.57 | 15.47 / 42.60 / 14.68 | +0.35 / +4.12 |
+| + Cross-modality KD | `csl-daily-kd-seed56` (step 23,800; beam 4, alpha 1) | 17.55 / 47.27 / 16.54 | 17.87 / 47.06 / 16.66 | 17.05 / 44.17 / 15.74 | 16.92 / 43.90 / 15.65 | −0.19 / +5.50 |
+| + XmDA | `csl-daily-xmda-seed56` (step 29,700; beam 3, alpha 1) | 18.91 / 47.68 / 16.92 | 19.52 / 47.52 / 17.32 | 21.69 / 49.36 / 19.60 | 21.58 / 49.34 / 19.50 | +1.17 / +10.14 |
+
+Our gains are measured against the in-image reference at seed 56, the paper's against its own baseline. At seed 56, the test gain over that reference is +0.47 BLEU-4 for Mix-up (paper +3.86), −0.24 for KD (paper +5.31) and +1.41 for XmDA (paper +9.97).
+
+**Not produced (36 targets).** These are the mix-up, KD, and XmDA rows: `not_produced / protocol_ambiguous` (gates `xmda-protocol`, `teacher-gloss-decoding`, and `compute-full-plan`). All six rows carry the seed-56 conditional values and three-seed statistics in the two sections above.
 
 | Target IDs | System | Dataset | Original dev (BLEU-4 / ROUGE-L / ChrF) | Original test |
 | --- | --- | --- | --- | --- |
@@ -319,7 +358,7 @@ done
 
 Changing any of this would change behaviour, so it was not patched. Reloading a checkpoint returns to the last improvement, not to the interruption. XmDA attempt 1 was interrupted at step 28,000, but its only checkpoint was from step 9,000.
 
-So an interrupted CSL-Daily run can only be recovered by a full re-run. That costs about 8 GPU-h per teacher, about 18 for KD and about 20 for XmDA, the last two close to Modal's 24 h limit. A preemption (as with teacher seed 59) also restarts from scratch inside the same call.
+So an interrupted CSL-Daily run can only be recovered by a full re-run. Measured on A10G, that costs about 13–15 GPU-h per teacher, about 9.8 per Mix-up run, about 4 per KD run and about 13–14 per XmDA run. No CSL-Daily run on A10G was interrupted. A preemption (as with PHOENIX-2014T teacher seed 59) also restarts from scratch inside the same call.
 
 ## Data provenance and permissions
 
@@ -379,7 +418,7 @@ So an interrupted CSL-Daily run can only be recovered by a full re-run. That cos
 
 ## Execution evidence
 
-All runs used Modal profile `repro-sign`, app `repro-ye-2023-xmda`, and agent `claude-opus-5-5-claude-code`. Dashboard links are `https://modal.com/apps/repro-sign/main/` followed by the app ID. Times are UTC; the first twelve rows are from 2026-10-28, and the rest are from 2026-10-29.
+All runs used Modal profile `repro-sign`, app `repro-ye-2023-xmda`, and agent `claude-opus-5-5-claude-code`. Dashboard links are `https://modal.com/apps/repro-sign/main/` followed by the app ID. Times are UTC. In the table below, the first twelve rows are from 2026-10-28 and the rest from 2026-10-29 unless a row names its date. Later runs are in the result tables above and in `reproduction.json.runs`, with the same fields: the replicates, the environment trial, the CSL-Daily teachers and gloss embedding, the pickles, and the CSL-Daily students.
 
 | Run ID | Attempt / max | Kind | Hardware | Start → end (UTC) | Exit / terminal / reason | Failure class | Ceilings (wall s / GPU-h / CHF) | Modal app / function call |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -457,7 +496,29 @@ Each preflight trained on full data, saved a checkpoint, and had `prediction_XmD
 - the decode grids, 1.19;
 - the preflights.
 
-XmDA attempt 2 used 6.35 more, which brings the seed-56 PHOENIX-2014T chain to about 27 GPU-h, as the assignee approved. The replicate, environment-trial and CSL-Daily runs from 2026-10-30 are listed with their GPU-hours in their run entries. The overwritten PHOENIX dev/test extractions listed in the dead ends add a little more. GPU details are in each run entry: L4 23,034 MiB and T4 15,360 MiB, driver 610.57.04.
+XmDA attempt 2 used 6.35 more, which brings the seed-56 PHOENIX-2014T chain to about 27 GPU-h, as the assignee approved. The later runs from 2026-10-30 to 2026-11-02 are listed with their GPU-hours in their run entries.
+
+**Total compute.** Summed over every run entry in `reproduction.json`, the attempt used about 220 GPU-h:
+
+| Hardware | GPU-h | Approximate list price |
+| --- | --- | --- |
+| L4 (SMKD extraction) | 4.1 | about USD 3 at about USD 0.80/h |
+| T4 | 69.6 | about USD 41 at about USD 0.59/h |
+| A10G | 146.8 | about USD 162 at about USD 1.10/h |
+| **Total** | **about 220** | **about USD 205** |
+
+The T4 part covers the produced baselines, the PHOENIX-2014T chain with its replicates, and the stopped T4 CSL-Daily teachers. The A10G part breaks down as follows:
+
+| A10G runs | GPU-h |
+| --- | --- |
+| Four CSL-Daily teachers | 56.75 |
+| In-image baseline, seeds 56–58 | 7.50 |
+| Mix-up, three seeds | 29.32 |
+| KD, three seeds | 11.55 |
+| XmDA, three seeds | 41.26 |
+| Preflights | the rest |
+
+The 11 CSL-Daily student and replicate runs used 87.1 GPU-h, against an estimate of about 104 and amended ceilings that sum to 164. The overwritten PHOENIX dev/test extractions listed in the dead ends add a little more. GPU details are in each run entry: L4 23,034 MiB and T4 15,360 MiB, driver 610.57.04.
 
 ## Guesses and deviations
 
@@ -500,7 +561,17 @@ XmDA attempt 2 used 6.35 more, which brings the seed-56 PHOENIX-2014T chain to a
 - **Decode-grid loop bug** (both `decode-grid-*-attempt-1` runs). `decode_grid` updated `config["testing"]` inside the loop, which replaced the alpha list after the first setting, so beams 2–4 ran only alpha 1. Fix kept: the beam and alpha lists are read once before the loop. The PHOENIX attempt finished with 7 of 16 settings and the CSL-Daily attempt was stopped; both attempt 2 runs covered all 16 settings.
 - **Teacher seed 59 preemption.** Modal preempted the container at about 15:16 UTC (after epoch 39) and restarted the function with the same input. Because the config has `overwrite: true`, training restarted from scratch; the epoch-1 loss repeats exactly. About 0.54 GPU-h were lost, and the run finished within its 4 GPU-h ceiling. This is the reason resume must be verified before the long CSL-Daily runs.
 - **XmDA attempt 1 cancelled by client-token expiry.** Hypothesis: a client blocked in `.remote()` under `run --detach` loses its session token after about 5 h, and the error cancels the call. Evidence: the cancellation came at 5 h 05 min, and the log shows `AuthError: Jwt is expired` right after "Received a cancellation signal". Every earlier run was shorter than 5 h. Fix kept: `--spawn`, checked by `preflight-phoenix14t-xmda-spawn`. Attempt 2 is a from-scratch restart (assignee decision); no resume was attempted (see How to repeat this).
+- **CSL-Daily Mix-up ceiling too low.** The CSL-Daily student estimates reused the baseline's 31 s full-dev validation, because the student preflights validated on a 32-sentence subset. The running logs showed about 125 s per validation on the mix-up path, and the three Mix-up runs were on course to pass their 5 GPU-h ceiling. The assignee amended the ceiling to 12.5 GPU-h at 2026-11-01T14:25:45Z, before any Mix-up score was inspected; the old value is kept as superseded. The runs took 9.76–9.79 GPU-h. KD and XmDA were re-estimated with their own measured validation cost and left unchanged (gate `compute-full-plan`).
+- **Overnight watcher stall (2026-11-01 to 2026-11-02).** A local poller checked the Volume every 300 s for each run's `summary.json`. After it was restarted at about 20:34Z, it did not report again until 06:00–06:13Z. In the meantime the three CSL-Daily XmDA runs had finished: seed 58 at 23:52Z, seed 56 at 00:25Z and seed 57 at 01:01Z. Their records were therefore written about 5–6 h late. The cause of the stall was not established. The runs were unaffected: they were spawned functions independent of the local client, and their run entries use the functions' own start and finish times from `summary.json`.
 - **Teacher image ID.** The teachers' summaries predate the `MODAL_IMAGE_ID` field. Their image is recorded as `im-x0vni1AxwKaBoFixz4bQRH`, inferred from the released-config run launched 7 minutes later from the same Dockerfile and patches.
+
+## Open questions for downstream analysis
+
+These are stated as questions only; this attempt does not investigate them.
+
+- **CSL-Daily baseline.** Did the paper's CSL-Daily baseline use weaker sign features (the authors' fork builds its pickles from VAC_CSLR `checkpoints/cslt/gloss30check2`), the released config instead of Table 10, or both? Recorded evidence: the Table 10 baseline, the released-config run, and the fork's experiment name (Results).
+- **Reference diversity for KD.** How much reference diversity do the teachers' training-set translations actually add for KD? On the training set the teachers score 80.88–97.72 BLEU-4 on PHOENIX-2014T and 98.10–98.71 on CSL-Daily against the original references. The translations themselves are on the private Volume (`…-train-translations` artifacts).
+- **Eq. 5 vs the released Mix-up branch.** Does the Eq. 5 mix-up the paper describes differ in effect from the released code's dropout-consistency branch (note b; `code_observations`)? The variant was not implemented (gate `mixup-eq5-variant`).
 
 ## Candidate flags, ethics, and human evaluation
 

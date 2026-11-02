@@ -7,9 +7,10 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.312",
-      "scope": "Assignment ingestion, paper/target resolution, source search and pinning, data verification, implementation of the Modal glue (modal_app.py, Dockerfile, extract_smkd_features.py, build_pickles.py, dump_gloss_embedding.py), execution of every recorded run, gate preparation, and report authoring for the 2026-10-28 attempt.",
+      "scope": "Assignment ingestion, paper/target resolution, source search and pinning, data verification, implementation of the Modal glue (modal_app.py, Dockerfile, extract_smkd_features.py, build_pickles.py, dump_gloss_embedding.py), execution of every recorded run, gate preparation, and report authoring for the attempt from 2026-10-28 to 2026-11-02 (one continuous session).",
       "evidence": [
-        "Session system metadata on 2026-10-28 exposes model Opus 5.5 with exact model ID claude-opus-5-5; `claude --version` in the session reports 2.1.312 (Claude Code)."
+        "Session system metadata on 2026-10-28 exposes model Opus 5.5 with exact model ID claude-opus-5-5; `claude --version` in the session reports 2.1.312 (Claude Code).",
+        "2026-11-02: the same session (records in its transcript carry version 2.1.312) ran every later run through the CSL-Daily students and wrote the final report; the locally installed CLI now reports 2.1.316, which is not the version that ran this session."
       ]
     }
   ],
@@ -322,7 +323,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "12 of 48 in-scope targets produced: the Sign Language Transformers baseline on PHOENIX-2014T (Table 1) and CSL-Daily (Table 2), with Table 10 hyperparameters, one run each at seed 56. All twelve reproduced values are higher than the published ones: PHOENIX-2014T by 1.74 (test BLEU-4) to 3.87 (test ChrF) points, CSL-Daily by 5.04 (dev ChrF) to 9.93 (dev ROUGE-L) points. The paper reports one number per cell with no seed count or variance, and this attempt ran a single seed, so there is no basis for treating these gaps as run-to-run noise; they are recorded as numerical disagreement for the reviewer to judge. CSL-Daily scoring is character-level, as in the authors' own pickle builder (code_observations), so tokenization is not the main candidate explanation. The leading hypothesis is that the paper's CSL-Daily baseline was not trained with Table 10: the released config is weaker, and the authors' fork names a CSL-Daily baseline with batch 64, dropout 0.15 and max length 30. The released-config CSL-Daily run (csl-daily-baseline-released-config-seed56, conditional evidence under gate hyperparameters) gives dev 14.30 / 42.38 / 13.91 and test 14.80 / 42.40 / 14.21 (BLEU-4 / ROUGE-L / ChrF): closer to the paper than the Table 10 run but still above it by 2.75 to 6.06 points, and it does not replace the produced values. The batch-64 / dropout-0.15 / length-30 variant named in the fork was not run. A second candidate explanation is the sign features: the authors' fork built its CSL-Daily pickles from VAC_CSLR checkpoints/cslt/gloss30check2 (Atrewin/slt concat_data.py L168-170), whereas this attempt uses SLTUNet's released SMKD checkpoint. The paper does not state its decoding setting, so greedy (beam 1) scores and the full dev grid are recorded next to the grid-selected ones. The 36 mixup/kd/xmda targets remain not_produced (protocol_ambiguous) and are never assessed for agreement.",
+    "numerical_agreement_basis": "12 of 48 in-scope targets produced: the Sign Language Transformers baseline on PHOENIX-2014T (Table 1) and CSL-Daily (Table 2), with Table 10 hyperparameters, one run each at seed 56. All twelve reproduced values are higher than the published ones: PHOENIX-2014T by 1.74 (test BLEU-4) to 3.87 (test ChrF) points, CSL-Daily by 5.04 (dev ChrF) to 9.93 (dev ROUGE-L) points. The paper reports one number per cell with no seed count or variance, and this attempt ran a single seed, so there is no basis for treating these gaps as run-to-run noise; they are recorded as numerical disagreement for the reviewer to judge. CSL-Daily scoring is character-level, as in the authors' own pickle builder (code_observations), so tokenization is not the main candidate explanation. One candidate explanation, left open for downstream analysis (README, Open questions), is that the paper's CSL-Daily baseline was not trained with Table 10: the released config is weaker, and the authors' fork names a CSL-Daily baseline with batch 64, dropout 0.15 and max length 30. The released-config CSL-Daily run (csl-daily-baseline-released-config-seed56, conditional evidence under gate hyperparameters) gives dev 14.30 / 42.38 / 13.91 and test 14.80 / 42.40 / 14.21 (BLEU-4 / ROUGE-L / ChrF): closer to the paper than the Table 10 run but still above it by 2.75 to 6.06 points, and it does not replace the produced values. The batch-64 / dropout-0.15 / length-30 variant named in the fork was not run. A second candidate explanation is the sign features: the authors' fork built its CSL-Daily pickles from VAC_CSLR checkpoints/cslt/gloss30check2 (Atrewin/slt concat_data.py L168-170), whereas this attempt uses SLTUNet's released SMKD checkpoint. The paper does not state its decoding setting, so greedy (beam 1) scores and the full dev grid are recorded next to the grid-selected ones. The 36 mixup/kd/xmda targets remain not_produced (protocol_ambiguous) and are never assessed for agreement; their conditional runs finished on both datasets with three student seeds each (seed 56 attached as the conditional value, seeds 57 and 58 as evidence).",
     "preference_level": 2,
     "blocker": null
   },
@@ -13907,6 +13908,33 @@
       "required_action": "None.",
       "resolved_at": "2026-10-30",
       "resolution": "Resolved 2026-10-30 by applying the assignee's pre-stated decision rule (criterion met -> adopt for CSL-Daily on A10G). The amended comparability criterion passed on both dev and test BLEU-4. The CSL-Daily Table 2 student rows (a new in-image reference baseline, Mix-up, KD and XmDA) run in the cu110 image on A10G. The already-produced Table 10 CSL-Daily baseline from the old image remains the produced target. The CSL-Daily teachers stay in the old image on T4: they only produce translations and the frozen embedding. (Superseded for the teachers at 2026-10-30T13:23:41Z by assignee decision: the T4 teachers projected about 22 h each against the 24 h function cap, so they were stopped and rerun on A10G in the cu110 image as csl-daily-teacher-seed56..59-attempt-2.) PHOENIX-2014T stays entirely in the old image."
+    },
+    {
+      "gate_id": "mixup-eq5-variant",
+      "type": "protocol",
+      "status": "resolved",
+      "opened_at": "2026-10-30",
+      "reason": "Proposed conditional variant: a paper-faithful Cross-modality Mix-up following the paper's Eq. 5 (gloss embeddings mixed into the sign-embedding sequence), as a behavior-changing patch (planned as patches/0003) on PHOENIX-2014T only, reported as separate conditional rows next to the released code's Mix-up branch (code_observations: the released branch never mixes gloss embeddings in and acts as a gated dropout-consistency regularizer).",
+      "evidence": [
+        "2026-10-30: the assignee planned the variant (PHOENIX-2014T only, gated patch 0003, separate conditional rows) to start only after the CSL-Daily students were launched; it was never started.",
+        "No patch 0003 was written or committed, and no run used it; patches/ holds only 0001 and 0002.",
+        "2026-11-02: the assignee closed it as not pursued and out of scope. Team R produces numbers and documents the process; interpretation, including whether the paper-described Eq. 5 mix-up differs in effect from the released branch, belongs to Team C (README, Open questions for downstream analysis)."
+      ],
+      "alternatives": [
+        {
+          "alternative_id": "run-eq5-variant",
+          "description": "Write patches/0003 and run Eq. 5 Mix-up rows on PHOENIX-2014T as conditional evidence.",
+          "decision_needed": "Not selected: out of scope for Team R."
+        },
+        {
+          "alternative_id": "not-pursued",
+          "description": "Do not implement or run the variant; record the question for downstream analysis.",
+          "decision_needed": "Selected by the assignee on 2026-11-02."
+        }
+      ],
+      "required_action": "None.",
+      "resolved_at": "2026-11-02",
+      "resolution": "Not pursued: out of scope (assignee decision, 2026-11-02). No patch 0003 exists and no Eq. 5 run was made; the Mix-up rows report the released code's behaviour only. The question is listed for downstream analysis."
     }
   ],
   "guesses": [
