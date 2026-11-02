@@ -142,14 +142,14 @@ Frames for all three datasets are resized to 256×256 PNG with the upstream `res
 - `ctcdecode` (`c90ad94`);
 - `simple-video-utils` 0.7.4 with `av` 18.1.0;
 - `lmdb` 1.5.1, which TLP's and SEN's `dataset/dataloader_video.py` import at module level;
-- the four repos at their pinned commits under `/opt/repos/{vac,tlp,sen,corrnet}`, each with one correctness patch (`patches/<repo>-ctc-without-cudnn.patch`, below).
+- the four repos at their pinned commits under `/opt/repos/{vac,tlp,sen,corrnet}`, each with one correctness patch (`patches/{repo}-ctc-without-cudnn.patch`, below).
 
 The repos' own Python pins (numpy 1.20, scipy 1.7, opencv 4.5.5) have no Python 3.12 wheels. They are replaced by the oldest releases that do and that still ship `scipy.misc`, as in `papers/yu-2025-cvsign`.
 
 Each run works on its own copy of one repo. The harness adds only data files and configs to that copy:
 
 - the setting's info lists, gloss dict and STMs, written with the repo's own `generate_gt_stm` and `sign_dict_update`;
-- a `configs/<dataset>.yaml`;
+- a `configs/{dataset}.yaml`;
 - `configs/run.yaml`. This is the pinned `configs/baseline.yaml` with only the gate-approved keys changed, and each run records the exact delta.
 
 Tracked upstream files stay unchanged, and each run records the hash of `git diff HEAD`.
@@ -178,7 +178,7 @@ Two full-run settings change no computation:
 
 ## Execution evidence
 
-All runs are in `reproduction.json.runs`, with Modal app and function-call IDs, image IDs, timestamps and declared ceilings. Outputs live under `runs/<run_id>/` on the Modal Volume `alyami-2024-cslr-results`.
+All runs are in `reproduction.json.runs`, with Modal app and function-call IDs, image IDs, timestamps and declared ceilings. Outputs live under `runs/{run_id}/` on the Modal Volume `alyami-2024-cslr-results`.
 
 **Data jobs, 2026-11-02:**
 
