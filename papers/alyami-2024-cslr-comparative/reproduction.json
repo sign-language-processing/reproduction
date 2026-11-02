@@ -12,6 +12,18 @@
         "Session system context identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code (2026-10-26).",
         "`claude --version` in the session returned 2.1.310 (Claude Code)."
       ]
+    },
+    {
+      "agent_id": "claude-opus-5-5-claude-code-2026-11-02",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.316",
+      "scope": "Continuation from 2026-11-02: recording the compute-gate decision and ICCVW epoch evidence, data population (data.sh), container build, preflights, measured estimates, and launching/monitoring the full-run blocks.",
+      "evidence": [
+        "Session system context identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code (2026-11-02).",
+        "`claude --version` in the session returned 2.1.316 (Claude Code)."
+      ]
     }
   ],
   "assignment": {
@@ -238,11 +250,11 @@
   "status": {
     "pipeline": null,
     "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "Not assessed: no full run has been launched; the compute gate is open.",
+    "numerical_agreement_basis": "Not assessed: no full run has completed yet.",
     "preference_level": 2,
     "blocker": null,
     "preference_level_basis": "Every model has pinned official code (level 1), but the sibling yu-2025-cvsign attempt on the same CorrNet/VAC code family showed it needs minimal correctness patches on current PyTorch (ctcdecode C++17 build, CTC loss without cuDNN), plus dataset adapters for ArabSign and GrSL; expected level 2, to be confirmed by this paper's own preflight.",
-    "pipeline_note": "Attempt paused 2026-10-26 at open gate compute-full-table before any data population, container build or run. pipeline and blocker are left null deliberately: AGENTS.md forbids blocked_on_compute before the #repro-sign-team-r discussion, and no target has a terminal result yet."
+    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). pipeline and blocker stay null until targets have terminal results."
   },
   "datasets": [
     {
@@ -1204,26 +1216,41 @@
       "evidence": [
         "arXiv v1 Sec. IV 'Experiments Setup': 'We followed the same experimental settings described in each study' AND 'Adam ... 40 epochs ... batch size of 2 and an initial learning rate of 10^-3, reduced at epochs 20 and 35 by a factor of five'",
         "VAC_CSLR@71f3e03, CorrNet@a812814, TLP@21be215, SEN@c9a4c7e configs/baseline.yaml: base_lr 0.0001",
-        "TLP and SEN upstream: num_epoch 80, step [40, 60]; ICCVW 2025 version Sec. 3.3 later states TLP/SEN were trained 80 epochs (steps 30, 60), still with lr 1e-3"
+        "TLP and SEN upstream: num_epoch 80, step [40, 60]; ICCVW 2025 version Sec. 3.3 later states TLP/SEN were trained 80 epochs (steps 30, 60), still with lr 1e-3",
+        "ICCVW 2025 PDF (sha256 922a2038...) Sec. 3.3: 'The VAC, SMKD, and CorrNet models were trained for 40 epochs ... The models TLP, SEN, and SlowFastSign were trained for 80 epochs, following the training protocols outlined by their respective authors' and, for TLP/SEN/SlowFastSign, 'the learning rate was adjusted at epochs 30 and 60'; lr 1e-3 and batch 2 for all.",
+        "Shared Table I cells, arXiv v1 vs ICCVW Table 1 (checked 2026-11-02 from both PDFs): all six TLP values and five of six SEN values are identical at one decimal; SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08->43.0, SEN GrSL SI 8.09->8.0, CorrNet ArabSign SI 7.65->7.6), and 1 differs (SMKD Phoenix SD 22.31->22.1). So the TLP/SEN numbers did not change although the stated schedule changed from 40 to 80 epochs; the evidence does not show which schedule produced them."
       ],
       "required_action": "Choose learning rate (paper 1e-3 vs upstream 1e-4) and TLP/SEN schedule (v1-stated 40 epochs/steps 20,35 vs upstream 80/steps 40,60) before any full run.",
       "resolution": {
         "decided_at": "2026-10-26",
         "decision": "Use the arXiv v1 stated protocol for every model: Adam, base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2. Each model otherwise runs its pinned upstream config unchanged (loss weights, augmentation, decoding).",
-        "basis": "Operator decision at the protocol gate after reviewing the paper text and the pinned upstream configs."
+        "basis": "Operator decision at the protocol gate after reviewing the paper text and the pinned upstream configs.",
+        "follow_up": "2026-11-02: decision kept (arXiv v1 is the assigned paper; its text states 40 epochs, steps 20/35 for all five models). The ICCVW 80-epoch (steps 30/60) statement for TLP/SEN is recorded as evidence and as a README deviation note. Before the full TLP and SEN runs launch, the measured cost of training them for 80 epochs, and whether it fits under the USD 2,000 ceiling, is reported to the operator for a decision."
       }
     },
     {
       "gate_id": "compute-full-table",
       "type": "compute",
-      "status": "open",
+      "status": "resolved",
       "reason": "Table I needs about 55 single-GPU trainings (Phoenix SD 5, Phoenix SI 5, ArabSign SD 5, ArabSign leave-one-signer-out 30, GrSL SI 5, GrSL Unseen-Sent 5); the projection far exceeds the 24 GPU-hour autonomous gate.",
       "evidence": [
         "Paper ICCVW Sec. 4: ~10 h per 40-epoch VAC/SMKD/CorrNet run on Phoenix2014/GrSL on one RTX A6000; ArabSign about half",
         "papers/yu-2025-cvsign run full-phoenix14t-002: CorrNet-family model on PHOENIX14-T, one L40S, ~33 min/epoch incl. dev eval (heavier ResNet34 variant, 7096 train clips vs 5672 here)",
-        "Projection (40 epochs for all models): Phoenix SD ~65, Phoenix SI ~50, GrSL ~130, ArabSign SD ~75, ArabSign LOSO 30 runs ~150-450 L40S-hours; total roughly 400-800 GPU-hours, about USD 800-1,600 at L40S rates, before preflight measurement and retries"
+        "Pre-preflight projection presented in #repro-sign-team-r on 2026-10-30 (40 epochs for all models): about 420-610 L40S GPU-hours including about 15 GPU-hours of preflights and a 10% retry margin, i.e. about USD 1,350-2,000 at USD 3.22/h effective (L40S with 16 CPU cores and 64 GiB, as measured in papers/yu-2025-cvsign); the 30 ArabSign leave-one-signer-out runs account for about USD 550-1,050. This supersedes the earlier GPU-only figure of USD 800-1,600, which omitted CPU/memory charges, preflights and retries."
       ],
-      "required_action": "Discuss the full-table plan in #repro-sign-team-r (study budget CHF 20,000) and record the approved ceiling; a representative preflight will replace the projection with measured throughput."
+      "required_action": "None outstanding. Launch blocks in the order Phoenix SD, Phoenix SI, GrSL SI, GrSL Unseen-Sent, ArabSign SD, ArabSign LOSO, each with declared ceilings and cumulative spend tracked against USD 2,000; ArabSign blocks wait for their protocol gates.",
+      "resolution": {
+        "decided_at": "2026-11-02",
+        "decision": "Approved: the full arXiv v1 Table I, including the 30 ArabSign leave-one-signer-out runs.",
+        "basis": "Project lead's approval in #repro-sign-team-r on 2026-11-02, relayed by the operator, after the 420-610 GPU-hour / USD 1,350-2,000 estimate.",
+        "ceilings": {
+          "max_cost_usd": 2000,
+          "max_cost_chf_approx": 1650,
+          "max_gpu_hours_l40s_approx": 620,
+          "rate_usd_per_l40s_hour": 3.22,
+          "note": "USD 2,000 is an absolute ceiling for this reproduction (preflights, full runs, evaluation and retries together). Cumulative spend is tracked per block against it; the GPU-hour figure is the ceiling divided by the L40S rate."
+        }
+      }
     }
   ]
 }

@@ -10,17 +10,18 @@
 
 The preference level is expected rather than confirmed; see `status.preference_level_basis`.
 
-**Pipeline status:** not yet set. The attempt is paused at the open compute gate `compute-full-table`. AGENTS.md forbids `blocked_on_compute` before the `#repro-sign-team-r` discussion, and no run has been launched.
+**Pipeline status:** not yet set. It stays null until targets have terminal results. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
 
 **Numerical agreement:** `not_assessed` — no target has been produced.
 
-**Attempt date:** 2026-10-26
+**Attempt dates:** 2026-10-26 (intake and gates); continued from 2026-11-02
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
 | `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.310 | Assignment intake, version resolution, source search, dataset inspection on Modal `repro-sign`, target/protocol/compute gates | Session system context names the model and ID. `claude --version` returned 2.1.310. No runs executed. |
+| `claude-opus-5-5-claude-code-2026-11-02` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | From 2026-11-02: gate updates, data population, container, preflights, estimates, launching and monitoring full runs | Session system context names the model and ID. `claude --version` returned 2.1.316. |
 
 ## Scope and target contract
 
@@ -45,6 +46,8 @@ The operator chose the arXiv v1 Table I, which is the supplied PDF. That gives 3
 The metric is test WER in percent: sclite corpus-level (S+D+I)/N, Eq. 1. None of the values is a copied baseline. The paper re-ran the Phoenix Signer-Dep column itself, and the other columns are new benchmarks. The paper states no seeds or checkpoint rule.
 
 **Protocol (gate `protocol-lr-epochs`, resolved).** The paper says it "followed the same experimental settings described in each study". The same paragraph then states Adam, lr 1e-3, 40 epochs, ×0.2 at epochs 20 and 35, and batch 2 for all models. Every pinned upstream config instead uses lr 1e-4, and TLP/SEN train for 80 epochs (steps 40/60). The operator chose the paper-stated protocol for every model: lr 1e-3 and 40 epochs with steps 20/35. Everything else is each repo's unchanged config.
+
+The ICCVW 2025 version (Sec. 3.3) instead says TLP and SEN were trained for 80 epochs, with steps 30/60. The decision stands because arXiv v1 is the assigned paper. Yet the TLP and SEN Table I values are the same in both versions: all six TLP cells and five of six SEN cells are identical at one decimal. So the change in stated schedule did not come with new numbers, and the evidence does not show which schedule produced them. Before the full TLP and SEN runs, the measured cost of an 80-epoch schedule will be reported to the operator for a decision.
 
 | Target ID | Paper location | Published WER |
 | --- | --- | ---: |
@@ -88,7 +91,7 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-No target has been produced. All 30 targets are open pending the compute gate.
+No target has been produced yet. All 30 targets are open, and no full run has completed.
 
 ## How to repeat this
 
@@ -116,7 +119,8 @@ No runs.
 
 | Detail | Paper/evidence says | This attempt will use | Rationale |
 | --- | --- | --- | --- |
-| Learning rate, TLP/SEN epochs | Paper: lr 1e-3, 40 epochs for all; upstream: lr 1e-4, TLP/SEN 80 epochs | Paper-stated values | Operator decision at gate `protocol-lr-epochs` |
+| Learning rate, TLP/SEN epochs | arXiv v1: lr 1e-3, 40 epochs (steps 20/35) for all. Upstream: lr 1e-4, TLP/SEN 80 epochs (steps 40/60). ICCVW 2025: lr 1e-3, TLP/SEN 80 epochs (steps 30/60). | arXiv v1 values for all five models | Operator decision at gate `protocol-lr-epochs`; arXiv v1 is the assigned paper |
+| TLP/SEN schedule evidence across versions | Table I vs ICCVW Table 1 (checked 2026-11-02 from both PDFs). All six TLP cells and five of six SEN cells are identical at one decimal. SEN GrSL Signer-Indep is 8.09 in v1, 8.0 in ICCVW Table 1 and 8.1 in ICCVW Fig. 3. Across all 30 shared cells, 26 are identical at one decimal, 3 match only by truncation (SMKD Phoenix SI 43.08→43.0, SEN GrSL SI 8.09→8.0, CorrNet ArabSign SI 7.65→7.6), and 1 differs (SMKD Phoenix SD 22.31→22.1). | 40 epochs (arXiv v1) | The numbers did not change when the stated schedule went from 40 to 80 epochs, so the evidence does not show which schedule produced them. The 80-epoch cost will be measured and put to the operator before the TLP/SEN full runs. |
 | Seed | Not stated | 0 (upstream default) | Single reported number per cell |
 | Checkpoint selection | Not stated | Dev-best per upstream `main.py`; the rule for ArabSign LOSO folds (no dev set) is to be fixed before launch | Upstream behavior |
 | ArabSign Signer-Dep validation | 709 samples, unpublished | To be decided before launch | Split not released |
@@ -133,10 +137,21 @@ The queue record flags no human evaluation and no ethical concerns, and `copied_
 
 None. The ArabSign access shown in the queue record was coordinated earlier by Team S.
 
-## Open gate
+## Compute gate (resolved)
 
 `compute-full-table` covers about 55 single-GPU trainings: Phoenix 10, ArabSign Signer-Dep 5, ArabSign LOSO 30, GrSL 10.
 
-The paper reports about 10 h per Phoenix/GrSL run on an RTX A6000, and about half that on ArabSign. The sibling `yu-2025-cvsign` run measured about 33 min/epoch on an L40S for a heavier CorrNet variant.
+The estimate presented in `#repro-sign-team-r` on 2026-10-30 was about 420–610 L40S GPU-hours, or USD 1,350–2,000. It included about 15 GPU-hours of preflights and a 10% retry margin, at USD 3.22/h effective for an L40S with 16 cores and 64 GiB. The 30 ArabSign LOSO runs account for about USD 550–1,050 of that.
 
-The projection is roughly 400–800 GPU-hours, or about USD 800–1,600. This needs a decision in `#repro-sign-team-r` before any full run.
+That estimate replaces the earlier GPU-only figure of USD 800–1,600, which left out CPU and memory charges, preflights and retries.
+
+The project lead approved the full Table I on 2026-11-02, including the 30 ArabSign LOSO runs. The absolute ceiling is **USD 2,000**: about 620 L40S GPU-hours at USD 3.22/h, or about CHF 1,650. Blocks run in this order:
+
+1. Phoenix SD
+2. Phoenix SI
+3. GrSL SI
+4. GrSL Unseen-Sent
+5. ArabSign SD
+6. ArabSign LOSO
+
+Each block declares its own ceilings, and cumulative spend is tracked against USD 2,000.
