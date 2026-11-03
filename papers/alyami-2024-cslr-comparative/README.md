@@ -10,9 +10,9 @@
 
 The preference level is expected rather than confirmed; see `status.preference_level_basis`.
 
-**Pipeline status:** `partial` — interim: 3 of 30 in-scope targets have been produced while the blocks run. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
+**Pipeline status:** `partial` — interim: 5 of 30 in-scope targets have been produced while the blocks run. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
 
-**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. SMKD is within it. VAC (+7.73) and TLP (+4.58) are not. This will be reassessed as targets complete; see `status.numerical_agreement_basis`.
+**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. SMKD is within it. VAC (+7.73), TLP (+4.58), SEN (+4.28) and CorrNet (+1.64) are not. This will be reassessed as targets complete; see `status.numerical_agreement_basis`.
 
 **Attempt dates:** 2026-10-26 (intake and gates); continued from 2026-11-02
 
@@ -91,15 +91,25 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-Three of the 30 targets have been produced so far; the other 27 are still running or not yet launched. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error.
+Five of the 30 targets have been produced so far (block 1, Phoenix SD); the other 25 are running or not yet launched. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error.
 
 | Target | Published | Reproduced | Difference | Selected epoch (dev WER) | Runs |
 | --- | ---: | ---: | ---: | --- | --- |
 | VAC, Phoenix2014 Signer-Dep | 21.94 | 29.67 | +7.73 | 35 (29.64) | `full-vac-phoenix-sd-001`, `eval-vac-phoenix-sd-001` |
 | SMKD, Phoenix2014 Signer-Dep | 22.31 | 22.14 | −0.17 | 36 (21.57) | `full-smkd-phoenix-sd-001`, `eval-smkd-phoenix-sd-001` |
 | TLP, Phoenix2014 Signer-Dep | 22.0 | 26.58 | +4.58 | 39 (26.19) | `full-tlp-phoenix-sd-001`, `eval-tlp-phoenix-sd-002` |
+| SEN, Phoenix2014 Signer-Dep | 20.2 | 24.48 | +4.28 | 36 (24.75) | `full-sen-phoenix-sd-001`, `eval-sen-phoenix-sd-001` |
+| CorrNet, Phoenix2014 Signer-Dep | 19.9 | 21.54 | +1.64 | 38 (21.34) | `full-corrnet-phoenix-sd-001`, `eval-corrnet-phoenix-sd-002` |
 
-Counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729. VAC and SMKD come from the same repository, data, lists and scoring; they differ only in `share_classifier` and `weight_norm`. Both use SeqCTC 1 + ConvCTC 1, the loss weights recorded as a guess. TLP's dev WER was still falling at the last of its 40 epochs (26.7, 26.8, 26.5, 26.2 over epochs 36–39). The 80-epoch schedule that ICCVW states for TLP was not adopted (see Guesses and deviations). These numbers are recorded as produced and not interpreted.
+Counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729, SEN 1,592, CorrNet 1,401.
+
+**Block 1 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`:
+
+- The lowest dev WER came late for all five models. The best epochs, 0-based out of 40, were VAC 35, SMKD 36, TLP 39, SEN 36 and CorrNet 38.
+- TLP's dev WER was still falling at its final (40th) epoch: 26.7, 26.8, 26.5 and 26.2 at epochs 36–39. The ICCVW 80-epoch schedule for TLP was not adopted (see Guesses and deviations).
+- VAC is +7.73 against the paper, while SMKD is within 0.17. SMKD comes from the same repository, with the same data lists and scoring, and differs only in `share_classifier` and `weight_norm`. Both use SeqCTC 1 + ConvCTC 1, the loss weights recorded as a guess. This rules out a data or scoring fault for this block.
+
+**Convergence curves.** Every full run's upstream per-epoch dev WER log (`work/dev.txt`) is copied verbatim to `artifacts/{run_id}-dev.txt`. Each copy is recorded as artifact `{run_id}-dev-log` with its sha256 and its source URI on the results Volume. Later blocks do the same.
 
 ## How to repeat this
 
@@ -119,7 +129,7 @@ The preflight, training and evaluation commands are listed per run in `reproduct
 
 ```bash
 $W run --detach $A::launch_train --model {vac|smkd|tlp|sen|corrnet} --setting {setting} --run-id {run_id} [--dev-rule {rule}]
-$W run $A::launch_evaluate --train-run-id {run_id} --eval-run-id {eval_run_id}
+$W run --detach $A::launch_evaluate --train-run-id {run_id} --eval-run-id {eval_run_id}
 $W run $A::launch_arabsign_split_record   # re-derives the ArabSign split hashes recorded in the gates
 ```
 
@@ -238,7 +248,22 @@ Per run this is 5.3–10.6 h. The paper reports about 10 h per Phoenix/GrSL run 
 
 **Spend so far:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
 
-**Block 1, Phoenix SD (running; VAC, SMKD and TLP done).** Training took 6.15 h for VAC, 6.16 h for SMKD (estimates 7.65 each) and 4.61 h for TLP (estimate 7.23). The first TLP evaluation hit a GPU hardware fault (XID 154, CUDA unknown error) before loading anything. It was retried unchanged as `eval-tlp-phoenix-sd-002`. Spend was USD 102.94 cumulative at 20:35 UTC, from Modal billing. The block ceiling is USD 228. That is the sum of the per-run GPU-hour ceilings (14 + 14 + 16 + 14 + 18 GPU-h) at USD 3.0/h, against an estimate of USD 122.
+**Block 1, Phoenix SD (complete, 2026-11-03 01:45 UTC).**
+
+| Model | Training time (h) | Estimate (h) |
+| --- | ---: | ---: |
+| VAC | 6.15 | 7.65 |
+| SMKD | 6.16 | 7.65 |
+| TLP | 4.61 | 7.23 |
+| SEN | 8.32 | 9.85 |
+| CorrNet | 6.94 | 8.75 |
+
+Each model trained in a single attempt. Two evaluations needed a second attempt, both rerun unchanged:
+
+- The first TLP evaluation hit a GPU hardware fault (XID 154, CUDA unknown error) before loading anything; the rerun is `eval-tlp-phoenix-sd-002`.
+- The first CorrNet evaluation was stopped when the local Modal client lost its connection, before the function had written anything; the rerun is `eval-corrnet-phoenix-sd-002`. Evaluations now run with `modal run --detach`.
+
+The block cost USD 98.15 (Modal billing per app, training and evaluation), against an estimate of USD 122. Cumulative spend is USD 114.69 of USD 2,000. The block ceiling is USD 228. That is the sum of the per-run GPU-hour ceilings (14 + 14 + 16 + 14 + 18 GPU-h) at USD 3.0/h, against an estimate of USD 122.
 
 | Run | Launched (UTC) | App | Declared ceiling |
 | --- | --- | --- | --- |
@@ -280,6 +305,7 @@ The 2026-10-26 session stopped before data work at the compute gate. On 2026-11-
 - **CTC diagnostics.** These found the cuDNN gradient error, which led to the four `ctc-without-cudnn` patches.
 - **ArabSign labels.** `preflight-*-arabsign-001` was stopped after `score_check` showed that the harness compared the wrong CSV columns with the ground-truth file. The CSV columns are `caption` and `procCaption`, not an Arabic sentence and a sign sentence.
 - **SEN log parsing.** SEN's preflights then failed twice in the harness's log parser, because SEN logs WER without a percent sign.
+- **Block 1 evaluations.** `eval-tlp-phoenix-sd-001` hit a GPU hardware fault (XID 154). `eval-corrnet-phoenix-sd-001` lost its client connection. Both were reruns of the same command, and `evaluate()` now raises on a non-zero upstream exit instead of failing in the log parser.
 
 Every model × dataset preflight passed within its declared attempt limit.
 
