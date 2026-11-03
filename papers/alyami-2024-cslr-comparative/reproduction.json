@@ -4192,9 +4192,9 @@
       ],
       "purpose": "Harness check of run_full's GPU-hour ceiling: with a 0.05 GPU-h (180 s) ceiling, frame staging alone exceeds it, so upstream must be stopped at once, the attempt recorded as stopped (gpu_hour_ceiling_reached) and the call must return without a Modal retry.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting phoenix-si --run-id check-run-full-ceiling-002 --eval-run-id eval-check-run-full-ceiling-002 --max-gpu-hours 0.05",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-03T08:38:00Z",
+      "finished_at_utc": "2026-11-03T08:41:46Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -4211,7 +4211,14 @@
         "max_gpu_hours": 0.5,
         "max_cost_chf": 1.25
       },
-      "terminal": null,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "The intended behaviour occurred: with max_gpu_hours 0.05 (180 s), frame staging used the budget, upstream main.py was started with the 1 s floor and killed (train record exit_code null, timed_out true, 1.4 s), the attempt was recorded in runs/check-run-full-ceiling-002/run_full.jsonl as state 'stopped', reason_code 'gpu_hour_ceiling_reached', stage 'training' (226 s), and the call returned normally (FunctionCall DONE), so Modal did not retry. gpu_seconds.json held 180 s (this check ran the heartbeat version before the final-write fix; launched runs write a final value). started_at_utc is approximate (task start)."
+      },
       "artifact_ids": [],
       "compute": {
         "platform": "modal",
@@ -5894,7 +5901,7 @@
           "worst_case_usd_if_every_run_hits_its_ceiling": 836.3,
           "cumulative_usd_before_launch": 114.69,
           "proof_of_detachment": "full-vac-phoenix-si-001 launched with modal run --detach at 08:36:37 UTC; the local client exited at 08:36:51. At 08:39:28, with no local modal process, app ap-TExBCfqcV25PagMad0KbLc was 'ephemeral (detached)' with 1 task, call fc-01M6G8VAYT4NYXFWJNAZ9SSKDV was running, and the run had written its own attempt_started record (task ta-01M6G8VBCEDZF0B5YDKSY9X6AR) to runs/full-vac-phoenix-si-001/run_full.jsonl on the results Volume. Checked through the Modal CLI/API (app list, FunctionCall status, volume get).",
-          "gpu_concurrency": "Not yet observed at launch; recorded when the runs are collected."
+          "gpu_concurrency": "At 08:41:52 UTC, 5 of the 20 apps had a running task and 15 were waiting for a GPU (state 'ephemeral (detached)', 0 tasks). Waiting is allowed; queue time does not count against the in-function GPU-hour ceilings. Observed concurrency over the whole run is recorded at collection."
         }
       }
     },

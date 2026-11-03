@@ -293,11 +293,11 @@ The 20 runs together are estimated at 154 GPU-h (about USD 465 at USD 3.03/h). T
 **Harness checks.**
 
 - `check-run-full-complete-002` ran `run_full` on the finished SMKD Phoenix SD run. It skipped training, re-evaluated epoch 36 and got 1,440 / 6,504 = 22.1402%, identical to `eval-smkd-phoenix-sd-001`.
-- `check-run-full-ceiling-002` exercises the ceiling stop.
+- `check-run-full-ceiling-002` exercised the ceiling stop with a 0.05 GPU-h budget. Upstream was killed after 1.4 s, the attempt was recorded as `stopped` (`gpu_hour_ceiling_reached`), and the call returned with no retry.
 
 The first Phoenix SI launch, at 08:18, used the train-only function. It was stopped during frame staging, before any checkpoint, and replaced by `run_full`. The stopped calls are listed under each run's `compute.superseded_calls`.
 
-At 08:41, 2 runs had a GPU and 18 were still being scheduled. Queueing is allowed and is recorded when the runs are collected.
+At 08:41:52, 5 runs had a GPU and 15 were waiting for one. Queueing is allowed and is recorded when the runs are collected.
 
 ## Guesses and deviations
 
