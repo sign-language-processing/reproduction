@@ -273,6 +273,16 @@ The block cost USD 98.15 (Modal billing per app, training and evaluation), again
 | `full-tlp-phoenix-sd-001` | 15:28 | `ap-brLTkY5v3XGxA5aUMV3ioZ` | 14 GPU-h |
 | `full-sen-phoenix-sd-001` | 15:28 | `ap-q7NTK645rUEFQURf7rlJGn` | 18 GPU-h |
 
+**Block 2, Phoenix SI (running).** All five runs launched on 2026-11-03 at 08:18 UTC with the unchanged protocol: lr 1e-3, 40 epochs, steps 20/35. They train on the SI5 corpus (4,375 train, 111 dev, 180 test clips). The estimate is USD 88. The block ceiling is USD 165: the per-run ceilings (VAC, SMKD and TLP 10 GPU-h each, SEN 13, CorrNet 12) at USD 3.0/h.
+
+| Run | App |
+| --- | --- |
+| `full-vac-phoenix-si-001` | `ap-m5mnbJdJzdRkYPGjffK9Wn` |
+| `full-smkd-phoenix-si-001` | `ap-R1FK2i2FAjYzl56IhgkDia` |
+| `full-tlp-phoenix-si-001` | `ap-3AX1CHxhqeJRNMfN5J1Qrr` |
+| `full-sen-phoenix-si-001` | `ap-BHsqxMPqjLSSeB7DxxXGnd` |
+| `full-corrnet-phoenix-si-001` | `ap-tC4qazyZMkNqWHgl2NmscF` |
+
 ## Guesses and deviations
 
 | Detail | Paper/evidence says | This attempt uses | Rationale |
