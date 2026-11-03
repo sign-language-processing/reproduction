@@ -3744,8 +3744,8 @@
       "agent_ids": [
         "claude-opus-5-5-claude-code-2026-11-02"
       ],
-      "purpose": "Full training of vac on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID; lists and gloss dict written with the repo's preprocess helpers), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation, dev-best checkpoint; block 2 (Phoenix SI). Measured estimate 5.45 GPU-h (block 1 ran at 0.64-0.85 of its estimates). Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model vac --setting phoenix-si --run-id full-vac-phoenix-si-001",
+      "purpose": "Full run of vac on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID), block 2 phoenix-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-vac-phoenix-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-phoenix-si-001/run_full.jsonl. Measured estimate 5.45 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted. Re-declared 2026-11-03 08:40 UTC: the first call (train-only function, launched 08:18) was stopped at about 08:26 during frame staging, before any checkpoint, and replaced by run_full so that evaluation needs no local step; the in-function budget is the declared ceiling minus 0.25 GPU-h for that call.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting phoenix-si --run-id full-vac-phoenix-si-001 --eval-run-id eval-vac-phoenix-si-001 --max-gpu-hours 9.75",
       "exit_code": null,
       "started_at_utc": null,
       "finished_at_utc": null,
@@ -3760,7 +3760,7 @@
         "max_attempts": 4
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-03T08:18:53Z",
+        "declared_at_utc": "2026-11-03T08:31:02Z",
         "max_wall_time_seconds": 36000,
         "max_gpu_hours": 10.0,
         "max_cost_chf": 25.0
@@ -3771,9 +3771,9 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_environment": "main",
-        "modal_app_id": "ap-m5mnbJdJzdRkYPGjffK9Wn",
-        "function_call_id": "fc-01M6G7TW5NSFTBWKGJP97BQHE0",
-        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "modal_app_id": "ap-TExBCfqcV25PagMad0KbLc",
+        "function_call_id": "fc-01M6G8VAYT4NYXFWJNAZ9SSKDV",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
         "gpu_count": 1,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -3782,7 +3782,18 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "superseded_calls": [
+          {
+            "modal_app_id": "ap-m5mnbJdJzdRkYPGjffK9Wn",
+            "function_call_id": "fc-01M6G7TW5NSFTBWKGJP97BQHE0",
+            "function": "train",
+            "stopped_at_utc": "2026-11-03T08:26:10Z",
+            "reason": "stopped during frame staging (no checkpoint) and replaced by run_full, which evaluates in the same call"
+          }
+        ],
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-TExBCfqcV25PagMad0KbLc",
+        "launched_at_utc": "2026-11-03T08:36:37Z"
       }
     },
     {
@@ -3790,8 +3801,8 @@
       "agent_ids": [
         "claude-opus-5-5-claude-code-2026-11-02"
       ],
-      "purpose": "Full training of smkd on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID; lists and gloss dict written with the repo's preprocess helpers), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation, dev-best checkpoint; block 2 (Phoenix SI). Measured estimate 5.45 GPU-h (block 1 ran at 0.64-0.85 of its estimates). Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model smkd --setting phoenix-si --run-id full-smkd-phoenix-si-001",
+      "purpose": "Full run of smkd on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID), block 2 phoenix-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-smkd-phoenix-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-phoenix-si-001/run_full.jsonl. Measured estimate 5.45 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted. Re-declared 2026-11-03 08:40 UTC: the first call (train-only function, launched 08:18) was stopped at about 08:26 during frame staging, before any checkpoint, and replaced by run_full so that evaluation needs no local step; the in-function budget is the declared ceiling minus 0.25 GPU-h for that call.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting phoenix-si --run-id full-smkd-phoenix-si-001 --eval-run-id eval-smkd-phoenix-si-001 --max-gpu-hours 9.75",
       "exit_code": null,
       "started_at_utc": null,
       "finished_at_utc": null,
@@ -3806,7 +3817,7 @@
         "max_attempts": 4
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-03T08:18:53Z",
+        "declared_at_utc": "2026-11-03T08:31:02Z",
         "max_wall_time_seconds": 36000,
         "max_gpu_hours": 10.0,
         "max_cost_chf": 25.0
@@ -3817,9 +3828,9 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_environment": "main",
-        "modal_app_id": "ap-R1FK2i2FAjYzl56IhgkDia",
-        "function_call_id": "fc-01M6G7VA0EFCPNEQ9J9WK5HG43",
-        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "modal_app_id": "ap-U3fn0kLn9plk2DOYiKEurv",
+        "function_call_id": "fc-01M6G91C7GJBX497RRPTCY9DV9",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
         "gpu_count": 1,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -3828,7 +3839,18 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "superseded_calls": [
+          {
+            "modal_app_id": "ap-R1FK2i2FAjYzl56IhgkDia",
+            "function_call_id": "fc-01M6G7VA0EFCPNEQ9J9WK5HG43",
+            "function": "train",
+            "stopped_at_utc": "2026-11-03T08:25:59Z",
+            "reason": "stopped during frame staging (no checkpoint) and replaced by run_full, which evaluates in the same call"
+          }
+        ],
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-U3fn0kLn9plk2DOYiKEurv",
+        "launched_at_utc": "2026-11-03T08:40Z"
       }
     },
     {
@@ -3836,8 +3858,8 @@
       "agent_ids": [
         "claude-opus-5-5-claude-code-2026-11-02"
       ],
-      "purpose": "Full training of tlp on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID; lists and gloss dict written with the repo's preprocess helpers), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation, dev-best checkpoint; block 2 (Phoenix SI). Measured estimate 5.3 GPU-h (block 1 ran at 0.64-0.85 of its estimates). Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model tlp --setting phoenix-si --run-id full-tlp-phoenix-si-001",
+      "purpose": "Full run of tlp on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID), block 2 phoenix-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-tlp-phoenix-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-phoenix-si-001/run_full.jsonl. Measured estimate 5.3 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted. Re-declared 2026-11-03 08:40 UTC: the first call (train-only function, launched 08:18) was stopped at about 08:26 during frame staging, before any checkpoint, and replaced by run_full so that evaluation needs no local step; the in-function budget is the declared ceiling minus 0.25 GPU-h for that call.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting phoenix-si --run-id full-tlp-phoenix-si-001 --eval-run-id eval-tlp-phoenix-si-001 --max-gpu-hours 9.75",
       "exit_code": null,
       "started_at_utc": null,
       "finished_at_utc": null,
@@ -3852,7 +3874,7 @@
         "max_attempts": 4
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-03T08:18:53Z",
+        "declared_at_utc": "2026-11-03T08:31:02Z",
         "max_wall_time_seconds": 36000,
         "max_gpu_hours": 10.0,
         "max_cost_chf": 25.0
@@ -3863,9 +3885,9 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_environment": "main",
-        "modal_app_id": "ap-3AX1CHxhqeJRNMfN5J1Qrr",
-        "function_call_id": "fc-01M6G7VQWKP4XJCG0YNQWS84KG",
-        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "modal_app_id": "ap-g1LNgoGZKe880RCkgYGsKN",
+        "function_call_id": "fc-01M6G91CE3EQNN4G027XZE7450",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
         "gpu_count": 1,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -3874,7 +3896,18 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "superseded_calls": [
+          {
+            "modal_app_id": "ap-3AX1CHxhqeJRNMfN5J1Qrr",
+            "function_call_id": "fc-01M6G7VQWKP4XJCG0YNQWS84KG",
+            "function": "train",
+            "stopped_at_utc": "2026-11-03T08:26:01Z",
+            "reason": "stopped during frame staging (no checkpoint) and replaced by run_full, which evaluates in the same call"
+          }
+        ],
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-g1LNgoGZKe880RCkgYGsKN",
+        "launched_at_utc": "2026-11-03T08:40Z"
       }
     },
     {
@@ -3882,8 +3915,8 @@
       "agent_ids": [
         "claude-opus-5-5-claude-code-2026-11-02"
       ],
-      "purpose": "Full training of sen on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID; lists and gloss dict written with the repo's preprocess helpers), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation, dev-best checkpoint; block 2 (Phoenix SI). Measured estimate 7.26 GPU-h (block 1 ran at 0.64-0.85 of its estimates). Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model sen --setting phoenix-si --run-id full-sen-phoenix-si-001",
+      "purpose": "Full run of sen on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID), block 2 phoenix-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-sen-phoenix-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-phoenix-si-001/run_full.jsonl. Measured estimate 7.26 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted. Re-declared 2026-11-03 08:40 UTC: the first call (train-only function, launched 08:18) was stopped at about 08:26 during frame staging, before any checkpoint, and replaced by run_full so that evaluation needs no local step; the in-function budget is the declared ceiling minus 0.25 GPU-h for that call.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting phoenix-si --run-id full-sen-phoenix-si-001 --eval-run-id eval-sen-phoenix-si-001 --max-gpu-hours 12.75",
       "exit_code": null,
       "started_at_utc": null,
       "finished_at_utc": null,
@@ -3898,7 +3931,7 @@
         "max_attempts": 4
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-03T08:18:53Z",
+        "declared_at_utc": "2026-11-03T08:31:02Z",
         "max_wall_time_seconds": 46800,
         "max_gpu_hours": 13.0,
         "max_cost_chf": 32.5
@@ -3909,9 +3942,9 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_environment": "main",
-        "modal_app_id": "ap-BHsqxMPqjLSSeB7DxxXGnd",
-        "function_call_id": "fc-01M6G7W5N9KY1NCDEKPK6S1QWE",
-        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "modal_app_id": "ap-EP7aeqDJAW8e86DVciMrGY",
+        "function_call_id": "fc-01M6G91C6X3C91TKWH27NJYH73",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
         "gpu_count": 1,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -3920,7 +3953,18 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "superseded_calls": [
+          {
+            "modal_app_id": "ap-BHsqxMPqjLSSeB7DxxXGnd",
+            "function_call_id": "fc-01M6G7W5N9KY1NCDEKPK6S1QWE",
+            "function": "train",
+            "stopped_at_utc": "2026-11-03T08:26:16Z",
+            "reason": "stopped during frame staging (no checkpoint) and replaced by run_full, which evaluates in the same call"
+          }
+        ],
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-EP7aeqDJAW8e86DVciMrGY",
+        "launched_at_utc": "2026-11-03T08:40Z"
       }
     },
     {
@@ -3928,8 +3972,8 @@
       "agent_ids": [
         "claude-opus-5-5-claude-code-2026-11-02"
       ],
-      "purpose": "Full training of corrnet on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID; lists and gloss dict written with the repo's preprocess helpers), 40 epochs, Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation, dev-best checkpoint; block 2 (Phoenix SI). Measured estimate 6.35 GPU-h (block 1 ran at 0.64-0.85 of its estimates). Modal retries (up to 3) resume from the newest epoch checkpoint within this run; a further attempt needs a new diagnosis.",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_train --model corrnet --setting phoenix-si --run-id full-corrnet-phoenix-si-001",
+      "purpose": "Full run of corrnet on Phoenix2014 Signer-Indep (SI5 corpus: train 4,375 / dev 111 / test 180 clips, broken clip dropped by ID), block 2 phoenix-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-corrnet-phoenix-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-phoenix-si-001/run_full.jsonl. Measured estimate 6.35 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted. Re-declared 2026-11-03 08:40 UTC: the first call (train-only function, launched 08:18) was stopped at about 08:26 during frame staging, before any checkpoint, and replaced by run_full so that evaluation needs no local step; the in-function budget is the declared ceiling minus 0.25 GPU-h for that call.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting phoenix-si --run-id full-corrnet-phoenix-si-001 --eval-run-id eval-corrnet-phoenix-si-001 --max-gpu-hours 11.75",
       "exit_code": null,
       "started_at_utc": null,
       "finished_at_utc": null,
@@ -3944,7 +3988,7 @@
         "max_attempts": 4
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-03T08:18:53Z",
+        "declared_at_utc": "2026-11-03T08:31:02Z",
         "max_wall_time_seconds": 43200,
         "max_gpu_hours": 12.0,
         "max_cost_chf": 30.0
@@ -3955,9 +3999,74 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_environment": "main",
-        "modal_app_id": "ap-tC4qazyZMkNqWHgl2NmscF",
-        "function_call_id": "fc-01M6G7WKBDAYWPT8AT5XXT1QQ9",
-        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 32 GiB RAM",
+        "modal_app_id": "ap-UVPKim6rZ2OnAt9oo0NSGe",
+        "function_call_id": "fc-01M6G91C8RY8B5HDK1PCN83DNK",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "superseded_calls": [
+          {
+            "modal_app_id": "ap-tC4qazyZMkNqWHgl2NmscF",
+            "function_call_id": "fc-01M6G7WKBDAYWPT8AT5XXT1QQ9",
+            "function": "train",
+            "stopped_at_utc": "2026-11-03T08:26:17Z",
+            "reason": "stopped during frame staging (no checkpoint) and replaced by run_full, which evaluates in the same call"
+          }
+        ],
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-UVPKim6rZ2OnAt9oo0NSGe",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "check-run-full-complete-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Harness check of run_full before the unattended blocks: on the already-trained full-smkd-phoenix-sd-001 it must skip training (already complete, newest checkpoint loadable), evaluate the dev-best checkpoint into eval-smkd-phoenix-sd-check-001, and record the attempt; the test WER should equal eval-smkd-phoenix-sd-001's 22.14.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting phoenix-sd --run-id full-smkd-phoenix-sd-001 --eval-run-id eval-smkd-phoenix-sd-check-001 --max-gpu-hours 1",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-03T08:29:02Z",
+      "finished_at_utc": "2026-11-03T08:29:05Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "check-run-full-complete",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:29:00Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.5
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "check-run-full-complete-002",
+        "gate_ids": [],
+        "detail": "Launched without --detach: launch_run_full only spawns the call and returns, so the ephemeral app stopped 3 s after creation (app state 'stopped', 0 tasks) and the spawned call never ran. Relaunched with modal run --detach. This is the client dependency the unattended blocks must not have."
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-CfxCqF7GSTa9uZXNSESabU",
+        "function_call_id": "fc-01M6G8DDRMQZTAVVG43GEHW77X",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
         "gpu_count": 1,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -3967,6 +4076,879 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
+      }
+    },
+    {
+      "run_id": "check-run-full-ceiling-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Harness check of run_full's GPU-hour ceiling: with a 0.05 GPU-h (180 s) ceiling, frame staging alone exceeds it, so upstream must be stopped at once, the attempt recorded as stopped (gpu_hour_ceiling_reached) and the call must return without a Modal retry.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting phoenix-si --run-id check-run-full-ceiling-001 --eval-run-id eval-check-run-full-ceiling-001 --max-gpu-hours 0.05",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-03T08:29:02Z",
+      "finished_at_utc": "2026-11-03T08:29:05Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "check-run-full-ceiling",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:29:00Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 1.25
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "check-run-full-ceiling-002",
+        "gate_ids": [],
+        "detail": "Launched without --detach: launch_run_full only spawns the call and returns, so the ephemeral app stopped 3 s after creation (app state 'stopped', 0 tasks) and the spawned call never ran. Relaunched with modal run --detach. This is the client dependency the unattended blocks must not have."
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-zGQd42BkuAuawi0tPBuLbL",
+        "function_call_id": "fc-01M6G8DDMJ5B93TN3QK56P982B",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "check-run-full-complete-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Harness check of run_full before the unattended blocks: on the already-trained full-smkd-phoenix-sd-001 it must skip training (already complete, newest checkpoint loadable), evaluate the dev-best checkpoint into eval-smkd-phoenix-sd-check-002, and record the attempt; the test WER should equal eval-smkd-phoenix-sd-001's 22.14.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting phoenix-sd --run-id full-smkd-phoenix-sd-001 --eval-run-id eval-smkd-phoenix-sd-check-002 --max-gpu-hours 1",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-03T08:31:14Z",
+      "finished_at_utc": "2026-11-03T08:34:08Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "check-run-full-complete",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:29:25Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 2.5
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "run_full on full-smkd-phoenix-sd-001 skipped training (already complete), evaluated the dev-best epoch 36 into eval-smkd-phoenix-sd-check-002 and recorded the attempt in runs/full-smkd-phoenix-sd-001/run_full.jsonl (state succeeded, 175 s). sclite test 1,440 errors / 6,504 words = 22.1402%, identical to eval-smkd-phoenix-sd-001. Launched with --detach; ran with no local client."
+      },
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-lEovDiv8cBgTW8OfzDkMNg",
+        "function_call_id": "fc-01M6G8EHSECS2YE4QSSEY84A9P",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "check-run-full-ceiling-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Harness check of run_full's GPU-hour ceiling: with a 0.05 GPU-h (180 s) ceiling, frame staging alone exceeds it, so upstream must be stopped at once, the attempt recorded as stopped (gpu_hour_ceiling_reached) and the call must return without a Modal retry.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting phoenix-si --run-id check-run-full-ceiling-002 --eval-run-id eval-check-run-full-ceiling-002 --max-gpu-hours 0.05",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "check-run-full-ceiling",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:29:25Z",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 1.25
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2w0tubaq6EaTQTOsaAFyB6",
+        "function_call_id": "fc-01M6G8EHPV2N8BGW7KV4E0VNEF",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-grsl-si-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on GrSL Signer-Indep (official GSL SI split files), block 3 grsl-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-vac-grsl-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-grsl-si-001/run_full.jsonl. Measured estimate 6.39 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting grsl-si --run-id full-vac-grsl-si-001 --eval-run-id eval-vac-grsl-si-001 --max-gpu-hours 12",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-grsl-si",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-QunvGnTyC62nmzeMMwPHRk",
+        "function_call_id": "fc-01M6G91C6ZD5B6RBCBWHDQCGT5",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-QunvGnTyC62nmzeMMwPHRk",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-smkd-grsl-si-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on GrSL Signer-Indep (official GSL SI split files), block 3 grsl-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-smkd-grsl-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-grsl-si-001/run_full.jsonl. Measured estimate 6.66 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting grsl-si --run-id full-smkd-grsl-si-001 --eval-run-id eval-smkd-grsl-si-001 --max-gpu-hours 12",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-grsl-si",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-mLTm6HQa11uVb2OXr4DWhH",
+        "function_call_id": "fc-01M6G91TPZY8J7CXZSEVG5JRE1",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-mLTm6HQa11uVb2OXr4DWhH",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-tlp-grsl-si-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on GrSL Signer-Indep (official GSL SI split files), block 3 grsl-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-tlp-grsl-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-grsl-si-001/run_full.jsonl. Measured estimate 8.72 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting grsl-si --run-id full-tlp-grsl-si-001 --eval-run-id eval-tlp-grsl-si-001 --max-gpu-hours 15",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-grsl-si",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-pmT4YYYpVqGxUQdj2hriqZ",
+        "function_call_id": "fc-01M6G91TJVV0XB2SN2YDPVT4VP",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-pmT4YYYpVqGxUQdj2hriqZ",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-sen-grsl-si-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on GrSL Signer-Indep (official GSL SI split files), block 3 grsl-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-sen-grsl-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-grsl-si-001/run_full.jsonl. Measured estimate 8.89 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting grsl-si --run-id full-sen-grsl-si-001 --eval-run-id eval-sen-grsl-si-001 --max-gpu-hours 16",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-grsl-si",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-p4EVa6nhrBFvnLPPzPTyoW",
+        "function_call_id": "fc-01M6G91TJSXSGP1WZBPJK3T3B1",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-p4EVa6nhrBFvnLPPzPTyoW",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-corrnet-grsl-si-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on GrSL Signer-Indep (official GSL SI split files), block 3 grsl-si: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-corrnet-grsl-si-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-grsl-si-001/run_full.jsonl. Measured estimate 8.09 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting grsl-si --run-id full-corrnet-grsl-si-001 --eval-run-id eval-corrnet-grsl-si-001 --max-gpu-hours 14",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-grsl-si",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-pCmcfgaiIqeghmYbp7D249",
+        "function_call_id": "fc-01M6G91TBJ9CT1MPZ0S64KD6YG",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-pCmcfgaiIqeghmYbp7D249",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-vac-grsl-unseen-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on GrSL Unseen-Sentences (official GSL SD unseen split files), block 4 grsl-unseen: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-vac-grsl-unseen-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-grsl-unseen-001/run_full.jsonl. Measured estimate 7.77 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting grsl-unseen --run-id full-vac-grsl-unseen-001 --eval-run-id eval-vac-grsl-unseen-001 --max-gpu-hours 14",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-grsl-unseen",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-L6A200x2gn7OiiOMZn4z3b",
+        "function_call_id": "fc-01M6G91TJH3G4AZVGVH4WABKD5",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-L6A200x2gn7OiiOMZn4z3b",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-smkd-grsl-unseen-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on GrSL Unseen-Sentences (official GSL SD unseen split files), block 4 grsl-unseen: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-smkd-grsl-unseen-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-grsl-unseen-001/run_full.jsonl. Measured estimate 7.74 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting grsl-unseen --run-id full-smkd-grsl-unseen-001 --eval-run-id eval-smkd-grsl-unseen-001 --max-gpu-hours 14",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-grsl-unseen",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 50400,
+        "max_gpu_hours": 14.0,
+        "max_cost_chf": 35.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-QG2cFxfRTtnLB9LI113p4r",
+        "function_call_id": "fc-01M6G928YXAB1RE530TX078B3D",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-QG2cFxfRTtnLB9LI113p4r",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-tlp-grsl-unseen-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on GrSL Unseen-Sentences (official GSL SD unseen split files), block 4 grsl-unseen: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-tlp-grsl-unseen-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-grsl-unseen-001/run_full.jsonl. Measured estimate 8.6 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting grsl-unseen --run-id full-tlp-grsl-unseen-001 --eval-run-id eval-tlp-grsl-unseen-001 --max-gpu-hours 15",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-grsl-unseen",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-LhBprd22zRPeZxyYEWAFLP",
+        "function_call_id": "fc-01M6G928YXHHQSF4SR5CG8H8Y3",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-LhBprd22zRPeZxyYEWAFLP",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-sen-grsl-unseen-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on GrSL Unseen-Sentences (official GSL SD unseen split files), block 4 grsl-unseen: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-sen-grsl-unseen-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-grsl-unseen-001/run_full.jsonl. Measured estimate 9.02 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting grsl-unseen --run-id full-sen-grsl-unseen-001 --eval-run-id eval-sen-grsl-unseen-001 --max-gpu-hours 16",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-grsl-unseen",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-sNW1fIgoYr0gUOYqRI8DXP",
+        "function_call_id": "fc-01M6G9293VT0XHPT2ZT93R3MR7",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-sNW1fIgoYr0gUOYqRI8DXP",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-corrnet-grsl-unseen-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on GrSL Unseen-Sentences (official GSL SD unseen split files), block 4 grsl-unseen: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-corrnet-grsl-unseen-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-grsl-unseen-001/run_full.jsonl. Measured estimate 8.45 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting grsl-unseen --run-id full-corrnet-grsl-unseen-001 --eval-run-id eval-corrnet-grsl-unseen-001 --max-gpu-hours 15",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-grsl-unseen",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-VwcM9JAhjmyhY9dOq4g1Gd",
+        "function_call_id": "fc-01M6G9294EF5EJJW1ZCFWQAJKT",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-VwcM9JAhjmyhY9dOq4g1Gd",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign Signer-Dep (author train/test lists; 6,780 train / 709 dev / 1,841 test, dev = stratified-709-seed42, gate arabsign-sd-validation), block 5 arabsign-sd: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-vac-arabsign-sd-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-sd-001/run_full.jsonl. Measured estimate 8.21 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-sd --run-id full-vac-arabsign-sd-001 --eval-run-id eval-vac-arabsign-sd-001 --max-gpu-hours 15 --dev-rule stratified-709-seed42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-BbjjLwqxAWCQ2Ue2FCDgmG",
+        "function_call_id": "fc-01M6G928YZXDESATGA3F3P92WN",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-BbjjLwqxAWCQ2Ue2FCDgmG",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign Signer-Dep (author train/test lists; 6,780 train / 709 dev / 1,841 test, dev = stratified-709-seed42, gate arabsign-sd-validation), block 5 arabsign-sd: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-smkd-arabsign-sd-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-sd-001/run_full.jsonl. Measured estimate 8.21 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-sd --run-id full-smkd-arabsign-sd-001 --eval-run-id eval-smkd-arabsign-sd-001 --max-gpu-hours 15 --dev-rule stratified-709-seed42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-BRS8krpxEzYbe3stxBFlAz",
+        "function_call_id": "fc-01M6G92PZQMG3TQNKRYFAN712A",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-BRS8krpxEzYbe3stxBFlAz",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign Signer-Dep (author train/test lists; 6,780 train / 709 dev / 1,841 test, dev = stratified-709-seed42, gate arabsign-sd-validation), block 5 arabsign-sd: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-tlp-arabsign-sd-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-sd-001/run_full.jsonl. Measured estimate 8.15 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-sd --run-id full-tlp-arabsign-sd-001 --eval-run-id eval-tlp-arabsign-sd-001 --max-gpu-hours 15 --dev-rule stratified-709-seed42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-l0IdMYXSK9n3NWRKlN6Hw4",
+        "function_call_id": "fc-01M6G92Q0DXQVMBQ4838N5NR2E",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-l0IdMYXSK9n3NWRKlN6Hw4",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign Signer-Dep (author train/test lists; 6,780 train / 709 dev / 1,841 test, dev = stratified-709-seed42, gate arabsign-sd-validation), block 5 arabsign-sd: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-sen-arabsign-sd-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-sd-001/run_full.jsonl. Measured estimate 10.41 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-sd --run-id full-sen-arabsign-sd-001 --eval-run-id eval-sen-arabsign-sd-001 --max-gpu-hours 18 --dev-rule stratified-709-seed42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 64800,
+        "max_gpu_hours": 18.0,
+        "max_cost_chf": 45.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-h66zj5x7PztuyBMwwp2etl",
+        "function_call_id": "fc-01M6G92Q2SK6QWHPBR2BDXV96B",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-h66zj5x7PztuyBMwwp2etl",
+        "launched_at_utc": "2026-11-03T08:40Z"
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-sd-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign Signer-Dep (author train/test lists; 6,780 train / 709 dev / 1,841 test, dev = stratified-709-seed42, gate arabsign-sd-validation), block 5 arabsign-sd: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0, per-epoch dev evaluation), then evaluates the dev-best (lowest dev WER, earliest on ties) checkpoint on dev and test into runs/eval-corrnet-arabsign-sd-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-sd-001/run_full.jsonl. Measured estimate 8.68 GPU-h. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-sd --run-id full-corrnet-arabsign-sd-001 --eval-run-id eval-corrnet-arabsign-sd-001 --max-gpu-hours 15 --dev-rule stratified-709-seed42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-sd",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-03T08:31:02Z",
+        "max_wall_time_seconds": 54000,
+        "max_gpu_hours": 15.0,
+        "max_cost_chf": 37.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-2onpEtHWQ53JrJWLeJMXl3",
+        "function_call_id": "fc-01M6G92Q3FR1NQCKPCMHN53N6W",
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-2onpEtHWQ53JrJWLeJMXl3",
+        "launched_at_utc": "2026-11-03T08:40Z"
       }
     }
   ],
@@ -4834,7 +5816,7 @@
           },
           {
             "block": "2 phoenix-si",
-            "launched_at": "2026-11-03T08:18Z",
+            "launched_at": "2026-11-03T08:36-08:41Z",
             "runs": [
               "full-vac-phoenix-si-001",
               "full-smkd-phoenix-si-001",
@@ -4842,10 +5824,59 @@
               "full-sen-phoenix-si-001",
               "full-corrnet-phoenix-si-001"
             ],
-            "estimated_usd": 88.2,
-            "declared_ceiling_usd": 165,
-            "cumulative_usd_before_block": 114.69,
-            "note": "Ceiling = sum of the per-run GPU-hour ceilings x USD 3.0 (10+10+10+13+12 GPU-h). Protocol unchanged: lr 1e-3, 40 epochs, steps 20/35 (gate protocol-lr-epochs)."
+            "estimated_gpu_hours": 29.81,
+            "estimated_usd": 90.3,
+            "declared_ceiling_gpu_hours": 55,
+            "declared_ceiling_usd": 166.6,
+            "note": "Launched together with the other non-LOSO blocks as independent detached run_full calls (train + evaluate in one call, ceiling enforced inside the function). USD at 3.03/h (L40S, 16 cores, 40 GiB). The first Phoenix SI launch (train-only calls at 08:18) was stopped during frame staging and replaced; see each run's compute.superseded_calls."
+          },
+          {
+            "block": "3 grsl-si",
+            "launched_at": "2026-11-03T08:36-08:41Z",
+            "runs": [
+              "full-vac-grsl-si-001",
+              "full-smkd-grsl-si-001",
+              "full-tlp-grsl-si-001",
+              "full-sen-grsl-si-001",
+              "full-corrnet-grsl-si-001"
+            ],
+            "estimated_gpu_hours": 38.75,
+            "estimated_usd": 117.4,
+            "declared_ceiling_gpu_hours": 69,
+            "declared_ceiling_usd": 209.1,
+            "note": "Launched together with the other non-LOSO blocks as independent detached run_full calls (train + evaluate in one call, ceiling enforced inside the function). USD at 3.03/h (L40S, 16 cores, 40 GiB)."
+          },
+          {
+            "block": "4 grsl-unseen",
+            "launched_at": "2026-11-03T08:36-08:41Z",
+            "runs": [
+              "full-vac-grsl-unseen-001",
+              "full-smkd-grsl-unseen-001",
+              "full-tlp-grsl-unseen-001",
+              "full-sen-grsl-unseen-001",
+              "full-corrnet-grsl-unseen-001"
+            ],
+            "estimated_gpu_hours": 41.58,
+            "estimated_usd": 126.0,
+            "declared_ceiling_gpu_hours": 74,
+            "declared_ceiling_usd": 224.2,
+            "note": "Launched together with the other non-LOSO blocks as independent detached run_full calls (train + evaluate in one call, ceiling enforced inside the function). USD at 3.03/h (L40S, 16 cores, 40 GiB)."
+          },
+          {
+            "block": "5 arabsign-sd",
+            "launched_at": "2026-11-03T08:36-08:41Z",
+            "runs": [
+              "full-vac-arabsign-sd-001",
+              "full-smkd-arabsign-sd-001",
+              "full-tlp-arabsign-sd-001",
+              "full-sen-arabsign-sd-001",
+              "full-corrnet-arabsign-sd-001"
+            ],
+            "estimated_gpu_hours": 43.66,
+            "estimated_usd": 132.3,
+            "declared_ceiling_gpu_hours": 78,
+            "declared_ceiling_usd": 236.3,
+            "note": "Launched together with the other non-LOSO blocks as independent detached run_full calls (train + evaluate in one call, ceiling enforced inside the function). USD at 3.03/h (L40S, 16 cores, 40 GiB)."
           }
         ],
         "projection_after_decisions": {
@@ -4854,6 +5885,16 @@
           "usd_spent_before_full_runs": 16.08,
           "usd_projected_total": 1396.4,
           "basis": "measured_estimate blocks at 40 epochs with the decided ArabSign rules (stratified-709-seed42: 129.2; final-epoch: 803.2)."
+        },
+        "unattended_launch": {
+          "at_utc": "2026-11-03T08:36-08:41Z",
+          "runs": 20,
+          "sum_estimated_gpu_hours": 153.8,
+          "sum_ceiling_gpu_hours": 276,
+          "worst_case_usd_if_every_run_hits_its_ceiling": 836.3,
+          "cumulative_usd_before_launch": 114.69,
+          "proof_of_detachment": "full-vac-phoenix-si-001 launched with modal run --detach at 08:36:37 UTC; the local client exited at 08:36:51. At 08:39:28, with no local modal process, app ap-TExBCfqcV25PagMad0KbLc was 'ephemeral (detached)' with 1 task, call fc-01M6G8VAYT4NYXFWJNAZ9SSKDV was running, and the run had written its own attempt_started record (task ta-01M6G8VBCEDZF0B5YDKSY9X6AR) to runs/full-vac-phoenix-si-001/run_full.jsonl on the results Volume. Checked through the Modal CLI/API (app list, FunctionCall status, volume get).",
+          "gpu_concurrency": "Not yet observed at launch; recorded when the runs are collected."
         }
       }
     },

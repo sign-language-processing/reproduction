@@ -131,6 +131,7 @@ The preflight, training and evaluation commands are listed per run in `reproduct
 $W run --detach $A::launch_train --model {vac|smkd|tlp|sen|corrnet} --setting {setting} --run-id {run_id} [--dev-rule {rule}]
 $W run --detach $A::launch_evaluate --train-run-id {run_id} --eval-run-id {eval_run_id}
 $W run $A::launch_arabsign_split_record   # re-derives the ArabSign split hashes recorded in the gates
+$W run --detach $A::launch_run_full --model {model} --setting {setting} --run-id {run_id} --eval-run-id {eval_run_id} --max-gpu-hours {ceiling} [--dev-rule {rule}]   # blocks 2-5: train + evaluate in one detached call
 ```
 
 The settings are `phoenix-sd`, `phoenix-si`, `grsl-si`, `grsl-unseen`, `arabsign-sd` (`--dev-rule stratified-709-seed42`) and `arabsign-loso-01` … `-06` (`--dev-rule final-epoch`).
@@ -273,15 +274,30 @@ The block cost USD 98.15 (Modal billing per app, training and evaluation), again
 | `full-tlp-phoenix-sd-001` | 15:28 | `ap-brLTkY5v3XGxA5aUMV3ioZ` | 14 GPU-h |
 | `full-sen-phoenix-sd-001` | 15:28 | `ap-q7NTK645rUEFQURf7rlJGn` | 18 GPU-h |
 
-**Block 2, Phoenix SI (running).** All five runs launched on 2026-11-03 at 08:18 UTC with the unchanged protocol: lr 1e-3, 40 epochs, steps 20/35. They train on the SI5 corpus (4,375 train, 111 dev, 180 test clips). The estimate is USD 88. The block ceiling is USD 165: the per-run ceilings (VAC, SMKD and TLP 10 GPU-h each, SEN 13, CorrNet 12) at USD 3.0/h.
+**Blocks 2–5 (Phoenix SI, GrSL SI, GrSL Unseen-Sent, ArabSign SD): 20 unattended runs, launched 2026-11-03 08:36–08:41 UTC.**
 
-| Run | App |
-| --- | --- |
-| `full-vac-phoenix-si-001` | `ap-m5mnbJdJzdRkYPGjffK9Wn` |
-| `full-smkd-phoenix-si-001` | `ap-R1FK2i2FAjYzl56IhgkDia` |
-| `full-tlp-phoenix-si-001` | `ap-3AX1CHxhqeJRNMfN5J1Qrr` |
-| `full-sen-phoenix-si-001` | `ap-BHsqxMPqjLSSeB7DxxXGnd` |
-| `full-corrnet-phoenix-si-001` | `ap-tC4qazyZMkNqWHgl2NmscF` |
+Each run is a single detached Modal call of `run_full`, launched as `modal run --detach … ::launch_run_full`, one call per app. The call:
+
+1. trains with the unchanged protocol (lr 1e-3, 40 epochs, steps 20/35);
+2. evaluates the dev-best checkpoint on dev and test;
+3. writes `runs/{eval_run_id}/evaluation.json`, sclite's raw reports and the hypothesis CTMs to the results Volume, with one record per attempt in `runs/{run_id}/run_full.jsonl`.
+
+No step depends on this session, a local process or an open connection.
+
+Each run's declared GPU-hour ceiling is enforced inside the function. A heartbeat records container time per Modal attempt in `gpu_seconds.json`, and upstream is stopped when the ceiling is reached. A stopped run is recorded as `stopped` and is not retried. Modal retries (up to 3) resume from the newest checkpoint that loads.
+
+The 20 runs together are estimated at 154 GPU-h (about USD 465 at USD 3.03/h). The sum of their ceilings is 276 GPU-h, a worst case of USD 836. Every app and function-call ID is in `reproduction.json.runs`, with a dashboard link.
+
+**Proof of detachment.** `full-vac-phoenix-si-001` was launched first, at 08:36:37. Its local client exited at 08:36:51. At 08:39:28, with no local `modal` process, its app (`ap-TExBCfqcV25PagMad0KbLc`) was `ephemeral (detached)` with one running task. Its call (`fc-01M6G8VAYT4NYXFWJNAZ9SSKDV`) was running, and it had written its own start record to the Volume. Only then were the other 19 launched.
+
+**Harness checks.**
+
+- `check-run-full-complete-002` ran `run_full` on the finished SMKD Phoenix SD run. It skipped training, re-evaluated epoch 36 and got 1,440 / 6,504 = 22.1402%, identical to `eval-smkd-phoenix-sd-001`.
+- `check-run-full-ceiling-002` exercises the ceiling stop.
+
+The first Phoenix SI launch, at 08:18, used the train-only function. It was stopped during frame staging, before any checkpoint, and replaced by `run_full`. The stopped calls are listed under each run's `compute.superseded_calls`.
+
+At 08:41, 2 runs had a GPU and 18 were still being scheduled. Queueing is allowed and is recorded when the runs are collected.
 
 ## Guesses and deviations
 
@@ -315,6 +331,7 @@ The 2026-10-26 session stopped before data work at the compute gate. On 2026-11-
 - **CTC diagnostics.** These found the cuDNN gradient error, which led to the four `ctc-without-cudnn` patches.
 - **ArabSign labels.** `preflight-*-arabsign-001` was stopped after `score_check` showed that the harness compared the wrong CSV columns with the ground-truth file. The CSV columns are `caption` and `procCaption`, not an Arabic sentence and a sign sentence.
 - **SEN log parsing.** SEN's preflights then failed twice in the harness's log parser, because SEN logs WER without a percent sign.
+- **Unattended launch, 2026-11-03.** The first two `run_full` checks were launched without `--detach`. `launch_run_full` only spawns and returns, so their apps stopped 3 s later and the calls never ran. They were relaunched with `--detach` as `-002`. The five train-only Phoenix SI calls from 08:18 were stopped during staging and replaced by `run_full`. Full-run containers have 40 GiB RAM from block 2 on, because block 1 peaked at 26.8 of 32 GiB.
 - **Block 1 evaluations.** `eval-tlp-phoenix-sd-001` hit a GPU hardware fault (XID 154). `eval-corrnet-phoenix-sd-001` lost its client connection. Both were reruns of the same command, and `evaluate()` now raises on a non-zero upstream exit instead of failing in the log parser.
 
 Every model × dataset preflight passed within its declared attempt limit.

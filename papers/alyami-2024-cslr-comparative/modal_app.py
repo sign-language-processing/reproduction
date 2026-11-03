@@ -697,6 +697,8 @@ def _prepare_code(model, setting, run_dir, epochs, steps, dev_rule=None, lists=N
     """A private copy of the pinned repo with this setting's data files and run config."""
     repo = MODELS[model]
     code = run_dir / "code"
+    if code.exists() and not _epoch_checkpoints(run_dir / "work"):
+        shutil.rmtree(code)  # an attempt stopped before its first checkpoint may have left a partial copy
     if not code.exists():
         shutil.copytree(REPOS[repo], code, symlinks=True)
     frames_root, staged = _stage_frames(SETTINGS[setting]["frames"])
@@ -729,10 +731,11 @@ def _prepare_code(model, setting, run_dir, epochs, steps, dev_rule=None, lists=N
 # VAC/CorrNet: 'Epoch 3, dev  24.10%'; TLP: 'Epoch 3, dev Percent Total Error = 24.1% (n)'; SEN: 'Epoch 3, dev 24.1'.
 LOG_LINE = re.compile(r"^\[ (?P<time>[^\]]+) \] Epoch (?P<epoch>\d+), (?P<split>\w+)\s+(?:Percent Total Error\s*=\s*)?(?P<wer>[\d.]+)")
 TRAIN_RESOURCES = dict(gpu=GPU, cpu=16, memory=65536, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES)
-# Full runs: preflight host peaks were <= 19.5 GiB, so 32 GiB. VAC/SMKD peaked at 45.2 of
+# Full runs: preflight host peaks were <= 19.5 GiB, so 32 GiB for block 1, whose runs then peaked at
+# 26.8 GiB; 40 GiB from block 2 on, which run unattended. VAC/SMKD peaked at 45.2 of
 # 46 GB GPU memory with the longest clips; expandable segments change only how the
 # allocator reuses freed blocks (fragmentation), not what is computed.
-FULL_RUN_RESOURCES = dict(gpu=GPU, cpu=16, memory=32768, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES,
+FULL_RUN_RESOURCES = dict(gpu=GPU, cpu=16, memory=40960, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES,
                           env={"PYTORCH_ALLOC_CONF": "expandable_segments:True"})
 
 
@@ -752,7 +755,7 @@ def _host_memory_used_mib():
     return (int(info["MemTotal"].split()[0]) - int(info["MemAvailable"].split()[0])) // 1024
 
 
-def _run_upstream(command, cwd, work_dir):
+def _run_upstream(command, cwd, work_dir, time_limit=None):
     """Runs one upstream command, keeping its log and committing outputs as it goes.
 
     TLP, SEN and CorrNet ask on stdin whether to wipe an existing work_dir; the
@@ -782,14 +785,18 @@ def _run_upstream(command, cwd, work_dir):
     with open(Path(work_dir) / "stdout.log", "a") as log:
         log.write(f"\n### {started_at} {' '.join(command)}\n")
         log.flush()
-        proc = subprocess.run(command, cwd=cwd, input="n\n", text=True, stdout=log, stderr=subprocess.STDOUT)
+        try:
+            exit_code = subprocess.run(command, cwd=cwd, input="n\n", text=True, stdout=log, stderr=subprocess.STDOUT,
+                                       timeout=time_limit).returncode
+        except subprocess.TimeoutExpired:  # the run's GPU-hour ceiling (run_full); upstream is killed
+            exit_code = None
     stop.set()
     for thread in threads:
         thread.join()
     RESULTS.commit()
     # seq_eval() swallows scoring errors and logs a WER of 100 instead.
     scoring_failed = "Unexpected error" in (Path(work_dir) / "stdout.log").read_text(errors="replace")
-    return {"command": command, "cwd": str(cwd), "exit_code": proc.returncode, "scoring_failed": scoring_failed,
+    return {"command": command, "cwd": str(cwd), "exit_code": exit_code, "timed_out": exit_code is None, "scoring_failed": scoring_failed,
             "started_at_utc": started_at, "finished_at_utc": _now(),
             "duration_seconds": round(time.monotonic() - started, 1),
             "peak_gpu_memory_mib_nvidia_smi": peak["gpu_mib"], "peak_host_memory_mib": peak["host_mib"],
@@ -960,16 +967,32 @@ def _prune_checkpoints(work_dir):
             path.unlink(missing_ok=True)
 
 
-@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=24 * 3600, retries=modal.Retries(max_retries=3, initial_delay=60.0))
-def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = "20,35", dev_rule: str = ""):
-    """Trains to `epochs`, resuming from the newest epoch checkpoint when one exists."""
+def _seconds_until(deadline):
+    return None if deadline is None else max(1.0, deadline - time.monotonic())
+
+
+def _loadable(path):
+    import torch
+
+    try:
+        torch.load(path, map_location="cpu", weights_only=False)
+        return True
+    except Exception:
+        return False
+
+
+def _train(model, setting, run_id, epochs, steps, dev_rule, deadline=None):
+    """Trains to `epochs`, resuming from the newest epoch checkpoint that loads. `deadline` is a
+    time.monotonic() value at which upstream is stopped (run_full's GPU-hour ceiling)."""
     run_dir = Path("/results/runs") / run_id
-    RESULTS.reload()
-    code, record = _prepare_code(model, setting, run_dir, epochs, tuple(int(s) for s in steps.split(",")), dev_rule or None)
+    code, record = _prepare_code(model, setting, run_dir, epochs, steps, dev_rule)
     work = str(run_dir / "work")
     record.update({"environment": _environment(code), "model": model, "setting": setting, "dev_rule": dev_rule or None,
                    "epochs": epochs})
     checkpoints = _epoch_checkpoints(work)
+    while checkpoints and not _loadable(checkpoints[max(checkpoints)]):  # truncated by a killed container
+        record.setdefault("unloadable_checkpoints_removed", []).append(checkpoints.pop(max(checkpoints)).name)
+        (Path(work) / record["unloadable_checkpoints_removed"][-1]).unlink()
     extra = []
     if checkpoints:
         if max(checkpoints) + 1 >= epochs:
@@ -983,7 +1006,7 @@ def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = 
 
     pruner = threading.Thread(target=prune_periodically, daemon=True)
     pruner.start()
-    record.update(_run_upstream(_command(work, *extra), code, work))
+    record.update(_run_upstream(_command(work, *extra), code, work, _seconds_until(deadline)))
     stop.set()
     pruner.join()
     _prune_checkpoints(work)
@@ -994,6 +1017,13 @@ def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = 
     if record["exit_code"]:
         raise RuntimeError(f"upstream training exited {record['exit_code']}")
     return record
+
+
+@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=24 * 3600, retries=modal.Retries(max_retries=3, initial_delay=60.0))
+def train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = "20,35", dev_rule: str = ""):
+    """Trains to `epochs`, resuming from the newest epoch checkpoint when one exists (block 1)."""
+    RESULTS.reload()
+    return _train(model, setting, run_id, epochs, tuple(int(s) for s in steps.split(",")), dev_rule or None)
 
 
 def _sclite_counts(work_dir, split):
@@ -1011,8 +1041,7 @@ def _sclite_counts(work_dir, split):
     return None
 
 
-@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=4 * 3600)
-def evaluate(train_run_id: str, eval_run_id: str):
+def _evaluate(train_run_id, eval_run_id, deadline=None):
     """Scores the lowest-dev-WER epoch (earliest on ties) once on dev and test; for the
     ArabSign LOSO folds (dev_rule 'final-epoch') the final epoch instead."""
     train_dir, run_dir = Path("/results/runs") / train_run_id, Path("/results/runs") / eval_run_id
@@ -1033,7 +1062,11 @@ def evaluate(train_run_id: str, eval_run_id: str):
               "selected_dev_wer_during_training": history.get(best),
               "epochs_logged": len(history), "checkpoint": str(checkpoint), "checkpoint_sha256": _sha256(checkpoint),
               **_environment(code)}
-    record.update(_run_upstream(_command(work, "--phase", "test", "--load-weights", str(checkpoint)), code, work))
+    record.update(_run_upstream(_command(work, "--phase", "test", "--load-weights", str(checkpoint)), code, work, _seconds_until(deadline)))
+    if record["timed_out"]:
+        (run_dir / "evaluation.json").write_text(json.dumps(record, indent=2, default=str))
+        RESULTS.commit()
+        return record
     if record["exit_code"] or record["scoring_failed"]:
         (run_dir / "evaluation.json").write_text(json.dumps(record, indent=2, default=str))
         RESULTS.commit()
@@ -1046,6 +1079,93 @@ def evaluate(train_run_id: str, eval_run_id: str):
     (run_dir / "evaluation.json").write_text(json.dumps(record, indent=2, default=str))
     RESULTS.commit()
     return record
+
+
+@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=4 * 3600)
+def evaluate(train_run_id: str, eval_run_id: str):
+    """Evaluation as its own call (block 1)."""
+    return _evaluate(train_run_id, eval_run_id)
+
+
+def _gpu_seconds_used(run_dir):
+    path = run_dir / "gpu_seconds.json"
+    return sum(json.loads(path.read_text()).values()) if path.exists() else 0
+
+
+def _heartbeat(run_dir, stop):
+    """Every 60 s, this container's elapsed seconds under its Modal task ID. The file is committed
+    with the run's other outputs (at start, every 10 min during upstream commands, at the end),
+    so a killed attempt is undercounted by at most the time since the last commit."""
+    path, key, started = run_dir / "gpu_seconds.json", os.environ.get("MODAL_TASK_ID", "unknown"), time.monotonic()
+    while True:
+        data = json.loads(path.read_text()) if path.exists() else {}
+        data[key] = round(time.monotonic() - started)
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text(json.dumps(data, indent=1))
+        os.replace(tmp, path)  # a commit never sees a half-written file
+        if stop.is_set():
+            return
+        stop.wait(60)
+
+
+@APP.function(image=IMAGE, **FULL_RUN_RESOURCES, timeout=20 * 3600, retries=modal.Retries(max_retries=3, initial_delay=60.0))
+def run_full(model: str, setting: str, run_id: str, eval_run_id: str, max_gpu_hours: float,
+             epochs: int = 40, steps: str = "20,35", dev_rule: str = ""):
+    """One full run with no local dependency (blocks 2-5): trains to `epochs` (resuming across Modal
+    retries), then evaluates the selected checkpoint on dev and test into runs/<eval_run_id>/.
+    The declared GPU-hour ceiling is enforced here, over the container time of every attempt:
+    when it is reached upstream is stopped, the stop is recorded and the call returns without a retry.
+    Every attempt appends its outcome to runs/<run_id>/run_full.jsonl."""
+    run_dir = Path("/results/runs") / run_id
+    RESULTS.reload()
+    run_dir.mkdir(parents=True, exist_ok=True)
+    budget = max_gpu_hours * 3600 - _gpu_seconds_used(run_dir)
+    started = time.monotonic()
+    summary = {"run_id": run_id, "eval_run_id": eval_run_id, "model": model, "setting": setting, "epochs": epochs, "steps": steps,
+               "dev_rule": dev_rule or None, "max_gpu_hours": max_gpu_hours, "task_id": os.environ.get("MODAL_TASK_ID"),
+               "attempt_started_at_utc": _now(), "gpu_seconds_before_attempt": round(max_gpu_hours * 3600 - budget)}
+    stop = threading.Event()
+    beat = threading.Thread(target=_heartbeat, args=(run_dir, stop), daemon=True)
+    beat.start()
+
+    deadline = started + budget
+
+    def left():
+        return deadline - time.monotonic()
+
+    def finish(state, **fields):
+        stop.set()
+        beat.join()
+        summary.update(state=state, attempt_finished_at_utc=_now(), attempt_seconds=round(time.monotonic() - started), **fields)
+        with open(run_dir / "run_full.jsonl", "a") as f:
+            f.write(json.dumps(summary, default=str, ensure_ascii=False) + "\n")
+        RESULTS.commit()
+        return summary
+
+    with open(run_dir / "run_full.jsonl", "a") as f:
+        f.write(json.dumps({**summary, "state": "attempt_started"}) + "\n")
+    RESULTS.commit()
+    try:
+        if left() <= 0:
+            return finish("stopped", reason_code="gpu_hour_ceiling_reached", stage="before training")
+        trained = _train(model, setting, run_id, epochs, tuple(int(s) for s in steps.split(",")), dev_rule or None, deadline)
+        if trained.get("timed_out"):
+            return finish("stopped", reason_code="gpu_hour_ceiling_reached", stage="training",
+                          dev_wer_by_epoch=trained.get("dev_wer_by_epoch"))
+        done = Path("/results/runs") / eval_run_id / "evaluation.json"
+        evaluation = json.loads(done.read_text()) if done.exists() else {}
+        if not evaluation.get("sclite_counts"):
+            if left() <= 0:
+                return finish("stopped", reason_code="gpu_hour_ceiling_reached", stage="before evaluation")
+            evaluation = _evaluate(run_id, eval_run_id, deadline)
+            if evaluation.get("timed_out"):
+                return finish("stopped", reason_code="gpu_hour_ceiling_reached", stage="evaluation")
+        return finish("succeeded", selected_epoch=evaluation["selected_epoch"], selection_rule=evaluation["selection_rule"],
+                      wer=evaluation["wer"], sclite_test=evaluation["sclite_counts"]["test"],
+                      dev_wer_by_epoch={e: w for e, (w, _) in _log_entries(run_dir / "work", "dev").items()})
+    except Exception as error:
+        finish("failed", error=repr(error)[:2000])
+        raise  # Modal retries; the next attempt resumes from the newest loadable checkpoint
 
 
 @APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
@@ -1196,6 +1316,12 @@ def launch_preflights(setting: str, tag: str, models: str = "vac,smkd,tlp,sen,co
 @APP.local_entrypoint()
 def launch_train(model: str, setting: str, run_id: str, epochs: int = 40, steps: str = "20,35", dev_rule: str = ""):
     print(train.spawn(model, setting, run_id, epochs, steps, dev_rule).object_id)
+
+
+@APP.local_entrypoint()
+def launch_run_full(model: str, setting: str, run_id: str, eval_run_id: str, max_gpu_hours: float, dev_rule: str = ""):
+    """Use with `modal run --detach`: one spawned call per app, so it outlives the client."""
+    print(run_full.spawn(model, setting, run_id, eval_run_id, max_gpu_hours, 40, "20,35", dev_rule).object_id)
 
 
 @APP.local_entrypoint()
