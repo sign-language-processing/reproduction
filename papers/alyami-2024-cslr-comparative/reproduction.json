@@ -255,7 +255,7 @@
     "preference_level": 2,
     "blocker": null,
     "preference_level_basis": "Level 2, confirmed by this paper's own build and preflights: all five systems run their pinned official code through its own main.py, with two kinds of correctness patch and dependency/environment fixes only. (1) patches/ctcdecode-cxx17.patch: ctcdecode does not compile against current PyTorch (image build im-zwwdoz4GF7RwJO4BnSPdG6). (2) patches/<repo>-ctc-without-cudnn.patch for VAC_CSLR, TLP, SEN and CorrNet: on PyTorch 2.11/cuDNN 9.19, nn.CTCLoss uses cuDNN for unequal-length batches and returns wrong gradients (cosine 0.06-0.96 vs a float64 reference; runs ctc-diagnostics-*-001, preflight-*-002/003); disabling cuDNN for the CTC call restores the native computation PyTorch 1.x used. Dependencies: lmdb (imported by TLP/SEN), simple-video-utils 0.7.4 with av 18.1.0. New datasets and Phoenix SI5 enter only as data files and dataset configs written with the repos' own preprocess helpers; no upstream code is changed for them.",
-    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000; USD 509.75 spent as of 2026-11-04). 25 of 30 in-scope targets produced: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5, all complete). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: the operator held block 6 on 2026-11-04 pending the adapter cross-check and failure signatures recorded in runs adapter-check-001, checkpoint-check-001 and the failure_signature of three full runs."
+    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000; USD 509.75 spent as of 2026-11-04). 25 of 30 in-scope targets produced: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5, all complete). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: the operator held block 6 on 2026-11-04 pending the adapter cross-check and failure signatures recorded in runs adapter-check-002, checkpoint-check-002 and the failure_signature of three full runs."
   },
   "datasets": [
     {
@@ -10050,7 +10050,7 @@
             "observations": [
               "Recorded as evidence, without interpretation.",
               "Test WER: VAC 81.71, SMKD 70.96, TLP 92.14, SEN 85.10, CorrNet 92.72 (dev-best epochs 36, 30, 7, 37, 6).",
-              "176 of 5,187 dev and 105 of 4,490 test reference gloss tokens are glosses that never occur in this split's training list (adapter-check-001).",
+              "176 of 5,187 dev and 105 of 4,490 test reference gloss tokens are glosses that never occur in this split's training list (adapter-check-002).",
               "CorrNet: dev WER 91.0-99.5 for epochs 0-12, then exactly 100.7 at every epoch 13-39; from epoch 14 almost every training batch is skipped for a non-finite loss (4,092-4,094 of 4,094 per epoch; 18 epochs log 'Mean training loss: nan'); the epoch-39 checkpoint has non-finite BatchNorm running statistics in conv1d.temporal_conv.1 and .5 and emits the same two glosses for every dev clip (see runs[full-corrnet-grsl-unseen-001].failure_signature).",
               "TLP's dev WER stayed between 89.5 and 94.1 for all 40 epochs (best epoch 7) with 0 skipped batches.",
               "Skipped training batches over 40 epochs: VAC 0, SMKD 0, TLP 0, SEN 0, CorrNet 109,472."
