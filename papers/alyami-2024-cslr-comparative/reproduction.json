@@ -213,28 +213,32 @@
       "kind": "code",
       "url": "https://github.com/VIPL-SLP/VAC_CSLR",
       "revision_or_sha256": "71f3e0334fbc8cecc7ce9816ec69781068abaac0",
-      "role": "Official VAC implementation (Apache-2.0); README documents the VAC+SMKD configuration (share_classifier, weight_norm). Candidate for VAC and SMKD rows."
+      "role": "Official VAC implementation (Apache-2.0); README documents the VAC+SMKD configuration (share_classifier, weight_norm). Candidate for VAC and SMKD rows.",
+      "training_precision": "fp32. seq_scripts.py seq_train (line 14) runs the forward pass, loss and backward without autocast or a GradScaler; a batch whose loss is inf or nan is skipped (line 25). Applies to the VAC and SMKD runs. Recorded as a fact on 2026-11-04 (operator request); unchanged by this reproduction."
     },
     {
       "source_id": "tlp",
       "kind": "code",
       "url": "https://github.com/hulianyuyy/Temporal-Lift-Pooling",
       "revision_or_sha256": "21be215c6ba749d98ce6a51f4b84cc9d5029bfe6",
-      "role": "Official TLP implementation (no license file). Candidate for TLP rows."
+      "role": "Official TLP implementation (no license file). Candidate for TLP rows.",
+      "training_precision": "fp16 mixed precision. seq_scripts.py seq_train (line 15) creates a GradScaler at the start of every epoch (line 22) and runs the forward pass and loss under torch.cuda.amp.autocast() (line 29); a batch whose loss is inf or nan is skipped (line 32). Recorded as a fact on 2026-11-04 (operator request); unchanged by this reproduction."
     },
     {
       "source_id": "sen",
       "kind": "code",
       "url": "https://github.com/hulianyuyy/SEN_CSLR",
       "revision_or_sha256": "c9a4c7ebd0489e22496c00f9f31d930c0d968ad8",
-      "role": "Official SEN implementation (Apache-2.0). Candidate for SEN rows."
+      "role": "Official SEN implementation (Apache-2.0). Candidate for SEN rows.",
+      "training_precision": "fp16 mixed precision. seq_scripts.py seq_train (line 15) creates a GradScaler at the start of every epoch (line 19) and runs the forward pass and loss under torch.cuda.amp.autocast() (line 26); a batch whose loss is inf or nan is skipped (line 29). Recorded as a fact on 2026-11-04 (operator request); unchanged by this reproduction."
     },
     {
       "source_id": "corrnet",
       "kind": "code",
       "url": "https://github.com/hulianyuyy/CorrNet",
       "revision_or_sha256": "a812814f4deefda0b75ab1dcc90b106c62912263",
-      "role": "Official CorrNet implementation (no license file). Candidate for CorrNet rows."
+      "role": "Official CorrNet implementation (no license file). Candidate for CorrNet rows.",
+      "training_precision": "fp16 mixed precision. seq_scripts.py seq_train (line 15) creates a GradScaler at the start of every epoch (line 19) and runs the forward pass and loss under torch.cuda.amp.autocast() (line 26); a batch whose loss is inf or nan is skipped (line 29). Recorded as a fact on 2026-11-04 (operator request); unchanged by this reproduction."
     }
   ],
   "source_search": {
@@ -255,7 +259,7 @@
     "preference_level": 2,
     "blocker": null,
     "preference_level_basis": "Level 2, confirmed by this paper's own build and preflights: all five systems run their pinned official code through its own main.py, with two kinds of correctness patch and dependency/environment fixes only. (1) patches/ctcdecode-cxx17.patch: ctcdecode does not compile against current PyTorch (image build im-zwwdoz4GF7RwJO4BnSPdG6). (2) patches/<repo>-ctc-without-cudnn.patch for VAC_CSLR, TLP, SEN and CorrNet: on PyTorch 2.11/cuDNN 9.19, nn.CTCLoss uses cuDNN for unequal-length batches and returns wrong gradients (cosine 0.06-0.96 vs a float64 reference; runs ctc-diagnostics-*-001, preflight-*-002/003); disabling cuDNN for the CTC call restores the native computation PyTorch 1.x used. Dependencies: lmdb (imported by TLP/SEN), simple-video-utils 0.7.4 with av 18.1.0. New datasets and Phoenix SI5 enter only as data files and dataset configs written with the repos' own preprocess helpers; no upstream code is changed for them.",
-    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000; USD 509.75 spent as of 2026-11-04). 25 of 30 in-scope targets produced: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5, all complete). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: the operator held block 6 on 2026-11-04 pending the adapter cross-check and failure signatures recorded in runs adapter-check-002, checkpoint-check-002 and the failure_signature of three full runs."
+    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000; USD 509.75 spent before block 6). 25 of 30 in-scope targets produced: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5, all complete). The 5 ArabSign Signer-Indep (LOSO) targets are in block 6: the operator resolved gate arabsign-loso-hold on 2026-11-04 and its 30 run_full runs were declared and launched that day under the approved protocol."
   },
   "datasets": [
     {
@@ -596,7 +600,24 @@
       "verification": "Populated 2026-11-02 by data.sh -> modal_app.py::populate_gsl (app ap-Sg1meM9jpuHIbOLcF5I5bd) at /datasets/gsl-continuous: the 15 RGB zips (health1-5, kep1-5, police1-5) and supplementary.zip of Zenodo record 3941811 (DOI 10.5281/zenodo.3941811, license cc-by-4.0), 40.17 GB, each verified against Zenodo's md5 with sha256 recorded in gsl-continuous/manifest.json; depth zips not needed and not fetched. Split files fetched from the dataset's public Drive folder 18ruYi9MULMm1KQtUgdIhN0m-XilRhncg into gsl-continuous/splits/ and verified against the sha256 recorded on 2026-10-26. Row format '<scenario>_signer<k>_rep<r>_sentences/sentences<NNNN>|GLOSS ...'; zip entries '<that folder>/frame_<i>.jpg'. 'GSL SI' gsl_split_SI_{train,dev,test}.csv = 8821/588/881 rows (train signers 1,2,4,5,6,7; dev/test signer 3) = paper's Signer-Indep; 'GSL SD' gsl_{train,dev,test}_unseen.txt = 8189/1063/1043 rows, 0 of 1043 test sentences occur in train (45 unique test sentences) = paper's Unseen-Sent. check_modal_dataset.sh gsl-continuous manifest.json passes.",
       "deviations": [
         "The SI dev/test files lack a trailing newline, so 'wc -l' reports 587/880 lines for the 588/881 entries Zenodo states; all entries are used."
-      ]
+      ],
+      "gloss_coverage": {
+        "recorded_at": "2026-11-04",
+        "source_run": "adapter-check-002",
+        "unseen-sent": {
+          "dev_reference_gloss_tokens": 5187,
+          "dev_tokens_absent_from_train_list": 176,
+          "test_reference_gloss_tokens": 4490,
+          "test_tokens_absent_from_train_list": 105
+        },
+        "signer-indep": {
+          "dev_reference_gloss_tokens": 2330,
+          "dev_tokens_absent_from_train_list": 0,
+          "test_reference_gloss_tokens": 3498,
+          "test_tokens_absent_from_train_list": 0
+        },
+        "note": "Counted over the label tokens of the lists the runs used (identical across the four repos); a token is absent when its gloss never occurs in that split's training list. ArabSign SD: 0 of 2,196 dev and 0 of 5,732 test."
+      }
     }
   ],
   "metric_definitions": [
@@ -7476,6 +7497,1386 @@
         "note": "Same command at 08:53-08:58 UTC, launched before this run's ceilings were recorded; its output (same content) was not retained as a separate artifact.",
         "not_a_retained_attempt": "The earlier invocation is described here rather than as a run entry because its ceilings were not declared before launch; the ID suffix -002 marks it as the second invocation."
       }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-01-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 01 (train on every clip of the other five signers, 7798 clips; test on all 1532 clips of signer 01), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-01-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-01-001/run_full.jsonl. Estimate 6.45 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-01 --run-id full-vac-arabsign-loso-01-001 --eval-run-id eval-vac-arabsign-loso-01-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-01",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-01-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 01 (train on every clip of the other five signers, 7798 clips; test on all 1532 clips of signer 01), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-01-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-01-001/run_full.jsonl. Estimate 6.47 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-01 --run-id full-smkd-arabsign-loso-01-001 --eval-run-id eval-smkd-arabsign-loso-01-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-01",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-01-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 01 (train on every clip of the other five signers, 7798 clips; test on all 1532 clips of signer 01), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-01-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-01-001/run_full.jsonl. Estimate 5.05 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-01 --run-id full-tlp-arabsign-loso-01-001 --eval-run-id eval-tlp-arabsign-loso-01-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-01",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-01-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 01 (train on every clip of the other five signers, 7798 clips; test on all 1532 clips of signer 01), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-01-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-01-001/run_full.jsonl. Estimate 9.05 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-01 --run-id full-sen-arabsign-loso-01-001 --eval-run-id eval-sen-arabsign-loso-01-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-01",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-01-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 01 (train on every clip of the other five signers, 7798 clips; test on all 1532 clips of signer 01), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-01-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-01-001/run_full.jsonl. Estimate 6.93 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-01 --run-id full-corrnet-arabsign-loso-01-001 --eval-run-id eval-corrnet-arabsign-loso-01-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-01",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-02-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 02 (train on every clip of the other five signers, 7733 clips; test on all 1597 clips of signer 02), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-02-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-02-001/run_full.jsonl. Estimate 6.6 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-02 --run-id full-vac-arabsign-loso-02-001 --eval-run-id eval-vac-arabsign-loso-02-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-02",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-02-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 02 (train on every clip of the other five signers, 7733 clips; test on all 1597 clips of signer 02), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-02-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-02-001/run_full.jsonl. Estimate 6.62 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-02 --run-id full-smkd-arabsign-loso-02-001 --eval-run-id eval-smkd-arabsign-loso-02-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-02",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-02-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 02 (train on every clip of the other five signers, 7733 clips; test on all 1597 clips of signer 02), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-02-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-02-001/run_full.jsonl. Estimate 5.17 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-02 --run-id full-tlp-arabsign-loso-02-001 --eval-run-id eval-tlp-arabsign-loso-02-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-02",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-02-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 02 (train on every clip of the other five signers, 7733 clips; test on all 1597 clips of signer 02), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-02-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-02-001/run_full.jsonl. Estimate 9.25 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-02 --run-id full-sen-arabsign-loso-02-001 --eval-run-id eval-sen-arabsign-loso-02-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-02",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-02-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 02 (train on every clip of the other five signers, 7733 clips; test on all 1597 clips of signer 02), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-02-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-02-001/run_full.jsonl. Estimate 7.09 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-02 --run-id full-corrnet-arabsign-loso-02-001 --eval-run-id eval-corrnet-arabsign-loso-02-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-02",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-03-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 03 (train on every clip of the other five signers, 7690 clips; test on all 1640 clips of signer 03), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-03-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-03-001/run_full.jsonl. Estimate 6.6 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-03 --run-id full-vac-arabsign-loso-03-001 --eval-run-id eval-vac-arabsign-loso-03-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-03",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-03-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 03 (train on every clip of the other five signers, 7690 clips; test on all 1640 clips of signer 03), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-03-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-03-001/run_full.jsonl. Estimate 6.62 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-03 --run-id full-smkd-arabsign-loso-03-001 --eval-run-id eval-smkd-arabsign-loso-03-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-03",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-03-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 03 (train on every clip of the other five signers, 7690 clips; test on all 1640 clips of signer 03), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-03-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-03-001/run_full.jsonl. Estimate 5.17 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-03 --run-id full-tlp-arabsign-loso-03-001 --eval-run-id eval-tlp-arabsign-loso-03-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-03",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-03-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 03 (train on every clip of the other five signers, 7690 clips; test on all 1640 clips of signer 03), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-03-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-03-001/run_full.jsonl. Estimate 9.26 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-03 --run-id full-sen-arabsign-loso-03-001 --eval-run-id eval-sen-arabsign-loso-03-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-03",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-03-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 03 (train on every clip of the other five signers, 7690 clips; test on all 1640 clips of signer 03), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-03-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-03-001/run_full.jsonl. Estimate 7.09 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-03 --run-id full-corrnet-arabsign-loso-03-001 --eval-run-id eval-corrnet-arabsign-loso-03-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-03",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-04-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 04 (train on every clip of the other five signers, 7780 clips; test on all 1550 clips of signer 04), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-04-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-04-001/run_full.jsonl. Estimate 6.59 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-04 --run-id full-vac-arabsign-loso-04-001 --eval-run-id eval-vac-arabsign-loso-04-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-04",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-04-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 04 (train on every clip of the other five signers, 7780 clips; test on all 1550 clips of signer 04), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-04-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-04-001/run_full.jsonl. Estimate 6.61 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-04 --run-id full-smkd-arabsign-loso-04-001 --eval-run-id eval-smkd-arabsign-loso-04-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-04",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-04-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 04 (train on every clip of the other five signers, 7780 clips; test on all 1550 clips of signer 04), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-04-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-04-001/run_full.jsonl. Estimate 5.16 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-04 --run-id full-tlp-arabsign-loso-04-001 --eval-run-id eval-tlp-arabsign-loso-04-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-04",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-04-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 04 (train on every clip of the other five signers, 7780 clips; test on all 1550 clips of signer 04), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-04-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-04-001/run_full.jsonl. Estimate 9.24 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-04 --run-id full-sen-arabsign-loso-04-001 --eval-run-id eval-sen-arabsign-loso-04-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-04",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-04-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 04 (train on every clip of the other five signers, 7780 clips; test on all 1550 clips of signer 04), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-04-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-04-001/run_full.jsonl. Estimate 7.07 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-04 --run-id full-corrnet-arabsign-loso-04-001 --eval-run-id eval-corrnet-arabsign-loso-04-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-04",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-05-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 05 (train on every clip of the other five signers, 7831 clips; test on all 1499 clips of signer 05), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-05-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-05-001/run_full.jsonl. Estimate 6.51 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-05 --run-id full-vac-arabsign-loso-05-001 --eval-run-id eval-vac-arabsign-loso-05-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-05",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-05-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 05 (train on every clip of the other five signers, 7831 clips; test on all 1499 clips of signer 05), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-05-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-05-001/run_full.jsonl. Estimate 6.53 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-05 --run-id full-smkd-arabsign-loso-05-001 --eval-run-id eval-smkd-arabsign-loso-05-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-05",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-05-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 05 (train on every clip of the other five signers, 7831 clips; test on all 1499 clips of signer 05), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-05-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-05-001/run_full.jsonl. Estimate 5.1 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-05 --run-id full-tlp-arabsign-loso-05-001 --eval-run-id eval-tlp-arabsign-loso-05-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-05",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-05-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 05 (train on every clip of the other five signers, 7831 clips; test on all 1499 clips of signer 05), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-05-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-05-001/run_full.jsonl. Estimate 9.13 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-05 --run-id full-sen-arabsign-loso-05-001 --eval-run-id eval-sen-arabsign-loso-05-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-05",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-05-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 05 (train on every clip of the other five signers, 7831 clips; test on all 1499 clips of signer 05), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-05-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-05-001/run_full.jsonl. Estimate 6.99 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-05 --run-id full-corrnet-arabsign-loso-05-001 --eval-run-id eval-corrnet-arabsign-loso-05-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-05",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-vac-arabsign-loso-06-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of vac on ArabSign leave-one-signer-out fold 06 (train on every clip of the other five signers, 7818 clips; test on all 1512 clips of signer 06), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-vac-arabsign-loso-06-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-vac-arabsign-loso-06-001/run_full.jsonl. Estimate 6.59 GPU-h, calibrated on the measured full-vac-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model vac --setting arabsign-loso-06 --run-id full-vac-arabsign-loso-06-001 --eval-run-id eval-vac-arabsign-loso-06-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-vac-arabsign-loso-06",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-smkd-arabsign-loso-06-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of smkd on ArabSign leave-one-signer-out fold 06 (train on every clip of the other five signers, 7818 clips; test on all 1512 clips of signer 06), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-smkd-arabsign-loso-06-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-smkd-arabsign-loso-06-001/run_full.jsonl. Estimate 6.61 GPU-h, calibrated on the measured full-smkd-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model smkd --setting arabsign-loso-06 --run-id full-smkd-arabsign-loso-06-001 --eval-run-id eval-smkd-arabsign-loso-06-001 --max-gpu-hours 12 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-smkd-arabsign-loso-06",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_chf": 30.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-tlp-arabsign-loso-06-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of tlp on ArabSign leave-one-signer-out fold 06 (train on every clip of the other five signers, 7818 clips; test on all 1512 clips of signer 06), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-tlp-arabsign-loso-06-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-tlp-arabsign-loso-06-001/run_full.jsonl. Estimate 5.16 GPU-h, calibrated on the measured full-tlp-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model tlp --setting arabsign-loso-06 --run-id full-tlp-arabsign-loso-06-001 --eval-run-id eval-tlp-arabsign-loso-06-001 --max-gpu-hours 10 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-tlp-arabsign-loso-06",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 36000,
+        "max_gpu_hours": 10.0,
+        "max_cost_chf": 25.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-sen-arabsign-loso-06-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of sen on ArabSign leave-one-signer-out fold 06 (train on every clip of the other five signers, 7818 clips; test on all 1512 clips of signer 06), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-sen-arabsign-loso-06-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-sen-arabsign-loso-06-001/run_full.jsonl. Estimate 9.24 GPU-h, calibrated on the measured full-sen-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model sen --setting arabsign-loso-06 --run-id full-sen-arabsign-loso-06-001 --eval-run-id eval-sen-arabsign-loso-06-001 --max-gpu-hours 16 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-sen-arabsign-loso-06",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 57600,
+        "max_gpu_hours": 16.0,
+        "max_cost_chf": 40.0
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-corrnet-arabsign-loso-06-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "Full run of corrnet on ArabSign leave-one-signer-out fold 06 (train on every clip of the other five signers, 7818 clips; test on all 1512 clips of signer 06), block 6 arabsign-loso: one detached Modal call of run_full with no local dependency. It trains 40 epochs (Adam lr 1e-3, x0.2 at epochs 20 and 35, batch 2, seed 0); upstream's per-epoch dev loop reads the fixed 50-clip token list (first training clip of each sentence), never used for selection. It then scores the final epoch (39) on that list and the test signer (gate arabsign-loso-checkpoint: final-epoch) into runs/eval-corrnet-arabsign-loso-06-001/ (evaluation.json, raw sclite reports, hypothesis CTMs); per-attempt records in runs/full-corrnet-arabsign-loso-06-001/run_full.jsonl. Estimate 7.08 GPU-h, calibrated on the measured full-corrnet-arabsign-sd-001 run. The GPU-hour ceiling is enforced inside the function over the container time of every attempt (Modal retries up to 3, resuming from the newest loadable checkpoint); time queued for a GPU is not counted.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_run_full --model corrnet --setting arabsign-loso-06 --run-id full-corrnet-arabsign-loso-06-001 --eval-run-id eval-corrnet-arabsign-loso-06-001 --max-gpu-hours 13 --dev-rule final-epoch",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-corrnet-arabsign-loso-06",
+        "number": 1,
+        "max_attempts": 4
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-04T09:52:52Z",
+        "max_wall_time_seconds": 46800,
+        "max_gpu_hours": 13.0,
+        "max_cost_chf": 32.5
+      },
+      "terminal": null,
+      "artifact_ids": [],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": null,
+        "function_call_id": null,
+        "hardware": "one NVIDIA L40S (48 GB), 16 CPU cores, 40 GiB RAM",
+        "gpu_count": 1,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
   "artifacts": [
@@ -10081,6 +11482,49 @@
               "SEN: dev WER 83.3-95.3 for epochs 0-20, then 63.5 at epoch 21 (first epoch at lr 2e-4) falling to 33.7 at epoch 38; mean training loss fell to 14.0 at epoch 20, rose to 24.3 at epoch 23, and ended at 18.8; 0 skipped batches; no non-finite value in its checkpoints (see runs[full-sen-arabsign-sd-001].failure_signature).",
               "Skipped training batches over 40 epochs: 0 for all five models."
             ]
+          },
+          {
+            "block": "6 arabsign-loso",
+            "runs": [
+              "full-vac-arabsign-loso-01-001",
+              "full-smkd-arabsign-loso-01-001",
+              "full-tlp-arabsign-loso-01-001",
+              "full-sen-arabsign-loso-01-001",
+              "full-corrnet-arabsign-loso-01-001",
+              "full-vac-arabsign-loso-02-001",
+              "full-smkd-arabsign-loso-02-001",
+              "full-tlp-arabsign-loso-02-001",
+              "full-sen-arabsign-loso-02-001",
+              "full-corrnet-arabsign-loso-02-001",
+              "full-vac-arabsign-loso-03-001",
+              "full-smkd-arabsign-loso-03-001",
+              "full-tlp-arabsign-loso-03-001",
+              "full-sen-arabsign-loso-03-001",
+              "full-corrnet-arabsign-loso-03-001",
+              "full-vac-arabsign-loso-04-001",
+              "full-smkd-arabsign-loso-04-001",
+              "full-tlp-arabsign-loso-04-001",
+              "full-sen-arabsign-loso-04-001",
+              "full-corrnet-arabsign-loso-04-001",
+              "full-vac-arabsign-loso-05-001",
+              "full-smkd-arabsign-loso-05-001",
+              "full-tlp-arabsign-loso-05-001",
+              "full-sen-arabsign-loso-05-001",
+              "full-corrnet-arabsign-loso-05-001",
+              "full-vac-arabsign-loso-06-001",
+              "full-smkd-arabsign-loso-06-001",
+              "full-tlp-arabsign-loso-06-001",
+              "full-sen-arabsign-loso-06-001",
+              "full-corrnet-arabsign-loso-06-001"
+            ],
+            "estimated_gpu_hours": 207.03,
+            "estimated_usd": 629.6,
+            "declared_ceiling_gpu_hours": 378,
+            "declared_ceiling_usd": 1149.5,
+            "cumulative_usd_before_launch": 509.75,
+            "projected_cumulative_usd": 1139.3,
+            "worst_case_cumulative_usd_if_every_run_hits_its_ceiling": 1659.3,
+            "note": "Launched after the operator resolved gate arabsign-loso-hold (2026-11-04). Estimate per run = the measured ArabSign SD run of the same model (upstream training and evaluation seconds, container overhead) rescaled by each fold's training frames, its 50-clip token dev list and its test frames; ceiling = ceil(1.6 x estimate + 1) GPU-h, the blocks 2-5 rule. USD at 3.041/h, the blocks 2-5 billed rate (393.76 / 129.48 GPU-h). All within the USD 2,000 absolute ceiling even if every run hits its ceiling."
           }
         ],
         "projection_after_decisions": {
@@ -10369,7 +11813,7 @@
     {
       "gate_id": "arabsign-loso-hold",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "Block 6 (ArabSign LOSO: 30 runs, 5 targets) was held by the operator on 2026-11-04 after blocks 2-5 showed TLP, SEN and CorrNet degrading or stalling on GrSL and ArabSign under the stated protocol. The operator asked for a no-training investigation first (data-adapter cross-check across the four repos; failure signatures of CorrNet GrSL SI, CorrNet GrSL Unseen-Sent and SEN ArabSign SD) and will decide how to proceed with LOSO after reviewing it.",
       "evidence": [
         "Blocks 2-5 results: targets *-grsl-*, *-arabsign-signer-dep and *-phoenix2014-signer-indep, and compute-full-table.resolution.block_ledger observations.",
@@ -10377,7 +11821,22 @@
         "checkpoint-check-002 and runs[full-corrnet-grsl-si-001|full-corrnet-grsl-unseen-001|full-sen-arabsign-sd-001].failure_signature.",
         "Code fact: VAC_CSLR (VAC, SMKD) trains in fp32; TLP, SEN and CorrNet train under torch.cuda.amp autocast with a GradScaler (seq_scripts.py at the pinned commits). All four skip a batch whose loss is non-finite."
       ],
-      "required_action": "Operator decides whether and how to run block 6 (ArabSign LOSO). Nothing is launched until then; the decided LOSO rules of 2026-11-02 (final epoch, 40 epochs, lr 1e-3, steps 20/35) are unchanged unless the operator changes them."
+      "required_action": "Operator decides whether and how to run block 6 (ArabSign LOSO). Nothing is launched until then; the decided LOSO rules of 2026-11-02 (final epoch, 40 epochs, lr 1e-3, steps 20/35) are unchanged unless the operator changes them.",
+      "resolution": {
+        "decided_at": "2026-11-04",
+        "decided_by": "operator",
+        "decision": "Launch the 30 ArabSign LOSO runs now under the approved protocol (lr 1e-3, 40 epochs, steps 20/35, final-epoch checkpoint), detached as blocks 2-5, with ceilings declared before launch and app/call IDs recorded. No run under a different learning rate or schedule.",
+        "basis": [
+          "The data adapters are identical across the four repos (adapter-check-002).",
+          "The observed failures are optimization instabilities under the stated protocol (operator's characterisation; failure signatures recorded as facts).",
+          "ArabSign SD trained for all five models.",
+          "Table I must stay internally consistent: the same protocol for every column."
+        ],
+        "also_recorded_as_facts": [
+          "sources[].training_precision: VAC_CSLR trains in fp32; TLP, SEN and CorrNet train under torch.cuda.amp autocast with a GradScaler.",
+          "datasets[grsl].gloss_coverage: GrSL Unseen-Sent has 176 of 5,187 dev and 105 of 4,490 test reference gloss tokens absent from its training list."
+        ]
+      }
     }
   ]
 }

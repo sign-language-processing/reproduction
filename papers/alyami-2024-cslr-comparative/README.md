@@ -10,7 +10,7 @@
 
 The preference level is expected rather than confirmed; see `status.preference_level_basis`.
 
-**Pipeline status:** `partial` — interim: 25 of 30 in-scope targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets are held by the operator at gate `arabsign-loso-hold` (2026-11-04). The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000; USD 509.75 has been spent.
+**Pipeline status:** `partial` — interim: 25 of 30 in-scope targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets are in block 6: its 30 runs were launched on 2026-11-04 after the operator resolved gate `arabsign-loso-hold`. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000; USD 509.75 has been spent.
 
 **Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. 5 of the 25 produced values are within it: SMKD Phoenix SD, CorrNet Phoenix SI, and VAC, SMKD and TLP on ArabSign SD. For ArabSign SD the published values are all below 1% WER, so the absolute tolerance cannot tell them apart; the Results table also gives the relative difference. See `status.numerical_agreement_basis`.
 
@@ -91,7 +91,7 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-25 of the 30 targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: block 6 is held at gate `arabsign-loso-hold`. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error. The relative difference is that difference divided by the published value. ArabSign values keep the paper's four decimals.
+25 of the 30 targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: block 6 (30 runs) is running. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error. The relative difference is that difference divided by the published value. ArabSign values keep the paper's four decimals.
 
 | Target | Published | Reproduced | Difference | Relative | Selected epoch (dev WER) | Runs |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
@@ -234,6 +234,8 @@ Both steps are the only ones that mount `datasets` writable. Every other functio
 
 The GSL Drive folder labelled "GSL SD" actually holds the `*_unseen` files. None of its 1,043 test sentences occurs in training, and they cover 45 unique sentences, so this folder matches the paper's Unseen-Sent split. "GSL SI" holds signer 3 out with seen sentences, matching the paper's Signer-Indep split.
 
+**GrSL gloss coverage (fact; `datasets[grsl].gloss_coverage`, from `adapter-check-002`).** In GrSL Unseen-Sent, 176 of the 5,187 dev reference gloss tokens and 105 of the 4,490 test reference gloss tokens are glosses that never occur in its training list. In GrSL SI (and ArabSign SD) there are none.
+
 The five ArabSign videos missing from the RGB release are `01/test/0006`, `01/test/0044`, `01/train/0020`, `02/train/0020` and `05/train/0042`, all with `(timestamp)_c.mp4` stems. Signer-Dep test therefore has 1,841 of 1,843 clips. In addition, 35 file stems carry a signer/sentence prefix that differs from their folder. The folder path is what the author's CSVs list, so it defines signer, split and sentence.
 
 Frames for all three datasets are resized to 256×256 PNG with the upstream `resize_img` operation (`cv2.resize`, `INTER_LANCZOS4`) and archived on the paper's results Volume `alyami-2024-cslr-results`:
@@ -251,6 +253,8 @@ Frames for all three datasets are resized to 256×256 PNG with the upstream `res
 - `simple-video-utils` 0.7.4 with `av` 18.1.0;
 - `lmdb` 1.5.1, which TLP's and SEN's `dataset/dataloader_video.py` import at module level;
 - the four repos at their pinned commits under `/opt/repos/{vac,tlp,sen,corrnet}`, each with one correctness patch (`patches/{repo}-ctc-without-cudnn.patch`, below).
+
+**Training precision (fact, unchanged by this reproduction; `sources[].training_precision`).** VAC_CSLR (the VAC and SMKD runs) trains in fp32: its `seq_scripts.py` `seq_train` has no autocast or GradScaler. TLP, SEN and CorrNet train in fp16 mixed precision. Their `seq_train` creates a `GradScaler` at the start of every epoch and runs the forward pass and loss under `torch.cuda.amp.autocast()` (TLP lines 22/29, SEN and CorrNet lines 19/26 at the pinned commits). All four skip a batch whose loss is inf or nan.
 
 The repos' own Python pins (numpy 1.20, scipy 1.7, opencv 4.5.5) have no Python 3.12 wheels. They are replaced by the oldest releases that do and that still ship `scipy.misc`, as in `papers/yu-2025-cvsign`.
 
@@ -392,6 +396,21 @@ The first Phoenix SI launch, at 08:18, used the train-only function. It was stop
 
 Per-run container time is in each run's `compute.gpu_hours`. The longest was SEN on GrSL SI, at 10.47 of its 16 GPU-h. Cumulative spend is **USD 509.75 of USD 2,000** (Modal billing summed over this paper's apps, 2026-11-02 to 2026-11-04, including the CPU-only checks of 2026-11-04).
 
+**Block 6, ArabSign LOSO: 30 runs, declared 2026-11-04 before launch.** Gate `arabsign-loso-hold` was resolved by the operator. The protocol is the approved one: lr 1e-3, 40 epochs, steps 20/35, batch 2, seed 0, final-epoch checkpoint. Each run is one detached `run_full` call, as in blocks 2–5, with `--dev-rule final-epoch`. Upstream's per-epoch dev loop reads the fixed 50-clip token list, which is never used for selection; the run then scores epoch 39 on that list and on the held-out signer.
+
+Per-run estimates take the measured ArabSign SD run of the same model (upstream training and evaluation time, container overhead) and rescale it by each fold's training frames, token dev list and test frames. Ceilings use the blocks 2–5 rule, ceil(1.6 × estimate + 1) GPU-h. USD is at 3.041/h, the blocks 2–5 billed rate.
+
+| Model | Estimate per fold (GPU-h) | Ceiling per fold (GPU-h) |
+| --- | ---: | ---: |
+| VAC | 6.45–6.60 | 12 |
+| SMKD | 6.47–6.62 | 12 |
+| TLP | 5.05–5.17 | 10 |
+| SEN | 9.05–9.26 | 16 |
+| CorrNet | 6.93–7.09 | 13 |
+| **30 runs** | **207.0 (USD 630)** | **378 (USD 1,150)** |
+
+Cumulative spend before launch is USD 509.75. The projected total after block 6 is about **USD 1,139**. If every run hit its ceiling the total would be USD 1,659, under the USD 2,000 absolute ceiling. Every run's app and function-call ID is in `reproduction.json.runs`.
+
 ## Guesses and deviations
 
 | Detail | Paper/evidence says | This attempt uses | Rationale |
@@ -475,6 +494,13 @@ Each block declares its own ceilings, and cumulative spend is tracked against US
 
 With these decisions the projected total was about USD 1,396 before retries, including the USD 16 already spent (`compute-full-table.resolution.projection_after_decisions`).
 
-### ArabSign LOSO hold (open)
+### ArabSign LOSO hold (resolved)
 
-`arabsign-loso-hold`. On 2026-11-04, after blocks 2–5, the operator held block 6 (ArabSign LOSO: 30 runs, 5 targets) and asked for the no-training investigation in Results first. The operator decides whether and how block 6 runs. Nothing is launched until then. The LOSO rules decided on 2026-11-02 (final epoch, 40 epochs, lr 1e-3, steps 20/35) are unchanged unless the operator changes them.
+`arabsign-loso-hold`. On 2026-11-04, after blocks 2–5, the operator held block 6 (ArabSign LOSO: 30 runs, 5 targets) and asked for the no-training investigation in Results first. After reviewing it, the operator resolved the gate the same day: launch the 30 runs under the approved protocol, with lr 1e-3, 40 epochs, steps 20/35 and the final-epoch checkpoint. No run uses a different learning rate or schedule. The operator gave four reasons:
+
+- the adapters are identical across the repos;
+- the observed failures are optimization instabilities under the stated protocol;
+- ArabSign SD trained for all five models;
+- the table must stay internally consistent.
+
+Two facts were recorded with the decision: training precision per repository (`sources[].training_precision`) and GrSL Unseen-Sent gloss coverage (`datasets[grsl].gloss_coverage`).
