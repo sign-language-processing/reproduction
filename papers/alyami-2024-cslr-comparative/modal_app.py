@@ -1290,6 +1290,139 @@ def launch_score_check(settings: str = "phoenix-si,grsl-si,grsl-unseen,arabsign-
         print(json.dumps(result, ensure_ascii=False))
 
 
+@APP.function(image=IMAGE, cpu=8, memory=32768, ephemeral_disk=512 * 1024, volumes=RUN_VOLUMES, timeout=2 * 3600)
+def adapter_check(setting: str, samples_per_split: int = 10):
+    """Investigation only, no training. For the five full runs of one setting, compares what each
+    run's own code copy (runs/full-<model>-<setting>-001/code) holds and what that repo's BaseFeeder
+    reads: info lists, gloss dict, ground-truth STMs, and for the same train and test clips the
+    label ids and glosses, frames read, the test-transform tensor and a seed-0 train-transform tensor."""
+    import importlib
+    import inspect
+    import random
+    import sys
+
+    import numpy as np
+    import torch
+    import yaml
+
+    sys.dont_write_bytecode = True
+    RESULTS.reload()
+    _, staged = _stage_frames(SETTINGS[setting]["frames"])
+    dataset = SETTINGS[setting]["dataset"]
+
+    def digest(obj):
+        return hashlib.sha256(json.dumps(obj, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
+
+    out = {"setting": setting, "dataset": dataset, "frames": staged, "started_at_utc": _now(), "runs": {}}
+    chosen = None
+    for model, repo in MODELS.items():
+        run_id = f"full-{model}-{setting}-001"
+        code = Path("/tmp/adapter-check") / run_id
+        shutil.copytree(f"/results/runs/{run_id}/code", code, symlinks=True)  # never import from the Volume copy
+        config = yaml.safe_load((code / "configs/run.yaml").read_text())
+        dataset_info = yaml.safe_load((code / f"configs/{config['dataset']}.yaml").read_text())
+        gloss_dict = np.load(code / dataset_info["dict_path"], allow_pickle=True).item()
+        reader_dir = "phoenix2014" if repo == "vac" else dataset  # VAC's BaseFeeder hardcodes ./preprocess/phoenix2014
+        record = {"repo": repo, "config_dataset": config["dataset"], "dataset_root": dataset_info["dataset_root"],
+                  "feeder_args": config["feeder_args"], "info_dir": f"preprocess/{reader_dir}",
+                  "gloss_dict": {"size": len(gloss_dict), "sha256": digest(sorted(gloss_dict.items()))}, "splits": {}}
+        infos = {}
+        for split in ("train", "dev", "test"):
+            info = np.load(code / f"preprocess/{reader_dir}/{split}_info.npy", allow_pickle=True).item()
+            rows = infos[split] = [info[i] for i in range(len(info) - 1)]
+            tokens = [t for r in rows for t in r["label"].split(" ") if t]
+            record["splits"][split] = {
+                "clips": len(rows), "frames": sum(r["num_frames"] for r in rows), "prefix": info["prefix"],
+                "rows_sha256": digest([[r["fileid"], r["folder"], r["signer"], r["label"], r["num_frames"]] for r in rows]),
+                "label_tokens": len(tokens), "tokens_missing_from_gloss_dict": sum(t not in gloss_dict for t in tokens),
+                "stm_sha256": _sha256(code / f"{dataset_info['evaluation_dir']}/{dataset_info['evaluation_prefix']}-{split}.stm")}
+        seen = {t for r in infos["train"] for t in r["label"].split()}
+        for split in ("dev", "test"):
+            record["splits"][split]["tokens_unseen_in_train"] = sum(t not in seen for r in infos[split] for t in r["label"].split())
+        if chosen is None:
+            chosen = out["samples"] = {split: [infos[split][int(i)]["fileid"]
+                                               for i in np.linspace(0, len(infos[split]) - 1, samples_per_split)]
+                                       for split in ("train", "test")}
+        for name in [m for m in sys.modules if m.split(".")[0] in ("dataset", "utils")]:
+            del sys.modules[name]
+        importlib.invalidate_caches()
+        os.chdir(code)
+        sys.path.insert(0, str(code))
+        feeder_class = importlib.import_module("dataset.dataloader_video").BaseFeeder
+        sys.path.remove(str(code))
+        accepted = inspect.signature(feeder_class.__init__).parameters
+        inverse = {value[0]: key for key, value in gloss_dict.items()}
+        samples = []
+        for split in ("train", "test"):
+            feeders = {}
+            for train_flag in (False, True):  # main.py: arg = feeder_args + prefix, mode, transform_mode (+ kernel_size, dataset)
+                arg = dict(config["feeder_args"], prefix=dataset_info["dataset_root"], mode=split, transform_mode=train_flag)
+                if "kernel_size" in accepted:
+                    arg["kernel_size"] = ["K5", "P2", "K5", "P2"]  # only collate_fn uses it; not exercised here
+                if "dataset" in accepted:
+                    arg["dataset"] = config["dataset"]
+                feeders[train_flag] = feeder_class(gloss_dict=gloss_dict, **arg)
+            index = {r["fileid"]: i for i, r in enumerate(infos[split])}
+            for fileid in chosen[split]:
+                i = index[fileid]
+                frames, label, fi = feeders[False].read_video(i)
+                test_video, _ = feeders[False].normalize(frames, label)
+                random.seed(0)
+                np.random.seed(0)
+                torch.manual_seed(0)
+                train_frames, train_label, _ = feeders[True].read_video(i)
+                train_video, _ = feeders[True].normalize(train_frames, train_label)
+                samples.append({
+                    "split": split, "fileid": fileid, "index": i, "info_num_frames": fi["num_frames"],
+                    "frames_read": len(frames), "frame_shape": list(frames[0].shape),
+                    "info_label": fi["label"], "label_ids": list(label), "label_glosses": [inverse[x] for x in label],
+                    "test_tensor_shape": list(test_video.shape),
+                    "test_tensor_sha256": hashlib.sha256(test_video.numpy().tobytes()).hexdigest(),
+                    "train_tensor_shape_seed0": list(train_video.shape),
+                    "train_tensor_sha256_seed0": hashlib.sha256(train_video.numpy().tobytes()).hexdigest()})
+        record["samples"] = samples
+        out["runs"][run_id] = record
+    out["finished_at_utc"] = _now()
+    path = Path(f"/results/checks/adapter-check-{setting}.json")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    RESULTS.commit()
+    return {"setting": setting, "path": str(path), "sha256": _sha256(path)}
+
+
+@APP.function(image=IMAGE, cpu=4, memory=16384, volumes=RUN_VOLUMES, timeout=3600)
+def checkpoint_check(run_id: str):
+    """Investigation only, no training: non-finite values per tensor in every retained checkpoint
+    of one run (model parameters vs. buffers such as BatchNorm running statistics)."""
+    import torch
+
+    RESULTS.reload()
+    out = {"run_id": run_id, "checkpoints": {}}
+    for path in sorted(Path(f"/results/runs/{run_id}/work").glob("dev_*_epoch*_model.pt")):
+        state = torch.load(path, map_location="cpu", weights_only=False)
+        weights = state["model_state_dict"]
+        bad = {name: int((~torch.isfinite(t)).sum()) for name, t in weights.items()
+               if t.is_floating_point() and not torch.isfinite(t).all()}
+        buffers = {n for n in bad if n.endswith(("running_mean", "running_var"))}  # BatchNorm running statistics
+        out["checkpoints"][path.name] = {
+            "epoch": state.get("epoch"), "tensors": len(weights), "sha256": _sha256(path),
+            "nonfinite_tensors": len(bad), "nonfinite_parameters": sorted(set(bad) - buffers),
+            "nonfinite_buffers": sorted(buffers), "nonfinite_elements": sum(bad.values())}
+    return out
+
+
+@APP.local_entrypoint()
+def launch_checkpoint_check(run_ids: str):
+    for result in checkpoint_check.map(run_ids.split(",")):
+        print(json.dumps(result))
+
+
+@APP.local_entrypoint()
+def launch_adapter_check(settings: str = "grsl-si,grsl-unseen,arabsign-sd"):
+    for result in adapter_check.map(settings.split(",")):
+        print(json.dumps(result))
+
+
 @APP.local_entrypoint()
 def launch_setting_frame_totals():
     print(json.dumps(setting_frame_totals.remote(), indent=2))

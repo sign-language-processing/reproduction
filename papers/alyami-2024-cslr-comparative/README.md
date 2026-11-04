@@ -10,18 +10,18 @@
 
 The preference level is expected rather than confirmed; see `status.preference_level_basis`.
 
-**Pipeline status:** `partial` — interim: 5 of 30 in-scope targets have been produced while the blocks run. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000.
+**Pipeline status:** `partial` — interim: 25 of 30 in-scope targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets are held by the operator at gate `arabsign-loso-hold` (2026-11-04). The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000; USD 509.75 has been spent.
 
-**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. SMKD is within it. VAC (+7.73), TLP (+4.58), SEN (+4.28) and CorrNet (+1.64) are not. This will be reassessed as targets complete; see `status.numerical_agreement_basis`.
+**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. 5 of the 25 produced values are within it: SMKD Phoenix SD, CorrNet Phoenix SI, and VAC, SMKD and TLP on ArabSign SD. For ArabSign SD the published values are all below 1% WER, so the absolute tolerance cannot tell them apart; the Results table also gives the relative difference. See `status.numerical_agreement_basis`.
 
-**Attempt dates:** 2026-10-26 (intake and gates); continued from 2026-11-02
+**Attempt dates:** 2026-10-26 (intake and gates); 2026-11-02 to 2026-11-04 (data, preflights, blocks 1–5, investigation)
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
 | `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.310 | Assignment intake, version resolution, source search, dataset inspection on Modal `repro-sign`, target/protocol/compute gates | Session system context names the model and ID. `claude --version` returned 2.1.310. No runs executed. |
-| `claude-opus-5-5-claude-code-2026-11-02` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | From 2026-11-02: gate updates, data population, container, preflights, estimates, launching and monitoring full runs | Session system context names the model and ID. `claude --version` returned 2.1.316. |
+| `claude-opus-5-5-claude-code-2026-11-02` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | From 2026-11-02: gate updates, data population, container, preflights, estimates, launching and monitoring full runs; on 2026-11-04, collecting blocks 2–5 and the no-training investigation | Session system context names the model and ID. `claude --version` returned 2.1.316 on 2026-11-02 and 2.1.318 on 2026-11-04 in the same continued session. Whether the running process changed version is not exposed. |
 
 ## Scope and target contract
 
@@ -91,17 +91,49 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-Five of the 30 targets have been produced so far (block 1, Phoenix SD); the other 25 are running or not yet launched. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error.
+25 of the 30 targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: block 6 is held at gate `arabsign-loso-hold`. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error. The relative difference is that difference divided by the published value. ArabSign values keep the paper's four decimals.
 
-| Target | Published | Reproduced | Difference | Selected epoch (dev WER) | Runs |
-| --- | ---: | ---: | ---: | --- | --- |
-| VAC, Phoenix2014 Signer-Dep | 21.94 | 29.67 | +7.73 | 35 (29.64) | `full-vac-phoenix-sd-001`, `eval-vac-phoenix-sd-001` |
-| SMKD, Phoenix2014 Signer-Dep | 22.31 | 22.14 | −0.17 | 36 (21.57) | `full-smkd-phoenix-sd-001`, `eval-smkd-phoenix-sd-001` |
-| TLP, Phoenix2014 Signer-Dep | 22.0 | 26.58 | +4.58 | 39 (26.19) | `full-tlp-phoenix-sd-001`, `eval-tlp-phoenix-sd-002` |
-| SEN, Phoenix2014 Signer-Dep | 20.2 | 24.48 | +4.28 | 36 (24.75) | `full-sen-phoenix-sd-001`, `eval-sen-phoenix-sd-001` |
-| CorrNet, Phoenix2014 Signer-Dep | 19.9 | 21.54 | +1.64 | 38 (21.34) | `full-corrnet-phoenix-sd-001`, `eval-corrnet-phoenix-sd-002` |
+| Target | Published | Reproduced | Difference | Relative | Selected epoch (dev WER) | Runs |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| VAC, Phoenix2014 Signer-Dep | 21.94 | 29.67 | +7.73 | +35.2% | 35 (29.64) | `full-vac-phoenix-sd-001`, `eval-vac-phoenix-sd-001` |
+| SMKD, Phoenix2014 Signer-Dep | 22.31 | 22.14 | −0.17 | −0.8% | 36 (21.57) | `full-smkd-phoenix-sd-001`, `eval-smkd-phoenix-sd-001` |
+| TLP, Phoenix2014 Signer-Dep | 22.0 | 26.58 | +4.58 | +20.8% | 39 (26.19) | `full-tlp-phoenix-sd-001`, `eval-tlp-phoenix-sd-002` |
+| SEN, Phoenix2014 Signer-Dep | 20.2 | 24.48 | +4.28 | +21.2% | 36 (24.75) | `full-sen-phoenix-sd-001`, `eval-sen-phoenix-sd-001` |
+| CorrNet, Phoenix2014 Signer-Dep | 19.9 | 21.54 | +1.64 | +8.2% | 38 (21.34) | `full-corrnet-phoenix-sd-001`, `eval-corrnet-phoenix-sd-002` |
+| VAC, Phoenix2014 Signer-Indep (SI5) | 40.4 | 50.39 | +9.99 | +24.7% | 28 (51.41) | `full-vac-phoenix-si-001` |
+| SMKD, Phoenix2014 Signer-Indep (SI5) | 43.08 | 36.88 | −6.20 | −14.4% | 39 (36.68) | `full-smkd-phoenix-si-001` |
+| TLP, Phoenix2014 Signer-Indep (SI5) | 35.7 | 47.34 | +11.64 | +32.6% | 28 (47.56) | `full-tlp-phoenix-si-001` |
+| SEN, Phoenix2014 Signer-Indep (SI5) | 34.4 | 40.56 | +6.16 | +17.9% | 26 (40.10) | `full-sen-phoenix-si-001` |
+| CorrNet, Phoenix2014 Signer-Indep (SI5) | 33.6 | 34.40 | +0.80 | +2.4% | 39 (35.22) | `full-corrnet-phoenix-si-001` |
+| VAC, GrSL Signer-Indep | 29.6 | 3.80 | −25.80 | −87.2% | 37 (4.72) | `full-vac-grsl-si-001` |
+| SMKD, GrSL Signer-Indep | 30.8 | 5.06 | −25.74 | −83.6% | 33 (6.39) | `full-smkd-grsl-si-001` |
+| TLP, GrSL Signer-Indep | 6.4 | 25.76 | +19.36 | +302.5% | 37 (27.73) | `full-tlp-grsl-si-001` |
+| SEN, GrSL Signer-Indep | 8.09 | 38.54 | +30.45 | +376.4% | 36 (42.32) | `full-sen-grsl-si-001` |
+| CorrNet, GrSL Signer-Indep | 1.5 | 89.11 | +87.61 | +5,840.7% | 8 (89.44) | `full-corrnet-grsl-si-001` |
+| VAC, GrSL Unseen-Sent | 74.92 | 81.71 | +6.79 | +9.1% | 36 (72.10) | `full-vac-grsl-unseen-001` |
+| SMKD, GrSL Unseen-Sent | 61.1 | 70.96 | +9.86 | +16.1% | 30 (64.30) | `full-smkd-grsl-unseen-001` |
+| TLP, GrSL Unseen-Sent | 75.5 | 92.14 | +16.64 | +22.0% | 7 (89.49) | `full-tlp-grsl-unseen-001` |
+| SEN, GrSL Unseen-Sent | 74.8 | 85.10 | +10.30 | +13.8% | 37 (85.06) | `full-sen-grsl-unseen-001` |
+| CorrNet, GrSL Unseen-Sent | 64.7 | 92.72 | +28.02 | +43.3% | 6 (91.02) | `full-corrnet-grsl-unseen-001` |
+| VAC, ArabSign Signer-Dep | 0.2787 | 0.3838 | +0.1051 | +37.7% | 27 (0.18) | `full-vac-arabsign-sd-001` |
+| SMKD, ArabSign Signer-Dep | 0.2091 | 0.2442 | +0.0351 | +16.8% | 36 (0.18) | `full-smkd-arabsign-sd-001` |
+| TLP, ArabSign Signer-Dep | 0.2439 | 1.1165 | +0.8726 | +357.8% | 36 (0.36) | `full-tlp-arabsign-sd-001` |
+| SEN, ArabSign Signer-Dep | 0.2962 | 36.8981 | +36.6019 | +12,357.2% | 38 (33.65) | `full-sen-arabsign-sd-001` |
+| CorrNet, ArabSign Signer-Dep | 0.2265 | 8.8625 | +8.6360 | +3,812.8% | 20 (6.65) | `full-corrnet-arabsign-sd-001` |
 
-Counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729, SEN 1,592, CorrNet 1,401.
+Phoenix SD counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729, SEN 1,592, CorrNet 1,401. Each blocks 2–5 target cites its run's `{run_id}-sclite-test` artifact with its exact error and word counts.
+
+**Agreement basis.** The ±1.0-point tolerance is kept as recorded. It is uninformative for ArabSign Signer-Dep, whose published values are all below 1% WER: any reproduced value under about 1.2% falls inside it. VAC (+37.7%), SMKD (+16.8%) and TLP (+357.8%) are "within" on that column only in this absolute sense.
+
+**Results by code family.** These are facts under the stated protocol (lr 1e-3, 40 epochs, steps 20/35, batch 2, seed 0), without interpretation:
+
+- VAC and SMKD (repository VAC_CSLR) train on every dataset. In all four settings of blocks 2–5 their lowest dev WER comes late (epochs 27–39), far below their epoch-0 value. Their test WERs are 3.80 and 5.06 on GrSL SI, 81.71 and 70.96 on GrSL Unseen-Sent, and 0.3838 and 0.2442 on ArabSign SD.
+- TLP, SEN and CorrNet (repositories Temporal-Lift-Pooling, SEN_CSLR and CorrNet) train on Phoenix SD and SI, but degrade or stall on GrSL and ArabSign:
+  - **GrSL SI:** TLP reaches 25.76, SEN 38.54 and CorrNet 89.11, where VAC/SMKD reach 3.80/5.06; the paper has the opposite order (TLP 6.4, SEN 8.09, CorrNet 1.5, VAC/SMKD about 30).
+  - **GrSL Unseen-Sent:** TLP's and CorrNet's dev WER stays at about 89–100% for all 40 epochs, and dev-best selection picks epochs 7 and 6.
+  - **ArabSign SD:** SEN's dev WER stays at 83–95% for the first 21 epochs and ends at 36.90 on test; CorrNet ends at 8.86; TLP reaches 1.12.
+- The two families differ in one training-loop fact at the pinned commits. VAC_CSLR's `seq_train` runs in fp32. TLP, SEN and CorrNet run the forward pass and loss under `torch.cuda.amp.autocast()` with a `GradScaler`. All four skip a batch whose loss is non-finite.
+- The data path is identical across the four repositories for GrSL SI, GrSL Unseen-Sent and ArabSign SD (`adapter-check-002`, below).
 
 **Block 1 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`:
 
@@ -109,7 +141,54 @@ Counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TL
 - TLP's dev WER was still falling at its final (40th) epoch: 26.7, 26.8, 26.5 and 26.2 at epochs 36–39. The ICCVW 80-epoch schedule for TLP was not adopted (see Guesses and deviations).
 - VAC is +7.73 against the paper, while SMKD is within 0.17. SMKD comes from the same repository, with the same data lists and scoring, and differs only in `share_classifier` and `weight_norm`. Both use SeqCTC 1 + ConvCTC 1, the loss weights recorded as a guess. This rules out a data or scoring fault for this block.
 
-**Convergence curves.** Every full run's upstream per-epoch dev WER log (`work/dev.txt`) is copied verbatim to `artifacts/{run_id}-dev.txt`. Each copy is recorded as artifact `{run_id}-dev-log` with its sha256 and its source URI on the results Volume. Later blocks do the same.
+**Convergence curves.** Every full run's upstream per-epoch dev WER log (`work/dev.txt`) is copied verbatim to `artifacts/{run_id}-dev.txt`. Each copy is recorded as artifact `{run_id}-dev-log` with its sha256 and its source URI on the results Volume. This is done for all 25 runs of blocks 1–5, and each blocks 2–5 run also records its full training log (`{run_id}-train-log`), stdout (`{run_id}-stdout`) and attempt records (`{run_id}-attempt-records`) by URI and sha256.
+
+**Block 2–5 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`. Every run trained 40 epochs in one Modal attempt and none reached its ceiling. Training batches skipped for a non-finite loss over 40 epochs (from each run's `stdout.log`, `runs[].skipped_training_batches`):
+
+| Setting | VAC | SMKD | TLP | SEN | CorrNet | Batches per epoch |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Phoenix SI | 4 | 1 | 4 | 2 | 2 | 2,187 |
+| GrSL SI | 9 | 8 | 11 | 8 | 21,566 | 4,410 |
+| GrSL Unseen-Sent | 0 | 0 | 0 | 0 | 109,472 | 4,094 |
+| ArabSign SD | 0 | 0 | 0 | 0 | 0 | 3,390 |
+
+In GrSL Unseen-Sent, 176 of 5,187 dev and 105 of 4,490 test reference gloss tokens are glosses that never occur in its training list. GrSL SI and ArabSign SD have none.
+
+### Investigation of 2026-11-04 (no training)
+
+The operator held block 6 and asked for two checks before deciding on LOSO. Both ran CPU-only on Modal against the retained run directories.
+
+**1. Data adapters across the four repositories (`adapter-check-002`, `modal_app.py::adapter_check`).** For each of GrSL SI, GrSL Unseen-Sent and ArabSign SD, the check copies each of the five full runs' own code directory (`runs/full-{model}-{setting}-001/code`). It then compares what those copies hold and runs each repo's own `BaseFeeder`, built as its `main.py` builds it, on the same 20 clips (10 train, 10 test, evenly spaced). **No difference was found:**
+
+| Compared | GrSL SI | GrSL Unseen-Sent | ArabSign SD |
+| --- | --- | --- | --- |
+| Train / dev / test lists (every row: fileid, folder, signer, label, frame count) | identical (8,821 / 588 / 881) | identical (8,189 / 1,063 / 1,043) | identical (6,780 / 709 / 1,841) |
+| Gloss dictionary (size, every entry) | identical, 306 | identical, 310 | identical, 93 |
+| Ground-truth STMs for scoring | identical | identical | identical |
+| Label ids and glosses of the 20 clips | identical, equal to the list label | identical, equal to the list label | identical, equal to the list label |
+| Frames read per clip (20 clips) | identical, equal to the list count (24–183) | identical (15–226) | identical (51–152) |
+| Frame size read | 256×256×3 | 256×256×3 | 256×256×3 |
+| Test transform (CenterCrop 224) output | bit-identical tensors | bit-identical | bit-identical |
+| Train transform at seed 0 (RandomCrop 224, flip, TemporalRescale 0.2) | bit-identical tensors | bit-identical | bit-identical |
+
+The only difference is in the `feeder_args` keys. TLP adds `frame_interval: 1` and `image_scale: 1.0`; SEN and CorrNet add those plus `input_size: 224`; VAC_CSLR has none of them and hardcodes the same values. The identical tensors show the outputs do not differ. The preprocessing helper `preprocess/dataset_preprocess.py`, `evaluation/slr_eval/preprocess.sh`, `mergectmstm.py` and `utils/decode.py` are byte-identical across the four repos. `utils/video_augmentation.py` differs only in options these configs do not use. `evaluation/slr_eval/wer_calculation.py` differs in how it returns sclite's result and in an optional Python scorer; every run scores dev (during training) and test with sclite.
+
+**2. Failure signatures.** These are recorded in full in `reproduction.json`, in each run's `failure_signature` (per-epoch dev WER, mean training loss and skipped batches; sclite counts; hypothesis statistics; checkpoint scan). The checkpoint scan is `checkpoint-check-002`.
+
+| | CorrNet, GrSL SI | CorrNet, GrSL Unseen-Sent | SEN, ArabSign SD |
+| --- | --- | --- | --- |
+| Selected checkpoint | epoch 8 | epoch 6 | epoch 38 |
+| Test S / D / I (words) | 1,579 / 1,428 / 110 (3,498) | 1,980 / 2,158 / 25 (4,490) | 1,241 / 697 / 177 (5,732) |
+| Dev S / D / I (words) | 1,055 / 957 / 72 (2,330) | 1,959 / 2,714 / 48 (5,187) | 453 / 222 / 64 (2,196) |
+| Empty test hypotheses | 0 of 881 | 6 of 1,043 | 1 of 1,841 |
+| Distinct glosses / sequences in test hypotheses | 29 / 75 | 33 / 83 | 92 / 308 |
+| Dev WER by epoch | 89.4–91.6 for epochs 0–8, then exactly 104.1 at every epoch 9–39 | 91.0–99.5 for epochs 0–12, then exactly 100.7 at every epoch 13–39 | 83.3–95.3 for epochs 0–20; 63.5 at epoch 21 (first epoch at lr 2e-4), falling to 33.7 at epoch 38; 41.0 at 39 |
+| Mean training loss by epoch | 54.3 → 36.9 (epoch 9) → 16.3 (epoch 20); up to 18.7 at epoch 28; 11.5 at epoch 39 | 51.0 → 28.9 (epoch 13); then `nan` in 18 of the remaining 26 epochs, other values 13.1–30.1 | 34.9 → 14.0 (epoch 20); 19.6–24.3 in epochs 21–27; 18.8 at epoch 39 |
+| Training batches skipped (non-finite loss) | 0–4 per epoch for epochs 0–9; 354 at epoch 10, peak 1,967 at epoch 18, 0–5 from epoch 31 | 0 for epochs 0–12; 3,038 at epoch 13; 4,092–4,094 of 4,094 at every epoch 14–39 | 0 in every epoch |
+| Final-epoch (39) dev output | the same two glosses, `ΠΛΗΡΩΝΩ ΠΗΓΑΙΝΩ`, for all 588 dev clips | the same two glosses, `ΠΙΝΩ ΠΕΡΙΟΔΟΣ`, for all 1,063 dev clips | 196 distinct sequences; 11 empty |
+| Non-finite values in checkpoints | epoch 39: 2,306 values, only in BatchNorm buffers `conv1d.temporal_conv.1` and `.5` (`running_mean`, `running_var`); no model parameter. Epoch 8: none. | epoch 39: 2,108 values in the same four buffers; no parameter. Epoch 6: none. | none (epochs 38 and 39) |
+
+For comparison, the checkpoint scan found no non-finite value in any retained checkpoint of `full-corrnet-arabsign-sd-001`, `full-tlp-grsl-si-001`, `full-sen-grsl-si-001` or `full-vac-grsl-si-001`. Hypotheses are never empty in the sense of a missing line: upstream's `mergectmstm.py` writes `[EMPTY]` for a sentence with no gloss, and those are counted as empty above. The evaluated (dev-best) checkpoints of both CorrNet GrSL runs predate the frozen-output epochs.
 
 ## How to repeat this
 
@@ -132,6 +211,8 @@ $W run --detach $A::launch_train --model {vac|smkd|tlp|sen|corrnet} --setting {s
 $W run --detach $A::launch_evaluate --train-run-id {run_id} --eval-run-id {eval_run_id}
 $W run $A::launch_arabsign_split_record   # re-derives the ArabSign split hashes recorded in the gates
 $W run --detach $A::launch_run_full --model {model} --setting {setting} --run-id {run_id} --eval-run-id {eval_run_id} --max-gpu-hours {ceiling} [--dev-rule {rule}]   # blocks 2-5: train + evaluate in one detached call
+$W run --detach $A::launch_adapter_check   # no training: cross-repo data-adapter comparison on the retained run directories
+$W run --detach $A::launch_checkpoint_check --run-ids {run_id},{run_id},...   # no training: non-finite values per checkpoint tensor
 ```
 
 The settings are `phoenix-sd`, `phoenix-si`, `grsl-si`, `grsl-unseen`, `arabsign-sd` (`--dev-rule stratified-709-seed42`) and `arabsign-loso-01` … `-06` (`--dev-rule final-epoch`).
@@ -297,7 +378,19 @@ The 20 runs together are estimated at 154 GPU-h (about USD 465 at USD 3.03/h). T
 
 The first Phoenix SI launch, at 08:18, used the train-only function. It was stopped during frame staging, before any checkpoint, and replaced by `run_full`. The stopped calls are listed under each run's `compute.superseded_calls`.
 
-At 08:41:52, 5 runs had a GPU and 15 were waiting for one. Queueing is allowed and is recorded when the runs are collected.
+**GPU concurrency.** At 08:41:52, 5 runs had a GPU and 15 were waiting for one. The containers started between 08:36:51 and 09:10:35 UTC, so the longest wait for a GPU was about 30 minutes. All 20 then ran at once until the first finished at 12:32:15.
+
+**Outcome (collected 2026-11-04).** All 20 calls succeeded in one Modal attempt each, with no retry and no ceiling reached. Each trained 40 epochs, evaluated its dev-best checkpoint on dev and test, and wrote its outputs to the Volume. The last finished at 19:13:58 UTC on 2026-11-03.
+
+| Block | Container GPU-h | Estimate (GPU-h) | Ceiling (GPU-h) | Billed USD |
+| --- | ---: | ---: | ---: | ---: |
+| 2 Phoenix SI | 23.67 | 29.81 | 55 | 72.06 |
+| 3 GrSL SI | 38.05 | 38.75 | 69 | 115.62 |
+| 4 GrSL Unseen-Sent | 34.46 | 41.58 | 74 | 104.82 |
+| 5 ArabSign SD | 33.30 | 43.66 | 78 | 101.25 |
+| **Total** | **129.48** | **153.8** | **276** | **393.76** |
+
+Per-run container time is in each run's `compute.gpu_hours`. The longest was SEN on GrSL SI, at 10.47 of its 16 GPU-h. Cumulative spend is **USD 509.75 of USD 2,000** (Modal billing summed over this paper's apps, 2026-11-02 to 2026-11-04, including the CPU-only checks of 2026-11-04).
 
 ## Guesses and deviations
 
@@ -333,6 +426,7 @@ The 2026-10-26 session stopped before data work at the compute gate. On 2026-11-
 - **SEN log parsing.** SEN's preflights then failed twice in the harness's log parser, because SEN logs WER without a percent sign.
 - **Unattended launch, 2026-11-03.** The first two `run_full` checks were launched without `--detach`. `launch_run_full` only spawns and returns, so their apps stopped 3 s later and the calls never ran. They were relaunched with `--detach` as `-002`. The five train-only Phoenix SI calls from 08:18 were stopped during staging and replaced by `run_full`. Full-run containers have 40 GiB RAM from block 2 on, because block 1 peaked at 26.8 of 32 GiB.
 - **Block 1 evaluations.** `eval-tlp-phoenix-sd-001` hit a GPU hardware fault (XID 154). `eval-corrnet-phoenix-sd-001` lost its client connection. Both were reruns of the same command, and `evaluate()` now raises on a non-zero upstream exit instead of failing in the log parser.
+- **Investigation checks, 2026-11-04.** The adapter and checkpoint checks first ran at 08:48–08:58 UTC (apps `ap-bHQ3B5ERWHTpK2odgSqckY` and `ap-yqdhpwvsiOWMsfi0pFWHdc`) before their ceilings were written into `reproduction.json`. They were re-run unchanged as `adapter-check-002` and `checkpoint-check-002` with the ceilings declared first. Their outputs match the first invocations' (the adapter files differ only in timing fields); the first invocations are described under each run's `prior_invocation`.
 
 Every model × dataset preflight passed within its declared attempt limit.
 
@@ -379,4 +473,8 @@ Each block declares its own ceilings, and cumulative spend is tracked against US
   The lists hash is `1d36ba96…`.
 - **`arabsign-loso-checkpoint`: `final-epoch`.** No dev-based selection, based on v1's early-stopping remark. The per-fold train/test/token-dev hashes are in the gate's resolution.
 
-No gate is open. With these decisions the projected total is about USD 1,396 before retries, including the USD 16 already spent (`compute-full-table.resolution.projection_after_decisions`).
+With these decisions the projected total was about USD 1,396 before retries, including the USD 16 already spent (`compute-full-table.resolution.projection_after_decisions`).
+
+### ArabSign LOSO hold (open)
+
+`arabsign-loso-hold`. On 2026-11-04, after blocks 2–5, the operator held block 6 (ArabSign LOSO: 30 runs, 5 targets) and asked for the no-training investigation in Results first. The operator decides whether and how block 6 runs. Nothing is launched until then. The LOSO rules decided on 2026-11-02 (final epoch, 40 epochs, lr 1e-3, steps 20/35) are unchanged unless the operator changes them.
