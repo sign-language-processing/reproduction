@@ -411,6 +411,8 @@ Per-run estimates take the measured ArabSign SD run of the same model (upstream 
 
 Cumulative spend before launch is USD 509.75. The projected total after block 6 is about **USD 1,139**. If every run hit its ceiling the total would be USD 1,659, under the USD 2,000 absolute ceiling. Every run's app and function-call ID is in `reproduction.json.runs`.
 
+The declarations were pushed (`acd4c59`) before the first launch. The 30 runs were launched between 09:54:31 and 10:01:26 UTC, one `modal run --detach` app each. At 10:01:49 all 30 apps were `ephemeral (detached)`, 22 with a running task and 8 waiting for a GPU, and no local `modal` process was running. The first run had written its own start record to the Volume, confirming 40 epochs, steps 20/35 and the `final-epoch` rule.
+
 ## Guesses and deviations
 
 | Detail | Paper/evidence says | This attempt uses | Rationale |
