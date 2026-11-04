@@ -655,7 +655,7 @@ upstream code to patch. External pins used by the reimplementation and evaluatio
 | torchvision ResNet34 | `IMAGENET1K_V1` weights | Paper-stated ImageNet-pretrained backbone |
 
 Host used for setup: Linux 4.18 login node, no GPU, no Docker, system `python3` 3.6.8 with
-`python3.9` available. Modal CLI 1.2.6 installed to `~/.local/bin` via
+`python3.9` available. Modal CLI 1.2.6 installed as a user-level package via
 `python3.9 -m pip install --user modal`.
 
 **`setup.sh` does not complete in this environment.** It blocks indefinitely on its first
