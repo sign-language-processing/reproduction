@@ -122,11 +122,8 @@ If a contemporaneous GPU run was launched without declaring its GPU-hour and
 cost ceilings, record that instead of backfilling them: set
 `stop_policy.ceilings_declared: false` (absent means `true`), keep both
 ceilings `null`, and explain what did exist before launch in a non-empty
-`stop_policy.ceilings_note`. Likewise, when `HF_HOME` or `HF_HUB_CACHE` was not
-set, record it as `null` in `compute.shared_cache.environment` with a non-empty
-`compute.shared_cache.environment_note`. The validator reports both as
-warnings, not errors; they remain process deviations to disclose in the
-report.
+`stop_policy.ceilings_note`. The validator reports this as a warning, not an
+error; it remains a process deviation to disclose in the report.
 
 ### Terminal states and reason codes
 

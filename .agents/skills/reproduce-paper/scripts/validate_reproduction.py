@@ -442,18 +442,7 @@ def validate_runs(
                 if not isinstance(environment, dict) or any(
                     environment.get(key) != value for key, value in expected.items()
                 ):
-                    # Variables that were not set are recorded as null with a note.
-                    unset = isinstance(environment, dict) and all(
-                        key in environment and environment[key] in (None, value)
-                        for key, value in expected.items()
-                    )
-                    if unset and nonempty(cache.get("environment_note")):
-                        warnings.append(
-                            f"Modal {label} ran without the cache environment "
-                            "(environment_note)"
-                        )
-                    else:
-                        issues.append(f"Modal {label} has invalid cache environment")
+                    issues.append(f"Modal {label} has invalid cache environment")
     for group_id, group in attempt_groups.items():
         numbers = group["numbers"]
         expected = set(range(1, max(numbers) + 1))

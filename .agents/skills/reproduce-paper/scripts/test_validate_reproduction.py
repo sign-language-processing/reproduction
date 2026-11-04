@@ -348,8 +348,10 @@ class ValidatorTest(unittest.TestCase):
             "shared_cache": {
                 "modal_volume": "huggingface-cache",
                 "mount_path": "/cache/huggingface",
-                "environment": {"HF_HOME": None, "HF_HUB_CACHE": None},
-                "environment_note": "The image did not set the cache variables.",
+                "environment": {
+                    "HF_HOME": "/cache/huggingface",
+                    "HF_HUB_CACHE": "/cache/huggingface/hub",
+                },
             },
         }
         document["runs"][0]["stop_policy"].update(
@@ -358,12 +360,11 @@ class ValidatorTest(unittest.TestCase):
         )
         return document
 
-    def test_undeclared_ceilings_and_unset_cache_env_are_warnings(self) -> None:
+    def test_undeclared_ceilings_are_a_warning(self) -> None:
         result = self.validate(self.undeclared_gpu_run_document())
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("2 warning(s)", result.stderr)
+        self.assertIn("1 warning(s)", result.stderr)
         self.assertIn("launched without declared", result.stderr)
-        self.assertIn("without the cache environment", result.stderr)
 
     def test_undeclared_ceilings_need_a_note(self) -> None:
         document = self.undeclared_gpu_run_document()
@@ -378,13 +379,6 @@ class ValidatorTest(unittest.TestCase):
         result = self.validate(document)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("requires null max_gpu_hours and max_cost_chf", result.stderr)
-
-    def test_unset_cache_environment_needs_a_note(self) -> None:
-        document = self.undeclared_gpu_run_document()
-        del document["runs"][0]["compute"]["shared_cache"]["environment_note"]
-        result = self.validate(document)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIn("has invalid cache environment", result.stderr)
 
     def test_not_produced_requires_coded_reason_and_evidence(self) -> None:
         document = valid_document()
