@@ -25,6 +25,49 @@
       "note": "Treated as unverified leads per AGENTS.md, not as established facts."
     }
   },
+  "agents": [
+    {
+      "agent_id": "claude-opus-5-claude-code",
+      "model": "Claude Opus 5",
+      "model_id": "claude-opus-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.247",
+      "scope": "Implementation and execution. 2026-09-08 to 2026-09-09: assignment record, target ledger, data gate, OLMD reimplementation, all preflights, measurements and cache builds, the first PHOENIX14 full run (train-phoenix14-seed0-attempt1), the CTC-reduction fix and train-phoenix14-fixprobe-002. 2026-09-11: official-chain rescoring of the CINECA wiring-fix checkpoint. 2026-09-14: observed the terminal state of CINECA job 57329434 without recording it. 2026-09-22 to 2026-09-24: the whole PHOENIX14-T experiment. Run through the Claude desktop app (session entrypoint claude-desktop).",
+      "evidence": [
+        "Audited 2026-11-04 from local Claude Code session transcripts under ~/.claude/projects/-gpfs-home-mgranero-code-repro-sign/ on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
+        "Session 2a552891-f3de-417c-94d3-bcec6d661f18 and its continuation aaee465a-9148-48d3-b6a3-6bd4d2214a94 (2026-09-08T13:45Z to 2026-09-09T08:28Z, Claude Code 2.1.247, entrypoint claude-desktop): every assistant message has model claude-opus-5; it issued every Modal launch from data-inspect-001 through train-phoenix14-seed0-attempt1 (modal_app.py --action train at 2026-09-08T22:28Z) and wrote train-phoenix14-fixprobe-002 into the record.",
+        "Session 07ed424c-43ec-44b1-867b-acadb7659c06 (shared history with acee1494 and 1fda5bfc): the model was switched to claude-opus-5 for the 2026-09-11T12:34Z to 12:45Z rescore/sclite launches with --path phoenix14-wiring-fix, and for the 2026-09-14T05:45Z exchange that read sacct and result.json for job 57329434.",
+        "Session bd08104a-81c7-4fc1-86e4-c40950e413bb (2026-09-22T14:57Z to 2026-09-24T09:25Z, Claude Code 2.1.247): every assistant message has model claude-opus-5; it issued every PHOENIX14-T Modal launch.",
+        "38 commits carry 'Co-Authored-By: Claude Opus 5', from https://github.com/MarcelGranero/reproduction/commit/32eb34b5e1b9869937fdf95003bb819fe886fbf1 (assignment record) to https://github.com/MarcelGranero/reproduction/commit/231a877fbba519ef0e172e2b040bc65c7aedbdef (CTC fix), https://github.com/MarcelGranero/reproduction/commit/e50d96670ef39f4d46bb13be128e307972c2cc6b (wiring-fix result), and https://github.com/MarcelGranero/reproduction/commit/5fe7e2f490f09a7d11932055a84aac1ded16a686 to https://github.com/MarcelGranero/reproduction/commit/4a76cf7d889a796bca254830f431edfd6acf7d5e (PHOENIX14-T)."
+      ]
+    },
+    {
+      "agent_id": "claude-fable-5-claude-code",
+      "model": "Claude Fable 5",
+      "model_id": "claude-fable-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.247",
+      "scope": "Execution and analysis, 2026-09-09 to 2026-09-11: resumed PHOENIX14 training (train-phoenix14-seed0-attempt3), beam-10 rescoring and the official sclite chain on that checkpoint, the scorer-asymmetry diagnosis, the post-run figure audit, the CINECA entry points, and the CINECA launches of train-phoenix14-wiring-fix-001 and train-phoenix14-params-fix-001. Run through the Claude desktop app (session entrypoint claude-desktop).",
+      "evidence": [
+        "Audited 2026-11-04 from local Claude Code session transcripts under ~/.claude/projects/-gpfs-home-mgranero-code-repro-sign/ on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
+        "Sessions acee1494-b6e1-42d4-bd87-c51969f6cb85, 07ed424c-43ec-44b1-867b-acadb7659c06 and 1fda5bfc-3455-480a-8f61-d98820ce60c3 (one conversation from 2026-09-09T08:04Z, Claude Code 2.1.247, entrypoint claude-desktop): assistant messages with model claude-fable-5 issued modal_app.py --action train --detach (2026-09-09T10:01Z), --action rescore (2026-09-10T08:56Z), --action sclite (09:02Z and 09:04Z), --action smoke (09:49Z), the CINECA smoke sbatch (10:36Z to 10:39Z), the wiring-fix sbatch recorded with job 57186814 (10:40Z), and sbatch --parsable cineca.sbatch for job 57329434 (2026-09-11T13:52Z).",
+        "14 commits carry 'Co-Authored-By: Claude Fable 5', from https://github.com/MarcelGranero/reproduction/commit/1ecf466b07a83effece59142bf01ad5a929a93e1 to https://github.com/MarcelGranero/reproduction/commit/ea749bdc452a726a86dba8500a97ecca06721768 (launch of job 57329434).",
+        "Commit https://github.com/MarcelGranero/reproduction/commit/020d3c99de10bbcb131a3a445eb64c8316304d10 has no Co-Authored-By trailer; it falls inside the Fable 5 session window but is not attributed by trailer."
+      ]
+    },
+    {
+      "agent_id": "claude-opus-5-5-report-maintenance",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.309",
+      "scope": "Report maintenance only, 2026-11-04: backfilled this agents list and runs[].agent_ids from the sources above, recorded the terminal state of train-phoenix14-params-fix-001 from the 2026-09-14 session evidence, and moved the branch onto main for review. Executed no run and changed no code or result.",
+      "evidence": [
+        "Session 9020a63b-f591-4433-9358-bb89c5ab915a (Claude Code 2.1.309, model claude-opus-5-5), worktree reproduction-status-883ada, branch reproduce/yu-2025-olmd.",
+        "A fresh sacct query from this session failed: CINECA Leonardo requires an interactive step-ssh login, so job 57329434 was not re-queried and its output files were not hashed."
+      ]
+    }
+  ],
   "paper": {
     "title": "OLMD: Orientation-aware Long-term Motion Decoupling for Continuous Sign Language Recognition",
     "citation": "Yiheng Yu, Sheng Liu, Yuan Feng, Min Xu, Zhelun Jin, and Xuhua Yang. 2025. OLMD: Orientation-aware Long-term Motion Decoupling for Continuous Sign Language Recognition. In Proceedings of the Thirty-Ninth AAAI Conference on Artificial Intelligence (AAAI-25), 39(9), 9707-9715. https://doi.org/10.1609/aaai.v39i9.33052",
@@ -2684,7 +2727,10 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "diagnose-csl-001",
@@ -2754,7 +2800,10 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "gpu-smoke-003",
@@ -2844,7 +2893,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "preflight-phoenix14-001",
@@ -2941,7 +2993,10 @@
         "loss_last": 34.2804,
         "steps_per_epoch_batch2": 2836,
         "checkpoint_size_bytes": 736918259
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "throughput-phoenix14-001",
@@ -3019,7 +3074,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-probe-phoenix14-001",
@@ -3098,7 +3156,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "preflight-phoenix14-002",
@@ -3197,7 +3258,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-trial-001",
@@ -3276,7 +3340,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-trial-000",
@@ -3340,7 +3407,10 @@
         "next_run_id": "cache-build-trial-001",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "loader-benchmark-001",
@@ -3430,7 +3500,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "loader-benchmark-000",
@@ -3493,7 +3566,10 @@
         "next_run_id": "loader-benchmark-001",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "loader-benchmark-h100-001",
@@ -3585,7 +3661,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-single-container-001",
@@ -3657,7 +3736,10 @@
         "retry_decision": "stop",
         "gate_ids": []
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-sharded-dev-002",
@@ -3735,7 +3817,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-sharded-full-001",
@@ -3824,7 +3909,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14-seed0-attempt1",
@@ -3911,7 +3999,10 @@
         "retry_decision": "retry",
         "next_run_id": "train-phoenix14-fixprobe-002",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14-fixprobe-002",
@@ -3993,7 +4084,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14-seed0-attempt3",
@@ -4091,7 +4185,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "rescore-phoenix14-001",
@@ -4197,7 +4294,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "sclite-phoenix14-001",
@@ -4261,7 +4361,10 @@
         "retry_decision": "retry",
         "next_run_id": "sclite-phoenix14-002",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "sclite-phoenix14-002",
@@ -4332,7 +4435,10 @@
         "beam10-dev": 35.0,
         "greedy-test": 34.4,
         "beam10-test": 34.2
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "gpu-smoke-004",
@@ -4406,7 +4512,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "cineca-smoke-001",
@@ -4457,7 +4566,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14-wiring-fix-001",
@@ -4544,7 +4656,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ]
     },
     {
       "run_id": "rescore-phoenix14-wiring-fix-001",
@@ -4618,7 +4733,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "sclite-phoenix14-wiring-fix-001",
@@ -4689,7 +4807,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14-params-fix-001",
@@ -4697,7 +4818,7 @@
       "kind": "train_full",
       "command": "cd /leonardo_work/EUHPC_D33_168/olmd/code && sbatch cineca.sbatch",
       "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
-      "started_at_utc": "2026-09-11T15:35:00Z",
+      "started_at_utc": "2026-09-11T13:53:00Z",
       "config": {
         "code_commit": "ac2512e (branch repro/yu-2025-olmd-wiring-fix)",
         "dataset": "phoenix14",
@@ -4711,7 +4832,7 @@
         "output": "/leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix"
       },
       "stop_policy": {
-        "declared_at_utc": "2026-09-11T15:30:00Z",
+        "declared_at_utc": "2026-09-11T13:30:00Z",
         "max_wall_time_seconds": 172800,
         "max_gpu_hours": 30.0,
         "max_cost_chf": null,
@@ -4733,12 +4854,42 @@
         "cluster": "leonardo",
         "job_id": "57329434"
       },
-      "observed": "IN PROGRESS at recording time; terminal block to be filled at completion. Structural validation by Modal smoke (gpu-smoke series, commit ac2512e): total 82,085,078 params (predicted 82.08M), shared head 47.00M, finite loss, correct branch lengths.",
+      "observed": "COMPLETED all 70 epochs (sacct State COMPLETED, ExitCode 0:0, Elapsed 22:33:59; result.json wall_seconds 81213). The model collapsed to all-blank output: from epoch 6 to epoch 69 dev WER is exactly 100.00 with 100% deletions and 0 insertions, while training CTC fell to 6.6, the lowest of any run. Best-dev checkpoint selection therefore chose epoch 1, and the run's own final evaluation is dev 96.09 / test 95.39 per-epoch symmetric greedy WER from that near-untrained checkpoint. Output files are on CINECA at /leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix/ (best.pt, latest.pt, history.json, result.json); they were not hashed or copied because CINECA access requires an interactive login. Source: sacct, ls and result.json output captured in session 07ed424c at 2026-09-14T05:45Z.",
       "artifact_ids": [],
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
         "unknown_fields": []
+      },
+      "agent_ids": [
+        "claude-fable-5-claude-code"
+      ],
+      "finished_at_utc": "2026-09-12T12:27:00Z",
+      "exit_code": 0,
+      "timestamp_note": "Corrected 2026-11-04. The launch-time values (declared 15:30Z, started 15:35Z) were Leonardo local time (CEST, UTC+2) labelled as UTC: the launch commit ea749bd is 2026-09-11T15:52:31+02:00, and squeue at 2026-09-11T14:38Z showed the job RUNNING for 44:58, so it started at about 13:53Z. Declaration is the original 15:30 CEST converted to UTC. Finish is start plus sacct Elapsed 22:33:59, which agrees with result.json's mtime of 2026-09-12 14:26 CEST. Both are accurate to about one minute.",
+      "measurements": {
+        "epochs_total": 70,
+        "best_epoch": 1,
+        "best_dev_wer_symmetric_greedy": 96.0897,
+        "final_dev_symmetric_greedy": 96.0897,
+        "final_test_symmetric_greedy": 95.3941,
+        "final_train_ctc_mean": 6.6,
+        "wall_seconds": 81213.0,
+        "gpu_hours": 22.56
+      },
+      "hypothesis_supported": null,
+      "findings": [
+        "The params-conformant variant (weight-shared temporal branch plus dense MP-Block, 82.09M parameters) trains but emits only blanks at evaluation, so it says nothing about whether matching the paper's parameter budget closes the gap.",
+        "Untested hypothesis from the 2026-09-14 session: the shared branch's BatchNorm sees two input distributions (trunk features and X_CS), which works with batch statistics in train mode but gives wrong running statistics in eval mode. The run changed two things at once, so the shared head and the dense MP-Block cannot be separated from this run alone.",
+        "No target value comes from this run. The reported PHOENIX14 values remain 33.9 / 33.0 from train-phoenix14-wiring-fix-001."
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "The command ran all 70 epochs and its final evaluation and exited 0, so the run is classified as completed. The model it produced is degenerate (all-blank output from epoch 6), which is a result of the hypothesis test, not a run failure. No follow-up run was launched. Terminal state recorded 2026-11-04 from evidence captured on 2026-09-14.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -4823,7 +4974,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "cache-build-phoenix14t-001",
@@ -4913,7 +5067,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "preflight-phoenix14t-001",
@@ -5001,7 +5158,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14t-wiring-fix-001",
@@ -5098,7 +5258,10 @@
         "retry_decision": "retry",
         "gate_ids": [],
         "next_run_id": "train-phoenix14t-wiring-fix-002"
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "clip-lengths-phoenix14t-001",
@@ -5183,7 +5346,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "train-phoenix14t-wiring-fix-002",
@@ -5288,7 +5454,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "rescore-phoenix14t-wiring-fix-001",
@@ -5366,7 +5535,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     },
     {
       "run_id": "sclite-phoenix14t-wiring-fix-001",
@@ -5454,7 +5626,10 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
-      }
+      },
+      "agent_ids": [
+        "claude-opus-5-claude-code"
+      ]
     }
   ],
   "artifacts": [

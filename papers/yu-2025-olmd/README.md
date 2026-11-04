@@ -44,6 +44,22 @@ figure-conformant wiring: PHOENIX14 **33.9 dev / 33.0 test** against published
 > reviewer decides the scientific conclusion; every variant, guess, and dead end is
 > recorded.
 
+## Agent attribution
+
+| Agent | Model | Application | Contribution |
+| --- | --- | --- | --- |
+| `claude-opus-5-claude-code` | Claude Opus 5 (`claude-opus-5`) | Claude Code 2.1.247, desktop app | Implementation, data gate, preflights, cache, first PHOENIX14 run and CTC fix (2026-09-08 → 09-09); wiring-fix rescoring (2026-09-11); all PHOENIX14-T work (2026-09-22 → 09-24) |
+| `claude-fable-5-claude-code` | Claude Fable 5 (`claude-fable-5`) | Claude Code 2.1.247, desktop app | PHOENIX14 attempt 3, rescoring and sclite, figure audit, both CINECA launches (2026-09-09 → 09-11) |
+| `claude-opus-5-5-report-maintenance` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.309 | Report maintenance only (2026-11-04): this attribution and the params-fix terminal record; ran nothing |
+
+Each run's `agent_ids` names the model that issued its launch command. The evidence is
+the `model` field on the launching assistant message in the local Claude Code session
+transcripts (session IDs in `reproduction.json.agents`). The transcripts were not
+published. The `Co-Authored-By` trailers on this paper's commits agree with that
+evidence: 38 Opus 5 commits and 14 Fable 5 commits. One commit, `020d3c9`, has no
+trailer. One conversation switched between Fable 5 and Opus 5, so attribution is per
+launch, not per session.
+
 ## Scope and target contract
 
 The queue export's `what_to_reproduce` is **"Table 1"**, and on 2026-09-08 the assignee
@@ -151,6 +167,31 @@ change convergence dramatically: the corrected wiring reached dev WER 52 by **ep
 a level the original needed roughly 50 epochs to reach, consistent with the
 zero-initialized α/β leaving the pretrained trunk undisturbed early and with the coupling
 path receiving its own CTC supervision. Both runs nonetheless plateau near 33–35.
+
+### A third PHOENIX14 run collapsed and produced no target value
+
+`train-phoenix14-params-fix-001` (CINECA job 57329434, commit `ac2512e`) tested the
+parameter-reconciliation hypothesis. It used a weight-shared temporal branch and a dense
+factorized MP-Block, which brought the model to 82.09M parameters against the paper's
+80.74M.
+
+- **Run:** all 70 epochs completed and the job exited 0 after 22:33:59 (22.56 GPU-hours).
+- **Collapse:** the model emitted only blanks. From epoch 6 onward, dev WER was exactly
+  100.00, with 100% deletions and 0 insertions. Training CTC still fell to 6.6, lower than
+  in any other run.
+- **Checkpoint selection:** best-dev selection therefore picked epoch 1. Its greedy WER
+  is 96.09 dev / 95.39 test.
+- **Interpretation:** the run tells us nothing about whether matching the parameter
+  budget would close the gap.
+- **Cause:** one untested hypothesis is that BatchNorm statistics are shared across the
+  two inputs of the shared branch. They work in train mode but are wrong in eval mode.
+  The run changed two things at once, so it cannot separate the shared branch from the
+  dense MP-Block.
+- **Not done:** no diagnostic or follow-up run was launched. The output files are still
+  on CINECA under `/leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix/`. They
+  were not copied or hashed.
+- **Record:** the terminal state was recorded on 2026-11-04 from sacct and `result.json`
+  output captured on 2026-09-14.
 
 ### How the reported number depends on scoring — measured, same checkpoint
 
@@ -426,8 +467,9 @@ the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
 Branch `repro/yu-2025-olmd-phoenix14t` runs **the same experiment as PHOENIX14, on
 PHOENIX14-T, on the Modal path**, with the **figure-conformant wiring** (`olmd.py`
 restored from `9dad93a`) that produced the reported 33.9/33.0 — so the two Table 1
-datasets are directly comparable. The params-conformant variant stays on the other
-branch, where its PHOENIX14 result is still in flight.
+datasets are directly comparable. The params-conformant variant was tested separately
+on PHOENIX14 and collapsed; see
+[A third PHOENIX14 run collapsed](#a-third-phoenix14-run-collapsed-and-produced-no-target-value).
 
 Five changes were needed to reach a dataset the pipeline had never executed:
 
@@ -717,8 +759,14 @@ paper's own inconsistency; this reproduction records it rather than choosing a r
 
 ## Open validation items
 
-`validate_reproduction.py` passes with **zero issues** as of 2026-09-10 (down from 171 at
-the start). What remains open is scope, not validity:
+The 2026-11-04 `validate_reproduction.py` from `main` passes with **zero issues**. The
+validator had since added agent attribution checks, and the report was brought up to them
+on that date. What remains open is scope, not validity:
+
+- Several runs' launch-time timestamps appear to be CEST local time labelled as UTC; for
+  example, launch commits and session logs place some starts about two hours earlier than
+  recorded. Only `train-phoenix14-params-fix-001` has been corrected, with its evidence.
+  The other runs keep their timestamps as originally recorded.
 
 - All four in-scope targets are produced; the compute gate is resolved. What remains
   open is diagnosis, not scope.
