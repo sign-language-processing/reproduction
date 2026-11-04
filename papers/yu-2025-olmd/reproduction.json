@@ -32,13 +32,12 @@
       "model_id": "claude-opus-5",
       "harness": "Claude Code",
       "harness_version": "2.1.247",
-      "scope": "Implementation and execution. 2026-09-08 to 2026-09-09: assignment record, target ledger, data gate, OLMD reimplementation, all preflights, measurements and cache builds, the first PHOENIX14 full run (train-phoenix14-seed0-attempt1), the CTC-reduction fix and train-phoenix14-fixprobe-002. 2026-09-11: official-chain rescoring of the CINECA wiring-fix checkpoint. 2026-09-14: observed the terminal state of CINECA job 57329434 without recording it. 2026-09-22 to 2026-09-24: the whole PHOENIX14-T experiment. Run through the Claude desktop app (session entrypoint claude-desktop).",
+      "scope": "Implementation and execution. 2026-09-08 to 2026-09-09: assignment record, target ledger, data gate, OLMD reimplementation, all preflights, measurements and cache builds, the first PHOENIX14 full run (train-phoenix14-seed0-attempt1), the CTC-reduction fix and train-phoenix14-fixprobe-002. 2026-09-22 to 2026-09-24: the whole PHOENIX14-T experiment. Run through the Claude desktop app (session entrypoint claude-desktop).",
       "evidence": [
         "Audited 2026-11-04 from the local Claude Code session transcripts on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
         "Session 2a552891-f3de-417c-94d3-bcec6d661f18 and its continuation aaee465a-9148-48d3-b6a3-6bd4d2214a94 (2026-09-08T13:45Z to 2026-09-09T08:28Z, Claude Code 2.1.247, entrypoint claude-desktop): every assistant message has model claude-opus-5; it issued every Modal launch from data-inspect-001 through train-phoenix14-seed0-attempt1 (modal_app.py --action train at 2026-09-08T22:28Z) and wrote train-phoenix14-fixprobe-002 into the record.",
-        "Session 07ed424c-43ec-44b1-867b-acadb7659c06 (shared history with acee1494 and 1fda5bfc): the model was switched to claude-opus-5 for the 2026-09-11T12:34Z to 12:45Z rescore/sclite launches with --path phoenix14-wiring-fix, and for the 2026-09-14T05:45Z exchange that read sacct and result.json for job 57329434.",
         "Session bd08104a-81c7-4fc1-86e4-c40950e413bb (2026-09-22T14:57Z to 2026-09-24T09:25Z, Claude Code 2.1.247): every assistant message has model claude-opus-5; it issued every PHOENIX14-T Modal launch.",
-        "38 commits carry 'Co-Authored-By: Claude Opus 5', from https://github.com/sign-language-processing/reproduction/commit/32eb34b5e1b9869937fdf95003bb819fe886fbf1 (assignment record) to https://github.com/sign-language-processing/reproduction/commit/231a877fbba519ef0e172e2b040bc65c7aedbdef (CTC fix), https://github.com/sign-language-processing/reproduction/commit/e50d96670ef39f4d46bb13be128e307972c2cc6b (wiring-fix result), and https://github.com/sign-language-processing/reproduction/commit/5fe7e2f490f09a7d11932055a84aac1ded16a686 to https://github.com/sign-language-processing/reproduction/commit/4a76cf7d889a796bca254830f431edfd6acf7d5e (PHOENIX14-T)."
+        "38 commits carry 'Co-Authored-By: Claude Opus 5', from https://github.com/sign-language-processing/reproduction/commit/32eb34b5e1b9869937fdf95003bb819fe886fbf1 (assignment record) to https://github.com/sign-language-processing/reproduction/commit/231a877fbba519ef0e172e2b040bc65c7aedbdef (CTC fix), and https://github.com/sign-language-processing/reproduction/commit/5fe7e2f490f09a7d11932055a84aac1ded16a686 to https://github.com/sign-language-processing/reproduction/commit/4a76cf7d889a796bca254830f431edfd6acf7d5e (PHOENIX14-T)."
       ]
     },
     {
@@ -47,11 +46,11 @@
       "model_id": "claude-fable-5",
       "harness": "Claude Code",
       "harness_version": "2.1.247",
-      "scope": "Execution and analysis, 2026-09-09 to 2026-09-11: resumed PHOENIX14 training (train-phoenix14-seed0-attempt3), beam-10 rescoring and the official sclite chain on that checkpoint, the scorer-asymmetry diagnosis, the post-run figure audit, the CINECA entry points, and the CINECA launches of train-phoenix14-wiring-fix-001 and train-phoenix14-params-fix-001. Run through the Claude desktop app (session entrypoint claude-desktop).",
+      "scope": "Execution and analysis, 2026-09-09 to 2026-09-10: resumed PHOENIX14 training (train-phoenix14-seed0-attempt3), beam-10 rescoring and the official sclite chain on that checkpoint, the scorer-asymmetry diagnosis, the post-run figure audit, and the gpu-smoke-004 check of the corrected wiring. Run through the Claude desktop app (session entrypoint claude-desktop).",
       "evidence": [
         "Audited 2026-11-04 from the local Claude Code session transcripts on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
-        "Sessions acee1494-b6e1-42d4-bd87-c51969f6cb85, 07ed424c-43ec-44b1-867b-acadb7659c06 and 1fda5bfc-3455-480a-8f61-d98820ce60c3 (one conversation from 2026-09-09T08:04Z, Claude Code 2.1.247, entrypoint claude-desktop): assistant messages with model claude-fable-5 issued modal_app.py --action train --detach (2026-09-09T10:01Z), --action rescore (2026-09-10T08:56Z), --action sclite (09:02Z and 09:04Z), --action smoke (09:49Z), the CINECA smoke sbatch (10:36Z to 10:39Z), the wiring-fix sbatch recorded with job 57186814 (10:40Z), and sbatch --parsable cineca.sbatch for job 57329434 (2026-09-11T13:52Z).",
-        "14 commits carry 'Co-Authored-By: Claude Fable 5', from https://github.com/sign-language-processing/reproduction/commit/1ecf466b07a83effece59142bf01ad5a929a93e1 to https://github.com/sign-language-processing/reproduction/commit/ea749bdc452a726a86dba8500a97ecca06721768 (launch of job 57329434).",
+        "Sessions acee1494-b6e1-42d4-bd87-c51969f6cb85, 07ed424c-43ec-44b1-867b-acadb7659c06 and 1fda5bfc-3455-480a-8f61-d98820ce60c3 (one conversation from 2026-09-09T08:04Z, Claude Code 2.1.247, entrypoint claude-desktop): assistant messages with model claude-fable-5 issued modal_app.py --action train --detach (2026-09-09T10:01Z), --action rescore (2026-09-10T08:56Z), --action sclite (09:02Z and 09:04Z) and --action smoke (09:49Z).",
+        "14 commits carry 'Co-Authored-By: Claude Fable 5', from https://github.com/sign-language-processing/reproduction/commit/1ecf466b07a83effece59142bf01ad5a929a93e1 to https://github.com/sign-language-processing/reproduction/commit/ea749bdc452a726a86dba8500a97ecca06721768.",
         "Commit https://github.com/sign-language-processing/reproduction/commit/020d3c99de10bbcb131a3a445eb64c8316304d10 has no Co-Authored-By trailer; it falls inside the Fable 5 session window but is not attributed by trailer."
       ]
     },
@@ -61,10 +60,9 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.309",
-      "scope": "Report maintenance only, 2026-11-04: backfilled this agents list and runs[].agent_ids from the sources above, recorded the terminal state of train-phoenix14-params-fix-001 from the 2026-09-14 session evidence, and moved the branch onto main for review. Executed no run and changed no code or result.",
+      "scope": "Report maintenance only, 2026-11-04: backfilled this agents list and runs[].agent_ids from the sources above, and at the operator's direction restricted the report to Modal experiments, removing the CINECA runs and every value derived from them. Executed no run and changed no retained Modal result.",
       "evidence": [
-        "Session 9020a63b-f591-4433-9358-bb89c5ab915a (Claude Code 2.1.309, model claude-opus-5-5), worktree reproduction-status-883ada, branch reproduce/yu-2025-olmd.",
-        "A fresh sacct query from this session failed: CINECA Leonardo requires an interactive step-ssh login, so job 57329434 was not re-queried and its output files were not hashed."
+        "Session 9020a63b-f591-4433-9358-bb89c5ab915a (Claude Code 2.1.309, model claude-opus-5-5), worktree reproduction-status-883ada, branch reproduce/yu-2025-olmd."
       ]
     }
   ],
@@ -171,7 +169,7 @@
   "status": {
     "pipeline": "complete",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "All four in-scope Table 1 targets now have comparable official-chain values from beam-10 decoding of each experiment's best-dev checkpoint: PHOENIX14 33.9 dev / 33.0 test against published 17.1 / 17.2, and PHOENIX14-T 34.5 dev / 32.6 test against published 17.1 / 18.4. Every value is roughly double its published counterpart, so does_not_agree stands across both datasets.\n\nDiagnosis. On PHOENIX14, of the 34-point gap first observed, about 16.5 points were this reproduction's own evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3), ~0.3 decoding, and ~1.1-1.2 two figure-audit wiring deviations that were corrected and retrained. PHOENIX14-T independently corroborates that the remaining gap is not evaluation error: its annotations carry no PHOENIX markers, so the stripping bug cannot arise, and its internal metric agrees with the official chain to within 0.13 WER, yet it lands at essentially the same distance from its published value.\n\nTwo independent datasets, run through identical code and protocol, landing within about 0.6 WER of each other (33.9/33.0 and 34.5/32.6) while their published values differ, points at a systematic property of this reimplementation rather than a dataset-specific fault. Both results also sit worse than the paper's own no-modules ablation baseline (18.9 dev on PHOENIX14), so the shortfall is not about the marginal value of OLMD's modules. The leading remaining candidate is the unpublished MP-Block architecture (blocking guess mp-block-internals), whose supplementary material does not exist publicly. A reviewer decides the scientific conclusion.",
+    "numerical_agreement_basis": "All four in-scope Table 1 targets have comparable official-chain values from beam-10 decoding of each experiment's best-dev checkpoint, all trained and evaluated on Modal: PHOENIX14 35.0 dev / 34.2 test against published 17.1 / 17.2, and PHOENIX14-T 34.5 dev / 32.6 test against published 17.1 / 18.4. Every value is roughly double its published counterpart, so does_not_agree stands across both datasets.\n\nDiagnosis. On PHOENIX14, of the 34-point gap first observed, about 16.5 points were this reproduction's own evaluation methodology (asymmetric marker stripping ~13, missing official normalizations ~3.3) and ~0.3 decoding. PHOENIX14-T shows the remaining gap is not evaluation error: its annotations carry no PHOENIX markers, so the stripping bug cannot arise, and its internal metric agrees with the official chain to within 0.13 WER, yet it lands at a similar distance from its published value.\n\nThe two datasets were not run with the same model variant. PHOENIX14 used the as-implemented wiring (deviations head-wiring-vs-figure2 and lma-in-trunk-vs-figures, found in a post-run figure audit) and the uniform-batch-lengths collate; PHOENIX14-T used the corrected wiring and the lineage padding. Both also keep the unshared temporal branches (deviation unshared-branch-weights). Both results sit worse than the paper's own no-modules ablation baseline (18.9 dev on PHOENIX14). The leading remaining candidate is the unpublished MP-Block architecture (blocking guess mp-block-internals). A reviewer decides the scientific conclusion.",
     "preference_level": 3,
     "preference_level_evidence": "Level 3 selected because the documented source search found no published code for OLMD in the paper, the AAAI proceedings, GitHub (including the first author's own account), or Papers With Code/HuggingFace. Levels 1 and 2 require an executable published artifact, which does not exist.",
     "blocker": null
@@ -455,26 +453,27 @@
         "status": "produced",
         "unit": "percent",
         "error_breakdown": {
-          "del": 8.5748,
-          "ins": 11.6316,
-          "sub": 31.2624
+          "sub": 18.3,
+          "del": 12.3,
+          "ins": 4.4
         },
         "artifact_ids": [
-          "wf-sclite-summary",
-          "wf-rescore-summary",
-          "wf-train-result-json",
-          "wf-train-best-pt"
+          "sclite-summary",
+          "rescore-summary",
+          "train-p14-result-json",
+          "train-p14-best-pt"
         ],
-        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-40 best-dev checkpoint from the figure-conformant wiring run.",
-        "checkpoint_selection": "best dev WER epoch (40), per guess checkpoint-rule",
-        "detail": "Reproduced 33.9 vs published 17.1 under the official chain, from the figure-conformant wiring run (train-phoenix14-wiring-fix-001). The earlier original-wiring run gave 35.0 under the identical chain; the two figure-audit wiring corrections improved the result by about 1.1-1.2 WER, so they do not explain the gap. Superseded value retained in that run's record and in the README comparison table.",
-        "difference": 16.8,
+        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
+        "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
+        "detail": "Reproduced 35.0 vs published 17.1 under the official chain. All scoring/decoding variants: beam-10 official-chain 35.0; greedy official-chain 35.3; symmetric Levenshtein stripped-both 38.19 (beam)/38.55 (greedy); raw symmetric 40.20/40.45; original asymmetric report 51.47. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training. This PHOENIX14 value comes from the as-implemented wiring, which carries the two figure-audit deviations head-wiring-vs-figure2 and lma-in-trunk-vs-figures and the uniform-batch-lengths collate. The PHOENIX14-T values come from the corrected (figure-conformant) wiring with the lineage padding. The two datasets therefore do not share one model variant. No PHOENIX14 run with the corrected wiring is part of this report.",
+        "difference": 17.9,
         "run_ids": [
-          "sclite-phoenix14-wiring-fix-001",
-          "rescore-phoenix14-wiring-fix-001",
-          "train-phoenix14-wiring-fix-001"
+          "sclite-phoenix14-002",
+          "rescore-phoenix14-001",
+          "train-phoenix14-seed0-attempt3"
         ],
-        "reproduced_value": 33.9
+        "reproduced_value": 35.0,
+        "error_breakdown_basis": "Official sclite chain, beam-10, from sclite-phoenix14-002."
       }
     },
     {
@@ -500,26 +499,27 @@
         "status": "produced",
         "unit": "percent",
         "error_breakdown": {
-          "del": 7.6595,
-          "ins": 12.5213,
-          "sub": 31.798
+          "sub": 18.1,
+          "del": 11.9,
+          "ins": 4.2
         },
         "artifact_ids": [
-          "wf-sclite-summary",
-          "wf-rescore-summary",
-          "wf-train-result-json",
-          "wf-train-best-pt"
+          "sclite-summary",
+          "rescore-summary",
+          "train-p14-result-json",
+          "train-p14-best-pt"
         ],
-        "metric_implementation": "Official PHOENIX evaluation chain (CorrNet slr_eval preprocess.sh + mergectmstm.py, sha256-pinned @ a812814, + SCTK v2.4.12 sclite -f 0 -o dtl) on beam-10 (no LM) decoding of the epoch-40 best-dev checkpoint from the figure-conformant wiring run.",
-        "checkpoint_selection": "best dev WER epoch (40), per guess checkpoint-rule",
-        "detail": "Reproduced 33.0 vs published 17.2 under the official chain, from the figure-conformant wiring run (train-phoenix14-wiring-fix-001). The earlier original-wiring run gave 34.2 under the identical chain; the two figure-audit wiring corrections improved the result by about 1.1-1.2 WER, so they do not explain the gap. Superseded value retained in that run's record and in the README comparison table.",
-        "difference": 15.8,
+        "metric_implementation": "Official PHOENIX evaluation chain: CorrNet slr_eval preprocess.sh + mergectmstm.py (sha256-pinned @ a812814) + SCTK v2.4.12 sclite -f 0 -o dtl, on beam-10 (no LM) decoding of the epoch-57 best-dev checkpoint. Selected as the comparable value because it is the evaluation the field's published numbers use.",
+        "checkpoint_selection": "best dev WER epoch (57), per guess checkpoint-rule",
+        "detail": "Reproduced 34.2 vs published 17.2 under the official chain. All scoring/decoding variants: beam-10 official-chain 34.2; greedy official-chain 34.4; symmetric Levenshtein stripped-both 37.43 (beam)/37.63 (greedy); raw symmetric 39.90/40.13; original asymmetric report 51.98. The originally committed 51.47/51.98 was inflated ~13 points by an asymmetric marker-stripping bug in the training-time scorer (references stripped, hypotheses not), and a further ~3.3 by not applying the official RWTH normalizations; both are evaluation-side and did not affect training. This PHOENIX14 value comes from the as-implemented wiring, which carries the two figure-audit deviations head-wiring-vs-figure2 and lma-in-trunk-vs-figures and the uniform-batch-lengths collate. The PHOENIX14-T values come from the corrected (figure-conformant) wiring with the lineage padding. The two datasets therefore do not share one model variant. No PHOENIX14 run with the corrected wiring is part of this report.",
+        "difference": 17.0,
         "run_ids": [
-          "sclite-phoenix14-wiring-fix-001",
-          "rescore-phoenix14-wiring-fix-001",
-          "train-phoenix14-wiring-fix-001"
+          "sclite-phoenix14-002",
+          "rescore-phoenix14-001",
+          "train-phoenix14-seed0-attempt3"
         ],
-        "reproduced_value": 33.0
+        "reproduced_value": 34.2,
+        "error_breakdown_basis": "Official sclite chain, beam-10, from sclite-phoenix14-002."
       }
     },
     {
@@ -4442,7 +4442,7 @@
     },
     {
       "run_id": "gpu-smoke-004",
-      "purpose": "Structural validation of the figure-conformant wiring (head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected) before the CINECA retrain: model constructs, forward and backward run, loss finite, branch lengths correct.",
+      "purpose": "Structural validation of the figure-conformant wiring (head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected) before training with it: model constructs, forward and backward run, loss finite, branch lengths correct.",
       "kind": "smoke",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action smoke",
       "working_directory": ".",
@@ -4450,7 +4450,7 @@
       "finished_at_utc": "2026-09-10T12:25:00Z",
       "exit_code": 0,
       "config": {
-        "wiring": "figure2-conformant (branch repro/yu-2025-olmd-wiring-fix)",
+        "wiring": "figure2-conformant (commit 9dad93a)",
         "frames": 128,
         "num_classes": 1296
       },
@@ -4497,7 +4497,7 @@
       },
       "hypothesis_supported": true,
       "findings": [
-        "The figure-conformant wiring is structurally sound; ready for the CINECA retrain."
+        "The figure-conformant wiring is structurally sound; it is the wiring the PHOENIX14-T runs use."
       ],
       "artifact_ids": [],
       "recording": {
@@ -4516,381 +4516,6 @@
       "agent_ids": [
         "claude-fable-5-claude-code"
       ]
-    },
-    {
-      "run_id": "cineca-smoke-001",
-      "purpose": "End-to-end offline validation on CINECA Leonardo before the full wiring-fix run: staged annotations/cache/weights load, model constructs on A100, two real optimizer steps, tiny dev eval.",
-      "kind": "smoke",
-      "command": "sbatch --qos=boost_qos_dbg ... train_cineca.py --smoke (Leonardo job 57186724; job 57186624 failed on a doubly-nested annotations directory from the volume download, fixed by moving the directory up)",
-      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
-      "started_at_utc": "2026-09-10T13:05:00Z",
-      "finished_at_utc": "2026-09-10T13:10:00Z",
-      "exit_code": 0,
-      "config": {
-        "code_commit": "9dad93a",
-        "environment": "cineca-ai/4.3.0 (python 3.11, torch 2.2.0 cuda 12.1, torchvision 0.17)"
-      },
-      "stop_policy": {
-        "declared_at_utc": "2026-09-10T13:00:00Z",
-        "max_wall_time_seconds": 1200,
-        "max_gpu_hours": 0.5,
-        "max_cost_chf": null
-      },
-      "attempt": {
-        "group_id": "cineca-smoke",
-        "number": 1,
-        "max_attempts": 3
-      },
-      "compute": {
-        "platform": "cineca-leonardo",
-        "account": "EUHPC_D33_168",
-        "partition": "boost_usr_prod",
-        "gpu": "A100-64GB",
-        "gpu_count": 1
-      },
-      "observed": "Job 57186724 COMPLETED in 26 s: smoke steps loss 558.4/657.3 (finite CTC), 4-clip dev eval WER 100 all-deletions (expected untrained regime), exit 0. Torch version differs from the Modal image (2.2.0 vs 2.11.0) -- recorded as an environment difference between the original and wiring-fix runs.",
-      "hypothesis_supported": true,
-      "findings": [
-        "The offline CINECA path (staged cache + annotations + TORCH_HOME weights, cineca-ai module) works end to end with the figure-conformant wiring."
-      ],
-      "artifact_ids": [],
-      "recording": {
-        "mode": "contemporaneous",
-        "source_record_sha256": null,
-        "unknown_fields": []
-      },
-      "terminal": {
-        "state": "succeeded",
-        "reason_code": "completed",
-        "detail": "Smoke completed, exit 0.",
-        "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
-      },
-      "agent_ids": [
-        "claude-fable-5-claude-code"
-      ]
-    },
-    {
-      "run_id": "train-phoenix14-wiring-fix-001",
-      "purpose": "Full 70-epoch PHOENIX14 training with the figure-conformant wiring (deviations head-wiring-vs-figure2 and lma-in-trunk-vs-figures corrected as one combined hypothesis), on CINECA Leonardo institutional compute.",
-      "kind": "train_full",
-      "command": "cd /leonardo_work/EUHPC_D33_168/olmd/code && sbatch cineca.sbatch",
-      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
-      "started_at_utc": "2026-09-10T13:15:00Z",
-      "config": {
-        "code_commit": "9dad93a (branch repro/yu-2025-olmd-wiring-fix)",
-        "dataset": "phoenix14",
-        "epochs": 70,
-        "batch_size": 2,
-        "seed": 0,
-        "wiring": "figure2-conformant",
-        "environment": "cineca-ai/4.3.0: python 3.11.6, torch 2.2.0+cu121, torchvision 0.17.0, numpy 1.26.4",
-        "data": "staged JPEG cache (6841 npz, 9.7 GiB) + annotation CSVs from the Modal datasets/results volumes; resnet34-b627a593.pth (sha-prefix-verified) in TORCH_HOME"
-      },
-      "stop_policy": {
-        "declared_at_utc": "2026-09-10T13:15:00Z",
-        "max_wall_time_seconds": 172800,
-        "max_gpu_hours": 30.0,
-        "max_cost_chf": null,
-        "note": "Institutional allocation EUHPC_D33_168 (144k local-hours, 10.7% consumed); no CHF cost. 24 h SLURM walltime per submission; per-epoch checkpointing resumes across resubmissions, wall ceiling covers two submissions."
-      },
-      "attempt": {
-        "group_id": "train-phoenix14-wiring-fix",
-        "number": 1,
-        "max_attempts": 3
-      },
-      "compute": {
-        "platform": "cineca-leonardo",
-        "account": "EUHPC_D33_168",
-        "partition": "boost_usr_prod",
-        "gpu": "A100-64GB",
-        "gpu_count": 1
-      },
-      "observed": "COMPLETED all 70 epochs in 22:31:06 on one A100-SXM-64GB (peak 32.15 GiB, ~1155 s/epoch), inside the 24 h walltime, so no resubmission was needed. Best dev WER 37.7729 at epoch 40 (the second LR cut); dev/test at that checkpoint 37.7729 / 37.2228 on the per-epoch symmetric greedy metric. The figure-conformant wiring learns MUCH faster than the original wiring -- it reached 52 dev WER by epoch 12, a level the original needed ~50 epochs to reach -- but converges to essentially the same place. Official-chain beam-10 scores are 33.9 dev / 33.0 test, against the original wiring's 35.0 / 34.2: an improvement of 1.1 / 1.2 WER, within or near seed-noise range and nowhere near the paper's 17.1 / 17.2.",
-      "artifact_ids": [
-        "wf-train-result-json",
-        "wf-train-history-json",
-        "wf-train-best-pt"
-      ],
-      "recording": {
-        "mode": "contemporaneous",
-        "source_record_sha256": null,
-        "unknown_fields": []
-      },
-      "slurm": {
-        "cluster": "leonardo",
-        "job_id": "57186814",
-        "smoke_job_ids": [
-          "57186624",
-          "57186724"
-        ]
-      },
-      "finished_at_utc": "2026-09-11T11:11:00Z",
-      "exit_code": 0,
-      "measurements": {
-        "epochs_total": 70,
-        "best_epoch": 40,
-        "best_dev_wer_symmetric_greedy": 37.7729,
-        "final_dev_symmetric_greedy": 37.7729,
-        "final_test_symmetric_greedy": 37.2228,
-        "sclite_beam10_dev": 33.9,
-        "sclite_beam10_test": 33.0,
-        "sclite_greedy_dev": 34.1,
-        "sclite_greedy_test": 33.3,
-        "wall_seconds": 81045.9,
-        "seconds_per_epoch_mean": 1157.8,
-        "gpu_hours": 22.52,
-        "peak_memory_GiB": 32.152
-      },
-      "hypothesis_supported": false,
-      "findings": [
-        "The combined figure-conformance correction improves the official-chain result by only 1.1 dev / 1.2 test WER (35.0/34.2 -> 33.9/33.0). The two wiring deviations are therefore NOT the explanation for the ~18-point gap to the published 17.1/17.2.",
-        "Convergence speed changed dramatically even though the endpoint did not: the corrected wiring reached dev WER 52 by epoch 12 versus ~epoch 50 for the original, consistent with the zero-initialized alpha/beta leaving the pretrained trunk undisturbed early and with the coupling path receiving direct CTC supervision.",
-        "Both runs plateau near 33-35 official-chain WER, roughly twice the published value and worse than the paper's own no-modules ablation baseline (18.9 dev). The remaining suspicion concentrates on the unpublished MP-Block internals (blocking guess mp-block-internals), with the open cross-stage/LMA questions now resolved against the figures and tested."
-      ],
-      "terminal": {
-        "state": "succeeded",
-        "reason_code": "completed",
-        "detail": "All 70 epochs completed inside the declared ceilings (22.5 of 30 GPU-hours) and evaluation emitted traceable dev and test WER from the best-dev checkpoint.",
-        "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
-      },
-      "agent_ids": [
-        "claude-fable-5-claude-code"
-      ]
-    },
-    {
-      "run_id": "rescore-phoenix14-wiring-fix-001",
-      "purpose": "Decode the CINECA wiring-fix best-dev checkpoint with greedy and beam-10 under the same scoring variants as the original run.",
-      "kind": "evaluate",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action rescore --path phoenix14-wiring-fix",
-      "working_directory": ".",
-      "started_at_utc": "2026-09-11T13:40:00Z",
-      "finished_at_utc": "2026-09-11T13:55:00Z",
-      "exit_code": 0,
-      "config": {
-        "checkpoint": "olmd-yu-2025-results:/train/phoenix14-wiring-fix/best.pt (epoch 40)",
-        "variant": "phoenix14-wiring-fix"
-      },
-      "stop_policy": {
-        "declared_at_utc": "2026-09-11T13:35:00Z",
-        "max_wall_time_seconds": 10800,
-        "max_gpu_hours": 2.0,
-        "max_cost_chf": 5.0
-      },
-      "attempt": {
-        "group_id": "rescore-phoenix14-wiring-fix",
-        "number": 1,
-        "max_attempts": 3
-      },
-      "compute": {
-        "platform": "modal",
-        "modal_profile": "repro-sign",
-        "gpu": "A10G",
-        "gpu_count": 1,
-        "shared_cache": {
-          "modal_volume": "huggingface-cache",
-          "mount_path": "/cache/huggingface",
-          "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub",
-            "TORCH_HOME": "/cache/huggingface/torch"
-          }
-        }
-      },
-      "modal": {
-        "profile": "repro-sign",
-        "environment": "main",
-        "app_id": null,
-        "dashboard": null,
-        "image": "ghcr.io/sign-language-processing/reproduction:latest"
-      },
-      "observed": "326.1 s on A10G. Beam-10 vs greedy again immaterial (0.18 dev / 0.31 test). Symmetric stripped-both: 37.59 dev / 36.90 test beam-10.",
-      "measurements": {
-        "wall_seconds": 326.1,
-        "dev_beam10_stripped": 37.5943,
-        "test_beam10_stripped": 36.8994,
-        "dev_greedy_stripped": 37.7729,
-        "test_greedy_stripped": 37.2228
-      },
-      "hypothesis_supported": true,
-      "artifact_ids": [
-        "wf-rescore-summary",
-        "wf-rescore-hyp-dev",
-        "wf-rescore-hyp-test"
-      ],
-      "recording": {
-        "mode": "contemporaneous",
-        "source_record_sha256": null,
-        "unknown_fields": []
-      },
-      "terminal": {
-        "state": "succeeded",
-        "reason_code": "completed",
-        "detail": "Evaluation completed and emitted the requested values.",
-        "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
-      },
-      "agent_ids": [
-        "claude-opus-5-claude-code"
-      ]
-    },
-    {
-      "run_id": "sclite-phoenix14-wiring-fix-001",
-      "purpose": "Score the wiring-fix CTM hypotheses with the pinned official PHOENIX sclite chain, identical to sclite-phoenix14-002.",
-      "kind": "evaluate",
-      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/yu-2025-olmd/modal_app.py --action sclite --path phoenix14-wiring-fix",
-      "working_directory": ".",
-      "started_at_utc": "2026-09-11T13:40:00Z",
-      "finished_at_utc": "2026-09-11T13:55:00Z",
-      "exit_code": 0,
-      "config": {
-        "checkpoint": "olmd-yu-2025-results:/train/phoenix14-wiring-fix/best.pt (epoch 40)",
-        "variant": "phoenix14-wiring-fix"
-      },
-      "stop_policy": {
-        "declared_at_utc": "2026-09-11T13:35:00Z",
-        "max_wall_time_seconds": 10800,
-        "max_gpu_hours": 2.0,
-        "max_cost_chf": 5.0
-      },
-      "attempt": {
-        "group_id": "sclite-phoenix14-wiring-fix",
-        "number": 1,
-        "max_attempts": 3
-      },
-      "compute": {
-        "platform": "modal",
-        "modal_profile": "repro-sign",
-        "gpu": null,
-        "gpu_count": 0,
-        "shared_cache": {
-          "modal_volume": "huggingface-cache",
-          "mount_path": "/cache/huggingface",
-          "environment": {
-            "HF_HOME": "/cache/huggingface",
-            "HF_HUB_CACHE": "/cache/huggingface/hub",
-            "TORCH_HOME": "/cache/huggingface/torch"
-          }
-        }
-      },
-      "modal": {
-        "profile": "repro-sign",
-        "environment": "main",
-        "app_id": null,
-        "dashboard": null,
-        "image": "ghcr.io/sign-language-processing/reproduction:latest"
-      },
-      "observed": "Official chain: dev 34.1 greedy / 33.9 beam-10; test 33.3 greedy / 33.0 beam-10. Versus the original wiring's 35.3/35.0 dev and 34.4/34.2 test.",
-      "measurements": {
-        "greedy_dev": 34.1,
-        "beam10_dev": 33.9,
-        "greedy_test": 33.3,
-        "beam10_test": 33.0
-      },
-      "hypothesis_supported": true,
-      "artifact_ids": [
-        "wf-sclite-summary"
-      ],
-      "recording": {
-        "mode": "contemporaneous",
-        "source_record_sha256": null,
-        "unknown_fields": []
-      },
-      "terminal": {
-        "state": "succeeded",
-        "reason_code": "completed",
-        "detail": "Evaluation completed and emitted the requested values.",
-        "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
-      },
-      "agent_ids": [
-        "claude-opus-5-claude-code"
-      ]
-    },
-    {
-      "run_id": "train-phoenix14-params-fix-001",
-      "purpose": "Full 70-epoch PHOENIX14 training testing the parameter-reconciliation hypothesis: weight-shared temporal branch plus dense factorized MP-Block, bringing the model from 111.76M to 82.09M vs the paper's 80.74M. Third and final planned PHOENIX14 variant.",
-      "kind": "train_full",
-      "command": "cd /leonardo_work/EUHPC_D33_168/olmd/code && sbatch cineca.sbatch",
-      "working_directory": "/leonardo_work/EUHPC_D33_168/olmd/code",
-      "started_at_utc": "2026-09-11T13:53:00Z",
-      "config": {
-        "code_commit": "ac2512e (branch repro/yu-2025-olmd-wiring-fix)",
-        "dataset": "phoenix14",
-        "epochs": 70,
-        "batch_size": 2,
-        "seed": 0,
-        "wiring": "params-conformant: figure2 wiring + weight-shared temporal branch + dense (3x1)+(1x3) MP-Block",
-        "params_total": 82085078,
-        "environment": "cineca-ai/4.3.0: python 3.11.6, torch 2.2.0+cu121, torchvision 0.17.0",
-        "data": "same staged cache/annotations/weights as train-phoenix14-wiring-fix-001",
-        "output": "/leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix"
-      },
-      "stop_policy": {
-        "declared_at_utc": "2026-09-11T13:30:00Z",
-        "max_wall_time_seconds": 172800,
-        "max_gpu_hours": 30.0,
-        "max_cost_chf": null,
-        "note": "Institutional allocation EUHPC_D33_168; 24 h SLURM walltime per submission, per-epoch checkpointing resumes across resubmissions."
-      },
-      "attempt": {
-        "group_id": "train-phoenix14-params-fix",
-        "number": 1,
-        "max_attempts": 3
-      },
-      "compute": {
-        "platform": "cineca-leonardo",
-        "account": "EUHPC_D33_168",
-        "partition": "boost_usr_prod",
-        "gpu": "A100-64GB",
-        "gpu_count": 1
-      },
-      "slurm": {
-        "cluster": "leonardo",
-        "job_id": "57329434"
-      },
-      "observed": "COMPLETED all 70 epochs (sacct State COMPLETED, ExitCode 0:0, Elapsed 22:33:59; result.json wall_seconds 81213). The model collapsed to all-blank output: from epoch 6 to epoch 69 dev WER is exactly 100.00 with 100% deletions and 0 insertions, while training CTC fell to 6.6, the lowest of any run. Best-dev checkpoint selection therefore chose epoch 1, and the run's own final evaluation is dev 96.09 / test 95.39 per-epoch symmetric greedy WER from that near-untrained checkpoint. Output files are on CINECA at /leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix/ (best.pt, latest.pt, history.json, result.json); they were not hashed or copied because CINECA access requires an interactive login. Source: sacct, ls and result.json output captured in session 07ed424c at 2026-09-14T05:45Z.",
-      "artifact_ids": [],
-      "recording": {
-        "mode": "contemporaneous",
-        "source_record_sha256": null,
-        "unknown_fields": []
-      },
-      "agent_ids": [
-        "claude-fable-5-claude-code"
-      ],
-      "finished_at_utc": "2026-09-12T12:27:00Z",
-      "exit_code": 0,
-      "timestamp_note": "Corrected 2026-11-04. The launch-time values (declared 15:30Z, started 15:35Z) were Leonardo local time (CEST, UTC+2) labelled as UTC: the launch commit ea749bd is 2026-09-11T15:52:31+02:00, and squeue at 2026-09-11T14:38Z showed the job RUNNING for 44:58, so it started at about 13:53Z. Declaration is the original 15:30 CEST converted to UTC. Finish is start plus sacct Elapsed 22:33:59, which agrees with result.json's mtime of 2026-09-12 14:26 CEST. Both are accurate to about one minute.",
-      "measurements": {
-        "epochs_total": 70,
-        "best_epoch": 1,
-        "best_dev_wer_symmetric_greedy": 96.0897,
-        "final_dev_symmetric_greedy": 96.0897,
-        "final_test_symmetric_greedy": 95.3941,
-        "final_train_ctc_mean": 6.6,
-        "wall_seconds": 81213.0,
-        "gpu_hours": 22.56
-      },
-      "hypothesis_supported": null,
-      "findings": [
-        "The params-conformant variant (weight-shared temporal branch plus dense MP-Block, 82.09M parameters) trains but emits only blanks at evaluation, so it says nothing about whether matching the paper's parameter budget closes the gap.",
-        "Untested hypothesis from the 2026-09-14 session: the shared branch's BatchNorm sees two input distributions (trunk features and X_CS), which works with batch statistics in train mode but gives wrong running statistics in eval mode. The run changed two things at once, so the shared head and the dense MP-Block cannot be separated from this run alone.",
-        "No target value comes from this run. The reported PHOENIX14 values remain 33.9 / 33.0 from train-phoenix14-wiring-fix-001."
-      ],
-      "terminal": {
-        "state": "succeeded",
-        "reason_code": "completed",
-        "detail": "The command ran all 70 epochs and its final evaluation and exited 0, so the run is classified as completed. The model it produced is degenerate (all-blank output from epoch 6), which is a result of the hypothesis test, not a run failure. No follow-up run was launched. Terminal state recorded 2026-11-04 from evidence captured on 2026-09-14.",
-        "failure_class": null,
-        "retry_decision": "not_needed",
-        "gate_ids": []
-      }
     },
     {
       "run_id": "cache-probe-phoenix14t-001",
@@ -5165,7 +4790,7 @@
     },
     {
       "run_id": "train-phoenix14t-wiring-fix-001",
-      "purpose": "Full 70-epoch PHOENIX14-T training with the figure-conformant wiring: the same experiment, same code and same protocol that produced the reported PHOENIX14 33.9/33.0, so the two Table 1 datasets are directly comparable. Stage two of the compute gate's staging decision.",
+      "purpose": "Full 70-epoch PHOENIX14-T training with the figure-conformant wiring (olmd.py from 9dad93a), otherwise the same protocol as PHOENIX14. Stage two of the compute gate's staging decision.",
       "kind": "train_full",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train --dataset phoenix14t",
       "working_directory": ".",
@@ -5177,7 +4802,7 @@
         "batch_size": 2,
         "seed": 0,
         "workers": 8,
-        "wiring": "figure2-conformant (olmd.py restored from 9dad93a, the variant behind the reported PHOENIX14 33.9/33.0)",
+        "wiring": "figure2-conformant (olmd.py restored from 9dad93a)",
         "optimizer": "Adam, lr 0.001, weight decay 0.001, x0.3 at epochs 25 and 40",
         "checkpoint_selection": "best dev WER epoch, per guess checkpoint-rule",
         "data": "JPEG frame cache from cache-build-phoenix14t-001 (8257 npz, 8.83 GiB) + official PHOENIX-2014-T annotation CSVs from the shared datasets Volume",
@@ -5586,7 +5211,7 @@
         "The official chain and this reproduction's internal symmetric metric agree to within 0.13 WER on PHOENIX14-T (34.5 vs 34.6318 dev beam-10 vs greedy-internal). On PHOENIX14 the same comparison differed by ~16.5 WER before the evaluation methodology was corrected. The agreement here is evidence the corrected metric path is sound, and it is expected: PHOENIX14-T carries no PHOENIX markers for stripping to mishandle.",
         "Beam-10 beats greedy by only 0.2 WER on both splits, matching the ~0.3 seen on PHOENIX14. Decoding is not a material part of the gap.",
         "Deletions dominate the error profile on both splits (15.0 dev / 14.6 test against 1.6 / 2.0 insertions), the same imbalance PHOENIX14 showed. The model under-emits glosses rather than hallucinating them.",
-        "The PHOENIX14-T result (34.5 / 32.6) sits within about 0.6 WER of the PHOENIX14 result (33.9 / 33.0) from the identical code and protocol. Two independent datasets landing at nearly the same distance from their published values points at a systematic property of this reimplementation rather than a dataset-specific fault."
+        "The PHOENIX14-T result (34.5 / 32.6) lands near the PHOENIX14 result (35.0 / 34.2), but the two used different wiring and padding, so this is not a same-model comparison across datasets."
       ],
       "measurements": {
         "beam10_dev_wer": 34.5,
@@ -5786,62 +5411,6 @@
       "kind": "predictions"
     },
     {
-      "artifact_id": "wf-train-result-json",
-      "kind": "metrics",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/result.json",
-      "sha256": "2b5ac9d02930944581843fb44b248cbe4fa19fcec336b899d36d86de9610b9c1",
-      "size_bytes": 22437,
-      "description": "CINECA wiring-fix final result: best epoch 40, dev/test WER with breakdown, 70-epoch history (copied from Leonardo $WORK/olmd/output/phoenix14-wiring-fix)."
-    },
-    {
-      "artifact_id": "wf-train-history-json",
-      "kind": "metrics",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/history.json",
-      "sha256": "6231e476578c9e152ada25a9e1f91d4a8f810fcdd393b7596f740f38a5250bf4",
-      "size_bytes": 19660,
-      "description": "CINECA wiring-fix per-epoch history: loss components, dev WER/del/ins, LR, seconds for epochs 0-69."
-    },
-    {
-      "artifact_id": "wf-train-best-pt",
-      "kind": "checkpoint",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/train/phoenix14-wiring-fix/best.pt",
-      "sha256": "1159a1cde41ae9adb93b606b4fceba3e58285e5bf4e37ea0272fb60d3567f393",
-      "size_bytes": 447350232,
-      "description": "CINECA wiring-fix best-dev checkpoint (epoch 40); uploaded from Leonardo for evaluation."
-    },
-    {
-      "artifact_id": "wf-rescore-summary",
-      "kind": "metrics",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/rescore-summary.json",
-      "sha256": "d4b921c15369159a228bb133bfcb3d14497b39a6a7922c8f4959ef1aaace1bde",
-      "size_bytes": 4398,
-      "description": "Wiring-fix greedy and beam-10 WER under the three scoring variants."
-    },
-    {
-      "artifact_id": "wf-sclite-summary",
-      "kind": "metrics",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/sclite-summary.json",
-      "sha256": "fea470802bd04bf1fbca24f1e2f72baebb99c8f7f4b23d1f0cb4868052bc61ad",
-      "size_bytes": 552,
-      "description": "Wiring-fix official-chain sclite WER for greedy/beam-10 on dev/test."
-    },
-    {
-      "artifact_id": "wf-rescore-hyp-dev",
-      "kind": "predictions",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/hypotheses-dev.json",
-      "sha256": "6ab4782ddf15585284232c87654f16db3af6cff91c32614136968b9e137b6a92",
-      "size_bytes": 182897,
-      "description": "Wiring-fix per-utterance greedy and beam-10 hypotheses, dev split."
-    },
-    {
-      "artifact_id": "wf-rescore-hyp-test",
-      "kind": "predictions",
-      "uri": "modal://repro-sign/volumes/olmd-yu-2025-results/rescore/phoenix14-wiring-fix/hypotheses-test.json",
-      "sha256": "0a78f17cc47edd06bd23dd69ce43653db025d6137c32a7e7cc13cf11344ff1a8",
-      "size_bytes": 218380,
-      "description": "Wiring-fix per-utterance greedy and beam-10 hypotheses, test split."
-    },
-    {
       "artifact_id": "p14t-crashed-attempt1-history",
       "kind": "metrics",
       "description": "Per-epoch history of the four epochs completed by train-phoenix14t-wiring-fix-001 before the short-clip crash. Retained as evidence of the pre-fix trajectory and throughput.",
@@ -5927,12 +5496,11 @@
           "phoenix14t_gpu_hours_h100": 17.7,
           "phoenix14t_gpu_hours_a100": 30.1,
           "threshold_basis": "Inside the AGENTS.md autonomous threshold (single GPU, under 24 hours), so no #repro-sign-team-r discussion is required for this dataset alone.",
-          "model_variant": "wiring-fix (figure-conformant, commit 9dad93a), matching the variant that produced the reported PHOENIX14 33.9/33.0 so the two experiments are directly comparable",
+          "model_variant": "Corrected (figure-conformant) wiring, olmd.py from commit 9dad93a. This is not the variant behind the reported PHOENIX14 values, which used the as-implemented wiring.",
           "targets_reachable": [
             "table1-p14t-dev-wer",
             "table1-p14t-test-wer"
-          ],
-          "note": "The params-conformant variant stays on branch repro/yu-2025-olmd-wiring-fix, where its PHOENIX14 result (CINECA 57329434) is still in flight."
+          ]
         }
       },
       "awaiting": "Nothing. Both experiments complete.",
@@ -6074,7 +5642,7 @@
           "note": "Replaces the earlier unmeasured 1.9x nominal and my own too-pessimistic 1.2-1.5x estimate. Each dataset individually clears the 24-hour gate on H100; the pair does not, so the staged PHOENIX14-first plan is what keeps the work inside it."
         }
       },
-      "resolution": "Both staged experiments are complete and every in-scope Table 1 target has a terminal full-run result. PHOENIX14 ran on CINECA (22.5 GPU-hours) and PHOENIX14-T on Modal H100 (15.9 GPU-hours), each inside its declared ceiling and each within the AGENTS.md autonomous threshold as a single-GPU job. No compute authorization remains outstanding for the assigned scope.",
+      "resolution": "Both staged experiments are complete and every in-scope Table 1 target has a terminal full-run result, all on Modal. PHOENIX14 ran on A100-40GB (train-phoenix14-seed0-attempt3, resumed from the fixprobe checkpoint) and PHOENIX14-T on H100 (15.9 GPU-hours), each inside its declared ceiling. No compute authorization remains outstanding for the assigned scope.",
       "resolution_note": "The COMPUTE OBSTACLE is resolved by measurement: on H100, PHOENIX14 needs about 14.4 GPU-hours, which is single-GPU, well inside 24 hours, fits the study infrastructure, and has no unresolved data or behaviour-changing patch gate -- precisely the AGENTS.md condition for proceeding autonomously. PHOENIX14-T at 17.7 GPU-hours clears it too; the pair at 32.1 does not, so they must run as separate staged jobs.\n\nThe gate nevertheless remains OPEN, because the technical obstacle is not the only one. On 2026-09-08 the assignee was asked to authorize the GPU spend, or to route it to #repro-sign-team-r first, and declined to decide. That instruction stands until answered. Marking this resolved while no authorization exists and no run has launched would misrepresent the state, and the four in-scope targets cite this gate as the evidence for their compute_budget_blocked results.",
       "authorization": {
         "granted_at_utc": "2026-09-08T20:15:00Z",
@@ -6148,7 +5716,7 @@
       "guess_id": "mp-block-internals",
       "severity": "blocking",
       "status": "constrained-not-determined",
-      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint. DESIGN UNDER TEST (commit ac2512e, run train-phoenix14-params-fix-001): dense factorized Conv(3x1)-BN-ReLU-Conv(1x3)-BN, 4.13M across six instances; corrected model totals 82.085M vs the paper's 80.74M.",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint. A budget-conformant variant (dense factorized Conv(3x1)-BN-ReLU-Conv(1x3)-BN, 4.13M across six instances, model total 82.085M vs the paper's 80.74M) was written in commit ac2512e but not trained in this report.",
       "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
         "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
@@ -6356,7 +5924,7 @@
       "severity": "open",
       "status": "resolved",
       "detail": "The paper does not say whether the two 1D-CNN branches are sequential or parallel. Fig. 2 annotates them 'xN' and says they 'share architecture'; Eq. 12 supervises both with peer local CTC losses.",
-      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips. REVISED 2026-09-10 after inspecting Figure 2 at full resolution: the two 1D-CNNs are parallel but take DIFFERENT inputs (trunk features vs X_CS), with outputs summed before the BiLSTM; and the 'xN' annotations sit on the Feature-Extractor stage block and the OMP block (N = 3 stages), not on the 1D-CNNs as earlier recorded. The parallel-over-identical-input topology used by the completed run is a deviation (head-wiring-vs-figure2). The sequential-is-impossible argument stands. PARAMETER-RECONCILIATION UPDATE (2026-09-11): 'two 1D-CNNs share architecture' most likely means shared WEIGHTS, not merely identical structure. Measured head cost of two independent 1024-wide branches is 80.07M (2 x (7.87M convs + 25.20M TLPs) + 12.60M BiLSTM + 1.33M classifier) -- as large as the paper's entire 80.74M model. With shared branch weights the predicted total is 78.69M vs the paper's 80.74M (within 2.05M, the MP-Block budget); unshared-1024 gives 111.76M and unshared-512 about 58.6M, neither close. Both completed runs used unshared branches (deviation unshared-branch-weights).",
+      "resolution": "Parallel peers over the same backbone features. Two sequential {K5,P2,K5,P2} branches reduce sequence length about 16x, so a 100-frame clip would yield 2 output steps and a 200-frame clip 8, against a PHOENIX14 training mean of 11.5 glosses (p95 18, max 28) -- CTC could not emit the targets. A T=32 probe crashed in max_pool1d with 'Invalid computed output size: 0'. One branch yields 22-72 steps for 100-300 frame clips. REVISED 2026-09-10 after inspecting Figure 2 at full resolution: the two 1D-CNNs are parallel but take DIFFERENT inputs (trunk features vs X_CS), with outputs summed before the BiLSTM; and the 'xN' annotations sit on the Feature-Extractor stage block and the OMP block (N = 3 stages), not on the 1D-CNNs as earlier recorded. The parallel-over-identical-input topology used by the completed run is a deviation (head-wiring-vs-figure2). The sequential-is-impossible argument stands. PARAMETER-RECONCILIATION UPDATE (2026-09-11): 'two 1D-CNNs share architecture' most likely means shared WEIGHTS, not merely identical structure. Measured head cost of two independent 1024-wide branches is 80.07M (2 x (7.87M convs + 25.20M TLPs) + 12.60M BiLSTM + 1.33M classifier) -- as large as the paper's entire 80.74M model. With shared branch weights the predicted total is 78.69M vs the paper's 80.74M (within 2.05M, the MP-Block budget); unshared-1024 gives 111.76M and unshared-512 about 58.6M, neither close. Every completed training run in this report used unshared branches (deviation unshared-branch-weights).",
       "evidence": [
         "arXiv:2503.08205v1 Figure 2 caption and Equation 12.",
         "Gloss-count statistics computed from PHOENIX14 train.corpus.csv: mean 11.5, median 11, p95 18, max 28.",
@@ -6446,7 +6014,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix (combined figure-conformance hypothesis) for a retrain on CINECA institutional compute; structural validity confirmed by gpu-smoke-004."
+      "correction": "Corrected in commit 9dad93a (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
     },
     {
       "deviation_id": "lma-in-trunk-vs-figures",
@@ -6458,7 +6026,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix (combined figure-conformance hypothesis) for a retrain on CINECA institutional compute; structural validity confirmed by gpu-smoke-004."
+      "correction": "Corrected in commit 9dad93a (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
     },
     {
       "deviation_id": "ctc-zero-infinity",
@@ -6471,7 +6039,7 @@
     },
     {
       "deviation_id": "unshared-branch-weights",
-      "detail": "Both completed training runs instantiated the two temporal-head 1D-CNN branches (including their TLP poolings) as INDEPENDENT parameter sets, 66.1M total, whereas 'two 1D-CNNs share architecture' read together with Table 5's parameter column implies a single shared 33.1M branch applied to both inputs (see guess temporal-branch-topology). This makes our model 111.76M vs the paper's 80.74M and changes the role of the two local CTC losses (independent branches vs a consistency signal on shared weights). Discovered 2026-09-11 by parameter reconciliation, after both runs; correcting it requires a retrain.",
+      "detail": "Every completed training run in this report (PHOENIX14 and PHOENIX14-T) instantiated the two temporal-head 1D-CNN branches (including their TLP poolings) as INDEPENDENT parameter sets, 66.1M total, whereas 'two 1D-CNNs share architecture' read together with Table 5's parameter column implies a single shared 33.1M branch applied to both inputs (see guess temporal-branch-topology). This makes our model 111.76M vs the paper's 80.74M and changes the role of the two local CTC losses (independent branches vs a consistency signal on shared weights). Discovered 2026-09-11 by parameter reconciliation, after the PHOENIX14 run; correcting it requires a retrain.",
       "guess_id": "temporal-branch-topology",
       "affects": [
         "train",
@@ -6479,7 +6047,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "Corrected on branch repro/yu-2025-olmd-wiring-fix commit ac2512e together with the budget-conformant MP-Block, as the single hypothesis 'match Table 5's parameter column'; under test in run train-phoenix14-params-fix-001. Modal smoke verified the corrected model at 82,085,078 params vs the paper's 80.74M."
+      "correction": "A corrected variant (shared branch weights plus the budget-conformant MP-Block, commit ac2512e) was written and smoke-tested at 82,085,078 parameters but not trained in this report. The deviation stands for every reported value."
     }
   ],
   "contacts": []

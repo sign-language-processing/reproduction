@@ -1189,9 +1189,8 @@ def rescore(dataset: str = "phoenix14", variant: str = "") -> dict:
     device = torch.device("cuda")
     root = pathlib.Path("/datasets")
     cache_root = pathlib.Path(CACHE_ROOT)
-    # `variant` selects an alternative checkpoint/output pair, e.g.
-    # "phoenix14-wiring-fix" for the CINECA-trained figure-conformant model
-    # whose best.pt is uploaded to /outputs/train/<variant>/best.pt.
+    # `variant` selects an alternative checkpoint/output pair whose best.pt
+    # sits at /outputs/train/<variant>/best.pt.
     slug = variant or dataset
     output = pathlib.Path("/outputs/rescore") / slug
     output.mkdir(parents=True, exist_ok=True)
@@ -1536,7 +1535,7 @@ def main(
             dataset=dataset, epochs=limit or 70, resume=not bool(limit)
         )
     elif action == "rescore":
-        # `path` doubles as the optional variant slug, e.g. phoenix14-wiring-fix
+        # `path` doubles as the optional variant slug
         result = rescore.remote(dataset=dataset, variant=path)
     elif action == "sclite":
         result = sclite_score.remote(dataset=dataset, variant=path)

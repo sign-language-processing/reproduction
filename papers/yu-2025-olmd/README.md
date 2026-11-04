@@ -15,42 +15,47 @@ documented search (see [Source provenance](#source-provenance))
 Level 3 means reimplementation from the paper: no published code exists.
 
 **Pipeline status:** `complete` — all four in-scope Table 1 targets are produced from
-completed 70-epoch full runs: PHOENIX14 on CINECA, PHOENIX14-T on Modal H100.
+completed 70-epoch full runs on Modal: PHOENIX14 on A100-40GB, PHOENIX14-T on H100.
 
-**Numerical agreement:** `does_not_agree` — official sclite chain, beam-10,
-figure-conformant wiring: PHOENIX14 **33.9 dev / 33.0 test** against published
-**17.1 / 17.2**, PHOENIX14-T **34.5 dev / 32.6 test** against published **17.1 / 18.4**.
+**Numerical agreement:** `does_not_agree` — official sclite chain, beam-10:
+PHOENIX14 **35.0 dev / 34.2 test** against published **17.1 / 17.2**, PHOENIX14-T
+**34.5 dev / 32.6 test** against published **17.1 / 18.4**.
 
-**Attempt dates:** 2026-09-08 → 2026-09-11 (PHOENIX14); 2026-09-22 → 2026-09-24 (PHOENIX14-T)
+**Attempt dates:** 2026-09-08 → 2026-09-10 (PHOENIX14); 2026-09-22 → 2026-09-24 (PHOENIX14-T)
 
 > **Status: both datasets reproduced end to end; the numbers disagree with the paper.**
 > The full stated protocol ran to completion on each (70 epochs, batch 2, best-dev
 > checkpoint selection) and both were evaluated with the official PHOENIX sclite chain.
 > Every reproduced WER is roughly twice its published counterpart. On PHOENIX14, of the
 > raw 34-point gap first observed, ~16.5 points were traced to this reproduction's own
-> evaluation methodology and corrected, and a further ~1.2 to two wiring deviations found
-> in a post-run figure audit and fixed in a second full run.
+> evaluation methodology and corrected.
 >
-> **PHOENIX14-T independently corroborates that the residual gap is not evaluation
-> error.** Its annotations carry no PHOENIX markers, so the asymmetric-stripping bug that
-> cost ~13 WER on PHOENIX14 cannot arise, and its internal metric agrees with the official
-> chain to within 0.13 WER — yet it lands at essentially the same distance from its
-> published value. Two datasets, identical code and protocol, finishing within ~0.6 WER of
-> each other (33.9/33.0 and 34.5/32.6) while their published values differ points at a
-> systematic property of this reimplementation rather than a dataset-specific fault. Both
-> also sit worse than the paper's own no-modules ablation baseline (18.9 dev), so the
-> shortfall is not about the marginal value of OLMD's modules. The residual **~15-17
-> points remain unexplained**, with the unpublished MP-Block the leading candidate. A
-> reviewer decides the scientific conclusion; every variant, guess, and dead end is
-> recorded.
+> **The two datasets do not share one model variant.** After the PHOENIX14 run, a
+> figure audit found two wiring deviations. PHOENIX14-T was trained with the corrected
+> wiring and the lineage padding. The reported PHOENIX14 values still carry both
+> deviations, because no corrected PHOENIX14 run is part of this report.
+>
+> **PHOENIX14-T shows that the residual gap is not evaluation error.** Its annotations
+> carry no PHOENIX markers, so the asymmetric-stripping bug that cost ~13 WER on PHOENIX14
+> cannot arise. Its internal metric also agrees with the official chain to within 0.13
+> WER, yet it lands at a similar distance from its published value.
+>
+> Both datasets also score worse than the paper's own no-modules ablation baseline (18.9
+> dev), so the shortfall is not about the marginal value of OLMD's modules. The residual
+> **~14-18 points remain unexplained**, with the unpublished MP-Block the leading
+> candidate. A reviewer decides the scientific conclusion; every variant, guess, and dead
+> end is recorded.
+>
+> Only Modal experiments are reported. Runs on other infrastructure are excluded from
+> this report.
 
 ## Agent attribution
 
 | Agent | Model | Application | Contribution |
 | --- | --- | --- | --- |
-| `claude-opus-5-claude-code` | Claude Opus 5 (`claude-opus-5`) | Claude Code 2.1.247, desktop app | Implementation, data gate, preflights, cache, first PHOENIX14 run and CTC fix (2026-09-08 → 09-09); wiring-fix rescoring (2026-09-11); all PHOENIX14-T work (2026-09-22 → 09-24) |
-| `claude-fable-5-claude-code` | Claude Fable 5 (`claude-fable-5`) | Claude Code 2.1.247, desktop app | PHOENIX14 attempt 3, rescoring and sclite, figure audit, both CINECA launches (2026-09-09 → 09-11) |
-| `claude-opus-5-5-report-maintenance` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.309 | Report maintenance only (2026-11-04): this attribution and the params-fix terminal record; ran nothing |
+| `claude-opus-5-claude-code` | Claude Opus 5 (`claude-opus-5`) | Claude Code 2.1.247, desktop app | Implementation, data gate, preflights, cache, first PHOENIX14 run and CTC fix (2026-09-08 → 09-09); all PHOENIX14-T work (2026-09-22 → 09-24) |
+| `claude-fable-5-claude-code` | Claude Fable 5 (`claude-fable-5`) | Claude Code 2.1.247, desktop app | PHOENIX14 attempt 3, rescoring and sclite, figure audit, smoke test of the corrected wiring (2026-09-09 → 09-10) |
+| `claude-opus-5-5-report-maintenance` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.309 | Report maintenance only (2026-11-04): this attribution, and restricting the report to Modal experiments; ran nothing |
 
 Each run's `agent_ids` names the model that issued its launch command. The evidence is
 the `model` field on the launching assistant message in the local Claude Code session
@@ -139,59 +144,30 @@ is **level 3 — reimplementation from the paper**.
 
 | Target ID | Paper location | Dataset/split | Original | Reproduced | Status |
 | --- | --- | --- | ---: | ---: | --- |
-| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **33.9** | produced (`sclite-phoenix14-wiring-fix-001`) |
-| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **33.0** | produced (`sclite-phoenix14-wiring-fix-001`) |
+| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **35.0** | produced (`sclite-phoenix14-002`) |
+| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **34.2** | produced (`sclite-phoenix14-002`) |
 | `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | **34.5** | produced (`sclite-phoenix14t-wiring-fix-001`) |
 | `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | **32.6** | produced (`sclite-phoenix14t-wiring-fix-001`) |
 | 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
 
 The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
 + `mergectmstm.py` + SCTK v2.4.12 `sclite`, all sha256-pinned) applied to **beam-10**
-(no LM) decoding of the best-dev checkpoint of the **figure-conformant wiring run**
-(epoch 40 of 70, trained on CINECA). This is the evaluation the field's published numbers
-use, so it is the comparable value. Error breakdown: dev 14.8 sub / 15.3 del / 3.8 ins;
-test 15.6 / 13.8 / 3.6 (paper reports 4.8 del / 2.4 ins dev, 4.7 / 2.3 test — our
-deletion rate is 3x the paper's, the clearest signature of the remaining gap).
+(no LM) decoding of the best-dev checkpoint of `train-phoenix14-seed0-attempt3` (epoch 57
+of 70, Modal A100-40GB). This is the evaluation the field's published numbers use, so it
+is the comparable value. Error breakdown at that setting: dev 18.3 sub / 12.3 del / 4.4
+ins; test 18.1 / 11.9 / 4.2 (paper reports 4.8 del / 2.4 ins dev, 4.7 / 2.3 test).
 
-### Two full runs, same conclusion
+### Wiring differs between the two datasets
 
-| Run | Wiring | Best epoch | sclite beam-10 dev | sclite beam-10 test |
-| --- | --- | ---: | ---: | ---: |
-| `train-phoenix14-seed0-attempt3` (Modal) | as-implemented | 57 | 35.0 | 34.2 |
-| `train-phoenix14-wiring-fix-001` (CINECA) | **figure-conformant** | 40 | **33.9** | **33.0** |
-| Published | — | — | 17.1 | 17.2 |
+| Dataset | Training run | Temporal head and LMA routing | Collate |
+| --- | --- | --- | --- |
+| PHOENIX14 | `train-phoenix14-seed0-attempt3` | as implemented (deviations `head-wiring-vs-figure2`, `lma-in-trunk-vs-figures`) | uniform batch lengths |
+| PHOENIX14-T | `train-phoenix14t-wiring-fix-002` | corrected to the paper's figures (commit `9dad93a`) | lineage padding |
 
-The figure-conformance correction (both deviations fixed together) is worth **1.1 dev /
-1.2 test WER** — real but small, and within or near seed-noise range. It did, however,
-change convergence dramatically: the corrected wiring reached dev WER 52 by **epoch 12**,
-a level the original needed roughly 50 epochs to reach, consistent with the
-zero-initialized α/β leaving the pretrained trunk undisturbed early and with the coupling
-path receiving its own CTC supervision. Both runs nonetheless plateau near 33–35.
-
-### A third PHOENIX14 run collapsed and produced no target value
-
-`train-phoenix14-params-fix-001` (CINECA job 57329434, commit `ac2512e`) tested the
-parameter-reconciliation hypothesis. It used a weight-shared temporal branch and a dense
-factorized MP-Block, which brought the model to 82.09M parameters against the paper's
-80.74M.
-
-- **Run:** all 70 epochs completed and the job exited 0 after 22:33:59 (22.56 GPU-hours).
-- **Collapse:** the model emitted only blanks. From epoch 6 onward, dev WER was exactly
-  100.00, with 100% deletions and 0 insertions. Training CTC still fell to 6.6, lower than
-  in any other run.
-- **Checkpoint selection:** best-dev selection therefore picked epoch 1. Its greedy WER
-  is 96.09 dev / 95.39 test.
-- **Interpretation:** the run tells us nothing about whether matching the parameter
-  budget would close the gap.
-- **Cause:** one untested hypothesis is that BatchNorm statistics are shared across the
-  two inputs of the shared branch. They work in train mode but are wrong in eval mode.
-  The run changed two things at once, so it cannot separate the shared branch from the
-  dense MP-Block.
-- **Not done:** no diagnostic or follow-up run was launched. The output files are still
-  on CINECA under `/leonardo_work/EUHPC_D33_168/olmd/output/phoenix14-params-fix/`. They
-  were not copied or hashed.
-- **Record:** the terminal state was recorded on 2026-11-04 from sacct and `result.json`
-  output captured on 2026-09-14.
+The figure audit happened after the PHOENIX14 run. No PHOENIX14 run with the corrected
+wiring is part of this report, so the two datasets' values are not from one model
+variant. Both runs keep the unshared temporal branches (deviation
+`unshared-branch-weights`).
 
 ### How the reported number depends on scoring — measured, same checkpoint
 
@@ -216,12 +192,12 @@ Two findings from the diagnosis runs (`rescore-phoenix14-001`, `sclite-phoenix14
 
 ### The remaining ~16-point gap is unexplained
 
-Both training runs were healthy: loss fell monotonically, both LR cuts (epochs 25/40)
-produced visible improvements, and errors are dominated by substitutions and deletions.
-Context that sharpens the diagnosis: the paper's own no-modules ablation baseline
-(Table 5, "None") reaches 18.9 dev — our 33.9 is far worse than even that, so the
+The PHOENIX14 training run was healthy: loss fell monotonically, both LR cuts (epochs
+25/40) produced visible improvements, and errors are dominated by substitutions and
+deletions. Context that sharpens the diagnosis: the paper's own no-modules ablation
+baseline (Table 5, "None") reaches 18.9 dev — our 35.0 is far worse than even that, so the
 shortfall points at the **inferred parts of the recipe**, not at the marginal value of
-OLMD's novel modules. The wiring hypothesis has now been tested and largely ruled out.
+OLMD's novel modules.
 
 **Post-run figure audit (2026-09-10) found two wiring deviations.** A full-resolution
 inspection of the paper's figure assets (the prose never states either detail, and both
@@ -238,8 +214,9 @@ were adopted under then-open guesses before training) found:
    run instead routed LMA's residual output (whose expand convolution is not
    zero-initialized) into the trunk.
 
-Both are training-side candidate contributors to the residual gap; correcting either
-requires a gated retrain. The same audit *positively verified* the rest of the
+Both are training-side candidate contributors to the residual gap. PHOENIX14-T was
+trained with both corrected; PHOENIX14 was not retrained with them in this report. The
+same audit *positively verified* the rest of the
 architecture against the figures: FFN residual, cascade order and content (DS of the
 previous post-FFN output, fused before the MP-Block), α/β mapping, HMP/VMP orientation
 assignment, and the LMA difference/concat structure. It also confirmed Figure 2's "×N"
@@ -466,10 +443,8 @@ the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
 
 Branch `repro/yu-2025-olmd-phoenix14t` runs **the same experiment as PHOENIX14, on
 PHOENIX14-T, on the Modal path**, with the **figure-conformant wiring** (`olmd.py`
-restored from `9dad93a`) that produced the reported 33.9/33.0 — so the two Table 1
-datasets are directly comparable. The params-conformant variant was tested separately
-on PHOENIX14 and collapsed; see
-[A third PHOENIX14 run collapsed](#a-third-phoenix14-run-collapsed-and-produced-no-target-value).
+restored from `9dad93a`). This is not the wiring behind the reported PHOENIX14 values;
+see [Wiring differs between the two datasets](#wiring-differs-between-the-two-datasets).
 
 Five changes were needed to reach a dataset the pipeline had never executed:
 
@@ -498,7 +473,7 @@ Five changes were needed to reach a dataset the pipeline had never executed:
    deviation.
 
    **Comparability note:** this padding change also affects PHOENIX14, so the PHOENIX14-T
-   result carries one correction the reported PHOENIX14 33.9/33.0 does not. PHOENIX14 was
+   result carries one correction the reported PHOENIX14 35.0/34.2 does not. PHOENIX14 was
    not re-run; the difference is recorded rather than silently absorbed.
 
 ```bash
@@ -571,43 +546,6 @@ temporal stack to reduce to zero length. The fix adopts the lineage's padding co
 in `collate`; it is a behaviour-changing change, recorded as a deviation, and it cost
 ~50 s/epoch because it pads ~12 extra frames per clip. The crashed run's checkpoints were
 deleted before relaunching, so no weights trained under the broken padding carried over.
-
-## CINECA wiring-fix retrain (this branch)
-
-This branch (`repro/yu-2025-olmd-wiring-fix`) corrects the two figure-audit deviations —
-`head-wiring-vs-figure2` and `lma-in-trunk-vs-figures` — in one combined
-figure-conformance hypothesis, and retrains on CINECA instead of Modal to conserve the
-Modal budget. Structural validity of the new wiring was confirmed by `gpu-smoke-004`
-(finite loss/gradients, correct branch lengths, 14.95 GiB peak on A10).
-
-**One-time staging** (run where the Modal CLI is authenticated; login nodes have
-internet, CINECA compute nodes do not):
-
-```bash
-# 1. Annotations (~3 MB) and the JPEG frame cache (6841 files, 9.6 GiB)
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get datasets rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner/annotations staging/data/rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner/annotations
-```
-
-```bash
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume get olmd-yu-2025-results /cache/phoenix14 staging/cache/phoenix14
-```
-
-```bash
-# 2. ImageNet ResNet34 weights for offline TORCH_HOME
-mkdir -p staging/torch/hub/checkpoints && curl -L -o staging/torch/hub/checkpoints/resnet34-b627a593.pth https://download.pytorch.org/models/resnet34-b627a593.pth
-```
-
-```bash
-# 3. Transfer to CINECA (adjust user/host), then build the venv there
-rsync -av staging/ USER@login.leonardo.cineca.it:'$WORK/olmd/'
-```
-
-On CINECA: create `$WORK/olmd/venv` with `torch torchvision numpy pillow`, edit the
-`#SBATCH --account` line in [cineca.sbatch](cineca.sbatch), optionally run the smoke
-first (`python train_cineca.py ... --smoke`), then `sbatch cineca.sbatch`. The trainer
-checkpoints every epoch; if the 24 h walltime ends, resubmitting resumes from
-`latest.pt`. Evaluation of the finished checkpoint (beam-10 + official sclite chain)
-can run back on Modal for cents, or the CTMs can be scored anywhere SCTK builds.
 
 ## Data provenance and permissions
 
@@ -765,15 +703,14 @@ on that date. What remains open is scope, not validity:
 
 - Several runs' launch-time timestamps appear to be CEST local time labelled as UTC; for
   example, launch commits and session logs place some starts about two hours earlier than
-  recorded. Only `train-phoenix14-params-fix-001` has been corrected, with its evidence.
-  The other runs keep their timestamps as originally recorded.
+  recorded. They are kept as originally recorded.
 
 - All four in-scope targets are produced; the compute gate is resolved. What remains
   open is diagnosis, not scope.
-- The residual ~15-17 point gap, now confirmed on **both** datasets, is undiagnosed
-  beyond the recorded guesses. PHOENIX14-T narrows the search usefully: it rules out
-  evaluation methodology as the explanation, since that dataset's clean metric path
-  produces the same shortfall.
+- The residual ~14-18 point gap, seen on **both** datasets, is undiagnosed beyond the
+  recorded guesses. PHOENIX14-T narrows the search usefully: it rules out evaluation
+  methodology as the explanation, since that dataset's clean metric path produces a
+  similar shortfall.
   The cheapest next probes, if pursued: per-sample batch lengths (deviation
   `uniform-batch-lengths`), alternative cross-stage injection points, and MP-Block
   variants — each a behavior-changing protocol experiment requiring its own decision,
