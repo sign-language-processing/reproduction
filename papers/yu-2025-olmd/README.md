@@ -61,7 +61,7 @@ Each run's `agent_ids` names the model that issued its launch command. The evide
 the `model` field on the launching assistant message in the local Claude Code session
 transcripts (session IDs in `reproduction.json.agents`). The transcripts were not
 published. The `Co-Authored-By` trailers on this paper's commits agree with that
-evidence: 38 Opus 5 commits and 14 Fable 5 commits. One commit, `020d3c9`, has no
+evidence: 38 Opus 5 commits and 14 Fable 5 commits. One commit, `97ddc1d`, has no
 trailer. One conversation switched between Fable 5 and Opus 5, so attribution is per
 launch, not per session.
 
@@ -165,7 +165,7 @@ ins; test 18.1 / 11.9 / 4.2 (paper reports 4.8 del / 2.4 ins dev, 4.7 / 2.3 test
 | Dataset | Training run | Temporal head and LMA routing | Collate |
 | --- | --- | --- | --- |
 | PHOENIX14 | `train-phoenix14-seed0-attempt3` | as implemented (deviations `head-wiring-vs-figure2`, `lma-in-trunk-vs-figures`) | uniform batch lengths |
-| PHOENIX14-T | `train-phoenix14t-wiring-fix-002` | corrected to the paper's figures (commit `9dad93a`) | lineage padding |
+| PHOENIX14-T | `train-phoenix14t-wiring-fix-002` | corrected to the paper's figures (commit `a33b3e3`) | lineage padding |
 
 The figure audit happened after the PHOENIX14 run. No PHOENIX14 run with the corrected
 wiring is part of this report, so the two datasets' values are not from one model
@@ -357,7 +357,7 @@ jobs**, which is what the assignee's PHOENIX14-first instruction already implies
 ### Status of the gate — closed by explicit authorization
 
 The assignee authorized the PHOENIX14 launch on 2026-09-08 (gate
-`compute-full-run-table1`, commit `569cf83`) and re-authorized the post-fix launch
+`compute-full-run-table1`, commit `56f0051`) and re-authorized the post-fix launch
 directly on 2026-09-09. The run executed on **A100-40GB** (not H100): the training
 function checkpoints every epoch and resumes across invocations, so the 24-hour function
 timeout was not a constraint, and the attempt-3 invocation (66 epochs, ~22.1 GPU-hours)
@@ -446,7 +446,7 @@ the Modal Volume `olmd-yu-2025-results` under `/train/phoenix14/` and
 
 Branch `repro/yu-2025-olmd-phoenix14t` runs **the same experiment as PHOENIX14, on
 PHOENIX14-T, on the Modal path**, with the **figure-conformant wiring** (`olmd.py`
-restored from `9dad93a`). This is not the wiring behind the reported PHOENIX14 values;
+restored from `a33b3e3`). This is not the wiring behind the reported PHOENIX14 values;
 see [Wiring differs between the two datasets](#wiring-differs-between-the-two-datasets).
 
 Five changes were needed to reach a dataset the pipeline had never executed:

@@ -37,7 +37,7 @@
         "Audited 2026-11-04 from the local Claude Code session transcripts on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
         "Session 2a552891-f3de-417c-94d3-bcec6d661f18 and its continuation aaee465a-9148-48d3-b6a3-6bd4d2214a94 (2026-09-08T13:45Z to 2026-09-09T08:28Z, Claude Code 2.1.247, entrypoint claude-desktop): every assistant message has model claude-opus-5; it issued every Modal launch from data-inspect-001 through train-phoenix14-seed0-attempt1 (modal_app.py --action train at 2026-09-08T22:28Z) and wrote train-phoenix14-fixprobe-002 into the record.",
         "Session bd08104a-81c7-4fc1-86e4-c40950e413bb (2026-09-22T14:57Z to 2026-09-24T09:25Z, Claude Code 2.1.247): every assistant message has model claude-opus-5; it issued every PHOENIX14-T Modal launch.",
-        "38 commits carry 'Co-Authored-By: Claude Opus 5', from https://github.com/sign-language-processing/reproduction/commit/32eb34b5e1b9869937fdf95003bb819fe886fbf1 (assignment record) to https://github.com/sign-language-processing/reproduction/commit/231a877fbba519ef0e172e2b040bc65c7aedbdef (CTC fix), and https://github.com/sign-language-processing/reproduction/commit/5fe7e2f490f09a7d11932055a84aac1ded16a686 to https://github.com/sign-language-processing/reproduction/commit/4a76cf7d889a796bca254830f431edfd6acf7d5e (PHOENIX14-T)."
+        "38 commits carry 'Co-Authored-By: Claude Opus 5', from https://github.com/sign-language-processing/reproduction/commit/d1132b551fe58fc3b40147c092c7706dba4cdd63 (assignment record) to https://github.com/sign-language-processing/reproduction/commit/c9f5f1cc429b8fecba13dbb198330e11c9fc3e44 (CTC fix), and https://github.com/sign-language-processing/reproduction/commit/ef813b6534e377ccbe3dfbed89d600e902c419e1 to https://github.com/sign-language-processing/reproduction/commit/37a1012bf61c89a20d181ecdf87af5fdac8c2cda (PHOENIX14-T)."
       ]
     },
     {
@@ -50,8 +50,8 @@
       "evidence": [
         "Audited 2026-11-04 from the local Claude Code session transcripts on the executing workstation (not published) and from Co-Authored-By trailers on this paper's commits.",
         "Sessions acee1494-b6e1-42d4-bd87-c51969f6cb85, 07ed424c-43ec-44b1-867b-acadb7659c06 and 1fda5bfc-3455-480a-8f61-d98820ce60c3 (one conversation from 2026-09-09T08:04Z, Claude Code 2.1.247, entrypoint claude-desktop): assistant messages with model claude-fable-5 issued modal_app.py --action train --detach (2026-09-09T10:01Z), --action rescore (2026-09-10T08:56Z), --action sclite (09:02Z and 09:04Z) and --action smoke (09:49Z).",
-        "14 commits carry 'Co-Authored-By: Claude Fable 5', from https://github.com/sign-language-processing/reproduction/commit/1ecf466b07a83effece59142bf01ad5a929a93e1 to https://github.com/sign-language-processing/reproduction/commit/ea749bdc452a726a86dba8500a97ecca06721768.",
-        "Commit https://github.com/sign-language-processing/reproduction/commit/020d3c99de10bbcb131a3a445eb64c8316304d10 has no Co-Authored-By trailer; it falls inside the Fable 5 session window but is not attributed by trailer."
+        "14 commits carry 'Co-Authored-By: Claude Fable 5', from https://github.com/sign-language-processing/reproduction/commit/aec9b2cea58e816354ebf523e9326f560153ca2c to https://github.com/sign-language-processing/reproduction/commit/a3762434ff06f66427571e3f66da5e1408a14d3d.",
+        "Commit https://github.com/sign-language-processing/reproduction/commit/97ddc1d04915b85bda811a0ab57583502c44c93c has no Co-Authored-By trailer; it falls inside the Fable 5 session window but is not attributed by trailer."
       ]
     },
     {
@@ -2663,7 +2663,7 @@
       "exit_code": 0,
       "started_at_utc": "2026-09-08T15:05:00Z",
       "finished_at_utc": "2026-09-08T15:07:00Z",
-      "repository_commit": "347f55b (plus the working-tree additions committed alongside this entry)",
+      "repository_commit": "073b702 (plus the working-tree additions committed alongside this entry)",
       "compute": {
         "platform": "modal",
         "gpu": null,
@@ -4103,7 +4103,7 @@
         "resume_from": "olmd-yu-2025-results:/train/phoenix14/latest.pt (epoch 3, dev WER 89.4403)",
         "batch_size": 2,
         "seed": 0,
-        "ctc_reduction": "none + .mean() (corrected in commit 231a877)",
+        "ctc_reduction": "none + .mean() (corrected in commit c9f5f1c)",
         "gamma_distill": 25.0
       },
       "stop_policy": {
@@ -4450,7 +4450,7 @@
       "finished_at_utc": "2026-09-10T12:25:00Z",
       "exit_code": 0,
       "config": {
-        "wiring": "figure2-conformant (commit 9dad93a)",
+        "wiring": "figure2-conformant (commit a33b3e3)",
         "frames": 128,
         "num_classes": 1296
       },
@@ -4530,7 +4530,7 @@
         "clips": 6,
         "jpeg_quality": 90,
         "resolution": "256x256 pre-crop",
-        "code_commit": "5fe7e2f (branch repro/yu-2025-olmd-phoenix14t)",
+        "code_commit": "ef813b6 (branch repro/yu-2025-olmd-phoenix14t)",
         "decoder": "simple-video-utils 0.9.1 (PyAV), read_frames_batched"
       },
       "compute": {
@@ -4620,7 +4620,7 @@
         "threads_per_container": 8,
         "jpeg_quality": 90,
         "resolution": "256x256 pre-crop",
-        "code_commit": "5fe7e2f (branch repro/yu-2025-olmd-phoenix14t)",
+        "code_commit": "ef813b6 (branch repro/yu-2025-olmd-phoenix14t)",
         "decoder": "simple-video-utils 0.9.1 (PyAV), read_frames_batched"
       },
       "compute": {
@@ -4710,8 +4710,8 @@
         "train_steps": 12,
         "eval_clips": 8,
         "batch_size": 2,
-        "code_commit": "c05d9ae (branch repro/yu-2025-olmd-phoenix14t)",
-        "wiring": "figure2-conformant (wiring-fix variant, olmd.py from 9dad93a)"
+        "code_commit": "d4fadd2 (branch repro/yu-2025-olmd-phoenix14t)",
+        "wiring": "figure2-conformant (wiring-fix variant, olmd.py from a33b3e3)"
       },
       "compute": {
         "platform": "modal",
@@ -4790,19 +4790,19 @@
     },
     {
       "run_id": "train-phoenix14t-wiring-fix-001",
-      "purpose": "Full 70-epoch PHOENIX14-T training with the figure-conformant wiring (olmd.py from 9dad93a), otherwise the same protocol as PHOENIX14. Stage two of the compute gate's staging decision.",
+      "purpose": "Full 70-epoch PHOENIX14-T training with the figure-conformant wiring (olmd.py from a33b3e3), otherwise the same protocol as PHOENIX14. Stage two of the compute gate's staging decision.",
       "kind": "train_full",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/yu-2025-olmd/modal_app.py --action train --dataset phoenix14t",
       "working_directory": ".",
       "started_at_utc": "2026-09-22T15:10:00Z",
       "config": {
-        "code_commit": "c05d9ae (branch repro/yu-2025-olmd-phoenix14t)",
+        "code_commit": "d4fadd2 (branch repro/yu-2025-olmd-phoenix14t)",
         "dataset": "phoenix14t",
         "epochs": 70,
         "batch_size": 2,
         "seed": 0,
         "workers": 8,
-        "wiring": "figure2-conformant (olmd.py restored from 9dad93a)",
+        "wiring": "figure2-conformant (olmd.py restored from a33b3e3)",
         "optimizer": "Adam, lr 0.001, weight decay 0.001, x0.3 at epochs 25 and 40",
         "checkpoint_selection": "best dev WER epoch, per guess checkpoint-rule",
         "data": "JPEG frame cache from cache-build-phoenix14t-001 (8257 npz, 8.83 GiB) + official PHOENIX-2014-T annotation CSVs from the shared datasets Volume",
@@ -4984,13 +4984,13 @@
       "working_directory": ".",
       "started_at_utc": "2026-09-23T10:05:00Z",
       "config": {
-        "code_commit": "211a47c (branch repro/yu-2025-olmd-phoenix14t)",
+        "code_commit": "e01a40f (branch repro/yu-2025-olmd-phoenix14t)",
         "dataset": "phoenix14t",
         "epochs": 70,
         "batch_size": 2,
         "seed": 0,
         "workers": 8,
-        "wiring": "figure2-conformant (olmd.py from 9dad93a)",
+        "wiring": "figure2-conformant (olmd.py from a33b3e3)",
         "collate": "lineage padding: 6 replicated frames each side, lengths rounded up to a multiple of 4, per-clip lengths (CorrNet collate_fn @ a812814)",
         "optimizer": "Adam, lr 0.001, weight decay 0.001, x0.3 at epochs 25 and 40",
         "checkpoint_selection": "best dev WER epoch, per guess checkpoint-rule",
@@ -5099,7 +5099,7 @@
         "beam_width": 10,
         "beam_prune": 50,
         "language_model": null,
-        "code_commit": "2584388 (branch repro/yu-2025-olmd-phoenix14t)"
+        "code_commit": "f71eec9 (branch repro/yu-2025-olmd-phoenix14t)"
       },
       "compute": {
         "platform": "modal",
@@ -5180,7 +5180,7 @@
         "slr_eval_commit": "a812814f4deefda0b75ab1dcc90b106c62912263",
         "ground_truth_stm": "phoenix2014-T-groundtruth-{dev,test}.stm, sha256-pinned",
         "sclite_flags": "-f 0 -o dtl",
-        "code_commit": "2584388 (branch repro/yu-2025-olmd-phoenix14t)"
+        "code_commit": "f71eec9 (branch repro/yu-2025-olmd-phoenix14t)"
       },
       "compute": {
         "platform": "modal",
@@ -5496,7 +5496,7 @@
           "phoenix14t_gpu_hours_h100": 17.7,
           "phoenix14t_gpu_hours_a100": 30.1,
           "threshold_basis": "Inside the AGENTS.md autonomous threshold (single GPU, under 24 hours), so no #repro-sign-team-r discussion is required for this dataset alone.",
-          "model_variant": "Corrected (figure-conformant) wiring, olmd.py from commit 9dad93a. This is not the variant behind the reported PHOENIX14 values, which used the as-implemented wiring.",
+          "model_variant": "Corrected (figure-conformant) wiring, olmd.py from commit a33b3e3. This is not the variant behind the reported PHOENIX14 values, which used the as-implemented wiring.",
           "targets_reachable": [
             "table1-p14t-dev-wer",
             "table1-p14t-test-wer"
@@ -5716,7 +5716,7 @@
       "guess_id": "mp-block-internals",
       "severity": "blocking",
       "status": "constrained-not-determined",
-      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint. A budget-conformant variant (dense factorized Conv(3x1)-BN-ReLU-Conv(1x3)-BN, 4.13M across six instances, model total 82.085M vs the paper's 80.74M) was written in commit ac2512e but not trained in this report.",
+      "detail": "The MP-Block remains undetermined, but related work narrows it to a small family rather than leaving it open-ended. Equations 2 and 3 together form the MetaFormer macro-block: a token mixer with its own residual, followed by an FFN of two 1x1 convolutions with normalization and ReLU. Here the mixer is '2D CNNs' over the (T, W) or (T, H) plane. What remains genuinely free is the mixer's depth, kernel shape, whether it is dense or depthwise, the FFN expansion ratio, and the normalization placement. FIGURE 3 VERIFIED 2026-09-10: panel (a) draws an explicit residual around the FFN (matching the implementation) and confirms MP-Block + FFN each carry their own residual; panel (b) confirms cascade fusion happens BEFORE the MP-Block and that the cascaded quantity is the previous stage's post-FFN output, both matching the implementation. The MP-Block's internal architecture remains unpublished. PARAMETER BUDGET (2026-09-11): under the weight-shared-branches reading, Table 5 leaves roughly 2.0-3.5M parameters for the six MP-Block instances (2 orientations x 3 stages). Full (dense) C-to-C convolution costs 0.688M summed over stages per unit kernel area, so the budget implies total kernel area ~3-5: a short FULL-channel strip convolution, e.g. a 3-tap conv along one axis (2.06M) or a factorized (1x3)+(3x1) pair (4.13M) -- '2D CNNs', plural. Our depthwise (9,3) CorrNet-style guess costs only 0.74M and has no textual basis; it is likely both undersized and wrongly shaped. The MP-Block paragraph carries no citations, and Related Work cites no strip-pooling/coordinate-attention/MetaFormer precedent, so the budget is the strongest available constraint. A budget-conformant variant (dense factorized Conv(3x1)-BN-ReLU-Conv(1x3)-BN, 4.13M across six instances, model total 82.085M vs the paper's 80.74M) was written in commit 40ca748 but not trained in this report.",
       "planned_resolution": "Implement the MetaFormer-style block with an anisotropic mixer kernel following the lineage's long-temporal convention, FFN ratio 4, and Equation 3's literal norm placement. Sanity-check total parameters against Table 5 and record every choice as a deviation. Because the headline mechanism is inferred, any resulting number is conditional evidence and cannot be a produced target value.",
       "evidence": [
         "arXiv:2503.08205v1: 'The MP-Block (2D CNNs, detailed in the supplementary materials)'.",
@@ -6014,7 +6014,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "Corrected in commit 9dad93a (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
+      "correction": "Corrected in commit a33b3e3 (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
     },
     {
       "deviation_id": "lma-in-trunk-vs-figures",
@@ -6026,7 +6026,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "Corrected in commit 9dad93a (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
+      "correction": "Corrected in commit a33b3e3 (combined figure-conformance hypothesis); structural validity confirmed by gpu-smoke-004. The PHOENIX14-T runs use this corrected wiring. No PHOENIX14 run with the correction is part of this report, so the reported PHOENIX14 values keep the deviation."
     },
     {
       "deviation_id": "ctc-zero-infinity",
@@ -6047,7 +6047,7 @@
       ],
       "adopted_before_run": "train-phoenix14-seed0-attempt3",
       "discovered_after_run": true,
-      "correction": "A corrected variant (shared branch weights plus the budget-conformant MP-Block, commit ac2512e) was written and smoke-tested at 82,085,078 parameters but not trained in this report. The deviation stands for every reported value."
+      "correction": "A corrected variant (shared branch weights plus the budget-conformant MP-Block, commit 40ca748) was written and smoke-tested at 82,085,078 parameters but not trained in this report. The deviation stands for every reported value."
     }
   ],
   "contacts": []
