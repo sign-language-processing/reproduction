@@ -1,0 +1,551 @@
+"""Dataset access for the OLMD reproduction.
+
+Three corpora, three on-disk formats, all mounted read-only from the shared
+Modal Volume `datasets`:
+
+  * PHOENIX14   -- extracted per-utterance PNG frame directories
+  * PHOENIX14-T -- per-split mp4 (plus PAMI feature archives OLMD does not use,
+                   since it trains a ResNet34 on images)
+  * CSL-Daily   -- per-utterance mp4
+
+Video files are decoded with simple-video-utils per AGENTS.md. PHOENIX14 needs
+no decoder because its frames are already extracted.
+
+Conventions the OLMD paper leaves unstated are taken from its immediate
+methodological ancestor (CorrNet, github.com/hulianyuyy/CorrNet, pinned at
+a812814f) and each is recorded as a deviation in reproduction.json.
+"""
+
+from __future__ import annotations
+
+import csv
+import os
+import pickle
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+
+# Paths inside the mounted `datasets` Volume, as verified at the data gate.
+PHOENIX14_ROOT = "rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner"
+PHOENIX14T_ROOT = "rwth-phoenix-2014-t"
+CSL_DAILY_ROOT = "csl-daily"
+
+# Split sizes confirmed at the data gate against the canonical published counts.
+EXPECTED_COUNTS = {
+    "phoenix14": {"train": 5672, "dev": 540, "test": 629},
+    "phoenix14t": {"train": 7096, "dev": 519, "test": 642},
+    # CSL-Daily's split_1.txt lists 18401 unique training names, but one of
+    # them -- S000005_P0004_T00 -- has no entry in csl2020ct_v2.pkl at all, so
+    # only 18400 training utterances are usable. This is a defect in the
+    # published corpus, not in this loader; see diagnose_csl_daily below.
+    "csl-daily": {"train": 18400, "dev": 1077, "test": 1176},
+}
+CSL_DAILY_MISSING_FROM_PICKLE = ("S000005_P0004_T00",)
+
+
+@dataclass
+class Sample:
+    """One utterance: where its frames live, and its gloss sequence."""
+
+    name: str
+    source: str  # frame directory or video file, relative to the dataset root
+    glosses: list[str]
+
+
+def load_phoenix14(root: Path, split: str) -> list[Sample]:
+    """PHOENIX14 multisigner. Frames are PNG directories, so no decoding."""
+    annotation = root / PHOENIX14_ROOT / "annotations/manual" / f"{split}.corpus.csv"
+    samples = []
+    with annotation.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            glosses = row["annotation"].strip().split()
+            if not glosses:
+                continue
+            # The CSV's `folder` column is a frame glob, e.g.
+            # "01April_2010_Thursday_heute_default-1/1/*.png"; the frames live
+            # in the directory that glob sits in (verified on the Volume).
+            folder = row["folder"].rsplit("/", 1)[0]
+            samples.append(
+                Sample(
+                    name=row["id"],
+                    source=f"{PHOENIX14_ROOT}/features/fullFrame-210x260px/{split}/{folder}",
+                    glosses=glosses,
+                )
+            )
+    return samples
+
+
+def load_phoenix14t(root: Path, split: str) -> list[Sample]:
+    """PHOENIX14-T. The `orth` column holds glosses; `translation` is for SLT."""
+    annotation = root / PHOENIX14T_ROOT / "annotations" / f"PHOENIX-2014-T.{split}.corpus.csv"
+    samples = []
+    with annotation.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            glosses = row["orth"].strip().split()
+            if not glosses:
+                continue
+            samples.append(
+                Sample(
+                    name=row["name"],
+                    source=f"{PHOENIX14T_ROOT}/videos/{split}/{row['name']}.mp4",
+                    glosses=glosses,
+                )
+            )
+    return samples
+
+
+def load_csl_daily(root: Path, split: str) -> list[Sample]:
+    """CSL-Daily. Splits come from split_1.txt; glosses from csl2020ct_v2.pkl.
+
+    Per the corpus's own README, the pickle's `info` entries carry `name`,
+    `length`, `label_gloss` (recognition target), `label_char`, `label_word`,
+    `signer` and `time`. `label_gloss` is the CSLR target.
+    """
+    base = root / CSL_DAILY_ROOT / "sentence_label"
+    wanted = set()
+    with (base / "split_1.txt").open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            if row["split"].strip() == split:
+                wanted.add(row["name"].strip())
+
+    with (base / "csl2020ct_v2.pkl").open("rb") as handle:
+        annotations = pickle.load(handle)
+
+    samples = []
+    for entry in annotations["info"]:
+        name = entry["name"]
+        if name not in wanted:
+            continue
+        glosses = list(entry["label_gloss"])
+        if glosses:
+            samples.append(
+                Sample(
+                    name=name,
+                    source=f"{CSL_DAILY_ROOT}/videos/{name}.mp4",
+                    glosses=glosses,
+                )
+            )
+    return samples
+
+
+LOADERS = {
+    "phoenix14": load_phoenix14,
+    "phoenix14t": load_phoenix14t,
+    "csl-daily": load_csl_daily,
+}
+
+
+def build_vocabulary(root: Path, dataset: str) -> dict[str, int]:
+    """Gloss vocabulary with index 0 reserved for the CTC blank.
+
+    Built over train, dev AND test, which is what the corpora's own gloss
+    dictionaries do and what reproduces the paper's stated vocabulary sizes:
+    PHOENIX14 gives 1295 glosses (the paper says "1,295 words"; 1296 classes
+    with the blank, the familiar figure in this literature), whereas a
+    train-only vocabulary gives 1231 and would leave dev/test glosses
+    unmappable. CSL-Daily ships gloss_map.txt with 2000 entries, matching.
+    """
+    loader = LOADERS[dataset]
+    glosses = sorted(
+        {
+            gloss
+            for split in ("train", "dev", "test")
+            for sample in loader(root, split)
+            for gloss in sample.glosses
+        }
+    )
+    return {gloss: index + 1 for index, gloss in enumerate(glosses)}
+
+
+def inspect_all(mount: str = "/datasets") -> dict:
+    """Verify every split parses and matches the counts recorded at the data gate.
+
+    Cheap, CPU-only, and it fails loudly on a count mismatch rather than
+    silently training on the wrong data.
+    """
+    root = Path(mount)
+    report: dict = {}
+    for dataset, loader in LOADERS.items():
+        entry: dict = {"splits": {}, "mismatches": []}
+        for split in ("train", "dev", "test"):
+            try:
+                samples = loader(root, split)
+            except Exception as error:  # surfaced, never swallowed
+                entry["splits"][split] = {"error": f"{type(error).__name__}: {error}"}
+                entry["mismatches"].append(split)
+                continue
+
+            expected = EXPECTED_COUNTS[dataset][split]
+            entry["splits"][split] = {
+                "parsed": len(samples),
+                "expected": expected,
+                "example_name": samples[0].name if samples else None,
+                "example_glosses": samples[0].glosses[:6] if samples else None,
+                "example_source": samples[0].source if samples else None,
+            }
+            if len(samples) != expected:
+                entry["mismatches"].append(split)
+
+        if not any("error" in split for split in entry["splits"].values()):
+            vocabulary = build_vocabulary(root, dataset)
+            entry["vocabulary"] = len(vocabulary)
+            entry["num_classes_with_blank"] = len(vocabulary) + 1
+        report[dataset] = entry
+    return report
+
+
+# --- Preprocessing -------------------------------------------------------
+# The paper states: resize to 256x256, random crop 224x224, 50% horizontal
+# flip, "a 20% probability of temporal scale adjustment", and a central
+# 224x224 crop at inference.
+#
+# INFERRED (guess_id: temporal-scale-range). The paper says "a 20% probability
+# of temporal scale adjustment", which states a PROBABILITY and leaves the
+# magnitude unstated. The lineage's TemporalRescale instead reads
+# temp_scaling=0.2 as a RANGE, sampling a length factor uniformly from
+# [0.8, 1.2] on every clip with no probability gate.
+#
+# The paper's wording is followed for the gate -- the augmentation is applied
+# with probability 0.2 -- and the lineage supplies the magnitude the paper omits,
+# since it is the only defined source for it. Both halves are deviations and are
+# recorded as such: a reproduction that always rescales sees roughly five times
+# as much temporal augmentation as this one.
+TEMPORAL_SCALE_PROBABILITY = 0.2
+TEMPORAL_SCALE_RANGE = (0.8, 1.2)
+TEMPORAL_MIN_LEN = 32
+TEMPORAL_MAX_LEN = 230
+
+
+def temporal_rescale(num_frames: int, rng: np.random.Generator) -> np.ndarray:
+    """Resample frame indices to a rescaled length, clamped like the lineage.
+
+    Applied with probability TEMPORAL_SCALE_PROBABILITY, per the paper's "20%
+    probability"; otherwise the clip is returned unchanged.
+    """
+    if rng.random() >= TEMPORAL_SCALE_PROBABILITY:
+        return np.arange(num_frames)
+    low, high = TEMPORAL_SCALE_RANGE
+    new_len = int(num_frames * (low + (high - low) * rng.random()))
+    new_len = max(TEMPORAL_MIN_LEN, min(TEMPORAL_MAX_LEN, new_len))
+    # Keep the length compatible with the {K5,P2,K5,P2} head, as the lineage does.
+    if (new_len - 4) % 4 != 0:
+        new_len += 4 - (new_len - 4) % 4
+    if new_len <= num_frames:
+        return np.sort(rng.choice(num_frames, size=new_len, replace=False))
+    return np.sort(rng.choice(num_frames, size=new_len, replace=True))
+
+
+# Padding for the {K5,P2,K5,P2} head, which uses padding=0 and therefore
+# shortens each sequence. The lineage pads by REPLICATING the first and last
+# frames (never zeros), so boundary frames stay in-distribution; the same
+# choice makes LMA's frame differences zero rather than spuriously large at
+# clip edges (guess_id: batching-and-padding).
+LEFT_PAD = 6
+TOTAL_STRIDE = 4
+
+
+def padded_length(num_frames: int) -> int:
+    """Length after the lineage's left/right replicate padding."""
+    return int(np.ceil(num_frames / TOTAL_STRIDE)) * TOTAL_STRIDE + 2 * LEFT_PAD
+
+
+def diagnose_csl_daily(root: Path) -> dict:
+    """Explain any split_1 name that produces no training sample.
+
+    Exists because the loader initially yielded 18400 of the expected 18401
+    training utterances, and a silently dropped sample is not acceptable
+    evidence.
+    """
+    base = root / CSL_DAILY_ROOT / "sentence_label"
+    wanted = []
+    with (base / "split_1.txt").open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            if row["split"].strip() == "train":
+                wanted.append(row["name"].strip())
+
+    with (base / "csl2020ct_v2.pkl").open("rb") as handle:
+        annotations = pickle.load(handle)
+    by_name = {entry["name"]: entry for entry in annotations["info"]}
+
+    missing = [name for name in wanted if name not in by_name]
+    empty = [
+        name for name in wanted if name in by_name and not list(by_name[name]["label_gloss"])
+    ]
+    return {
+        "split_1_train_names": len(wanted),
+        "unique_names": len(set(wanted)),
+        "pickle_info_entries": len(by_name),
+        "absent_from_pickle": missing,
+        "present_but_empty_glosses": empty,
+    }
+
+
+# --- Frame loading -------------------------------------------------------
+# PHOENIX14 ships extracted PNG directories; PHOENIX14-T and CSL-Daily ship
+# mp4. Video files are decoded with simple-video-utils per AGENTS.md; PHOENIX14
+# needs no decoder.
+RESIZE = 256
+CROP = 224
+
+
+def load_frames(root: Path, sample: Sample) -> np.ndarray:
+    """Return an utterance's frames as uint8 (T, H, W, 3) in RGB."""
+    source = root / sample.source
+    if source.is_dir():
+        return _load_png_directory(source)
+    return _load_video(source)
+
+
+def _load_png_directory(directory: Path) -> np.ndarray:
+    from PIL import Image
+
+    paths = sorted(directory.glob("*.png"))
+    if not paths:
+        raise FileNotFoundError(f"no PNG frames in {directory}")
+    return np.stack([np.asarray(Image.open(path).convert("RGB")) for path in paths])
+
+
+def _load_video(path: Path) -> np.ndarray:
+    if not path.exists():
+        raise FileNotFoundError(f"missing video {path}")
+    # simple-video-utils is the decoder AGENTS.md requires for video paths.
+    # read_frames_batched returns the whole clip as one (T, H, W, 3) uint8 RGB
+    # array, which is exactly this function's contract; no range or fps
+    # arguments, so every stored frame is kept, matching the PNG path.
+    from simple_video_utils.frames import read_frames_batched
+
+    return np.asarray(read_frames_batched(str(path)))
+
+
+def preprocess(
+    frames: np.ndarray,
+    train: bool,
+    rng: "np.random.Generator | None" = None,
+    already_resized: bool = False,
+) -> np.ndarray:
+    """Resize to 256x256, then crop (random + flip when training, else central).
+
+    The paper: "All input frames are first resized to 256x256 and then randomly
+    cropped to 224x224 during training, with a 50% chance of horizontal
+    flipping ... For inference, we simply use a central crop of 224x224."
+    Returns float32 (T, 3, 224, 224).
+
+    `already_resized` skips the resize for cache reads, which store frames at
+    256x256 already. The crop and flip still happen here, per epoch, so the
+    paper's augmentation is unaffected by caching.
+    """
+    from PIL import Image
+
+    if already_resized:
+        resized = frames
+    else:
+        resized = np.stack(
+            [
+                np.asarray(Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR))
+                for frame in frames
+            ]
+        )
+
+    if train:
+        if rng is None:
+            rng = np.random.default_rng()
+        top = int(rng.integers(0, RESIZE - CROP + 1))
+        left = int(rng.integers(0, RESIZE - CROP + 1))
+        flip = rng.random() < 0.5
+    else:
+        top = left = (RESIZE - CROP) // 2
+        flip = False
+
+    cropped = resized[:, top : top + CROP, left : left + CROP, :]
+    if flip:
+        cropped = cropped[:, :, ::-1, :]
+
+    # INFERRED (guess_id: unstated-training-hyperparameters): the paper states
+    # no normalization. The lineage scales to [-1, 1] as x/127.5 - 1 rather
+    # than using ImageNet channel statistics, despite the ImageNet-pretrained
+    # backbone. That convention is followed and recorded as a deviation.
+    scaled = cropped.astype(np.float32) / 127.5 - 1.0
+    return np.ascontiguousarray(scaled.transpose(0, 3, 1, 2))
+
+
+# --- Frame cache -------------------------------------------------------------
+# throughput-phoenix14-001 and preflight-phoenix14-002 measured serial PNG
+# loading at 2.66 s per clip against 0.211 s of GPU work, so the pipeline is
+# 12.6x I/O-bound as written. The cost is per-request latency across the ~179
+# separate PNG files per utterance, not bandwidth: an 8-thread pool gained only
+# 1.79x. cache-probe-phoenix14-001 confirmed that consolidating each utterance
+# into ONE JPEG-encoded .npz cuts the read to 0.267 s, a 24.1x speedup, with
+# frame counts preserved exactly and JPEG q90 costing 1.028 mean absolute pixel
+# levels out of 255.
+#
+# The cache stores frames at 256x256 BEFORE cropping, so the paper's random
+# 224x224 crop and 50% horizontal flip still vary every epoch. Caching
+# post-crop would be smaller and faster but would silently remove the stated
+# augmentation, which is a protocol change rather than an optimization.
+CACHE_JPEG_QUALITY = 90
+
+
+def cache_path(cache_root: Path, dataset: str, sample: Sample) -> Path:
+    return cache_root / dataset / f"{sample.name}.npz"
+
+
+def write_cache_entry(root: Path, cache_root: Path, dataset: str, sample: Sample) -> int:
+    """Encode one utterance into the cache. Idempotent: skips existing entries."""
+    import io
+
+    from PIL import Image
+
+    destination = cache_path(cache_root, dataset, sample)
+    if destination.exists():
+        return destination.stat().st_size
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    frames = load_frames(root, sample)
+    encoded = {}
+    for index, frame in enumerate(frames):
+        buffer = io.BytesIO()
+        Image.fromarray(frame).resize((RESIZE, RESIZE), Image.BILINEAR).save(
+            buffer, format="JPEG", quality=CACHE_JPEG_QUALITY
+        )
+        encoded[str(index)] = np.frombuffer(buffer.getvalue(), dtype=np.uint8)
+
+    # Write to a temporary name first so an interrupted build cannot leave a
+    # truncated entry that later reads would treat as valid. np.savez appends
+    # ".npz" unless the name already ends in it, so the staging name must end in
+    # ".npz" and carry its marker in the stem.
+    # The staging name includes the process id so two workers building the same
+    # clip cannot clobber each other's partial file.
+    staging = destination.with_name(f"{destination.stem}.partial-{os.getpid()}.npz")
+    np.savez(staging, **encoded)
+    staging.replace(destination)
+    return destination.stat().st_size
+
+
+def read_cache_entry(cache_root: Path, dataset: str, sample: Sample) -> np.ndarray:
+    """Decode one cached utterance back to uint8 (T, 256, 256, 3)."""
+    import io
+
+    from PIL import Image
+
+    with np.load(cache_path(cache_root, dataset, sample)) as bundle:
+        keys = sorted(bundle.files, key=int)
+        return np.stack(
+            [np.asarray(Image.open(io.BytesIO(bundle[key].tobytes()))) for key in keys]
+        )
+
+
+class OLMDDataset:
+    """Utterances as (video, gloss ids), read from the cache when available.
+
+    Deliberately a plain class rather than a torch.utils.data.Dataset subclass so
+    this module imports without torch; modal_app.py wraps it for the DataLoader.
+    """
+
+    def __init__(
+        self,
+        root: Path,
+        dataset: str,
+        split: str,
+        vocabulary: dict[str, int],
+        cache_root: "Path | None" = None,
+        train: bool = True,
+        seed: int = 0,
+    ):
+        self.root = root
+        self.dataset = dataset
+        self.split = split
+        self.vocabulary = vocabulary
+        self.cache_root = cache_root
+        self.train = train
+        self.samples = LOADERS[dataset](root, split)
+        self.seed = seed
+
+    def __len__(self) -> int:
+        return len(self.samples)
+
+    def __getitem__(self, index: int):
+        sample = self.samples[index]
+        # Each item gets its own generator seeded by (seed, index) so worker
+        # processes do not share augmentation state and runs stay repeatable.
+        rng = np.random.default_rng((self.seed, index))
+
+        if self.cache_root is not None and cache_path(
+            self.cache_root, self.dataset, sample
+        ).exists():
+            frames = read_cache_entry(self.cache_root, self.dataset, sample)
+            already_resized = True
+        else:
+            frames = load_frames(self.root, sample)
+            already_resized = False
+
+        if self.train:
+            frames = frames[temporal_rescale(len(frames), rng)]
+
+        video = preprocess(frames, self.train, rng, already_resized=already_resized)
+        ids = [self.vocabulary[g] for g in sample.glosses if g in self.vocabulary]
+        return video, ids, sample.name
+
+
+# The temporal head is {K5,P2,K5,P2}. The lineage's collate (CorrNet
+# dataset/dataloader_video.py::collate_fn @ a812814, the same revision this
+# reproduction pins for evaluation) derives its padding from that kernel spec:
+# each K accumulates (k-1)/2 into left_pad after scaling by the running stride,
+# and each P multiplies the total stride. For {K5,P2,K5,P2} that is
+# left_pad = 6 and total_stride = 4.
+#
+# The padding is what makes short clips work. With 6 replicated frames on each
+# side and lengths rounded up to a multiple of 4, the convolutions consume
+# padding instead of real frames and a clip of length L emits ceil(L/4) steps
+# rather than (L-8)/4. Without it, PHOENIX14-T's shortest clips (16 frames,
+# against PHOENIX14's ~147 minimum) collapse to a single temporal element and
+# crash InstanceNorm1d inside TLP's LocalWeighting.
+HEAD_LEFT_PAD = 6
+HEAD_TOTAL_STRIDE = 4
+
+
+def collate(batch):
+    """Pad a batch the way the lineage does: replicate frames, never zeros.
+
+    Frame replication (rather than zero padding) matters here because LMA
+    differences each frame against its neighbours, so zeros would make the
+    boundary differences spuriously large.
+
+    Two paddings are applied, both from the lineage's collate_fn:
+
+    * `HEAD_LEFT_PAD` frames of the first frame at the front and enough of the
+      last frame at the back that the convolutions consume padding rather than
+      real frames;
+    * a round-up of every length to a multiple of `HEAD_TOTAL_STRIDE`, so the
+      two poolings divide evenly.
+
+    `lengths` reports each clip's OWN padded length, not the batch maximum, so
+    the head's length bookkeeping and the CTC input lengths follow the real
+    content of each clip.
+    """
+    import torch
+
+    videos, id_lists, names = zip(*batch)
+    # Each clip's own length, rounded up to the stride, then padded both sides.
+    content = [video.shape[0] for video in videos]
+    rounded = [
+        -(-length // HEAD_TOTAL_STRIDE) * HEAD_TOTAL_STRIDE for length in content
+    ]
+    padded_lengths = [length + 2 * HEAD_LEFT_PAD for length in rounded]
+    longest = max(padded_lengths)
+
+    padded = []
+    for video, own_length in zip(videos, padded_lengths):
+        tensor = torch.from_numpy(video)
+        head = tensor[:1].expand(HEAD_LEFT_PAD, -1, -1, -1)
+        # Pad this clip out to the batch maximum; everything past its own
+        # padded length is surplus that `lengths` already excludes.
+        tail_frames = longest - tensor.shape[0] - HEAD_LEFT_PAD
+        tail = tensor[-1:].expand(tail_frames, -1, -1, -1)
+        padded.append(torch.cat([head, tensor, tail], dim=0))
+
+    video_batch = torch.stack(padded).permute(0, 2, 1, 3, 4)  # (N, C, T, H, W)
+    lengths = torch.tensor(padded_lengths, dtype=torch.long)
+    targets = torch.tensor([i for ids in id_lists for i in ids], dtype=torch.long)
+    target_lengths = torch.tensor([len(ids) for ids in id_lists], dtype=torch.long)
+    return video_batch, lengths, targets, target_lengths, list(names)
