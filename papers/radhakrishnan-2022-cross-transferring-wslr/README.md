@@ -134,4 +134,10 @@ No retained runs. Modal operations were read-only (`volume list`, `volume ls dat
 - **Deviations:** none taken.
 - **Dead end — Modal preflight:** the wrapper reported expired credentials because Modal CLI 1.2.6 lacks `modal token info`; CLI 1.6.0 fixed it.
 - **Dead end — video acquisition:** `data.sh` processed 223 of 7,212 videos (126 downloaded, 97 private or removed), then stopped when YouTube required sign-in bot verification. This was not worked around.
-- **Author contact:** none. Requesting the authors' clip list and split through Team S remains the only route to the exact data and was not pursued.
+- **Author contact:** none by this reproduction's operator.
+- **Team S data-access contact:**
+  - **When and to whom:** on 2026-10-05, after this attempt, Team S emailed the authors about the paper's data. The first author's institutional student address was undeliverable; the message to the last author, S. N. Pai, went through.
+  - **Response:** none recorded in Team S's notes as of 2026-11-05.
+  - **What it changed:** nothing. The clip list, trims and split remain unavailable, so all 24 targets stay not produced.
+
+  Getting those from the authors is still the only route to the exact data. Details are in `reproduction.json.contacts`.
