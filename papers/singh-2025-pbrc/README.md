@@ -10,9 +10,9 @@
 
 **Pipeline status:** `blocked_on_data`
 
-**Numerical agreement:** `not_assessed` — no target has been produced; nothing has been run, because 570 of the 2,038 WLASL100 videos the paper uses are missing from the shared dataset and the user asked to wait until data completeness is settled.
+**Numerical agreement:** `not_assessed` — no target has been produced; nothing has been run, because 570 of the 2,038 WLASL100 videos the paper uses are missing from the shared dataset. They were requested from the WLASL authors around 2026-10-02, and no reply had come by 2026-11-05.
 
-**Attempt date:** 2026-10-02 (in progress, stopped at the data gate)
+**Attempt date:** 2026-10-02 (stopped at the data gate)
 
 ## Reproduction agents
 
@@ -115,7 +115,8 @@ Then, for the top 100 glosses of `WLASL_v0.3.json`, map each instance URL to its
 **Is WLASL itself incomplete?** Yes. WLASL is distributed as source URLs, not video files, and many of those links have died:
 - The shared copy holds 15,601 of the 21,083 WLASL2000 instances (74.0%) and 1,468 of the 2,038 WLASL100 instances (72.0%).
 - Missing WLASL100 videos by host: handspeak.com 174 (HTTP 404 on the 2026-10-01 retry), aslpro.com 162 (HTTP 404/406 on a 2026-10-02 probe), YouTube 232 (removed videos), aslsignbank 2.
-- The WLASL authors provide missing videos only through a request form that requires accepting their terms. That is a human/Team S action, recorded as open gate `wlasl100-missing-videos`.
+- The WLASL authors provide missing videos only through a request form that requires accepting their terms. A Team R member requested them around 2026-10-02 and no reply had come by 2026-11-05, so gate `wlasl100-missing-videos` was resolved with the targets not produced (see [Author and team contact](#author-and-team-contact)).
+- On 2026-11-05 the shared copy was rechecked and was unchanged since 2026-10-01: same `index.csv` hash, and none of the 570 missing videos present.
 - The paper uses only WLASL100, so the request needs to cover only the 570 WLASL100 videos in `wlasl100-missing-videos.tsv`. The full-WLASL counts above are context, not a requirement of this reproduction.
 
 The PBRC authors' counts (1,780 + 258) match the complete `nslt_100` split, so they had all 2,038 videos.
@@ -156,4 +157,14 @@ These are planned and approved by the user (gate `pbrc-unstated-protocol`), and 
 
 ## Author and team contact
 
-No author contact. Team S action is pending: request the 570 missing WLASL100 videos only (gate `wlasl100-missing-videos`).
+**Author contact (PBRC paper):** none.
+
+**WLASL data request:**
+
+- **Who and when:** around 2026-10-02, a Team R member requested the missing WLASL videos from the WLASL authors, for the study's WLASL-based reproductions. It was coordinated in the team's Slack, not through Team S.
+- **Response:** none as of 2026-11-05.
+- **What it changed:** nothing. The 570 WLASL100 videos are still missing from the shared copy, so gate `wlasl100-missing-videos` was resolved with every in-scope target staying not produced.
+- **Not done:** no conditional run on the 1,468 available videos was authorized.
+- **If the videos arrive later:** they need to be added to `datasets/WLASL` with `index.csv` rebuilt, and then the attempt can resume.
+
+Details are in `reproduction.json.contacts`.
