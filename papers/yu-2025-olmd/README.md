@@ -731,5 +731,16 @@ publication.
 
 ## Author and team contact
 
-None. AGENTS.md permits author contact only after an independent attempt, and no attempt
-has been made yet.
+- **Who and when:** on 2026-09-16 the assigned operator emailed Sheng Liu, the paper's
+  second author, on behalf of the REPRO-SIGN collaboration. This came after the
+  independent PHOENIX14 attempt had completed (2026-09-10), as AGENTS.md requires, and
+  before the PHOENIX14-T run.
+- **Why:** to ask for code, implementation details and the supplementary material for
+  the OLMD row of Table 1. The email said anything shared would be published with the
+  results, with full attribution to the authors.
+- **Response:** none as of 2026-11-05.
+- **What it changed:** nothing. No author material was received or used, so every
+  inferred detail, including the MP-Block internals, remains a recorded guess.
+- **Team S:** not involved. This was a request for author help, not a data-access request.
+
+Details are in `reproduction.json.contacts`.
