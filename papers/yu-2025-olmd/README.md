@@ -142,13 +142,16 @@ is **level 3 — reimplementation from the paper**.
 
 ## Results
 
-| Target ID | Paper location | Dataset/split | Original | Reproduced | Status |
-| --- | --- | --- | ---: | ---: | --- |
-| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **35.0** | produced (`sclite-phoenix14-002`) |
-| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **34.2** | produced (`sclite-phoenix14-002`) |
-| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | **34.5** | produced (`sclite-phoenix14t-wiring-fix-001`) |
-| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | **32.6** | produced (`sclite-phoenix14t-wiring-fix-001`) |
-| 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | `copied_baseline` |
+| Target ID | Paper location | Dataset/split | Original | Reproduced | Difference | Status |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| `table1-p14-dev-wer` | Table 1, OLMD row | PHOENIX14 / dev | 17.1 | **35.0** | +17.9 | produced (`sclite-phoenix14-002`) |
+| `table1-p14-test-wer` | Table 1, OLMD row | PHOENIX14 / test | 17.2 | **34.2** | +17.0 | produced (`sclite-phoenix14-002`) |
+| `table1-p14t-dev-wer` | Table 1, OLMD row | PHOENIX14-T / dev | 17.1 | **34.5** | +17.4 | produced (`sclite-phoenix14t-wiring-fix-001`) |
+| `table1-p14t-test-wer` | Table 1, OLMD row | PHOENIX14-T / test | 18.4 | **32.6** | +14.2 | produced (`sclite-phoenix14t-wiring-fix-001`) |
+| 60 copied rows | Table 1, prior methods | both datasets | see `reproduction.json` | n/a | n/a | `copied_baseline` |
+
+Difference is reproduced minus original, in WER points. WER is lower-is-better, so a
+positive difference means a higher error rate than published.
 
 The reproduced values are the **official PHOENIX evaluation chain** (RWTH `preprocess.sh`
 + `mergectmstm.py` + SCTK v2.4.12 `sclite`, all sha256-pinned) applied to **beam-10**
