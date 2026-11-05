@@ -110,7 +110,7 @@ The selected `status.blocker` is `data_permission_blocked`, the earliest blocker
 
 I verified directly in the Modal `repro-sign` workspace that ub-MOJI is **not** already available to the study: the shared `datasets` Volume holds 18 dataset directories, none of them ub-MOJI, and probes of `ub-moji/`, `ub-MOJI/`, `ubmoji/` and `moji/` all returned "path does not exist". So no pre-existing copy exempts this attempt from the access gate.
 
-A third gate, `modal-wrapper-token-info-incompatible`, is open but is **not** about this paper: it records a defect in the repository's own Modal wrapper that affects every paper in the study. See Environment and patches.
+A third gate, `modal-wrapper-token-info-incompatible`, was **not** about this paper: it recorded a defect in the repository's own Modal wrapper that affected every paper in the study. It was resolved on 2026-11-05 by upgrading the Modal client. See Environment and patches.
 
 ## Reproduction agents
 
@@ -246,6 +246,8 @@ No container was built, no dependency resolved, and no image digest exists, beca
 The upstream environment is already well pinned by the authors and is recorded here for the resumed attempt: Python ≥3.11 (`.python-version` 3.11) with `uv` lockfiles in each of `hrpro/`, `videomae/`, and `feature_extraction/angle_features/`; `torch==2.6.0` / `torchvision==0.21.0` from the `cu124` index; `decord==0.6.0`, `timm==0.4.12`, `deepspeed==0.17.1`, `schedulefree==1.4.1` (VideoMAE stage); `mediapipe==0.10.21` (angle stage); CUDA ≥12.4 and OpenCV per the root README.
 
 **Repository tooling defect found.** `.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh` verifies credentials with `modal token info`, which Modal client 1.2.6 no longer provides ("No such command 'info'"). The wrapper reports that as expired credentials and directs the agent to a `modal setup` human gate that is not actually needed. Since the wrapper is the mandated path for all Modal operations, this blocks wrapper-mediated Modal work for every paper in the study on this CLI version. Recorded as gate `modal-wrapper-token-info-incompatible` for the maintainers; a workspace-verification check that exists in current clients (parsing `modal profile list`, or `modal profile current` plus a cheap authenticated call) would fix it. The ub-MOJI checks in this report were made with direct `modal volume ls` calls under `MODAL_PROFILE=repro-sign`, in the required workspace, with no fallback profile.
+
+**Resolved 2026-11-05.** Modal client 1.6.0 provides `modal token info` again, and with it the unchanged wrapper on `main` verifies the workspace: running it with no arguments prints "Verified Modal profile and workspace 'repro-sign'." No wrapper change was needed. Clients without `modal token info`, such as 1.2.6, still hit the defect.
 
 **Patches to the published code: none.** The published code is at preference level 1 and needed no correctness patch, because no execution was attempted. One adaptation is known to be required if work resumes — the `video_features` submodule's SSH URL blocks anonymous cloning — but it was not applied or tested here, so it is recorded as future work rather than as a retained patch.
 

@@ -2281,17 +2281,19 @@
     {
       "gate_id": "modal-wrapper-token-info-incompatible",
       "type": "authority",
-      "status": "open",
+      "status": "resolved",
       "reason": "Repository tooling defect, not a blocker for this paper. .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh gates every Modal operation behind `modal token info`, which was removed from the Modal CLI by client version 1.2.6 ('No such command info'). The wrapper interprets that missing subcommand as a credential failure and aborts with \"Modal credentials for 'repro-sign' are invalid or expired. Ask the user to run 'modal setup'\", sending agents to a human authentication gate that does not exist. The credentials in this environment are in fact valid: with MODAL_PROFILE=repro-sign, `modal profile list` shows profile repro-sign active on workspace repro-sign, and `modal volume list` succeeds and returns the workspace's 15 Volumes including both canonical v2 Volumes. Because the wrapper is the mandated path for every Modal operation, this defect blocks wrapper-mediated Modal work for every paper in the study on this CLI version, so it needs an owner outside this reproduction.",
       "evidence": [
         "`MODAL_PROFILE=repro-sign modal token info` on 2026-09-24 with modal client version 1.2.6: \"No such command 'info'.\"",
         "`MODAL_PROFILE=repro-sign modal profile list` shows a single profile 'repro-sign' on workspace 'repro-sign', marked active.",
         "`MODAL_PROFILE=repro-sign modal volume list` succeeds and returns 15 Volumes, including 'datasets' (created 2026-08-20) and 'huggingface-cache' (created 2026-08-20).",
         "`.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume list` fails with \"Modal credentials for 'repro-sign' are invalid or expired.\" against those same working credentials.",
-        "Because check_modal_dataset.sh calls the same wrapper, it cannot run on this CLI version; the ub-MOJI absence recorded in this attempt was verified with direct `modal volume ls` calls under MODAL_PROFILE=repro-sign, in the required workspace, and no other profile was used."
+        "Because check_modal_dataset.sh calls the same wrapper, it cannot run on this CLI version; the ub-MOJI absence recorded in this attempt was verified with direct `modal volume ls` calls under MODAL_PROFILE=repro-sign, in the required workspace, and no other profile was used.",
+        "2026-11-05, Modal client 1.6.0: `.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh` (no arguments) -> \"Verified Modal profile and workspace 'repro-sign'.\""
       ],
       "required_action": "Repository maintainers update modal_repro_sign.sh to verify the authenticated workspace using a subcommand that exists in current Modal clients (for example parsing `modal profile list` for the active profile/workspace pair, or `modal profile current` plus a cheap authenticated call such as `modal volume list`) instead of the removed `modal token info`. This is a study-infrastructure fix and does not gate the Murai 2025 reproduction, which remains blocked on the ub-MOJI data gates.",
-      "opened_at_utc": "2026-09-24T00:00:00Z"
+      "opened_at_utc": "2026-09-24T00:00:00Z",
+      "resolution": "Resolved 2026-11-05 by the Modal client upgrade, not by a wrapper change. With Modal client 1.6.0, which provides `modal token info` again, the unchanged wrapper on main verifies the workspace: running `.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh` with no arguments prints \"Verified Modal profile and workspace 'repro-sign'.\" Wrapper-mediated Modal work is no longer blocked. The defect remains for clients that lack `modal token info`, such as 1.2.6."
     },
     {
       "gate_id": "ub-moji-modal-redistribution",
