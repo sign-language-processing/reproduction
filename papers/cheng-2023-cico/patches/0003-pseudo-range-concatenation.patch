@@ -1,0 +1,22 @@
+Subject: Native collater returns range objects; materialize lists for existing segment concatenation
+
+--- a/CiCo/I3D_feature_extractor/epoch_pseudo.py
++++ b/CiCo/I3D_feature_extractor/epoch_pseudo.py
+@@ -150,7 +150,7 @@
+         for sim_word_in_one_video in records[words]:
+             curr_list=records[words][sim_word_in_one_video]
+             curr_list=sorted(curr_list, key=lambda x: x['top_value'], reverse=True)
+-            frames=curr_list[0]['frame']
++            frames=list(curr_list[0]['frame'])
+             frame_start=np.min(frames)
+             record_dict={}
+             record_score={}
+@@ -159,7 +159,7 @@
+             for iterations in range(len(curr_list)):
+                 if iterations==0:
+                     continue
+-                curr_frame = curr_list[iterations]['frame']
++                curr_frame = list(curr_list[iterations]['frame'])
+                 curr_start_frame=np.min(curr_frame)
+                 isin=0
+                 for frame_start_key in record_dict:

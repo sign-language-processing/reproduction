@@ -1,0 +1,51 @@
+Subject: Audit native CLIP feature-input initialization and fail on unexpected load errors
+
+The native loader logs shape errors and keeps random initialization for two
+image-to-feature tensors. Preserve those values without interpolation; permit
+only those mismatches and make other load errors fatal. Strict resume is separate.
+
+--- a/CiCo/CLCL/modules/until_module.py
++++ b/CiCo/CLCL/modules/until_module.py
+@@ -124,6 +124,19 @@
+             for old_key, new_key in zip(old_keys, new_keys):
+                 state_dict[new_key] = state_dict.pop(old_key)
+ 
++        # Native initialization already skips these two incompatible image-to-
++        # feature tensors. Make that exact policy auditable and fail on others.
++        current = model.state_dict()
++        allowed = {'clip.visual.conv1.weight', 'clip.visual.positional_embedding'}
++        mismatches = {k: {'pretrained': list(v.shape), 'model': list(current[k].shape)} for k,v in state_dict.items() if k in current and v.shape != current[k].shape}
++        assert set(mismatches).issubset(allowed), mismatches
++        state_dict = state_dict.copy()
++        for key in mismatches:
++            del state_dict[key]
++        if task_config is not None and hasattr(task_config, 'output_dir'):
++            import json
++            from pathlib import Path
++            Path(task_config.output_dir, 'initialization-shapes.json').write_text(json.dumps({'retained_random_native_tensors': mismatches, 'policy': 'Native compatible CLIP tensors loaded; only incompatible visual input and temporal positions remain seeded random.'}, indent=2))
+         missing_keys = []
+         unexpected_keys = []
+         error_msgs = []
+@@ -142,6 +155,13 @@
+                     load(child, prefix + name + '.')
+ 
+         load(model, prefix='')
++        loaded = model.state_dict()
++        compatible = [k for k,v in state_dict.items() if k in loaded and v.shape == loaded[k].shape]
++        assert all(torch.equal(loaded[k].cpu(), state_dict[k].to(dtype=loaded[k].dtype).cpu()) for k in compatible)
++        if task_config is not None and hasattr(task_config, 'output_dir'):
++            report = json.loads(Path(task_config.output_dir, 'initialization-shapes.json').read_text())
++            report.update(compatible_loaded_tensors_exact=True, compatible_tensor_count=len(compatible))
++            Path(task_config.output_dir, 'initialization-shapes.json').write_text(json.dumps(report, indent=2))
+ 
+         if prefix is None and (task_config is None or task_config.local_rank == 0):
+             logger.info("-" * 20)
+@@ -155,6 +175,8 @@
+                 logger.error("Weights from pretrained model cause errors in {}: {}"
+                              .format(model.__class__.__name__, "\n   " + "\n   ".join(error_msgs)))
+ 
++        if error_msgs:
++            raise RuntimeError('Unexplained pretrained load errors: ' + '; '.join(error_msgs))
+         return model
+ 
+     @property
