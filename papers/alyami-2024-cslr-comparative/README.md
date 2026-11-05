@@ -8,20 +8,32 @@
 
 **Preference level:** 2
 
-The preference level is expected rather than confirmed; see `status.preference_level_basis`.
+Level 2 is confirmed by this paper's own build, preflights and 55 full runs: the pinned official code runs through its own `main.py` with correctness patches and environment fixes only. See `status.preference_level_basis`.
 
-**Pipeline status:** `partial` — interim: 25 of 30 in-scope targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets are in block 6: its 30 runs were launched on 2026-11-04 after the operator resolved gate `arabsign-loso-hold`. The compute gate `compute-full-table` was resolved on 2026-11-02 with an absolute ceiling of USD 2,000; USD 509.75 has been spent.
+**Pipeline status:** `complete` — all 30 in-scope targets were produced in six blocks of full runs (55 runs in total), each trained for 40 epochs in one Modal attempt, with no run reaching its ceiling. The compute gate `compute-full-table` set an absolute ceiling of USD 2,000; total Modal spend is USD 1,169.16.
 
-**Numerical agreement:** `does_not_agree` — interim. The tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. 5 of the 25 produced values are within it: SMKD Phoenix SD, CorrNet Phoenix SI, and VAC, SMKD and TLP on ArabSign SD. For ArabSign SD the published values are all below 1% WER, so the absolute tolerance cannot tell them apart; the Results table also gives the relative difference. See `status.numerical_agreement_basis`.
+**Numerical agreement:** `does_not_agree` — the tolerance is ±1.0 WER point, from the paper's own "around 1% fluctuations" for its Phoenix re-runs. 7 of the 30 values are within it:
 
-**Attempt dates:** 2026-10-26 (intake and gates); 2026-11-02 to 2026-11-04 (data, preflights, blocks 1–5, investigation)
+- SMKD on Phoenix SD;
+- CorrNet on Phoenix SI;
+- VAC, SMKD and TLP on ArabSign SD;
+- VAC and SMKD on ArabSign SI.
+
+The other 23 are outside it, by between −25.80 and +87.61 points. Two qualifications apply:
+
+- **ArabSign SD.** The published values are all below 1% WER, so a 1-point tolerance cannot distinguish them.
+- **ArabSign SI.** The VAC and SMKD values are means over six folds, and not one of the 30 per-signer folds is within ±1.0 of its Table II value.
+
+See `status.numerical_agreement_basis`.
+
+**Attempt dates:** 2026-10-26 (intake and gates); 2026-11-02 to 2026-11-05 (data, preflights, blocks 1–6, investigation, close-out)
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
 | `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.310 | Assignment intake, version resolution, source search, dataset inspection on Modal `repro-sign`, target/protocol/compute gates | Session system context names the model and ID. `claude --version` returned 2.1.310. No runs executed. |
-| `claude-opus-5-5-claude-code-2026-11-02` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | From 2026-11-02: gate updates, data population, container, preflights, estimates, launching and monitoring full runs; on 2026-11-04, collecting blocks 2–5 and the no-training investigation | Session system context names the model and ID. `claude --version` returned 2.1.316 on 2026-11-02 and 2.1.318 on 2026-11-04 in the same continued session. Whether the running process changed version is not exposed. |
+| `claude-opus-5-5-claude-code-2026-11-02` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | From 2026-11-02: gate updates, data population, container, preflights, estimates, launching and monitoring full runs. On 2026-11-04: collecting blocks 2–5, the no-training investigation, and declaring and launching block 6. On 2026-11-05: collecting block 6, the environment freeze, the LOSO targets and the final status. Executing agent of every retained run. | Session system context names the model and ID. `claude --version` returned 2.1.316 on 2026-11-02 and 2.1.318 on 2026-11-04 and 2026-11-05, in the same continued session. Whether the running process changed version is not exposed. |
 
 ## Scope and target contract
 
@@ -47,7 +59,7 @@ The metric is test WER in percent: sclite corpus-level (S+D+I)/N, Eq. 1. None of
 
 **Protocol (gate `protocol-lr-epochs`, resolved).** The paper says it "followed the same experimental settings described in each study". The same paragraph then states Adam, lr 1e-3, 40 epochs, ×0.2 at epochs 20 and 35, and batch 2 for all models. Every pinned upstream config instead uses lr 1e-4, and TLP/SEN train for 80 epochs (steps 40/60). The operator chose the paper-stated protocol for every model: lr 1e-3 and 40 epochs with steps 20/35. Everything else is each repo's unchanged config.
 
-The ICCVW 2025 version (Sec. 3.3) instead says TLP and SEN were trained for 80 epochs, with steps 30/60. The decision stands because arXiv v1 is the assigned paper. Yet the TLP and SEN Table I values are the same in both versions: all six TLP cells and five of six SEN cells are identical at one decimal. So the change in stated schedule did not come with new numbers, and the evidence does not show which schedule produced them. Before the full TLP and SEN runs, the measured cost of an 80-epoch schedule will be reported to the operator for a decision.
+The ICCVW 2025 version (Sec. 3.3) instead says TLP and SEN were trained for 80 epochs, with steps 30/60. The decision stands because arXiv v1 is the assigned paper. Yet the TLP and SEN Table I values are the same in both versions: all six TLP cells and five of six SEN cells are identical at one decimal. So the change in stated schedule did not come with new numbers, and the evidence does not show which schedule produced them. The measured cost of an 80-epoch schedule was reported on 2026-11-02, and the operator kept 40 epochs for TLP and SEN (see Gates).
 
 | Target ID | Paper location | Published WER |
 | --- | --- | ---: |
@@ -91,7 +103,12 @@ None of these turned up a repository for the comparative study itself.
 
 ## Results
 
-25 of the 30 targets have been produced (blocks 1–5). The 5 ArabSign Signer-Indep (LOSO) targets have no result yet: block 6 (30 runs) is running. The WER is sclite's exact (S+D+I)/N on the test split. The difference is reproduced minus published (arXiv v1 Table I), so positive means a higher error. The relative difference is that difference divided by the published value. ArabSign values keep the paper's four decimals.
+All 30 targets have been produced. The WER is sclite's exact (S+D+I)/N on the test split.
+
+- **Difference:** reproduced minus published (arXiv v1 Table I), so positive means a higher error.
+- **Relative:** that difference divided by the published value.
+- **Precision:** ArabSign Signer-Dep values keep the paper's four decimals.
+- **ArabSign Signer-Indep (LOSO):** each value is the plain arithmetic mean of six per-signer test WERs. Each fold trains on the other five signers and scores its final epoch, 39. The paper's Table II Avg column is the plain mean of its six per-signer values, to rounding, for all five models. The per-fold values follow the main table.
 
 | Target | Published | Reproduced | Difference | Relative | Selected epoch (dev WER) | Runs |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
@@ -120,20 +137,58 @@ None of these turned up a repository for the comparative study itself.
 | TLP, ArabSign Signer-Dep | 0.2439 | 1.1165 | +0.8726 | +357.8% | 36 (0.36) | `full-tlp-arabsign-sd-001` |
 | SEN, ArabSign Signer-Dep | 0.2962 | 36.8981 | +36.6019 | +12,357.2% | 38 (33.65) | `full-sen-arabsign-sd-001` |
 | CorrNet, ArabSign Signer-Dep | 0.2265 | 8.8625 | +8.6360 | +3,812.8% | 20 (6.65) | `full-corrnet-arabsign-sd-001` |
+| VAC, ArabSign Signer-Indep (LOSO mean) | 6.97 | 6.16 | −0.81 | −11.6% | 39 in every fold (final epoch) | `full-vac-arabsign-loso-{01…06}-001` |
+| SMKD, ArabSign Signer-Indep (LOSO mean) | 4.24 | 4.29 | +0.05 | +1.2% | 39 in every fold | `full-smkd-arabsign-loso-{01…06}-001` |
+| TLP, ArabSign Signer-Indep (LOSO mean) | 2.9 | 8.03 | +5.13 | +176.9% | 39 in every fold | `full-tlp-arabsign-loso-{01…06}-001` |
+| SEN, ArabSign Signer-Indep (LOSO mean) | 7.22 | 32.36 | +25.14 | +348.2% | 39 in every fold | `full-sen-arabsign-loso-{01…06}-001` |
+| CorrNet, ArabSign Signer-Indep (LOSO mean) | 7.65 | 59.41 | +51.76 | +676.6% | 39 in every fold | `full-corrnet-arabsign-loso-{01…06}-001` |
 
-Phoenix SD counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729, SEN 1,592, CorrNet 1,401. Each blocks 2–5 target cites its run's `{run_id}-sclite-test` artifact with its exact error and word counts.
+Phoenix SD counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMKD 1,440, TLP 1,729, SEN 1,592, CorrNet 1,401. Each target from blocks 2–6 cites its runs' `{run_id}-sclite-test` artifacts, with exact error and word counts.
 
-**Agreement basis.** The ±1.0-point tolerance is kept as recorded. It is uninformative for ArabSign Signer-Dep, whose published values are all below 1% WER: any reproduced value under about 1.2% falls inside it. VAC (+37.7%), SMKD (+16.8%) and TLP (+357.8%) are "within" on that column only in this absolute sense.
+**ArabSign Signer-Indep per tested signer.** Each cell gives the reproduced test WER at epoch 39, then the arXiv v1 Table II value in parentheses. Each LOSO target's `result.per_fold` also records the sclite counts.
+
+| Model | Signer 01 | 02 | 03 | 04 | 05 | 06 | Mean (Table II Avg) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| VAC | 3.54 (7.55) | 1.86 (5.03) | 6.50 (8.67) | 15.76 (5.66) | 4.02 (8.17) | 5.25 (6.76) | 6.16 (6.97) |
+| SMKD | 2.68 (5.88) | 6.95 (2.93) | 3.57 (2.11) | 2.59 (4.52) | 4.00 (1.89) | 5.93 (8.11) | 4.29 (4.24) |
+| TLP | 5.43 (2.91) | 1.78 (0.53) | 6.06 (2.09) | 8.19 (1.14) | 9.58 (1.29) | 17.16 (9.46) | 8.03 (2.90) |
+| SEN | 16.24 (5.84) | 25.16 (5.70) | 12.99 (6.20) | 64.39 (10.90) | 26.19 (5.40) | 49.17 (9.30) | 32.36 (7.22) |
+| CorrNet | 32.99 (10.50) | 99.39 (5.50) | 26.66 (6.70) | 51.68 (11.10) | 99.35 (3.80) | 46.39 (8.30) | 59.41 (7.65) |
+| Test words | 4,771 | 4,949 | 5,064 | 4,822 | 4,647 | 4,686 | |
+
+Pooling the six folds' sclite counts instead (errors over words) gives the following. This is recorded as a note only, in each target's `result.word_weighted_mean_note`:
+
+| Model | Pooled WER | Change from the plain mean |
+| --- | ---: | ---: |
+| VAC | 6.16 | 0.00 |
+| SMKD | 4.29 | 0.00 |
+| TLP | 7.94 | −0.09 |
+| SEN | 32.15 | −0.21 |
+| CorrNet | 59.18 | −0.23 |
+
+No comparison against the ±1.0 tolerance changes.
+
+**Agreement basis.** The ±1.0-point tolerance is kept as recorded.
+
+- **ArabSign Signer-Dep.** The published values are all below 1% WER, so any reproduced value under about 1.2% falls inside the tolerance. VAC (+37.7%), SMKD (+16.8%) and TLP (+357.8%) are "within" on that column only in this absolute sense.
+- **ArabSign Signer-Indep.** VAC and SMKD are within at the level of the six-fold mean, but none of the 30 folds is within ±1.0 of its Table II value. VAC's folds differ by −4.15 to +10.10, and SMKD's by −3.20 to +4.02.
 
 **Results by code family.** These are facts under the stated protocol (lr 1e-3, 40 epochs, steps 20/35, batch 2, seed 0), without interpretation:
 
-- VAC and SMKD (repository VAC_CSLR) train on every dataset. In all four settings of blocks 2–5 their lowest dev WER comes late (epochs 27–39), far below their epoch-0 value. Their test WERs are 3.80 and 5.06 on GrSL SI, 81.71 and 70.96 on GrSL Unseen-Sent, and 0.3838 and 0.2442 on ArabSign SD.
+- VAC and SMKD (repository VAC_CSLR) train on every dataset. In all four settings of blocks 2–5 their lowest dev WER comes late (epochs 27–39), far below their epoch-0 value. Their test WERs are:
+  - 3.80 and 5.06 on GrSL SI;
+  - 81.71 and 70.96 on GrSL Unseen-Sent;
+  - 0.3838 and 0.2442 on ArabSign SD;
+  - 6.16 and 4.29 on ArabSign SI, the six-fold LOSO mean.
+
+  In every LOSO fold, their WER on the 50-clip training token list is 0.0 at epoch 39.
 - TLP, SEN and CorrNet (repositories Temporal-Lift-Pooling, SEN_CSLR and CorrNet) train on Phoenix SD and SI, but degrade or stall on GrSL and ArabSign:
   - **GrSL SI:** TLP reaches 25.76, SEN 38.54 and CorrNet 89.11, where VAC/SMKD reach 3.80/5.06; the paper has the opposite order (TLP 6.4, SEN 8.09, CorrNet 1.5, VAC/SMKD about 30).
   - **GrSL Unseen-Sent:** TLP's and CorrNet's dev WER stays at about 89–100% for all 40 epochs, and dev-best selection picks epochs 7 and 6.
   - **ArabSign SD:** SEN's dev WER stays at 83–95% for the first 21 epochs and ends at 36.90 on test; CorrNet ends at 8.86; TLP reaches 1.12.
+  - **ArabSign SI (LOSO):** TLP reaches 8.03 (folds 1.78–17.16), SEN 32.36 (12.99–64.39) and CorrNet 59.41 (26.66–99.39). In CorrNet folds 02 and 05 every test hypothesis uses the same two glosses, and training skipped 350 and 82,755 batches for a non-finite loss.
 - The two families differ in one training-loop fact at the pinned commits. VAC_CSLR's `seq_train` runs in fp32. TLP, SEN and CorrNet run the forward pass and loss under `torch.cuda.amp.autocast()` with a `GradScaler`. All four skip a batch whose loss is non-finite.
-- The data path is identical across the four repositories for GrSL SI, GrSL Unseen-Sent and ArabSign SD (`adapter-check-002`, below).
+- The data path is identical across the four repositories for GrSL SI, GrSL Unseen-Sent and ArabSign SD (`adapter-check-002`, below). The LOSO folds were not part of that check; they use the same ArabSign frames, gloss dictionary and list format.
 
 **Block 1 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`:
 
@@ -141,9 +196,11 @@ Phoenix SD counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMK
 - TLP's dev WER was still falling at its final (40th) epoch: 26.7, 26.8, 26.5 and 26.2 at epochs 36–39. The ICCVW 80-epoch schedule for TLP was not adopted (see Guesses and deviations).
 - VAC is +7.73 against the paper, while SMKD is within 0.17. SMKD comes from the same repository, with the same data lists and scoring, and differs only in `share_classifier` and `weight_norm`. Both use SeqCTC 1 + ConvCTC 1, the loss weights recorded as a guess. This rules out a data or scoring fault for this block.
 
-**Convergence curves.** Every full run's upstream per-epoch dev WER log (`work/dev.txt`) is copied verbatim to `artifacts/{run_id}-dev.txt`. Each copy is recorded as artifact `{run_id}-dev-log` with its sha256 and its source URI on the results Volume. This is done for all 25 runs of blocks 1–5, and each blocks 2–5 run also records its full training log (`{run_id}-train-log`), stdout (`{run_id}-stdout`) and attempt records (`{run_id}-attempt-records`) by URI and sha256.
+**Convergence curves.** Every full run's upstream per-epoch dev WER log (`work/dev.txt`) is copied verbatim to `artifacts/{run_id}-dev.txt`. Each copy is recorded as artifact `{run_id}-dev-log` with its sha256 and its source URI on the results Volume. This is done for all 55 full runs of blocks 1–6. Each run in blocks 2–6 also records three more logs by URI and sha256: its full training log (`{run_id}-train-log`), stdout (`{run_id}-stdout`) and attempt records (`{run_id}-attempt-records`). In the LOSO runs, `dev.txt` holds the WER on the fixed 50-clip training token list, which is training data and is never used for selection.
 
-**Block 2–5 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`. Every run trained 40 epochs in one Modal attempt and none reached its ceiling. Training batches skipped for a non-finite loss over 40 epochs (from each run's `stdout.log`, `runs[].skipped_training_batches`):
+**Block 2–6 observations.** These are recorded as evidence, without interpretation, and are also in `compute-full-table.resolution.block_ledger`. Every run trained 40 epochs in one Modal attempt, and none reached its ceiling.
+
+The table counts training batches skipped for a non-finite loss over 40 epochs, from each run's `stdout.log` (`runs[].skipped_training_batches`):
 
 | Setting | VAC | SMKD | TLP | SEN | CorrNet | Batches per epoch |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -151,6 +208,16 @@ Phoenix SD counts on the 629 test sentences (6,504 words): VAC 1,930 errors, SMK
 | GrSL SI | 9 | 8 | 11 | 8 | 21,566 | 4,410 |
 | GrSL Unseen-Sent | 0 | 0 | 0 | 0 | 109,472 | 4,094 |
 | ArabSign SD | 0 | 0 | 0 | 0 | 0 | 3,390 |
+| ArabSign LOSO, 6 folds | 0 | 0 | 0 | 0 | 83,105 (fold 02: 350 from epoch 15; fold 05: 82,755 from epoch 9; others 0) | 3,845–3,915 |
+
+**Block 6 (ArabSign LOSO) observations.**
+
+- **Outcome.** All 30 runs finished in one attempt. Containers started between 09:54:48 and 10:13:32 UTC on 2026-11-04, and the last run finished at 19:43:36.
+- **Token-list WER at epoch 39.** The 50-clip list is training data. VAC, SMKD and TLP score 0.0 in every fold. SEN scores 1.3–21.9.
+- **CorrNet token-list WER.** CorrNet scores 10.3–99.4 at epoch 39 and swings widely from epoch to epoch. Fold 01, for example, moves between 3.9 and 36.8 over epochs 16–39.
+- **CorrNet collapsed folds.** Folds 02 and 05 score 99.4 on the token list and on test. Their 1,597 and 1,499 test hypotheses use only two distinct glosses, recorded in each run's `failure_signature` with the sclite alignment.
+- **Not checked.** The block 6 checkpoints were not scanned for non-finite values.
+- **SEN empty outputs.** SEN fold 06 has 11 empty test hypotheses. No other LOSO run has any.
 
 In GrSL Unseen-Sent, 176 of 5,187 dev and 105 of 4,490 test reference gloss tokens are glosses that never occur in its training list. GrSL SI and ArabSign SD have none.
 
@@ -213,7 +280,16 @@ $W run $A::launch_arabsign_split_record   # re-derives the ArabSign split hashes
 $W run --detach $A::launch_run_full --model {model} --setting {setting} --run-id {run_id} --eval-run-id {eval_run_id} --max-gpu-hours {ceiling} [--dev-rule {rule}]   # blocks 2-5: train + evaluate in one detached call
 $W run --detach $A::launch_adapter_check   # no training: cross-repo data-adapter comparison on the retained run directories
 $W run --detach $A::launch_checkpoint_check --run-ids {run_id},{run_id},...   # no training: non-finite values per checkpoint tensor
+$W run $A::launch_inspect_environment   # no training: versions, pip freeze and image ID of the training image
 ```
+
+Block 6 runs once per model and fold:
+
+```bash
+$W run --detach $A::launch_run_full --model {model} --setting arabsign-loso-{01..06} --run-id full-{model}-arabsign-loso-{FF}-001 --eval-run-id eval-{model}-arabsign-loso-{FF}-001 --max-gpu-hours {ceiling} --dev-rule final-epoch
+```
+
+The exact command for each of the 30 runs is in `reproduction.json.runs`. Each LOSO target is the plain mean of the six `sclite_counts.test.wer_percent_exact` values in `runs/eval-{model}-arabsign-loso-{FF}-001/evaluation.json`.
 
 The settings are `phoenix-sd`, `phoenix-si`, `grsl-si`, `grsl-unseen`, `arabsign-sd` (`--dev-rule stratified-709-seed42`) and `arabsign-loso-01` … `-06` (`--dev-rule final-epoch`).
 
@@ -258,6 +334,16 @@ Frames for all three datasets are resized to 256×256 PNG with the upstream `res
 
 The repos' own Python pins (numpy 1.20, scipy 1.7, opencv 4.5.5) have no Python 3.12 wheels. They are replaced by the oldest releases that do and that still ship `scipy.misc`, as in `papers/yu-2025-cvsign`.
 
+**Image and dependency freeze.** Every full run, blocks 1–6, records Modal image `im-RRhJE2W44Meiwq3PVXQMMX` in its `train_calls.jsonl`. `inspect-environment-001` ran on 2026-11-05 from the unchanged `Dockerfile` and patches, and Modal reused that same image ID. Its output is in `artifacts/inspect-environment-001.json`:
+
+- Python 3.12.3;
+- torch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1, cuDNN 91900;
+- numpy 2.1.0;
+- the full `pip freeze` of 268 packages (sha256 `1f39e822fa855d25…`);
+- the four repos' HEADs, which equal the pinned commits.
+
+The `Dockerfile` is recorded as artifact `dockerfile`, with sha256 `85e8c0dd…`.
+
 Each run works on its own copy of one repo. The harness adds only data files and configs to that copy:
 
 - the setting's info lists, gloss dict and STMs, written with the repo's own `generate_gt_stm` and `sign_dict_update`;
@@ -270,7 +356,15 @@ Phoenix Signer-Dep uses each repo's own `phoenix2014` dataset config. SEN and Co
 
 Every other setting is written in the same format under a dataset name containing `phoenix`. In TLP, SEN and CorrNet that substring is the only thing that selects the train/dev/test loaders and the frame-folder glob. VAC always reads `./preprocess/phoenix2014/`. So no upstream code needs changing for the new datasets.
 
-Patches and environment fixes, each justified by this paper's own build or preflight:
+Patches and environment fixes, each justified by this paper's own build or preflight. The patch files are recorded as `patch-*` artifacts with these sha256 values:
+
+| Patch | sha256 |
+| --- | --- |
+| `patches/ctcdecode-cxx17.patch` | `cb68df51440663569382513520196372d38c412da2bead8dcc7fc01c2eab24ae` |
+| `patches/vac-ctc-without-cudnn.patch` | `3f82f3157ba97586fc7d2ac6e95402d3779a7aacec7b81200eb98dc68bdfb65c` |
+| `patches/tlp-ctc-without-cudnn.patch` | `b2c6de79fa245b7f3a3af380238a23efd5c02e892909aa9e4a105411df06f4ca` |
+| `patches/sen-ctc-without-cudnn.patch` | `54663cb575f67f2c968455bbae462f90b63f0259df910e78bccf0a74673d37e6` |
+| `patches/corrnet-ctc-without-cudnn.patch` | `9bfa60a2aabc76c0ad031daf59a5b0ddc4d03205b1b672aa41aedcb1b2ba7e05` |
 
 | Item | Why | Evidence |
 | --- | --- | --- |
@@ -332,7 +426,7 @@ Each upstream checkpoint is about 385 MB.
 
 Per run this is 5.3–10.6 h. The paper reports about 10 h per Phoenix/GrSL run on an RTX A6000. The per-frame rates come from 136-clip epochs with worker start-up included, so they are more likely high than low.
 
-**Spend so far:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
+**Spend before the full runs:** USD 16.08 on 2026-11-02, from Modal billing summed over this paper's apps, covering data jobs, image builds, preflights and diagnostics.
 
 **Block 1, Phoenix SD (complete, 2026-11-03 01:45 UTC).**
 
@@ -413,6 +507,31 @@ Cumulative spend before launch is USD 509.75. The projected total after block 6 
 
 The declarations were pushed (`acd4c59`) before the first launch. The 30 runs were launched between 09:54:31 and 10:01:26 UTC, one `modal run --detach` app each. At 10:01:49 all 30 apps were `ephemeral (detached)`, 22 with a running task and 8 waiting for a GPU, and no local `modal` process was running. The first run had written its own start record to the Volume, confirming 40 epochs, steps 20/35 and the `final-epoch` rule.
 
+**Block 6 outcome (collected 2026-11-05).** All 30 calls succeeded in one Modal attempt each, with no retry and no ceiling reached. The longest used 9.52 of its 16 GPU-h (`full-sen-arabsign-loso-03-001`). Containers started by 10:13:32 UTC, so no run waited more than about 12 minutes for a GPU. The first finished at 14:29:56 (TLP fold 01) and the last at 19:43:36 (SEN fold 06).
+
+| Model | Container GPU-h, 6 folds | Range per fold | Estimate (GPU-h) | Ceiling (GPU-h) |
+| --- | ---: | ---: | ---: | ---: |
+| VAC | 43.18 | 7.10–7.42 | 39.34 | 72 |
+| SMKD | 43.03 | 7.03–7.38 | 39.46 | 72 |
+| TLP | 30.61 | 4.57–5.31 | 30.81 | 60 |
+| SEN | 56.76 | 9.34–9.52 | 55.17 | 96 |
+| CorrNet | 43.33 | 5.22–7.94 | 42.25 | 78 |
+| **Block 6** | **216.91** | | **207.0** | **378** |
+
+The block cost USD 659.15 in Modal billing, summed over its 30 apps. That is USD 3.04 per container GPU-h, against the USD 629.6 estimate.
+
+**Total spend: USD 1,169.16 of the USD 2,000 ceiling** (Modal billing, 2026-11-02 to 2026-11-04, summed over this paper's apps; `compute-full-table.resolution.spend_ledger`).
+
+| Item | USD |
+| --- | ---: |
+| Data jobs, image builds, preflights, diagnostics and CPU-only checks | 18.10 |
+| Block 1, Phoenix SD (training and evaluation) | 98.15 |
+| Blocks 2–5 | 393.76 |
+| Block 6, ArabSign LOSO | 659.15 |
+| **Total** | **1,169.16** |
+
+USD 830.84 of the ceiling is unused. Billing showed no rows for 2026-11-05 when queried, so the 2026-11-05 status query and `inspect-environment-001` are not included; both are CPU-only and cost cents. Container time is 346.39 GPU-h over the 50 runs of blocks 2–6. Block 1 recorded training time per model (32.18 h in total) rather than container GPU-h.
+
 ## Guesses and deviations
 
 | Detail | Paper/evidence says | This attempt uses | Rationale |
@@ -428,6 +547,7 @@ The declarations were pushed (`acd4c59`) before the first launch. The 30 runs we
 | ArabSign videos | 9,335 samples | 9,330 (5 absent from the RGB release; test 1,841 of 1,843) | Data as released; listed in `reproduction.json.datasets` |
 | ArabSign Signer-Dep validation | 6,783 train / 709 validation (ICCVW only). The subset itself is unpublished. The dataset author's code draws validation with `train_test_split(random_state=42, stratify=sentence ID)`. | 709 of the 7,489 usable training rows, from `train_test_split(test_size=709, random_state=42, stratify=sentence ID)` with scikit-learn 1.8.0 on rows in sorted archive-path order. That gives 6,780 train / 709 dev / 1,841 test, all 50 sentences in each. Dev-best selection. | Operator decision at gate `arabsign-sd-validation`, 2026-11-02. Split hashes are in the gate's resolution. |
 | ArabSign LOSO checkpoint | No dev set. arXiv v1 Sec. V, on CorrNet: "Better results are likely to be obtained by … adopting early stopping". | Train 40 epochs on all clips of the five training signers and score the final epoch (39). Upstream's per-epoch dev loop reads a fixed 50-clip token list (the first training clip of each sentence), which is never used for selection. | Operator decision at gate `arabsign-loso-checkpoint`, 2026-11-02, based on the early-stopping remark. Per-fold hashes are in the gate's resolution. |
+| ArabSign Signer-Indep aggregation | Table I gives one number per model. Table II gives WER per "Tested Signer" 1–6 and an "Avg" column; the text says "average WER amongst all signers". | Plain arithmetic mean of the six per-signer test WERs. Tested signer *k* is the ArabSign signer folder `0k`. The word-weighted (pooled) mean is recorded as a note only. | For all five models, the mean of Table II's six per-signer values equals its Avg to rounding (within 0.0033). Operator decision of 2026-11-05. The pooled mean differs by at most 0.23 points. |
 | Frame resizing for ArabSign/GrSL | "Resized to 256x256" | Upstream `resize_img` (`cv2.resize`, `INTER_LANCZOS4`) to 256×256 PNG, the Phoenix pipeline's own operation | Same operation the repos apply to Phoenix |
 | Checkpoint retention | Not applicable | Full runs keep only the newest epoch checkpoint (for resume) and the current dev-best (for selection), and delete superseded ones during training | Declared before launch. About 385 MB × 40 epochs × 55 runs would otherwise cost about USD 75 per month in Volume storage. |
 
@@ -448,8 +568,10 @@ The 2026-10-26 session stopped before data work at the compute gate. On 2026-11-
 - **Unattended launch, 2026-11-03.** The first two `run_full` checks were launched without `--detach`. `launch_run_full` only spawns and returns, so their apps stopped 3 s later and the calls never ran. They were relaunched with `--detach` as `-002`. The five train-only Phoenix SI calls from 08:18 were stopped during staging and replaced by `run_full`. Full-run containers have 40 GiB RAM from block 2 on, because block 1 peaked at 26.8 of 32 GiB.
 - **Block 1 evaluations.** `eval-tlp-phoenix-sd-001` hit a GPU hardware fault (XID 154). `eval-corrnet-phoenix-sd-001` lost its client connection. Both were reruns of the same command, and `evaluate()` now raises on a non-zero upstream exit instead of failing in the log parser.
 - **Investigation checks, 2026-11-04.** The adapter and checkpoint checks first ran at 08:48–08:58 UTC (apps `ap-bHQ3B5ERWHTpK2odgSqckY` and `ap-yqdhpwvsiOWMsfi0pFWHdc`) before their ceilings were written into `reproduction.json`. They were re-run unchanged as `adapter-check-002` and `checkpoint-check-002` with the ceilings declared first. Their outputs match the first invocations' (the adapter files differ only in timing fields); the first invocations are described under each run's `prior_invocation`.
+- **Block 6, 2026-11-04.** No failure. All 30 LOSO runs finished in their first attempt. CorrNet folds 02 and 05 completed but produced two-gloss outputs, recorded as results and not retried.
+- **Environment freeze, 2026-11-05.** No pip freeze had been recorded during the full runs. `inspect-environment-001`, a CPU-only call of the existing `inspect_environment` function, recorded it afterwards. Its stop policy was declared before launch, and it confirmed the same image ID as the full runs.
 
-Every model × dataset preflight passed within its declared attempt limit.
+Every model × dataset preflight passed within its declared attempt limit. Each of the 55 full runs trained in one Modal attempt.
 
 ## Candidate flags, ethics, and human evaluation
 
@@ -478,7 +600,7 @@ The project lead approved the full Table I on 2026-11-02, including the 30 ArabS
 5. ArabSign SD
 6. ArabSign LOSO
 
-Each block declares its own ceilings, and cumulative spend is tracked against USD 2,000.
+Each block declares its own ceilings, and cumulative spend is tracked against USD 2,000. All six blocks are complete, at a total of USD 1,169.16 (Execution evidence).
 
 ### Protocol decisions of 2026-11-02 (resolved)
 
