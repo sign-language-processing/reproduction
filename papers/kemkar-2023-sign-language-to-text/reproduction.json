@@ -7595,15 +7595,17 @@
     {
       "gate_id": "asl-dataset-protocol",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "Table 3.2 and Fig. 3.5 cannot be reproduced as specified: the paper gives no split, input size, colour handling, or training schedule for the second dataset, the published code does not cover it, and the reported support (5030) is the whole archive with every image counted twice, so the evaluation set contains whatever was trained on.",
       "evidence": [
         "Paper Section IV: only the dataset URL, 36 classes, and 'a number of images for each class'.",
         "Kaggle archive: 5030 files, 2515 unique; Table 3.2 total support 5030.",
         "Upstream repository at 415849b: no reference to the second dataset.",
-        "Fig. 3.2 shows a 24-way output layer, which cannot classify 36 classes."
+        "Fig. 3.2 shows a 24-way output layer, which cannot classify 36 classes.",
+        "Author email of 2026-10-02 asking for the split and protocol; no reply as of 2026-11-05."
       ],
-      "required_action": "A human reviewer decides whether any protocol for this dataset can count as the paper's (for example after asking the authors), or whether these targets stay not produced. The conditional run is preserved as evidence either way."
+      "required_action": "A human reviewer decides whether any protocol for this dataset can count as the paper's (for example after asking the authors), or whether these targets stay not produced. The conditional run is preserved as evidence either way.",
+      "resolution": "Resolved 2026-11-05 by the operator. The authors were asked on 2026-10-02 for this dataset's split and protocol (contact author-email-2026-10-02) and had not replied by 2026-11-05. No protocol for this dataset can be counted as the paper's, so the 121 Table 3.2 / Fig. 3.5 targets stay not produced under protocol_ambiguous. The conditional run asl-conditional-seed-42 remains preserved as evidence only."
     }
   ],
   "guesses": [
@@ -7627,5 +7629,22 @@
     "First launch of the three notebook runs failed in the first matplotlib cell (unpinned matplotlib-inline). Recorded as attempt 1 of each run group.",
     "The second attempt of the third repeat was interrupted by the platform mid-training and relaunched once."
   ],
-  "author_contact": "None."
+  "author_contact": "None.",
+  "contacts": [
+    {
+      "contact_id": "author-email-2026-10-02",
+      "kind": "author_help",
+      "channel": "email",
+      "sent_at_utc": "2026-10-02T15:07:00Z",
+      "sent_at_note": "Shown as 2 Oct 2026, 17:07 in the operator's mail client (CEST, UTC+2).",
+      "recipient": "The paper's three authors, Tanya Kemkar, Vasudha Rai and Bindu Verma, with the study's overall lead and reproduction team lead copied",
+      "sender": "The assigned operator, on behalf of the REPRO-SIGN collaboration",
+      "timing": "After the independent attempt: every run had finished by 2026-10-02T14:17:37Z.",
+      "request": "Code and supplementary material for Fig. 3.4/Table 3.1 and Fig. 3.5/Table 3.2, specifically: whether github.com/kemkartanya/Sign-Language-Recognition is the code behind the Sign Language MNIST results; the trained weights; the American Sign Language Dataset split (Table 3.2's support of 5030 against 2515 distinct images stored in two identical folders, and whether the test set was held out); and how the text's 99% and 96% accuracies relate to the tables' 0.96 and 0.99 averages. It stated that anything shared would be published with the results, with full attribution.",
+      "response": "None as of 2026-11-05.",
+      "effect": "None on any value. The authors gave no protocol for the American Sign Language Dataset, so gate asl-dataset-protocol was resolved with its 121 targets staying not produced.",
+      "team_s_coordination": "Not applicable: a request for author help, not a data-access request.",
+      "evidence": "The operator's sent email. The message itself is not committed because it carries operator identity."
+    }
+  ]
 }

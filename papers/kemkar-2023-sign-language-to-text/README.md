@@ -117,7 +117,7 @@ The tutorial's own checkpoint does score 0.963, which rounds to Table 3.1's aver
 
 ### Table 3.2 and Fig. 3.5: American Sign Language Dataset (not produced)
 
-All 121 targets are `not_produced` with reason `protocol_ambiguous`, gate `asl-dataset-protocol` (open).
+All 121 targets are `not_produced` with reason `protocol_ambiguous`, gate `asl-dataset-protocol` (resolved: the authors were asked for the protocol and did not reply, so these targets stay not produced).
 
 The paper gives only the dataset URL and the class count. It states no split, input size, colour handling or training schedule, and Fig. 3.2 shows a 24-way output layer that cannot classify 36 classes. The Kaggle archive stores every image twice: 2515 files under `asl_dataset/` and the same 2515 again under `asl_dataset/asl_dataset/`. Table 3.2's total support, 5030, is that full doubled count. So the reported numbers were computed over the whole archive, training images included, and no held-out test set can be identified. The table also lists support 140 for every class, which sums to 5040; class `t` has only 130 files.
 
@@ -245,8 +245,20 @@ No upstream file is patched.
 | --- | --- | --- |
 | `paper-full-text-access` | resolved | The operator supplied the PDF. |
 | `modal-reauthentication` | resolved | The operator ran `modal setup`. The preflight kept failing because the installed Modal client (1.2.6 on Python 3.9) lacks the `token info` command the wrapper calls; it passed with Modal 1.6.0 under a newer Python. |
-| `asl-dataset-protocol` | open | A reviewer decides whether any protocol for the second dataset can count as the paper's, for example after asking the authors. |
+| `asl-dataset-protocol` | resolved | The authors were asked for the second dataset's split and protocol on 2026-10-02 and had not replied by 2026-11-05. No protocol can be counted as the paper's, so the 121 targets stay not produced; the conditional run `asl-conditional-seed-42` remains evidence only. |
 
 ## Author contact
 
-None.
+- **Who and when:** on 2026-10-02 the assigned operator emailed the paper's three authors on behalf of the REPRO-SIGN collaboration, with the study's overall lead and reproduction team lead copied. All runs had finished before the email was sent.
+- **What was asked:**
+  - whether `github.com/kemkartanya/Sign-Language-Recognition` is the code behind the Sign Language MNIST results;
+  - the trained weights;
+  - the American Sign Language Dataset split, since Table 3.2's support of 5030 is twice the 2515 distinct images, which are stored in two identical folders, and whether the test set was held out;
+  - how the text's 99% and 96% accuracies relate to the tables' 0.96 and 0.99 averages.
+
+  The email said anything shared would be published with the results, with full attribution.
+- **Response:** none as of 2026-11-05.
+- **What it changed:** no value. With no protocol from the authors, gate `asl-dataset-protocol` was resolved and the second dataset's targets stay not produced.
+- **Team S:** not involved. This was a request for author help, not a data-access request.
+
+Details are in `reproduction.json.contacts`.
