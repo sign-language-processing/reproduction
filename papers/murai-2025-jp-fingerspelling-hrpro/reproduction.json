@@ -2250,7 +2250,7 @@
     {
       "gate_id": "ub-moji-consent-withheld-training-data",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "The public ub-MOJI releases do not contain the data behind Table 2, established by two independent checks rather than inference. Only 19 of the 24 reported evaluation videos are usable in the current release: four have no video file under any name in any of the four tags, and a fifth has a video file but no entry in the dataset's own annotations.toml, so it carries no ground truth to score against. Training coverage is 151 usable of the 235 videos the authors' proposal.json enumerates, against 240 reported. Six paper-used participant IDs appear in no release. The paper's Section 3.2 consent statement accounts for part of the training shortfall but not for the missing held-out Dataset A evaluation videos. Reproducing Table 2 on its reported split is impossible from public data; evaluating on the usable subset would be a different measurement, not a reproduction.",
       "evidence": [
         "Paper Section 3.2, Dataset B: 'While our model was trained on data from both sessions, only data from Session 2 (13 signers) is made public due to participant consent agreements.'",
@@ -2273,10 +2273,12 @@
         "Version sensitivity tested across all four tags. Test-split usability: v25.05 20/24, v25.07 19/24, v25.09 19/24, v26.09/main 19/24. The same four test videos are missing from EVERY version (kankoku_019_202310_t001, tsurukawa_018_202310_t001, tsurukawa_019_202310_t001, yokosuka_019_202310_t001); kamakura_019_202310_t001 is usable only in v25.05 and from v25.07 onward has a video file but no annotation entry. Train-split usability: v25.05 47/235, v25.07 142/235, v25.09 142/235, v26.09/main 151/235. No version choice recovers the split, and paper-contemporaneous versions are substantially worse for training.",
         "The paper pins no dataset version: reference [15] cites only 'ub-moji. https://huggingface.co/datasets/kanglabs/ub-MOJI, 2025', despite the dataset card advising 'We strongly recommend specifying a dataset version to ensure reproducibility.'",
         "Public-availability quantification on main/v26.09: the release publishes 1,297 continuous videos (1,272 annotated), but supplies only 170 of the 259 videos the paper's splits enumerate (65.6%). Twelve of the paper's eighteen signers are released; six (001, 002, 004, 005, 006, 009) appear nowhere. The release separately adds four signers (023-026) that postdate the paper, so it is not a superset of the paper's data.",
-        "The paper's Section 3.2 account implies four withheld Dataset B signers (17 total, 'only data from Session 2 (13 signers) is made public'), but six of the paper's signers are absent, so the stated consent reason does not fully account for the observed absence even at signer level."
+        "The paper's Section 3.2 account implies four withheld Dataset B signers (17 total, 'only data from Session 2 (13 signers) is made public'), but six of the paper's signers are absent, so the stated consent reason does not fully account for the observed absence even at signer level.",
+        "Team S contact team-s-ub-moji-availability: maintainers' reply of 2026-09-26 recommending v25.07 and confirming it excludes the non-public participant data."
       ],
       "required_action": "A human must decide, with Team S, between: (a) reporting Table 2 as not reproducible from public artifacts; (b) authorizing a documented deviation evaluating on the usable 19 of 24 test videos, recorded as conditional evidence that cannot become a produced target; or (c) after an independent attempt, coordinating an author contact. Option (c) is now better motivated: the five unusable EVALUATION videos belong to two signers who are otherwise present, the authors have an established practice of adding missing videos (discussion #28, CHANGELOG v26.09), and one of the five (kamakura_019_202310_t001) merely lacks an annotations.toml entry while its video file is published. That subset looks like a fixable omission rather than a consent exclusion, and is a narrow, answerable question. The consent-withheld training data remains a separate matter requiring ethics review.",
-      "opened_at_utc": "2026-09-24T00:00:00Z"
+      "opened_at_utc": "2026-09-24T00:00:00Z",
+      "resolution": "Resolved 2026-11-05 by the operator after Team S's data-access inquiry (option c). The ub-MOJI maintainers replied on 2026-09-26 that the closest public basis is release v25.07, which does not include the non-public participant data. With that data unavailable, Table 2 is reported as not reproducible from public artifacts (option a). No conditional run on the usable subset was authorized (option b). All 50 targets stay not produced under data_permission_blocked."
     },
     {
       "gate_id": "modal-wrapper-token-info-incompatible",
@@ -2308,6 +2310,22 @@
       ],
       "required_action": "Team S decides whether the study's acceptance of the ub-MOJI terms covers population of the shared 'datasets' Volume, or whether written approval from the Imaging and Information Processing Laboratory, Tokyo Polytechnic University is required first. Given that the release cannot reproduce Table 2 on its reported split (gate ub-moji-consent-withheld-training-data), resolving this gate is not urgent: a 21.87 GB upload would not unblock the targets.",
       "opened_at_utc": "2026-09-24T00:00:00Z"
+    }
+  ],
+  "contacts": [
+    {
+      "contact_id": "team-s-ub-moji-availability",
+      "kind": "team_s_data_access",
+      "channel": "email",
+      "sent_by": "Team S (REPRO-SIGN data-access coordination), not this reproduction's operator",
+      "recipient": "The ub-MOJI dataset maintainers",
+      "sent_at_utc": null,
+      "sent_at_note": "Date of Team S's message not recorded; the reply arrived on 2026-09-26.",
+      "replied_at": "2026-09-26",
+      "request": "Whether the ub-MOJI data used in the paper is available.",
+      "response": "A detailed reply. For reproducing the paper as closely as possible with publicly available data, the maintainers recommended ub-MOJI release v25.07, and stated that this release does not include the non-public participant data. Other details of the reply are not recorded here.",
+      "effect": "No change to any number or to the blocker. This report already tested v25.07 (19 of 24 held-out videos and 163 of 259 training videos usable). The reply confirms that the missing participant data is not public, so Table 2 cannot be run on the paper's full data. It settles gate ub-moji-consent-withheld-training-data.",
+      "evidence": "Team S's email thread, as reported by the operator on 2026-11-05. Not committed."
     }
   ]
 }

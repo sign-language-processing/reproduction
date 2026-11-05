@@ -106,7 +106,7 @@ One pattern is visible but unexplained: word recordings are dropped disproportio
 
 3. **Modal redistribution rights, unresolved.** Access does not authorize copying the data to the study's shared `datasets` Volume: the terms forbid transfer to third parties without the Laboratory's written approval and require access control. Tracked as gate `ub-moji-modal-redistribution` — though with finding 2 standing, a 21.87 GB upload would not unblock anything.
 
-The selected `status.blocker` is `data_permission_blocked`, the earliest blocker that independently prevents the requested pipeline. Blocker 2 is reported separately as gate `ub-moji-consent-withheld-training-data`; it is not hidden behind blocker 1, and unlike blocker 1 it cannot be cleared by an access grant alone.
+The selected `status.blocker` is `data_permission_blocked`, the earliest blocker that independently prevents the requested pipeline. Blocker 2 is reported separately as gate `ub-moji-consent-withheld-training-data`; it is not hidden behind blocker 1, and unlike blocker 1 it cannot be cleared by an access grant alone. That gate was resolved on 2026-11-05: Team S asked the ub-MOJI maintainers, who confirmed the missing participant data is not public (see [Author and team contact](#author-and-team-contact)). Table 2 is therefore reported as not reproducible from public artifacts.
 
 I verified directly in the Modal `repro-sign` workspace that ub-MOJI is **not** already available to the study: the shared `datasets` Volume holds 18 dataset directories, none of them ub-MOJI, and probes of `ub-moji/`, `ub-MOJI/`, `ubmoji/` and `moji/` all returned "path does not exist". So no pre-existing copy exempts this attempt from the access gate.
 
@@ -297,4 +297,13 @@ No build, training, OOM, or interrupted run occurred, and no speculative change 
 
 ## Author and team contact
 
-None. No author was contacted, which is correct at this stage: author contact is a gated post-independent-attempt action, and this attempt has not run independently. The two data gates route to Team S for dataset access coordination. Any future approach to the consent-withheld Session 1 data must go through Team S with ethics review, not directly to the authors.
+**Author contact:** none. This reproduction did not contact the paper's authors.
+
+**Team S data-access coordination:**
+
+- **Who and what:** Team S, not this reproduction's operator, emailed the ub-MOJI dataset maintainers. They asked whether the data used in the paper is available. The date of that email is not recorded.
+- **Reply (2026-09-26):** detailed. For reproducing the paper as closely as possible with public data, the maintainers recommended release v25.07. They said that release does not include the non-public participant data.
+- **What it changed:** no number and no blocker. This report had already tested v25.07: 19 of 24 test videos and 163 of 259 training videos are usable. The reply confirms the missing participant data is not public, so Table 2 cannot be run on the paper's full data. On that basis the gate `ub-moji-consent-withheld-training-data` was resolved, with Table 2 reported as not reproducible from public artifacts.
+- **Not done:** no conditional run on the usable subset was authorized.
+
+Details are in `reproduction.json.contacts`. Any further approach to the non-public data must go through Team S with ethics review, not directly to the authors.
