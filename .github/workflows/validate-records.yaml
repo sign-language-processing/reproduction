@@ -1,0 +1,46 @@
+name: Validate reproduction records
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validator unit tests
+        run: |
+          python3 -m unittest discover \
+            --start-directory .agents/skills/reproduce-paper/scripts \
+            --pattern 'test_*.py' --verbose
+
+      - name: Validate every committed paper record
+        if: always()
+        run: |
+          known=.agents/skills/reproduce-paper/known-invalid-records.txt
+          status=0
+          for paper in papers/*/; do
+            name=$(basename "$paper")
+            if python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py "$paper"; then
+              if grep -qxF "$name" "$known"; then
+                echo "::error title=Record now validates::$name passes; delete its line from $known"
+                status=1
+              fi
+            elif grep -qxF "$name" "$known"; then
+              echo "::warning title=Known-invalid record::$name still fails validation (tracked in #69)"
+            else
+              echo "::error title=Invalid record::$name does not validate"
+              status=1
+            fi
+          done
+          exit $status

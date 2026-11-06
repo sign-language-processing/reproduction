@@ -14,6 +14,7 @@ VALIDATOR = Path(__file__).with_name("validate_reproduction.py")
 INGESTER = Path(__file__).with_name("ingest_candidate.py")
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 SHA = "0" * 64
+KNOWN_INVALID_RECORDS = REPOSITORY_ROOT / ".agents/skills/reproduce-paper/known-invalid-records.txt"
 HISTORICAL_PAPER_ID = "camgoz-2020-slt"
 HISTORICAL_SHA = "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc15f"
 
@@ -587,6 +588,14 @@ class ValidatorTest(unittest.TestCase):
         self.assertIn("schema_version is no longer supported", result.stderr)
 
     def test_all_committed_paper_records_use_current_contract(self) -> None:
+        # Records listed in known-invalid-records.txt predate parts of the
+        # current contract (issue #69). A listed record that starts validating
+        # fails here, so the list cannot outlive the backlog it tracks.
+        known_invalid = {
+            line.strip()
+            for line in KNOWN_INVALID_RECORDS.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.startswith("#")
+        }
         paper_directories = sorted((REPOSITORY_ROOT / "papers").glob("*"))
         self.assertTrue(paper_directories)
         for paper_directory in paper_directories:
@@ -597,7 +606,15 @@ class ValidatorTest(unittest.TestCase):
                     capture_output=True,
                     text=True,
                 )
-                self.assertEqual(result.returncode, 0, result.stderr)
+                if paper_directory.name in known_invalid:
+                    self.assertNotEqual(
+                        result.returncode,
+                        0,
+                        f"{paper_directory.name} validates; remove it from "
+                        f"{KNOWN_INVALID_RECORDS.name}",
+                    )
+                else:
+                    self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_candidate_ingestion_creates_current_record_shape(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

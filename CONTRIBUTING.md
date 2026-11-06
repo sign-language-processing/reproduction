@@ -19,20 +19,25 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<
 Fix every reported issue before pushing. Then read your own diff end to end — the validator
 checks structure, not sense.
 
+CI runs the same validator, plus its unit tests, on every pull request — so this is not optional,
+only earlier and faster than waiting for the run.
+
 In the PR description, say which paper, which preference level, and what a reviewer should look
 at hardest. If the attempt stopped at a gate, say which gate and what evidence was gathered;
 a blocked attempt is a legitimate, reportable outcome and should not be dressed up as progress.
 
 ## Reviewing a reproduction PR
 
-### 1. Run the validator first
+### 1. Read the validator's verdict first
+
+CI runs it for you on every pull request, so start from that check rather than from the diff. To
+reproduce the result locally:
 
 ```bash
 python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<paper-slug>
 ```
 
-Do this before reading anything. It already enforces a large share of what used to be reviewed
-by hand, including:
+It already enforces a large share of what used to be reviewed by hand, including:
 
 - `status.pipeline` and `status.numerical_agreement` are drawn from the allowed vocabularies, so
   invented values like `not_fully_reproduced` are rejected;
@@ -56,9 +61,14 @@ by hand, including:
   in the report, inline HTML included);
 - `schema_version` is gone, since there is one current contract.
 
-Some records committed before the current contract still fail. Hold a PR to its own paper
-directory; do not ask a contributor to repair unrelated legacy records, but do flag them in a
-separate issue.
+Some records committed before the current contract still fail. Those are listed in
+`.agents/skills/reproduce-paper/known-invalid-records.txt`, where CI reports them as warnings
+instead of failing, so the contract still binds new records while that backlog drains. Hold a PR
+to its own paper directory; do not ask a contributor to repair unrelated legacy records, but do
+flag them in a separate issue.
+
+The list is a ratchet in both directions: CI fails if a record it names starts validating, so
+whoever repairs one deletes its line in the same PR.
 
 ### 2. Read the report as a stranger would
 
