@@ -61,14 +61,10 @@ It already enforces a large share of what used to be reviewed by hand, including
   in the report, inline HTML included);
 - `schema_version` is gone, since there is one current contract.
 
-Some records committed before the current contract still fail. Those are listed in
-`.agents/skills/reproduce-paper/known-invalid-records.txt`, where CI reports them as warnings
-instead of failing, so the contract still binds new records while that backlog drains. Hold a PR
-to its own paper directory; do not ask a contributor to repair unrelated legacy records, but do
-flag them in a separate issue.
-
-The list is a ratchet in both directions: CI fails if a record it names starts validating, so
-whoever repairs one deletes its line in the same PR.
+Every committed record validates, and CI fails on any that does not — there is no allowlist for
+legacy records. If a PR's own record fails, that is the PR's to fix. If an *unrelated* record
+starts failing, hold the PR to its own paper directory and raise the other one separately rather
+than asking a contributor to repair it.
 
 ### 2. Read the report as a stranger would
 
