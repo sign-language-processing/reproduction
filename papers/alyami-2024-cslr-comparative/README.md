@@ -65,7 +65,7 @@ This README is also the model card of the Hugging Face repository [`repro-sign/a
 - **Intended use.** Research on the reproducibility of continuous sign language recognition. Not for deployment, and not for any decision about people. The models were trained on video of identifiable signers.
 - **License: CC BY-NC-SA 4.0.** The basis for each dataset:
   - Phoenix2014 is CC BY-NC-SA;
-  - ArabSign is non-commercial, and its queue dataset record gives permission to publish model weights (`permission_model_weights: yes`);
+  - ArabSign is non-commercial; publication of trained weights is permitted by the dataset authors, as coordinated by the study's data team (Team S);
   - Continuous GSL is CC BY 4.0.
 
   The checkpoints are weights trained by this attempt; no upstream code is redistributed. Of the upstream code, VAC_CSLR and SEN_CSLR are Apache-2.0, while Temporal-Lift-Pooling and CorrNet have no license file.
