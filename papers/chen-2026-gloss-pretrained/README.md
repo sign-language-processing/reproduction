@@ -8,11 +8,23 @@
 
 **Preference level:** 3
 
-**Status:** `partial`
+**Pipeline status:** `complete`
 
-All 86 producible own-authored targets are `produced`; the remaining 21 targets are copied-baseline rows, `not_produced: copied_baseline` by design, never meant to be retrained — see Results.
+**Numerical agreement:** `does_not_agree` — the Transformer, mBART and +Back-translation rows reproduce within ~6.4 points, while every mT5 row falls 8 to 90 points below the paper.
+
+All 86 in-scope own-authored targets are `produced`, so the pipeline is `complete`. The remaining 21 targets are copied-baseline rows citing refs [7], [33] and [34]: they stay in the ledger with `in_scope: false` and `not_produced: copied_baseline` so the whole table is accounted for, but they are other papers' numbers and were never meant to be retrained — see Results.
 
 **Attempt date:** 2026-08-31 to 2026-09-01
+
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `original-reproduction-agent` | unknown | unknown | Implementation of the reproduction and execution of all 17 retained runs. | Audited 2026-11-06: [`7b12017`](https://github.com/sign-language-processing/reproduction/commit/7b12017), the only commit touching this directory, carries no model or agent-application trailer, and [PR #41](https://github.com/sign-language-processing/reproduction/pull/41) describes results and missing artifacts with a single `lgtm1` review, identifying no executing model. |
+
+Mirrors `reproduction.json.agents`. No model or application has been inferred from a human
+account or a branch name, so all 17 retained runs carry `agent_ids: []` with an
+`agent_attribution_note`.
 
 ## Scope and target contract
 
