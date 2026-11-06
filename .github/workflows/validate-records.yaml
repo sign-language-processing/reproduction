@@ -27,19 +27,10 @@ jobs:
       - name: Validate every committed paper record
         if: always()
         run: |
-          known=.agents/skills/reproduce-paper/known-invalid-records.txt
           status=0
           for paper in papers/*/; do
-            name=$(basename "$paper")
-            if python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py "$paper"; then
-              if grep -qxF "$name" "$known"; then
-                echo "::error title=Record now validates::$name passes; delete its line from $known"
-                status=1
-              fi
-            elif grep -qxF "$name" "$known"; then
-              echo "::warning title=Known-invalid record::$name still fails validation (tracked in #69)"
-            else
-              echo "::error title=Invalid record::$name does not validate"
+            if ! python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py "$paper"; then
+              echo "::error title=Invalid record::$(basename "$paper") does not validate"
               status=1
             fi
           done
