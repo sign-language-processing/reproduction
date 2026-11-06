@@ -115,7 +115,7 @@ Requests for data access and author-held data are coordinated with Team S. If ac
 
 ### Shared Hugging Face cache
 
-Every Modal reproduction run uses the shared Volume `huggingface-cache`, created with VolumeFS v2. Mount it read-write at `/cache/huggingface` and set at least `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub` so model, tokenizer, and Hub artifact downloads are reused across papers.
+Every Modal reproduction run uses the shared Volume `huggingface-cache`, created with VolumeFS v2. Mount it read-write at `/cache/huggingface` and set at least `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub` so model, tokenizer, and Hub artifact downloads are reused across papers. If a run mounted the cache without these variables, record them as `null` in its `compute.shared_cache.environment` with a non-empty `environment_note`; never backfill them. The validator reports this as a warning, and the report discloses it as a process deviation.
 
 The cache is an optimization, never a source of provenance. Pin every Hugging Face revision and record its repository/revision or artifact hash. Do not store canonical datasets, checkpoints, final results, credentials, or evidence in `huggingface-cache`; datasets remain under the shared `datasets` Volume and outputs use paper-specific storage.
 
