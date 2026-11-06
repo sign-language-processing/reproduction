@@ -16822,10 +16822,10 @@
     {
       "artifact_id": "hf-model-card",
       "kind": "documentation",
-      "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/ff4a8b7abcfac01b7c941f5c25d00b148bd9624c/README.md",
-      "sha256": "e71119774bf2f4a1eb6f66e1d6fd10e20e7643b4c2852498d015a0c971c1a237",
-      "size_bytes": 60523,
-      "note": "The paper README uploaded as the model card at revision ff4a8b7abcfac01b7c941f5c25d00b148bd9624c (2026-11-06), byte-identical to papers/alyami-2024-cslr-comparative/README.md in the commit that records this artifact. Revision c549da6 carried an earlier draft of the same README with the checkpoints."
+      "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/aaac87063acdedae04f26ada41e49d4b3d3ee642/README.md",
+      "sha256": "a7fa23b0d9c24fd120521649d6f973e9fe3fa53b41776bebd77f9616c449c67c",
+      "size_bytes": 61201,
+      "note": "The paper README uploaded as the model card at revision aaac87063acdedae04f26ada41e49d4b3d3ee642 (2026-11-06), byte-identical to papers/alyami-2024-cslr-comparative/README.md in the commit that records this artifact. Revision c549da6 carried an earlier draft of the same README with the checkpoints; revision ff4a8b7 carried the version before the 2026-11-06 wording change that states arXiv v1 as the assigned paper and source of truth (no values changed)."
     }
   ],
   "gates": [
@@ -16857,7 +16857,7 @@
       "resolution": {
         "decided_at": "2026-10-26",
         "decision": "arxiv-v1-table-I",
-        "basis": "Operator selected the arXiv v1 Table I (the supplied PDF) as the target in response to the target gate."
+        "basis": "arXiv v1 is the assigned paper and the source of truth: the Team S queue record for this paper points to arXiv 2406.12369 (assignment.record.expand.paper.pdf_url; its venue field names ICCVW 2025) and the assignment supplied the arXiv v1 PDF (paper.versions[arxiv-v1], the only arXiv version on 2026-10-26). Where the two versions conflict (target table, learning rate, epochs), v1 is followed and the ICCVW 2025 version is recorded as evidence only. On that basis the operator selected the arXiv v1 Table I as the target in response to the target gate."
       }
     },
     {
@@ -16876,13 +16876,13 @@
       "resolution": {
         "decided_at": "2026-10-26",
         "decision": "Use the arXiv v1 stated protocol for every model: Adam, base_lr 0.001, 40 epochs, lr x0.2 at epochs 20 and 35, batch 2. Each model otherwise runs its pinned upstream config unchanged (loss weights, augmentation, decoding).",
-        "basis": "Operator decision at the protocol gate after reviewing the paper text and the pinned upstream configs.",
-        "follow_up": "2026-11-02: decision kept (arXiv v1 is the assigned paper; its text states 40 epochs, steps 20/35 for all five models). The measured cost of 80 epochs for TLP/SEN (about USD +578 over all blocks, +238 outside LOSO; see compute-full-table.resolution.measured_estimate.per_run usd_80) was reported to the operator, who decided on 2026-11-02 that TLP and SEN stay at 40 epochs, lr steps 20/35, in every block including ArabSign LOSO. The ICCVW 2025 statement (TLP/SEN 80 epochs, steps 30/60) is a known alternative that was not adopted because the assigned paper (arXiv v1) states 40 epochs.",
+        "basis": "Operator decision at the protocol gate after reviewing the paper text and the pinned upstream configs. arXiv v1 is the assigned paper and the source of truth (see target-table-version: the Team S queue record's pdf_url points to arXiv 2406.12369 and the assignment supplied the v1 PDF); where the versions conflict on learning rate or epochs, v1 is followed and the ICCVW 2025 version is recorded as evidence only.",
+        "follow_up": "2026-11-02: decision kept (arXiv v1 is the assigned paper; its text states 40 epochs, steps 20/35 for all five models). The measured cost of 80 epochs for TLP/SEN (about USD +578 over all blocks, +238 outside LOSO; see compute-full-table.resolution.measured_estimate.per_run usd_80) was reported to the operator, who decided on 2026-11-02 that TLP and SEN stay at 40 epochs, lr steps 20/35, in every block including ArabSign LOSO. The ICCVW 2025 statement (TLP/SEN 80 epochs, steps 30/60) is recorded as evidence only and was not adopted, because arXiv v1, the assigned paper and source of truth, states 40 epochs.",
         "tlp_sen_epochs_decision": {
           "decided_at": "2026-11-02",
           "decision": "40 epochs, steps 20/35, all blocks",
           "not_adopted": "ICCVW 80 epochs, steps 30/60",
-          "basis": "Operator decision after the measured 80-epoch cost was reported; arXiv v1 is the assigned paper."
+          "basis": "Operator decision after the measured 80-epoch cost was reported; arXiv v1 is the assigned paper and the source of truth, and the ICCVW 2025 version is evidence only."
         }
       }
     },
