@@ -31,6 +31,16 @@ CVSign's new contribution is two modules, Contextual Correspondence Awareness (C
 - ctcdecode: beam-search decoding;
 - sclite: WER scoring.
 
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `original-reproduction-agent` | unknown | unknown | Implementation of the CVSign reimplementation and execution of all 28 retained runs. | Audited 2026-11-06: no commit touching `papers/yu-2025-cvsign/` carries a model or agent-application trailer — [`6ca846f`](https://github.com/sign-language-processing/reproduction/commit/6ca846f), `49543bd` and `9bc0427` — and [PR #44](https://github.com/sign-language-processing/reproduction/pull/44) states only that a human checked it, identifying no executing model in its body, commits, comments or reviews. |
+
+Mirrors `reproduction.json.agents`. No model or application has been inferred from a human
+account or a branch name, so all 28 retained runs carry `agent_ids: []` with an
+`agent_attribution_note`.
+
 ## Scope and target contract
 
 The paper's main results are Table I (PHOENIX14 and PHOENIX14-T Dev/Test WER, "CVSign (ours)") and Table II (CSL-Daily Dev/Test WER). The target ledger holds only the two PHOENIX14-T values; PHOENIX14 (17.8 / 18.0) and CSL-Daily (25.7 / 24.7) are out of scope and not recorded as targets. The ablations (Tables III–VII) only fix the default configuration (modules after layers 2/3/4, CCA L=[3,5,9], CVA L=[9,9,9], full-image query area).
