@@ -1,5 +1,18 @@
 {
   "paper_id": "e13b83983c37b44c5b555743fffd4d6cec545e4f",
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Implementation of the reimplementation and execution of all eight retained runs. Audited 2026-11-06: neither the model nor the agent application is recoverable from the committed evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/aaa7d1a \u2014 introducing commit 'First run' carries no model or agent-application trailer; the same holds for a3cb787 ('Second run') and d8e6fcd ('Fix paper id').",
+        "https://github.com/sign-language-processing/reproduction/pull/39 \u2014 audited 2026-11-06: the body is empty and the two comments and one review discuss only merge permissions, identifying no execution model or application.",
+        "A human account and a branch name do not establish agent identity, so no model has been inferred from either."
+      ]
+    }
+  ],
   "assignment": {
     "kind": "direct_user_request",
     "source": {
@@ -39,7 +52,8 @@
   ],
   "status": {
     "pipeline": "complete",
-    "numerical_agreement": "not_fully_reproduced",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Assessed on all 32 in-scope Table II targets (eight systems x accuracy, macro-precision, macro-recall, macro-F1), every one of which produced a comparable value. Absolute differences from the published two-decimal values range from 0.0303 to 7.8154 percentage points; only EfficientNet-B3 test accuracy (-0.0303) falls within the half-unit rounding interval of the paper's printed precision. Because the contract requires does_not_agree when any assessed value disagrees, the record is does_not_agree; no score-matching tolerance is asserted and no statistical significance test was performed. Recorded as a raw observation for later analysis, not as a scientific conclusion: the system ordering is not preserved and the paper's central claim inverts. The paper ties DenseNet121-HHO for best at 99.79% accuracy, while reproduced it is 95.1064% and seventh of eight; HHO lowered accuracy in both pairs (CNN 97.1878% to CNN-HHO 91.0546%; DenseNet121 96.3922% to DenseNet121-HHO 95.1064%) where the paper reports it helping or holding level. The best reproduced system is EfficientNet-B0 at 99.3895%.",
     "preference_level": 3,
     "blocker": null
   },
@@ -190,6 +204,7 @@
   "targets": [
     {
       "target_id": "cnn-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN\", column \"Test Accuracy (%)\"",
       "experiment_id": "cnn",
       "metric_id": "accuracy",
@@ -209,6 +224,7 @@
     },
     {
       "target_id": "cnn-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN\", column \"Precision (%)\"",
       "experiment_id": "cnn",
       "metric_id": "macro-precision",
@@ -228,6 +244,7 @@
     },
     {
       "target_id": "cnn-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN\", column \"Recall (%)\"",
       "experiment_id": "cnn",
       "metric_id": "macro-recall",
@@ -247,6 +264,7 @@
     },
     {
       "target_id": "cnn-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN\", column \"F1-Score (%)\"",
       "experiment_id": "cnn",
       "metric_id": "macro-f1",
@@ -266,6 +284,7 @@
     },
     {
       "target_id": "cnn-hho-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN-HHO\", column \"Test Accuracy (%)\"",
       "experiment_id": "cnn-hho",
       "metric_id": "accuracy",
@@ -285,6 +304,7 @@
     },
     {
       "target_id": "cnn-hho-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN-HHO\", column \"Precision (%)\"",
       "experiment_id": "cnn-hho",
       "metric_id": "macro-precision",
@@ -304,6 +324,7 @@
     },
     {
       "target_id": "cnn-hho-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN-HHO\", column \"Recall (%)\"",
       "experiment_id": "cnn-hho",
       "metric_id": "macro-recall",
@@ -323,6 +344,7 @@
     },
     {
       "target_id": "cnn-hho-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"CNN-HHO\", column \"F1-Score (%)\"",
       "experiment_id": "cnn-hho",
       "metric_id": "macro-f1",
@@ -342,6 +364,7 @@
     },
     {
       "target_id": "efficientnet-b0-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B0\", column \"Test Accuracy (%)\"",
       "experiment_id": "efficientnet-b0",
       "metric_id": "accuracy",
@@ -361,6 +384,7 @@
     },
     {
       "target_id": "efficientnet-b0-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B0\", column \"Precision (%)\"",
       "experiment_id": "efficientnet-b0",
       "metric_id": "macro-precision",
@@ -380,6 +404,7 @@
     },
     {
       "target_id": "efficientnet-b0-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B0\", column \"Recall (%)\"",
       "experiment_id": "efficientnet-b0",
       "metric_id": "macro-recall",
@@ -399,6 +424,7 @@
     },
     {
       "target_id": "efficientnet-b0-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B0\", column \"F1-Score (%)\"",
       "experiment_id": "efficientnet-b0",
       "metric_id": "macro-f1",
@@ -418,6 +444,7 @@
     },
     {
       "target_id": "efficientnet-b3-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B3\", column \"Test Accuracy (%)\"",
       "experiment_id": "efficientnet-b3",
       "metric_id": "accuracy",
@@ -437,6 +464,7 @@
     },
     {
       "target_id": "efficientnet-b3-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B3\", column \"Precision (%)\"",
       "experiment_id": "efficientnet-b3",
       "metric_id": "macro-precision",
@@ -456,6 +484,7 @@
     },
     {
       "target_id": "efficientnet-b3-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B3\", column \"Recall (%)\"",
       "experiment_id": "efficientnet-b3",
       "metric_id": "macro-recall",
@@ -475,6 +504,7 @@
     },
     {
       "target_id": "efficientnet-b3-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"EfficientNet-B3\", column \"F1-Score (%)\"",
       "experiment_id": "efficientnet-b3",
       "metric_id": "macro-f1",
@@ -494,6 +524,7 @@
     },
     {
       "target_id": "resnet50-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"ResNet50\", column \"Test Accuracy (%)\"",
       "experiment_id": "resnet50",
       "metric_id": "accuracy",
@@ -513,6 +544,7 @@
     },
     {
       "target_id": "resnet50-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"ResNet50\", column \"Precision (%)\"",
       "experiment_id": "resnet50",
       "metric_id": "macro-precision",
@@ -532,6 +564,7 @@
     },
     {
       "target_id": "resnet50-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"ResNet50\", column \"Recall (%)\"",
       "experiment_id": "resnet50",
       "metric_id": "macro-recall",
@@ -551,6 +584,7 @@
     },
     {
       "target_id": "resnet50-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"ResNet50\", column \"F1-Score (%)\"",
       "experiment_id": "resnet50",
       "metric_id": "macro-f1",
@@ -570,6 +604,7 @@
     },
     {
       "target_id": "densenet201-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet201\", column \"Test Accuracy (%)\"",
       "experiment_id": "densenet201",
       "metric_id": "accuracy",
@@ -589,6 +624,7 @@
     },
     {
       "target_id": "densenet201-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet201\", column \"Precision (%)\"",
       "experiment_id": "densenet201",
       "metric_id": "macro-precision",
@@ -608,6 +644,7 @@
     },
     {
       "target_id": "densenet201-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet201\", column \"Recall (%)\"",
       "experiment_id": "densenet201",
       "metric_id": "macro-recall",
@@ -627,6 +664,7 @@
     },
     {
       "target_id": "densenet201-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet201\", column \"F1-Score (%)\"",
       "experiment_id": "densenet201",
       "metric_id": "macro-f1",
@@ -646,6 +684,7 @@
     },
     {
       "target_id": "densenet121-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121\", column \"Test Accuracy (%)\"",
       "experiment_id": "densenet121",
       "metric_id": "accuracy",
@@ -665,6 +704,7 @@
     },
     {
       "target_id": "densenet121-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121\", column \"Precision (%)\"",
       "experiment_id": "densenet121",
       "metric_id": "macro-precision",
@@ -684,6 +724,7 @@
     },
     {
       "target_id": "densenet121-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121\", column \"Recall (%)\"",
       "experiment_id": "densenet121",
       "metric_id": "macro-recall",
@@ -703,6 +744,7 @@
     },
     {
       "target_id": "densenet121-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121\", column \"F1-Score (%)\"",
       "experiment_id": "densenet121",
       "metric_id": "macro-f1",
@@ -722,6 +764,7 @@
     },
     {
       "target_id": "densenet121-hho-test-accuracy",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Test Accuracy (%)\"",
       "experiment_id": "densenet121-hho",
       "metric_id": "accuracy",
@@ -741,6 +784,7 @@
     },
     {
       "target_id": "densenet121-hho-precision",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Precision (%)\"",
       "experiment_id": "densenet121-hho",
       "metric_id": "macro-precision",
@@ -760,6 +804,7 @@
     },
     {
       "target_id": "densenet121-hho-recall",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121-HHO\", column \"Recall (%)\"",
       "experiment_id": "densenet121-hho",
       "metric_id": "macro-recall",
@@ -779,6 +824,7 @@
     },
     {
       "target_id": "densenet121-hho-f1",
+      "in_scope": true,
       "paper_location": "Table II, row \"DenseNet121-HHO\", column \"F1-Score (%)\"",
       "experiment_id": "densenet121-hho",
       "metric_id": "macro-f1",
@@ -847,7 +893,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "cnn-hho-full",
@@ -899,7 +947,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "efficientnet-b0-full",
@@ -950,7 +1000,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "efficientnet-b3-full",
@@ -1001,7 +1053,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "resnet50-full",
@@ -1052,7 +1106,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "densenet201-full",
@@ -1103,7 +1159,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "densenet121-full",
@@ -1154,7 +1212,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "densenet121-hho-full",
@@ -1206,7 +1266,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         }
-      }
+      },
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
     }
   ],
   "artifacts": [

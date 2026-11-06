@@ -10,11 +10,21 @@
 
 I ended up writing this from scratch. There's no code released with the paper.
 
-**Status:** `complete`
+**Pipeline status:** `complete`
 
-**Numerical agreement:** `not_fully_reproduced`
+**Numerical agreement:** `does_not_agree` — all 32 Table II targets produced comparable values; absolute differences from the published numbers run from 0.0303 to 7.8154 percentage points.
 
 **Attempt date:** 2026-08-30
+
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `original-reproduction-agent` | unknown | unknown | Wrote the reimplementation and ran all eight retained runs. | Audited 2026-11-06: none of the three commits touching this directory carries a model or agent-application trailer — [`aaa7d1a`](https://github.com/sign-language-processing/reproduction/commit/aaa7d1a), `a3cb787`, `d8e6fcd` — and [PR #39](https://github.com/sign-language-processing/reproduction/pull/39) has an empty body with two comments and one review that only discuss merge permissions. |
+
+I can't say which model or application did this work — the commits and the PR don't record it, and
+a human account or branch name doesn't establish it. So both fields are null and all eight runs
+carry `agent_ids: []` with an `agent_attribution_note`.
 
 ## Summary
 
