@@ -1,5 +1,29 @@
 {
   "paper_id": "dbf0205f1d29b109ad5e29d6824ed965b511598a",
+  "agents": [
+    {
+      "agent_id": "report-maintenance-agent",
+      "model": "Claude Sonnet 5",
+      "harness": null,
+      "scope": "Attempt closure and report maintenance only: the 2026-09-30 commits that resolved the author-contact gate and corrected its send date. Not established as the implementing or executing agent; the commit trailer names a model but no agent application.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/e000aed — 'partaourides-2021: close attempt — author contact sent, no reply; gate resolved', trailer 'Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>'.",
+        "https://github.com/sign-language-processing/reproduction/commit/e8f513e — 'partaourides-2021: correct author-contact send date to 2026-09-08 (22 days, no reply)', same trailer.",
+        "The trailer names no agent application, so harness is null. AGENTS.md: a commit coauthor is not automatically the agent that ran the experiment."
+      ]
+    },
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Implementation and execution of the reimplementation and all six retained runs. Audited 2026-11-06: neither model nor agent application is recoverable from the committed evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/d492605 — introducing commit 'partaourides-2021: scaffold reproduction (assignment, targets, PyTorch SB-GRU reimpl, Modal app)' carries no model or agent-application trailer.",
+        "Commits b0dcb8f, 7acaab7 and 30e7feb, which contain the fixes, the full runs and the author-contact draft, likewise carry no attribution trailer.",
+        "https://github.com/sign-language-processing/reproduction/pull/47 — audited 2026-11-06: body, commits, comments and reviews do not identify the execution model or application. Human authors and branch names do not establish agent identity."
+      ]
+    }
+  ],
   "assignment": {
     "kind": "direct_user_request",
     "source": {
@@ -1185,7 +1209,9 @@
       },
       "artifact_ids": [
         "plain-results"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     },
     {
       "run_id": "train-repar",
@@ -1235,7 +1261,9 @@
       },
       "artifact_ids": [
         "repar-results"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     },
     {
       "run_id": "train-bp",
@@ -1285,7 +1313,9 @@
       },
       "artifact_ids": [
         "bp-results"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     },
     {
       "run_id": "train-sb",
@@ -1335,7 +1365,9 @@
       },
       "artifact_ids": [
         "sb-results"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     },
     {
       "run_id": "eval-repar-wc",
@@ -1385,7 +1417,9 @@
       },
       "artifact_ids": [
         "repar-wc-eval"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     },
     {
       "run_id": "eval-sb-wc",
@@ -1435,7 +1469,9 @@
       },
       "artifact_ids": [
         "sb-wc-eval"
-      ]
+      ],
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The introducing commit d492605 and the run commits b0dcb8f/7acaab7 carry no model or agent-application trailer, and PR #47 does not identify the executor; see agents[].evidence. The Claude Sonnet 5 trailer appears only on the later attempt-closure commits, which AGENTS.md does not treat as execution attribution."
     }
   ],
   "artifacts": [

@@ -28,6 +28,18 @@ LNCS 12536, pp. 251–262. Springer (2021). arXiv:2102.06143v1 [stat.ML] 11 Feb 
 > reimplementation stands as evidence that the SB-GRU protocol is under-specified; the
 > gap on the Baseline row is documented but unexplained.
 
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `report-maintenance-agent` | Claude Sonnet 5 | unknown | Attempt closure and report maintenance: the 2026-09-30 commits that resolved the author-contact gate and corrected its send date. | `Co-Authored-By: Claude Sonnet 5` trailer on commits [`e000aed`](https://github.com/sign-language-processing/reproduction/commit/e000aed) and [`e8f513e`](https://github.com/sign-language-processing/reproduction/commit/e8f513e). The trailer names no agent application, so the harness is unknown. |
+| `original-reproduction-agent` | unknown | unknown | Implementation of the SB-GRU reimplementation and execution of all six retained runs. | Audited 2026-11-06: the introducing commit [`d492605`](https://github.com/sign-language-processing/reproduction/commit/d492605) and the run commits `b0dcb8f` / `7acaab7` carry no attribution trailer, and [PR #47](https://github.com/sign-language-processing/reproduction/pull/47) does not identify the executor in its body, commits, comments or reviews. |
+
+Mirrors `reproduction.json.agents`. No model or application has been inferred from a human
+author or a branch name. Each of the six retained runs therefore carries `agent_ids: []` with an
+`agent_attribution_note`: the Sonnet 5 trailer appears only on the later attempt-closure commits,
+and `AGENTS.md` does not treat a commit coauthor as execution attribution.
+
 ## Scope and target contract
 
 `what_to_reproduce` = "Table 1 on page 9". Table 1 ("Performance Metrics") reports Dev and
