@@ -8,13 +8,23 @@
 
 **Preference level:** 3
 
-**Status:** `complete`
+**Pipeline status:** `complete`
 
-**Numerical agreement:** not fully reproduced
+**Numerical agreement:** `does_not_agree` — all nine Table III targets produced comparable values; the four training accuracies are within 1.21 points, while all five augmented-validation accuracies are 11.43 to 14.50 points above the paper.
 
 Every Table III target was produced by a fully documented conditional reconstruction; the paper provides no executable artifact.
 
 **Attempt date:** 2026-08-28
+
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `original-reproduction-agent` | unknown | unknown | Implementation of the reconstruction and execution of all three retained runs, including the bounded split diagnostic. | Audited 2026-11-06: none of the nine commits touching this directory carries a model or agent-application trailer, starting with [`3937eda`](https://github.com/sign-language-processing/reproduction/commit/3937eda), and [PR #37](https://github.com/sign-language-processing/reproduction/pull/37) reports results and omissions only, identifying no executing model in its body, comments or reviews. |
+
+Mirrors `reproduction.json.agents`. No model or application has been inferred from a human
+account or a branch name, so all three retained runs carry `agent_ids: []` with an
+`agent_attribution_note`.
 
 ## Scope and target contract
 
@@ -26,7 +36,7 @@ The implementation includes the two CNNs, their probability-average ensemble, an
 
 | Artifact | Canonical source | Pin | Role |
 | --- | --- | --- | --- |
-| Paper PDF | User-provided [`03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf`](/Users/amitmoryossef/Downloads/03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf) | SHA-256 above | Table III and protocol |
+| Paper PDF | User-provided `03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf` (operator-local path omitted; the SHA-256 is the identifier) | SHA-256 above | Table III and protocol |
 | Bibliographic record | [IEEE DOI](https://doi.org/10.1109/JCSSE58229.2023.10202089) | accessed 2026-08-27 | Canonical citation |
 | Dataset | [Kaggle ASL Alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet) | version 1 archive SHA-256 `7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4` | Exact 29-class image release |
 

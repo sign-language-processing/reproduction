@@ -1,9 +1,22 @@
 {
   "paper_id": "03785db2dc052c9c21dfefc690b03b8ad0703d9d",
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Implementation of the reimplementation and execution of all three retained runs, including the bounded split diagnostic. Audited 2026-11-06: neither the model nor the agent application is recoverable from the committed evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/3937eda \u2014 introducing commit 'feat(reproduction): add 2023 ASL CNN attempt' carries no model or agent-application trailer; nor do the eight later commits bb33b22, 75436b6, 13c5eea, 6377886, b2d6c09, ca25750, 5985e42 and 5d94528.",
+        "https://github.com/sign-language-processing/reproduction/pull/37 \u2014 audited 2026-11-06: the body reports results and omissions only, and neither it nor the PR's comments and reviews identify the execution model or application.",
+        "A human account and a branch name do not establish agent identity, so no model has been inferred from either."
+      ]
+    }
+  ],
   "assignment": {
     "kind": "direct_user_request",
     "source": {
-      "path": "/Users/amitmoryossef/Downloads/03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf",
+      "path": "user-provided PDF 03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf; operator-local path omitted per the operator-privacy rules. The SHA-256 below is the artifact identifier.",
       "sha256": "73e8eb64c28f3aa4ea5ab86304cf9b2a6f224dd58c96a29bbb7249a82a3e732d"
     },
     "user_provided_review_summary": {
@@ -41,7 +54,8 @@
   ],
   "status": {
     "pipeline": "complete",
-    "numerical_agreement": "not_fully_reproduced",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Assessed on all nine in-scope Table III targets, every one of which produced a comparable value from the paper's stated protocol (random 80:20 image split of 69,600/17,400, online training augmentation, fixed tenfold offline validation augmentation to 174,000 images). Comparability was decided on specification grounds before the differences were inspected. The nine differences separate cleanly by split. The four checkpoint-training accuracies are within 1.2146 points (-1.2146, -1.1086, +0.3555, +0.6157). All five augmented-validation accuracies are far above the paper and all in the same direction: +14.4989, +11.4275, +14.3705, +13.7111 and +11.6584 points. Because the contract requires does_not_agree when any assessed value disagrees, the record is does_not_agree; no score-matching tolerance is asserted and no significance test was performed. The one bounded split diagnostic (first 80 percent of lexicographically sorted filenames per class, never substituted for a target result) lowered validation accuracy but left it 9.60 to 10.17 points above Table III, so split order alone does not account for the validation gap; the author split, the saved offline validation images, convolution padding and optimizer remain material unknowns. The four RBF-SVM targets additionally rest on an unreported feature layer and unreported C and gamma, recorded as scikit-learn defaults (C=1, gamma='scale') chosen to avoid score tuning rather than attributed to the authors.",
     "preference_level": 3,
     "blocker": null
   },
@@ -95,19 +109,21 @@
     }
   ],
   "targets": [
-    {"target_id": "slr-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 98.41, "result": {"status": "produced", "reproduced_value": 97.19540476799011, "difference": -1.2145952320098934, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
-    {"target_id": "slr-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 83.5, "result": {"status": "produced", "reproduced_value": 97.99885057471265, "difference": 14.49885057471265, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
-    {"target_id": "ocnn-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 96.85, "result": {"status": "produced", "reproduced_value": 95.74137926101685, "difference": -1.1086207389831515, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
-    {"target_id": "ocnn-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "augmented validation", "metric_id": "accuracy", "original_value": 84.68, "result": {"status": "produced", "reproduced_value": 96.10747126436782, "difference": 11.427471264367824, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
-    {"target_id": "slr-svm-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.45, "result": {"status": "produced", "reproduced_value": 99.80545977011495, "difference": 0.35545977011494885, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
-    {"target_id": "slr-svm-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.41, "result": {"status": "produced", "reproduced_value": 99.78045977011493, "difference": 14.370459770114935, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
-    {"target_id": "ocnn-svm-train", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.01, "result": {"status": "produced", "reproduced_value": 99.6257183908046, "difference": 0.6157183908046012, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
-    {"target_id": "ocnn-svm-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.74, "result": {"status": "produced", "reproduced_value": 99.45114942528735, "difference": 13.71114942528735, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
-    {"target_id": "e-ocnn-slr-validation", "experiment_id": "table-iii", "paper_location": "Table III", "system": "E-OCNN-SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 87.01, "result": {"status": "produced", "reproduced_value": 98.6683908045977, "difference": 11.658390804597701, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}}
+    {"target_id": "slr-train", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 98.41, "result": {"status": "produced", "reproduced_value": 97.19540476799011, "difference": -1.2145952320098934, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "slr-validation", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 83.5, "result": {"status": "produced", "reproduced_value": 97.99885057471265, "difference": 14.49885057471265, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "ocnn-train", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 96.85, "result": {"status": "produced", "reproduced_value": 95.74137926101685, "difference": -1.1086207389831515, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "ocnn-validation", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN", "split": "augmented validation", "metric_id": "accuracy", "original_value": 84.68, "result": {"status": "produced", "reproduced_value": 96.10747126436782, "difference": 11.427471264367824, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}},
+    {"target_id": "slr-svm-train", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.45, "result": {"status": "produced", "reproduced_value": 99.80545977011495, "difference": 0.35545977011494885, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "slr-svm-validation", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "SLR-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.41, "result": {"status": "produced", "reproduced_value": 99.78045977011493, "difference": 14.370459770114935, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "ocnn-svm-train", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "checkpoint training", "metric_id": "accuracy", "original_value": 99.01, "result": {"status": "produced", "reproduced_value": 99.6257183908046, "difference": 0.6157183908046012, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "ocnn-svm-validation", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "OCNN-SVM", "split": "augmented validation", "metric_id": "accuracy", "original_value": 85.74, "result": {"status": "produced", "reproduced_value": 99.45114942528735, "difference": 13.71114942528735, "run_ids": ["svm-full"], "artifact_ids": ["svm-full-run-json"]}},
+    {"target_id": "e-ocnn-slr-validation", "in_scope": true, "experiment_id": "table-iii", "paper_location": "Table III", "system": "E-OCNN-SLR", "split": "augmented validation", "metric_id": "accuracy", "original_value": 87.01, "result": {"status": "produced", "reproduced_value": 98.6683908045977, "difference": 11.658390804597701, "run_ids": ["full-threads"], "artifact_ids": ["full-threads-run-json"]}}
   ],
   "runs": [
     {
       "run_id": "full-threads",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. None of the nine commits touching papers/silanon-2023-asl-cnn/ carries a model or agent-application trailer, and PR #37 does not identify the executor; see agents[].evidence.",
       "kind": "full_reconstruction",
       "hypothesis": "The paper-specified architectures, 80:20 split, Table I augmentation ranges, and tenfold validation produce all CNN and ensemble Table III values.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::train",
@@ -130,6 +146,8 @@
     },
     {
       "run_id": "svm-full",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. None of the nine commits touching papers/silanon-2023-asl-cnn/ carries a model or agent-application trailer, and PR #37 does not identify the executor; see agents[].evidence.",
       "kind": "conditional_full_evaluation",
       "hypothesis": "An RBF SVM over each final CNN feature tensor can execute the paper's stated 696,000/174,000 augmented-example scale when its missing choices are recorded explicitly.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::svm_full",
@@ -152,6 +170,8 @@
     },
     {
       "run_id": "split-lexicographic-full-20260831T065151Z",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. None of the nine commits touching papers/silanon-2023-asl-cnn/ carries a model or agent-application trailer, and PR #37 does not identify the executor; see agents[].evidence.",
       "kind": "source_order_split_diagnostic",
       "hypothesis": "The unexpectedly high validation values are primarily caused by the retained seeded random split rather than another unreported protocol detail.",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/silanon-2023-asl-cnn/modal_app.py::train --run-name split-lexicographic-full-20260831T065151Z --split-policy lexicographic_per_class --seed 2026",
