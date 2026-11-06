@@ -19,12 +19,13 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.316",
-      "scope": "Continuation from 2026-11-02: recording the compute-gate decision and ICCVW epoch evidence, data population (data.sh), container build, preflights, measured estimates, and launching/monitoring the full-run blocks; on 2026-11-04, collecting blocks 2-5, running the operator-requested no-training investigation (adapter-check-002, checkpoint-check-002, failure signatures), and declaring and launching block 6 (30 ArabSign LOSO runs); on 2026-11-05, collecting block 6, recording the environment freeze (inspect-environment-001), filling the five LOSO targets and closing the status. The same session continued throughout (with context compaction); the installed Claude Code reported 2.1.316 on 2026-11-02 and 2.1.318 on 2026-11-04 and 2026-11-05, and the session does not expose whether the running process changed version.",
+      "scope": "Continuation from 2026-11-02: recording the compute-gate decision and ICCVW epoch evidence, data population (data.sh), container build, preflights, measured estimates, and launching/monitoring the full-run blocks; on 2026-11-04, collecting blocks 2-5, running the operator-requested no-training investigation (adapter-check-002, checkpoint-check-002, failure signatures), and declaring and launching block 6 (30 ArabSign LOSO runs); on 2026-11-05, collecting block 6, recording the environment freeze (inspect-environment-001), filling the five LOSO targets and closing the status, then the operator-requested evidence close-out (checkpoint-check-003, adapter-check-003, block 1 GPU-hours from billing, final spend ledger, README trim and model card) and staging the 55 checkpoints; on 2026-11-06, uploading them to Hugging Face repro-sign/alyami-2024-cslr-comparative with publish.sh after the operator logged in with write access. The same session continued throughout (with context compaction); the installed Claude Code reported 2.1.316 on 2026-11-02 and 2.1.318 on 2026-11-04 and 2026-11-05, and 2.1.319 on 2026-11-06, and the session does not expose whether the running process changed version.",
       "evidence": [
         "Session system context identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code (2026-11-02).",
         "`claude --version` in the session returned 2.1.316 (Claude Code).",
         "2026-11-04: `claude --version` returned 2.1.318 (Claude Code); session system context still names Claude Opus 5.5, model ID claude-opus-5-5.",
-        "2026-11-05: `claude --version` returned 2.1.318 (Claude Code); session system context still names Claude Opus 5.5, model ID claude-opus-5-5."
+        "2026-11-05: `claude --version` returned 2.1.318 (Claude Code); session system context still names Claude Opus 5.5, model ID claude-opus-5-5.",
+        "2026-11-06: `claude --version` returned 2.1.319 (Claude Code); session system context still names Claude Opus 5.5, model ID claude-opus-5-5."
       ]
     }
   ],
@@ -260,7 +261,7 @@
     "preference_level": 2,
     "blocker": null,
     "preference_level_basis": "Level 2, confirmed by this paper's own build, preflights and 55 full runs: all five systems run their pinned official code through its own main.py, with two kinds of correctness patch and dependency/environment fixes only. (1) patches/ctcdecode-cxx17.patch: ctcdecode does not compile against current PyTorch (image build im-zwwdoz4GF7RwJO4BnSPdG6). (2) patches/<repo>-ctc-without-cudnn.patch for VAC_CSLR, TLP, SEN and CorrNet: on PyTorch 2.11/cuDNN 9.19, nn.CTCLoss uses cuDNN for unequal-length batches and returns wrong gradients (cosine 0.06-0.96 vs a float64 reference; runs ctc-diagnostics-*-001, preflight-*-002/003); disabling cuDNN for the CTC call restores the native computation PyTorch 1.x used. Dependencies: lmdb (imported by TLP/SEN), simple-video-utils 0.7.4 with av 18.1.0. New datasets and Phoenix SI5 enter only as data files and dataset configs written with the repos' own preprocess helpers; no upstream code is changed for them.",
-    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). All 30 in-scope targets produced across six blocks: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5), and ArabSign Signer-Indep (block 6, 30 leave-one-signer-out runs launched 2026-11-04 after the operator resolved gate arabsign-loso-hold, all complete). Every full run trained 40 epochs in one Modal attempt and none reached its ceiling. Total Modal spend USD 1,169.16 (billing through 2026-11-04)."
+    "pipeline_note": "Compute gate resolved 2026-11-02 (absolute ceiling USD 2,000). All 30 in-scope targets produced across six blocks: Phoenix SD (block 1), Phoenix SI, GrSL SI, GrSL Unseen-Sent and ArabSign SD (blocks 2-5), and ArabSign Signer-Indep (block 6, 30 leave-one-signer-out runs launched 2026-11-04 after the operator resolved gate arabsign-loso-hold, all complete). Every full run trained 40 epochs in one Modal attempt and none reached its ceiling. Total Modal spend USD 1,169.84 (final billing, 2026-11-02 to 2026-11-05)."
   },
   "datasets": [
     {
@@ -340,7 +341,24 @@
         }
       ],
       "verification": "Verified 2026-10-26: multisigner train/dev/test frame folders 5672/540/629 present; SI5 corpus files (train 4376, dev 111, test 180 = Signer05 only) all resolve to existing multisigner frame folders in the matching split, so the SI5 split needs no extra data. check_modal_dataset.sh rwth-phoenix-2014 (SI5 train corpus) passes 2026-11-02. Dev/test corpus labels in this release are already clean (no loc-/cl-/__EMOTION__ tokens; train keeps them), and STMs generated from them by upstream generate_gt_stm equal the repos' official evaluation STMs up to signer-ID case and whitespace (540/540 dev, 629/629 test), so the SI5 references are generated the same way. Upstream csv2dict drops pandas row 2390 of train.corpus.csv, the broken clip 13April_2011_Wednesday_tagesschau_default-14; in train.SI5.corpus.csv that row index is a different, valid clip, so the SI5 lists drop the broken clip by ID instead.",
-      "deviations": []
+      "deviations": [],
+      "gloss_coverage": {
+        "recorded_at": "2026-11-05",
+        "source_run": "adapter-check-003",
+        "signer-dep": {
+          "dev_reference_gloss_tokens": 5540,
+          "dev_tokens_absent_from_train_list": 38,
+          "test_reference_gloss_tokens": 6504,
+          "test_tokens_absent_from_train_list": 45
+        },
+        "signer-indep-si5": {
+          "dev_reference_gloss_tokens": 1167,
+          "dev_tokens_absent_from_train_list": 10,
+          "test_reference_gloss_tokens": 1901,
+          "test_tokens_absent_from_train_list": 12
+        },
+        "note": "Counted over the label tokens of the lists the runs used (identical across the four repos); a token is absent when its gloss never occurs in that setting's training list."
+      }
     },
     {
       "dataset_id": "arabsign",
@@ -504,6 +522,14 @@
           ]
         },
         "comparison": "The labels used reproduce the paper's 155 signs over 50 sentences and 3.1 signs per sentence exactly; they give 93 distinct glosses against the paper's 95 (procCaption gives 90, further from it). The two-gloss difference is not explained by either label column; it is supporting evidence for the 'Sign Language Sentence' labels, not proof that they are what the paper's authors used. Every split of every setting covers all 93 glosses and 50 sentences (modal_app.py::arabsign_split_record, app ap-4HwGUsgGtScHCYmacWBOAP)."
+      },
+      "gloss_coverage": {
+        "recorded_at": "2026-11-05",
+        "source_runs": [
+          "adapter-check-002",
+          "adapter-check-003"
+        ],
+        "note": "No dev or test reference gloss token is absent from the training list in ArabSign SD (0 of 2,196 dev, 0 of 5,732 test) or in any of the six LOSO folds (token dev lists and held-out-signer test sets)."
       }
     },
     {
@@ -3967,7 +3993,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 6.236,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4023,7 +4051,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 6.258,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4079,7 +4109,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 7.037,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4135,7 +4167,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 4.708,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4191,7 +4225,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 8.424,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4251,7 +4287,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.092,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4305,7 +4343,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.049,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4365,7 +4405,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.087,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4425,7 +4467,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.084,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4539,7 +4583,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.061,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -4599,7 +4645,9 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "gpu_hours": 0.092,
+        "gpu_hours_basis": "Billed L40S cost of the run's Modal app (modal billing report --show-resources, resource 'L40S') divided by USD 1.95 per L40S-hour, the rate recorded in measured_estimate. Block 1 predates the in-function heartbeat (gpu_seconds.json). Calibration on the 50 runs of blocks 2-6 that have both: billed L40S cost per heartbeat GPU-hour is USD 1.953-1.967, so billed L40S time is 0.1-0.9% above heartbeat time."
       }
     },
     {
@@ -9252,14 +9300,34 @@
           0
         ],
         "training_batches_per_epoch": 3866,
-        "checkpoint_nonfinite_values": "not checked (no checkpoint_check run for block 6)",
+        "checkpoint_nonfinite_values": {
+          "dev_09.70_epoch14_model.pt": {
+            "epoch": 14,
+            "nonfinite_parameters": [],
+            "nonfinite_buffers": [],
+            "nonfinite_elements": 0
+          },
+          "dev_99.40_epoch39_model.pt": {
+            "epoch": 39,
+            "nonfinite_parameters": [],
+            "nonfinite_buffers": [
+              "conv1d.temporal_conv.1.running_mean",
+              "conv1d.temporal_conv.1.running_var",
+              "conv1d.temporal_conv.5.running_mean",
+              "conv1d.temporal_conv.5.running_var"
+            ],
+            "nonfinite_elements": 2882
+          }
+        },
         "artifact_ids": [
           "full-corrnet-arabsign-loso-02-001-sclite-test",
           "full-corrnet-arabsign-loso-02-001-hypothesis-test",
           "full-corrnet-arabsign-loso-02-001-alignment-test",
           "full-corrnet-arabsign-loso-02-001-stdout",
-          "full-corrnet-arabsign-loso-02-001-dev-log"
-        ]
+          "full-corrnet-arabsign-loso-02-001-dev-log",
+          "checkpoint-check-003-output"
+        ],
+        "checkpoint_nonfinite_source": "checkpoint-check-003"
       }
     },
     {
@@ -11130,14 +11198,34 @@
           2141
         ],
         "training_batches_per_epoch": 3915,
-        "checkpoint_nonfinite_values": "not checked (no checkpoint_check run for block 6)",
+        "checkpoint_nonfinite_values": {
+          "dev_85.20_epoch8_model.pt": {
+            "epoch": 8,
+            "nonfinite_parameters": [],
+            "nonfinite_buffers": [],
+            "nonfinite_elements": 0
+          },
+          "dev_99.40_epoch39_model.pt": {
+            "epoch": 39,
+            "nonfinite_parameters": [],
+            "nonfinite_buffers": [
+              "conv1d.temporal_conv.1.running_mean",
+              "conv1d.temporal_conv.1.running_var",
+              "conv1d.temporal_conv.5.running_mean",
+              "conv1d.temporal_conv.5.running_var"
+            ],
+            "nonfinite_elements": 3164
+          }
+        },
         "artifact_ids": [
           "full-corrnet-arabsign-loso-05-001-sclite-test",
           "full-corrnet-arabsign-loso-05-001-hypothesis-test",
           "full-corrnet-arabsign-loso-05-001-alignment-test",
           "full-corrnet-arabsign-loso-05-001-stdout",
-          "full-corrnet-arabsign-loso-05-001-dev-log"
-        ]
+          "full-corrnet-arabsign-loso-05-001-dev-log",
+          "checkpoint-check-003-output"
+        ],
+        "checkpoint_nonfinite_source": "checkpoint-check-003"
       }
     },
     {
@@ -11764,7 +11852,134 @@
           }
         },
         "dashboard": "https://modal.com/apps/repro-sign/main/ap-FuOiFDTOJRglfy27O0Vrag",
-        "launched_at_utc": "2026-11-05T08:00:23Z"
+        "launched_at_utc": "2026-11-05T08:00:23Z",
+        "billed_usd": 0.002,
+        "billed_usd_basis": "Modal billing for the run's app on 2026-11-05 (complete day)"
+      }
+    },
+    {
+      "run_id": "checkpoint-check-003",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "No training (operator request of 2026-11-05, item 1): count non-finite values per tensor in every retained checkpoint of the 30 block-6 LOSO runs, i.e. the evaluated final-epoch (39) checkpoint and the retained lowest-token-list-WER checkpoint where it differs (modal_app.py::checkpoint_check, unchanged since checkpoint-check-002).",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_checkpoint_check --run-ids full-vac-arabsign-loso-01-001,full-vac-arabsign-loso-02-001,full-vac-arabsign-loso-03-001,full-vac-arabsign-loso-04-001,full-vac-arabsign-loso-05-001,full-vac-arabsign-loso-06-001,full-smkd-arabsign-loso-01-001,full-smkd-arabsign-loso-02-001,full-smkd-arabsign-loso-03-001,full-smkd-arabsign-loso-04-001,full-smkd-arabsign-loso-05-001,full-smkd-arabsign-loso-06-001,full-tlp-arabsign-loso-01-001,full-tlp-arabsign-loso-02-001,full-tlp-arabsign-loso-03-001,full-tlp-arabsign-loso-04-001,full-tlp-arabsign-loso-05-001,full-tlp-arabsign-loso-06-001,full-sen-arabsign-loso-01-001,full-sen-arabsign-loso-02-001,full-sen-arabsign-loso-03-001,full-sen-arabsign-loso-04-001,full-sen-arabsign-loso-05-001,full-sen-arabsign-loso-06-001,full-corrnet-arabsign-loso-01-001,full-corrnet-arabsign-loso-02-001,full-corrnet-arabsign-loso-03-001,full-corrnet-arabsign-loso-04-001,full-corrnet-arabsign-loso-05-001,full-corrnet-arabsign-loso-06-001",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-05T08:31:48Z",
+      "finished_at_utc": "2026-11-05T08:32:49Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "checkpoint-check-loso",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-05T08:31:39Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Scanned 60 retained checkpoints of the 30 LOSO runs (the evaluated epoch-39 checkpoint of each, plus the retained lowest-token-list-WER checkpoint where it is a different epoch). Every epoch-39 checkpoint's sha256 equals the one recorded at evaluation. Non-finite values only in the epoch-39 checkpoints of full-corrnet-arabsign-loso-02-001 (2,882 elements) and full-corrnet-arabsign-loso-05-001 (3,164 elements), and there only in the four BatchNorm buffers conv1d.temporal_conv.1.running_mean/running_var and conv1d.temporal_conv.5.running_mean/running_var; no model parameter is non-finite in any checkpoint. The same four buffers are the only non-finite tensors in the collapsed CorrNet GrSL checkpoints (checkpoint-check-002). All other 28 runs' checkpoints have no non-finite value."
+      },
+      "artifact_ids": [
+        "checkpoint-check-003-output"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-QWczfvfihbvC3uSRs7weIr",
+        "function_call_id": null,
+        "hardware": "CPU only: 4 cores, 16 GiB RAM, one container per run",
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-QWczfvfihbvC3uSRs7weIr",
+        "launched_at_utc": "2026-11-05T08:31:48Z",
+        "billed_usd": 0.104,
+        "billed_usd_basis": "Modal billing for the run's app on 2026-11-05 (complete day)"
+      }
+    },
+    {
+      "run_id": "adapter-check-003",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2026-11-02"
+      ],
+      "purpose": "No training (operator request of 2026-11-05, item 1): extend the adapter-check-002 cross-check to Phoenix SD, Phoenix SI and the six ArabSign LOSO folds. For each setting, modal_app.py::adapter_check copies each of the five full runs' own code directory, compares info lists, gloss dictionaries and ground-truth STMs, and runs each repo's own BaseFeeder on the same 20 clips (10 train, 10 test): label ids and glosses, frames read, frame shape, test-transform tensor and seed-0 train-transform tensor. Only change since adapter-check-002: phoenix-sd, which has no harness dataset name, reads each repo's own phoenix2014 lists as its run did.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/alyami-2024-cslr-comparative/modal_app.py::launch_adapter_check --settings phoenix-sd,phoenix-si,arabsign-loso-01,arabsign-loso-02,arabsign-loso-03,arabsign-loso-04,arabsign-loso-05,arabsign-loso-06",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-05T08:31:48Z",
+      "finished_at_utc": "2026-11-05T08:40:30Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "adapter-check-loso-phoenix",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-05T08:31:39Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 6.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "No difference found in any compared item, in any of the eight settings, across the five runs (four repos) of each: every info-list row (fileid, folder, signer, label, num_frames) of train/dev/test, gloss dictionaries (size and every entry), ground-truth STMs, and for the same 20 clips (10 train, 10 test) label ids and glosses, frames read (equal to the list count), frame shape 256x256x3, the test-transform tensor and the seed-0 train-transform tensor (bit-identical sha256). Phoenix SD: VAC/TLP's dataset_preprocess.py lists and SEN/CorrNet's committed lists are identical row for row; train/dev/test 5671/540/629, gloss dict 1,295. Phoenix SI5: 4375/111/180, gloss dict 1,135. LOSO folds 01-06: train 7798/7733/7690/7780/7831/7818, token dev 50, test 1532/1597/1640/1550/1499/1512, gloss dict 93. Decoded labels equal the list label token for token (three Phoenix sample labels contain a double space). Reference tokens unseen in training: Phoenix SD dev 38 of 5,540 and test 45 of 6,504; Phoenix SI5 dev 10 of 1,167 and test 12 of 1,901; none in any LOSO fold. Only the feeder_args key sets differ, as in adapter-check-002."
+      },
+      "artifact_ids": [
+        "adapter-check-003-phoenix-sd",
+        "adapter-check-003-phoenix-si",
+        "adapter-check-003-arabsign-loso-01",
+        "adapter-check-003-arabsign-loso-02",
+        "adapter-check-003-arabsign-loso-03",
+        "adapter-check-003-arabsign-loso-04",
+        "adapter-check-003-arabsign-loso-05",
+        "adapter-check-003-arabsign-loso-06"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-FzcLP6q1XnkjaVa2OmJ697",
+        "function_call_id": null,
+        "hardware": "CPU only: 8 cores, 32 GiB RAM, 512 GiB ephemeral disk, one container per setting",
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "dashboard": "https://modal.com/apps/repro-sign/main/ap-FzcLP6q1XnkjaVa2OmJ697",
+        "launched_at_utc": "2026-11-05T08:31:48Z",
+        "billed_usd": 0.572,
+        "billed_usd_basis": "Modal billing for the run's app on 2026-11-05 (complete day)"
       }
     }
   ],
@@ -11809,7 +12024,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-phoenix-sd-001/work/dev_21.60_epoch36_model.pt",
       "sha256": "b4387b56d33dc9e967801451ff5dd16e1dce94fb7e1bb537adcb0952163232f5",
-      "size_bytes": 395728869
+      "size_bytes": 395728869,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-phoenix-sd-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-phoenix-sd-001-epoch36.pt",
+        "sha256": "b4387b56d33dc9e967801451ff5dd16e1dce94fb7e1bb537adcb0952163232f5",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "eval-tlp-phoenix-sd-002-evaluation",
@@ -11851,7 +12076,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-phoenix-sd-001/work/dev_26.20_epoch39_model.pt",
       "sha256": "4da825d77459a1d91b78dfdd6b7cc3c570fe23b47315a0efbf1b15ff0aae71b9",
-      "size_bytes": 714261637
+      "size_bytes": 714261637,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-phoenix-sd-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-phoenix-sd-001-epoch39.pt",
+        "sha256": "4da825d77459a1d91b78dfdd6b7cc3c570fe23b47315a0efbf1b15ff0aae71b9",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "eval-vac-phoenix-sd-001-evaluation",
@@ -11893,7 +12128,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-phoenix-sd-001/work/dev_29.60_epoch35_model.pt",
       "sha256": "974386116bc7ff3aa765db7fa1988a87f37b33f3ef27e0c33230c313ea716061",
-      "size_bytes": 411688717
+      "size_bytes": 411688717,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-phoenix-sd-001-epoch35.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-phoenix-sd-001-epoch35.pt",
+        "sha256": "974386116bc7ff3aa765db7fa1988a87f37b33f3ef27e0c33230c313ea716061",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "eval-corrnet-phoenix-sd-002-evaluation",
@@ -11935,7 +12180,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-phoenix-sd-001/work/dev_21.30_epoch38_model.pt",
       "sha256": "89b2c98c643345ab6ed328af3cd726a80ea6bde13ae567054edf16c1f2a17deb",
-      "size_bytes": 400582037
+      "size_bytes": 400582037,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-phoenix-sd-001-epoch38.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-phoenix-sd-001-epoch38.pt",
+        "sha256": "89b2c98c643345ab6ed328af3cd726a80ea6bde13ae567054edf16c1f2a17deb",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "eval-sen-phoenix-sd-001-evaluation",
@@ -11977,7 +12232,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-phoenix-sd-001/work/dev_24.70_epoch36_model.pt",
       "sha256": "c5d309d5c720b6749a646ae4211d10411d966480c609db2fed07d928d99f6722",
-      "size_bytes": 414638898
+      "size_bytes": 414638898,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-phoenix-sd-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-phoenix-sd-001-epoch36.pt",
+        "sha256": "c5d309d5c720b6749a646ae4211d10411d966480c609db2fed07d928d99f6722",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-phoenix-sd-001-dev-log",
@@ -12064,7 +12329,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-phoenix-si-001/work/dev_51.40_epoch28_model.pt",
       "sha256": "dfd887da49e994af99859beb3609a1c7785dc8315d6e20bbc2af2979f28e3b53",
-      "size_bytes": 407752717
+      "size_bytes": 407752717,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-phoenix-si-001-epoch28.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-phoenix-si-001-epoch28.pt",
+        "sha256": "dfd887da49e994af99859beb3609a1c7785dc8315d6e20bbc2af2979f28e3b53",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-phoenix-si-001-dev-log",
@@ -12131,7 +12406,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-grsl-si-001/work/dev_04.70_epoch37_model.pt",
       "sha256": "f00629a6cddb51e4d76f52b50e8c25753d96c7d63cd06d7163305c8f837e9e1e",
-      "size_bytes": 387359245
+      "size_bytes": 387359245,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-grsl-si-001-epoch37.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-grsl-si-001-epoch37.pt",
+        "sha256": "f00629a6cddb51e4d76f52b50e8c25753d96c7d63cd06d7163305c8f837e9e1e",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-grsl-si-001-dev-log",
@@ -12198,7 +12483,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-grsl-unseen-001/work/dev_72.10_epoch36_model.pt",
       "sha256": "f75bf89fa250a09f1f279d5216d17589e8beb6fcd361a7b0b90f98263d1c20a6",
-      "size_bytes": 387457549
+      "size_bytes": 387457549,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-grsl-unseen-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-grsl-unseen-001-epoch36.pt",
+        "sha256": "f75bf89fa250a09f1f279d5216d17589e8beb6fcd361a7b0b90f98263d1c20a6",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-grsl-unseen-001-dev-log",
@@ -12265,7 +12560,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-sd-001/work/dev_00.20_epoch27_model.pt",
       "sha256": "b467e9b5a31aaff8ccd1a69a20d842f6502346168fde5578e866c191ecd38d62",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-sd-001-epoch27.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-sd-001-epoch27.pt",
+        "sha256": "b467e9b5a31aaff8ccd1a69a20d842f6502346168fde5578e866c191ecd38d62",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-sd-001-dev-log",
@@ -12332,7 +12637,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-phoenix-si-001/work/dev_36.70_epoch39_model.pt",
       "sha256": "c4ee9848a59f2e35f9dd4a0c6a46c2b4a81ca48c5fdf311df2448d138b7ad746",
-      "size_bytes": 393762789
+      "size_bytes": 393762789,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-phoenix-si-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-phoenix-si-001-epoch39.pt",
+        "sha256": "c4ee9848a59f2e35f9dd4a0c6a46c2b4a81ca48c5fdf311df2448d138b7ad746",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-phoenix-si-001-dev-log",
@@ -12399,7 +12714,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-grsl-si-001/work/dev_06.40_epoch33_model.pt",
       "sha256": "bb7d239fad1fb76a344d2962aa7d0e162f282ec334e73f7fc2569761267619da",
-      "size_bytes": 383576037
+      "size_bytes": 383576037,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-grsl-si-001-epoch33.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-grsl-si-001-epoch33.pt",
+        "sha256": "bb7d239fad1fb76a344d2962aa7d0e162f282ec334e73f7fc2569761267619da",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-grsl-si-001-dev-log",
@@ -12466,7 +12791,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-grsl-unseen-001/work/dev_64.30_epoch30_model.pt",
       "sha256": "91c4ac5150a52922f8994f935acb9046b3d112332d6361cf2c2f3d17142d7c46",
-      "size_bytes": 383625189
+      "size_bytes": 383625189,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-grsl-unseen-001-epoch30.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-grsl-unseen-001-epoch30.pt",
+        "sha256": "91c4ac5150a52922f8994f935acb9046b3d112332d6361cf2c2f3d17142d7c46",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-grsl-unseen-001-dev-log",
@@ -12533,7 +12868,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-sd-001/work/dev_00.20_epoch36_model.pt",
       "sha256": "f58aeb5ba2298940e20a97a40ed3323cca9d50dd916128050fcb080c941e080b",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-sd-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-sd-001-epoch36.pt",
+        "sha256": "f58aeb5ba2298940e20a97a40ed3323cca9d50dd916128050fcb080c941e080b",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-sd-001-dev-log",
@@ -12600,7 +12945,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-phoenix-si-001/work/dev_47.60_epoch28_model.pt",
       "sha256": "b13b379a6a0c6d9d473cdc076eeab93d5c6da9e1bd5c7688342243b0fc6aa215",
-      "size_bytes": 710325637
+      "size_bytes": 710325637,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-phoenix-si-001-epoch28.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-phoenix-si-001-epoch28.pt",
+        "sha256": "b13b379a6a0c6d9d473cdc076eeab93d5c6da9e1bd5c7688342243b0fc6aa215",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-phoenix-si-001-dev-log",
@@ -12667,7 +13022,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-grsl-si-001/work/dev_27.70_epoch37_model.pt",
       "sha256": "c0b1d8982b470d11fe83627795b7465cbd4d4d255dd9bf02cec58df4b25d95df",
-      "size_bytes": 689932165
+      "size_bytes": 689932165,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-grsl-si-001-epoch37.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-grsl-si-001-epoch37.pt",
+        "sha256": "c0b1d8982b470d11fe83627795b7465cbd4d4d255dd9bf02cec58df4b25d95df",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-grsl-si-001-dev-log",
@@ -12734,7 +13099,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-grsl-unseen-001/work/dev_89.50_epoch7_model.pt",
       "sha256": "5c76a90881451e4281cf34ff554f6099c16b05c8ee1840fd3fb0aa16e8090d4b",
-      "size_bytes": 690029930
+      "size_bytes": 690029930,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-grsl-unseen-001-epoch7.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-grsl-unseen-001-epoch7.pt",
+        "sha256": "5c76a90881451e4281cf34ff554f6099c16b05c8ee1840fd3fb0aa16e8090d4b",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-grsl-unseen-001-dev-log",
@@ -12801,7 +13176,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-sd-001/work/dev_00.40_epoch36_model.pt",
       "sha256": "392d40a7bab23584b2e2fd2eaf3f73e2f029bbd1f2db2090c9a9322208030826",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-sd-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-sd-001-epoch36.pt",
+        "sha256": "392d40a7bab23584b2e2fd2eaf3f73e2f029bbd1f2db2090c9a9322208030826",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-sd-001-dev-log",
@@ -12868,7 +13253,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-phoenix-si-001/work/dev_40.10_epoch26_model.pt",
       "sha256": "6af6e4abcfe2430a69b942a9aa47691b84aea6c449d96ebba5733e4f0c178ffe",
-      "size_bytes": 410702898
+      "size_bytes": 410702898,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-phoenix-si-001-epoch26.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-phoenix-si-001-epoch26.pt",
+        "sha256": "6af6e4abcfe2430a69b942a9aa47691b84aea6c449d96ebba5733e4f0c178ffe",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-phoenix-si-001-dev-log",
@@ -12935,7 +13330,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-grsl-si-001/work/dev_42.30_epoch36_model.pt",
       "sha256": "dadd2d36691ca12c2412fe4cd87c0cd97bac739e8c8589db4a4096db78a3c3bd",
-      "size_bytes": 390309426
+      "size_bytes": 390309426,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-grsl-si-001-epoch36.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-grsl-si-001-epoch36.pt",
+        "sha256": "dadd2d36691ca12c2412fe4cd87c0cd97bac739e8c8589db4a4096db78a3c3bd",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-grsl-si-001-dev-log",
@@ -13002,7 +13407,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-grsl-unseen-001/work/dev_85.10_epoch37_model.pt",
       "sha256": "b0ea8dd1e72edefadc294861ead93738d4047b5d0ea514a54986e29d2a94ee0e",
-      "size_bytes": 390407730
+      "size_bytes": 390407730,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-grsl-unseen-001-epoch37.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-grsl-unseen-001-epoch37.pt",
+        "sha256": "b0ea8dd1e72edefadc294861ead93738d4047b5d0ea514a54986e29d2a94ee0e",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-grsl-unseen-001-dev-log",
@@ -13069,7 +13484,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-sd-001/work/dev_33.70_epoch38_model.pt",
       "sha256": "9f6f6eb5eb05dd5e509a899e51cfc2bd6634e8ae3c9aea4b090f212bf09f4027",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-sd-001-epoch38.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-sd-001-epoch38.pt",
+        "sha256": "9f6f6eb5eb05dd5e509a899e51cfc2bd6634e8ae3c9aea4b090f212bf09f4027",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-sd-001-dev-log",
@@ -13136,7 +13561,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-phoenix-si-001/work/dev_35.20_epoch39_model.pt",
       "sha256": "0d5f1cf679c6fbeab5f9fefc618faa887ad25b60a0d395b307fc544b7aedd478",
-      "size_bytes": 398615957
+      "size_bytes": 398615957,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-phoenix-si-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-phoenix-si-001-epoch39.pt",
+        "sha256": "0d5f1cf679c6fbeab5f9fefc618faa887ad25b60a0d395b307fc544b7aedd478",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-phoenix-si-001-dev-log",
@@ -13203,7 +13638,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-grsl-si-001/work/dev_89.40_epoch8_model.pt",
       "sha256": "9e7326de13735f82fc42f2a54ead8540d4e163c927c9032d86a2dac12b3e249d",
-      "size_bytes": 388428802
+      "size_bytes": 388428802,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-grsl-si-001-epoch8.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-grsl-si-001-epoch8.pt",
+        "sha256": "9e7326de13735f82fc42f2a54ead8540d4e163c927c9032d86a2dac12b3e249d",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-grsl-si-001-dev-log",
@@ -13270,7 +13715,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-grsl-unseen-001/work/dev_91.00_epoch6_model.pt",
       "sha256": "37683b0eea291f4caf2e414558dfa9ac0df555bd5a57cd14a204e4b29454269a",
-      "size_bytes": 388477954
+      "size_bytes": 388477954,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-grsl-unseen-001-epoch6.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-grsl-unseen-001-epoch6.pt",
+        "sha256": "37683b0eea291f4caf2e414558dfa9ac0df555bd5a57cd14a204e4b29454269a",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-grsl-unseen-001-dev-log",
@@ -13337,7 +13792,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-sd-001/work/dev_06.60_epoch20_model.pt",
       "sha256": "b6801d984f37d75c6d6e4ec11107d038d660d4aa4a273ed2da076b9e2df1b9d3",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-sd-001-epoch20.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-sd-001-epoch20.pt",
+        "sha256": "b6801d984f37d75c6d6e4ec11107d038d660d4aa4a273ed2da076b9e2df1b9d3",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-sd-001-dev-log",
@@ -13692,7 +14157,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-01-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "5f6bef4d55d909baaf2fa9f35c16dfc822733d4e604ed4ab3b258ccaa794cb0b",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-01-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-01-001-epoch39.pt",
+        "sha256": "5f6bef4d55d909baaf2fa9f35c16dfc822733d4e604ed4ab3b258ccaa794cb0b",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-01-001-dev-log",
@@ -13767,7 +14242,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-02-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "1d120c2cfdb025f750d1890afaebd56c6b9b59a8d4597b7d1dce9dfa8539d267",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-02-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-02-001-epoch39.pt",
+        "sha256": "1d120c2cfdb025f750d1890afaebd56c6b9b59a8d4597b7d1dce9dfa8539d267",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-02-001-dev-log",
@@ -13842,7 +14327,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-03-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "97570ffcc930234156e7b36d1fa363d4384d10d260a5b9ed459b8d01fcffc8cd",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-03-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-03-001-epoch39.pt",
+        "sha256": "97570ffcc930234156e7b36d1fa363d4384d10d260a5b9ed459b8d01fcffc8cd",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-03-001-dev-log",
@@ -13917,7 +14412,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-04-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "8fda160a80cf260bd01f13d9c5a0c425b594cb23db9cbf4837dfae6a13ec0b65",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-04-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-04-001-epoch39.pt",
+        "sha256": "8fda160a80cf260bd01f13d9c5a0c425b594cb23db9cbf4837dfae6a13ec0b65",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-04-001-dev-log",
@@ -13992,7 +14497,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-05-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "531f62d584f8deae36e43543c4db8976e05803e03656c36a2326f7480ee2ba87",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-05-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-05-001-epoch39.pt",
+        "sha256": "531f62d584f8deae36e43543c4db8976e05803e03656c36a2326f7480ee2ba87",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-05-001-dev-log",
@@ -14067,7 +14582,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-vac-arabsign-loso-06-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "b4da438badd72740b4e4e6c7213ddf2160bcc7ae190303420d48b91f94eb2575",
-      "size_bytes": 382119565
+      "size_bytes": 382119565,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-vac-arabsign-loso-06-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-vac-arabsign-loso-06-001-epoch39.pt",
+        "sha256": "b4da438badd72740b4e4e6c7213ddf2160bcc7ae190303420d48b91f94eb2575",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-vac-arabsign-loso-06-001-dev-log",
@@ -14142,7 +14667,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-01-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "5318f12bd47b9fdf0d61df592cae2e0c95ac42e6a35ec580cec0ee0cdc8ebd52",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-01-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-01-001-epoch39.pt",
+        "sha256": "5318f12bd47b9fdf0d61df592cae2e0c95ac42e6a35ec580cec0ee0cdc8ebd52",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-01-001-dev-log",
@@ -14217,7 +14752,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-02-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "88bda94d6303a5bb392317758d1f21612933c5fde971a5b539fa31bb74d039b6",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-02-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-02-001-epoch39.pt",
+        "sha256": "88bda94d6303a5bb392317758d1f21612933c5fde971a5b539fa31bb74d039b6",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-02-001-dev-log",
@@ -14292,7 +14837,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-03-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "3411ad7fa5c75c0e9a290d606431675ea1445289285212411e288317ca6fd9d6",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-03-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-03-001-epoch39.pt",
+        "sha256": "3411ad7fa5c75c0e9a290d606431675ea1445289285212411e288317ca6fd9d6",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-03-001-dev-log",
@@ -14367,7 +14922,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-04-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "ae8f3ed7fa98c88ff1c6d637dc075d29b915032ef56f48448da0e5b448bdb4b5",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-04-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-04-001-epoch39.pt",
+        "sha256": "ae8f3ed7fa98c88ff1c6d637dc075d29b915032ef56f48448da0e5b448bdb4b5",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-04-001-dev-log",
@@ -14442,7 +15007,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-05-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "a3d34730e6b67797b16eff4de382ee00966fc97403fbe33f2f714e38ca0885e6",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-05-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-05-001-epoch39.pt",
+        "sha256": "a3d34730e6b67797b16eff4de382ee00966fc97403fbe33f2f714e38ca0885e6",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-05-001-dev-log",
@@ -14517,7 +15092,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-smkd-arabsign-loso-06-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "a47606a4ccf4b30b9aead7dde38ec2a87502a4d6539b91e9e746308dd848ec37",
-      "size_bytes": 380958629
+      "size_bytes": 380958629,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-smkd-arabsign-loso-06-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-smkd-arabsign-loso-06-001-epoch39.pt",
+        "sha256": "a47606a4ccf4b30b9aead7dde38ec2a87502a4d6539b91e9e746308dd848ec37",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-smkd-arabsign-loso-06-001-dev-log",
@@ -14592,7 +15177,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-01-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "8a1189a20cc0adbc5d876bc784ae140f9bd2c3f253ab69b6ae6215cc2e913621",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-01-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-01-001-epoch39.pt",
+        "sha256": "8a1189a20cc0adbc5d876bc784ae140f9bd2c3f253ab69b6ae6215cc2e913621",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-01-001-dev-log",
@@ -14667,7 +15262,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-02-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "1fe7975f894834572748f22a526e18ff715ff0fa9612de1a74248b482648d644",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-02-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-02-001-epoch39.pt",
+        "sha256": "1fe7975f894834572748f22a526e18ff715ff0fa9612de1a74248b482648d644",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-02-001-dev-log",
@@ -14742,7 +15347,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-03-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "edab9e421bd56ed6ed4e4bf2d8aefbfb9596373447b622d8d900b7eed683d687",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-03-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-03-001-epoch39.pt",
+        "sha256": "edab9e421bd56ed6ed4e4bf2d8aefbfb9596373447b622d8d900b7eed683d687",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-03-001-dev-log",
@@ -14817,7 +15432,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-04-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "5bac9fcf13ea46033cf073948389a0c8628da81a8bf9e8b4cbf005cd041dad98",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-04-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-04-001-epoch39.pt",
+        "sha256": "5bac9fcf13ea46033cf073948389a0c8628da81a8bf9e8b4cbf005cd041dad98",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-04-001-dev-log",
@@ -14892,7 +15517,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-05-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "73fa954ef58539520210ad8fd8b552e6a5132c3d4bd841779c250efa02151270",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-05-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-05-001-epoch39.pt",
+        "sha256": "73fa954ef58539520210ad8fd8b552e6a5132c3d4bd841779c250efa02151270",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-05-001-dev-log",
@@ -14967,7 +15602,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-tlp-arabsign-loso-06-001/work/dev_00.00_epoch39_model.pt",
       "sha256": "028d7b78c34e911a81a37bbd2b7dc22efea1022d7ae04ecd6237c8b9fab8ba73",
-      "size_bytes": 684692421
+      "size_bytes": 684692421,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-tlp-arabsign-loso-06-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-tlp-arabsign-loso-06-001-epoch39.pt",
+        "sha256": "028d7b78c34e911a81a37bbd2b7dc22efea1022d7ae04ecd6237c8b9fab8ba73",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-tlp-arabsign-loso-06-001-dev-log",
@@ -15042,7 +15687,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-01-001/work/dev_04.50_epoch39_model.pt",
       "sha256": "c88fa289302fafb8e3cbf3191fd61bc10e25f84d9943552e933ca77ea4322988",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-01-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-01-001-epoch39.pt",
+        "sha256": "c88fa289302fafb8e3cbf3191fd61bc10e25f84d9943552e933ca77ea4322988",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-01-001-dev-log",
@@ -15117,7 +15772,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-02-001/work/dev_03.90_epoch39_model.pt",
       "sha256": "1d5699c160bf236fbf26e7b7c0538342e3f361975392699274c2603960b99d95",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-02-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-02-001-epoch39.pt",
+        "sha256": "1d5699c160bf236fbf26e7b7c0538342e3f361975392699274c2603960b99d95",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-02-001-dev-log",
@@ -15192,7 +15857,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-03-001/work/dev_01.30_epoch39_model.pt",
       "sha256": "87b8b2c9a22996b0ed519ec026e548aaa32ea129ab81b9e6e42c1bea2733fbf9",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-03-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-03-001-epoch39.pt",
+        "sha256": "87b8b2c9a22996b0ed519ec026e548aaa32ea129ab81b9e6e42c1bea2733fbf9",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-03-001-dev-log",
@@ -15267,7 +15942,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-04-001/work/dev_21.90_epoch39_model.pt",
       "sha256": "26177b1f095a779080da9a45081db8b6fc49dd1c93f3b12c034230d5dd5bcc0a",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-04-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-04-001-epoch39.pt",
+        "sha256": "26177b1f095a779080da9a45081db8b6fc49dd1c93f3b12c034230d5dd5bcc0a",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-04-001-dev-log",
@@ -15342,7 +16027,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-05-001/work/dev_04.50_epoch39_model.pt",
       "sha256": "b994a770ae68849ad608461ab526a88973dba486be28ad6f6afd06c1eeed51c0",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-05-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-05-001-epoch39.pt",
+        "sha256": "b994a770ae68849ad608461ab526a88973dba486be28ad6f6afd06c1eeed51c0",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-05-001-dev-log",
@@ -15417,7 +16112,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-sen-arabsign-loso-06-001/work/dev_04.50_epoch39_model.pt",
       "sha256": "64976863a3a0b3c740fbbb59b1bb31d32856fa40400158e035f9cbdc10cc52dc",
-      "size_bytes": 385069682
+      "size_bytes": 385069682,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-sen-arabsign-loso-06-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-sen-arabsign-loso-06-001-epoch39.pt",
+        "sha256": "64976863a3a0b3c740fbbb59b1bb31d32856fa40400158e035f9cbdc10cc52dc",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-sen-arabsign-loso-06-001-dev-log",
@@ -15492,7 +16197,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-01-001/work/dev_29.70_epoch39_model.pt",
       "sha256": "9dbf316f311a2deb23dca354ec6698526050f37bbc5cea7cef6fd43a1f262f1b",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-01-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-01-001-epoch39.pt",
+        "sha256": "9dbf316f311a2deb23dca354ec6698526050f37bbc5cea7cef6fd43a1f262f1b",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-01-001-dev-log",
@@ -15567,7 +16282,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-02-001/work/dev_99.40_epoch39_model.pt",
       "sha256": "4067da9ce6b8ec84fffbefeea6d15623844cb3dd0d43156558d527f43740f79b",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-02-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-02-001-epoch39.pt",
+        "sha256": "4067da9ce6b8ec84fffbefeea6d15623844cb3dd0d43156558d527f43740f79b",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-02-001-dev-log",
@@ -15650,7 +16375,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-03-001/work/dev_11.60_epoch39_model.pt",
       "sha256": "bdfd58c9170514a6fd8a2a8f8fb9e6d8d35dc51e0f580cae94f4b8ae639c0197",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-03-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-03-001-epoch39.pt",
+        "sha256": "bdfd58c9170514a6fd8a2a8f8fb9e6d8d35dc51e0f580cae94f4b8ae639c0197",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-03-001-dev-log",
@@ -15725,7 +16460,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-04-001/work/dev_10.30_epoch39_model.pt",
       "sha256": "fdc2be9570c59df157d62bca9b51f1a63c34c28ffac5dc2a0121856df6fe9440",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-04-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-04-001-epoch39.pt",
+        "sha256": "fdc2be9570c59df157d62bca9b51f1a63c34c28ffac5dc2a0121856df6fe9440",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-04-001-dev-log",
@@ -15800,7 +16545,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-05-001/work/dev_99.40_epoch39_model.pt",
       "sha256": "4eaafa81ff7b27c965dc43c1d393805e6a7167e0b42fe8d783ff33d64ae3050f",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-05-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-05-001-epoch39.pt",
+        "sha256": "4eaafa81ff7b27c965dc43c1d393805e6a7167e0b42fe8d783ff33d64ae3050f",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-05-001-dev-log",
@@ -15883,7 +16638,17 @@
       "kind": "checkpoint",
       "uri": "modal://repro-sign/alyami-2024-cslr-results/runs/full-corrnet-arabsign-loso-06-001/work/dev_12.90_epoch39_model.pt",
       "sha256": "44ba5bd1d1b62a2223601424d883132d319e5c061bd29f7f6d1df69698ed81ce",
-      "size_bytes": 385811861
+      "size_bytes": 385811861,
+      "published": {
+        "repository": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative",
+        "revision": "c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c",
+        "path": "checkpoints/full-corrnet-arabsign-loso-06-001-epoch39.pt",
+        "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/checkpoints/full-corrnet-arabsign-loso-06-001-epoch39.pt",
+        "sha256": "44ba5bd1d1b62a2223601424d883132d319e5c061bd29f7f6d1df69698ed81ce",
+        "license": "CC BY-NC-SA 4.0",
+        "published_at_utc": "2026-11-06T09:56:09Z",
+        "note": "sha256 and size read back from the Hugging Face file metadata at this revision; equal to the checkpoint on the results Volume."
+      }
     },
     {
       "artifact_id": "full-corrnet-arabsign-loso-06-001-dev-log",
@@ -15973,6 +16738,94 @@
       "sha256": "85e8c0dd2ec261bf5deada6388349cf79ea96d23ac0f172f26cd2bacc1c8eafb",
       "size_bytes": 4531,
       "note": "Built on Modal as image im-RRhJE2W44Meiwq3PVXQMMX, the image of every full run (blocks 1-6) and of inspect-environment-001."
+    },
+    {
+      "artifact_id": "checkpoint-check-003-output",
+      "kind": "metrics",
+      "uri": "artifacts/checkpoint-check-003.jsonl",
+      "sha256": "a55f20e94f1e0877ece3758ad3e24a90d06241780d46b6a5ef05246170cb2e71",
+      "size_bytes": 16628,
+      "note": "checkpoint_check's printed result per run (one JSON line each): per retained checkpoint, epoch, tensor count, sha256 and non-finite tensors split into parameters and buffers."
+    },
+    {
+      "artifact_id": "adapter-check-003-phoenix-sd",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-phoenix-sd.json",
+      "sha256": "11478a03cd406e049e48bca79d15de5fa71c59b8981c9f103a7804dda55fe6f3",
+      "size_bytes": 111440,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-phoenix-si",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-phoenix-si.json",
+      "sha256": "6b89f8eda34121de8f1ea5ca77f4934b281635704ec10d59125f886d32dedaef",
+      "size_bytes": 115021,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-01",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-01.json",
+      "sha256": "0fbc7972d809cb385bfbd6756c2199e6b2dfb28733f25de30a3975ee9fa2248d",
+      "size_bytes": 84233,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-02",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-02.json",
+      "sha256": "9e82e1a987e8a396e2e8ddd68421592bd1abb8511cd0f897106fc4fd4eca6252",
+      "size_bytes": 84938,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-03",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-03.json",
+      "sha256": "04935fac2b657e8104b71a59e435e142b66349bbfc6157d223cd169feb4e233f",
+      "size_bytes": 85068,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-04",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-04.json",
+      "sha256": "db3b9fe93563bb4d80517b1f0b9137a1779a86d927f6aaf49c263586f5008fc2",
+      "size_bytes": 84818,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-05",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-05.json",
+      "sha256": "8221b9a061ae20818095f1467badb7682cd80f372590c68262a64638949befd9",
+      "size_bytes": 85193,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "adapter-check-003-arabsign-loso-06",
+      "kind": "metrics",
+      "uri": "modal://repro-sign/alyami-2024-cslr-results/checks/adapter-check-arabsign-loso-06.json",
+      "sha256": "4bbd485d57aefab7703a84081c367f8000add87d05bf8b6402f91416575ed1e3",
+      "size_bytes": 85118,
+      "note": "adapter_check output: per run, info-list/gloss-dict/STM hashes and per-sample labels, frames read and transform-tensor hashes."
+    },
+    {
+      "artifact_id": "hf-sha256sums",
+      "kind": "checksums",
+      "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c/SHA256SUMS",
+      "sha256": "02a5cd0e5028798b87b898a697b695492e9af0d36b0c639e851517bef0860847",
+      "size_bytes": 6442,
+      "note": "sha256 of the 55 published checkpoints, written by publish.sh from the recorded values after verifying every staged file; uploaded with them at revision c549da6dccaec4e8d1bf3b2daf1e4418fbebe74c (2026-11-06T09:56:09Z)."
+    },
+    {
+      "artifact_id": "hf-model-card",
+      "kind": "documentation",
+      "uri": "https://huggingface.co/repro-sign/alyami-2024-cslr-comparative/resolve/ff4a8b7abcfac01b7c941f5c25d00b148bd9624c/README.md",
+      "sha256": "e71119774bf2f4a1eb6f66e1d6fd10e20e7643b4c2852498d015a0c971c1a237",
+      "size_bytes": 60523,
+      "note": "The paper README uploaded as the model card at revision ff4a8b7abcfac01b7c941f5c25d00b148bd9624c (2026-11-06), byte-identical to papers/alyami-2024-cslr-comparative/README.md in the commit that records this artifact. Revision c549da6 carried an earlier draft of the same README with the checkpoints."
     }
   ],
   "gates": [
@@ -16576,6 +17429,38 @@
             },
             "block_6_usd": 659.15,
             "remaining_under_absolute_ceiling_usd": 830.84
+          },
+          {
+            "date": "2026-11-06",
+            "as_of_utc": "2026-11-06T09:00Z",
+            "scope": "final: every app of this paper on 2026-11-02 to 2026-11-05 (data jobs, builds, preflights, diagnostics, blocks 1-6, all CPU-only checks); 2026-11-05 is a complete day and no Modal work ran on 2026-11-06 (the checkpoint upload to Hugging Face ran from the operator's machine from checkpoints staged on 2026-11-05)",
+            "usd": 1169.84,
+            "source": "modal billing report --start 2026-11-02 --end 2026-11-07 --show-resources --json (sum over apps described repro-alyami-2024-cslr*)",
+            "by_day_usd": {
+              "2026-11-02": 114.23,
+              "2026-11-03": 395.27,
+              "2026-11-04": 659.66,
+              "2026-11-05": 0.68
+            },
+            "by_resource_usd": {
+              "L40S": 750.78,
+              "CPU": 295.61,
+              "Memory": 123.44,
+              "Network Egress": 0.01
+            },
+            "2026_11_05_usd": {
+              "adapter-check-003": 0.572,
+              "checkpoint-check-003": 0.104,
+              "inspect-environment-001": 0.002
+            },
+            "breakdown_usd": {
+              "data_builds_preflights_diagnostics_checks_before_2026_11_05": 18.1,
+              "block_1": 98.15,
+              "blocks_2_to_5": 393.76,
+              "block_6": 659.15,
+              "checks_2026_11_05": 0.68
+            },
+            "remaining_under_absolute_ceiling_usd": 830.16
           }
         ],
         "block_ledger": [
@@ -16601,7 +17486,9 @@
               "TLP's dev WER was still falling at its final (40th) epoch: 26.7, 26.8, 26.5, 26.2 at epoch indices 36-39.",
               "VAC is +7.73 against the paper while SMKD, from the same repository with the same data lists and scoring, is within 0.17; this rules out a data or scoring fault for this block.",
               "Per-epoch dev WER curves of all five runs are preserved as artifacts full-<model>-phoenix-sd-001-dev-log (artifacts/ in this directory, verbatim copies of each run's work/dev.txt)."
-            ]
+            ],
+            "actual_gpu_hours": 33.13,
+            "actual_gpu_hours_basis": "Billed L40S time: training 32.66 GPU-h over the 5 full-*-phoenix-sd-001 apps plus evaluation 0.47 GPU-h over the 6 eval-*-phoenix-sd apps that billed L40S time (including the failed eval-tlp-phoenix-sd-001; the interrupted eval-corrnet-phoenix-sd-001 billed none); L40S cost / USD 1.95 per hour (see runs[].compute.gpu_hours_basis). Collected 2026-11-05."
           },
           {
             "block": "2 phoenix-si",

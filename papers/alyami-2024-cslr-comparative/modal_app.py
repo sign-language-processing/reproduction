@@ -1308,7 +1308,7 @@ def adapter_check(setting: str, samples_per_split: int = 10):
     sys.dont_write_bytecode = True
     RESULTS.reload()
     _, staged = _stage_frames(SETTINGS[setting]["frames"])
-    dataset = SETTINGS[setting]["dataset"]
+    dataset = SETTINGS[setting].get("dataset", "phoenix2014")  # phoenix-sd: each repo's own phoenix2014 lists (train())
 
     def digest(obj):
         return hashlib.sha256(json.dumps(obj, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
