@@ -1,9 +1,22 @@
 {
   "paper_id": "chen-2026-gloss-pretrained",
+  "agents": [
+    {
+      "agent_id": "original-reproduction-agent",
+      "model": null,
+      "harness": null,
+      "scope": "Implementation of the reproduction and execution of all 17 retained runs. Audited 2026-11-06: neither the model nor the agent application is recoverable from the committed evidence.",
+      "evidence": [
+        "https://github.com/sign-language-processing/reproduction/commit/7b12017 \u2014 the only commit touching papers/chen-2026-gloss-pretrained/, 'chen2026 finished', carries no model or agent-application trailer.",
+        "https://github.com/sign-language-processing/reproduction/pull/41 \u2014 audited 2026-11-06: the body describes results, the missing author code and the unreachable back-translation source, and the single review says only 'lgtm1'; neither identifies the execution model or application.",
+        "A human account and a branch name do not establish agent identity, so no model has been inferred from either."
+      ]
+    }
+  ],
   "assignment": {
     "kind": "direct_user_request",
     "source": {
-      "path": "/Users/carlos/Downloads/Improving_Sign_Language-Gloss_Translations_With_Pretrained_Models.pdf",
+      "path": "user-provided PDF Improving_Sign_Language-Gloss_Translations_With_Pretrained_Models.pdf; operator-local path omitted per the operator-privacy rules. The SHA-256 below is the artifact identifier.",
       "sha256": "ce9059654739d5b5a3804fbe99335148afab13c06499b27843a45ed88ce8171b"
     },
     "request": "User asked to reproduce Table 6 of this paper. The REPRO-SIGN survey tool record at repro-sign-survey-frontend.fly.dev/paper.html?id=550614802c03abf554dd1f3a4e65abfa34e6c07a required authenticated PocketBase access we did not have; the user instead supplied the paper directly as a local PDF path (the paper is paywalled on IEEE Xplore). No queue record fields (confirmation/status/code_repos/etc.) are available or invented for this assignment."
@@ -81,8 +94,9 @@
     }
   ],
   "status": {
-    "pipeline": "partial",
-    "numerical_agreement": "not_fully_reproduced",
+    "pipeline": "complete",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Assessed on the 86 in-scope Table 6 targets, every one of which produced a comparable value; the 21 copied comparison rows citing refs [7], [33] and [34] are out of scope and were not rerun. Absolute differences span 0.029 to 89.680 points, and the disagreement is structured by system rather than uniform. The from-scratch Transformer rows reproduce closely on all three tasks (ASLG-PC12 -1.72 to -0.40; CSL-Daily +0.03 to +1.16; Phoenix2014T +0.96 to +1.25), as do mBART (-3.55 to -1.31; -6.35 to -5.82; -3.91 to -2.37) and Phoenix2014T +Back-translation (-1.87 to -1.59). Every mT5 row falls far below the paper: medians -80.84 (small), -32.00 (base) and -88.78 (large) on ASLG-PC12, -27.99 / -8.35 / -45.81 on CSL-Daily, and -32.85 / -36.33 / -40.16 on Phoenix2014T. Because the contract requires does_not_agree when any assessed value disagrees, the record is does_not_agree; no score-matching tolerance is asserted and no significance test was performed. Recorded as a raw observation and not a scientific conclusion: the mT5 shortfall was diagnosed rather than tuned away. Checkpoint inspection confirmed fluent, non-repeating output collapsing to generic templates, i.e. underfitting rather than a decoding artifact, and T5Config exposes only a single dropout_rate, so setting the paper's 0.3 trains mT5 at roughly three times mBART's effective attention dropout, where BartConfig accepts the paper's separate attention_dropout of 0.1. That asymmetry is recorded as a plausible contributing cause and was deliberately not adjusted toward the published numbers; see guesses.",
     "preference_level": 3,
     "blocker": null
   },
@@ -471,6 +485,7 @@
   "targets": [
     {
       "target_id": "t6-phoenix-transformer-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, BLEU-1 column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -494,6 +509,7 @@
     },
     {
       "target_id": "t6-phoenix-transformer-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, BLEU-2 column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -517,6 +533,7 @@
     },
     {
       "target_id": "t6-phoenix-transformer-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, BLEU-3 column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -540,6 +557,7 @@
     },
     {
       "target_id": "t6-phoenix-transformer-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, BLEU-4 column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -563,6 +581,7 @@
     },
     {
       "target_id": "t6-phoenix-transformer-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, ROUGE-L column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -586,6 +605,7 @@
     },
     {
       "target_id": "t6-phoenix-transformer-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, Transformer row, METEOR column",
       "experiment_id": "t6-phoenix-transformer",
       "system": "Transformer",
@@ -609,6 +629,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, BLEU-1 column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -632,6 +653,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, BLEU-2 column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -655,6 +677,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, BLEU-3 column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -678,6 +701,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, BLEU-4 column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -701,6 +725,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, ROUGE-L column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -724,6 +749,7 @@
     },
     {
       "target_id": "t6-phoenix-backtranslation-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, +Back-translation row, METEOR column",
       "experiment_id": "t6-phoenix-backtranslation",
       "system": "+Back-translation",
@@ -747,6 +773,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, BLEU-1 column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -770,6 +797,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, BLEU-2 column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -793,6 +821,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, BLEU-3 column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -816,6 +845,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, BLEU-4 column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -839,6 +869,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, ROUGE-L column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -862,6 +893,7 @@
     },
     {
       "target_id": "t6-phoenix-mbart-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mBART row, METEOR column",
       "experiment_id": "t6-phoenix-mbart",
       "system": "mBART",
@@ -885,6 +917,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, BLEU-1 column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -908,6 +941,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, BLEU-2 column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -931,6 +965,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, BLEU-3 column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -954,6 +989,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, BLEU-4 column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -977,6 +1013,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, ROUGE-L column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -1000,6 +1037,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-small-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_small row, METEOR column",
       "experiment_id": "t6-phoenix-mt5-small",
       "system": "mT5_small",
@@ -1023,6 +1061,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, BLEU-1 column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1046,6 +1085,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, BLEU-2 column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1069,6 +1109,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, BLEU-3 column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1092,6 +1133,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, BLEU-4 column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1115,6 +1157,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, ROUGE-L column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1138,6 +1181,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-base-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_base row, METEOR column",
       "experiment_id": "t6-phoenix-mt5-base",
       "system": "mT5_base",
@@ -1161,6 +1205,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, BLEU-1 column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1184,6 +1229,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, BLEU-2 column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1207,6 +1253,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, BLEU-3 column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1230,6 +1277,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, BLEU-4 column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1253,6 +1301,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, ROUGE-L column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1276,6 +1325,7 @@
     },
     {
       "target_id": "t6-phoenix-mt5-large-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, Phoenix2014 Task, mT5_large row, METEOR column",
       "experiment_id": "t6-phoenix-mt5-large",
       "system": "mT5_large",
@@ -1299,6 +1349,7 @@
     },
     {
       "target_id": "t6-phoenix-ref7-bleu1",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [7], BLEU-1 column",
       "experiment_id": "t6-phoenix-ref7",
       "system": "Copied baseline ([7])",
@@ -1324,6 +1375,7 @@
     },
     {
       "target_id": "t6-phoenix-ref7-bleu2",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [7], BLEU-2 column",
       "experiment_id": "t6-phoenix-ref7",
       "system": "Copied baseline ([7])",
@@ -1349,6 +1401,7 @@
     },
     {
       "target_id": "t6-phoenix-ref7-bleu3",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [7], BLEU-3 column",
       "experiment_id": "t6-phoenix-ref7",
       "system": "Copied baseline ([7])",
@@ -1374,6 +1427,7 @@
     },
     {
       "target_id": "t6-phoenix-ref7-bleu4",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [7], BLEU-4 column",
       "experiment_id": "t6-phoenix-ref7",
       "system": "Copied baseline ([7])",
@@ -1399,6 +1453,7 @@
     },
     {
       "target_id": "t6-phoenix-ref7-rougel",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [7], ROUGE-L column",
       "experiment_id": "t6-phoenix-ref7",
       "system": "Copied baseline ([7])",
@@ -1424,6 +1479,7 @@
     },
     {
       "target_id": "t6-phoenix-ref33-bleu1",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [33], BLEU-1 column",
       "experiment_id": "t6-phoenix-ref33",
       "system": "Copied baseline ([33])",
@@ -1449,6 +1505,7 @@
     },
     {
       "target_id": "t6-phoenix-ref33-bleu2",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [33], BLEU-2 column",
       "experiment_id": "t6-phoenix-ref33",
       "system": "Copied baseline ([33])",
@@ -1474,6 +1531,7 @@
     },
     {
       "target_id": "t6-phoenix-ref33-bleu3",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [33], BLEU-3 column",
       "experiment_id": "t6-phoenix-ref33",
       "system": "Copied baseline ([33])",
@@ -1499,6 +1557,7 @@
     },
     {
       "target_id": "t6-phoenix-ref33-bleu4",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [33], BLEU-4 column",
       "experiment_id": "t6-phoenix-ref33",
       "system": "Copied baseline ([33])",
@@ -1524,6 +1583,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-bleu1",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], BLEU-1 column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1550,6 +1610,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-bleu2",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], BLEU-2 column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1576,6 +1637,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-bleu3",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], BLEU-3 column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1602,6 +1664,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-bleu4",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], BLEU-4 column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1628,6 +1691,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-rougel",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], ROUGE-L column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1654,6 +1718,7 @@
     },
     {
       "target_id": "t6-phoenix-ref34-meteor",
+      "in_scope": false,
       "paper_location": "Table 6, Phoenix2014 Task, row citing [34], METEOR column",
       "experiment_id": "t6-phoenix-ref34",
       "system": "Copied baseline ([34])",
@@ -1680,6 +1745,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, BLEU-1 column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1703,6 +1769,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, BLEU-2 column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1726,6 +1793,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, BLEU-3 column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1749,6 +1817,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, BLEU-4 column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1772,6 +1841,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, ROUGE-L column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1795,6 +1865,7 @@
     },
     {
       "target_id": "t6-aslgpc12-transformer-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, Transformer row, METEOR column",
       "experiment_id": "t6-aslgpc12-transformer",
       "system": "Transformer",
@@ -1818,6 +1889,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, BLEU-1 column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1841,6 +1913,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, BLEU-2 column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1864,6 +1937,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, BLEU-3 column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1887,6 +1961,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, BLEU-4 column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1910,6 +1985,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, ROUGE-L column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1933,6 +2009,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mbart-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mBART row, METEOR column",
       "experiment_id": "t6-aslgpc12-mbart",
       "system": "mBART",
@@ -1956,6 +2033,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, BLEU-1 column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -1979,6 +2057,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, BLEU-2 column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -2002,6 +2081,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, BLEU-3 column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -2025,6 +2105,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, BLEU-4 column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -2048,6 +2129,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, ROUGE-L column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -2071,6 +2153,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-small-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_small row, METEOR column",
       "experiment_id": "t6-aslgpc12-mt5-small",
       "system": "mT5_small",
@@ -2094,6 +2177,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, BLEU-1 column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2117,6 +2201,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, BLEU-2 column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2140,6 +2225,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, BLEU-3 column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2163,6 +2249,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, BLEU-4 column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2186,6 +2273,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, ROUGE-L column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2209,6 +2297,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-base-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_base row, METEOR column",
       "experiment_id": "t6-aslgpc12-mt5-base",
       "system": "mT5_base",
@@ -2232,6 +2321,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, BLEU-1 column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2255,6 +2345,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, BLEU-2 column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2278,6 +2369,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, BLEU-3 column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2301,6 +2393,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, BLEU-4 column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2324,6 +2417,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-rougel",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, ROUGE-L column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2347,6 +2441,7 @@
     },
     {
       "target_id": "t6-aslgpc12-mt5-large-meteor",
+      "in_scope": true,
       "paper_location": "Table 6, ASLG-PC12 Task, mT5_large row, METEOR column",
       "experiment_id": "t6-aslgpc12-mt5-large",
       "system": "mT5_large",
@@ -2370,6 +2465,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-bleu1",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], BLEU-1 column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2396,6 +2492,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-bleu2",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], BLEU-2 column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2422,6 +2519,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-bleu3",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], BLEU-3 column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2448,6 +2546,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-bleu4",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], BLEU-4 column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2474,6 +2573,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-rougel",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], ROUGE-L column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2500,6 +2600,7 @@
     },
     {
       "target_id": "t6-aslgpc12-ref34-meteor",
+      "in_scope": false,
       "paper_location": "Table 6, ASLG-PC12 Task, row citing [34], METEOR column",
       "experiment_id": "t6-aslgpc12-ref34",
       "system": "Copied baseline ([34])",
@@ -2526,6 +2627,7 @@
     },
     {
       "target_id": "t6-csldaily-transformer-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, Transformer row, BLEU-1 column",
       "experiment_id": "t6-csldaily-transformer",
       "system": "Transformer",
@@ -2549,6 +2651,7 @@
     },
     {
       "target_id": "t6-csldaily-transformer-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, Transformer row, BLEU-2 column",
       "experiment_id": "t6-csldaily-transformer",
       "system": "Transformer",
@@ -2572,6 +2675,7 @@
     },
     {
       "target_id": "t6-csldaily-transformer-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, Transformer row, BLEU-3 column",
       "experiment_id": "t6-csldaily-transformer",
       "system": "Transformer",
@@ -2595,6 +2699,7 @@
     },
     {
       "target_id": "t6-csldaily-transformer-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, Transformer row, BLEU-4 column",
       "experiment_id": "t6-csldaily-transformer",
       "system": "Transformer",
@@ -2618,6 +2723,7 @@
     },
     {
       "target_id": "t6-csldaily-mbart-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mBART row, BLEU-1 column",
       "experiment_id": "t6-csldaily-mbart",
       "system": "mBART",
@@ -2641,6 +2747,7 @@
     },
     {
       "target_id": "t6-csldaily-mbart-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mBART row, BLEU-2 column",
       "experiment_id": "t6-csldaily-mbart",
       "system": "mBART",
@@ -2664,6 +2771,7 @@
     },
     {
       "target_id": "t6-csldaily-mbart-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mBART row, BLEU-3 column",
       "experiment_id": "t6-csldaily-mbart",
       "system": "mBART",
@@ -2687,6 +2795,7 @@
     },
     {
       "target_id": "t6-csldaily-mbart-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mBART row, BLEU-4 column",
       "experiment_id": "t6-csldaily-mbart",
       "system": "mBART",
@@ -2710,6 +2819,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-small-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_small row, BLEU-1 column",
       "experiment_id": "t6-csldaily-mt5-small",
       "system": "mT5_small",
@@ -2733,6 +2843,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-small-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_small row, BLEU-2 column",
       "experiment_id": "t6-csldaily-mt5-small",
       "system": "mT5_small",
@@ -2756,6 +2867,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-small-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_small row, BLEU-3 column",
       "experiment_id": "t6-csldaily-mt5-small",
       "system": "mT5_small",
@@ -2779,6 +2891,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-small-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_small row, BLEU-4 column",
       "experiment_id": "t6-csldaily-mt5-small",
       "system": "mT5_small",
@@ -2802,6 +2915,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-base-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_base row, BLEU-1 column",
       "experiment_id": "t6-csldaily-mt5-base",
       "system": "mT5_base",
@@ -2825,6 +2939,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-base-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_base row, BLEU-2 column",
       "experiment_id": "t6-csldaily-mt5-base",
       "system": "mT5_base",
@@ -2848,6 +2963,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-base-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_base row, BLEU-3 column",
       "experiment_id": "t6-csldaily-mt5-base",
       "system": "mT5_base",
@@ -2871,6 +2987,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-base-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_base row, BLEU-4 column",
       "experiment_id": "t6-csldaily-mt5-base",
       "system": "mT5_base",
@@ -2894,6 +3011,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-large-bleu1",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_large row, BLEU-1 column",
       "experiment_id": "t6-csldaily-mt5-large",
       "system": "mT5_large",
@@ -2917,6 +3035,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-large-bleu2",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_large row, BLEU-2 column",
       "experiment_id": "t6-csldaily-mt5-large",
       "system": "mT5_large",
@@ -2940,6 +3059,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-large-bleu3",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_large row, BLEU-3 column",
       "experiment_id": "t6-csldaily-mt5-large",
       "system": "mT5_large",
@@ -2963,6 +3083,7 @@
     },
     {
       "target_id": "t6-csldaily-mt5-large-bleu4",
+      "in_scope": true,
       "paper_location": "Table 6, CSL-Daily Task, mT5_large row, BLEU-4 column",
       "experiment_id": "t6-csldaily-mt5-large",
       "system": "mT5_large",
@@ -3066,7 +3187,9 @@
       ],
       "observation": "Four earlier attempts in this same session (not separately retained) each hit one deterministic, code-level compatibility failure, fixed one hypothesis at a time: apex.amp import (removed apex), rouge.py wordnet DB path (copied files into tools/), and nltk.meteor() tokenization API (retained patch patches/0001-meteor-tokenize.patch). This run is the first clean pass after all three fixes.",
       "hypothesis_supported": true,
-      "next_action": "Measure real per-step throughput and decide batch size/epoch budget, then estimate cost for all 12 mBART/mT5 full runs before launching."
+      "next_action": "Measure real per-step throughput and decide batch size/epoch budget, then estimate cost for all 12 mBART/mT5 full runs before launching.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mbart-csldaily",
@@ -3150,7 +3273,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (same paper_id app family, max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-small-csldaily",
@@ -3234,7 +3359,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (same paper_id app family, max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mbart-phoenix",
@@ -3318,7 +3445,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-base-phoenix",
@@ -3402,7 +3531,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-small-phoenix",
@@ -3486,7 +3617,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-small-aslgpc12",
@@ -3570,7 +3703,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-base-csldaily",
@@ -3654,7 +3789,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-large-phoenix",
@@ -3738,7 +3875,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mbart-aslgpc12",
@@ -3822,7 +3961,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-large-csldaily",
@@ -3906,7 +4047,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain. Modal app ID/exact timing could not be recovered: local session lost the live log stream overnight (laptop closed); modal app list returned empty for this run afterward (retention-window or listing quirk), so provenance relies on the scores.json content and checkpoint history on the shared results Volume, not a live dashboard link.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-base-aslgpc12",
@@ -3990,7 +4133,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "reeval-mt5-large-aslgpc12",
@@ -4074,7 +4219,9 @@
       ],
       "observation": "Reuses weights trained by an earlier full-training launch (max_steps=40000, batch_size=16); this reeval run only redoes generation+scoring under the fixed generation config, it does not retrain.",
       "hypothesis_supported": true,
-      "next_action": "Populate this run's scores into the matching Table 6 targets."
+      "next_action": "Populate this run's scores into the matching Table 6 targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "baseline-phoenix-transformer",
@@ -4155,7 +4302,9 @@
       ],
       "observation": "Ref [33]'s recipe invoked verbatim (no hyperparameter overrides); early stopping ended training in ~5 minutes total (preprocess+train+translate).",
       "hypothesis_supported": true,
-      "next_action": "Populate scores into t6-phoenix-transformer targets."
+      "next_action": "Populate scores into t6-phoenix-transformer targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "baseline-csldaily-transformer",
@@ -4236,7 +4385,9 @@
       ],
       "observation": "ROUGE-L returned 0.0 (ref [33] tools/rouge.py strips non-ASCII characters, known Chinese-text limitation, immaterial since CSL-Daily has no ROUGE-L target).",
       "hypothesis_supported": true,
-      "next_action": "Populate scores into t6-csldaily-transformer targets."
+      "next_action": "Populate scores into t6-csldaily-transformer targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "baseline-aslgpc12-transformer",
@@ -4317,7 +4468,9 @@
       ],
       "observation": "A Modal Volume read-after-write race caused one transient scoring failure (test.pred.txt not yet synced); waiting for the training app to reach state=stopped before retrying resolved it, same pattern as the mBART/mT5 phase.",
       "hypothesis_supported": true,
-      "next_action": "Populate scores into t6-aslgpc12-transformer targets."
+      "next_action": "Populate scores into t6-aslgpc12-transformer targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     },
     {
       "run_id": "baseline-phoenix-backtranslation",
@@ -4400,7 +4553,9 @@
       ],
       "observation": "Reproduced +Back-translation scores slightly UNDERPERFORM this reproduction's own plain Transformer baseline (BLEU-4 21.07 vs 22.42), the opposite of the paper's reported direction (21.41 -> 22.78, an improvement). Plausible cause: the approximated 30K sentence set (generic mc4/de Common Crawl + unigram cross-entropy-difference selection) is a much noisier substitute for the paper's original (now-inaccessible) weather-domain source; not further tuned to chase the paper's direction.",
       "hypothesis_supported": true,
-      "next_action": "Populate scores into t6-phoenix-backtranslation targets."
+      "next_action": "Populate scores into t6-phoenix-backtranslation targets.",
+      "agent_ids": [],
+      "agent_attribution_note": "Historical execution agent not recorded. The only commit touching papers/chen-2026-gloss-pretrained/, 7b12017, carries no model or agent-application trailer, and PR #41 does not identify the executor; see agents[].evidence."
     }
   ],
   "artifacts": [
