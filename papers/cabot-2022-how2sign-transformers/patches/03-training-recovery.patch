@@ -1,0 +1,90 @@
+# Preserve epoch, iterator and RNG state at completed optimizer boundaries after observed Modal preemption. Native model, optimizer, scheduler and checkpoint selection remain unchanged.
+--- a/signjoey/training.py
++++ b/signjoey/training.py
+@@ -51,9 +51,14 @@
+         train_config = config["training"]
+ 
+         # files for logging and storing
+-        self.model_dir = make_model_dir(
+-            train_config["model_dir"], overwrite=train_config.get("overwrite", False)
+-        )
++        self.repro_recovery_dir = train_config.get("repro_recovery_dir")
++        if train_config.get("repro_resume", False):
++            self.model_dir = train_config["model_dir"]
++            assert os.path.isdir(self.model_dir)
++        else:
++            self.model_dir = make_model_dir(
++                train_config["model_dir"], overwrite=train_config.get("overwrite", False)
++            )
+         self.logger = make_logger(model_dir=self.model_dir)
+         self.logging_freq = train_config.get("logging_freq", 100)
+         self.valid_report_file = "{}/validations.txt".format(self.model_dir)
+@@ -264,6 +269,9 @@
+             if self.scheduler is not None
+             else None,
+         }
++        if self.repro_recovery_dir:
++            from recovery_train import preserve_native
++            preserve_native(self, model_path)
+         torch.save(state, model_path)
+         if self.ckpt_queue.full():
+             to_delete = self.ckpt_queue.get()  # delete oldest ckpt
+@@ -305,6 +313,7 @@
+                                 stored in the checkpoint.
+         """
+         model_checkpoint = load_checkpoint(path=path, use_cuda=self.use_cuda)
++        self.repro_state = model_checkpoint.get("repro_state")
+ 
+         # restore model and optimizer parameters
+         self.model.load_state_dict(model_checkpoint["model_state"])
+@@ -353,8 +362,15 @@
+             train=True,
+             shuffle=self.shuffle,
+         )
++        start_epoch, resume_loop = 0, {}
++        if self.repro_recovery_dir:
++            from recovery_train import restore_training, save_training
++            start_epoch, resume_loop, complete = restore_training(self, train_iter)
++            if complete:
++                self.tb_writer.close()
++                return
+         epoch_no = None
+-        for epoch_no in range(self.epochs):
++        for epoch_no in range(start_epoch, self.epochs):
+             self.logger.info("EPOCH %d", epoch_no + 1)
+ 
+             if self.scheduler is not None and self.scheduler_step_at == "epoch":
+@@ -367,10 +383,11 @@
+ 
+             if self.do_recognition:
+                 processed_gls_tokens = self.total_gls_tokens
+-                epoch_recognition_loss = 0
++                epoch_recognition_loss = resume_loop.get("recognition_loss", 0)
+             if self.do_translation:
+                 processed_txt_tokens = self.total_txt_tokens
+-                epoch_translation_loss = 0
++                epoch_translation_loss = resume_loop.get("translation_loss", 0)
++            resume_loop = {}
+ 
+             for batch in iter(train_iter):
+                 # reactivate training
+@@ -688,6 +705,10 @@
+                             "references.dev.txt", valid_seq, val_res["txt_ref"]
+                         )
+ 
++                if self.repro_recovery_dir:
++                    save_training(self, train_iter, epoch_no, loop={
++                        "recognition_loss": epoch_recognition_loss,
++                        "translation_loss": epoch_translation_loss})
+                 if self.stop:
+                     break
+             if self.stop:
+@@ -724,6 +745,8 @@
+             self.early_stopping_metric,
+         )
+ 
++        if self.repro_recovery_dir:
++            save_training(self, train_iter, epoch_no, complete=True, force=True)
+         self.tb_writer.close()  # close Tensorboard writer
+ 
+     def _train_batch(self, batch: Batch, update: bool = True) -> (Tensor, Tensor):

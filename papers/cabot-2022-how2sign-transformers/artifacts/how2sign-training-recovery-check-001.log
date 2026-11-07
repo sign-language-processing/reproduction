@@ -1,0 +1,167 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-2He4wV1EMffWNsxeK2dmxM
+Building image im-K2S8jtDKEZPj7TLZ29IEe1
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 962.27ms
+
+Built image im-K2S8jtDKEZPj7TLZ29IEe1 in 4.72s
+
+
+Building image im-UaGbv1KtlrrjpFXh1ZRWt8
+
+=> Step 0: FROM base
+
+=> Step 1: RUN git -C /slt apply /opt/how2-patches/01-english-wer.patch
+
+=> Step 2: RUN git -C /slt apply /opt/how2-patches/02-wer-integer-range.patch
+
+=> Step 3: RUN git -C /slt apply /opt/how2-patches/03-training-recovery.patch
+Saving image...
+Image saved, took 735.48ms
+
+Built image im-UaGbv1KtlrrjpFXh1ZRWt8 in 3.79s
+
+
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_training_recovery.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/recovery_train.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/parallel_ctc.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/pa
+│   tches
+├── 🔨 Created function execute.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function collect.
+├── 🔨 Created function check_phoenix_metric.
+├── 🔨 Created function execute_how2.
+├── 🔨 Created function check_how2_metric.
+├── 🔨 Created function check_evaluation.
+├── 🔨 Created function check_evaluation_gpu.
+└── 🔨 Created function check_training_recovery.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{"started_at_utc": "2026-10-01T15:06:12.107411+00:00", "app_id": "ap-2He4wV1EMffWNsxeK2dmxM", "function_call_id": "fc-01M3W00KQQREWYERX6H9H0Q1SB", "exit_code": 1, "finished_at_utc": "2026-10-01T15:07:52.388472+00:00"}
+Traceback (most recent call last):
+  File "/opt/check_training_recovery.py", line 74, in <module>
+    assert equal(reference,continued),'Training state differs after continuation'
+AssertionError: Training state differs after continuation
+
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 338, in check_training_recovery
+    if meta['exit_code']:raise RuntimeError('Training recovery diagnostic failed')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Training recovery diagnostic failed
+Runner terminated.
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <worktree>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:343 in main                                               │
+│                                                                              │
+│   342 │   if mode=='check-training-recovery':                                │
+│ ❱ 343 │   │   check_training_recovery.remote(run_id); return                 │
+│   344 │   if mode=='check-capacity-normal':                                  │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3W00MCG0BBZP5PPPXW2B81R)...      │
+│                                                                              │
+│ /root/modal_app.py:338 in check_training_recovery                            │
+│                                                                              │
+│ ❱ 338 if meta['exit_code']:raise RuntimeError('Training recovery diagnostic  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+RuntimeError: Training recovery diagnostic failed

@@ -1,0 +1,37 @@
+# Recovery only: cache completed native loss/decoding batches during the
+# explicitly wrapped final How2 checkpoint test. Leave aggregation, metrics,
+# candidate order, checkpoint selection and inactive training/PHX paths intact.
+--- a/signjoey/prediction.py
++++ b/signjoey/prediction.py
+@@ -102,6 +102,9 @@
+         - decoded_valid: raw validation hypotheses (before post-processing),
+         - valid_attention_scores: attention scores for validation hypotheses
+     """
++    from recovery_eval import model_for_validation
++
++    batch_model = model_for_validation(model, data, locals())
+     valid_iter = make_data_iter(
+         dataset=data,
+         batch_size=batch_size,
+@@ -132,8 +135,10 @@
+                 frame_subsampling_ratio=frame_subsampling_ratio,
+             )
+             sort_reverse_index = batch.sort_by_sgn_lengths()
+-
+-            batch_recognition_loss, batch_translation_loss = model.get_loss_for_batch(
++            if batch_model is not model:
++                batch_model.start_batch(batch, sort_reverse_index)
++
++            batch_recognition_loss, batch_translation_loss = batch_model.get_loss_for_batch(
+                 batch=batch,
+                 recognition_loss_function=recognition_loss_function
+                 if do_recognition
+@@ -160,7 +165,7 @@
+                 batch_gls_predictions,
+                 batch_txt_predictions,
+                 batch_attention_scores,
+-            ) = model.run_batch(
++            ) = batch_model.run_batch(
+                 batch=batch,
+                 recognition_beam_size=recognition_beam_size if do_recognition else None,
+                 translation_beam_size=translation_beam_size if do_translation else None,
