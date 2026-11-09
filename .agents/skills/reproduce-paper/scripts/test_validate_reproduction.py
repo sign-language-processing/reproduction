@@ -320,6 +320,42 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("declared after the run started", result.stderr)
 
+    def unset_cache_environment_document(self) -> dict:
+        document = valid_document()
+        document["runs"][0]["compute"] = {
+            "platform": "modal",
+            "modal_profile": "repro-sign",
+            "gpu_count": 0,
+            "shared_cache": {
+                "modal_volume": "huggingface-cache",
+                "mount_path": "/cache/huggingface",
+                "environment": {"HF_HOME": None, "HF_HUB_CACHE": None},
+                "environment_note": "The image did not set the cache variables.",
+            },
+        }
+        return document
+
+    def test_unset_cache_environment_with_note_is_a_warning(self) -> None:
+        result = self.validate(self.unset_cache_environment_document())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("1 warning(s)", result.stderr)
+        self.assertIn("without the cache environment", result.stderr)
+
+    def test_unset_cache_environment_needs_a_note(self) -> None:
+        document = self.unset_cache_environment_document()
+        del document["runs"][0]["compute"]["shared_cache"]["environment_note"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("has invalid cache environment", result.stderr)
+
+    def test_wrong_cache_environment_value_stays_an_error(self) -> None:
+        document = self.unset_cache_environment_document()
+        environment = document["runs"][0]["compute"]["shared_cache"]["environment"]
+        environment["HF_HOME"] = "/root/.cache/huggingface"
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("has invalid cache environment", result.stderr)
+
     def test_modal_gpu_run_requires_gpu_and_cost_ceilings(self) -> None:
         document = valid_document()
         document["runs"][0]["compute"] = {
