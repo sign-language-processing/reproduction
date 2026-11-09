@@ -82,6 +82,50 @@ Choose `status.numerical_agreement` only after target eligibility is settled:
 
 Record that basis in `status.numerical_agreement_basis`, including the assessed target scope and any tolerance, reported precision, uncertainty, or reviewer judgment used. Numerical agreement summarizes values, not protocol fidelity or overall reproducibility.
 
+## Guesses, deviations and noncompliance
+
+Every `reproduction.json` carries two arrays, present even when empty (`[]` states "none" explicitly; a missing key is invalid).
+
+`guesses_and_deviations` records fidelity to the paper and its released artifacts. Each entry needs a unique `id`, a `kind`, and a `description`:
+
+| `kind` | Use when |
+| --- | --- |
+| `guess` | The paper is silent and this attempt chose a value. |
+| `paper_deviation` | This attempt departs from what the paper states. |
+| `code_deviation` | This attempt departs from what the released code does. |
+| `paper_code_conflict` | The paper and the released code disagree, and this attempt followed one of them. |
+
+The paper and its code contradicting each other is common, and it is neither a guess nor a deviation from the paper; record it as `paper_code_conflict` rather than forcing it into either.
+
+Optional fields, with these spellings and no others: `paper_says` (what the paper or code states), `used` (what this attempt did instead), `basis` (why), `effect` (the consequence for interpretation or comparability), `scope` (which part of the protocol the entry covers), `status` (free-form, e.g. "adopted before the run"), `evidence` (array of strings), `related_ids` (other entries in this array), `affects` (pipeline stages, e.g. `["train", "evaluate"]`), and `dataset_ids` (entries in `datasets`, for a deviation that concerns one dataset). Datasets carry no deviation fields of their own.
+
+`noncompliance` records the points where this attempt did not meet a requirement of the study's own contract — a ceiling not declared before launch, a required environment variable not set, a compute discussion skipped. It concerns the process, not the paper, and never goes in `guesses_and_deviations`. Each entry needs a unique `id`, a `description`, and a `requirement` citing the rule that was not met. Optional: `run_ids` (empty or absent when the lapse concerns the plan rather than a run), `effect`, and `resolution`. Record the lapse here rather than backfilling a value that was never set. Recording it does not waive the requirement: a field the validator requires, such as a GPU run's declared ceilings, is still required.
+
+```json
+"guesses_and_deviations": [
+  {
+    "id": "training-epochs",
+    "kind": "paper_code_conflict",
+    "description": "The paper and the released config give different epoch counts.",
+    "paper_says": "Sec. 4.2: 120 epochs; configs/baseline.yaml: 80 epochs",
+    "used": "120 epochs, following the paper",
+    "basis": "The paper states the protocol behind the reported table.",
+    "effect": "Training cost exceeds the released config's.",
+    "affects": ["train"]
+  }
+],
+"noncompliance": [
+  {
+    "id": "ceilings-not-declared",
+    "description": "Two GPU runs were launched with only the Modal function timeout.",
+    "requirement": "stopping-criteria.md: a contemporaneous GPU run declares GPU-hour and CHF ceilings before launch.",
+    "run_ids": ["full-1", "full-2"],
+    "effect": "Budget control only; the reported values are unaffected.",
+    "resolution": "Recorded rather than backfilled; no re-run."
+  }
+]
+```
+
 ## Final consistency checks
 
 Before handoff:
@@ -90,7 +134,7 @@ Before handoff:
 - every result points to an existing run and raw artifact by internal ID;
 - paper/candidate IDs agree across JSON files;
 - `reproduction.json` and `README.md` use the same overall status and preference level;
-- commands, hashes, pins, data identity, guesses, deviations, patches, dead ends, contacts, runtime, and compute identifiers are complete;
+- commands, hashes, pins, data identity, guesses and deviations, noncompliance, patches, dead ends, contacts, runtime, and compute identifiers are complete;
 - templates contain no examples, alternatives, or placeholder markers;
 - the retained full run reaches metric parsing, or a representative preflight does when the full run is gated.
 
