@@ -1,0 +1,21 @@
+SC2SLR: drop horizontal flip from the training transform, as the paper does
+
+Why: Sec. 4.3 and Table 2 report that horizontal flipping did not improve WER
+and was "excluded from the final augmentation scheme"; the Table 3 system
+(20.8/21.2 on PHOENIX-2014, equal to Table 2's last row, which has no flip)
+was trained without it. The released transform still applies
+RandomHorizontalFlip(0.5). This removes only that line.
+Applies after sc2slr-2-contrastive-branch.patch.
+---
+diff --git a/dataset/dataloader_video.py b/dataset/dataloader_video.py
+index 9679052..31125df 100644
+--- a/dataset/dataloader_video.py
++++ b/dataset/dataloader_video.py
+@@ -138,7 +138,6 @@ class BaseFeeder(data.Dataset):
+                 # video_augmentation.CenterCrop(224),
+                 # video_augmentation.WERAugment('/lustre/wangtao/current_exp/exp/baseline/boundary.npy'),
+                 video_augmentation.RandomCrop(self.input_size),
+-                video_augmentation.RandomHorizontalFlip(0.5),
+                 video_augmentation.Resize(self.image_scale),
+                 video_augmentation.ToTensor(),
+                 video_augmentation.TemporalRescale(0.2, self.frame_interval),
