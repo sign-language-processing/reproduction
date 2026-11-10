@@ -42,13 +42,31 @@ The conditional result is not entered as a reproduced target result: the paper d
 
 The paper is internally inconsistent: §4.4 says Adam, while Table 2 says SGD; the reconstruction follows the detailed implementation prose. The paper describes 50-epoch experiments, but Table 3 explicitly reports the requested 30-epoch row.
 
-## Reconstruction decisions and gates
+## Guesses and deviations
 
 These choices are not presented as paper facts:
 
-- The paper does not publish signer IDs or split files. `(5, 10)` is only an inferred 8/2 convention, not an author split. It is further problematic because LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction.
-- The paper does not specify frame-selection positions, resize policy, normalization constants, the modified fully-connected/LSTM width or LSTM depth, seed, or the scheduler monitor. The code uses uniform 16-frame sampling, resize-short-side 144 then one 128 crop, ImageNet normalization, a trainable 512-unit frame projection followed by one 512-unit LSTM, seed 2024, and training loss for the scheduler. Training loss prevents the held-out clips from controlling optimization.
-- The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset, predictions, or new weights are committed or distributed. An earlier invalid checkpoint was uploaded before this review; it is not reproduction evidence and must be privatized or removed pending permission to publish learned weights.
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `signer-split` | `guess` | Which two learners are held out. | 8 learners train, 2 learners test (§4.2); identities are not given | Held-out signers `(5, 10)`, only an inferred 8/2 convention, not an author split |  | LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction |  | Gate `paper-signer-split` open |  |  |  | `lsa64-original` |
+| `frame-selection` | `guess` | Positions of the 16 frames taken from each clip. | Not specified | Uniform 16-frame sampling |  |  |  |  |  |  |  |  |
+| `resize-policy` | `guess` | Resize policy before the random crop. | Not specified | Resize-short-side 144 then one 128 crop |  |  |  |  |  |  |  |  |
+| `normalization` | `guess` | Input normalization constants. | Not specified | ImageNet normalization |  |  |  |  |  |  |  |  |
+| `projection-and-lstm` | `guess` | Width of the modified fully-connected layer and LSTM, and LSTM depth. | Not specified | A trainable 512-unit frame projection followed by one 512-unit LSTM |  |  |  |  |  |  |  |  |
+| `seed` | `guess` | Random seed. | Not specified | 2024 |  |  |  |  |  |  |  |  |
+| `scheduler-monitor` | `guess` | Quantity monitored by ReduceLROnPlateau. | Not specified | Training loss | Training loss prevents the held-out clips from controlling optimization |  |  |  |  |  |  |  |
+| `optimizer` | `paper_internal_conflict` | Optimizer. | §4.4 says Adam, while Table 2 says SGD | Adam | The reconstruction follows the detailed implementation prose |  |  |  |  |  |  |  |
+| `epoch-count` | `paper_internal_conflict` | Number of training epochs. | The paper describes 50-epoch experiments, but Table 3 explicitly reports the requested 30-epoch row | Fixed 30 epochs |  |  |  |  |  |  |  |  |
+
+## Noncompliance
+
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `unpermitted-checkpoint-upload` | An earlier invalid checkpoint was uploaded before this review. | Large artifacts are published only when their license permits redistribution; LSA64 is CC BY-NC-ND 4.0 and gate `lsa64-license-and-publication` is open |  | It is not reproduction evidence | Must be privatized or removed pending permission to publish learned weights |
+
+## Data license and open gates
+
+The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset, predictions, or new weights are committed or distributed.
 
 The unresolved signer identities and license/publishing question are open gates, so no target-level numerical result is claimed here. Earlier fine-tuned and purportedly frozen results are excluded: the retained code did not enforce the paper's encoder freeze, and the fine-tuned run also drove its LR schedule from the reported holdout.
 
