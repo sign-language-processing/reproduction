@@ -199,5 +199,74 @@
     {"artifact_id": "split-lexicographic-full-run-json", "kind": "raw metric output", "uri": "modal://repro-sign/volumes/03785db2-asl-cnn-results/split-lexicographic-full-20260831T065151Z/run.json", "sha256": "e4f4614a139653c5f305f34bb505f3caf8d9080cf380dc8a06c3ca8d1e5cbe1e", "size_bytes": 4702}
   ],
   "gates": [],
+  "guesses_and_deviations": [
+    {
+      "id": "random-split-seed",
+      "kind": "guess",
+      "description": "Seed for the random 80:20 split and for augmentation.",
+      "paper_says": "Random 80:20 split; no seed",
+      "used": "`2026`, stratified by class",
+      "basis": "Makes the reported conditional reconstruction repeatable without claiming the authors\u2019 split"
+    },
+    {
+      "id": "split-order-diagnostic",
+      "kind": "guess",
+      "description": "Sensitivity of the results to the order of the train/validation split.",
+      "paper_says": "No split file or seed",
+      "used": "One fixed lexicographic-per-class 80:20 diagnostic, never used as a replacement result",
+      "basis": "Tests whether the retained random partition alone causes the validation gap; it did not",
+      "related_ids": [
+        "random-split-seed"
+      ]
+    },
+    {
+      "id": "image-resizing",
+      "kind": "guess",
+      "description": "Input image size for both networks.",
+      "paper_says": "SLRNet-8 source architecture takes 64\u00d764; Table III does not repeat size",
+      "used": "64\u00d764 RGB",
+      "basis": "Only explicit SLRNet-8 input evidence; applied consistently to both networks"
+    },
+    {
+      "id": "convolution-padding",
+      "kind": "guess",
+      "description": "Padding mode of the convolution layers.",
+      "paper_says": "Not specified",
+      "used": "`same`",
+      "basis": "Preserves the Figure 4 spatial path for the listed pooling layers"
+    },
+    {
+      "id": "optimizer-learning-rate",
+      "kind": "guess",
+      "description": "Optimizer and learning rate.",
+      "paper_says": "Not specified",
+      "used": "Adam, `1e-3`",
+      "basis": "Conventional minimal Keras default-like choice, recorded rather than inferred as author setting"
+    },
+    {
+      "id": "cnn-checkpoint-rule",
+      "kind": "guess",
+      "description": "Rule for selecting the reported CNN checkpoint.",
+      "paper_says": "Table III pairs training accuracy with maximum validation accuracy",
+      "used": "Select maximum augmented-validation accuracy",
+      "basis": "Matches the table\u2019s stated comparison framing"
+    },
+    {
+      "id": "augmentation-samples",
+      "kind": "guess",
+      "description": "How the augmented samples are drawn.",
+      "paper_says": "Ranges/factor stated, sampled transforms not",
+      "used": "Deterministic ImageDataGenerator transforms",
+      "basis": "Exactly implements stated ranges and tenfold cardinality"
+    },
+    {
+      "id": "rbf-svm-details",
+      "kind": "guess",
+      "description": "Feature layer and hyperparameters of the RBF-SVM.",
+      "paper_says": "Only \u201cRBF kernel\u201d and 696,000 augmented training images",
+      "used": "SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma=\"scale\")`",
+      "basis": "Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned"
+    }
+  ],
   "noncompliance": []
 }
