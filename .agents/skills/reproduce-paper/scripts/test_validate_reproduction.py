@@ -322,7 +322,7 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("declared after the run started", result.stderr)
 
-    def fidelity_document(self) -> dict:
+    def guesses_and_deviations_document(self) -> dict:
         document = valid_document()
         document["guesses_and_deviations"] = [
             {
@@ -372,7 +372,7 @@ class ValidatorTest(unittest.TestCase):
         return document
 
     def test_guesses_deviations_and_noncompliance_entries_validate(self) -> None:
-        result = self.validate(self.fidelity_document())
+        result = self.validate(self.guesses_and_deviations_document())
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_guesses_and_deviations_and_noncompliance_are_required(self) -> None:
@@ -392,14 +392,14 @@ class ValidatorTest(unittest.TestCase):
         }
         for field, message in cases.items():
             with self.subTest(field=field):
-                document = self.fidelity_document()
+                document = self.guesses_and_deviations_document()
                 del document["guesses_and_deviations"][0][field]
                 result = self.validate(document)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn(message, result.stderr)
 
     def test_guess_deviation_rejects_invalid_kind_and_unknown_field(self) -> None:
-        document = self.fidelity_document()
+        document = self.guesses_and_deviations_document()
         entry = document["guesses_and_deviations"][0]
         entry["kind"] = "deviation"
         entry["detail"] = "a legacy spelling"
@@ -409,7 +409,7 @@ class ValidatorTest(unittest.TestCase):
         self.assertIn("unknown field 'detail'", result.stderr)
 
     def test_guess_deviation_ids_are_unique(self) -> None:
-        document = self.fidelity_document()
+        document = self.guesses_and_deviations_document()
         document["guesses_and_deviations"][1]["id"] = "seed"
         del document["guesses_and_deviations"][1]["related_ids"]
         result = self.validate(document)
@@ -417,7 +417,7 @@ class ValidatorTest(unittest.TestCase):
         self.assertIn("duplicate id 'seed'", result.stderr)
 
     def test_guess_deviation_references_must_resolve(self) -> None:
-        document = self.fidelity_document()
+        document = self.guesses_and_deviations_document()
         document["guesses_and_deviations"][0]["dataset_ids"] = ["missing-dataset"]
         document["guesses_and_deviations"][1]["related_ids"] = ["epochs"]
         result = self.validate(document)
@@ -426,7 +426,7 @@ class ValidatorTest(unittest.TestCase):
         self.assertIn("references unknown sibling entry 'epochs'", result.stderr)
 
     def test_noncompliance_needs_requirement_and_known_runs(self) -> None:
-        document = self.fidelity_document()
+        document = self.guesses_and_deviations_document()
         del document["noncompliance"][0]["requirement"]
         document["noncompliance"][0]["run_ids"] = ["missing-run"]
         result = self.validate(document)
