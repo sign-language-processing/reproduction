@@ -156,17 +156,21 @@ Preceding jobs, for traceability rather than retained runs: the RGB transfer `fc
 
 ## Guesses and deviations
 
-| Detail | Paper says | This attempt used | Effect on interpretation |
-| --- | --- | --- | --- |
-| **Frame sampling** | §III "10 consecutive frames" vs [19] "a sequence of ten frames"; neither states a window | Ten indices evenly spaced across each clip, selected at gate `frame-window-ambiguity` | **The blocker.** Behaviour-changing by demonstration: the readings differ by 25 accuracy points, so no target is produced |
-| Window position | Not stated | n/a under uniform sampling; the rejected run used frames 0–9 | Would have been a second undocumented choice under the consecutive reading |
-| Metric averaging | Not stated | Support-weighted over 50 classes | **Confirmed**, not guessed: our runs reproduce Table III's Recall≡Accuracy identity |
-| Coordinates | "x and y coordinates"; no scale | MediaPipe's native normalisation | Values reach 0.118–1.806 where MediaPipe extrapolates past the frame; ~⅓ of landmarks are extrapolation under upper-body framing |
-| Train/test split | Target silent; [19] "the common 80/20"; ArabSign documents none but ships one | Official directories, 7,489/1,841 | Not established either paper used them. Signer-dependent by design, so no signer-independent claim follows |
-| Undetected pose | No policy stated | Nearest detected pose, carried forward or backward | 15 frames of 93,300 under uniform, 1 under consecutive. Immaterial |
-| Seed | Not stated | 2026, single run | The paper reports single values, not mean ± std, so it ran once |
-| Versions | No versions given | TF 2.17.0, sklearn 1.6.1, MediaPipe 0.10.18, simple-video-utils 0.7.4 | Differences from the authors' unstated environment are unquantifiable |
-| Sample count | Both papers claim 9,335 | 9,330 | 0.05%; cannot materially affect a metric |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `frame-sampling` | `paper_internal_conflict` | Which ten frames of each clip form an input sample. | §III "10 consecutive frames" vs [19] "a sequence of ten frames"; neither states a window | Ten indices evenly spaced across each clip, selected at gate `frame-window-ambiguity` |  | **The blocker.** Behaviour-changing by demonstration: the readings differ by 25 accuracy points, so no target is produced |  |  |  |  |  |  |
+| `window-position` | `guess` | Where in the clip a ten-frame window starts. | Not stated | n/a under uniform sampling; the rejected run used frames 0–9 |  | Would have been a second undocumented choice under the consecutive reading |  |  |  | `frame-sampling` |  |  |
+| `metric-averaging` | `guess` | How the per-class metrics are averaged. | Not stated | Support-weighted over 50 classes |  | **Confirmed**, not guessed: our runs reproduce Table III's Recall≡Accuracy identity |  |  |  |  |  |  |
+| `coordinates` | `guess` | Scale of the landmark x and y coordinates. | "x and y coordinates"; no scale | MediaPipe's native normalisation |  | Values reach 0.118–1.806 where MediaPipe extrapolates past the frame; ~⅓ of landmarks are extrapolation under upper-body framing |  |  |  |  |  |  |
+| `train-test-split` | `guess` | Train/test split of the dataset. | Target silent; [19] "the common 80/20"; ArabSign documents none but ships one | Official directories, 7,489/1,841 |  | Not established either paper used them. Signer-dependent by design, so no signer-independent claim follows |  |  |  |  |  |  |
+| `undetected-pose` | `guess` | Handling of frames in which no pose is detected. | No policy stated | Nearest detected pose, carried forward or backward |  | 15 frames of 93,300 under uniform, 1 under consecutive. Immaterial |  |  |  |  |  |  |
+| `seed` | `guess` | Random seed. | Not stated | 2026, single run |  | The paper reports single values, not mean ± std, so it ran once |  |  |  |  |  |  |
+| `software-versions` | `guess` | Software versions. | No versions given | TF 2.17.0, sklearn 1.6.1, MediaPipe 0.10.18, simple-video-utils 0.7.4 |  | Differences from the authors' unstated environment are unquantifiable |  |  |  |  |  |  |
+| `sample-count` | `paper_deviation` | Number of samples in the dataset. | Both papers claim 9,335 | 9,330 |  | 0.05%; cannot materially affect a metric |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Attempts, failures, and dead ends
 
