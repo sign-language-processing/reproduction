@@ -1,0 +1,4136 @@
+{
+  "paper_id": "2248c0668fde8b2b3a04078ed3f27f6da9215ad2",
+  "agents": [
+    {
+      "agent_id": "semantic-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Source investigation, architecture reconstruction, data acquisition, diagnostic execution and reporting. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Session instructions identify GPT-6 using Codex; exact model ID and harness version not exposed."
+      ]
+    },
+    {
+      "agent_id": "codex-orchestrator-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent report, metric formula, label mapping and train.py review on 2026-10-01. Identified a documentation ambiguity between RGB Pillow resizing and MNIST PyTorch interpolation; no implementation defect or new experiment. Review only; did not execute the reported runs. Exact model ID and harness version were unavailable. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution. On 2026-10-03, independently reviewed LEXSET source, checkpoint/deadline guards, manifest pin and native membership, and independently verified the dataset manifest. Did not execute the LEXSET GPU run.",
+      "evidence": [
+        "Explicit root-session attestation dated 2026-10-01 identifies the reviewing agent as GPT-6 using Codex; exact model ID, model build/version and harness version were not exposed.",
+        "Root reviewed the report, metric formulas, label mapping and train.py, and requested precise MNIST interpolation documentation. Execution attribution and all run agent_ids remain unchanged.",
+        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable.",
+        "2026-10-03 session review approved dedicated pinned-image LEXSET loader, exact source/manifest binding, fresh model/optimizer restore and bounded full launch conditional on representative preflight; independently confirmed all27000 samples and21600/2400 native subset counts from manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0.",
+        "2026-10-03 independent terminal review recomputed LEXSET NPZ SHA7d6b8f874d0a9397e76e80811c042a966a343c464ec21debb868dc57fc649df7,2400 predictions/labels,100 support per24classes, exact confusion,2350correct and60 epochs each21600 examples. No execution attribution added."
+      ]
+    },
+    {
+      "agent_id": "lexset-continuation-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "LEXSET continuation: acquisition, implementation, execution and reporting. Exact model ID and harness version are not exposed. Prior MNIST/RGB execution attribution preserved.",
+      "evidence": [
+        "Active session instructions identify GPT-6 using Codex; continuation assigned 2026-10-03. Exact model ID and harness version are not exposed."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-2248c0668fde8b2b3a04078ed3f27f6da9215ad2-2026-10-01.json",
+      "sha256": "40245ba9da4e74dfda85a878bb8f988cdfc206460aa8da690aa389f5953078fa"
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "first flagged because the main focus is on transmission but there are still some ASL alphabet recognition rates reported, so we take it!",
+          "compute_requirements": "N/A",
+          "copied_scores": "no",
+          "datasets": [
+            "bel15x4rymfc9la",
+            "ik20wubgibxy60m",
+            "53kqr5r703bu603"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Sign language version of MNIST",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "bel15x4rymfc9la",
+                "license": "CC0: Public Domain",
+                "name": "MNIST",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [],
+                "spoken_languages": [],
+                "url": [
+                  "https://www.kaggle.com/datasets/datamunge/sign-language-mnist"
+                ]
+              },
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "ik20wubgibxy60m",
+                "license": "Data files \u00a9 Original Authors",
+                "name": "LEXSET",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [],
+                "spoken_languages": [],
+                "url": [
+                  "https://www.kaggle.com/datasets/lexset/synthetic-asl-alphabet"
+                ]
+              },
+              {
+                "assignees": [
+                  "[redacted]",
+                  "[redacted]"
+                ],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Tracker reports prior Team S author coordination in August/September 2026 and permission to access RGB dataset for the study. Exact correspondence not independently verified; public Zenodo CC BY4 license checked independently.",
+                "contact_dates": [
+                  "2026-08-27",
+                  "2026-09-03"
+                ],
+                "correspondence": "contacted_got_reply",
+                "id": "53kqr5r703bu603",
+                "license": "CC BY 4.0",
+                "name": "RGB",
+                "on_modal": "",
+                "permission_model_weights": "yes",
+                "permission_to_reproduce": "yes",
+                "signed_languages": [
+                  "ase"
+                ],
+                "spoken_languages": [],
+                "url": [
+                  "https://ieee-dataport.org/documents/american-sign-language-dataset-semantic-communications",
+                  "https://zenodo.org/records/14635573"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "wzc6kxyuhls6lut",
+                "name": "Accuracy",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "whj6bhf2ro5g8c0",
+                "name": "Precision",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "89xqke8qlyqq6mb",
+                "name": "Recall",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "398630tq0zlaufq",
+                "name": "F1",
+                "url": []
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "eeunelqpdmvucgq",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "no",
+          "metrics": [
+            "wzc6kxyuhls6lut",
+            "whj6bhf2ro5g8c0",
+            "89xqke8qlyqq6mb",
+            "398630tq0zlaufq"
+          ],
+          "paper_id": "2248c0668fde8b2b3a04078ed3f27f6da9215ad2",
+          "pdf_url": "https://ieeexplore.ieee.org/ielx7/8782661/8901158/10418996.pdf",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "no",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "flagged",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-08-18T09:36:23.171Z"
+            },
+            {
+              "after": "needs_review",
+              "before": "flagged",
+              "by": "[redacted]",
+              "when": "2026-08-26T10:26:12.925Z"
+            },
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-08-26T12:56:55.746Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Isolated fingerspelling images"
+          ],
+          "textual_conclusion": "SemComs architecture that is specifically designed for the transmission of ASL.  \na novel\napproach to semantic encoding using a CNN that effectively\nleverages the ASL alphabet \n the RGB model requires approximately 10, 490\nimages to achieve a testing accuracy of 99% compared\nto other models that need over 20, 000 images to achieve\nslightly inferior performance.",
+          "title": "Semantic Communications for Image-Based Sign Language Transmission",
+          "venue": "IEEE Open Journal of the Communications Society (OJ-COMS)",
+          "what_to_reproduce": "Table 2, Table 3 (c)\nReproduce only the NLP experiments reported in the paper, ignore the transmission / communication parts",
+          "year": 2024
+        }
+      },
+      "id": "vsqrrq2bj4kby4x",
+      "paper": "eeunelqpdmvucgq",
+      "status": "in_progress",
+      "url": []
+    },
+    "detail": "User-authorized tracker selection; final status present, confirmation field absent, database IDs distinct. Recognition only, Table2 and Table3(c)."
+  },
+  "paper": {
+    "title": "Semantic Communications for Image-Based Sign Language Transmission",
+    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088\u20131100. DOI10.1109/OJCOMS.2024.3360191.",
+    "url": "https://doi.org/10.1109/OJCOMS.2024.3360191",
+    "pdf_sha256": "eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa",
+    "accessed_at": "2026-10-01"
+  },
+  "sources": [
+    {
+      "source_id": "paper",
+      "kind": "paper",
+      "url": "https://doi.org/10.1109/OJCOMS.2024.3360191",
+      "revision_or_sha256": "eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa",
+      "role": "Full paper read, Figure3 and Tables1/2/3c visually verified."
+    },
+    {
+      "source_id": "author-xai-code",
+      "kind": "related author code",
+      "url": "https://github.com/InnoCubePC/SemCom-XAI",
+      "revision_or_sha256": "ae6d16e959f2b291cb1c4e3f26792fbce70caea3",
+      "role": "GPL3 related XAI project cites paper/dataset and confirms100x100 RGB normalization. Does not publish training implementation or weights; model file path is a placeholder. Main tree/history/releases inspected."
+    },
+    {
+      "source_id": "mnist-metadata",
+      "kind": "dataset metadata",
+      "url": "https://www.kaggle.com/api/v1/datasets/list/datamunge/sign-language-mnist",
+      "revision_or_sha256": "f392865f52001a3301037ff9cc718f38b0b5ecb08a8e74e465bad0b80e962385",
+      "role": "Author-provided dataset identity and license; raw response retained."
+    },
+    {
+      "source_id": "lexset-metadata",
+      "kind": "dataset metadata",
+      "url": "https://www.kaggle.com/api/v1/datasets/list/lexset/synthetic-asl-alphabet",
+      "revision_or_sha256": "62cf4486f376e9565d812f00fe889cbec403d285f2f0c08e04d860abf18da7b2",
+      "role": "Author-provided dataset identity and license; raw response retained."
+    },
+    {
+      "source_id": "zenodo-metadata",
+      "kind": "dataset metadata",
+      "url": "https://zenodo.org/api/records/14635573",
+      "revision_or_sha256": "f2a24b286808db2508d2c9727f6cc7b03f361a6996c1c2070ef87a0913a0a44f",
+      "role": "Author-provided dataset identity and license; raw response retained."
+    },
+    {
+      "source_id": "implementation-train.py",
+      "kind": "reproduction implementation",
+      "url": "scripts/train.py",
+      "revision_or_sha256": "c0b7b24ddb6a993606f48f25c286e8c220abe6e803fb1016cbea52bd0e2d6bca",
+      "role": "Committed entry point; full train.py unchanged after full-run launch; data acquisition checksum assertions strengthened after first discovery."
+    },
+    {
+      "source_id": "implementation-modal_app.py",
+      "kind": "reproduction implementation",
+      "url": "scripts/modal_app.py",
+      "revision_or_sha256": "ee2131235b44cb66fd5372ee1ee73690b29abf3dcc9cf9e4ce75823919ca5949",
+      "role": "Committed entry point; full train.py unchanged after full-run launch; data acquisition checksum assertions strengthened after first discovery."
+    },
+    {
+      "source_id": "implementation-data.sh",
+      "kind": "reproduction implementation",
+      "url": "scripts/data.sh",
+      "revision_or_sha256": "43204c7980d0dd10878d387125ddc63127bf2ccd4c55f1e5d01e8f537ef4127d",
+      "role": "Committed entry point; full train.py unchanged after full-run launch; data acquisition checksum assertions strengthened after first discovery."
+    }
+  ],
+  "datasets": [
+    {
+      "dataset_id": "mnist",
+      "name": "Sign Language MNIST",
+      "version_or_subset": "Kaggle datamunge/sign-language-mnist version1;24staticletterclasses",
+      "license_or_permission": "CC0: Public Domain (public author Kaggle metadata, artifacts/mnist-source-metadata.txt)",
+      "cloud_processing_allowed": true,
+      "permission_basis": "CC0 allows project cloud processing and storage of existing hand images; no new participants or identifying information collected.",
+      "modal_volume": "datasets",
+      "volume_version": 2,
+      "modal_path": "sign-language-mnist",
+      "manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
+      "archive_sha256": "fa1b513570d4348c6d6860e04e5854c59ef8eadb8c42a45d36bd1286ce3d489f",
+      "preprocessing": "28\u00d728 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100\u00d7100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 27455,
+          "files": [
+            {
+              "path": "files/sign_mnist_train.csv",
+              "sha256": "4c2897f19fab2b0ae2a7e4fa82e969043315d9f3a1a9cc0948b576bf1189a7e5"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 7172,
+          "files": [
+            {
+              "path": "files/sign_mnist_test.csv",
+              "sha256": "0e9d67bae23e67f40728e0b63bf15ad4bd5175947b8a9fac5dd9f17ce133c47b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dataset_id": "rgb",
+      "name": "American Sign Language dataset for semantic communications",
+      "version_or_subset": "Zenodo14635573 / ASL_SemCom.zip;24classes,originalauthortrain/testfolders",
+      "license_or_permission": "CC BY4.0 (Zenodo public author metadata, artifacts/zenodo-source-metadata.txt)",
+      "cloud_processing_allowed": true,
+      "permission_basis": "Public CC BY4.0 permits storing/processing the existing rendered hand-landmark images; no new participants or biometrics collected.",
+      "modal_volume": "datasets",
+      "volume_version": 2,
+      "modal_path": "asl-semcom-rgb",
+      "manifest_sha256": "d272cb793fc888b444a92419f998464a1c0026b076bf0e8193687a0b89b5d40d",
+      "archive_sha256": "686e818063a1a81bb90fb2cbb319f8c9dc8d368650faf71351d836e508ba0582",
+      "preprocessing": "PillowRGB conversion, bilinearresize100x100, /255; alphabetic24labelswithoutJ/Z.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 10490,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d272cb793fc888b444a92419f998464a1c0026b076bf0e8193687a0b89b5d40d"
+            }
+          ],
+          "note": "Manifest enumerates every image hash and class-folder count; native split membership unchanged."
+        },
+        {
+          "name": "test",
+          "sample_count": 1800,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d272cb793fc888b444a92419f998464a1c0026b076bf0e8193687a0b89b5d40d"
+            }
+          ],
+          "note": "Manifest enumerates every image hash and class-folder count; native split membership unchanged."
+        }
+      ]
+    },
+    {
+      "dataset_id": "lexset",
+      "name": "LEXSET synthetic ASL alphabet",
+      "version_or_subset": "Kaggle lexset/synthetic-asl-alphabet version3; intended24letters excludingJ/Z/background",
+      "license_or_permission": "Metadata: Data files \u00a9 Original Authors; user-confirmed attribution-based internal project cloud use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "volume_version": 2,
+      "modal_path": "synthetic-asl-alphabet",
+      "preprocessing": "Canonical ZIP native Train_Alphabet/Test_Alphabet. Select24static letters, excludeJ/Z/BLANK. Images actually513x512, resized RGB100x100 with Pillow bilinear then /255, same transformation as priorRGB. Archive copied temporarily to local worker disk and each selected member checksum verified before decoding.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 21600,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0"
+            }
+          ],
+          "note": "Verified original native split:900train and100test per selectedletter; manifest enumerates every ZIP member hash, CRC and dimensions."
+        },
+        {
+          "name": "test",
+          "sample_count": 2400,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0"
+            }
+          ],
+          "note": "Verified original native split:900train and100test per selectedletter; manifest enumerates every ZIP member hash, CRC and dimensions."
+        }
+      ],
+      "permission_basis": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized.",
+      "manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "archive_sha256": "fee9a105ef0785ded6c795031fc0b25252263e782a13836645d06f175cd04373",
+      "canonical_format": "source-v3.zip members",
+      "file_count": 27000,
+      "auxiliary_image_count": 1,
+      "cross_split_exact_duplicates": 0
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table2-mnist-training",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, mnist row, training column",
+      "experiment_id": "mnist",
+      "metric_id": "accuracy",
+      "split": "training",
+      "original_value": 99.61,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, mnist row, training column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.39000000000000057,
+        "run_ids": [
+          "mnist-full"
+        ],
+        "artifact_ids": [
+          "mnist-full-metrics-json",
+          "mnist-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-mnist-validation",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, mnist row, validation column",
+      "experiment_id": "mnist",
+      "metric_id": "accuracy",
+      "split": "validation",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, mnist row, validation column",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Validation partition not identified; all declared training examples used for independent train/test reproduction."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "validation-membership"
+        ],
+        "evidence": [
+          "Paper sectionIV-A/B and Table1/2 do not define validation allocation or membership."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-mnist-testing",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, mnist row, testing column",
+      "experiment_id": "mnist",
+      "metric_id": "accuracy",
+      "split": "testing",
+      "original_value": 97.12,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, mnist row, testing column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 88.38538761851645,
+        "difference": -8.734612381483558,
+        "run_ids": [
+          "mnist-full"
+        ],
+        "artifact_ids": [
+          "mnist-full-metrics-json",
+          "mnist-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-lexset-training",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, lexset row, training column",
+      "experiment_id": "lexset",
+      "metric_id": "accuracy",
+      "split": "training",
+      "original_value": 98.39,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, training column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.48611111111111,
+        "difference": 1.0961111111111137,
+        "run_ids": [
+          "lexset-full-v1"
+        ],
+        "artifact_ids": [
+          "lexset-full-v1-metrics-json",
+          "lexset-full-v1-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch online training metric and final-checkpoint test predictions; official24-letter native train/test partitions, predeclared defaults and60epochs. Closed artifact hashes independently collected after terminal execution."
+        ]
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.286881+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "target_id": "table2-lexset-validation",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, lexset row, validation column",
+      "experiment_id": "lexset",
+      "metric_id": "accuracy",
+      "split": "validation",
+      "original_value": 98.52,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, validation column",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Historical validation membership is unspecified; no invented partition used."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "validation-membership"
+        ],
+        "evidence": [
+          "Paper section IV-A allocates all 24000 selected LEXSET images to train/test; section IV-B reports validation without specifying membership."
+        ]
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.287069+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "target_id": "table2-lexset-testing",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, lexset row, testing column",
+      "experiment_id": "lexset",
+      "metric_id": "accuracy",
+      "split": "testing",
+      "original_value": 98.95,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, lexset row, testing column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.91666666666667,
+        "difference": -1.0333333333333314,
+        "run_ids": [
+          "lexset-full-v1"
+        ],
+        "artifact_ids": [
+          "lexset-full-v1-metrics-json",
+          "lexset-full-v1-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch online training metric and final-checkpoint test predictions; official24-letter native train/test partitions, predeclared defaults and60epochs. Closed artifact hashes independently collected after terminal execution."
+        ]
+      },
+      "prior_results": [
+        {
+          "retained_at_utc": "2026-10-03T18:14:33.287073+00:00",
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "data_permission_blocked",
+              "detail": "Author Kaggle data license reserves copyright; no verified project-cloud processing permission."
+            },
+            "run_ids": [],
+            "artifact_ids": [
+              "lexset-source-metadata"
+            ],
+            "gate_ids": [
+              "lexset-permission"
+            ],
+            "evidence": [
+              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "target_id": "table2-rgb-training",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, rgb row, training column",
+      "experiment_id": "rgb",
+      "metric_id": "accuracy",
+      "split": "training",
+      "original_value": 99.21,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, rgb row, training column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.7900000000000063,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-rgb-validation",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, rgb row, validation column",
+      "experiment_id": "rgb",
+      "metric_id": "accuracy",
+      "split": "validation",
+      "original_value": 99.81,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, rgb row, validation column",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Validation partition not identified; all declared training examples used for independent train/test reproduction."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "validation-membership"
+        ],
+        "evidence": [
+          "Paper sectionIV-A/B and Table1/2 do not define validation allocation or membership."
+        ]
+      }
+    },
+    {
+      "target_id": "table2-rgb-testing",
+      "in_scope": true,
+      "paper_location": "Table2 p1095, rgb row, testing column",
+      "experiment_id": "rgb",
+      "metric_id": "accuracy",
+      "split": "testing",
+      "original_value": 99.72,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table2 p1095, rgb row, testing column",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.83333333333333,
+        "difference": -1.8866666666666703,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class0-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class0, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.68,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class0, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.05263157894737,
+        "difference": -2.627368421052637,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class0-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class0, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class0, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": -2.6666666666666714,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class0-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class0, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 99.34,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class0, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.6887417218543,
+        "difference": -2.651258278145704,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class1-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class1, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class1, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class1-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class1, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class1, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.66666666666667,
+        "difference": -1.3333333333333286,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class1-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class1, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class1, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.32885906040268,
+        "difference": -0.671140939597322,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class2-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class2, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class2, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.66666666666667,
+        "difference": -1.3333333333333286,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class2-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class2, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class2, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.66666666666667,
+        "difference": -1.3333333333333286,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class2-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class2, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class2, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.66666666666667,
+        "difference": -1.3333333333333286,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class3-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class3, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class3, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class3-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class3, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class3, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.0,
+        "difference": -4.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class3-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class3, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class3, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.95918367346938,
+        "difference": -2.040816326530617,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class4-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class4, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class4, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class4-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class4, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class4, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class4-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class4, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class4, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.33774834437087,
+        "difference": -0.6622516556291345,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class5-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class5, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class5, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.40259740259741,
+        "difference": -2.597402597402592,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class5-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class5, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class5, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class5-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class5, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class5, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class6-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class6, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class6, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class6-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class6, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class6, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": -2.6666666666666714,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class6-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class6, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class6, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.64864864864865,
+        "difference": -1.3513513513513544,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class7-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class7, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class7, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.40259740259741,
+        "difference": -2.597402597402592,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class7-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class7, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class7, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class7-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class7, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class7, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class8-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class8, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class8, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class8-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class8, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class8, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class8-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class8, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class8, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class9-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class9, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class9, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.1038961038961,
+        "difference": -3.896103896103895,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class9-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class9, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.67,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class9, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.66666666666667,
+        "difference": -0.0033333333333303017,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class9-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class9, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 99.33,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class9, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.36842105263158,
+        "difference": -1.961578947368423,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class10-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class10, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class10, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class10-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class10, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class10, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class10-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class10, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class10, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.33774834437087,
+        "difference": -0.6622516556291345,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class11-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class11, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class11, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class11-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class11, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.67,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class11, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.0,
+        "difference": -2.6700000000000017,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class11-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class11, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 99.33,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class11, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.95918367346938,
+        "difference": -1.3708163265306155,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class12-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class12, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class12, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": -2.6666666666666714,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class12-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class12, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 97.33,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class12, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": 0.0033333333333303017,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class12-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class12, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.65,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class12, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": -1.316666666666677,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class13-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class13, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class13, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class13-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class13, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class13, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 97.33333333333333,
+        "difference": -2.6666666666666714,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class13-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class13, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class13, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.64864864864865,
+        "difference": -1.3513513513513544,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class14-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class14, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class14, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class14-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class14, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class14, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class14-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class14, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class14, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class15-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class15, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class15, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class15-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class15, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class15, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 92.0,
+        "difference": -8.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class15-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class15, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class15, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 95.83333333333333,
+        "difference": -4.166666666666671,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class16-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class16, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class16, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.15384615384616,
+        "difference": -3.8461538461538396,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class16-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class16, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class16, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class16-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class16, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class16, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.03921568627452,
+        "difference": -1.9607843137254832,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class17-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class17, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 96.1,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class17, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 92.85714285714286,
+        "difference": -3.242857142857133,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class17-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class17, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.67,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class17, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 86.66666666666667,
+        "difference": -12.00333333333333,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class17-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class17, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 97.37,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class17, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 89.65517241379311,
+        "difference": -7.714827586206894,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class18-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class18, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class18, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 90.36144578313252,
+        "difference": -9.638554216867476,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class18-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class18, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class18, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class18-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class18, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class18, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 94.9367088607595,
+        "difference": -5.063291139240505,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class19-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class19, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class19, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 93.75,
+        "difference": -6.25,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class19-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class19, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class19, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class19-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class19, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class19, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.7741935483871,
+        "difference": -3.225806451612897,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class20-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class20, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 98.68,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class20, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.57142857142857,
+        "difference": -0.10857142857143742,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class20-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class20, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class20, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 92.0,
+        "difference": -8.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class20-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class20, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 99.34,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class20, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 95.17241379310344,
+        "difference": -4.167586206896559,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class21-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class21, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class21, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class21-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class21, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class21, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class21-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class21, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class21, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.33774834437087,
+        "difference": -0.6622516556291345,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class22-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class22, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class22, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.6842105263158,
+        "difference": -1.3157894736842053,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class22-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class22, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class22, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class22-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class22, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class22, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.33774834437087,
+        "difference": -0.6622516556291345,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class23-precision",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class23, precision",
+      "experiment_id": "rgb",
+      "metric_id": "precision",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class23, precision",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class23-recall",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class23, recall",
+      "experiment_id": "rgb",
+      "metric_id": "recall",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class23, recall",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    },
+    {
+      "target_id": "table3c-class23-f1",
+      "in_scope": true,
+      "paper_location": "Table3(c) p1096, class23, f1",
+      "experiment_id": "rgb",
+      "metric_id": "f1",
+      "split": "RGB test,75 images per class",
+      "original_value": 100,
+      "copied_baseline": false,
+      "paper_evidence": "Full PDF eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa; Table3(c) p1096, class23, f1",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 100.0,
+        "difference": 0.0,
+        "run_ids": [
+          "rgb-full"
+        ],
+        "artifact_ids": [
+          "rgb-full-metrics-json",
+          "rgb-full-predictions-npz"
+        ],
+        "gate_ids": [],
+        "evidence": [
+          "Native final-epoch metric/prediction artifacts; comparability assessed before inspecting full scores under declared routine defaults."
+        ]
+      }
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "mnist",
+      "implementation": "independent PyTorch reconstruction from Figure3 exact parameter counts; author XAI repository lacks training/model artifacts",
+      "architecture": "100x100x3, valid convolutions 128x7,128x5,128x2,128x2,32x2; 2x2 pools after first four; ReLU; flatten288,dense128,24class;616504parameters",
+      "training": "Adam defaults lr0.001, batch64, seed42, float32; MNIST90epochs,RGB80epochs; final checkpoint",
+      "comparability_predeclared": "Official train/test partitions, all published training samples. Test accuracy and RGB per-class metrics comparable under declared defaults; online training accuracy uses conventional epoch aggregate. Validation has no identifiable partition and is not reconstructed. Numerical agreement means matching published two-decimal rounding; no score-directed tuning.",
+      "dataset_id": "mnist",
+      "system": "Figure3 CNN (616504parameters)",
+      "checkpoint_rule": "Final epoch: 90; no selection on test metrics",
+      "paper_evidence": "Figure3,p1091; sectionIII-E/IV-A/B,p1093-1095; Tables1/2/3c"
+    },
+    {
+      "experiment_id": "rgb",
+      "implementation": "independent PyTorch reconstruction from Figure3 exact parameter counts; author XAI repository lacks training/model artifacts",
+      "architecture": "100x100x3, valid convolutions 128x7,128x5,128x2,128x2,32x2; 2x2 pools after first four; ReLU; flatten288,dense128,24class;616504parameters",
+      "training": "Adam defaults lr0.001, batch64, seed42, float32; MNIST90epochs,RGB80epochs; final checkpoint",
+      "comparability_predeclared": "Official train/test partitions, all published training samples. Test accuracy and RGB per-class metrics comparable under declared defaults; online training accuracy uses conventional epoch aggregate. Validation has no identifiable partition and is not reconstructed. Numerical agreement means matching published two-decimal rounding; no score-directed tuning.",
+      "dataset_id": "rgb",
+      "system": "Figure3 CNN (616504parameters)",
+      "checkpoint_rule": "Final epoch: 80; no selection on test metrics",
+      "paper_evidence": "Figure3,p1091; sectionIII-E/IV-A/B,p1093-1095; Tables1/2/3c"
+    },
+    {
+      "experiment_id": "lexset",
+      "implementation": "independent PyTorch reconstruction from Figure3 exact parameter counts; author XAI repository lacks training/model artifacts",
+      "architecture": "100x100x3, valid convolutions 128x7,128x5,128x2,128x2,32x2; 2x2 pools after first four; ReLU; flatten288,dense128,24class;616504parameters",
+      "training": "Adam defaults lr0.001, batch64, seed42, float32; LEXSET60epochs; final checkpoint",
+      "comparability_predeclared": "Official train/test partitions, all published training samples. Test accuracy and RGB per-class metrics comparable under declared defaults; online training accuracy uses conventional epoch aggregate. Validation has no identifiable partition and is not reconstructed. Numerical agreement means matching published two-decimal rounding; no score-directed tuning.",
+      "dataset_id": "lexset",
+      "system": "Figure3 CNN (616504parameters)",
+      "checkpoint_rule": "Final epoch: 60; no selection on test metrics",
+      "paper_evidence": "Figure3,p1091; sectionIII-E/IV-A/B,p1093-1095; Tables1/2/3c"
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "accuracy",
+      "direction": "higher",
+      "implementation": "scripts/train.py confusion-matrix counts; 100 * correct / count",
+      "version": "NumPy/PyTorch versions preserved in native pip-freeze; implementation pinned by reproduction commit",
+      "aggregation": "Online example-weighted final-epoch training accuracy; fixed final-checkpoint full-test accuracy.",
+      "unit_or_scale": "percent",
+      "paper_evidence": "SectionIV-B/C Eqs16-19. Eq16 repeatsFN typographically; prose explicitly defines correct/count, used here."
+    },
+    {
+      "metric_id": "precision",
+      "name": "precision",
+      "direction": "higher",
+      "implementation": "scripts/train.py confusion-matrix counts; 100 * TP / (TP+FP)",
+      "version": "NumPy/PyTorch versions preserved in native pip-freeze; implementation pinned by reproduction commit",
+      "aggregation": "Per-class one-vs-rest on full1800RGBtest; zero denominator returns0.",
+      "unit_or_scale": "percent",
+      "paper_evidence": "SectionIV-B/C Eqs16-19. Eq16 repeatsFN typographically; prose explicitly defines correct/count, used here."
+    },
+    {
+      "metric_id": "recall",
+      "name": "recall",
+      "direction": "higher",
+      "implementation": "scripts/train.py confusion-matrix counts; 100 * TP / (TP+FN)",
+      "version": "NumPy/PyTorch versions preserved in native pip-freeze; implementation pinned by reproduction commit",
+      "aggregation": "Per-class one-vs-rest on full1800RGBtest; zero denominator returns0.",
+      "unit_or_scale": "percent",
+      "paper_evidence": "SectionIV-B/C Eqs16-19. Eq16 repeatsFN typographically; prose explicitly defines correct/count, used here."
+    },
+    {
+      "metric_id": "f1",
+      "name": "f1",
+      "direction": "higher",
+      "implementation": "scripts/train.py confusion-matrix counts; 200 * TP / (2TP+FP+FN)",
+      "version": "NumPy/PyTorch versions preserved in native pip-freeze; implementation pinned by reproduction commit",
+      "aggregation": "Per-class harmonic mean on full1800RGBtest; zero denominator returns0.",
+      "unit_or_scale": "percent",
+      "paper_evidence": "SectionIV-B/C Eqs16-19. Eq16 repeatsFN typographically; prose explicitly defines correct/count, used here."
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "data-population",
+      "agent_ids": [
+        "semantic-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-population",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:35:30.371890+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2.0
+      },
+      "started_at_utc": "2026-10-01T10:35:30.375127+00:00",
+      "finished_at_utc": "2026-10-01T10:37:40.222282+00:00",
+      "exit_code": 0,
+      "artifact_ids": [
+        "mnist-manifest",
+        "rgb-manifest"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Downloaded and checksum-verified Zenodo RGB and pinned Kaggle MNIST; inventoried extracted samples in canonical shared datasets Volume.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "timestamps_note": "Local CLI stdout log creation and last-write timestamps bound command execution; exact server timestamps were not emitted.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-RuFL8UeqB4v3fzAjTWgjSE",
+        "environment": "main",
+        "gpu_count": 0,
+        "gpu": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RuFL8UeqB4v3fzAjTWgjSE",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": false
+      },
+      "detail": "Initial permitted acquisition recorded archive checksums; repeated data.sh now verifies those discovered SHA256 pins, in addition to the author RGB MD5 used on acquisition."
+    },
+    {
+      "run_id": "preflight",
+      "agent_ids": [
+        "semantic-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:38:04.865113+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-NdLe89b3zwaqMrTPxyYj25",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NdLe89b3zwaqMrTPxyYj25",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": true,
+        "modal_task_id": "ta-01M3VGPPBEKKMSMGTWQ4KAH7CR",
+        "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
+        "gpu_hours": 0.027245857771944444
+      },
+      "started_at_utc": "2026-10-01T10:38:49.044274+00:00",
+      "finished_at_utc": "2026-10-01T10:40:32.131218+00:00",
+      "exit_code": 0,
+      "artifact_ids": [
+        "mnist-preflight-checkpoint-pt",
+        "mnist-preflight-metrics-json",
+        "mnist-preflight-nvidia-smi-txt",
+        "mnist-preflight-pip-freeze-txt",
+        "mnist-preflight-predictions-npz",
+        "rgb-preflight-checkpoint-pt",
+        "rgb-preflight-metrics-json",
+        "rgb-preflight-nvidia-smi-txt",
+        "rgb-preflight-pip-freeze-txt",
+        "rgb-preflight-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both real-data paths trained4steps, reloadedmodel/optimizer, resumedoptimizerstep and evaluated128heldoutimages. Diagnostic scores nottargetresults.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "mnist-full",
+      "agent_ids": [
+        "semantic-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset mnist",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "mnist-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:41:29.447454+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 25
+      },
+      "estimate": {
+        "gpu_hours": 3.53,
+        "usd": 9.35,
+        "basis": "Measured preflight throughput; official Modal A10080 $2.4984/hour plus CPU/RAM. CHF25 hard ceiling uses conservative 1USD=1CHF budget allowance. No automatic restarts; checkpoint every epoch."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-whLo78NxvmUwKfoYqZ0C2Q",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "NVIDIA A100-SXM4-80GB",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-whLo78NxvmUwKfoYqZ0C2Q",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": true,
+        "modal_task_id": "ta-01M3VGW8W24N09Z1X49352VRMR",
+        "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
+        "wall_time_seconds": 691.101511189,
+        "gpu_hours": 0.19197264199694444,
+        "estimated_cost_usd": 0.5087275012919028,
+        "cost_note": "Estimated process duration times A10080+CPU/RAM rate; excludes provisioning/storage, not billed cost."
+      },
+      "started_at_utc": "2026-10-01T10:42:03.031075+00:00",
+      "finished_at_utc": "2026-10-01T10:53:34.131779+00:00",
+      "exit_code": 0,
+      "artifact_ids": [
+        "mnist-full-checkpoint-pt",
+        "mnist-full-metrics-json",
+        "mnist-full-nvidia-smi-txt",
+        "mnist-full-pip-freeze-txt",
+        "mnist-full-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All published epochs completed, final checkpoint reloaded and entire native test split evaluated.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "configuration": {
+        "seed": 42,
+        "epochs": 90,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "batch_size": 64,
+        "dataset_manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
+        "final_checkpoint_sha256": "0670b9a9042ba8c1bceded021719fff7b7515ba62ee06994dbbcc1146bd4b18e",
+        "peak_gpu_memory_bytes": 927033856,
+        "examples_per_second": 5851.70374699859
+      }
+    },
+    {
+      "run_id": "rgb-full",
+      "agent_ids": [
+        "semantic-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset rgb",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "rgb-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:41:29.447454+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 25
+      },
+      "estimate": {
+        "gpu_hours": 1.03,
+        "usd": 2.73,
+        "basis": "Measured preflight throughput; official Modal A10080 $2.4984/hour plus CPU/RAM. CHF25 hard ceiling uses conservative 1USD=1CHF budget allowance. No automatic restarts; checkpoint every epoch."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-Hun5BDvgQbbY4q0gPtR4Nk",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "NVIDIA A100 80GB PCIe",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Hun5BDvgQbbY4q0gPtR4Nk",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": true,
+        "modal_task_id": "ta-01M3VGWDHDHKMW3430TA1YGG0R",
+        "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
+        "wall_time_seconds": 299.255724047,
+        "gpu_hours": 0.08312659001305556,
+        "estimated_cost_usd": 0.22028546353459721,
+        "cost_note": "Estimated process duration times A10080+CPU/RAM rate; excludes provisioning/storage, not billed cost."
+      },
+      "started_at_utc": "2026-10-01T10:42:08.818944+00:00",
+      "finished_at_utc": "2026-10-01T10:47:08.074274+00:00",
+      "exit_code": 0,
+      "artifact_ids": [
+        "rgb-full-checkpoint-pt",
+        "rgb-full-metrics-json",
+        "rgb-full-nvidia-smi-txt",
+        "rgb-full-pip-freeze-txt",
+        "rgb-full-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All published epochs completed, final checkpoint reloaded and entire native test split evaluated.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "configuration": {
+        "seed": 42,
+        "epochs": 80,
+        "optimizer": "Adam",
+        "lr": 0.001,
+        "batch_size": 64,
+        "dataset_manifest_sha256": "d272cb793fc888b444a92419f998464a1c0026b076bf0e8193687a0b89b5d40d",
+        "final_checkpoint_sha256": "580aaaf76383176635aa78097ff1cc9c4e481d1ad4d7c90fb92ac0f93a14da5d",
+        "peak_gpu_memory_bytes": 1273921024,
+        "examples_per_second": 6427.89525269346
+      }
+    },
+    {
+      "run_id": "evidence-audit",
+      "agent_ids": [
+        "semantic-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "evidence-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:52:04.596791+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "started_at_utc": "2026-10-01T10:54:07.001722+00:00",
+      "finished_at_utc": "2026-10-01T10:54:10.750787+00:00",
+      "exit_code": 0,
+      "artifact_ids": [
+        "mnist-full-checkpoint-pt",
+        "mnist-full-metrics-json",
+        "mnist-full-nvidia-smi-txt",
+        "mnist-full-pip-freeze-txt",
+        "mnist-full-predictions-npz",
+        "mnist-preflight-checkpoint-pt",
+        "mnist-preflight-metrics-json",
+        "mnist-preflight-nvidia-smi-txt",
+        "mnist-preflight-pip-freeze-txt",
+        "mnist-preflight-predictions-npz",
+        "rgb-full-checkpoint-pt",
+        "rgb-full-metrics-json",
+        "rgb-full-nvidia-smi-txt",
+        "rgb-full-pip-freeze-txt",
+        "rgb-full-predictions-npz",
+        "rgb-preflight-checkpoint-pt",
+        "rgb-preflight-metrics-json",
+        "rgb-preflight-nvidia-smi-txt",
+        "rgb-preflight-pip-freeze-txt",
+        "rgb-preflight-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only hashes collected after both full runs reached terminal success.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_id": "ap-AcMjsJ3xdXmWzAD5txHjHz",
+        "environment": "main",
+        "gpu_count": 0,
+        "gpu": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-AcMjsJ3xdXmWzAD5txHjHz",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": null,
+        "datasets_mount_note": "No dataset mount required for read-only output hash audit."
+      }
+    },
+    {
+      "run_id": "lexset-acquisition-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-acquisition",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:09:23.388230+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "modal_app_id": "ap-30vGKQLgRWieeLYL6sErg3",
+        "modal_function_call_id": "fc-01M41F9TKM2YVH7YSDJ727JAKZ",
+        "modal_task_id": "ta-01M41F9TWV1S2N8EBTRAFDQ00R",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Archive acquired and hashed; audit assumed train/test directories rather than actual Train_Alphabet/Test_Alphabet. Failed on first image before manifest. Correct only directory mapping.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T18:09:29.878064+00:00",
+      "finished_at_utc": "2026-10-03T18:10:22.791038+00:00",
+      "exit_code": 1,
+      "artifact_ids": [
+        "lexset-acquisition-v1-console-log",
+        "lexset-acquisition-v1-execution-json"
+      ]
+    },
+    {
+      "run_id": "lexset-acquisition-v2",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-native-split-directory-fix",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:11:09.349604+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-z1d5x9c7Rd6yHmig68UgNE",
+        "modal_function_call_id": "fc-01M41FD2MEDZK3ZYCPXQADWY46",
+        "modal_task_id": "ta-01M41FD2Z3SE4F5GH624BNSZJR"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "All 27000 sample images decoded successfully. The archive additionally contains root alphabet.jpg, an overview image with no split; audit failed closed on this extra file. Next scoped correction inventories and hashes that overview but excludes it from sample counts.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "configuration": {
+        "data_script_sha256": "aa641391f456a912d0319c24c9d1870c2bf1400a20ffd66fccaf82db8a016f98",
+        "source_snapshot": "artifacts/lexset-acquisition-v2-source.py",
+        "note": "Retained exact acquisition source prior to later extraction CRC/atomic hardening; v1 had only completed and decoded the first file before its folder-name assertion failed."
+      },
+      "artifact_ids": [
+        "lexset-acquisition-v2-console-log",
+        "lexset-acquisition-v2-execution-json"
+      ],
+      "started_at_utc": "2026-10-03T18:11:17.131059+00:00",
+      "finished_at_utc": "2026-10-03T18:15:58.523112+00:00",
+      "exit_code": 1
+    },
+    {
+      "run_id": "lexset-acquisition-v3",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v3",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-overview-exclusion",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:16:26.833154+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-1Pa6DZM9nXojjdMaLPRCnm"
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "no_new_hypothesis",
+        "detail": "Stopped after >7 minutes without first 3000/27000 milestone, projecting beyond 3600s ceiling. Repeated remote per-file audit was unproductive; canonical ZIP-member audit tests the exact training inputs more cheaply. Native process exit not emitted before explicit app stop.",
+        "failure_class": "budget_protocol",
+        "retry_decision": "stop",
+        "gate_ids": [
+          "lexset-remote-tree-budget"
+        ]
+      },
+      "configuration": {
+        "data_script_sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
+        "detail": "All existing extracted files are now CRC/size verified against ZIP and atomically repaired if needed; overview explicitly inventoried as auxiliary image.",
+        "source_snapshot": "artifacts/lexset-acquisition-v3-source.py"
+      },
+      "artifact_ids": [
+        "lexset-acquisition-v3-console-log"
+      ],
+      "started_at_utc": "2026-10-03T18:16:26.833154+00:00",
+      "finished_at_utc": "2026-10-03T18:26:20.162459+00:00",
+      "exit_code": 1,
+      "timestamps_note": "Start is conservative local declaration/launch lower bound; native start receipt was not persisted before app stop. Finish records collection after explicit stop; exact native termination timestamp unavailable.",
+      "native_exit_code": null,
+      "exit_code_basis": "Observed wrapper CLI exited 1 with RemoteError after explicit app stop. Native subprocess exit unavailable and remains null."
+    },
+    {
+      "run_id": "lexset-acquisition-v4",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate_lexset --run-id lexset-acquisition-v4",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-canonical-archive-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:26:20.162737+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "datasets_read_only": false,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "modal_app_id": "ap-ICy50ZZP9kxLmF9pDpdU4d",
+        "modal_function_call_id": "fc-01M41G8WCZH4D4Z94DM8CC3GM8",
+        "modal_task_id": "ta-01M41G8X3FK972MBM3ZAJHWEVR"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 27000 sample images plus one overview CRC/SHA/decode verified from canonical pinned ZIP; native paper subset21600train2400test; no exact cross-split duplicates.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "configuration": {
+        "data_script_sha256": "3c7f92f5753561b0936d6acbfeaaf783661885e511541c56085cfbce3d6a83f3",
+        "detail": "Canonical pinned ZIP local staging; every ZIP member CRC/SHA/decode; native sample membership unchanged. Extracted leftovers explicitly noncanonical."
+      },
+      "artifact_ids": [
+        "lexset-manifest",
+        "lexset-acquisition-v4-execution",
+        "lexset-acquisition-v4-console-log",
+        "lexset-acquisition-v4-execution-start-json",
+        "lexset-acquisition-v4-execution-json"
+      ],
+      "started_at_utc": "2026-10-03T18:26:29.237190+00:00",
+      "finished_at_utc": "2026-10-03T18:30:10.081027+00:00",
+      "exit_code": 0,
+      "wall_time_seconds": 219.939215561
+    },
+    {
+      "run_id": "lexset-preflight-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-preflight-v1 --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0 --preflight",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:31:56.643455+00:00",
+        "max_wall_time_seconds": 1200,
+        "max_gpu_hours": 0.3333333333333333,
+        "max_cost_chf": 2
+      },
+      "artifact_ids": [
+        "lexset-preflight-v1-metrics-json",
+        "lexset-preflight-v1-execution-segment-1-json",
+        "lexset-preflight-v1-checkpoint-pt",
+        "lexset-preflight-v1-claim-json",
+        "lexset-preflight-v1-console-segment-1-log",
+        "lexset-preflight-v1-nvidia-smi-txt",
+        "lexset-preflight-v1-pip-freeze-txt",
+        "lexset-preflight-v1-predictions-npz"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-TvWkgwebqW4fjBxcop6yyj",
+        "modal_function_call_id": "fc-01M41GK4D4QZ9122QGFBAGT2RP",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TvWkgwebqW4fjBxcop6yyj",
+        "modal_task_id": "ta-01M41GMXW13439Y58BHN93KRDR",
+        "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
+        "wall_time_seconds": 273.8318169116974,
+        "gpu_hours": 0.07606439358658261
+      },
+      "configuration": {
+        "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+        "train_source_sha256": "797a9249824090597d701aff18903c55f219d1513d6fa446ec07acb8bdc3804b",
+        "modal_source_sha256": "dbded721b2abe29e01b95fbcd82828be97240dcdefe7a7cb912f980a587e5078",
+        "image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "preflight": "256 real training samples /four optimizer steps, fresh CNN+Adam checkpoint restoration bitwise checks, one resumed step and128 held-out samples; all canonical training/test samples loaded through intended path.",
+        "deadline_unix": 1791053598.5253627,
+        "examples_per_second": 361.6854436559353,
+        "peak_gpu_memory_bytes": 1629828096,
+        "resume_loss": 3.15311336517334
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Loaded all21600/2400 canonical samples; four optimizer steps; fresh616504-parameterCNN and Adam restored every model/optimizer tensor exactly; resumed one optimizer step then evaluated128 held-out samples. Diagnostic accuracy3.125%, not a target.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-10-03T18:33:19.380362+00:00",
+      "finished_at_utc": "2026-10-03T18:37:52.357159+00:00",
+      "exit_code": 0
+    },
+    {
+      "run_id": "lexset-full-v1",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-full-v1 --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-full",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:39:01.142071+00:00",
+        "max_wall_time_seconds": 18000,
+        "max_gpu_hours": 5,
+        "max_cost_chf": 18
+      },
+      "artifact_ids": [
+        "lexset-full-v1-checkpoint-pt",
+        "lexset-full-v1-claim-json",
+        "lexset-full-v1-console-segment-1-log",
+        "lexset-full-v1-execution-segment-1-json",
+        "lexset-full-v1-metrics-json",
+        "lexset-full-v1-nvidia-smi-txt",
+        "lexset-full-v1-pip-freeze-txt",
+        "lexset-full-v1-predictions-npz"
+      ],
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "datasets_read_only": true,
+        "datasets_volume_version": 2,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-riaYpafepN5mW0emUdwkt6",
+        "modal_function_call_id": "fc-01M41H02F0TGPGABJZWPG2JZH9",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-riaYpafepN5mW0emUdwkt6",
+        "modal_task_id": "ta-01M41H0H9DG36Q56VHSPKZNEJR",
+        "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
+        "wall_time_seconds": 542.534957408905,
+        "gpu_hours": 0.15070415483580696,
+        "estimated_cost_chf": 0.45264776566539766,
+        "cost_note": "Process/function elapsed times official A10080+8CPU+16GiB rate, conservative1USD=1CHF budgeting conversion; storage/provisioning excluded, actual billing unknown."
+      },
+      "configuration": {
+        "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+        "train_source_sha256": "797a9249824090597d701aff18903c55f219d1513d6fa446ec07acb8bdc3804b",
+        "modal_source_sha256": "dbded721b2abe29e01b95fbcd82828be97240dcdefe7a7cb912f980a587e5078",
+        "image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "epochs": 60,
+        "seed": 42,
+        "batch_size": 64,
+        "optimizer": "Adam lr0.001 defaults",
+        "checkpoint_rule": "Final epoch60; no test-directed selection",
+        "max_execution_segments": 2,
+        "checkpoint_recovery": "Same function call/source/manifest/deadline only; model/optimizer/epoch/RNG persisted each epoch; no fresh restart.",
+        "deadline_unix": 1791070783.7011998,
+        "deadline_at_utc": "2026-10-03T23:39:43.701200+00:00",
+        "peak_gpu_memory_bytes": 1625123328,
+        "examples_per_second": 6594.0313653318335,
+        "final_checkpoint_sha256": "7568f82afbe19e43ccb34a05a9d48ae164193aa162665392cbb1f4e30434b43b"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All60 published epochs completed; final checkpoint restored and all2400 native test samples evaluated,2350correct. No full restart or recovery segment consumed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "estimate": {
+        "wall_time_seconds": 4150.85,
+        "gpu_hours": 1.153013888888889,
+        "cost_chf": 4,
+        "basis": "Cold representative throughput361.685 images/s \u00d721600\u00d760, plus observed267.6s setup and300s evaluation/overhead allowance. A10080+8CPU+16GiB budget roughly3.00USD/h, conservative1USD=1CHF planning conversion. Actual billing unknown. Hard5h/CHF18 full ceiling under additional6GPUh/CHF25 aggregate."
+      },
+      "started_at_utc": "2026-10-03T18:39:44.241555+00:00",
+      "finished_at_utc": "2026-10-03T18:48:46.236133+00:00",
+      "exit_code": 0
+    },
+    {
+      "run_id": "lexset-evidence-audit",
+      "agent_ids": [
+        "lexset-continuation-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "lexset-evidence-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:48:41.006330+00:00",
+        "max_wall_time_seconds": 300,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "artifact_ids": [
+        "lexset-acquisition-v4-execution",
+        "lexset-preflight-v1-metrics-json",
+        "lexset-preflight-v1-execution-segment-1-json",
+        "lexset-acquisition-v1-console-log",
+        "lexset-acquisition-v1-execution-json",
+        "lexset-acquisition-v2-console-log",
+        "lexset-acquisition-v2-execution-json",
+        "lexset-acquisition-v3-console-log",
+        "lexset-acquisition-v4-console-log",
+        "lexset-acquisition-v4-execution-start-json",
+        "lexset-acquisition-v4-execution-json",
+        "lexset-full-v1-checkpoint-pt",
+        "lexset-full-v1-claim-json",
+        "lexset-full-v1-console-segment-1-log",
+        "lexset-full-v1-execution-segment-1-json",
+        "lexset-full-v1-metrics-json",
+        "lexset-full-v1-nvidia-smi-txt",
+        "lexset-full-v1-pip-freeze-txt",
+        "lexset-full-v1-predictions-npz",
+        "lexset-preflight-v1-checkpoint-pt",
+        "lexset-preflight-v1-claim-json",
+        "lexset-preflight-v1-console-segment-1-log",
+        "lexset-preflight-v1-nvidia-smi-txt",
+        "lexset-preflight-v1-pip-freeze-txt",
+        "lexset-preflight-v1-predictions-npz"
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only CPU collection after full execution exited0; closed native hashes match downloaded metrics/predictions and recorded final checkpoint. Prior MNIST/RGB artifact hashes and76 produced target objects preserved.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "gpu": null,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "datasets_volume_version": 2,
+        "datasets_read_only": null,
+        "datasets_mount_note": "No dataset mount required for read-only output hash audit.",
+        "modal_app_id": "ap-mrYwyTmf9mEz5jjVLgICGq",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mrYwyTmf9mEz5jjVLgICGq"
+      },
+      "started_at_utc": "2026-10-03T18:49:19.385616+00:00",
+      "finished_at_utc": "2026-10-03T18:49:23.504557+00:00",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "mnist-source-metadata",
+      "kind": "raw public source metadata",
+      "uri": "artifacts/mnist-source-metadata.txt",
+      "sha256": "f392865f52001a3301037ff9cc718f38b0b5ecb08a8e74e465bad0b80e962385",
+      "size_bytes": 12140
+    },
+    {
+      "artifact_id": "lexset-source-metadata",
+      "kind": "raw public source metadata",
+      "uri": "artifacts/lexset-source-metadata.txt",
+      "sha256": "62cf4486f376e9565d812f00fe889cbec403d285f2f0c08e04d860abf18da7b2",
+      "size_bytes": 7028
+    },
+    {
+      "artifact_id": "zenodo-source-metadata",
+      "kind": "raw public source metadata",
+      "uri": "artifacts/zenodo-source-metadata.txt",
+      "sha256": "f2a24b286808db2508d2c9727f6cc7b03f361a6996c1c2070ef87a0913a0a44f",
+      "size_bytes": 7311
+    },
+    {
+      "artifact_id": "mnist-manifest",
+      "kind": "canonical dataset file manifest",
+      "uri": "modal://repro-sign/datasets/sign-language-mnist/manifest.json",
+      "sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
+      "size_bytes": 1538
+    },
+    {
+      "artifact_id": "rgb-manifest",
+      "kind": "canonical dataset file manifest",
+      "uri": "modal://repro-sign/datasets/asl-semcom-rgb/manifest.json",
+      "sha256": "d272cb793fc888b444a92419f998464a1c0026b076bf0e8193687a0b89b5d40d",
+      "size_bytes": 2245248
+    },
+    {
+      "artifact_id": "mnist-full-checkpoint-pt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-full/checkpoint.pt",
+      "sha256": "0670b9a9042ba8c1bceded021719fff7b7515ba62ee06994dbbcc1146bd4b18e",
+      "size_bytes": 7426997
+    },
+    {
+      "artifact_id": "mnist-full-metrics-json",
+      "kind": "raw metrics",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-full/metrics.json",
+      "sha256": "4e819c45e4d4d5ec3cbbd10138280bf11bd30abffbb97be3559a13f130311e6b",
+      "size_bytes": 22926
+    },
+    {
+      "artifact_id": "mnist-full-nvidia-smi-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-full/nvidia-smi.txt",
+      "sha256": "42b20daed62a485d4e342fa63758d98743d7ece1237cd8cec898e1934ba888e5",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "mnist-full-pip-freeze-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-full/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "mnist-full-predictions-npz",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-full/predictions.npz",
+      "sha256": "2b2927b2210c9f813b4c6471898c571f6b65a429846fcf9849c919a99bb28c19",
+      "size_bytes": 14983
+    },
+    {
+      "artifact_id": "mnist-preflight-checkpoint-pt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-preflight/checkpoint.pt",
+      "sha256": "f7b7a2a9b88c9cec66a0d41ba2d8c8bde8f03b054edafcc583d6cd4ee971d8e7",
+      "size_bytes": 7421173
+    },
+    {
+      "artifact_id": "mnist-preflight-metrics-json",
+      "kind": "raw metrics",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-preflight/metrics.json",
+      "sha256": "1913d969783a4f99cdcc7cc84e34059d2d707ee54bf62d0b8fc0e009dd165e48",
+      "size_bytes": 1261
+    },
+    {
+      "artifact_id": "mnist-preflight-nvidia-smi-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-preflight/nvidia-smi.txt",
+      "sha256": "75226db5d8ab462f511aad7164263726304e8e8fb2622976fe8ab36492d1e530",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "mnist-preflight-pip-freeze-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-preflight/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "mnist-preflight-predictions-npz",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/mnist-preflight/predictions.npz",
+      "sha256": "c216e5dec644c9f9869406b66042e19579ed0752dea668bc4832d5c140f2f175",
+      "size_bytes": 909
+    },
+    {
+      "artifact_id": "rgb-full-checkpoint-pt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-full/checkpoint.pt",
+      "sha256": "580aaaf76383176635aa78097ff1cc9c4e481d1ad4d7c90fb92ac0f93a14da5d",
+      "size_bytes": 7426357
+    },
+    {
+      "artifact_id": "rgb-full-metrics-json",
+      "kind": "raw metrics",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-full/metrics.json",
+      "sha256": "66efb056a0c7b07a87bef2eeeeebf738d4894c12e0ca5e6240ac5dcb901cbd59",
+      "size_bytes": 20985
+    },
+    {
+      "artifact_id": "rgb-full-nvidia-smi-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-full/nvidia-smi.txt",
+      "sha256": "d66bb11f9538e75ed7fced7afb1e18883a9a212ab112ae62f9aaf852147511da",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "rgb-full-pip-freeze-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-full/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "rgb-full-predictions-npz",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-full/predictions.npz",
+      "sha256": "3ea8b4cfccfb5fc8f8776f5da83fb35114a54d2a348bf5aae5f6dbe19f19b480",
+      "size_bytes": 1085
+    },
+    {
+      "artifact_id": "rgb-preflight-checkpoint-pt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/checkpoint.pt",
+      "sha256": "ff2764a1c88622e62e9987f278ef2bf916549d1a355783b4431de2e8261ce8d2",
+      "size_bytes": 7421173
+    },
+    {
+      "artifact_id": "rgb-preflight-metrics-json",
+      "kind": "raw metrics",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/metrics.json",
+      "sha256": "28f1e8d0d177e5b8b13f4fc0421a38ba5e942bd6f790622825e3965ef3f9b7f4",
+      "size_bytes": 1249
+    },
+    {
+      "artifact_id": "rgb-preflight-nvidia-smi-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/nvidia-smi.txt",
+      "sha256": "9c868550768ed4f7a92cb5a9d98fb0c00e4cfa438babf67c38e3a6804fcf1c17",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "rgb-preflight-pip-freeze-txt",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "rgb-preflight-predictions-npz",
+      "kind": "native experiment output",
+      "uri": "modal://repro-sign/repro-2248c066-results/rgb-preflight/predictions.npz",
+      "sha256": "40c00e26265d5a82884bf311e299321981c758a7f73ec9925dfa5ad56b018fb2",
+      "size_bytes": 658
+    },
+    {
+      "artifact_id": "lexset-source-metadata-20261003",
+      "sha256": "58b2c48aeabf10957dbaf0c9362ade83cdc1d5fe180439e8d9ec72a977c0dcbd",
+      "description": "Public Kaggle metadata inspected 2026-10-03; actual copyright label retained separately from project authorization.",
+      "uri": "artifacts/lexset-source-metadata-20261003.json",
+      "kind": "raw public source metadata",
+      "size_bytes": 5588
+    },
+    {
+      "artifact_id": "lexset-manifest",
+      "kind": "canonical dataset manifest",
+      "uri": "modal://repro-sign/datasets/synthetic-asl-alphabet/manifest.json",
+      "sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
+      "size_bytes": 11744661
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution",
+      "kind": "native execution receipt",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution.json",
+      "sha256": "29781e7866af2a77a47aa51a593c67df9ad437aded4f052a396228a0c86cbfac",
+      "size_bytes": 331
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-metrics-json",
+      "kind": "native preflight evidence",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/metrics.json",
+      "sha256": "260b90b53ca64cf7ccfa973f008859a6e40630d5e39ed1914e0da0fc2caa3441",
+      "size_bytes": 5149
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-execution-segment-1-json",
+      "kind": "native preflight evidence",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/execution-segment-1.json",
+      "sha256": "05ae3a4c85eb9a2bce70cb6a9cc576ef07bf5da709421d215021e35ef8eec83e",
+      "size_bytes": 547
+    },
+    {
+      "artifact_id": "lexset-acquisition-v1-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v1/console.log",
+      "sha256": "d3c9f09d6626d130099a3c556c4a430d1b589b7f2b7b8c9e3abc2543a313e3e1",
+      "size_bytes": 439
+    },
+    {
+      "artifact_id": "lexset-acquisition-v1-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v1/execution.json",
+      "sha256": "08f65186ffe33a6f5ef8583e8d0999f556cc866953fbf09f48e60a1dbb1de716",
+      "size_bytes": 330
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v2/console.log",
+      "sha256": "6c5aeb09f9b5f5915b1fc9df533a2eaba173a8ae2eba7bec217001e5beebecac",
+      "size_bytes": 459
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v2/execution.json",
+      "sha256": "5852a7bc581412272023f1798b3793c10c0a98e926e653c0b02163fa83285f7a",
+      "size_bytes": 336
+    },
+    {
+      "artifact_id": "lexset-acquisition-v3-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v3/console.log",
+      "sha256": "da04f48ac1901cf8f60a03666890e95bac282670c46757930ef71fb5d2855642",
+      "size_bytes": 472
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-console-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/console.log",
+      "sha256": "90e38c6885f1e5534c402a0c2c55aec29d8ebfeeb41d7616518dfac45795e6a8",
+      "size_bytes": 1559
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution-start-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution-start.json",
+      "sha256": "f32b85060aec9f9e887c8cbe7dbd85d9fb9ce072cf9acff0db258023af6a69fd",
+      "size_bytes": 218
+    },
+    {
+      "artifact_id": "lexset-acquisition-v4-execution-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-acquisition-v4/execution.json",
+      "sha256": "29781e7866af2a77a47aa51a593c67df9ad437aded4f052a396228a0c86cbfac",
+      "size_bytes": 331
+    },
+    {
+      "artifact_id": "lexset-full-v1-checkpoint-pt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/checkpoint.pt",
+      "sha256": "7568f82afbe19e43ccb34a05a9d48ae164193aa162665392cbb1f4e30434b43b",
+      "size_bytes": 7425013
+    },
+    {
+      "artifact_id": "lexset-full-v1-claim-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/claim.json",
+      "sha256": "7aa8d17e06c87808500985b3b6dbb8e88aad30acdc388ee5e445ca05cd82b316",
+      "size_bytes": 479
+    },
+    {
+      "artifact_id": "lexset-full-v1-console-segment-1-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/console-segment-1.log",
+      "sha256": "b42216791ed3c93167085ab73d3fec43da2773de856267e992db99f4ce9e461c",
+      "size_bytes": 23234
+    },
+    {
+      "artifact_id": "lexset-full-v1-execution-segment-1-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/execution-segment-1.json",
+      "sha256": "6e5db92a856f48a4bc23c065d365fa6702c22829c5cb832dc5f20eeae9d4c459",
+      "size_bytes": 522
+    },
+    {
+      "artifact_id": "lexset-full-v1-metrics-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/metrics.json",
+      "sha256": "9435b7cdd45319609f113367863feb197652c2797756fefec4056dd6a3c2babe",
+      "size_bytes": 17410
+    },
+    {
+      "artifact_id": "lexset-full-v1-nvidia-smi-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/nvidia-smi.txt",
+      "sha256": "3ff9d1db378c0885cc25f9c261dc06eb030f6ae10d533d233dfe1e02d4a71150",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "lexset-full-v1-pip-freeze-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "lexset-full-v1-predictions-npz",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-full-v1/predictions.npz",
+      "sha256": "7d6b8f874d0a9397e76e80811c042a966a343c464ec21debb868dc57fc649df7",
+      "size_bytes": 1181
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-checkpoint-pt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/checkpoint.pt",
+      "sha256": "5532395b5ff9af7ab98764bdda48a433ece5aa5305949b473b6cea2083c3eb94",
+      "size_bytes": 7421173
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-claim-json",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/claim.json",
+      "sha256": "5aeafdb29ad41a3f3cfdbb2fc25a3e5202ef724ea77c7e929b11608bc780a9c5",
+      "size_bytes": 477
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-console-segment-1-log",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/console-segment-1.log",
+      "sha256": "93f85c2b5ed1fca85c67635520fe60f59e571578e5018a1115ceaa78963b1983",
+      "size_bytes": 4085
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-nvidia-smi-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/nvidia-smi.txt",
+      "sha256": "8aeb6761ef875fc18fc98eb7079b4aa0bb28ca98e2407c9e0b64f78513dce253",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-pip-freeze-txt",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/pip-freeze.txt",
+      "sha256": "9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5",
+      "size_bytes": 6821
+    },
+    {
+      "artifact_id": "lexset-preflight-v1-predictions-npz",
+      "kind": "closed native execution artifact",
+      "uri": "modal://repro-sign/repro-2248c066-results/lexset-preflight-v1/predictions.npz",
+      "sha256": "31d3acb0537def7cb26471198b8d57a42ab1c18fecb19b7e331f58ac6f513139",
+      "size_bytes": 679
+    },
+    {
+      "artifact_id": "lexset-acquisition-v2-source",
+      "kind": "retained executed source snapshot",
+      "uri": "artifacts/lexset-acquisition-v2-source.py",
+      "sha256": "aa641391f456a912d0319c24c9d1870c2bf1400a20ffd66fccaf82db8a016f98",
+      "size_bytes": 3756
+    },
+    {
+      "artifact_id": "lexset-acquisition-v3-source",
+      "kind": "retained executed source snapshot",
+      "uri": "artifacts/lexset-acquisition-v3-source.py",
+      "sha256": "4b915726d168691ac585fa2adc726b1f8ba2a45af1687529a5ba474bcf81fa9c",
+      "size_bytes": 4188
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "lexset-permission",
+      "type": "data",
+      "status": "resolved",
+      "reason": "The author Kaggle metadata reserves dataset copyright without a positive cloud-use license.",
+      "required_action": "None; resolved by project authorization.",
+      "evidence": [
+        "artifacts/lexset-source-metadata.txt licenseName=Data files \u00a9 Original Authors",
+        "Paper reference32 identifies this exact dataset."
+      ],
+      "resolution": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized."
+    },
+    {
+      "gate_id": "validation-membership",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "Paper Tables1/2 provide train/test counts and validation scores, but no validation allocation or membership.",
+      "required_action": "No human execution decision awaited. Original validation membership remains unknown as a reporting limitation; permission for LEXSET is a separate open data gate.",
+      "evidence": [
+        "SectionIV-A assigns all34627MNIST and12290RGB samples to train/test; sectionIV-B/Table2 reports validation numbers without allocation.",
+        "Author XAI repository provides loading/inference examples but no training or validation splitter."
+      ],
+      "resolution": "Execution disposition resolved2026-10-01 under user-authorized judgment calls: retain completed train/test targets and mark historical validation scores not produced. No invented train-as-validation evaluation and no duplicate retraining solely to create an unidentifiable historical number."
+    },
+    {
+      "gate_id": "lexset-remote-tree-budget",
+      "type": "compute",
+      "status": "resolved",
+      "reason": "Remote extracted-file audit had not reached3000of27000 files after more than7minutes, projecting beyond the declared3600s CPU ceiling.",
+      "required_action": "None; stop redundant slow audit and verify the canonical pinned ZIP locally in the worker. No budget increase or human decision needed.",
+      "resolution": "Canonical ZIP-member audit v4 completed in219.94s; every member CRC/SHA/decode verified. Training uses only those archive bytes; extractedtree is explicitly noncanonical.",
+      "evidence": [
+        "lexset-acquisition-v3/console.log retained on repro-2248c066-results contains archive pin but no3000-file milestone when stopped.",
+        "lexset-acquisition-v4/execution.json and canonical manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0."
+      ]
+    }
+  ],
+  "guesses": [
+    {
+      "id": "defaults",
+      "detail": "Missing lr/batch/seed/initialization: Adam0.001,defaultbetas,eps1e-8,batch64,seed42,PyTorchdefaultlayerinitializers. User authorized routine missing-detail defaults; no tuning."
+    },
+    {
+      "id": "mnist-input",
+      "detail": "Figure 3 input dimensions of 100\u00d7100\u00d73 and the exact 616,504 parameters require upsampling grayscale MNIST to 100\u00d7100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
+    },
+    {
+      "id": "pooling",
+      "detail": "Prose says eachconv followedpool, but Figure3 and exactly616504parameters prove fourpools before finalconv. Figure/count evidence preferred."
+    },
+    {
+      "id": "resize",
+      "detail": "For RGB and the later LEXSET continuation, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
+    },
+    {
+      "id": "metrics",
+      "detail": "Use final-epoch online trainingaccuracy and finalcheckpoint testaccuracy; no test-basedmodelselection or augmentation."
+    },
+    {
+      "id": "lexset-native-size",
+      "detail": "Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented."
+    }
+  ],
+  "contacts": [
+    {
+      "kind": "none",
+      "detail": "No new author communication. Tracker mentions historical Team S RGB permission correspondence; not independently verified and not needed because Zenodo author CC BY4.0 independently establishes permission."
+    }
+  ],
+  "search_history": [
+    "Exact title, authors and GitHub/Zenodo/OSF search found no training code or weights.",
+    "Author Trevlakis dataset page and NANCY project paper page inspected.",
+    "InnoCubePC/SemCom-XAI exact revision, main tree, commit history and releases inspected: XAI scripts expect external model_path; no training/weights exist.",
+    "Dataset naming/count discrepancy resolved by inventory: actualRGBarchive10490train+1800test matchespaper, despite landingpage440train/class claim."
+  ],
+  "environment": {
+    "base_image": "ghcr.io/sign-language-processing/reproduction:latest",
+    "torch": "2.11.0a0+eb65b36914.nv26.02",
+    "cuda": "13.1",
+    "driver": "580.95.05",
+    "hardware": "NVIDIA A100-SXM4-80GB",
+    "precision": "float32",
+    "oci_digest": null,
+    "digest_note": "Not exposed by Modal; immutable Modal image ID and dependency freeze preserved per run."
+  },
+  "status": {
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "78of81 targets produced under predeclared architecture/preprocessing/defaults. Agreement requires matching published two-decimal rounding for every comparable value; this is not met. Three validation scores have unidentified historical memberships and remain not produced. LEXSET test2350/2400=97.9166667% versus98.95%; no score-directed tuning.",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "diagnosis": [
+    {
+      "finding": "Full target metrics differ from paper",
+      "checks": "Verified original archive split counts, MNIST missing-J label mapping, RGB alphabetic24class mapping, published epoch counts, finalcheckpoint reload, correct/count accuracy and per-class confusion formulas. No concrete implementation defect found.",
+      "remaining_explanations": "Unpublished learning rate/batch/initialization and MNIST resizing, plus small library interpolation differences, are declared assumptions; no score-driven tuning or restart performed."
+    }
+  ],
+  "judgment_call_review": {
+    "date": "2026-10-01",
+    "detail": "2026-10-01 user-authorized judgment-call review: an ordinary held-out training split is feasible for a new diagnostic, but these completed runs already trained on every declared training example. Retrofitting a validation subset would either evaluate training data or require distinct retraining and would not identify the paper validation metric. Preserve the76 produced targets and mark two original validation targets not produced; no human execution decision is awaited for those two targets.",
+    "new_experiments": false
+  },
+  "conclusion_assessment": {
+    "summary": "RGB and LEXSET reach similar test accuracy (97.83333% and97.91667%), both higher than MNIST88.38539%. RGB uses10490 training images versus LEXSET21600 and MNIST27455. The paper strict RGB-best ranking is not reproduced: LEXSET is0.08333 percentage points higher in this single-seed reconstruction. Similar RGB performance with fewer training examples is retained descriptively; absolute paper test scores are not recovered.",
+    "evidence": [
+      "Original MNIST/RGB runs preserved; lexset-full-v1 completed60epochs with2350/2400 correct.",
+      "LEXSET published98.95%, reproduced97.91667%, difference-1.03333pp. RGB-minus-LEXSET difference-0.08333pp; RGB-minus-MNIST+9.44794pp.",
+      "LEXSET final online training99.48611% versus test97.91667%; prior MNIST/RGB training100% with lower tests. These runs do not substantiate the paper assertion of no overfitting."
+    ],
+    "limits": [
+      "Different datasets and test samples; this is not a controlled causal comparison of representations or evidence of statistically reliable superiority from the0.08333pp difference.",
+      "All three historical validation memberships remain unspecified; their scores are not invented. Learning rate, batch, initialization and resize-library defaults remain documented reconstruction assumptions.",
+      "Communication/channel simulations and full-system semantic transmission claims are outside the assigned recognition scope."
+    ],
+    "assessed_at_utc": "2026-10-03T18:52:31.864707+00:00"
+  },
+  "continuation_budget": {
+    "declared_at_utc": "2026-10-03T18:09:23.388230+00:00",
+    "max_additional_gpu_hours": 6,
+    "max_cost_chf": 25,
+    "detail": "LEXSET acquisition, preflight and one checkpoint-resumable full attempt; preserve earlier results."
+  },
+  "execution_state": "terminal",
+  "continuation_summary": {
+    "gpu_hours": 0.22676854842238958,
+    "full_restarts": 0,
+    "closed_lexset_artifact_count": 24,
+    "prior_76_targets_unchanged": true,
+    "permission_gate_resolved": true,
+    "human_execution_action_required": false
+  }
+}
