@@ -84,7 +84,7 @@ Record that basis in `status.numerical_agreement_basis`, including the assessed 
 
 ## Guesses, deviations and noncompliance
 
-Every `reproduction.json` carries two arrays, present even when empty (`[]` states "none" explicitly; a missing key is invalid).
+Every `reproduction.json` carries two arrays: `guesses_and_deviations` and `noncompliance`, present even when empty (`[]` states "none" explicitly; a missing key is invalid).
 
 `guesses_and_deviations` records fidelity to the paper and its released artifacts. Each entry needs a unique `id`, a `kind`, and a `description`:
 
