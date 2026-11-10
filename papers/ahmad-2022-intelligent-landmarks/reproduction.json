@@ -422,14 +422,25 @@
   ],
   "guesses_and_deviations": [
     {
-      "id": "landmark-implementation",
+      "id": "landmark-implementation-isl-hs",
       "kind": "guess",
-      "description": "Landmark implementation and configuration.",
+      "description": "ISL-HS landmark implementation and configuration.",
       "paper_says": "The paper gives no version or configuration",
       "used": "`mediapipe==0.10.18`, direct `Hands`; sequential tracking within each video; one hand; model complexity 1; both confidence thresholds 0.5",
       "basis": "Preserves the stated 21-point Hands path",
       "dataset_ids": [
         "isl-hs"
+      ]
+    },
+    {
+      "id": "landmark-implementation-asl",
+      "kind": "guess",
+      "description": "ASL Alphabet landmark implementation and configuration.",
+      "paper_says": "The paper gives no version or configuration",
+      "used": "`mediapipe==0.10.18`, direct `Hands`; static image mode; one hand; model complexity 1; both confidence thresholds 0.5",
+      "basis": "Preserves the stated 21-point Hands path",
+      "dataset_ids": [
+        "asl-alphabet"
       ]
     },
     {
@@ -450,6 +461,7 @@
       "paper_says": "The paper describes pixel coordinates",
       "used": "Multiply MediaPipe's normalized `x/y` by the decoded frame width/height",
       "dataset_ids": [
+        "asl-alphabet",
         "isl-hs"
       ]
     },
@@ -460,6 +472,7 @@
       "paper_says": "The equations give no zero-division policy",
       "used": "Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0",
       "dataset_ids": [
+        "asl-alphabet",
         "isl-hs"
       ]
     },
@@ -471,6 +484,7 @@
       "used": "Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only",
       "basis": "Fitting on training folds only avoids test-fold leakage",
       "dataset_ids": [
+        "asl-alphabet",
         "isl-hs"
       ]
     },
@@ -479,9 +493,13 @@
       "kind": "guess",
       "description": "Random Forest settings.",
       "paper_says": "Only the 100-tree default is stated",
-      "used": "100 trees, seed 2026, eight CPU workers, all other `scikit-learn==1.6.1` defaults",
+      "used": "100 trees, seed 2026 + fold number, eight CPU workers, all other `scikit-learn==1.6.1` defaults",
       "dataset_ids": [
+        "asl-alphabet",
         "isl-hs"
+      ],
+      "evidence": [
+        "evaluate.py:166 and evaluate_asl.py:89 construct the classifier with `random_state=SEED + fold`; both write `random_state` as `SEED` into their run.json (evaluate.py:209, evaluate_asl.py:103)"
       ]
     },
     {
