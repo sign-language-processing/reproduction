@@ -1,0 +1,2853 @@
+{
+  "paper_id": "2be3c68e9731c401b36cc8d1d0588b59f86077ae",
+  "agents": [
+    {
+      "agent_id": "skresnet-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Source investigation, data preflight, structural gate and report. Exact model_id and harness_version unavailable.",
+      "evidence": [
+        "Session developer instructions identify GPT-6 using Codex; exact version identifiers are not exposed."
+      ]
+    },
+    {
+      "agent_id": "master-review-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Independent source, figure, and comparison-provenance review only; no run execution contribution. Exact model_id and harness_version unavailable in session. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution.",
+      "evidence": [
+        "Parent /root session message on 2026-10-01: independently rendered PDF pages 4\u20135; Figures 2\u20134 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
+        "Parent /root supplied the primary (2+1)D-SLR abstract discrepancy lead; executing agent independently verified its 98.7% versus Xu Table 4 98.2%. Session identifies GPT-6 using Codex but exposes no exact model or application version.",
+        "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
+      ]
+    },
+    {
+      "agent_id": "master-conditional-executor",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Conditional reconstruction implementation and execution after documented judgment calls were authorized. Separate from earlier review-only contribution. Exact model_id and harness_version are unavailable.",
+      "evidence": [
+        "Current session identifies GPT-6 using Codex. On 2026-10-01 the master agent declared source-based reconstruction choices before any new score; exact model and application versions are not exposed."
+      ]
+    },
+    {
+      "agent_id": "conditional-independent-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only review of conditional preprocessing, split, model, loss and resume. Identified sampler-cursor and atomic-checkpoint issues before any GPU run; reviewed fixes. No execution contribution. Exact model_id/harness_version unavailable. Later took over terminal monitoring, evidence collection, independent split/prediction/history audit and report finalization. Did not launch or restart training; original run executor attribution is preserved.",
+      "evidence": [
+        "2026-10-01 sibling agent identified as GPT-6/Codex reviewed conditional.py/conditional_modal.py: per-class30/10/10 splits disjoint, consistent video flips, accumulated loss correct, validation-only checkpointselection. Found mid-epochshuffle resume and non-atomic writes; root changed saves to60-step epochboundaries, atomicreplace, and includedbestmodelinresume. Suggested RangerLookahead branch preflight and wholeloopforecast; seven optimizersteps nowexercise defaultk6.",
+        "Explicit GPT-6/Codex session attestation on 2026-10-01: parent handed over monitoring after the one authorized provider replay. This agent independently audited terminal native artifacts and finalized the report. Exact model ID and harness version remain unavailable."
+      ]
+    },
+    {
+      "agent_id": "conditional-report-reviewer",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only source/report/ledger review of effective-batch normalization, validation checkpoint selection, epoch-boundary resume and evidence limits. No implementation edits, execution or job control. Exact model_id and harness_version are unavailable.",
+      "evidence": [
+        "2026-10-01 reviewer session explicitly identifies GPT-6 using Codex; exact model/build and application version are not exposed.",
+        "Independent review found no result-changing defect. Verified loss division across 32 microbatches of four videos, disclosed BatchNorm behavior, earliest strict validation maximum, post-selection test and atomic epoch-boundary state recovery. Any resume must respect the remaining aggregate budget; saved prediction arrays contain no logits or secondary-test predictions."
+      ]
+    },
+    {
+      "agent_id": "paper-sized-executor",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Root orchestrator: authorized architecture reconstruction, initial unsuccessful CPU count audit001, independent architecture/preflight/deadline/recovery source review and orchestration. Does not execute the later subagent training runs. Exact model ID and harness version unavailable.",
+      "evidence": [
+        "Current session identifies GPT-6 using Codex; explicit instruction authorizes approximate parameter-count-constrained reconstruction and scientific conclusion."
+      ]
+    },
+    {
+      "agent_id": "paper-sized-revision-executor",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Implements, executes and reports the newly authorized parameter-sized reconstruction. Exact model ID and harness version unavailable. Does not claim execution of earlier runs or root size audit 001.",
+      "evidence": [
+        "Active subagent session identifies GPT-6 using Codex, delegated by the orchestrator on 2026-10-03; exact model ID and harness version were not exposed."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-2be3c68e9731c401b36cc8d1d0588b59f86077ae-2026-10-01.json",
+      "sha256": "5b5662ce3a6881a7f0caf4ca170ff173db78aa4a1c348dadb6f728229e5cb034"
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "N/A",
+          "copied_scores": "yes",
+          "datasets": [
+            "ogmzk93uoqpbpf5"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "LSA64 (Ronchetti et al., 2016) is the Argentine Sign Language dataset provided by III-\nLIDI (Informatics Institute) at the Informatics Faculty of the National University of La\nPlata (UNLP) available at: https://facundoq.github.io/datasets/lsa64/.",
+                "contact_dates": [],
+                "correspondence": "",
+                "id": "ogmzk93uoqpbpf5",
+                "license": "CC BY-NC-SA 4.0",
+                "name": "LSA64",
+                "on_modal": "yes",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "aed"
+                ],
+                "spoken_languages": [
+                  "eng"
+                ],
+                "url": [
+                  "https://facundoq.github.io/datasets/lsa64/",
+                  "https://zenodo.org/record/6674324/files/LSA64_Full.zip?download=",
+                  "https://zenodo.org/record/6674324/files/LSA64_Cut.zip?download=1"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "wzc6kxyuhls6lut",
+                "name": "Accuracy",
+                "url": []
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "zg2j7pm6uiowmue",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "wzc6kxyuhls6lut"
+          ],
+          "paper_id": "2be3c68e9731c401b36cc8d1d0588b59f86077ae",
+          "pdf_url": "https://downloads.hindawi.com/journals/js/2023/9503961.pdf",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "yes",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-09-24T01:40:22.911Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Isolated signing videos"
+          ],
+          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long\u2013short term memory, which effectively saves computational cost and time cost.",
+          "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
+          "venue": "Hindawi Journal of Sensors",
+          "what_to_reproduce": "Table 4",
+          "year": 2023
+        }
+      },
+      "id": "w27nd4hmis8n4fy",
+      "paper": "zg2j7pm6uiowmue",
+      "status": "in_progress",
+      "url": []
+    },
+    "evidence": [
+      "Direct user assignment via current tracker. Current export has expand.paper.status=final and no confirmation field; database record ID is distinct from paper_id. Reviewer and assignee contact details redacted."
+    ]
+  },
+  "paper": {
+    "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
+    "citation": "Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. Journal of Sensors 2023, 9503961.",
+    "url": "https://doi.org/10.1155/2023/9503961",
+    "pdf_sha256": "b82a83f17f761f7c5743c847766c7d8d37c3c96c47bebea0cce9da2f2b1fecf8",
+    "accessed_at": "2026-10-01"
+  },
+  "sources": [
+    {
+      "source_id": "paper",
+      "kind": "paper",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1155/2023/9503961",
+      "revision_or_sha256": "b82a83f17f761f7c5743c847766c7d8d37c3c96c47bebea0cce9da2f2b1fecf8",
+      "role": "Full paper equations, tables, captions, references, Data Availability. No code or supplementary architecture specification linked."
+    },
+    {
+      "source_id": "tcn",
+      "kind": "code",
+      "url": "https://github.com/locuslab/TCN",
+      "revision_or_sha256": "2f8c2b817050206397458dfd1f5a25ce8a32fe65",
+      "role": "Cited base TCN accepts arbitrary num_channels and kernel_size; base implementation cannot determine this paper network widths/depth or hybrid dilations."
+    },
+    {
+      "source_id": "sknet",
+      "kind": "code",
+      "url": "https://github.com/implus/SKNet",
+      "revision_or_sha256": null,
+      "role": "Official code URL stated by cited Li2019 SKNet paper; GitHub endpoint404 on access. Third-party SKNet implementations found but do not specify Xu hybrid architecture."
+    },
+    {
+      "source_id": "spoter-baseline-provenance",
+      "kind": "paper",
+      "url": "https://openaccess.thecvf.com/content/WACV2022W/HADCV/papers/Bohacek_Sign_Pose-Based_Transformer_for_Word-Level_Sign_Language_Recognition_WACVW_2022_paper.pdf",
+      "revision_or_sha256": "WACVW2022 Table5",
+      "role": "Earlier I3D98.91 and MEMP99.06 accuracy evidence. Does not establish origin of all Xu comparison parameter/FLOP cells."
+    },
+    {
+      "source_id": "conditional-timm",
+      "kind": "package",
+      "name": "timm",
+      "version": "1.0.22",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/d6/14/fc04d491527b774ec7479897f5861959209de1480e4c4cd32ed098ff8bea/timm-1.0.22-py3-none-any.whl",
+          "sha256": "888981753e65cbaacfc07494370138b1700a27b1f0af587f4f9b47bc024161d0"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/c5/9d/e4670765d1c033f97096c760b3b907eeb659cf80f3678640e5f060b04c6c/timm-1.0.22.tar.gz",
+          "sha256": "14fd74bcc17db3856b1a47d26fb305576c98579ab9d02b36714a5e6b25cde422"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
+    },
+    {
+      "source_id": "conditional-torch-optimizer",
+      "kind": "package",
+      "name": "torch-optimizer",
+      "version": "0.3.0",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/f6/54/bbb1b4c15afc2dac525c8359c340ade685542113394fd4c6564ee3c71da3/torch_optimizer-0.3.0-py3-none-any.whl",
+          "sha256": "7de8e57315e43561cdd0370a1b67303cc8ef1b053f9b5573de629a62390f2af9"
+        },
+        {
+          "url": "https://files.pythonhosted.org/packages/18/13/c4c0a206131e978d8ceaa095ad1e3153d7daf48efad207b6057efe3491a2/torch-optimizer-0.3.0.tar.gz",
+          "sha256": "b2180629df9d6cd7a2aeabe71fa4a872bba938e8e275965092568cd9931b924c"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
+    },
+    {
+      "source_id": "conditional-fvcore",
+      "kind": "package",
+      "name": "fvcore",
+      "version": "0.1.5.post20221221",
+      "artifacts": [
+        {
+          "url": "https://files.pythonhosted.org/packages/a5/93/d056a9c4efc6c79ba7b5159cc66bb436db93d2cc46dca18ed65c59cc8e4e/fvcore-0.1.5.post20221221.tar.gz",
+          "sha256": "f2fb0bb90572ae651c11c78e20493ed19b2240550a7e4bbb2d6de87bdd037860"
+        }
+      ],
+      "selection_reason": "Pinnedpublishedlibraryusedforconditionalreconstruction;not targetauthorcode."
+    }
+  ],
+  "status": {
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "All three own-row quantities were measured for the authorized approximate scope. They differ from the printed Table4 values at its reported precision; raw differences are preserved. Parameter closeness is design calibration, operations use a disclosed one-FMA convention, and primary accuracy uses the preregistered reconstructed split/validation selection. Eleven baseline cells remain unproduced; their published numbers are comparison context, not independently rerun baselines.",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "lsa64",
+      "name": "LSA64",
+      "source_url": "https://facundoq.github.io/datasets/lsa64/",
+      "license_or_permission": "CC BY-NC-SA4.0 official academic/educational/personal use; internal noncommercial cloud analysis permitted, no redistribution in this PR.",
+      "modal_path": "lsa64",
+      "expected_counts": {
+        "videos": 3200,
+        "classes": 64,
+        "signers": 10,
+        "repetitions": 5
+      },
+      "archive_sha256": "218197acaa188583c1f06d149750af6af0d6b2bd44a627550d55773f5eefb20e",
+      "split": "The original audit used all 3,200 videos. The later conditional extension declares a seed-42 per-class 60/20/20 split; it does not claim the historical author membership.",
+      "version_or_subset": "Original3200video release",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "splits": [
+        {
+          "name": "all; paper60/20/20allocationunresolved",
+          "sample_count": 3200,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "b43af40df52e1a248a36ce2b9d65fac6e4fcbb75d0fcf91b2b60104d9a875098"
+            }
+          ]
+        }
+      ],
+      "manifest": {
+        "uri": "modal://datasets/lsa64/manifest.json",
+        "sha256": "b43af40df52e1a248a36ce2b9d65fac6e4fcbb75d0fcf91b2b60104d9a875098"
+      },
+      "verified_sample_count": 64,
+      "sample_frame_counts": 3
+    },
+    {
+      "dataset_id": "lsa64-conditional-v1",
+      "name": "LSA64: declared 32-keyframe reconstruction",
+      "source_url": "https://facundoq.github.io/datasets/lsa64/",
+      "license_or_permission": "Derived from canonical CC BY-NC-SA 4.0 LSA64 for internal noncommercial research; no redistribution.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "lsa64-skresnet-conditional-v1",
+      "version_or_subset": "conditional-v1seed42/224RGB/32frames",
+      "expected_counts": {
+        "train": 1920,
+        "validation": 640,
+        "test": 640,
+        "classes": 64
+      },
+      "manifest": {
+        "uri": "modal://datasets/lsa64-skresnet-conditional-v1/manifest.json",
+        "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+      },
+      "archive_sha256": "e5eba27c56f44d07d0d4eb432d10f5d5216ee955af891bd35c1886a97c41ca3d",
+      "source_dataset_id": "lsa64",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 1920,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        },
+        {
+          "name": "validation",
+          "sample_count": 640,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 640,
+          "files": [
+            {
+              "path": "manifest.json",
+              "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "parameters",
+      "name": "Model parameter count",
+      "direction": "lower",
+      "implementation": "sum(p.numel() for p in model.parameters()), counting learned parameters including weight-normalization parameters; divided by1e6.",
+      "version": "PyTorch2.11.0a0+eb65b36914.nv26.02",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "million parameters",
+      "paper_implementation_limit": "Author counting inclusion/exclusion unspecified."
+    },
+    {
+      "metric_id": "flops",
+      "name": "Floating point operations",
+      "direction": "lower",
+      "implementation": "fvcore FlopCountAnalysis for one video tensor[1,32,3,224,224], eval mode; one fused multiply-add counted as one operation; unsupportedoperators retained in rawmetrics, divided by1e9.",
+      "version": "fvcore0.1.5.post20221221",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "GFLOPs",
+      "paper_implementation_limit": "Input image dimensions and MAC/FLOP convention absent; Table2 states32frames."
+    },
+    {
+      "metric_id": "accuracy",
+      "name": "Top1 classification accuracy",
+      "direction": "higher",
+      "implementation": "Exactly correct argmax video classifications /640held-out videos \u00d7100; primarywhole-video horizontalflip probability0.5 atseed314159 after validation-only checkpoint selection.",
+      "version": "NumPy equality/mean; native dependency freeze retained.",
+      "aggregation": "single model/test partition",
+      "unit_or_scale": "percent",
+      "paper_implementation_limit": "Number correctly classified held-out videos divided by total videos times100; exact test split and checkpoint selection unresolved."
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "lsa64-hybrid",
+      "dataset_id": "lsa64",
+      "recipe": "SKResNet spatial+TCN temporal,32interframe-difference keyframes,Ranger1e-4,batch128,1000iterations,60/20/20split. Improved hybrid dilations, adaptive max pool and Mish.",
+      "unresolved": "Widths/depth/inputdimensions/dilationsequence/keyframe-smoothing and baseunification; iteration versus epoch; Figure7 says testbest at656.",
+      "system": "Improved SKResNet-TCN",
+      "checkpoint_rule": "Figure7 reports best test state at656iterations; validation selection unspecified",
+      "paper_evidence": "Sections3.3\u20133.6,4.1,Table4"
+    },
+    {
+      "experiment_id": "conditional-sknet50-tcn",
+      "dataset_id": "lsa64-conditional-v1",
+      "system": "Explicit conditional SKNet-50 + TCN reconstruction",
+      "recipe": "timm 1.0.22 skresnext50_32x4d; random initialization, Mish and max pooling; cited TCN blocks with width 256, kernel 3 and dilations 1/2/5; Ranger 1e-4, 1,000 steps, effective batch 128, microbatch 4; seed 42",
+      "checkpoint_rule": "Maximum validation accuracy every 50 steps; earliest tie; test only after training.",
+      "comparability": "Conditional evidence: the author architecture is unavailable. This assessment and all configuration choices were fixed before scores.",
+      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
+      "conditional_result": {
+        "run_id": "conditional-full-seed42-001",
+        "artifact_ids": [
+          "conditional-full-metrics-json",
+          "conditional-full-predictions-npz"
+        ],
+        "accuracy_percent": 55.15624999999999,
+        "correct": 353,
+        "count": 640,
+        "deterministic_accuracy_percent": 54.6875,
+        "parameters": 28530752,
+        "counted_flops_one_fma": 143947126784,
+        "unsupported_ops": {
+          "aten::mul": 17,
+          "aten::mish_": 65,
+          "aten::max_pool2d": 1,
+          "aten::sum": 32,
+          "aten::mean": 16,
+          "aten::softmax": 16,
+          "aten::add_": 16,
+          "aten::adaptive_max_pool2d": 1,
+          "aten::_weight_norm": 6,
+          "aten::mish": 9,
+          "aten::add": 3,
+          "aten::amax": 1
+        },
+        "selected_step": 1000,
+        "comparability": "Not an exact-paper target result: architecture dimensions are inferred and BatchNorm uses the disclosed microbatch behavior. Predeclared before scores; no numerical agreement assessment."
+      }
+    },
+    {
+      "experiment_id": "paper-sized-skresnet-tcn",
+      "dataset_id": "lsa64-conditional-v1",
+      "system": "Parameter-sized SKResNet-TCN reconstruction",
+      "recipe": "timm1.0.22 grouped skresnext50_32x4d with stage depths[1,2,2,1]; random initialization, Mish, max representation pooling; pinned cited TCN blocks width224/kernel3/dilations1,2,5/dropout0.2; Ranger0.3.0 lr1e-4;1,000 optimizer updates/effectivebatch128/microbatch4/seed42; existing32-frame224px preprocessing and1,920/640/640split.",
+      "checkpoint_rule": "Earliest maximum validation accuracy among the20scheduled evaluations every50updates; primary augmented test seed314159 only after training, secondary deterministic evaluation separately.",
+      "comparability": "Explicitly authorized approximate reconstruction fixed before accuracy. New own-row values assess the requested approximate scope, not an exact author implementation. Parameter closeness is design calibration; operation counts use1FMA convention with unsupportedoperators disclosed. Same held-out video accuracy metric, reconstructed class-balanced split; shared signers across partitions prevent signer-independent claims.",
+      "paper_evidence": "PaperSections3\u20134;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details.",
+      "result": {
+        "run_id": "paper-sized-full-seed42-001",
+        "artifact_ids": [
+          "paper-sized-full-metrics-json"
+        ],
+        "accuracy_percent": 81.875,
+        "correct": 524,
+        "count": 640,
+        "selected_step": 1000,
+        "parameters": 12222880,
+        "counted_flops_one_fma": 68347287552
+      }
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table4-i3d-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 12.39,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-i3d-flops",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 111.6,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-i3d-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D",
+      "system": "I3D",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 98.91,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-2-1-d-slr-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,row(2+1)D-SLR",
+      "system": "(2+1)D-SLR",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 33.3,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-2-1-d-slr-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,row(2+1)D-SLR",
+      "system": "(2+1)D-SLR",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 98.2,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 13.4,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-flops",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 111.79,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-i3d-glr-csa-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+      "system": "I3D+GLR+CSA",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 100.0,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-memp-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 12.83,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-memp-flops",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "flops",
+      "dataset_id": "lsa64",
+      "split": "model",
+      "original_value": 112.34,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-memp-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowMEMP",
+      "system": "MEMP",
+      "experiment_id": "lsa64-hybrid",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64",
+      "split": "test",
+      "original_value": 99.06,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+      ],
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "comparison-provenance"
+        ],
+        "evidence": [
+          "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+          "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+        ]
+      },
+      "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+    },
+    {
+      "target_id": "table4-ours-parameters",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "paper-sized-skresnet-tcn",
+      "metric_id": "parameters",
+      "dataset_id": "lsa64-conditional-v1",
+      "split": "model",
+      "original_value": 12.34,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "produced",
+        "reproduced_value": 12.22288,
+        "difference": -0.11711999999999989,
+        "run_ids": [
+          "paper-sized-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "paper-sized-full-metrics-json"
+        ],
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
+    },
+    {
+      "target_id": "table4-ours-flops",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "paper-sized-skresnet-tcn",
+      "metric_id": "flops",
+      "dataset_id": "lsa64-conditional-v1",
+      "split": "model",
+      "original_value": 62.5,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "produced",
+        "reproduced_value": 68.347287552,
+        "difference": 5.847287551999997,
+        "run_ids": [
+          "paper-sized-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "paper-sized-full-metrics-json"
+        ],
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
+    },
+    {
+      "target_id": "table4-ours-accuracy",
+      "in_scope": true,
+      "paper_location": "Table4,p8,rowours",
+      "system": "ours",
+      "experiment_id": "paper-sized-skresnet-tcn",
+      "metric_id": "accuracy",
+      "dataset_id": "lsa64-conditional-v1",
+      "split": "test",
+      "original_value": 100.0,
+      "copied_baseline": false,
+      "evidence": [
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+      ],
+      "result": {
+        "status": "produced",
+        "reproduced_value": 81.875,
+        "difference": -18.125,
+        "run_ids": [
+          "paper-sized-full-seed42-001"
+        ],
+        "artifact_ids": [
+          "paper-sized-full-metrics-json"
+        ],
+        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+      },
+      "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "data-preflight-001",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:38:32.021806+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:39:19Z",
+      "finished_at_utc": "2026-10-01T10:39:40Z",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-OkPK15AL83MGibmLot42IW",
+        "task_id": "ta-01M3VGREXS0T5Y2PBQAFNX86MR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OkPK15AL83MGibmLot42IW"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "simple-video-utils0.7.4 failed opening first real file because latest PyAV removed metadata_errors argument. No evidence of corrupt video. Pin av16.0.1 in separate compatibility hypothesis. App lifecycle timestamps from Modal app list.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-1"
+      ]
+    },
+    {
+      "run_id": "data-preflight-002",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-002",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "pyav-compatibility",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:40:15.421895+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:40:17+00:00",
+      "finished_at_utc": "2026-10-01T10:40:19+00:00",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-IRpHz2vtjd6PoxIdrcPYkS",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-IRpHz2vtjd6PoxIdrcPYkS"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "Pinning av16.0.1 rejected by resolver because simple-video-utils0.7.4 explicitly requires av>=18.0.0; revert16.0.1 and pin first supported18.0.0 before19 API removal.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-2"
+      ]
+    },
+    {
+      "run_id": "data-preflight-003",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-003",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supported-pyav18",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:40:36.006325+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "started_at_utc": "2026-10-01T10:40:37+00:00",
+      "finished_at_utc": "2026-10-01T10:40:57+00:00",
+      "exit_code": 1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-YIykPJ7OafUrlxeO827hOo",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YIykPJ7OafUrlxeO827hOo"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "PyAV18 successfully decoded first real video. Audit serializer incorrectly assumed metadata was dataclass; replace with documented explicit metadata attributes.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "failure-3"
+      ]
+    },
+    {
+      "run_id": "data-preflight-004",
+      "agent_ids": [
+        "skresnet-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xu-2023-skresnet-tcn/modal_app.py --run-id data-preflight-004",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "metadata-serialization",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:41:21.905308+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "gpu_count": 0
+      },
+      "artifact_ids": [
+        "data-audit-freeze",
+        "data-audit-audit",
+        "data-audit-execution"
+      ],
+      "started_at_utc": "2026-10-01T10:41:28.659233+00:00",
+      "finished_at_utc": "2026-10-01T10:41:54.810757+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-Q5jTR7jRU1BbyHlNewufsy",
+        "function_call_id": "fc-01M3VGW17RQMT228VPF0C8Q3Y0",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Q5jTR7jRU1BbyHlNewufsy"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Read-only inventory3200videos64classes; one full-resolution sample perclass hashed and3framesdecoded each. This data-only preflight yields no model metric.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "conditional-data-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode prepare --run-id conditional-data-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-data",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:04:49.431253+00:00",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 10
+      },
+      "compute": {
+        "gpu_count": 0,
+        "cpu_count": 16,
+        "memory_mb": 32768
+      },
+      "artifact_ids": [
+        "conditional-data-execution-json",
+        "conditional-data-runtime-json",
+        "conditional-data-freeze-txt",
+        "conditional-data-console-log",
+        "conditional-data-executed-source-py",
+        "conditional-derived-manifest"
+      ],
+      "started_at_utc": "2026-10-01T13:07:07.773090+00:00",
+      "finished_at_utc": "2026-10-01T13:12:48.147546+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-JEMJetvAmhcr5mOTlHkVLv",
+        "function_call_id": "fc-01M3VS6NHV4N2BSFCQA353JJ4N",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-JEMJetvAmhcr5mOTlHkVLv",
+        "image_id": "im-Uu4wuwsaA67VCRgY85sXbg"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Decoded all 3,200 videos, selected 32 RGB frames at 224-square resolution per video, hashed every source and output, archived derived inputs and generated disjoint seed-42 class-balanced splits of 1,920/640/640. CPU wall time: 340.37 seconds.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "conditional-preflight-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode preflight --run-id conditional-preflight-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-preflight",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:15:48.545582+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 5
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536
+      },
+      "artifact_ids": [
+        "conditional-preflight-best-pt",
+        "conditional-preflight-console-log",
+        "conditional-preflight-executed-source-py",
+        "conditional-preflight-freeze-txt",
+        "conditional-preflight-gpu-txt",
+        "conditional-preflight-last-pt",
+        "conditional-preflight-manifest-json",
+        "conditional-preflight-model-txt",
+        "conditional-preflight-predictions-npz",
+        "conditional-preflight-runtime-json",
+        "conditional-preflight-metrics-json",
+        "conditional-preflight-execution-json"
+      ],
+      "planned_scope": "Seven real optimizer steps at effective batch 128 exercise Ranger Lookahead synchronization; checkpoint reload and one actual resumed optimizer step; primary and secondary evaluations on 64 held-out videos; memory and whole-loop timing measurements. No claim of target comparability.",
+      "started_at_utc": "2026-10-01T13:16:18.155639+00:00",
+      "finished_at_utc": "2026-10-01T13:18:39.655731+00:00",
+      "exit_code": 0,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-f0q0RR1sqr3taTgKGauuAq",
+        "function_call_id": "fc-01M3VSQ25HF8PSQGFGKW8WQ02R",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-f0q0RR1sqr3taTgKGauuAq",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
+      },
+      "measurements": {
+        "wall_seconds": 130.36249923706055,
+        "training_seconds": 80.42017936706543,
+        "mean_warm_microbatch_seconds": 0.2645499920096633,
+        "peak_gpu_bytes": 27345091072,
+        "parameters": 28530752,
+        "flops_one_fused_multiply_add": 143947126784,
+        "accuracy": 0.0,
+        "test_count": 64,
+        "steps": 7,
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Seven real effective-batch-128 optimizer steps exercised Ranger Lookahead synchronization, checkpoint reload and an actual resumed optimizer step. Both tiny held-out evaluation paths completed. Scores are diagnostics only.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "conditional-full-seed42-001",
+      "agent_ids": [
+        "master-conditional-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/conditional_modal.py --mode full --run-id conditional-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "conditional-full-seed42",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T13:20:18.291122+00:00",
+        "max_wall_time_seconds": 18000,
+        "max_gpu_hours": 5,
+        "max_cost_chf": 20
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536,
+        "estimated_wall_hours": 3.5,
+        "estimated_gpu_hours": 3.5,
+        "estimated_cost_chf": 11,
+        "forecast_basis": "Measured seven-step whole training/evaluation phase 80.42 seconds, scaled conservatively to 1,000 optimizer steps, plus 20 full validation passes, final primary/secondary tests, staging and atomic checkpoint writes. Warm microbatch 0.26455 seconds; peak 27.345 GB. Exact same model, microbatch and precision as preflight.",
+        "aggregate_ceiling": "At most five GPU-hours / CHF20 across initial execution and one checkpoint-only resume. No full restart.",
+        "resume_enforcement": "Orchestrator polls container IDs and deadline every 60 seconds. Stop the app if any third container is observed or UTC reaches 2026-10-01T18:20:18Z, preserving the original aggregate five-hour ceiling. Only the initial container and one replay from step 480 are allowed; no full restart."
+      },
+      "artifact_ids": [
+        "conditional-preemption-platform-log",
+        "conditional-original-partial-log",
+        "conditional-resume-partial-log",
+        "conditional-full-best-pt",
+        "conditional-full-console-log",
+        "conditional-full-executed-source-py",
+        "conditional-full-freeze-txt",
+        "conditional-full-gpu-txt",
+        "conditional-full-last-pt",
+        "conditional-full-manifest-json",
+        "conditional-full-model-txt",
+        "conditional-full-predictions-npz",
+        "conditional-full-runtime-json",
+        "conditional-full-metrics-json",
+        "conditional-full-execution-json",
+        "conditional-original-wrapper-execution",
+        "conditional-terminal-uri-audit"
+      ],
+      "planned_scope": "1,000 optimizer steps, all 1,920 training videos, validation every 50 steps on 640 videos, earliest highest-validation checkpoint, primary fixed-seed augmented test and separate deterministic diagnostic on 640 videos. Conditional evidence only; no architecture/score tuning.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-0zyXHBpA6HkvCxedlnkv2E",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-0zyXHBpA6HkvCxedlnkv2E",
+        "function_call_id": "fc-01M3VSZ2HFDKYVJ06QRGDJZSJ7",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
+      },
+      "execution_segments": [
+        {
+          "container_id": "ta-01M3VSZ484QQ8C9NSEFCKQKSTR",
+          "started_at_utc": "2026-10-01T13:20:34+00:00",
+          "finished_at_utc": "2026-10-01T14:45:04+00:00",
+          "end_reason": "Provider preemption; platform log explicitly says same-input automatic replay. Native process exit code was not observed.",
+          "native_exit_code": null,
+          "checkpoint_step_recovered": 480,
+          "wrapper_started_at_utc": "2026-10-01T13:20:35.885595+00:00",
+          "wrapper_finished_at_utc": "2026-10-01T14:44:56.522101+00:00",
+          "wrapper_exit_code": 1,
+          "wrapper_exit_code_note": "Initialized code 1 written by finally on interruption; child native exit status remains unobserved.",
+          "wrapper_evidence_artifact_id": "conditional-original-wrapper-execution"
+        },
+        {
+          "container_id": "ta-01M3VYT587185B6Y4FZA0HAY3R",
+          "started_at_utc": "2026-10-01T14:45:12+00:00",
+          "resume_step": 480,
+          "detail": "Same logical Modal invocation replayed; script restored last checkpoint. This consumes the single allowed checkpoint resume. No fresh training restart.",
+          "finished_at_utc": "2026-10-01T16:04:39.988034+00:00",
+          "native_exit_code": 0
+        }
+      ],
+      "recovery_evidence_note": "Native wrapper overwrites console/runtime files when Modal replays the function. Original console evidence is limited to retained partial snapshots and platform preemption log; no complete original native log or native exit code is claimed. All final timing fields must distinguish the resumed process from the aggregate lifecycle. Restored optimizer/model/RNG/loader state does not establish bitwise cross-container equivalence; validation at step 500 differed after replay.",
+      "finished_at_utc": "2026-10-01T16:04:39.988034+00:00",
+      "exit_code": 0,
+      "started_at_utc": "2026-10-01T13:20:34+00:00",
+      "measurements": {
+        "wall_seconds": 4754.533994436264,
+        "training_seconds": 4714.211061239243,
+        "mean_warm_microbatch_seconds": 0.2601888656931447,
+        "peak_gpu_bytes": 27457426944,
+        "parameters": 28530752,
+        "flops_one_fused_multiply_add": 143947126784,
+        "accuracy": 0.5515625,
+        "deterministic_test_accuracy": 0.546875,
+        "test_count": 640,
+        "steps": 1000,
+        "checkpoint_reload_verified": true,
+        "resumed_wrapper_wall_seconds": 4765.163781,
+        "aggregate_container_seconds": 9835.163781,
+        "gpu_hours": 2.7319899391666667,
+        "correct": 353,
+        "selected_step": 1000,
+        "estimated_cost_chf": 8.58625409452381,
+        "cost_basis": "Prorated from the prospective CHF 11 / 3.5 GPU-hour estimate, not a billing statement; Includes original 5,070-second container interval plus resumed wrapper time; image build and startup outside the wrappers are excluded.",
+        "accounting_note": "The first 5,070 seconds use platform container start/end, conservatively exceeding the recovered first-wrapper interval. The second segment uses its completed wrapper interval. This is aggregate container time, not native training time or billed usage."
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 1,000 declared logical optimizer steps, 20 retained validation entries and both full held-out evaluation paths completed. Earliest maximum-validation checkpoint selected. Conditional evidence only; unknown author architecture prevents exact target attribution.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "paper-sized-audit-001",
+      "agent_ids": [
+        "paper-sized-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/size_audit_modal.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "paper-sized-count-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:36:45.638765+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu_count": 0,
+        "cpu": 4,
+        "memory_gib": 16
+      },
+      "started_at_utc": "2026-10-02T09:36:47+00:00",
+      "finished_at_utc": "2026-10-03T18:07:09+00:00",
+      "exit_code": -1,
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "deterministic_code",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Remote module initialization failed because conditional_modal was not shipped to the container; no audit task executed. App remained detached with zero tasks until explicitly stopped. App lifecycle start, not native function time; no native exit code exists."
+      },
+      "detail": "Eight architecture-only parameter counts from conventional grouped SK depth/TCN-width choices plus canonical SK18 alternative; no dataset or accuracy used. Exact source saved in Git; no training.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-zxa9pMmsy7GnyeoMyORfXf"
+      },
+      "native_exit_code": null,
+      "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
+      "artifact_ids": [
+        "paper-sized-setup-audit"
+      ]
+    },
+    {
+      "run_id": "paper-sized-audit-002",
+      "agent_ids": [
+        "paper-sized-revision-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/size_audit_modal.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "paper-sized-standalone-count-audit",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:06:57.146553+00:00",
+        "max_wall_time_seconds": 900,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1
+      },
+      "compute": {
+        "provider": "Modal",
+        "profile": "repro-sign",
+        "gpu_count": 0,
+        "cpu": 4,
+        "memory_gib": 16
+      },
+      "started_at_utc": "2026-10-03T18:07:09.995988+00:00",
+      "finished_at_utc": "2026-10-03T18:07:20.920337+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Sixteen architecture-only parameter counts, no data or accuracy. Selected preregistered grouped SK [1,2,2,1] + width224 TCN measured12,222,880 parameters,0.949% below12.34M. Count is calibration, not independent confirmation."
+      },
+      "detail": "Standalone image definition fixes missing remote import. Architecture-only count audit; no training or accuracy selection.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-HBIaemuAL5UFI6eRq5IajJ",
+        "function_call_id": "fc-01M41F5DN9NAT0BPHPPDAA12Z9"
+      },
+      "measurements": {
+        "chosen": {
+          "backbone": "skresnext50_32x4d",
+          "layers": [
+            1,
+            2,
+            2,
+            1
+          ],
+          "temporal_width": 224,
+          "counts": {
+            "spatial": 9617920,
+            "temporal": 2590560,
+            "classifier": 14400
+          },
+          "total": 12222880
+        }
+      },
+      "artifact_ids": [
+        "paper-sized-audit002-counts-json",
+        "paper-sized-audit002-execution-json"
+      ]
+    },
+    {
+      "agent_ids": [
+        "paper-sized-revision-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/paper_sized_modal.py --mode preflight --run-id paper-sized-preflight-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": [],
+        "detail": "The prospective tool command declared the1800s/.5GPUh/CHF2 policy but JSON write failed before the shell continued launching. This evidence preserves that bookkeeping failure rather than inventing successful prelaunch recording. App stopped29seconds later with no output directory or native task result."
+      },
+      "attempt": {
+        "group_id": "paper-sized-preflight-aborted",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-02T09:36:45.638765+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 24,
+        "detail": "References the actually timestamped prospective continuation ceiling shared across all new runs. The tighter1800s/.5GPUh/CHF2 invocation policy is preserved in the tool command but its exact declaration timestamp is unavailable; no fabricated timestamp. Native wrapper enforced1800s. App was cancelled29seconds after creation."
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536
+      },
+      "run_id": "paper-sized-preflight-001",
+      "started_at_utc": "2026-10-03T18:10:43+00:00",
+      "finished_at_utc": "2026-10-03T18:11:12+00:00",
+      "exit_code": -1,
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-NFTpIBVjUstfey6GCNflb0"
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "failure_class": "invalid_run",
+        "retry_decision": "stop",
+        "gate_ids": [],
+        "detail": "Orchestrator bookkeeping failed before ledger append while shell continued to launch; immediately cancelled. No function output directory exists. Conservative whole-app GPU allowance29seconds though no nativeGPU execution observed."
+      },
+      "native_exit_code": null,
+      "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
+      "artifact_ids": [
+        "paper-sized-setup-audit"
+      ]
+    },
+    {
+      "run_id": "paper-sized-preflight-002",
+      "agent_ids": [
+        "paper-sized-revision-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/paper_sized_modal.py --mode preflight --run-id paper-sized-preflight-002",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "paper-sized-preflight-fresh-restore",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:13:07.307328+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": 0.5,
+        "max_cost_chf": 2
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536
+      },
+      "started_at_utc": "2026-10-03T18:15:04.648019+00:00",
+      "finished_at_utc": "2026-10-03T18:16:47.266691+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [],
+        "detail": "Seven real effectivebatch128 updates, Ranger Lookahead synchronization, fresh model and optimizer restored with exact tensor comparison, actual resumedupdate,64held-out primary anddeterministic evaluation complete. Diagnostic accuraciesnotfinal targets."
+      },
+      "planned_scope": "Seven full effective-batch128 Ranger updates (including Lookahead sync), fresh model/optimizer checkpoint reload equality check, actual resumed update,64-video primary/secondary evaluation, memory/throughput/FLOP audit. Predeclared architecture fixed before accuracy.",
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-mv1jQvRWCeRLaLQBFAOhew",
+        "function_call_id": "fc-01M41FKMF2P4EFPZAJ5KFJH49K",
+        "task_id": "ta-01M41FKMQ8H7WH9TWYCXQ2KG7R"
+      },
+      "source_hashes": {
+        "source_sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+        "wrapper_sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3"
+      },
+      "measurements": {
+        "parameters": 12222880,
+        "flops_one_fused_multiply_add": 68347287552,
+        "steps": 7,
+        "wall_seconds": 91.48410391807556,
+        "training_seconds": 48.02802515029907,
+        "mean_warm_microbatch_seconds": 0.13209604468580854,
+        "peak_gpu_bytes": 13303025664,
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "fresh_instance_checkpoint_restore_verified": true
+      },
+      "artifact_ids": [
+        "paper-sized-preflight002-best-pt",
+        "paper-sized-preflight002-claim-json",
+        "paper-sized-preflight002-conditional-py",
+        "paper-sized-preflight002-console-segment-1-log",
+        "paper-sized-preflight002-execution-segment-1-json",
+        "paper-sized-preflight002-execution-json",
+        "paper-sized-preflight002-freeze-txt",
+        "paper-sized-preflight002-gpu-txt",
+        "paper-sized-preflight002-last-pt",
+        "paper-sized-preflight002-manifest-json",
+        "paper-sized-preflight002-metrics-json",
+        "paper-sized-preflight002-model-txt",
+        "paper-sized-preflight002-paper_sized_modal-py",
+        "paper-sized-preflight002-predictions-npz",
+        "paper-sized-preflight002-runtime-segment-1-json"
+      ],
+      "source_snapshot_commit": "a3bf661833a109b791a29c657f993055d7a25bf4",
+      "source_worktree_state": "Executed previously uncommitted files captured by source hashes and raw Modal snapshots; this later commit preserves exactly those executed bytes."
+    },
+    {
+      "run_id": "paper-sized-full-seed42-001",
+      "agent_ids": [
+        "paper-sized-revision-executor"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/paper_sized_modal.py --mode full --run-id paper-sized-full-seed42-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "paper-sized-full-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-03T18:18:22.402655+00:00",
+        "max_wall_time_seconds": 18000,
+        "max_gpu_hours": 5,
+        "max_cost_chf": 20
+      },
+      "compute": {
+        "gpu_count": 1,
+        "gpu": "A100-80GB",
+        "cpu_count": 8,
+        "memory_mb": 65536,
+        "estimated_gpu_hours": 2,
+        "estimated_cost_chf": 7,
+        "forecast_basis": "Preflight warmmicrobatch0.13210s \u00d732000=4227s training; sevenupdates plus preflightvalidation/twoevalpaths48.03s, full\u22481.2\u20132h including20fullvalidationpasses,2testpasses,staging,checkpointwrites andmargin.13.303GBpeak. Fivehour/CHF20maximum includes up tothreeprovidersegments and nofreshrestart; wholeprocess immutabledeadline watchdog.",
+        "aggregate_ceiling": "Additional6GPUh/CHF24 includes allnewruns. Preflight102.62s, cancelledapp29s conservativelycharged; CPUcount10.92s. Full5h ceiling leaves room belowaggregate.",
+        "deadline_utc": "2026-10-03T23:18:46.568692+00:00"
+      },
+      "started_at_utc": "2026-10-03T18:18:46.572982+00:00",
+      "finished_at_utc": "2026-10-03T19:36:38.811529+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 1,000 declared optimizer updates,20validation passes and both640-video test paths completed. Earliest maximum-validation checkpoint selected. Raw artifact hashes and primary prediction counts independently verified. This is the authorized approximate reconstruction, not recovered author code.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "planned_scope": "1000optimizersteps on1920trainvideos,20validationpasses on640videos, earliestmaxvalidation checkpoint, fixedseed314159 augmentedprimary andseparate deterministic test on640videos. Selected architecture12.222880Mparams before newaccuracy. No accuracy-driven changes.",
+      "source_hashes": {
+        "source_sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+        "wrapper_sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3"
+      },
+      "artifact_ids": [
+        "paper-sized-full-best-pt",
+        "paper-sized-full-claim-json",
+        "paper-sized-full-conditional-py",
+        "paper-sized-full-console-segment-1-log",
+        "paper-sized-full-execution-segment-1-json",
+        "paper-sized-full-execution-json",
+        "paper-sized-full-freeze-txt",
+        "paper-sized-full-gpu-txt",
+        "paper-sized-full-last-pt",
+        "paper-sized-full-manifest-json",
+        "paper-sized-full-metrics-json",
+        "paper-sized-full-model-txt",
+        "paper-sized-full-paper_sized_modal-py",
+        "paper-sized-full-predictions-npz",
+        "paper-sized-full-runtime-segment-1-json",
+        "paper-sized-full-evidence-json",
+        "paper-sized-full-independent-verification-json"
+      ],
+      "modal": {
+        "profile": "repro-sign",
+        "environment": "main",
+        "app_id": "ap-w8cKY5RzlyHvHHSKx7ODbY",
+        "function_call_id": "fc-01M41FTN7PF1YX24MECYTZY6ME",
+        "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-w8cKY5RzlyHvHHSKx7ODbY",
+        "image_id": "im-27GkSAaCIkScXRICNFFJg7"
+      },
+      "source_commit": "a3bf661833a109b791a29c657f993055d7a25bf4",
+      "source_worktree_state": "Training sources committed before launch; later ledger/report updates do not alter executed sources.",
+      "execution_segments": [
+        {
+          "number": 1,
+          "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
+          "started_at_utc": "2026-10-03T18:18:46.573521+00:00",
+          "checkpoint_sha256": null
+        }
+      ],
+      "measurements": {
+        "parameters": 12222880,
+        "flops_one_fused_multiply_add": 68347287552,
+        "steps": 1000,
+        "accuracy": 0.81875,
+        "deterministic_test_accuracy": 0.8140625,
+        "test_count": 640,
+        "best_validation_accuracy": 0.815625,
+        "wall_seconds": 4661.867804050446,
+        "training_seconds": 4622.5456602573395,
+        "mean_warm_microbatch_seconds": 0.12828004272651916,
+        "peak_gpu_bytes": 13178870784,
+        "checkpoint_reload_verified": true,
+        "correct": 524,
+        "selected_step": 1000,
+        "overall_wrapper_seconds": 4672.238547,
+        "gpu_hours": 1.2978440408333334,
+        "estimated_cost_chf": 4.542454142916667,
+        "cost_basis": "Estimated from the prospective CHF7 / two-GPU-hour forecast; not a billing statement. Overall wrapper interval includes staging and evaluation, excludes image startup and final hashing/commit after execution-record timestamp. All-run aggregate is below the declared ceiling even with the conservative cancelled-app interval."
+      },
+      "evidence_note": "The wrapper evidence.json hashes artifacts after native console closure. Any earlier embedded console hash inside metrics.files is only a pre-final-print snapshot; the closed wrapper hash is authoritative."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "data-audit-freeze",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/freeze.txt",
+      "sha256": "ba5b456eb8966d25f45e9e927295c0284c579fc8fb0d4e85eb3b8cc96ac3db16",
+      "size_bytes": 353
+    },
+    {
+      "artifact_id": "data-audit-audit",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/audit.json",
+      "sha256": "0318e7e3a62780202691dcebfab03fda355584357cf657ccdb544bae05d76c39",
+      "size_bytes": 26877
+    },
+    {
+      "artifact_id": "data-audit-execution",
+      "kind": "raw_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/data-preflight-004/execution.json",
+      "sha256": "836aade075f3fb9480c9af01a1560358ea1eebdbab648c8262676e6fa61cccb1",
+      "size_bytes": 247
+    },
+    {
+      "artifact_id": "failure-1",
+      "kind": "sanitized_log",
+      "sha256": "7ad32380f41b4a91ea6ea7184afd8c1bf45cfabd4d63c8e990cd1db01e872791",
+      "size_bytes": 10326,
+      "uri": "artifacts/failure-1.log"
+    },
+    {
+      "artifact_id": "failure-2",
+      "kind": "sanitized_log",
+      "sha256": "6cb725bcea86705011228f6b707b6998041cf4091b5ec6c326b4097850003041",
+      "size_bytes": 2526,
+      "uri": "artifacts/failure-2.log"
+    },
+    {
+      "artifact_id": "failure-3",
+      "kind": "sanitized_log",
+      "sha256": "be54fe1acddb05e9edfd4fe4df88206f380ce64c2d467b08332a46600800429b",
+      "size_bytes": 7991,
+      "uri": "artifacts/failure-3.log"
+    },
+    {
+      "artifact_id": "conditional-data-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/execution.json",
+      "sha256": "378c21ff5fe63fca97b9050baa966020a66c513b7885e720ecf4360344a21af9",
+      "size_bytes": 398
+    },
+    {
+      "artifact_id": "conditional-data-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/runtime.json",
+      "sha256": "86a4da9be03750a0fa92b667326757043df0d0b38565ebd03c4114037679f911",
+      "size_bytes": 143
+    },
+    {
+      "artifact_id": "conditional-data-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/freeze.txt",
+      "sha256": "25d11599f2b14dd7a1ca9c39e76e7ccc0415d1d177bca67ef3049695b8a852a7",
+      "size_bytes": 387
+    },
+    {
+      "artifact_id": "conditional-data-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/console.log",
+      "sha256": "dcd88115e3d86dde71cce159d249ef280d2b1cb37ded1a4e362be6afe6e92e7e",
+      "size_bytes": 693
+    },
+    {
+      "artifact_id": "conditional-data-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-data-001/executed-source.py",
+      "sha256": "244cb72a5137cbe8f7be2aa68a98d008ab31bf8ca978f1bd038b77f086f67983",
+      "size_bytes": 12734
+    },
+    {
+      "artifact_id": "conditional-derived-manifest",
+      "kind": "data_manifest",
+      "uri": "modal://datasets/lsa64-skresnet-conditional-v1/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-preflight-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/best.pt",
+      "sha256": "cec9600fbe1820730eb7ddb2b004ed33a513a1908bdb65609b97168cb9057536"
+    },
+    {
+      "artifact_id": "conditional-preflight-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/console.log",
+      "sha256": "6740e23fa30189cb7be6e81a8f02d1a66acbb845dd8006974fdab015f1354e11",
+      "note": "Hash of closed terminal log, independently collected. The embedded metrics.files console.log hash was sampled before the metrics JSON itself was printed and describes an earlier log snapshot."
+    },
+    {
+      "artifact_id": "conditional-preflight-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/executed-source.py",
+      "sha256": "d9ccc2af2aa8a858db578bc6e140bfc3bf358dcc7259c98ca16ab6169ec34ff9"
+    },
+    {
+      "artifact_id": "conditional-preflight-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5"
+    },
+    {
+      "artifact_id": "conditional-preflight-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/gpu.txt",
+      "sha256": "e78790c2d7eb65b807d5d7f048f66297ddb090c3fe3219ba10623b3c092ec2d3"
+    },
+    {
+      "artifact_id": "conditional-preflight-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/last.pt",
+      "sha256": "1b115c3d910a45612e1ffe7b6cea34dcd670124ec4b9728ce52739865e0eed7f"
+    },
+    {
+      "artifact_id": "conditional-preflight-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-preflight-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/model.txt",
+      "sha256": "1c75198c8c9f6bb98346de5740ce0161332c962bec56856c72a523ae033993f7"
+    },
+    {
+      "artifact_id": "conditional-preflight-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/predictions.npz",
+      "sha256": "746028130e0afbb2c07a5cad47a10504560be9d655cd1419c5e8699207bb8981"
+    },
+    {
+      "artifact_id": "conditional-preflight-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/runtime.json",
+      "sha256": "72d1c47a8d935d2b75664b3de822c083007bea99e840468fbb36314f3c36c76e"
+    },
+    {
+      "artifact_id": "conditional-preflight-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/metrics.json",
+      "sha256": "c33442534ccd171c39fc00a9c36f4e8c1ec5b2785d59ac88409d847c6a9d9fad"
+    },
+    {
+      "artifact_id": "conditional-preflight-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-preflight-001/execution.json",
+      "sha256": "bbc00af8a4bd2e3728ae063b354519f2216adaae9ce8688b63ca130231c8c5e0"
+    },
+    {
+      "artifact_id": "conditional-preemption-platform-log",
+      "kind": "execution_evidence",
+      "sha256": "04cd37c09cc9f51872e31873c71e65be995e69a04cbfeae85ca03f6848d4eb35",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-preemption-platform.log"
+    },
+    {
+      "artifact_id": "conditional-original-partial-log",
+      "kind": "execution_evidence",
+      "sha256": "1705d375a45091a834e47af8d2f17eb3781930150a320b1ae5591aa037a6fd42",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-original-partial.log"
+    },
+    {
+      "artifact_id": "conditional-resume-partial-log",
+      "kind": "execution_evidence",
+      "sha256": "52e59d423c29fc53c745d9cf9d8761c0a932be7407a9013265018f854b989d6c",
+      "note": "Partial contemporaneous evidence; not a complete original-container log.",
+      "uri": "artifacts/conditional-resume-partial.log"
+    },
+    {
+      "artifact_id": "conditional-full-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/best.pt",
+      "sha256": "44386773e304f1ad6aa013eede9c9b37cdfa3a0dc8b8c3fb19cdeadf2f7a0dcc"
+    },
+    {
+      "artifact_id": "conditional-full-console-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/console.log",
+      "sha256": "4692639402db30704b95523ecc7ebd81b193cbef83f6b62e425d9f505a6bb85d",
+      "note": "Closed terminal log checksum. metrics.files sampled the log before printing the final metrics, so its embedded log hash describes an earlier snapshot."
+    },
+    {
+      "artifact_id": "conditional-full-executed-source-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/executed-source.py",
+      "sha256": "d9ccc2af2aa8a858db578bc6e140bfc3bf358dcc7259c98ca16ab6169ec34ff9"
+    },
+    {
+      "artifact_id": "conditional-full-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5"
+    },
+    {
+      "artifact_id": "conditional-full-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/gpu.txt",
+      "sha256": "7111d436aac8c1c821958914cfde28b1c7353a0b894b10e332f5a521c936befd"
+    },
+    {
+      "artifact_id": "conditional-full-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/last.pt",
+      "sha256": "0b0a46a52b00ee0d494a1ca97f6bd71826e8b1798327e4f94b71e1479ba98390"
+    },
+    {
+      "artifact_id": "conditional-full-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92"
+    },
+    {
+      "artifact_id": "conditional-full-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/model.txt",
+      "sha256": "1c75198c8c9f6bb98346de5740ce0161332c962bec56856c72a523ae033993f7"
+    },
+    {
+      "artifact_id": "conditional-full-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/predictions.npz",
+      "sha256": "e16396a28678e4a5dbe50b4c0e69d33dacb3bb470f917770a98d67e4a07216d2"
+    },
+    {
+      "artifact_id": "conditional-full-runtime-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/runtime.json",
+      "sha256": "72d1c47a8d935d2b75664b3de822c083007bea99e840468fbb36314f3c36c76e"
+    },
+    {
+      "artifact_id": "conditional-full-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/metrics.json",
+      "sha256": "f110aca09545490e0565ccb07d74c296611fc0562dd6cb8b1a45ae12812b1bbf"
+    },
+    {
+      "artifact_id": "conditional-full-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/conditional-full-seed42-001/execution.json",
+      "sha256": "4cc1d52fb8c5efd0f0ebeaf2dcc21c104760e1ae83ee802d66d9488e982bf666",
+      "note": "Closed final-wrapper execution checksum. metrics.files contains the first-wrapper execution snapshot hash, preserved separately as a committed artifact."
+    },
+    {
+      "artifact_id": "conditional-original-wrapper-execution",
+      "kind": "execution_evidence",
+      "uri": "artifacts/conditional-original-wrapper-execution.json",
+      "sha256": "1659931f11e546e8a8976d310acaa8e746dda287c463397cf8716ed69088de66",
+      "note": "First wrapper finally record recovered before replay completion replaced the Modal execution.json. exit_code 1 is the wrapper default on interruption, not an observed native child exit code."
+    },
+    {
+      "artifact_id": "conditional-terminal-uri-audit",
+      "kind": "execution_evidence",
+      "uri": "artifacts/conditional-terminal-uri-audit.json",
+      "sha256": "8fefafa711d38aecbe29674e7cc7846801c2644edb2d4a9c8f0841db4fd0a986",
+      "note": "Independent terminal URI SHA-256 and byte-count audit; verified stdout semantics before streaming two checkpoints without large local storage."
+    },
+    {
+      "artifact_id": "paper-sized-audit002-counts-json",
+      "kind": "raw_metrics",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-audit-002/counts.json",
+      "sha256": "267f090259ae3bf2149a98d9fde3de8b2ce4c5747b3741d81cdd58176b1d5ead",
+      "bytes": 4056
+    },
+    {
+      "artifact_id": "paper-sized-audit002-execution-json",
+      "kind": "execution",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-audit-002/execution.json",
+      "sha256": "032bdd745b86ae177bddb3fa9943373c912edeadf97751c05dc56b25a1a59099",
+      "bytes": 425
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/best.pt",
+      "sha256": "ea94aa74014ca3b8cb11ed315a40f258612ee852cbfd013df4a1c346fd3c103d",
+      "bytes": 57623725
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-claim-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/claim.json",
+      "sha256": "902cd09b40a1912f93c50ef5dc993fe3dcff75852e879edbd8e3eaa09b519a78",
+      "bytes": 555
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-conditional-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/conditional.py",
+      "sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+      "bytes": 17337
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-console-segment-1-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/console-segment-1.log",
+      "sha256": "75bd7fe575f377572327ae1d19b5f5b0fdcee534063cc432d5ccb815ce154116",
+      "bytes": 4325
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-execution-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/execution-segment-1.json",
+      "sha256": "d46931ed6e8d20d22e788846fbef1d639b8517eefe1d2bba09f398c26dc05616",
+      "bytes": 792
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/execution.json",
+      "sha256": "d46931ed6e8d20d22e788846fbef1d639b8517eefe1d2bba09f398c26dc05616",
+      "bytes": 792
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5",
+      "bytes": 6969
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/gpu.txt",
+      "sha256": "3de650eedb59a43000c1c6951447e4d6f0292152237fee530264afe0c556ef0f",
+      "bytes": 1689
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/last.pt",
+      "sha256": "ef08feee6a15717e4d015c2905c95403ecbdc1eb0288bc95a177a295652aed9b",
+      "bytes": 253520301
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92",
+      "bytes": 2263641
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/metrics.json",
+      "sha256": "2f1d9343821dd715f3daf1e417b401fb0fedb972b861381ec88601842716893d",
+      "bytes": 2391
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/model.txt",
+      "sha256": "562e1c59b93f549fa9d1c4c97f5e96657739e6c26abe456748dbdd9b18e5582b",
+      "bytes": 15484
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-paper_sized_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/paper_sized_modal.py",
+      "sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3",
+      "bytes": 6545
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/predictions.npz",
+      "sha256": "9e97c66fc8f51fdee7d04eca8ca87fc72f8f160cbec616490803021e63926393",
+      "bytes": 922
+    },
+    {
+      "artifact_id": "paper-sized-preflight002-runtime-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-preflight-002/runtime-segment-1.json",
+      "sha256": "04dea6376d12988b71addeaf501fa7e3903e2081534e30f5495fcac3c3b3dc99",
+      "bytes": 266
+    },
+    {
+      "artifact_id": "paper-sized-setup-audit",
+      "kind": "execution_evidence",
+      "uri": "artifacts/paper-sized-setup-audit.json",
+      "sha256": "46e6614e2254bf681fa55d272fdbbb73f01a86de6ac6737dcf62a1f8af28f9ca"
+    },
+    {
+      "artifact_id": "paper-sized-full-best-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/best.pt",
+      "sha256": "1427e02f542650f74483a5013c5c7feb9e192d9a76efbac4996b43e6ad8de2bc",
+      "bytes": 57623725
+    },
+    {
+      "artifact_id": "paper-sized-full-claim-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/claim.json",
+      "sha256": "97e49a21cb7ac93b369895c546a7cc3a34c8a46b33dd97a4cc096898574e7a45",
+      "bytes": 551
+    },
+    {
+      "artifact_id": "paper-sized-full-conditional-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/conditional.py",
+      "sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+      "bytes": 17337
+    },
+    {
+      "artifact_id": "paper-sized-full-console-segment-1-log",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/console-segment-1.log",
+      "sha256": "53b002994128fa670c37d95d94ac413892fe55cba4b60e806993978daeb0c63f",
+      "bytes": 12428
+    },
+    {
+      "artifact_id": "paper-sized-full-execution-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/execution-segment-1.json",
+      "sha256": "b178f0bf926a3a4fc9cba609023ca19ca94bd9d1bd42ef006be2a7db7026ca66",
+      "bytes": 786
+    },
+    {
+      "artifact_id": "paper-sized-full-execution-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/execution.json",
+      "sha256": "b178f0bf926a3a4fc9cba609023ca19ca94bd9d1bd42ef006be2a7db7026ca66",
+      "bytes": 786
+    },
+    {
+      "artifact_id": "paper-sized-full-freeze-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/freeze.txt",
+      "sha256": "7dadb9713e5f30f5bce6113b6a07e8b5ce8c213cb7979c52c5539a854cd0f0a5",
+      "bytes": 6969
+    },
+    {
+      "artifact_id": "paper-sized-full-gpu-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/gpu.txt",
+      "sha256": "819115dbf991433731e2b0c071b4716a56cc4a6479af7b442db9159db96ba307",
+      "bytes": 1689
+    },
+    {
+      "artifact_id": "paper-sized-full-last-pt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/last.pt",
+      "sha256": "7e05e369783b2b2fb6261a03f3468bbc46e4e04f79f7dea86d0d24c9038dbb5b",
+      "bytes": 253521005
+    },
+    {
+      "artifact_id": "paper-sized-full-manifest-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/manifest.json",
+      "sha256": "d04e5c9b682f00eaa21cbfaa9df6aa62f7a7f45fcda788aca820acb3ad5b6e92",
+      "bytes": 2263641
+    },
+    {
+      "artifact_id": "paper-sized-full-metrics-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/metrics.json",
+      "sha256": "762b69679509fa0687f372f57603d8fb9c56a9260d178aa1198c2bd413d62e8d",
+      "bytes": 3728
+    },
+    {
+      "artifact_id": "paper-sized-full-model-txt",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/model.txt",
+      "sha256": "562e1c59b93f549fa9d1c4c97f5e96657739e6c26abe456748dbdd9b18e5582b",
+      "bytes": 15484
+    },
+    {
+      "artifact_id": "paper-sized-full-paper_sized_modal-py",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/paper_sized_modal.py",
+      "sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3",
+      "bytes": 6545
+    },
+    {
+      "artifact_id": "paper-sized-full-predictions-npz",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/predictions.npz",
+      "sha256": "cc4f8d7fa8162298e0949d842d12be32505bcd70885f5a6237bb7394d1f12900",
+      "bytes": 2229
+    },
+    {
+      "artifact_id": "paper-sized-full-runtime-segment-1-json",
+      "kind": "execution_evidence",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/runtime-segment-1.json",
+      "sha256": "123d4f2b64daa63e88e2e4a525ffc57268ad0c9e87b28f67def0b5ddd5521489",
+      "bytes": 266
+    },
+    {
+      "artifact_id": "paper-sized-full-evidence-json",
+      "kind": "closed_manifest",
+      "uri": "modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/evidence.json",
+      "sha256": "4f02072083f3bc9f805581e3ab49ca3a16d7fb0420fbe0135f5cfd6f3bb1e98d",
+      "bytes": 1913
+    },
+    {
+      "artifact_id": "paper-sized-full-independent-verification-json",
+      "kind": "independent_verification",
+      "uri": "artifacts/paper-sized-terminal-verification.json",
+      "sha256": "206f1a29dad4ef1c6ce2cfb210b1eba3c1c5bb4446a2952898b053ab32f3bf85",
+      "bytes": 811
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "architecture",
+      "status": "resolved",
+      "evidence": [
+        "Sections3.3\u20133.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
+        "Official article/PDF/data-availability/references examined. GitHub repository search SKResNet-TCN and9503961 both return0. Exacttitle/model/authorwebsearch yields paper/citations, no author code. GenericSKNet/TCN artifacts cannot resolve missing hybrid specification.",
+        "Independent master review rendered PDF pages 4\u20135: Figures 2\u20134 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
+        "2026-10-01 judgment review: ordinary split/seed/iteration/default choices are declared rather than gated; missing core architecture still prevents exact target attribution. Conditional execution proceeds independently."
+      ],
+      "type": "protocol",
+      "reason": "Architecture and evaluation protocol missing.",
+      "required_action": "None for this completed authorized approximate reconstruction.",
+      "resolution": "Known paper details plus explicit parameter-sized dimensions were fixed before training. Exact historical architecture remains unknown; the completed result answers the authorized approximate question."
+    },
+    {
+      "gate_id": "comparison-provenance",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings.",
+      "required_action": "No human action is needed to finalize this attempt. The unresolved provenance is retained as a scientific limitation.",
+      "evidence": [
+        "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+        "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied.",
+        "Primary (2+1)D-SLR publisher abstract https://link.springer.com/article/10.1007/s00521-021-06467-9 reports LSA64 accuracy 98.7%, whereas Xu Table 4 prints 98.2%; this discrepancy prevents treating that cell as verified copied. Root agent supplied the lead; reproduction agent independently read the primary abstract on 2026-10-01."
+      ],
+      "resolution": "Comparison cells remain explicitly unproduced and are used only as paper-reported contextual values; no baseline rerun or copied-score exemption is claimed. Their exact provenance does not prevent a conclusion about the completed proposed-method reconstruction."
+    }
+  ],
+  "source_search": [
+    "Publisherfulltext/PDF all sections and references",
+    "GitHubrepositorysearch SKResNet-TCN,9503961",
+    "Webexacttitle+code/GitHub; authorXuebinXu+SKResNet",
+    "CitedLi2019officialSKNet URL404; citedBai2018TCN pinnedsource inspected"
+  ],
+  "guesses": [
+    {
+      "guess_id": "conditional-backbone",
+      "detail": "Use timm 1.0.22 skresnext50_32x4d, the grouped model equivalent to the original SKNet-50 reference, with random initialization, 224-square input, max spatial pooling and Mish. Its size is not chosen to match 12.34M parameters or 62.50 GFLOPs. This is not the missing author architecture."
+    },
+    {
+      "guess_id": "conditional-temporal",
+      "detail": "Use the cited pinned TCN TemporalBlock three times: width 256, kernel 3, sawtooth block dilations 1/2/5 and dropout 0.2. Mish replaces ReLU as described in the paper. Temporal max pooling feeds a 64-class classifier."
+    },
+    {
+      "guess_id": "conditional-keyframes",
+      "detail": "Bilinear resize to 224-square RGB; mean absolute grayscale frame differences; three-frame moving average; select the strongest 32 local maxima in chronological order. Fill shortages uniformly, then repeat the last frame if the video has fewer than 32 frames. Smoothing, resizing and filling are declared interpretations."
+    },
+    {
+      "guess_id": "conditional-split-training",
+      "detail": "Seed 42 per-class 60/20/20 split gives 1,920/640/640 videos. Ranger at learning rate 0.0001 uses library defaults. Interpret 1,000 iterations as optimizer steps, with effective batch 128 accumulated over 32 microbatches of four videos. BatchNorm sees 128 frames per microbatch, an explicit protocol deviation. Validation every 50 steps selects the earliest best checkpoint."
+    },
+    {
+      "guess_id": "conditional-comparability",
+      "detail": "All new architecture and training outputs are conditional evidence, never comparable target values regardless of numerical closeness. Execution choices are resolved; the exact author architecture and historical comparison provenance remain unknown."
+    },
+    {
+      "guess_id": "conditional-resume",
+      "detail": "Validate every 50 steps. Atomically save training state every 60 steps (four complete training epochs), and at termination. Embed the selected best model in the resume state so an interrupted later checkpoint cannot be reused accidentally. Seven exact-effective-batch preflight steps exercise Ranger Lookahead synchronization at step six, followed by state reload and another optimizer step."
+    },
+    {
+      "guess_id": "conditional-input-augmentation",
+      "detail": "Scale RGB to [0,1] and normalize with ImageNet means (0.485,0.456,0.406) and standard deviations (0.229,0.224,0.225), without pretrained weights. Flip whole videos horizontally with probability 0.5 during training and primary test evaluation. Validation is unaugmented. Test seed 314159 was fixed before scores."
+    }
+  ],
+  "deviations": [
+    "No substitute architecture or split was invented; data-only preflight does not yield a recognition metric.",
+    {
+      "deviation_id": "authorized-conditional-reconstruction",
+      "detail": "After independent source/dataaudit, declared reconstructionchoices are executed as conditional evidence. Noauthormodelclaim, no tuningtowardpublishedparameter/FLOP/accuracy values."
+    }
+  ],
+  "author_contact": {
+    "contacted": false,
+    "reason": "No author contact authorized."
+  },
+  "conclusion_assessment": {
+    "summary": "The parameter-sized reconstruction reached 81.875% accuracy (524/640), versus the paper\u2019s 100% and Table 4 baseline accuracies of 98.20\u2013100%. This is 26.71875 percentage points above the earlier larger reconstruction, but it does not support the paper\u2019s claimed joint accuracy and efficiency advantage.",
+    "assessed_at_utc": "2026-10-03T19:38:02.357275+00:00",
+    "human_execution_blocker": null,
+    "scope": "Explicitly authorized approximate reconstruction using all available paper details and documented missing dimensions. Exact historical attempt remains archived.",
+    "capacity_and_operations": "Measured 12.222880M parameters (0.949% below 12.34M) and 68.347287552G counted operations (9.356% above 62.50G). Both are below paper-reported baseline totals, but parameter scale was preselected and cross-paper operation conventions remain unknown.",
+    "evidence": [
+      "paper-sized-full-seed42-001",
+      "paper-sized-full-metrics-json",
+      "paper-sized-full-independent-verification-json",
+      "PaperTable4 and Sections4.3,5"
+    ],
+    "limits": [
+      "Missing author architecture, initialization, image size, split and meaning of iterations are resolved here by explicit assumptions, not recovered facts. A mismatch in this reconstructed recipe does not refute every possible unpublished author configuration.",
+      "The paper-reported comparison models were not independently rerun. The (2+1)D-SLR source abstract says98.7% while Xu Table4 says98.2%; this unresolved citation discrepancy does not alter a result below both values.",
+      "Parameter closeness was used to select the architecture before training and is not an independent numerical reproduction claim. Unsupported FLOP operators and the one-FMA convention are preserved.",
+      "One seed and one fixed640-video test partition; no signer-independent generalization claim. Secondary test accuracy is native output without saved per-example secondary predictions."
+    ]
+  },
+  "assessment_history": [
+    {
+      "record_sha256": "3569bf400d73dfec9db06317bcf7d8b280317c3e088f8fdd8329324d894f2995",
+      "archived_at_utc": "2026-10-02T09:36:45.638765+00:00",
+      "status": {
+        "pipeline": "insufficient_information",
+        "numerical_agreement": "not_assessed",
+        "numerical_agreement_basis": "No comparable values produced; missing architecture defines requested parameter, computation, and recognition results.",
+        "preference_level": 3,
+        "blocker": {
+          "reason_code": "protocol_ambiguous",
+          "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target.",
+          "target_ids": [
+            "table4-ours-parameters",
+            "table4-ours-flops",
+            "table4-ours-accuracy"
+          ]
+        }
+      },
+      "conclusion_assessment": {
+        "summary": "The central claim of simultaneously achieving 100% accuracy with fewer parameters and operations is not established by this attempt. The documented reconstruction produced 55.15625% accuracy with 28.53M parameters and 143.947G counted operations; it does not recover the claimed 100%, 12.34M and 62.50G.",
+        "evidence": [
+          "Paper Table 4 and section 4.3 claim a joint accuracy/efficiency advantage; section 5 repeats that conclusion.",
+          "The completed conditional-full-seed42-001 run and existing raw artifacts preserve measured accuracy, architecture counts and fixed pre-score choices."
+        ],
+        "limits": [
+          "The paper does not identify the exact executable architecture. Our larger declared reconstruction cannot serve as a controlled refutation of the unavailable author model.",
+          "A different architecture chosen to hit the published counts would be a new assumption, not evidence resolving this attempt. No new experiment is required to conclude that the current evidence does not establish the claimed advantage."
+        ],
+        "assessed_at_utc": "2026-10-02T06:52:37.540428+00:00"
+      },
+      "targets": [
+        {
+          "target_id": "table4-i3d-parameters",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D",
+          "system": "I3D",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "parameters",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 12.39,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-i3d-flops",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D",
+          "system": "I3D",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "flops",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 111.6,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-i3d-accuracy",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D",
+          "system": "I3D",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "accuracy",
+          "dataset_id": "lsa64",
+          "split": "test",
+          "original_value": 98.91,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-2-1-d-slr-parameters",
+          "in_scope": true,
+          "paper_location": "Table4,p8,row(2+1)D-SLR",
+          "system": "(2+1)D-SLR",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "parameters",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 33.3,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-2-1-d-slr-accuracy",
+          "in_scope": true,
+          "paper_location": "Table4,p8,row(2+1)D-SLR",
+          "system": "(2+1)D-SLR",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "accuracy",
+          "dataset_id": "lsa64",
+          "split": "test",
+          "original_value": 98.2,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-i3d-glr-csa-parameters",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+          "system": "I3D+GLR+CSA",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "parameters",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 13.4,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-i3d-glr-csa-flops",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+          "system": "I3D+GLR+CSA",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "flops",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 111.79,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-i3d-glr-csa-accuracy",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowI3D+GLR+CSA",
+          "system": "I3D+GLR+CSA",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "accuracy",
+          "dataset_id": "lsa64",
+          "split": "test",
+          "original_value": 100.0,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-memp-parameters",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowMEMP",
+          "system": "MEMP",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "parameters",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 12.83,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-memp-flops",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowMEMP",
+          "system": "MEMP",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "flops",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 112.34,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-memp-accuracy",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowMEMP",
+          "system": "MEMP",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "accuracy",
+          "dataset_id": "lsa64",
+          "split": "test",
+          "original_value": 99.06,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 comparison row cites prior architecture; provenance of the specific reported cell is not fully established."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "Comparison rows cite architectures, but the paper does not specify whether each parameter/FLOP/accuracy cell was copied or remeasured, nor their input/checkpoint/split settings."
+            },
+            "run_ids": [],
+            "artifact_ids": [],
+            "gate_ids": [
+              "comparison-provenance"
+            ],
+            "evidence": [
+              "Section4.3 compares prior networks but does not state a baseline remeasurement protocol. Reference21 is Carreira2017 Kinetics I3D, which does not itself establish an LSA64 experiment.",
+              "I3D98.91 and MEMP99.06 appear in earlier SPOTER2022 Table5, supporting prior-score provenance for those accuracy numbers; citation presence alone does not establish that every Table4 comparison cell was copied."
+            ]
+          },
+          "copied_baseline_note": "Not established as copied; false denotes no verified exemption. Retained in scope pending comparison provenance."
+        },
+        {
+          "target_id": "table4-ours-parameters",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowours",
+          "system": "ours",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "parameters",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 12.34,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+            },
+            "run_ids": [
+              "data-preflight-004",
+              "conditional-full-seed42-001"
+            ],
+            "artifact_ids": [
+              "data-audit-freeze",
+              "data-audit-audit",
+              "data-audit-execution",
+              "conditional-full-metrics-json"
+            ],
+            "gate_ids": [
+              "architecture"
+            ],
+            "evidence": [
+              "Table4 and Sections3\u20134;source-search audit.",
+              "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
+            ]
+          }
+        },
+        {
+          "target_id": "table4-ours-flops",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowours",
+          "system": "ours",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "flops",
+          "dataset_id": "lsa64",
+          "split": "model",
+          "original_value": 62.5,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+            },
+            "run_ids": [
+              "data-preflight-004",
+              "conditional-full-seed42-001"
+            ],
+            "artifact_ids": [
+              "data-audit-freeze",
+              "data-audit-audit",
+              "data-audit-execution",
+              "conditional-full-metrics-json"
+            ],
+            "gate_ids": [
+              "architecture"
+            ],
+            "evidence": [
+              "Table4 and Sections3\u20134;source-search audit.",
+              "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
+            ]
+          }
+        },
+        {
+          "target_id": "table4-ours-accuracy",
+          "in_scope": true,
+          "paper_location": "Table4,p8,rowours",
+          "system": "ours",
+          "experiment_id": "lsa64-hybrid",
+          "metric_id": "accuracy",
+          "dataset_id": "lsa64",
+          "split": "test",
+          "original_value": 100.0,
+          "copied_baseline": false,
+          "evidence": [
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+          ],
+          "result": {
+            "status": "not_produced",
+            "reason": {
+              "code": "protocol_ambiguous",
+              "detail": "No model depth/channels, temporal kernel/dilation sequence, or input dimensions are specified; these jointly determine every own Table4 target."
+            },
+            "run_ids": [
+              "data-preflight-004",
+              "conditional-full-seed42-001"
+            ],
+            "artifact_ids": [
+              "data-audit-freeze",
+              "data-audit-audit",
+              "data-audit-execution",
+              "conditional-full-metrics-json"
+            ],
+            "gate_ids": [
+              "architecture"
+            ],
+            "evidence": [
+              "Table4 and Sections3\u20134;source-search audit.",
+              "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "continuation_authorization": {
+    "date_utc": "2026-10-02T09:36:45.638765+00:00",
+    "scope": "Explicit instruction to infer missing architectural details, reconstruct near the paper parameter count, run available protocol and finalize comparative conclusion. Earlier terminal attempt and exhausted resume remain preserved; this is a new architecture hypothesis with a separate prospective ceiling.",
+    "additional_budget": {
+      "gpu_hours": 6,
+      "cost_chf": 24,
+      "full_restart_allowed": false
+    },
+    "selection_policy": "Select architectural dimensions by paper/module fidelity and parameter count before training or observing new validation/test accuracy. No score-driven architecture sweep.",
+    "independent_review": {
+      "date_utc": "2026-10-03",
+      "reviewer": "orchestrator",
+      "result": "PASS",
+      "source_sha256": "2589362bf00ac1149c73f954af25cda4adc6095953f642f2f0d043f5a602ea06",
+      "wrapper_sha256": "8c77cd11384f6bd3112837f1b15c7073fd9b225b2218423475b264b90b64d5e3",
+      "evidence": "Root reviewed parameter-sized architecture, fresh-instance model/Ranger restoration proof, immutable whole-process deadline, same-call/source recovery, maximumthree segments and nofreshrestart. Full authorized only after successful measuredpreflight withinfivehour/CHF20 and aggregate6GPUh/CHF24."
+    },
+    "diagnostics": [
+      "Initial count-audit remote import failed; app had zero tasks and was stopped. Standalone image definition fixes import without touching model.",
+      "Folder-download target was incorrectly a file; overlapping concatenated JSON caused per-run ledger append to fail while shell continued launching preflight001. The app was immediately stopped after29seconds before nativeoutput; parent prospective aggregate policy remains documented. Subsequent commands separate mutation/validation fromlaunch.",
+      "Preflight002 first CLI call failed locally on a syntax error introduced by broad replacement of code=1 inside code=124. No Modal app existed for that local failure. Fixed explicitexception blocks and AST-parsed all sources before actual002 app launch."
+    ],
+    "assessment_scope": {
+      "decision_before_full_accuracy": true,
+      "detail": "The requested approximate reconstruction is the active scientific scope: assess whether a model obeying known paper modules, optimization, dataset proportions and approximate12.34Mcapacity supports the claimed recognition/efficiency tradeoff. Preserve original exact-author targets in assessment_history; any new own-row measurements are produced for this explicitly revised scope, not recovered author code. Parameter agreement is calibration, operations use disclosed1FMAconvention, and baselines remain paper-reported comparisons rather than rerunexperiments. No accuracy-driven changes."
+    },
+    "completion": {
+      "full_run_id": "paper-sized-full-seed42-001",
+      "full_wrapper_gpu_hours": 1.2978440408333334,
+      "additional_gpu_hours_conservative": 1.3344047830555557,
+      "cost_note": "Actual billing unavailable; full-run estimate uses CHF3.5/hour. The29-second cancelled app interval is conservatively counted despite no observed native GPU execution. CPU audit10.924349seconds; all totals below additional6GPUh/CHF24."
+    }
+  },
+  "execution_state": "complete"
+}

@@ -1,0 +1,35 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-IRpHz2vtjd6PoxIdrcPYkS
+Building image im-qLBIZ7D6vYht7vqqrAraKw
+
+=> Step 0: FROM base
+
+=> Step 1: RUN python -m pip install av==16.0.1 simple-video-utils==0.7.4
+Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+Collecting av==16.0.1
+  Downloading http://pypi-mirror.modal.local:5555/simple/av/av-16.0.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (4.6 kB)
+Collecting simple-video-utils==0.7.4
+  Downloading http://pypi-mirror.modal.local:5555/simple/simple-video-utils/simple_video_utils-0.7.4-py3-none-any.whl.metadata (4.2 kB)
+INFO: pip is looking at multiple versions of simple-video-utils to determine which version is compatible with other requirements. This could take a while.
+ERROR: Cannot install av==16.0.1 and simple-video-utils==0.7.4 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    The user requested av==16.0.1
+    simple-video-utils 0.7.4 depends on av>=18.0.0
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+Terminating task due to error: failed to run builder command "python -m pip install av==16.0.1 simple-video-utils==0.7.4": container exit status: 1
+Runner failed with exit code: -1
+Stopping app - uncaught exception raised locally: ImageBuildError('Image build for im-qLBIZ7D6vYht7vqqrAraKw failed.\nView the build logs:\n  modal image logs im-qLBIZ7D6vYht7vqqrAraKw').
+╭─ Error ──────────────────────────────────────────────────────────────────────╮
+│ Image build for im-qLBIZ7D6vYht7vqqrAraKw failed.                            │
+│ View the build logs:                                                         │
+│   modal image logs im-qLBIZ7D6vYht7vqqrAraKw                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
