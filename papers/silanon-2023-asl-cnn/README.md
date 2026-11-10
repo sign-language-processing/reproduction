@@ -105,18 +105,22 @@ The Modal image is `tensorflow/tensorflow:2.15.0-gpu` (resolved digest `sha256:2
 
 There are no patches because no published code exists. `train.py` implements the CNNs and ensemble: Figure 4 supplies SLRNet-8’s visible layers; Section III.B/Table II supply OCNN’s five convolutions, pooling, batch normalization, dropout, dense layers, and output regularization; Section III.C supplies the average-probability ensemble. `svm.py` is the small separate Table III SVM evaluator. Comments identify the paper-derived items.
 
-## Decisions not specified by the paper
+## Guesses and deviations
 
-| Detail | Paper says | This attempt uses | Why |
-| --- | --- | --- | --- |
-| Random split and augmentation seed | Random 80:20 split; no seed | `2026`, stratified by class | Makes the reported conditional reconstruction repeatable without claiming the authors’ split |
-| Split-order sensitivity | No split file or seed | One fixed lexicographic-per-class 80:20 diagnostic, never used as a replacement result | Tests whether the retained random partition alone causes the validation gap; it did not |
-| Image resizing | SLRNet-8 source architecture takes 64×64; Table III does not repeat size | 64×64 RGB | Only explicit SLRNet-8 input evidence; applied consistently to both networks |
-| Convolution padding | Not specified | `same` | Preserves the Figure 4 spatial path for the listed pooling layers |
-| Optimizer / learning rate | Not specified | Adam, `1e-3` | Conventional minimal Keras default-like choice, recorded rather than inferred as author setting |
-| CNN checkpoint rule | Table III pairs training accuracy with maximum validation accuracy | Select maximum augmented-validation accuracy | Matches the table’s stated comparison framing |
-| Augmentation samples | Ranges/factor stated, sampled transforms not | Deterministic ImageDataGenerator transforms | Exactly implements stated ranges and tenfold cardinality |
-| RBF-SVM details | Only “RBF kernel” and 696,000 augmented training images | SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma="scale")` | Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `random-split-seed` | `guess` | Seed for the random 80:20 split and for augmentation. | Random 80:20 split; no seed | `2026`, stratified by class | Makes the reported conditional reconstruction repeatable without claiming the authors’ split |  |  |  |  |  |  |  |
+| `split-order-diagnostic` | `guess` | Sensitivity of the results to the order of the train/validation split. | No split file or seed | One fixed lexicographic-per-class 80:20 diagnostic, never used as a replacement result | Tests whether the retained random partition alone causes the validation gap; it did not |  |  |  |  | `random-split-seed` |  |  |
+| `image-resizing` | `guess` | Input image size for both networks. | SLRNet-8 source architecture takes 64×64; Table III does not repeat size | 64×64 RGB | Only explicit SLRNet-8 input evidence; applied consistently to both networks |  |  |  |  |  |  |  |
+| `convolution-padding` | `guess` | Padding mode of the convolution layers. | Not specified | `same` | Preserves the Figure 4 spatial path for the listed pooling layers |  |  |  |  |  |  |  |
+| `optimizer-learning-rate` | `guess` | Optimizer and learning rate. | Not specified | Adam, `1e-3` | Conventional minimal Keras default-like choice, recorded rather than inferred as author setting |  |  |  |  |  |  |  |
+| `cnn-checkpoint-rule` | `guess` | Rule for selecting the reported CNN checkpoint. | Table III pairs training accuracy with maximum validation accuracy | Select maximum augmented-validation accuracy | Matches the table’s stated comparison framing |  |  |  |  |  |  |  |
+| `augmentation-samples` | `guess` | How the augmented samples are drawn. | Ranges/factor stated, sampled transforms not | Deterministic ImageDataGenerator transforms | Exactly implements stated ranges and tenfold cardinality |  |  |  |  |  |  |  |
+| `rbf-svm-details` | `guess` | Feature layer and hyperparameters of the RBF-SVM. | Only “RBF kernel” and 696,000 augmented training images | SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma="scale")` | Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned |  |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Execution evidence and attempts
 
