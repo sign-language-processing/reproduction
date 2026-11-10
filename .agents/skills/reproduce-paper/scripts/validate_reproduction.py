@@ -94,6 +94,7 @@ GUESS_DEVIATION_KINDS = {
     "paper_deviation",
     "code_deviation",
     "paper_code_conflict",
+    "paper_internal_conflict",
 }
 GUESS_DEVIATION_TEXT_FIELDS = {
     "description",

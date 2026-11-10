@@ -143,9 +143,9 @@ platform record, and uses the paper slug instead. The validator does not cross-c
 against the JSON the way it does the statuses, so it is on the reviewer.
 
 **Guesses, deviations and noncompliance are filed correctly.** The validator checks the shape, not
-the classification. Check each `kind`: a `guess` is only where the paper is silent, and the paper
-disagreeing with its own released code is a `paper_code_conflict`, not a guess and not a
-`paper_deviation`. Check that nothing about the attempt's own process — an undeclared ceiling, an
+the classification. Check each `kind`: a `guess` is only where the paper is silent; the paper
+disagreeing with its own released code is a `paper_code_conflict`, and the paper contradicting
+itself is a `paper_internal_conflict` — neither is a guess or a `paper_deviation`. Check that nothing about the attempt's own process — an undeclared ceiling, an
 unset environment variable, a skipped discussion — sits in `guesses_and_deviations`; that belongs in
 `noncompliance`, and the converse. An empty array is a claim that there are none, so it deserves the
 same scrutiny as a full one.

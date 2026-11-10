@@ -94,8 +94,9 @@ Every `reproduction.json` carries two arrays, present even when empty (`[]` stat
 | `paper_deviation` | This attempt departs from what the paper states. |
 | `code_deviation` | This attempt departs from what the released code does. |
 | `paper_code_conflict` | The paper and the released code disagree, and this attempt followed one of them. |
+| `paper_internal_conflict` | The paper contradicts itself — two sections, or a table and the text, give incompatible values — and this attempt followed one reading. |
 
-The paper and its code contradicting each other is common, and it is neither a guess nor a deviation from the paper; record it as `paper_code_conflict` rather than forcing it into either.
+The paper and its code contradicting each other is common, and so is the paper contradicting itself. Neither is a guess or a deviation from the paper; record them as `paper_code_conflict` and `paper_internal_conflict` rather than forcing them into either.
 
 Optional fields, with these spellings and no others: `paper_says` (what the paper or code states), `used` (what this attempt did instead), `basis` (why), `effect` (the consequence for interpretation or comparability), `scope` (which part of the protocol the entry covers), `status` (free-form, e.g. "adopted before the run"), `evidence` (array of strings), `related_ids` (other entries in this array), `affects` (pipeline stages, e.g. `["train", "evaluate"]`), and `dataset_ids` (entries in `datasets`, for a deviation that concerns one dataset). Datasets carry no deviation fields of their own.
 

@@ -88,7 +88,7 @@ For Modal runs, record profile `repro-sign`, environment, app/function-call IDs,
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |
 
-Mirror `reproduction.json.guesses_and_deviations`. Include every missing detail filled in and every departure from the published protocol or released code, even if it seems harmless. Kind is `guess` (the paper is silent), `paper_deviation`, `code_deviation`, or `paper_code_conflict` (the paper and the released code disagree). Write "None." when the list is empty.
+Mirror `reproduction.json.guesses_and_deviations`. Include every missing detail filled in and every departure from the published protocol or released code, even if it seems harmless. Kind is `guess` (the paper is silent), `paper_deviation`, `code_deviation`, `paper_code_conflict` (the paper and the released code disagree), or `paper_internal_conflict` (the paper contradicts itself). Write "None." when the list is empty.
 
 ## Noncompliance
 

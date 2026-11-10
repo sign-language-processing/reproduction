@@ -346,6 +346,13 @@ class ValidatorTest(unittest.TestCase):
                 "used": "120 epochs, following the paper",
                 "related_ids": ["seed"],
             },
+            {
+                "id": "split-sections",
+                "kind": "paper_internal_conflict",
+                "description": "Two sections of the paper describe different splits.",
+                "paper_says": "Sec. 2.1: 80/20 of all images; Sec. 5.1: 500 per class",
+                "used": "500 per class, the protocol tied to the reported table",
+            },
         ]
         document["noncompliance"] = [
             {
