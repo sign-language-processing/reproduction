@@ -96,8 +96,11 @@ GUESS_DEVIATION_KINDS = {
     "paper_code_conflict",
     "paper_internal_conflict",
 }
-GUESS_DEVIATION_TEXT_FIELDS = {
-    "description",
+# Each container's fields come in two tiers. Required fields are checked on every
+# entry, so a missing one is an error. Optional fields are checked only when
+# present. A field in neither tier is rejected as unknown.
+GUESS_DEVIATION_REQUIRED_FIELDS = {"id", "kind", "description"}
+GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS = {
     "paper_says",
     "used",
     "basis",
@@ -105,12 +108,25 @@ GUESS_DEVIATION_TEXT_FIELDS = {
     "scope",
     "status",
 }
-GUESS_DEVIATION_LIST_FIELDS = {"evidence", "related_ids", "affects", "dataset_ids"}
+GUESS_DEVIATION_OPTIONAL_LIST_FIELDS = {
+    "evidence",
+    "related_ids",
+    "affects",
+    "dataset_ids",
+}
 GUESS_DEVIATION_FIELDS = (
-    {"id", "kind"} | GUESS_DEVIATION_TEXT_FIELDS | GUESS_DEVIATION_LIST_FIELDS
+    GUESS_DEVIATION_REQUIRED_FIELDS
+    | GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS
+    | GUESS_DEVIATION_OPTIONAL_LIST_FIELDS
 )
-NONCOMPLIANCE_TEXT_FIELDS = {"description", "requirement", "effect", "resolution"}
-NONCOMPLIANCE_FIELDS = {"id", "run_ids"} | NONCOMPLIANCE_TEXT_FIELDS
+NONCOMPLIANCE_REQUIRED_FIELDS = {"id", "description", "requirement"}
+NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS = {"effect", "resolution"}
+NONCOMPLIANCE_OPTIONAL_LIST_FIELDS = {"run_ids"}
+NONCOMPLIANCE_FIELDS = (
+    NONCOMPLIANCE_REQUIRED_FIELDS
+    | NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS
+    | NONCOMPLIANCE_OPTIONAL_LIST_FIELDS
+)
 HISTORICAL_RECORD_HASHES = {
     "8526aecd1407305d815883725a864405e31a54c1": (
         "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6"
@@ -1088,9 +1104,7 @@ def validate_guesses_and_deviations(
             )
         if not nonempty(entry.get("description")):
             issues.append(f"{label} needs a non-empty description")
-        check_optional_text(
-            entry, GUESS_DEVIATION_TEXT_FIELDS - {"description"}, label, issues
-        )
+        check_optional_text(entry, GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS, label, issues)
         for field in ("evidence", "affects"):
             if field in entry and (
                 not isinstance(entry[field], list)
@@ -1126,7 +1140,7 @@ def validate_noncompliance(
         for field in ("description", "requirement"):
             if not nonempty(entry.get(field)):
                 issues.append(f"{label} needs a non-empty {field}")
-        check_optional_text(entry, {"effect", "resolution"}, label, issues)
+        check_optional_text(entry, NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS, label, issues)
         # Empty or absent run_ids is valid: noncompliance can concern the plan
         # rather than any particular run.
         if "run_ids" in entry:
