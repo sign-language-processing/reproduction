@@ -1,0 +1,835 @@
+{
+  "paper_id": "01da9a64404d009c2ab0f22113b6c29c91f325b9",
+  "agents": [
+    {
+      "agent_id": "opus-5-5-claude-code",
+      "model": "Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.299",
+      "scope": "Opened the attempt on 2026-10-14: created the branch and paper directory, preserved the queue record, acquired the paper, resolved the Table 2 target ledger, completed the source search, verified the shared ASL Alphabet dataset and opened the protocol gate. Wrote train.py and modal_app.py, ran the preflights and executed the three conditional full runs, and wrote the report.",
+      "evidence": [
+        "Interactive Claude Code session on 2026-10-14; the environment declares model name 'Opus 5.5' and exact model ID 'claude-opus-5-5'.",
+        "`claude --version` in the session printed '2.1.299 (Claude Code)'."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "queue_record",
+    "source": {
+      "path": "papers-01da9a64404d009c2ab0f22113b6c29c91f325b9-2026-10-14.json",
+      "sha256": "f097a075bb6f22d8277ecf51b0332f4d2ca8ed47726bca9a2b1419cfb2b16dfe",
+      "discovered_at": "2026-10-14",
+      "note": "Local queue export supplied by the assigning user. It is never committed (excluded via .git/info/exclude); the record is preserved below with reviewer email addresses replaced by role labels."
+    },
+    "ingestion": {
+      "script_accepted": false,
+      "detail": "ingest_candidate.py rejected the export with 'candidate export must be a top-level JSON array': the file is a single record object. The record is preserved instead, following the eunice-2023-sign2pose and zhang-2023-sltunet precedent."
+    },
+    "confirmation_status": {
+      "confirmation_field_present": false,
+      "paper_status": "final",
+      "assessment": "AGENTS.md requires confirmation 'confirmed' and status 'final'. The record has status 'final' (needs_review -> final on 2026-09-18) but no confirmation field, so the validator still reports it.",
+      "human_confirmation": {
+        "at": "2026-10-14",
+        "by": "the assigning user",
+        "detail": "In the attempt's session the assigning user confirmed that the record is approved for reproduction."
+      }
+    },
+    "normalized": {
+      "title": "Comparison of Autoencoders for tokenization of ASL datasets",
+      "year": 2025,
+      "pdf_url": "https://arxiv.org/abs/2501.06942",
+      "code_repos": [],
+      "what_to_reproduce": "Table 2: MSE for Reconstructed Images Across Different Encoder-Decoder Models on Validation Dataset",
+      "metric_ids": [
+        "jqnes5udf3gl9tl"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "jqnes5udf3gl9tl",
+          "name": "mean squared error (MSE)",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "w7sw8kriqh6nn61",
+          "name": "ASL Alphabet",
+          "available": "yes",
+          "license": "GPL 2",
+          "urls": [
+            "https://www.kaggle.com/datasets/grassknoted/asl-alphabet"
+          ],
+          "comments": "The training data set contains 87,000 images which are 200x200 pixels. There are 29 classes, of which 26 are for the letters A-Z and 3 classes for SPACE, DELETE and NOTHING."
+        }
+      ]
+    },
+    "record": {
+      "area_of_slp": [
+        "Segmentation / tokenization"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "",
+      "compute_requirements": "N/A",
+      "copied_scores": "no",
+      "datasets": [
+        "w7sw8kriqh6nn61"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "assignees": [
+              "[queue reviewer]"
+            ],
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "The training data set contains 87,000 images which are 200x200 pixels. There are 29 classes, of which 26 are for the letters A-Z and 3 classes for SPACE, DELETE and NOTHING.",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "w7sw8kriqh6nn61",
+            "license": "GPL 2",
+            "name": "ASL Alphabet",
+            "on_modal": "yes",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [
+              "ase"
+            ],
+            "spoken_languages": [
+              "eng"
+            ],
+            "url": [
+              "https://www.kaggle.com/datasets/grassknoted/asl-alphabet"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "jqnes5udf3gl9tl",
+            "name": "mean squared error (MSE)",
+            "url": null
+          }
+        ]
+      },
+      "finalized_by": "[queue reviewer]",
+      "flag_reason": "",
+      "id": "m1ap19xdt27an1l",
+      "includes_human_evaluation": "yes",
+      "main_experiment_has_ranking": "yes",
+      "metrics": [
+        "jqnes5udf3gl9tl"
+      ],
+      "paper_id": "01da9a64404d009c2ab0f22113b6c29c91f325b9",
+      "pdf_url": "https://arxiv.org/abs/2501.06942",
+      "peer_reviewed": "no",
+      "potential_ethical_concerns": "no",
+      "rejection_reason": "",
+      "status": "final",
+      "status_history": [
+        {
+          "after": "final",
+          "before": "needs_review",
+          "by": "[queue reviewer]",
+          "when": "2026-10-06T16:12:56.052Z"
+        }
+      ],
+      "sub_area_of_slp": [],
+      "textual_conclusion": "The Diffusion Autoencoder demonstrated superior performance ... The Convolutional Autoencoder performed moderately well... The Feedforward Autoencoder served as a baseline ... which further\nexplains its lower performance.",
+      "title": "Comparison of Autoencoders for tokenization of ASL datasets",
+      "venue": "arXiv",
+      "what_to_reproduce": "Table 2: MSE for Reconstructed Images Across Different Encoder-Decoder Models on Validation Dataset",
+      "year": 2025
+    }
+  },
+  "paper": {
+    "title": "Comparison of Autoencoders for tokenization of ASL datasets",
+    "citation": "Vouk Praun-Petrovic, Aadhvika Koundinya, Lavanya Prahallad. Comparison of Autoencoders for tokenization of ASL datasets. arXiv:2501.06942v1 [cs.LG], 12 January 2025.",
+    "url": "https://arxiv.org/abs/2501.06942v1",
+    "pdf_url": "https://arxiv.org/pdf/2501.06942v1",
+    "pdf_sha256": "6b61452774017e5fdaa876eddd067565176351d7d193a46ea9dfd41eef7806a7",
+    "accessed_at": "2026-10-14",
+    "versions": "Only v1 exists on arXiv (checked 2026-10-14). Not peer reviewed (queue peer_reviewed 'no')."
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2501.06942v1",
+      "revision_or_sha256": "6b61452774017e5fdaa876eddd067565176351d7d193a46ea9dfd41eef7806a7",
+      "role": "Only source of the target values and the protocol."
+    },
+    {
+      "source_id": "study-repo",
+      "kind": "code",
+      "url": "https://github.com/sign-language-processing/reproduction",
+      "revision_or_sha256": "939d8937bf2744a2dd2ac4c0825167797865bccd",
+      "role": "Study repository revision (origin/main) the attempt branch was created from."
+    },
+    {
+      "source_id": "base-image",
+      "kind": "container",
+      "url": "ghcr.io/sign-language-processing/reproduction:latest",
+      "revision_or_sha256": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+      "role": "GPU base image (NVIDIA NGC PyTorch 2.11.0a0+eb65b36914.nv26.02, torchvision 0.25.0a0, numpy 2.1.0, pillow 12.1.1). The digest is what ghcr.io returned for :latest at launch time; the runs referenced the tag, and modal_app.py now pins this digest."
+    }
+  ],
+  "source_search": {
+    "searched_at": "2026-10-14",
+    "conclusion": "No published code, weights, supplement or project page was found. Preference level 3 (reimplementation from the paper) is the only available path.",
+    "locations": [
+      "Paper PDF v1: no code, data or supplement link; no footnotes; the references are background works and Wikipedia pages.",
+      "arXiv abstract page and API: only v1, comment '9 pages, 2 tables, 4 figures', no code link.",
+      "Hugging Face paper, model and Space index for arXiv:2501.06942: none.",
+      "GitHub repository search: exact title, 'asl autoencoder diffusion', author names (Praun-Petrovic, Vouk, Aadhvika, researchsparkhub): no matching repository. GitHub user 'Vouk' hosts an unrelated video-encoder project.",
+      "Web search for the exact title plus 'code github', and for the author names plus 'Research Spark Hub': only arXiv mirrors and summary sites.",
+      "Zenodo search for the title: 0 records.",
+      "Research Spark Hub website (www.researchsparkhub.com, affiliation of the third author): programme pages only, no code or publication artefacts."
+    ]
+  },
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "No in-scope target produced a comparable value: every Table 2 row depends on unreported hyperparameters, subset selection and architecture details. Conditional values and their raw differences are recorded in each target result and in README.md for the reviewer.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "No code exists and the paper omits the training hyperparameters, the image subset and seed, the feedforward widths and most of the diffusion model, so none of the three Table 2 values can be reproduced under the paper's own protocol.",
+      "target_ids": [
+        "table2-mse-feedforward",
+        "table2-mse-convolutional",
+        "table2-mse-diffusion"
+      ]
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "asl-alphabet-v1",
+      "name": "ASL Alphabet",
+      "source_url": "https://www.kaggle.com/datasets/grassknoted/asl-alphabet",
+      "version_or_subset": "Kaggle grassknoted/asl-alphabet version 1; asl_alphabet_train, all 29 classes, 3,000 images each",
+      "license_or_permission": "GPL-2.0 as declared by the Kaggle source metadata (queue: 'GPL 2'). The project already holds an authorised copy in the shared Volume (queue on_modal 'yes'), also used by silanon-2023-asl-cnn.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "asl-alphabet",
+      "checked_at_utc": "2026-10-14T00:00:00Z",
+      "manifest_sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d",
+      "archive_sha256": "7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4",
+      "verification": "On 2026-10-14 every one of the 29 class directories under asl-alphabet/source/asl_alphabet_train/asl_alphabet_train held exactly 3,000 files (87,000 total), and asl_alphabet_test held 28 files, matching manifest.json and the paper's Section 2.1 counts.",
+      "selection": {
+        "manifest_field": "stored_classes",
+        "detail": "The paper uses all 29 classes including 'nothing'. The manifest's 28-class training_classes field is another study's selection and is not used."
+      },
+      "splits": [
+        {
+          "name": "source train (all 29 classes)",
+          "sample_count": 87000,
+          "files": [
+            {
+              "path": "asl-alphabet/manifest.json",
+              "sha256": "012e786c2f72e1f731f4384adbcf190c4e7084f80c64c8c17e3ad585693a453d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "mse-pixel-01",
+      "name": "Mean squared error",
+      "queue_metric_id": "jqnes5udf3gl9tl",
+      "definition": "Mean of squared differences between reconstructed and input pixels, with images resized to 200x200 and scaled to [0, 1] (Sections 2.2, 4, 5.1). Averaged over the 2,900-image validation set.",
+      "direction": "lower",
+      "unresolved": "The paper does not say whether the mean is over all pixels and channels (torch MSELoss default) or a mean of per-batch losses, nor whether the feedforward model is scored on grayscale (Figure 1 shows a 40,000-value input, i.e. 200x200x1) or RGB images.",
+      "implementation": "mean of squared differences between reconstruction and input over all pixels (and channels) of the validation images, pixel values in [0, 1]",
+      "version": "not reported by the paper; this attempt will use torch.nn.functional.mse_loss (reduction='mean') summed per batch and divided by the total element count",
+      "aggregation": "single value over the 2,900-image validation set; one training run per model, no seeds or repeats reported",
+      "unit_or_scale": "squared pixel intensity on the [0, 1] scale"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table2-validation-mse",
+      "description": "Train each of the three autoencoders on 11,600 training images (80% of 500 per class) with Adam and MSE loss; report validation MSE on the remaining 2,900 images.",
+      "paper_protocol": {
+        "data": "500 images per class x 29 classes, 80/20 split into 11,600 train / 2,900 validation (Section 4; Section 5.1 gives 2,900 validation images selected with a fixed random seed). Section 2.1's 69,600/17,400 split of all 87,000 images conflicts with this; the 2,900 figure is used because Section 5.1 ties it to the evaluation.",
+        "preprocessing": "Resize to 200x200, ToTensor, scale to [0, 1] (Section 2.2).",
+        "optimizer": "Adam; loss MSE. Learning rate, batch size, epochs, seed and checkpoint selection are not reported.",
+        "feedforward": "Fully connected; Figure 1 shows flattened input of 40,000 values, two hidden layers each side and a 64-d latent. Hidden widths, activations and the output activation are not reported.",
+        "convolutional": "Three 4x4 stride-2 padding-1 convolutions 3->32->64->128 (200->100->50->25), flatten 25x25x128, linear to 64; mirrored decoder with linear and transposed convolutions; ReLU throughout, sigmoid output. The paper states about 16 million parameters; this specification gives 10,651,139.",
+        "diffusion": "Convolutional encoder producing mean and variance through fully connected layers; 100-timestep beta noise schedule on the latent; a fully connected denoiser 'with five primary layers, multiple dynamically added layers, and final output layers'; convolutional decoder from the denoised latent; about 16 million parameters. Latent size, beta schedule, denoiser widths, the 'dynamically added layers', the loss composition (reconstruction, noise prediction, KL) and how reconstructions are produced at evaluation are not reported. Figure 3 is the latent diffusion (Stable Diffusion) overview diagram, not this model."
+      },
+      "paper_location": "Table 2; Sections 2, 3, 4 and 5.1; Figures 1-3",
+      "system": "Feedforward, convolutional and diffusion autoencoders",
+      "dataset_id": "asl-alphabet-v1",
+      "checkpoint_rule": "not reported; Section 4 says the model is saved 'after training', read as the final-epoch weights",
+      "paper_evidence": "Table 2 and Section 6.0.2"
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table2-mse-feedforward",
+      "in_scope": true,
+      "paper_location": "Table 2, row 'FeedForward' (p. 7, Section 6.0.2)",
+      "experiment_id": "table2-validation-mse",
+      "system": "FeedForward autoencoder",
+      "dataset_id": "asl-alphabet-v1",
+      "split": "validation: 2,900 images (20% of 500 images per class x 29 classes, 'randomly selected ... using a fixed random seed'; seed value not reported)",
+      "metric_id": "mse-pixel-01",
+      "unit": "MSE on pixel values scaled to [0, 1]",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "All three rows are the authors' own models (Sections 3-4); the paper cites no external source for these numbers.",
+      "evidence_location": "Table 2 and the paragraph below it (0.00141 diffusion, 0.00144 convolutional)",
+      "reproduction_plan": "Reimplement from Section 3.1-3.2 and Figure 1; train and evaluate on the 2,900-image validation split.",
+      "original_value": 0.00506,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not report the training hyperparameters, the image subset or seed, or the architecture details needed for this model, so the conditional run is not the paper's protocol."
+        },
+        "run_ids": [
+          "full-feedforward-1"
+        ],
+        "artifact_ids": [
+          "full-feedforward-1-metrics"
+        ],
+        "gate_ids": [
+          "protocol-unreported-details"
+        ],
+        "evidence": [
+          "Sections 3-5 of the paper; see guesses split-selection, training-hyperparameters, feedforward-architecture."
+        ],
+        "conditional_value": 0.004883386495655981,
+        "conditional_difference": -0.00017661350434401962
+      }
+    },
+    {
+      "target_id": "table2-mse-convolutional",
+      "in_scope": true,
+      "paper_location": "Table 2, row 'Convolution' (p. 7, Section 6.0.2)",
+      "experiment_id": "table2-validation-mse",
+      "system": "Convolution autoencoder",
+      "dataset_id": "asl-alphabet-v1",
+      "split": "validation: 2,900 images (20% of 500 images per class x 29 classes, 'randomly selected ... using a fixed random seed'; seed value not reported)",
+      "metric_id": "mse-pixel-01",
+      "unit": "MSE on pixel values scaled to [0, 1]",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "All three rows are the authors' own models (Sections 3-4); the paper cites no external source for these numbers.",
+      "evidence_location": "Table 2 and the paragraph below it (0.00141 diffusion, 0.00144 convolutional)",
+      "reproduction_plan": "Reimplement from Section 3.4; train and evaluate on the 2,900-image validation split.",
+      "original_value": 0.00144,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not report the training hyperparameters, the image subset or seed, or the architecture details needed for this model, so the conditional run is not the paper's protocol."
+        },
+        "run_ids": [
+          "full-convolutional-1"
+        ],
+        "artifact_ids": [
+          "full-convolutional-1-metrics"
+        ],
+        "gate_ids": [
+          "protocol-unreported-details"
+        ],
+        "evidence": [
+          "Sections 3-5 of the paper; see guesses split-selection, training-hyperparameters, conv-decoder-activation."
+        ],
+        "conditional_value": 0.0017755508647348689,
+        "conditional_difference": 0.0003355508647348688
+      }
+    },
+    {
+      "target_id": "table2-mse-diffusion",
+      "in_scope": true,
+      "paper_location": "Table 2, row 'Diffusion' (p. 7, Section 6.0.2)",
+      "experiment_id": "table2-validation-mse",
+      "system": "Diffusion autoencoder",
+      "dataset_id": "asl-alphabet-v1",
+      "split": "validation: 2,900 images (20% of 500 images per class x 29 classes, 'randomly selected ... using a fixed random seed'; seed value not reported)",
+      "metric_id": "mse-pixel-01",
+      "unit": "MSE on pixel values scaled to [0, 1]",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "All three rows are the authors' own models (Sections 3-4); the paper cites no external source for these numbers.",
+      "evidence_location": "Table 2 and the paragraph below it (0.00141 diffusion, 0.00144 convolutional)",
+      "reproduction_plan": "Reimplement from Section 3.6; train and evaluate on the 2,900-image validation split.",
+      "original_value": 0.00141,
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper does not report the training hyperparameters, the image subset or seed, or the architecture details needed for this model, so the conditional run is not the paper's protocol."
+        },
+        "run_ids": [
+          "full-diffusion-1"
+        ],
+        "artifact_ids": [
+          "full-diffusion-1-metrics"
+        ],
+        "gate_ids": [
+          "protocol-unreported-details"
+        ],
+        "evidence": [
+          "Sections 3-5 of the paper; see guesses split-selection, training-hyperparameters, diffusion-model."
+        ],
+        "conditional_value": 0.018702918653466235,
+        "conditional_difference": 0.017292918653466233
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "full-feedforward-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "kind": "conditional_full_run",
+      "target_ids": [
+        "table2-mse-feedforward"
+      ],
+      "hypothesis": "The feedforward autoencoder, reimplemented with the documented guesses and trained on the 11,600/2,900 split, yields a validation MSE comparable to Table 2.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/praun-petrovic-2025-asl-autoencoders/modal_app.py --model feedforward --run-name full-feedforward-1",
+      "started_at_utc": "2026-10-14T12:59:28Z",
+      "finished_at_utc": "2026-10-14T13:07:41Z",
+      "duration_seconds": 493.0,
+      "exit_code": 0,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-feedforward",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-14T12:59:19Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Trained 20 epochs, saved and reloaded the final checkpoint, and evaluated all 2,900 validation images (MSE 0.004883386495655981).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "repository_commit": "939d8937bf2744a2dd2ac4c0825167797865bccd",
+        "dirty_diff_sha256": null,
+        "upstream_revision": null,
+        "patch_sha256": [],
+        "file_sha256": {
+          "papers/praun-petrovic-2025-asl-autoencoders/train.py": "69f5cde37ce17803fc920013ce89d2d8823150f35374daf7a595bd2369a55048",
+          "papers/praun-petrovic-2025-asl-autoencoders/modal_app.py": "995dcede20e7f8488981dce88700baabcab791221d3e8ed4b24d3fac2d8a361d"
+        },
+        "note": "The paper files were uncommitted at launch; their hashes are recorded instead of a dirty-diff hash. train.py is unchanged in the commit; modal_app.py was later changed only to pin the base-image digest."
+      },
+      "environment": {
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "base_image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "dependency_manifest": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-feedforward-1/pip-freeze.txt (sha256 9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5)",
+        "software": {
+          "torch": "2.11.0a0+eb65b36914.nv26.02",
+          "torchvision": "0.25.0a0+1e53952f.nv26.2",
+          "numpy": "2.1.0",
+          "pillow": "12.1.1",
+          "precision": "fp32",
+          "nvidia_driver": "580.95.05"
+        }
+      },
+      "configuration": {
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 32,
+        "effective_batch_size": 32,
+        "lr": 0.001,
+        "grayscale": true,
+        "parameters": 82519680,
+        "checkpoint": "final epoch",
+        "split_sha256": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "checkpoint_sha256": "25ce9668268292bd3d7517a3a2805b0c2cd61093a2a9438ec37e6d6238cbf8d4"
+      },
+      "data": {
+        "dataset_id": "asl-alphabet-v1",
+        "mount": "/datasets/asl-alphabet (read-only)",
+        "train_images": 11600,
+        "validation_images": 2900
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-aHIDIIGEvmWGS1FOjfblXr",
+        "modal_function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-aHIDIIGEvmWGS1FOjfblXr",
+        "hardware": "NVIDIA L4, driver 580.95.05, CUDA 13.0",
+        "gpu_count": 1,
+        "peak_gpu_memory_bytes": 2003683328,
+        "train_script_wall_time_seconds": 270.6,
+        "wall_time_hours": 0.1369,
+        "gpu_hours": 0.1369,
+        "cost_note": "Below CHF 1 per run at Modal's L4 rate; billing for the individual app was not retrieved.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "full-feedforward-1-metrics"
+      ],
+      "observation": "Validation MSE 0.004883; final train MSE 0.004277.",
+      "hypothesis_supported": null,
+      "next_action": "None. The run is conditional evidence under gate protocol-unreported-details."
+    },
+    {
+      "run_id": "full-convolutional-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "kind": "conditional_full_run",
+      "target_ids": [
+        "table2-mse-convolutional"
+      ],
+      "hypothesis": "The convolutional autoencoder, reimplemented with the documented guesses and trained on the 11,600/2,900 split, yields a validation MSE comparable to Table 2.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/praun-petrovic-2025-asl-autoencoders/modal_app.py --model convolutional --run-name full-convolutional-1",
+      "started_at_utc": "2026-10-14T12:59:28Z",
+      "finished_at_utc": "2026-10-14T13:04:48Z",
+      "duration_seconds": 320.0,
+      "exit_code": 0,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-convolutional",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-14T12:59:19Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Trained 20 epochs, saved and reloaded the final checkpoint, and evaluated all 2,900 validation images (MSE 0.0017755508647348689).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "repository_commit": "939d8937bf2744a2dd2ac4c0825167797865bccd",
+        "dirty_diff_sha256": null,
+        "upstream_revision": null,
+        "patch_sha256": [],
+        "file_sha256": {
+          "papers/praun-petrovic-2025-asl-autoencoders/train.py": "69f5cde37ce17803fc920013ce89d2d8823150f35374daf7a595bd2369a55048",
+          "papers/praun-petrovic-2025-asl-autoencoders/modal_app.py": "995dcede20e7f8488981dce88700baabcab791221d3e8ed4b24d3fac2d8a361d"
+        },
+        "note": "The paper files were uncommitted at launch; their hashes are recorded instead of a dirty-diff hash. train.py is unchanged in the commit; modal_app.py was later changed only to pin the base-image digest."
+      },
+      "environment": {
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "base_image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "dependency_manifest": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-convolutional-1/pip-freeze.txt (sha256 9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5)",
+        "software": {
+          "torch": "2.11.0a0+eb65b36914.nv26.02",
+          "torchvision": "0.25.0a0+1e53952f.nv26.2",
+          "numpy": "2.1.0",
+          "pillow": "12.1.1",
+          "precision": "fp32",
+          "nvidia_driver": "580.95.05"
+        }
+      },
+      "configuration": {
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 32,
+        "effective_batch_size": 32,
+        "lr": 0.001,
+        "grayscale": false,
+        "parameters": 10651139,
+        "checkpoint": "final epoch",
+        "split_sha256": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "checkpoint_sha256": "fae31a1fba49e10fd3e8e732bea69edbe0db62b5a842436bbc6587829ca2ca00"
+      },
+      "data": {
+        "dataset_id": "asl-alphabet-v1",
+        "mount": "/datasets/asl-alphabet (read-only)",
+        "train_images": 11600,
+        "validation_images": 2900
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-hgmBO8EYb5V8FSSEI7miLJ",
+        "modal_function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-hgmBO8EYb5V8FSSEI7miLJ",
+        "hardware": "NVIDIA L4, driver 580.95.05, CUDA 13.0",
+        "gpu_count": 1,
+        "peak_gpu_memory_bytes": 559218688,
+        "train_script_wall_time_seconds": 284.0,
+        "wall_time_hours": 0.0889,
+        "gpu_hours": 0.0889,
+        "cost_note": "Below CHF 1 per run at Modal's L4 rate; billing for the individual app was not retrieved.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "full-convolutional-1-metrics"
+      ],
+      "observation": "Validation MSE 0.001776; final train MSE 0.001188.",
+      "hypothesis_supported": null,
+      "next_action": "None. The run is conditional evidence under gate protocol-unreported-details."
+    },
+    {
+      "run_id": "full-diffusion-1",
+      "agent_ids": [
+        "opus-5-5-claude-code"
+      ],
+      "kind": "conditional_full_run",
+      "target_ids": [
+        "table2-mse-diffusion"
+      ],
+      "hypothesis": "The diffusion autoencoder, reimplemented with the documented guesses and trained on the 11,600/2,900 split, yields a validation MSE comparable to Table 2.",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/praun-petrovic-2025-asl-autoencoders/modal_app.py --model diffusion --run-name full-diffusion-1",
+      "started_at_utc": "2026-10-14T12:59:28Z",
+      "finished_at_utc": "2026-10-14T13:05:24Z",
+      "duration_seconds": 356.0,
+      "exit_code": 0,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-diffusion",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-14T12:59:19Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": 1.0,
+        "max_cost_chf": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Trained 20 epochs, saved and reloaded the final checkpoint, and evaluated all 2,900 validation images (MSE 0.018702918653466235).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "source": {
+        "repository_commit": "939d8937bf2744a2dd2ac4c0825167797865bccd",
+        "dirty_diff_sha256": null,
+        "upstream_revision": null,
+        "patch_sha256": [],
+        "file_sha256": {
+          "papers/praun-petrovic-2025-asl-autoencoders/train.py": "69f5cde37ce17803fc920013ce89d2d8823150f35374daf7a595bd2369a55048",
+          "papers/praun-petrovic-2025-asl-autoencoders/modal_app.py": "995dcede20e7f8488981dce88700baabcab791221d3e8ed4b24d3fac2d8a361d"
+        },
+        "note": "The paper files were uncommitted at launch; their hashes are recorded instead of a dirty-diff hash. train.py is unchanged in the commit; modal_app.py was later changed only to pin the base-image digest."
+      },
+      "environment": {
+        "image": "ghcr.io/sign-language-processing/reproduction:latest",
+        "base_image_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
+        "dependency_manifest": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-diffusion-1/pip-freeze.txt (sha256 9c737efc2a1c5670d8ebb945f5f53a9fb75715e7ed274cc914d8201c5e9175f5)",
+        "software": {
+          "torch": "2.11.0a0+eb65b36914.nv26.02",
+          "torchvision": "0.25.0a0+1e53952f.nv26.2",
+          "numpy": "2.1.0",
+          "pillow": "12.1.1",
+          "precision": "fp32",
+          "nvidia_driver": "580.95.05"
+        }
+      },
+      "configuration": {
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 32,
+        "effective_batch_size": 32,
+        "lr": 0.001,
+        "grayscale": false,
+        "parameters": 16067715,
+        "checkpoint": "final epoch",
+        "split_sha256": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "checkpoint_sha256": "b315778a935c363eb18f58a8e85dd098ebbaa650f1251e9b5babb6d915b749b8"
+      },
+      "data": {
+        "dataset_id": "asl-alphabet-v1",
+        "mount": "/datasets/asl-alphabet (read-only)",
+        "train_images": 11600,
+        "validation_images": 2900
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "main",
+        "modal_app_id": "ap-AIfqNNBgiYXKc6ygEZfyIp",
+        "modal_function_call_id": null,
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-AIfqNNBgiYXKc6ygEZfyIp",
+        "hardware": "NVIDIA L4, driver 580.95.05, CUDA 13.0",
+        "gpu_count": 1,
+        "peak_gpu_memory_bytes": 687887872,
+        "train_script_wall_time_seconds": 261.0,
+        "wall_time_hours": 0.0989,
+        "gpu_hours": 0.0989,
+        "cost_note": "Below CHF 1 per run at Modal's L4 rate; billing for the individual app was not retrieved.",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "artifact_ids": [
+        "full-diffusion-1-metrics"
+      ],
+      "observation": "Validation MSE 0.018703; final train MSE 0.018993.",
+      "hypothesis_supported": null,
+      "next_action": "None. The run is conditional evidence under gate protocol-unreported-details."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "full-feedforward-1-metrics",
+      "kind": "raw metric output",
+      "uri": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-feedforward-1/metrics.json",
+      "sha256": "e8e4dd39c1d176a24930111ebc618d81f51e78c90affdf4c53be97a984b398ee",
+      "size_bytes": 2931,
+      "companions": {
+        "split.json": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "model.pt": "25ce9668268292bd3d7517a3a2805b0c2cd61093a2a9438ec37e6d6238cbf8d4",
+        "nvidia-smi.txt": "0ad9d28b6ddd083ed144edaf1734da301be9679c4d7263ad5399d470564a7bcc"
+      }
+    },
+    {
+      "artifact_id": "full-convolutional-1-metrics",
+      "kind": "raw metric output",
+      "uri": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-convolutional-1/metrics.json",
+      "sha256": "78e7b1d9539f5d769e848a9d25e49b637e5c6d291f87fe02bf0cd6da9de06c2a",
+      "size_bytes": 2949,
+      "companions": {
+        "split.json": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "model.pt": "fae31a1fba49e10fd3e8e732bea69edbe0db62b5a842436bbc6587829ca2ca00",
+        "nvidia-smi.txt": "06df063f244fd9396597ec1f7585502c511904affde8988bba8e2576697643b5"
+      }
+    },
+    {
+      "artifact_id": "full-diffusion-1-metrics",
+      "kind": "raw metric output",
+      "uri": "modal://repro-sign/volumes/01da9a64-asl-autoencoders-results/full-diffusion-1/metrics.json",
+      "sha256": "103d3e8ced5a4eb3199c778b1f7e17661ed3dafc719c57ea30c2e0cf201a17dd",
+      "size_bytes": 2925,
+      "companions": {
+        "split.json": "80d17c24644a3c55dc3a06edb5033e68963bbe2a0f2fef07065e6117f1a884ce",
+        "model.pt": "b315778a935c363eb18f58a8e85dd098ebbaa650f1251e9b5babb6d915b749b8",
+        "nvidia-smi.txt": "5b884650e51b38b998c068182e887bed422835485f0f1ca0a1acc69c9b92c6c7"
+      }
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "protocol-unreported-details",
+      "type": "protocol",
+      "status": "resolved",
+      "opened_at_utc": "2026-10-14T00:00:00Z",
+      "reason": "No code exists, and the paper omits details that change the reported MSE: training hyperparameters and seeds for all three models, which 500 images per class are used, the entire feedforward architecture apart from its 40,000-value input and 64-d latent, and almost all of the diffusion model.",
+      "evidence": [
+        "Section 4 states only 'Adam optimizer', 'MSE loss', 'multiple epochs', '500 images per class' and an 80/20 split.",
+        "Sections 3.1 and 3.2 repeat the same paragraph and give no feedforward layer sizes; Figure 1 shows the input size (40,000) and latent size (64) only.",
+        "Section 3.6 describes the diffusion denoiser as 'five primary layers, multiple dynamically added layers, and final output layers' without sizes, schedule values or loss terms.",
+        "Section 3.4's specification gives 10,651,139 parameters, not the stated ~16 million, so the convolutional model as described is not exactly the model that was run."
+      ],
+      "required_action": "Human decision: either authorise a labelled conditional reimplementation with documented guesses (results kept as conditional evidence, targets not marked produced), or close the attempt as insufficient_information without training.",
+      "resolved_at_utc": "2026-10-14T12:50:00Z",
+      "resolution": "The assigning user authorised a labelled conditional reimplementation of all three models with documented guesses. The missing protocol details remain unknown, so the runs are conditional evidence and the targets are not produced."
+    }
+  ],
+  "guesses": [
+    {
+      "guess_id": "split-selection",
+      "detail": "Which 500 images per class, and how the 80/20 split is drawn",
+      "paper": "'500 images per class ... 80/20 split' (Section 4); validation of 2,900 images 'randomly selected ... using a fixed random seed' (Section 5.1); seed not given",
+      "used": "random.Random(42).sample of 500 sorted filenames per class, then a torch.randperm(seed 42) 80/20 split of the pooled 14,500 images (11,600 / 2,900; split.json sha256 80d17c24...)",
+      "effect": "Behaviour-changing: a different subset changes the validation MSE."
+    },
+    {
+      "guess_id": "training-hyperparameters",
+      "detail": "Learning rate, batch size, epochs, seed, checkpoint",
+      "paper": "Adam, MSE loss, 'multiple epochs'; weights saved after training",
+      "used": "Adam lr 1e-3, batch 32, 20 epochs, seed 42, final-epoch weights, fp32",
+      "effect": "Behaviour-changing for all three models."
+    },
+    {
+      "guess_id": "feedforward-architecture",
+      "detail": "Feedforward widths, activations, colour",
+      "paper": "Figure 1: flattened 40,000-value input and output, two hidden layers per side, 64-d latent; nothing else",
+      "used": "Grayscale 200x200 input (40,000 values, following Figure 1); 40000-1024-256-64-256-1024-40000 with ReLU and a sigmoid output (82,519,680 parameters)",
+      "effect": "Behaviour-changing; the feedforward MSE is computed on grayscale pixels while the other two models use RGB."
+    },
+    {
+      "guess_id": "conv-decoder-activation",
+      "detail": "Activation after the decoder's linear layer",
+      "paper": "ReLU on every convolution and transposed convolution, sigmoid on the output; linear layers not specified",
+      "used": "ReLU after the decoder linear layer, none after the encoder linear layer (10,651,139 parameters vs the paper's 'approximately 16 million')",
+      "effect": "Minor; the parameter-count mismatch shows the paper's model differs from its own description in some unknown way."
+    },
+    {
+      "guess_id": "diffusion-model",
+      "detail": "Diffusion autoencoder internals",
+      "paper": "Section 3.6: mean/variance heads, 100-step beta schedule on the latent, FC denoiser with 'five primary layers, multiple dynamically added layers, and final output layers'; ~16 million parameters",
+      "used": "64-d latent with reparameterised sampling; linear betas 1e-4 to 0.02 over 100 steps; one random timestep per image; five 256-wide ReLU layers plus an output layer predicting the noise from (z_t, t/100); z0 estimated from the predicted noise and decoded; loss = reconstruction MSE + noise MSE, no KL; evaluation uses the same stochastic forward pass with a fixed generator seed (16,067,715 parameters)",
+      "effect": "Behaviour-changing and the largest source of uncertainty. Only the parameter count is checkable, and it matches the paper."
+    },
+    {
+      "guess_id": "metric-aggregation",
+      "detail": "MSE aggregation",
+      "paper": "MSE over the validation set",
+      "used": "Sum of squared errors over every pixel and channel divided by the element count",
+      "effect": "Equal to the mean of per-image MSE here because all images have the same size."
+    }
+  ],
+  "deviations": [
+    {
+      "deviation_id": "split-sections-conflict",
+      "detail": "Section 2.1 describes an 80/20 split of all 87,000 images (69,600/17,400); Sections 4 and 5.1 describe 500 images per class and a 2,900-image validation set.",
+      "used": "The 500-per-class protocol, because Section 5.1 ties the 2,900-image validation set to the reported MSE.",
+      "effect": "Recorded as the paper's own inconsistency, not a choice of this attempt."
+    }
+  ]
+}
