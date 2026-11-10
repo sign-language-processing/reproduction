@@ -89,9 +89,9 @@ No runs. The only Modal operations were read-only: listing the `datasets` Volume
 
 ## Guesses and deviations
 
-| ID | Kind | Description | Paper/evidence says | This attempt used | Basis | Effect on interpretation |
-| --- | --- | --- | --- | --- | --- | --- |
-| `fig7-accuracy` | `guess` | Accuracy implied by the Fig. 7 confusion matrix, which the paper does not print. | Not printed | Trace/total of the transcribed matrix = 99.97% | Standard accuracy, as Sec. VI-B says accuracy is computed from Fig. 7 | Establishes the inconsistency; no result depends on it |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `fig7-accuracy` | `guess` | Accuracy implied by the Fig. 7 confusion matrix, which the paper does not print. | Not printed | Trace/total of the transcribed matrix = 99.97% | Standard accuracy, as Sec. VI-B says accuracy is computed from Fig. 7 | Establishes the inconsistency; no result depends on it |  |  |  |  |  |  |
 
 ## Noncompliance
 
