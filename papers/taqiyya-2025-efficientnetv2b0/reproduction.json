@@ -1,0 +1,3704 @@
+{
+  "paper_id": "c56bc98c78421f35c08f8cdf9657b22ce66dfc77",
+  "agents": [
+    {
+      "agent_id": "reproduction-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Source discovery, clean-room implementation, execution, and reporting. Exact model ID and harness version are unavailable in the session.",
+      "evidence": [
+        "Session identifies the agent as GPT-6 using Codex; no precise model variant/build or harness version is exposed."
+      ]
+    },
+    {
+      "agent_id": "independent-review-agent",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only independent paper, code, protocol and runtime review. Identified augmentation order and timeout discrepancies; reviewed corrected v3 code. Did not edit files or execute experiments. Exact model ID, build/version and harness version unavailable. On 2026-10-02, reviewed the paper claims against retained results and updated the conclusion assessment and report; this follow-up performed no experiments.",
+      "evidence": [
+        "Session attestation 2026-10-01: reviewer explicitly identified GPT-6 using Codex from active session instructions; exact model/build/harness versions not exposed. Read-only review of Figure1/II.B identified resize-order and timeout discrepancies; reviewed v3 correction without editing files or executing experiments.",
+        "Explicit 2026-10-02 session attestation: GPT-6 using Codex, exact model ID/build and harness version unavailable. Compared the local supplied paper tables and surrounding conclusions against the existing report and ledger; performed claim-level assessment and report maintenance only, without new experiment execution."
+      ]
+    },
+    {
+      "agent_id": "codex-orchestrator",
+      "model": "GPT-6",
+      "harness": "Codex",
+      "scope": "Read-only independent verification of terminal prediction arrays, unique test indices, probability argmax, exact correct counts, test accuracy and unchanged split hash; review of source-based correction. Did not execute these model experiments. Exact model variant/build and harness version are unavailable in the session. On 2026-10-03, rechecked preserved predictions and paired errors and finalized claim-level conclusions; later analysis/reporting only, not new model execution.",
+      "evidence": [
+        "Session attestation on 2026-10-01 identifies root orchestrator as GPT-6 using Codex; exact model and app versions unavailable. Root independently recomputed EfficientNet and ConvNeXt results and reported PASS, then independently recomputed ResNet 2318/2336 and reported PASS; all test indices and split SHA agreed. Root explicitly confirmed review-only attribution and exclusion from execution agent_ids.",
+        "Session audit 2026-10-01: root independently verified the final MobileNet result 2321/2336 = 0.9935787671232876, unique indices, probability argmax and unchanged split SHA; all four final prediction audits passed.",
+        "2026-10-03 session attestation: GPT-6 using Codex; exact model and harness versions unavailable. Independently hash-verified and recomputed all four retained predictions, paired correctness differences and generated-test counts; compared Table X and adjacent conclusion text. Target/run/artifact/status records preserved."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "direct_user_request",
+    "source": {
+      "path": "reproductions-c56bc98c78421f35c08f8cdf9657b22ce66dfc77-2026-10-01.json",
+      "sha256": "edf3e36154b533ea74c087525ff21113a7dda47133f2257c9896a32cfa13a774"
+    },
+    "record": {
+      "area_of_slp": [
+        "Recognition"
+      ],
+      "code_repos": "N/A",
+      "collectionId": "pbc_3632733556",
+      "collectionName": "papers",
+      "comments": "",
+      "compute_requirements": "N/A",
+      "copied_scores": "no",
+      "datasets": [
+        "bf31covl5al6tzs"
+      ],
+      "expand": {
+        "datasets": [
+          {
+            "available": "yes",
+            "collectionId": "pbc_3710182791",
+            "collectionName": "datasets",
+            "comments": "Dataset created by https://arxiv.org/pdf/2203.03859\n\n26 classes contain numbers, letters, and words selected from American Sign Language, which has the large number of users [1], to gathering the data. Selected numbers are 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. Selected letters are A, B, C, D, and E. Selected expressions are Hello, Yes, No, Good, Bye, Good morning, Whats up, Pardon, Project, Little\nbit, and Please.\n\nImages only, no videos. Apparently signed by volunteers who don't know any sign languages",
+            "contact_dates": [],
+            "correspondence": "",
+            "id": "bf31covl5al6tzs",
+            "license": "CC BY-NC-SA 4.0",
+            "name": "27 Class Sign Language Dataset",
+            "on_modal": "",
+            "permission_model_weights": "",
+            "permission_to_reproduce": "",
+            "signed_languages": [],
+            "spoken_languages": [],
+            "url": [
+              "https://arxiv.org/pdf/2203.03859",
+              "https://www.kaggle.com/datasets/ardamavi/27-class-sign-language-dataset"
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "collectionId": "pbc_3017397517",
+            "collectionName": "metrics",
+            "comments": "",
+            "id": "wzc6kxyuhls6lut",
+            "name": "Accuracy",
+            "url": []
+          }
+        ]
+      },
+      "flag_reason": "",
+      "id": "3wtbwn5ynjfkma6",
+      "includes_human_evaluation": "no",
+      "main_experiment_has_ranking": "yes",
+      "metrics": [
+        "wzc6kxyuhls6lut"
+      ],
+      "paper_id": "c56bc98c78421f35c08f8cdf9657b22ce66dfc77",
+      "pdf_url": "https://doi.org/10.1109/ICITACEE66165.2025.11233171",
+      "peer_reviewed": "yes",
+      "potential_ethical_concerns": "yes",
+      "rejection_reason": "",
+      "status": "final",
+      "sub_area_of_slp": [
+        "Isolated fingerspelling images",
+        "Isolated signing images"
+      ],
+      "textual_conclusion": "These results confirm that EfficientNetV2B0 is effective in recognizing ASL patterns and has the potential to be implemented in real-time sign language detection systems.",
+      "title": "Classification of American Sign Language Using EfficientNETV2B0 Architecture",
+      "venue": "International Conference on Information Technology, Computer, and Electrical Engineering (ICITACEE)",
+      "what_to_reproduce": "Table X",
+      "year": 2025
+    },
+    "detail": "Direct user-authorized batch reproduction from the current tracker. Its expanded paper record is final, but has no confirmation property and its database id differs from paper_id; queue approval fields were not invented."
+  },
+  "paper": {
+    "title": "Classification of American Sign Language Using EfficientNETV2B0 Architecture",
+    "citation": "Thifa Ziada Taqiyya, Khadijah, and Retno Kusumaningrum. 2025. Classification of American Sign Language Using EfficientNetV2B0 Architecture. ICITACEE, pp. 196\u2013202.",
+    "url": "https://doi.org/10.1109/ICITACEE66165.2025.11233171",
+    "pdf_sha256": "5099d9093dd3d628c344128d4eec0cde2ffc58b83ec151f9c9b6bfe649e0162b",
+    "accessed_at": "2026-10-01"
+  },
+  "sources": [
+    {
+      "source_id": "paper",
+      "kind": "paper",
+      "url": "https://doi.org/10.1109/ICITACEE66165.2025.11233171",
+      "revision_or_sha256": "5099d9093dd3d628c344128d4eec0cde2ffc58b83ec151f9c9b6bfe649e0162b",
+      "role": "Seven-page publisher PDF obtained from the authorized tracker; Table X and sections II\u2013III define targets. Licensed PDF retained outside Git."
+    },
+    {
+      "source_id": "thesis",
+      "kind": "author-thesis",
+      "url": "https://eprints2.undip.ac.id/id/eprint/40526/",
+      "role": "Abstract independently confirms Table X EfficientNet accuracy 99.57% belongs to augmented data and dense256; only front matter and introduction are public."
+    },
+    {
+      "source_id": "dataset-paper",
+      "kind": "dataset-paper",
+      "url": "https://arxiv.org/abs/2203.03859v1",
+      "role": "Dataset identity, shape, counts, preprocessing, consent/IRB and research-use permission."
+    },
+    {
+      "source_id": "dataset-card",
+      "kind": "dataset",
+      "url": "https://www.kaggle.com/datasets/ardamavi/27-class-sign-language-dataset",
+      "revision_or_sha256": "version 1, 2022-03-06",
+      "role": "Official data release and CC BY-NC-SA 4.0 metadata."
+    },
+    {
+      "source_id": "keras",
+      "kind": "implementation",
+      "url": "https://github.com/keras-team/keras/tree/v3.8.0/keras/src/applications",
+      "revision_or_sha256": "v3.8.0; wheel pinned and resolved freeze recorded with each run",
+      "role": "Standard pretrained backbones; all four parameter counts exactly match Table X after dense256 and dense27 head."
+    },
+    {
+      "source_id": "efficientnetv2b0-imagenet-weights",
+      "kind": "pretrained-weights",
+      "url": "https://storage.googleapis.com/tensorflow/keras-applications/efficientnet_v2/efficientnetv2-b0_notop.h5",
+      "revision_or_sha256": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+      "role": "Official Keras3.8 application URL inspected in the executed container source. SHA256 verified in preflight before full training; final runs must retain the same selected artifact."
+    },
+    {
+      "source_id": "mobilenetv2-imagenet-weights",
+      "kind": "pretrained-weights",
+      "url": "https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5",
+      "revision_or_sha256": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+      "role": "Official Keras3.8 application URL inspected in the executed container source. SHA256 verified in preflight before full training; final runs must retain the same selected artifact."
+    },
+    {
+      "source_id": "resnet50v2-imagenet-weights",
+      "kind": "pretrained-weights",
+      "url": "https://storage.googleapis.com/tensorflow/keras-applications/resnet/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5",
+      "revision_or_sha256": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9",
+      "role": "Official Keras3.8 application URL inspected in the executed container source. SHA256 verified in preflight before full training; final runs must retain the same selected artifact."
+    },
+    {
+      "source_id": "convnexttiny-imagenet-weights",
+      "kind": "pretrained-weights",
+      "url": "https://storage.googleapis.com/tensorflow/keras-applications/convnext/convnext_tiny_notop.h5",
+      "revision_or_sha256": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+      "role": "Official Keras3.8 application URL inspected in the executed container source. SHA256 verified in preflight before full training; final runs must retain the same selected artifact."
+    }
+  ],
+  "status": {
+    "pipeline": "complete",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Prospectively declared comparison at four-decimal fraction precision: every target must differ by less than 0.00005 (0.005 percentage points). The same reconstructed protocol and split were declared before full scores. A numerical discrepancy does not imply scientific failure.",
+    "preference_level": 3,
+    "blocker": null
+  },
+  "datasets": [
+    {
+      "dataset_id": "mavi27",
+      "name": "27 Class Sign Language Dataset",
+      "version_or_subset": "Kaggle version 1, 22801 float32 RGB 128x128 examples/27 classes, including 314 NULL examples",
+      "license_or_permission": "CC BY-NC-SA 4.0 per Kaggle metadata. Dataset card and original paper section 3 separately permit research use with citation. This is noncommercial research processing; no image redistribution.",
+      "cloud_processing_allowed": true,
+      "permission_evidence": [
+        "https://www.kaggle.com/api/v1/datasets/view/ardamavi/27-class-sign-language-dataset",
+        "https://arxiv.org/pdf/2203.03859 section 2.1: IRB approval and consent from 173 volunteers; section 2.3: resized images to reduce identifying hand detail; section 3: public research reuse."
+      ],
+      "modal_volume": "datasets",
+      "modal_path": "mavi-27-class",
+      "manifest": {
+        "source_url": "https://www.kaggle.com/api/v1/datasets/download/ardamavi/27-class-sign-language-dataset?datasetVersionNumber=1",
+        "version": 1,
+        "license": "CC BY-NC-SA 4.0",
+        "research_permission": "Dataset card and Mavi & Dikle section 3 allow research use; IRB/volunteer consent in section 2.1. Noncommercial study processing only.",
+        "sample_count": 22801,
+        "class_counts": {
+          "0": 866,
+          "1": 865,
+          "2": 865,
+          "3": 865,
+          "4": 864,
+          "5": 865,
+          "6": 865,
+          "7": 865,
+          "8": 865,
+          "9": 865,
+          "NULL": 314,
+          "a": 863,
+          "b": 866,
+          "bye": 865,
+          "c": 865,
+          "d": 865,
+          "e": 863,
+          "good": 865,
+          "good morning": 865,
+          "hello": 865,
+          "little bit": 865,
+          "no": 865,
+          "pardon": 865,
+          "please": 865,
+          "project": 865,
+          "whats up": 865,
+          "yes": 865
+        },
+        "shape": [
+          22801,
+          128,
+          128,
+          3
+        ],
+        "dtype": "float32",
+        "files": {
+          "source-v1.zip": {
+            "sha256": "1f5bee3ee04209e2337d1cd7eeab73a0cc47809621558f4c14a7bf725a819704",
+            "bytes": 1136621909
+          },
+          "X.npy": {
+            "sha256": "20871064f141869153f198d0067116dcc98df76cc74041ecfab165f3ee320eae",
+            "bytes": 4482859136
+          },
+          "Y.npy": {
+            "sha256": "3ec56c06e74c42663e060e514960c8cbc855524d1832f8c1bcdbe40882261554",
+            "bytes": 1550596
+          }
+        }
+      },
+      "splits": [
+        {
+          "name": "official unsplit release",
+          "sample_count": 22801,
+          "files": [
+            {
+              "path": "X.npy",
+              "sha256": "20871064f141869153f198d0067116dcc98df76cc74041ecfab165f3ee320eae"
+            },
+            {
+              "path": "Y.npy",
+              "sha256": "3ec56c06e74c42663e060e514960c8cbc855524d1832f8c1bcdbe40882261554"
+            }
+          ]
+        }
+      ],
+      "preprocessing": "Bilinearly resize original 128\u00d7128 images to 224\u00d7224, then generate 551 NULL augmentations before a stratified split, matching Table III total 23,352. Seed 42; train 18,681 / validation 2,335 / test 2,336; each pretrained backbone uses its standard input scaling."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Multiclass top-1 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Mean of argmax prediction equal to integer true class over all test examples, cross-checked through correct/count",
+      "version": "numpy 1.26.4; predictions from TensorFlow 2.18.0 / Keras 3.8.0",
+      "aggregation": "sample-level micro accuracy on one held-out test split; no seed averaging specified",
+      "unit_or_scale": "fraction [0,1]"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "efficientnetv2b0",
+      "system": "efficientnetv2b0 ImageNet backbone + global average pooling + dense256 ReLU + dropout0.2 + dense27 softmax",
+      "dataset_id": "mavi27",
+      "checkpoint_rule": "Maximum validation accuracy within 50 epochs, stop after 5 unimproved epochs; the stopping monitor and tie rule are declared reconstruction choices.",
+      "paper_evidence": "Table X parameter count exactly matches this head. Section III.E selects lr1e-5, batch16, dropout.2, dense256 for augmented data; author thesis abstract confirms 0.9957 augmented result. Apply the same winning configuration to all Table X models as the intended controlled comparison."
+    },
+    {
+      "experiment_id": "mobilenetv2",
+      "system": "mobilenetv2 ImageNet backbone + global average pooling + dense256 ReLU + dropout0.2 + dense27 softmax",
+      "dataset_id": "mavi27",
+      "checkpoint_rule": "Maximum validation accuracy within 50 epochs, stop after 5 unimproved epochs; the stopping monitor and tie rule are declared reconstruction choices.",
+      "paper_evidence": "Table X parameter count exactly matches this head. Section III.E selects lr1e-5, batch16, dropout.2, dense256 for augmented data; author thesis abstract confirms 0.9957 augmented result. Apply the same winning configuration to all Table X models as the intended controlled comparison."
+    },
+    {
+      "experiment_id": "resnet50v2",
+      "system": "resnet50v2 ImageNet backbone + global average pooling + dense256 ReLU + dropout0.2 + dense27 softmax",
+      "dataset_id": "mavi27",
+      "checkpoint_rule": "Maximum validation accuracy within 50 epochs, stop after 5 unimproved epochs; the stopping monitor and tie rule are declared reconstruction choices.",
+      "paper_evidence": "Table X parameter count exactly matches this head. Section III.E selects lr1e-5, batch16, dropout.2, dense256 for augmented data; author thesis abstract confirms 0.9957 augmented result. Apply the same winning configuration to all Table X models as the intended controlled comparison."
+    },
+    {
+      "experiment_id": "convnexttiny",
+      "system": "convnexttiny ImageNet backbone + global average pooling + dense256 ReLU + dropout0.2 + dense27 softmax",
+      "dataset_id": "mavi27",
+      "checkpoint_rule": "Maximum validation accuracy within 50 epochs, stop after 5 unimproved epochs; the stopping monitor and tie rule are declared reconstruction choices.",
+      "paper_evidence": "Table X parameter count exactly matches this head. Section III.E selects lr1e-5, batch16, dropout.2, dense256 for augmented data; author thesis abstract confirms 0.9957 augmented result. Apply the same winning configuration to all Table X models as the intended controlled comparison."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table-x-efficientnetv2b0",
+      "in_scope": true,
+      "paper_location": "Table X, PDF page 6",
+      "experiment_id": "efficientnetv2b0",
+      "metric_id": "accuracy",
+      "original_value": 0.9957,
+      "split": "test",
+      "copied_baseline": false,
+      "parameter_count": 6254187,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.9940068493150684,
+        "difference": -0.001693150684931588,
+        "run_ids": [
+          "full-efficientnetv2b0-2"
+        ],
+        "artifact_ids": [
+          "full-efficientnetv2b0-2-metrics-json",
+          "full-efficientnetv2b0-2-predictions-npz"
+        ]
+      }
+    },
+    {
+      "target_id": "table-x-mobilenetv2",
+      "in_scope": true,
+      "paper_location": "Table X, PDF page 6",
+      "experiment_id": "mobilenetv2",
+      "metric_id": "accuracy",
+      "original_value": 0.9906,
+      "split": "test",
+      "copied_baseline": false,
+      "parameter_count": 2592859,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.9935787671232876,
+        "difference": 0.0029787671232875956,
+        "run_ids": [
+          "full-mobilenetv2-2"
+        ],
+        "artifact_ids": [
+          "full-mobilenetv2-2-metrics-json",
+          "full-mobilenetv2-2-predictions-npz"
+        ]
+      }
+    },
+    {
+      "target_id": "table-x-resnet50v2",
+      "in_scope": true,
+      "paper_location": "Table X, PDF page 6",
+      "experiment_id": "resnet50v2",
+      "metric_id": "accuracy",
+      "original_value": 0.9932,
+      "split": "test",
+      "copied_baseline": false,
+      "parameter_count": 24096283,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.9922945205479452,
+        "difference": -0.0009054794520547693,
+        "run_ids": [
+          "full-resnet50v2-2"
+        ],
+        "artifact_ids": [
+          "full-resnet50v2-2-metrics-json",
+          "full-resnet50v2-2-predictions-npz"
+        ]
+      }
+    },
+    {
+      "target_id": "table-x-convnexttiny",
+      "in_scope": true,
+      "paper_location": "Table X, PDF page 6",
+      "experiment_id": "convnexttiny",
+      "metric_id": "accuracy",
+      "original_value": 0.994,
+      "split": "test",
+      "copied_baseline": false,
+      "parameter_count": 28023931,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.9935787671232876,
+        "difference": -0.000421232876712363,
+        "run_ids": [
+          "full-convnexttiny-2"
+        ],
+        "artifact_ids": [
+          "full-convnexttiny-2-metrics-json",
+          "full-convnexttiny-2-predictions-npz"
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "data-populate-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "dataset_population",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "data-populate",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:20:05.820898+00:00",
+        "max_wall_time_seconds": 1800,
+        "max_gpu_hours": null,
+        "max_cost_chf": 5
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "environment": "main",
+        "gpu_count": 0,
+        "app_id": "ap-mFN2xHHpA3x940lKo8CiFv",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mFN2xHHpA3x940lKo8CiFv",
+        "image_id": "im-gMw75Q0DnIvgEpM3qZp0Pj",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "started_at_utc": "2026-10-01T10:20:05.820898+00:00",
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-01T10:23:05.050066+00:00",
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Downloaded exact Kaggle dataset v1, verified X/Y shapes, labels, ranges and hashes, and committed the shared dataset manifest.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "data-manifest",
+        "data-populate-1-log"
+      ]
+    },
+    {
+      "run_id": "preflight-efficientnetv2b0-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model efficientnetv2b0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-efficientnetv2b0",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:21:41.986853+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 5
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "environment": "main",
+        "app_id": "ap-Wdyp4qA336C3KuOXoHSNg1",
+        "function_call_id": "fc-01M3VG2HJBQH38MV4NCHRC3HQ6",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Wdyp4qA336C3KuOXoHSNg1",
+        "image_id": "im-1RrZSaGYgNW9zTSFwhI0u4",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      },
+      "started_at_utc": "2026-10-01T10:21:41.986853+00:00",
+      "finished_at_utc": "2026-10-01T10:31:16.677735+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real-data 64-example training, 54-example evaluation, checkpoint reload and optimizer resume passed. The raw conditional flag was a provisional label predating source resolution, not a scientific comparability judgment. Initial script used remote mmap and default Keras JIT; source remains in immutable Modal image. Final recipe explicitly disables JIT and copies verified data to local scratch, so a fresh preflight follows.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "efficientnetv2b0",
+        "conditional": true,
+        "preflight": true,
+        "test_accuracy": 0.037037037037037035,
+        "correct": 2,
+        "test_count": 54,
+        "parameter_count": 6254187,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.03703703731298447,
+        "epoch_seconds": [
+          108.30303955078125,
+          0.21568989753723145
+        ],
+        "started_at_utc": "2026-10-01T10:27:54.643291+00:00",
+        "finished_at_utc": "2026-10-01T10:31:16.677735+00:00",
+        "wall_seconds": 202.03446507453918,
+        "peak_gpu_memory": {
+          "current": 321031936,
+          "peak": 955898624
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "files": {
+          "best.keras": "a6411416affd81b8d391e612d18f044b9a0b7d5f02a5baf9964b070657bcedf2",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "2c6a7680bbf23c3ab5aa8f413a986ccced815e532d69e943dd97fe57d623d08e",
+          "last.keras": "c9b0122bf45faf80aad10308847c49d31d2d3e58848b8ab6eba1573983fbf81a",
+          "model.json": "eb600d68ea793353ae1bae9849d1a44be1bab0276c8e240ddd873f91540ee9af",
+          "predictions.npz": "9ca21f10883a34e6add6374f90cd539fbd4c3e4e9047fb764e4b1c2392780fef",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "eb768d89ac6820b2f43133a57b285c299032e57a0e096ff0ea1e2b1eafbf7c03"
+        }
+      },
+      "artifact_ids": [
+        "preflight-efficientnetv2b0-1-metrics",
+        "preflight-efficientnetv2b0-1-log"
+      ]
+    },
+    {
+      "run_id": "preflight-efficientnetv2b0-v2-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model efficientnetv2b0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-efficientnetv2b0-v2",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:31:53.842288+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 5
+      },
+      "started_at_utc": "2026-10-01T10:31:53.842288+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-yxMftQfpjY8IKzxYxWbsA4",
+        "function_call_id": "fc-01M3VGM94KZ6AD9HW0ME30HA5M",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yxMftQfpjY8IKzxYxWbsA4"
+      },
+      "finished_at_utc": "2026-10-01T10:39:40.174233+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Finalrecipe loadedrealdata+ImageNetweights, trained2epochs, evaluated54images, verifiedcheckpointreload andoptimizerresumedstep. TFgraphlayoutwarning fellbacksuccessfully; no patchrequired.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "efficientnetv2b0",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.037037037037037035,
+        "correct": 2,
+        "test_count": 54,
+        "parameter_count": 6254187,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.0555555559694767,
+        "epoch_seconds": [
+          69.2972719669342,
+          0.4351465702056885
+        ],
+        "started_at_utc": "2026-10-01T10:37:26.774858+00:00",
+        "finished_at_utc": "2026-10-01T10:39:40.174233+00:00",
+        "wall_seconds": 133.39939165115356,
+        "peak_gpu_memory": {
+          "current": 322315008,
+          "peak": 1342571008
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852",
+        "files": {
+          "best.keras": "35ba15b93d99e30a6de0e5505b9a1e8236effed6ed04d9a3a2bd5ae3b7efd5bc",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "2c73ff88c22d9d1a31b16ce64ebca8ecd66bb0e5a04821d4cf73f1b377a77996",
+          "last.keras": "f0620645a82246c0db09f85c0405442b46935e3d421fec48cf3f6b1987b0aa9e",
+          "model.json": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6",
+          "predictions.npz": "01025e092cf72caab922ed6ad4af02ac90452d4a624f752fe851a32829b5c00d",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "3dcd9358aa24be9b31bfae8797ef341358cddb00e6cb9fc8147e3c486b73cdf7"
+        }
+      },
+      "artifact_ids": [
+        "preflight-efficientnetv2b0-v2-metrics",
+        "preflight-efficientnetv2b0-v2-1-log"
+      ]
+    },
+    {
+      "run_id": "full-efficientnetv2b0-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model efficientnetv2b0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-efficientnetv2b0",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:40:59.781542+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T10:40:59.781542+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "app_id": "ap-3Xdsl5aJs890SQ533d8SNH",
+        "function_call_id": "fc-01M3VGVATMZZDWHSQ0ZHYC9YH2",
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-3Xdsl5aJs890SQ533d8SNH"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.4351465702056885,
+        "measured_peak_gpu_bytes": 1342571008,
+        "estimated_wall_hours": 2,
+        "estimated_gpu_hours": 2,
+        "estimated_storage_gb": 0.5,
+        "estimated_cost_chf": 5,
+        "pricing_basis": "Modalpublic A10G1.1016USD/h plus8CPU32GiB about1.73USD/h total, roundedconservativeCHFallowance, notFXsettledinvoice.",
+        "resume": "Verifiedlast.kerasoptimizerreload; atmostonecheckpointresume, nofullrestart withoutnewdiagnosis."
+      },
+      "finished_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "exit_code": 1,
+      "artifact_ids": [
+        "invalid-v2-train-source",
+        "full-efficientnetv2b0-1-log",
+        "full-efficientnetv2b0-1-best-keras",
+        "full-efficientnetv2b0-1-freeze-txt",
+        "full-efficientnetv2b0-1-hardware-txt",
+        "full-efficientnetv2b0-1-last-keras",
+        "full-efficientnetv2b0-1-model-json",
+        "full-efficientnetv2b0-1-split-npz",
+        "full-efficientnetv2b0-1-state-json"
+      ],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Independent review of Figure 1 and Section II.B established resize-before-augmentation; this implementation reversed these operations for 551 NULL examples. Stopped early, excluded from target results, retaining evidence. One diagnosed restart restores the specified order with unchanged source indices, split and seeds.",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "full-efficientnetv2b0-2",
+        "gate_ids": []
+      },
+      "usage": {
+        "wall_seconds_upper_bound": 1277.59987,
+        "gpu_hours_upper_bound": 0.35488885277777776,
+        "estimated_cost_chf_upper_bound": 0.8872221319444444,
+        "detail": "Submission-to-post-stop observation bound includes startup and recording delay; actual provider-billed cost is unavailable."
+      }
+    },
+    {
+      "run_id": "preflight-mobilenetv2-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model mobilenetv2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-mobilenetv2",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:50:19.089735+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 5
+      },
+      "started_at_utc": "2026-10-01T10:50:19.089735+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-U550xJWOLsiVmyaHV4vxS6",
+        "function_call_id": "fc-01M3VHCD01BSPY81WCFCR3B4GF",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-U550xJWOLsiVmyaHV4vxS6"
+      },
+      "finished_at_utc": "2026-10-01T10:52:50.360896+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real data and ImageNet weights; two tiny epochs; checkpoint reload, actual optimizer resume step, and evaluation passed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "mobilenetv2",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.09259259259259259,
+        "correct": 5,
+        "test_count": 54,
+        "parameter_count": 2592859,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.018518518656492233,
+        "epoch_seconds": [
+          72.0998044013977,
+          0.46815991401672363
+        ],
+        "started_at_utc": "2026-10-01T10:50:45.258858+00:00",
+        "finished_at_utc": "2026-10-01T10:52:50.360896+00:00",
+        "wall_seconds": 125.10205936431885,
+        "peak_gpu_memory": {
+          "current": 137168896,
+          "peak": 1200841216
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852",
+        "files": {
+          "best.keras": "8643f2f953c50d2a3a4269aee3c7ec04940f15dc70b1e10b5f66ad8109faedb0",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "92dfe9faa16ca30e27707797b37c5218a03709e418983172e8766567033e3c20",
+          "last.keras": "6938f8623906f1b292ffd9245054475decc84c4c306f106c5c36420e4cbc6930",
+          "model.json": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635",
+          "predictions.npz": "d9b44c22a6e3074c0bf62e6102fd3bd951d16de4a357adf8f728f26b61d5b47e",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "a71dab5a3480914db55a1ff1275c9ef588de740c6886787e9098c283e22fd849"
+        }
+      },
+      "artifact_ids": [
+        "preflight-mobilenetv2-metrics",
+        "preflight-mobilenetv2-1-log"
+      ]
+    },
+    {
+      "run_id": "preflight-resnet50v2-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model resnet50v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-resnet50v2",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:50:19.089735+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 5
+      },
+      "started_at_utc": "2026-10-01T10:50:19.089735+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-yELKm3z9jjNgu6kah536A8",
+        "function_call_id": "fc-01M3VHCE2GKACTVQN5Y1SHJ3FD",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yELKm3z9jjNgu6kah536A8"
+      },
+      "finished_at_utc": "2026-10-01T10:52:21.293200+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real data and ImageNet weights; two tiny epochs; checkpoint reload, actual optimizer resume step, and evaluation passed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "resnet50v2",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.018518518518518517,
+        "correct": 1,
+        "test_count": 54,
+        "parameter_count": 24096283,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.0555555559694767,
+        "epoch_seconds": [
+          48.51248788833618,
+          0.5382168292999268
+        ],
+        "started_at_utc": "2026-10-01T10:50:40.262552+00:00",
+        "finished_at_utc": "2026-10-01T10:52:21.293200+00:00",
+        "wall_seconds": 101.0306704044342,
+        "peak_gpu_memory": {
+          "current": 1242143744,
+          "peak": 2444655104
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852",
+        "files": {
+          "best.keras": "a7a0b9a974b0d2a4104ff7694f17c1c252977f325846994f77ea0abe9d3e2f0b",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "a1ffe7c22172156ea4b4be6b99166afa61b733d8536451e9195deaea8ebb0fba",
+          "last.keras": "2501115cc6ff9eb3a55d83e1e17348802804c6f9a97b56f661a1fae9e214608b",
+          "model.json": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104",
+          "predictions.npz": "7910525623813464cb4910f93fe72d5a9e1c40c17942155564ae604c0fc20e0c",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "e8a45de1775b37b885b4e2977dbd4fd0b5fc849b7a60f82f9d831eba1bb0cdc5"
+        }
+      },
+      "artifact_ids": [
+        "preflight-resnet50v2-metrics",
+        "preflight-resnet50v2-1-log"
+      ]
+    },
+    {
+      "run_id": "preflight-convnexttiny-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model convnexttiny",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-convnexttiny",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:50:19.089735+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 5
+      },
+      "started_at_utc": "2026-10-01T10:50:19.089735+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-qUFTgPPUysPa52ClALlgih",
+        "function_call_id": "fc-01M3VHCFBXM1FF5VP09CAKX4HS",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-qUFTgPPUysPa52ClALlgih"
+      },
+      "finished_at_utc": "2026-10-01T10:53:59.492993+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Real data and ImageNet weights; two tiny epochs; checkpoint reload, actual optimizer resume step, and evaluation passed.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "convnexttiny",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.018518518518518517,
+        "correct": 1,
+        "test_count": 54,
+        "parameter_count": 28023931,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.09259258955717087,
+        "epoch_seconds": [
+          99.9385039806366,
+          1.3122425079345703
+        ],
+        "started_at_utc": "2026-10-01T10:51:02.213422+00:00",
+        "finished_at_utc": "2026-10-01T10:53:59.492993+00:00",
+        "wall_seconds": 177.27959942817688,
+        "peak_gpu_memory": {
+          "current": 1410296832,
+          "peak": 5653242624
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852",
+        "files": {
+          "best.keras": "13caa980405dee1ed70a76464099890e18a4383b49e4ce2741f3bd899da15d60",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "12a11acf6a73e7d429a7dc54877521d19c2761e4cd458edcd0740e80cecba019",
+          "last.keras": "fb72d1b9f9ab7b348968501e1655cf42e2da37ecbeec65dad7471949796f596e",
+          "model.json": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876",
+          "predictions.npz": "199e2e1ac642cdac7657d97f178b575b98a21d1e788dbfbbc8a47fbc0b54704e",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "ffe4f9231b3c36e0844d5628da2d381d852fe10a2b3d2e406572f65110e7cb97"
+        }
+      },
+      "artifact_ids": [
+        "preflight-convnexttiny-metrics",
+        "preflight-convnexttiny-1-log"
+      ]
+    },
+    {
+      "run_id": "full-mobilenetv2-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model mobilenetv2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-mobilenetv2",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:53:36.862224+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T10:53:36.862224+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "app_id": "ap-PgZs82CFzK0c2x4KvjPaKC",
+        "function_call_id": "fc-01M3VHJE66FBZRB4FRZGTWJHSS",
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-PgZs82CFzK0c2x4KvjPaKC"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.46815991401672363,
+        "measured_peak_gpu_bytes": 1200841216,
+        "estimated_wall_hours": 2,
+        "estimated_gpu_hours": 2,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 5,
+        "resume": "Verified last.keras optimizer reload; at most one checkpoint resume, no complete restart without new diagnosis."
+      },
+      "finished_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "exit_code": 1,
+      "artifact_ids": [
+        "invalid-v2-train-source",
+        "full-mobilenetv2-1-log",
+        "full-mobilenetv2-1-best-keras",
+        "full-mobilenetv2-1-freeze-txt",
+        "full-mobilenetv2-1-hardware-txt",
+        "full-mobilenetv2-1-last-keras",
+        "full-mobilenetv2-1-model-json",
+        "full-mobilenetv2-1-split-npz",
+        "full-mobilenetv2-1-state-json"
+      ],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Independent review of Figure 1 and Section II.B established resize-before-augmentation; this implementation reversed these operations for 551 NULL examples. Stopped early, excluded from target results, retaining evidence. One diagnosed restart restores the specified order with unchanged source indices, split and seeds.",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "full-mobilenetv2-2",
+        "gate_ids": []
+      },
+      "usage": {
+        "wall_seconds_upper_bound": 520.519188,
+        "gpu_hours_upper_bound": 0.14458866333333334,
+        "estimated_cost_chf_upper_bound": 0.36147165833333333,
+        "detail": "Submission-to-post-stop observation bound includes startup and recording delay; actual provider-billed cost is unavailable."
+      }
+    },
+    {
+      "run_id": "full-resnet50v2-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model resnet50v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-resnet50v2",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:53:36.919469+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T10:53:36.919469+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "app_id": "ap-c6wO7tJhKDbZIR5cOsnwdw",
+        "function_call_id": "fc-01M3VHJF95YASX5KDCYTP79JK4",
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-c6wO7tJhKDbZIR5cOsnwdw"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.5382168292999268,
+        "measured_peak_gpu_bytes": 2444655104,
+        "estimated_wall_hours": 3,
+        "estimated_gpu_hours": 3,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 7,
+        "resume": "Verified last.keras optimizer reload; at most one checkpoint resume, no complete restart without new diagnosis."
+      },
+      "finished_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "exit_code": 1,
+      "artifact_ids": [
+        "invalid-v2-train-source",
+        "full-resnet50v2-1-log",
+        "full-resnet50v2-1-best-keras",
+        "full-resnet50v2-1-freeze-txt",
+        "full-resnet50v2-1-hardware-txt",
+        "full-resnet50v2-1-last-keras",
+        "full-resnet50v2-1-model-json",
+        "full-resnet50v2-1-split-npz",
+        "full-resnet50v2-1-state-json"
+      ],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Independent review of Figure 1 and Section II.B established resize-before-augmentation; this implementation reversed these operations for 551 NULL examples. Stopped early, excluded from target results, retaining evidence. One diagnosed restart restores the specified order with unchanged source indices, split and seeds.",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "full-resnet50v2-2",
+        "gate_ids": []
+      },
+      "usage": {
+        "wall_seconds_upper_bound": 520.461943,
+        "gpu_hours_upper_bound": 0.14457276194444446,
+        "estimated_cost_chf_upper_bound": 0.36143190486111115,
+        "detail": "Submission-to-post-stop observation bound includes startup and recording delay; actual provider-billed cost is unavailable."
+      }
+    },
+    {
+      "run_id": "full-convnexttiny-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model convnexttiny",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-convnexttiny",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T10:55:48.143252+00:00",
+        "max_wall_time_seconds": 28800,
+        "max_gpu_hours": 8,
+        "max_cost_chf": 20
+      },
+      "started_at_utc": "2026-10-01T10:55:48.143252+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "app_id": "ap-hVw9LOJUSqvwYK9AYRpCrw",
+        "function_call_id": "fc-01M3VHPEX8C24WPVVZ3TQZ6HMJ",
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-hVw9LOJUSqvwYK9AYRpCrw"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 1.3122425079345703,
+        "measured_peak_gpu_bytes": 5653242624,
+        "estimated_wall_hours": 5.5,
+        "estimated_gpu_hours": 5.5,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 12,
+        "resume": "Verified last.keras optimizer reload; at most one checkpoint resume, no complete restart without new diagnosis."
+      },
+      "finished_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "exit_code": 1,
+      "artifact_ids": [
+        "invalid-v2-train-source",
+        "full-convnexttiny-1-log",
+        "full-convnexttiny-1-freeze-txt",
+        "full-convnexttiny-1-hardware-txt",
+        "full-convnexttiny-1-model-json",
+        "full-convnexttiny-1-split-npz"
+      ],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Independent review of Figure 1 and Section II.B established resize-before-augmentation; this implementation reversed these operations for 551 NULL examples. Stopped early, excluded from target results, retaining evidence. One diagnosed restart restores the specified order with unchanged source indices, split and seeds.",
+        "failure_class": "invalid_run",
+        "retry_decision": "retry",
+        "next_run_id": "full-convnexttiny-2",
+        "gate_ids": []
+      },
+      "usage": {
+        "wall_seconds_upper_bound": 389.23816,
+        "gpu_hours_upper_bound": 0.10812171111111112,
+        "estimated_cost_chf_upper_bound": 0.27030427777777777,
+        "detail": "Submission-to-post-stop observation bound includes startup and recording delay; actual provider-billed cost is unavailable."
+      }
+    },
+    {
+      "run_id": "preflight-efficientnetv2b0-v3-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model efficientnetv2b0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-efficientnetv2b0-v3",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:02:17.381412+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 3
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "environment": "main",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "app_id": "ap-ay7iLKpPDnIIzllnfy3myK",
+        "function_call_id": "fc-01M3VJ2AWD5TMD3PZ2S8W8804X",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ay7iLKpPDnIIzllnfy3myK"
+      },
+      "started_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "artifact_ids": [
+        "preflight-efficientnetv2b0-v3-1-metrics",
+        "preflight-efficientnetv2b0-v3-1-best-keras",
+        "preflight-efficientnetv2b0-v3-1-freeze-txt",
+        "preflight-efficientnetv2b0-v3-1-hardware-txt",
+        "preflight-efficientnetv2b0-v3-1-last-keras",
+        "preflight-efficientnetv2b0-v3-1-model-json",
+        "preflight-efficientnetv2b0-v3-1-predictions-npz",
+        "preflight-efficientnetv2b0-v3-1-split-npz",
+        "preflight-efficientnetv2b0-v3-1-state-json",
+        "preflight-efficientnetv2b0-v3-1-log"
+      ],
+      "plan": {
+        "detail": "Correct resize-before-augmentation; preflight includes four generated NULL images in each partition, checkpoint reload/resume, and tiny evaluation. Subprocess ceiling3500 seconds leaves room for artifact commit."
+      },
+      "finished_at_utc": "2026-10-01T11:04:59.002019+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected order exercised with original and generated examples; real weights, two tiny epochs, evaluation, checkpoint reload and optimizer resume verified.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "efficientnetv2b0",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.05555555555555555,
+        "correct": 3,
+        "test_count": 54,
+        "parameter_count": 6254187,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.0555555559694767,
+        "epoch_seconds": [
+          69.59294199943542,
+          0.4271371364593506
+        ],
+        "started_at_utc": "2026-10-01T11:02:35.534379+00:00",
+        "finished_at_utc": "2026-10-01T11:04:59.002019+00:00",
+        "wall_seconds": 143.4676582813263,
+        "peak_gpu_memory": {
+          "current": 322869760,
+          "peak": 1342952704
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "b28c8300ad96405c52f205643abc258631c712cfc1b955d1a245a50d7ea93037",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "65b357c918e629a29c223e4555c7247ff86bd7336b79dd135dd7534dbd47d80e",
+          "last.keras": "efcb868b08f275e7f748fe207bb52f40cfdb6f655cf001319ad639ab9bec3177",
+          "model.json": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6",
+          "predictions.npz": "a65cc4fcd51af2bc3f6c64b1975e08275cb416d909cfabffff25822591eb496d",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "192e89900f1c7a569f865e116237112c356c66ddfb71ac24f64dbb635e2718a4"
+        }
+      }
+    },
+    {
+      "run_id": "preflight-mobilenetv2-v3-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model mobilenetv2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-mobilenetv2-v3",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:02:17.381412+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 3
+      },
+      "started_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-7CjicujKJNzcAzKQ68AFDz",
+        "function_call_id": "fc-01M3VJ2BQ8ENA8DJ3575ZH2P3R",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7CjicujKJNzcAzKQ68AFDz"
+      },
+      "artifact_ids": [
+        "preflight-mobilenetv2-v3-1-metrics",
+        "preflight-mobilenetv2-v3-1-best-keras",
+        "preflight-mobilenetv2-v3-1-freeze-txt",
+        "preflight-mobilenetv2-v3-1-hardware-txt",
+        "preflight-mobilenetv2-v3-1-last-keras",
+        "preflight-mobilenetv2-v3-1-model-json",
+        "preflight-mobilenetv2-v3-1-predictions-npz",
+        "preflight-mobilenetv2-v3-1-split-npz",
+        "preflight-mobilenetv2-v3-1-state-json",
+        "preflight-mobilenetv2-v3-1-log"
+      ],
+      "plan": {
+        "detail": "Correct resize-before-augmentation; preflight includes four generated NULL images in each partition, checkpoint reload/resume, and tiny evaluation. Subprocess ceiling3500 seconds leaves room for artifact commit."
+      },
+      "finished_at_utc": "2026-10-01T11:04:57.296771+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected order exercised with original and generated examples; real weights, two tiny epochs, evaluation, checkpoint reload and optimizer resume verified.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "mobilenetv2",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.07407407407407407,
+        "correct": 4,
+        "test_count": 54,
+        "parameter_count": 2592859,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.018518518656492233,
+        "epoch_seconds": [
+          66.66072988510132,
+          0.4756762981414795
+        ],
+        "started_at_utc": "2026-10-01T11:02:59.311036+00:00",
+        "finished_at_utc": "2026-10-01T11:04:57.296771+00:00",
+        "wall_seconds": 117.98575806617737,
+        "peak_gpu_memory": {
+          "current": 136357888,
+          "peak": 1200841472
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "72c6af7e527ba693b4ed9116a4a5abca82544bd507c52fd9840ab5c9275c58b6",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "e382430d8c8de7716649bb239a4c8cb1ec9cc2aa859cbe755bb82ec309f182be",
+          "last.keras": "e2b9479670f374d799d443262723b0b9372b61e6a6b5d0042eaf2f766d113c76",
+          "model.json": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635",
+          "predictions.npz": "41f9402aa7217635fe4ce13804d2b1eceee032efcdbae835bffdeb1ec861c872",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "5787981e7a2c025bc45711064570d74c29f4899e2a73d2282a3177b806f3b239"
+        }
+      }
+    },
+    {
+      "run_id": "preflight-resnet50v2-v3-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model resnet50v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-resnet50v2-v3",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:02:17.381412+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 3
+      },
+      "started_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-NZkYrZHFImFUdY8JGw4NSd",
+        "function_call_id": "fc-01M3VJ2CTXWMPKXZ4P4Y6HRTZF",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NZkYrZHFImFUdY8JGw4NSd"
+      },
+      "artifact_ids": [
+        "preflight-resnet50v2-v3-1-metrics",
+        "preflight-resnet50v2-v3-1-best-keras",
+        "preflight-resnet50v2-v3-1-freeze-txt",
+        "preflight-resnet50v2-v3-1-hardware-txt",
+        "preflight-resnet50v2-v3-1-last-keras",
+        "preflight-resnet50v2-v3-1-model-json",
+        "preflight-resnet50v2-v3-1-predictions-npz",
+        "preflight-resnet50v2-v3-1-split-npz",
+        "preflight-resnet50v2-v3-1-state-json",
+        "preflight-resnet50v2-v3-1-log"
+      ],
+      "plan": {
+        "detail": "Correct resize-before-augmentation; preflight includes four generated NULL images in each partition, checkpoint reload/resume, and tiny evaluation. Subprocess ceiling3500 seconds leaves room for artifact commit."
+      },
+      "finished_at_utc": "2026-10-01T11:05:10.307717+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected order exercised with original and generated examples; real weights, two tiny epochs, evaluation, checkpoint reload and optimizer resume verified.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "resnet50v2",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.018518518518518517,
+        "correct": 1,
+        "test_count": 54,
+        "parameter_count": 24096283,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.0555555559694767,
+        "epoch_seconds": [
+          73.8182487487793,
+          0.6193275451660156
+        ],
+        "started_at_utc": "2026-10-01T11:02:55.823828+00:00",
+        "finished_at_utc": "2026-10-01T11:05:10.307717+00:00",
+        "wall_seconds": 134.48390984535217,
+        "peak_gpu_memory": {
+          "current": 1249799424,
+          "peak": 2421193216
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "3d4b425b410b30b733434764367b72e6cf4c132b8b5c0e7e99b608579f1e4c63",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "b97a2bc776da62b928076c3d94ffc7f506b7c9d662b121e09c09f1c91861de50",
+          "last.keras": "737832e1a5ee1ef3c770c872e58ccdf49bee88fa0a4a9c7c3e841a172e8d8e17",
+          "model.json": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104",
+          "predictions.npz": "2c50ebe8cfc45198fa6ac3f2add7df8f8fa8cb162c4768706abb4f6a247da11a",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "168a287f280fb80b0be408b3160c2078f931251c65419eef30a42e893abdf05a"
+        }
+      }
+    },
+    {
+      "run_id": "preflight-convnexttiny-v3-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model convnexttiny",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-convnexttiny-v3",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:02:17.381412+00:00",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1,
+        "max_cost_chf": 3
+      },
+      "started_at_utc": "2026-10-01T11:02:17.381412+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-Sg8z7oKRmotVOJJsDi0GMa",
+        "function_call_id": "fc-01M3VJ2DRZVXV4TCYRM9D77EKN",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Sg8z7oKRmotVOJJsDi0GMa"
+      },
+      "artifact_ids": [
+        "preflight-convnexttiny-v3-1-metrics",
+        "preflight-convnexttiny-v3-1-best-keras",
+        "preflight-convnexttiny-v3-1-freeze-txt",
+        "preflight-convnexttiny-v3-1-hardware-txt",
+        "preflight-convnexttiny-v3-1-last-keras",
+        "preflight-convnexttiny-v3-1-model-json",
+        "preflight-convnexttiny-v3-1-predictions-npz",
+        "preflight-convnexttiny-v3-1-split-npz",
+        "preflight-convnexttiny-v3-1-state-json",
+        "preflight-convnexttiny-v3-1-log"
+      ],
+      "plan": {
+        "detail": "Correct resize-before-augmentation; preflight includes four generated NULL images in each partition, checkpoint reload/resume, and tiny evaluation. Subprocess ceiling3500 seconds leaves room for artifact commit."
+      },
+      "finished_at_utc": "2026-10-01T11:05:23.520021+00:00",
+      "exit_code": 0,
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected order exercised with original and generated examples; real weights, two tiny epochs, evaluation, checkpoint reload and optimizer resume verified.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "metrics": {
+        "model": "convnexttiny",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.018518518518518517,
+        "correct": 1,
+        "test_count": 54,
+        "parameter_count": 28023931,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.07407407462596893,
+        "epoch_seconds": [
+          80.51616668701172,
+          1.2983529567718506
+        ],
+        "started_at_utc": "2026-10-01T11:02:53.726161+00:00",
+        "finished_at_utc": "2026-10-01T11:05:23.520021+00:00",
+        "wall_seconds": 149.79388165473938,
+        "peak_gpu_memory": {
+          "current": 1412490240,
+          "peak": 5653253376
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "ad5c82d8a61af13cde57c306db75c4676053dbd2cf16d85c65df58e770f6e490",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "4328c84dcc89f09b060ad157089294ae9a382659c4372626834ca709a8bdd0cc",
+          "last.keras": "790acc8a293a73e24aeccd86911161539bff51fef9c1814ed63033bbd566495f",
+          "model.json": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876",
+          "predictions.npz": "de3b5e68ea6d7b43ce149c8db23bdd084ef9604464a2dd373100bf3feb35d566",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "0d033affad05c99ead3b2b584625f88aab27dbcd83088b2ec53a8dc76d8c8ffe"
+        }
+      }
+    },
+    {
+      "run_id": "full-efficientnetv2b0-2",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model efficientnetv2b0",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-efficientnetv2b0",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:05:33.815084+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T11:05:33.815084+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "app_id": "ap-DjyZgxXkErXjkkX1pnK3bT",
+        "function_call_id": "fc-01M3VJ8A7VXX98DT6XW3GGMPHA",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DjyZgxXkErXjkkX1pnK3bT"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.4271371364593506,
+        "measured_peak_gpu_bytes": 1342952704,
+        "estimated_wall_hours": 2,
+        "estimated_gpu_hours": 2,
+        "estimated_storage_gb": 0.5,
+        "estimated_cost_chf": 5,
+        "pricing_basis": "Modalpublic A10G1.1016USD/h plus8CPU32GiB about1.73USD/h total, roundedconservativeCHFallowance, notFXsettledinvoice.",
+        "resume": "One diagnosed restart restores explicit resize-before-augmentation order. Fresh v3 output path, same split IDs/seed/source draws; invalid v2 weights are not reused. Per-call subprocess timeout enforces the ceiling. No further full restart budget remains.",
+        "source_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc"
+      },
+      "artifact_ids": [
+        "full-efficientnetv2b0-2-metrics-json",
+        "full-efficientnetv2b0-2-best-keras",
+        "full-efficientnetv2b0-2-freeze-txt",
+        "full-efficientnetv2b0-2-hardware-txt",
+        "full-efficientnetv2b0-2-last-keras",
+        "full-efficientnetv2b0-2-model-json",
+        "full-efficientnetv2b0-2-predictions-npz",
+        "full-efficientnetv2b0-2-split-npz",
+        "full-efficientnetv2b0-2-state-json",
+        "full-efficientnetv2b0-2-sanitized-log"
+      ],
+      "finished_at_utc": "2026-10-01T11:35:07.528483+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "model": "efficientnetv2b0",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": false,
+        "test_accuracy": 0.9940068493150684,
+        "correct": 2322,
+        "test_count": 2336,
+        "parameter_count": 6254187,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 16,
+        "validation_best_accuracy": 0.9927194714546204,
+        "epoch_seconds": [
+          171.8148946762085,
+          101.07091069221497,
+          101.38092732429504,
+          101.61350870132446,
+          101.05701923370361,
+          101.15054678916931,
+          101.473299741745,
+          102.00311207771301,
+          101.49922847747803,
+          101.60316157341003,
+          101.29547691345215,
+          101.94550776481628,
+          101.90205550193787,
+          100.73625802993774,
+          101.61044096946716,
+          102.01842498779297
+        ],
+        "started_at_utc": "2026-10-01T11:05:50.777266+00:00",
+        "finished_at_utc": "2026-10-01T11:35:07.528483+00:00",
+        "wall_seconds": 1756.7512392997742,
+        "peak_gpu_memory": {
+          "current": 241307136,
+          "peak": 1184660736
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": false,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "546bd0ce521f2ad4507acc51010e73c32e18c4852b7385502dd9968be4bd9899",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "4f1ab8950c033291456d3ec266fe56e561b7123c5931cfc2effc715607aa57d4",
+          "last.keras": "333a5883ee25bdd1ab621a391ca499bebb4f57da4499363340f62fe03071bf0e",
+          "model.json": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6",
+          "predictions.npz": "d8d95296053ea21a5da33e94bb075185bf27e4e013e4b683774df425b4c49a43",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "f421c9b75deeeaa52073281391411298b3891c50a5a85edfa4324eb3ea0d4c5f"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected resize-before-augmentation recipe completed training with declared early stopping, selected best validation-accuracy checkpoint, verified reload, and evaluated 2,336 test images.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "usage": {
+        "measured_training_and_evaluation_wall_seconds": 1756.7512392997742,
+        "gpu_hours": 0.4879864553610484,
+        "estimated_cost_chf": 1.219966138402621,
+        "actual_billed_cost_chf": null,
+        "detail": "Script runtime excludes container startup. Cost is a planning estimate, not a provider invoice."
+      },
+      "verification": {
+        "prediction_artifact_sha256_verified": true,
+        "split_artifact_sha256_verified": true,
+        "test_indices_unique": 2336,
+        "test_indices_match_split": true,
+        "probability_argmax_matches_predictions": true,
+        "probabilities_finite_normalized": true,
+        "number_of_classes": 27,
+        "accuracy_recomputed_from_predictions": true,
+        "local_verifier": "NumPy 2.5.1; independent from TensorFlow training code"
+      }
+    },
+    {
+      "run_id": "full-mobilenetv2-2",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model mobilenetv2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-mobilenetv2",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:05:33.851953+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T11:05:33.851953+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "app_id": "ap-06KFspvRcHM80FvWds91Lh",
+        "function_call_id": "fc-01M3VJ8BDKEJNCH2AAEK7WBZ0F",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-06KFspvRcHM80FvWds91Lh"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.4756762981414795,
+        "measured_peak_gpu_bytes": 1200841472,
+        "estimated_wall_hours": 2,
+        "estimated_gpu_hours": 2,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 5,
+        "resume": "One diagnosed restart restores explicit resize-before-augmentation order. Fresh v3 output path, same split IDs/seed/source draws; invalid v2 weights are not reused. Per-call subprocess timeout enforces the ceiling. No further full restart budget remains.",
+        "source_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc"
+      },
+      "artifact_ids": [
+        "full-mobilenetv2-2-metrics-json",
+        "full-mobilenetv2-2-best-keras",
+        "full-mobilenetv2-2-freeze-txt",
+        "full-mobilenetv2-2-hardware-txt",
+        "full-mobilenetv2-2-last-keras",
+        "full-mobilenetv2-2-model-json",
+        "full-mobilenetv2-2-predictions-npz",
+        "full-mobilenetv2-2-split-npz",
+        "full-mobilenetv2-2-state-json",
+        "full-mobilenetv2-2-sanitized-log"
+      ],
+      "finished_at_utc": "2026-10-01T12:00:01.759032+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "model": "mobilenetv2",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": false,
+        "test_accuracy": 0.9935787671232876,
+        "correct": 2321,
+        "test_count": 2336,
+        "parameter_count": 2592859,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 32,
+        "validation_best_accuracy": 0.9931477308273315,
+        "epoch_seconds": [
+          160.54870653152466,
+          96.74598741531372,
+          96.80684185028076,
+          97.28820037841797,
+          96.86137986183167,
+          96.57755255699158,
+          96.55862379074097,
+          96.53131532669067,
+          96.34842133522034,
+          96.61674547195435,
+          96.59926962852478,
+          96.82027244567871,
+          98.15512824058533,
+          96.45087766647339,
+          96.25569415092468,
+          95.46177840232849,
+          95.55433797836304,
+          95.3273344039917,
+          97.22967672348022,
+          96.75296473503113,
+          95.78915143013,
+          95.14944052696228,
+          94.74793887138367,
+          94.69312381744385,
+          97.17575669288635,
+          95.91144967079163,
+          95.8527569770813,
+          94.98394703865051,
+          96.37420678138733,
+          95.28157711029053,
+          101.37902021408081,
+          95.83108878135681
+        ],
+        "started_at_utc": "2026-10-01T11:06:05.964393+00:00",
+        "finished_at_utc": "2026-10-01T12:00:01.759032+00:00",
+        "wall_seconds": 3235.7946660518646,
+        "peak_gpu_memory": {
+          "current": 101664768,
+          "peak": 1193593088
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": false,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "11acf87b3c42c85adb57c4486779b97ed115386e461841b364db5aaee1383a50",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "45a84caa9393b4a16c4bc671ab4925b048ef9d448c55915446f10d9a281940db",
+          "last.keras": "feb3aa0ae2c289480c5169cc3ab51fa08bea8467929f53938ff7eb9d260f99c4",
+          "model.json": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635",
+          "predictions.npz": "0f0534a99cba49f6a7df726733ea3729ead1909370fb91b7b37da5147aa5d472",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "fc4593a5bdb87dbd7d3fd1ca377766ea5b17a6cc11feede419b515eb9bc1f772"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected resize-before-augmentation recipe completed training with declared early stopping, selected best validation-accuracy checkpoint, verified reload, and evaluated 2,336 test images.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "usage": {
+        "measured_training_and_evaluation_wall_seconds": 3235.7946660518646,
+        "gpu_hours": 0.8988318516810735,
+        "estimated_cost_chf": 2.2470796292026836,
+        "actual_billed_cost_chf": null,
+        "detail": "Script runtime excludes container startup. Cost is a planning estimate, not a provider invoice."
+      },
+      "verification": {
+        "prediction_artifact_sha256_verified": true,
+        "split_artifact_sha256_verified": true,
+        "test_indices_unique": 2336,
+        "test_indices_match_split": true,
+        "probability_argmax_matches_predictions": true,
+        "probabilities_finite_normalized": true,
+        "number_of_classes": 27,
+        "accuracy_recomputed_from_predictions": true,
+        "local_verifier": "NumPy 2.5.1; independent from TensorFlow training code"
+      }
+    },
+    {
+      "run_id": "full-resnet50v2-2",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model resnet50v2",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-resnet50v2",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:06:30.344049+00:00",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 6,
+        "max_cost_chf": 15
+      },
+      "started_at_utc": "2026-10-01T11:06:30.344049+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "app_id": "ap-YoUHonLuYX2mC4rZEyqV5W",
+        "function_call_id": "fc-01M3VJA2JNCG363QAP740NM7BY",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YoUHonLuYX2mC4rZEyqV5W"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.6193275451660156,
+        "measured_peak_gpu_bytes": 2421193216,
+        "estimated_wall_hours": 3,
+        "estimated_gpu_hours": 3,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 7,
+        "resume": "One diagnosed restart restores explicit resize-before-augmentation order. Fresh v3 output path, same split IDs/seed/source draws; invalid v2 weights are not reused. Per-call subprocess timeout enforces the ceiling. No further full restart budget remains.",
+        "source_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc"
+      },
+      "artifact_ids": [
+        "full-resnet50v2-2-metrics-json",
+        "full-resnet50v2-2-best-keras",
+        "full-resnet50v2-2-freeze-txt",
+        "full-resnet50v2-2-hardware-txt",
+        "full-resnet50v2-2-last-keras",
+        "full-resnet50v2-2-model-json",
+        "full-resnet50v2-2-predictions-npz",
+        "full-resnet50v2-2-split-npz",
+        "full-resnet50v2-2-state-json",
+        "full-resnet50v2-2-sanitized-log"
+      ],
+      "finished_at_utc": "2026-10-01T11:51:02.446633+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "model": "resnet50v2",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": false,
+        "test_accuracy": 0.9922945205479452,
+        "correct": 2318,
+        "test_count": 2336,
+        "parameter_count": 24096283,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 18,
+        "validation_best_accuracy": 0.9944325685501099,
+        "epoch_seconds": [
+          230.60326838493347,
+          134.4590244293213,
+          134.11843585968018,
+          134.57882618904114,
+          135.22485613822937,
+          132.9272084236145,
+          133.87635278701782,
+          134.9381263256073,
+          136.24242305755615,
+          138.8726511001587,
+          136.55766797065735,
+          136.12464785575867,
+          135.1854898929596,
+          134.163987159729,
+          134.84353590011597,
+          134.9079146385193,
+          134.4272973537445,
+          133.32955932617188
+        ],
+        "started_at_utc": "2026-10-01T11:07:10.915636+00:00",
+        "finished_at_utc": "2026-10-01T11:51:02.446633+00:00",
+        "wall_seconds": 2631.5310349464417,
+        "peak_gpu_memory": {
+          "current": 972577792,
+          "peak": 1705724416
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": false,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "e34074c28e0664e8bdf2f0b6cccd546e50eebe8b33ea7e32a22655771bca4907",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "622ee772d72bc9923c1ceb2176c098d34eefa790531586b95ca57706dc6a9141",
+          "last.keras": "584f84b7d4865f67406421ebaaf3882a3a87f185d385a2a818d314f689a2942f",
+          "model.json": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104",
+          "predictions.npz": "f3101e1fbe5f6838f141e8daa07fa98603e9d9ce33a3702855567c840939ae28",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "4aa57623586e55547ddbddca5bbfbe3f6cb81081bf6892366ea5e07beaac6b84"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected resize-before-augmentation recipe completed training with declared early stopping, selected best validation-accuracy checkpoint, verified reload, and evaluated 2,336 test images.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "usage": {
+        "measured_training_and_evaluation_wall_seconds": 2631.5310349464417,
+        "gpu_hours": 0.7309808430406782,
+        "estimated_cost_chf": 1.8274521076016956,
+        "actual_billed_cost_chf": null,
+        "detail": "Script runtime excludes container startup. Cost is a planning estimate, not a provider invoice."
+      },
+      "verification": {
+        "prediction_artifact_sha256_verified": true,
+        "split_artifact_sha256_verified": true,
+        "test_indices_unique": 2336,
+        "test_indices_match_split": true,
+        "probability_argmax_matches_predictions": true,
+        "probabilities_finite_normalized": true,
+        "number_of_classes": 27,
+        "accuracy_recomputed_from_predictions": true,
+        "local_verifier": "NumPy 2.5.1; independent from TensorFlow training code"
+      }
+    },
+    {
+      "run_id": "preflight-convnexttiny-v3-a100-1",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "representative_preflight",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model convnexttiny --gpu A100",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight-convnexttiny-v3-a100",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:06:30.379808+00:00",
+        "max_wall_time_seconds": 600,
+        "max_gpu_hours": 0.16666666666666666,
+        "max_cost_chf": 2
+      },
+      "started_at_utc": "2026-10-01T11:06:30.379808+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A100",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "app_id": "ap-Uyd2hAVvxzDuzJ52j3vMNU",
+        "function_call_id": "fc-01M3VJA304EGG32H3FKHE98ZDA",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Uyd2hAVvxzDuzJ52j3vMNU"
+      },
+      "artifact_ids": [
+        "preflight-convnexttiny-v3-a100-1-metrics",
+        "preflight-convnexttiny-v3-a100-1-best-keras",
+        "preflight-convnexttiny-v3-a100-1-freeze-txt",
+        "preflight-convnexttiny-v3-a100-1-hardware-txt",
+        "preflight-convnexttiny-v3-a100-1-last-keras",
+        "preflight-convnexttiny-v3-a100-1-model-json",
+        "preflight-convnexttiny-v3-a100-1-predictions-npz",
+        "preflight-convnexttiny-v3-a100-1-split-npz",
+        "preflight-convnexttiny-v3-a100-1-state-json",
+        "preflight-convnexttiny-v3-a100-1-log"
+      ],
+      "plan": {
+        "detail": "One bounded standard A100 hardware comparison before full launch; identical float32 batch16 recipe,64training examples and54validation/test. No score-based choice; compare timing and estimated cost only."
+      },
+      "finished_at_utc": "2026-10-01T11:10:30.981502+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "model": "convnexttiny",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": true,
+        "test_accuracy": 0.018518518518518517,
+        "correct": 1,
+        "test_count": 54,
+        "parameter_count": 28023931,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 2,
+        "validation_best_accuracy": 0.07407407462596893,
+        "epoch_seconds": [
+          101.66508102416992,
+          0.7548465728759766
+        ],
+        "started_at_utc": "2026-10-01T11:07:05.451649+00:00",
+        "finished_at_utc": "2026-10-01T11:10:30.981502+00:00",
+        "wall_seconds": 205.5299153327942,
+        "peak_gpu_memory": {
+          "current": 1412490240,
+          "peak": 5653252352
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": true,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "65928b5d96fe7cc5efafcbf44e7df2311dad82cae58e638f51304f2effbfe9ed",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "c64cbebad03fe8c5fea08eb92b9d58e15fd2eb12f8c61b802894c5ff83fc4538",
+          "last.keras": "f576f2c9c254d691a70ae8f315dedeb44aca3488a9db719761fa9296eb98d991",
+          "model.json": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876",
+          "predictions.npz": "5ee9f2c1d2dfa313cb4c92762f6a332227e80ade62ef0c52b2432d28bc193088",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "e6400c641bc3125098d64743c57e0d77b57c9fa5af20b3f4574a53bf175a82ad"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Same float32/batch16 reconstruction passed real-data checkpoint reload, optimizer resume and tiny evaluation on standard A100. Measured warm epoch0.755seconds versus1.298 onA10G; hardware chosen on throughput, not score.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    },
+    {
+      "run_id": "full-convnexttiny-2",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "kind": "full",
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model convnexttiny --gpu A100",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-convnexttiny",
+        "number": 2,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-10-01T11:11:32.675736+00:00",
+        "max_wall_time_seconds": 28800,
+        "max_gpu_hours": 8,
+        "max_cost_chf": 20
+      },
+      "started_at_utc": "2026-10-01T11:11:32.675736+00:00",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "gpu_count": 1,
+        "gpu": "A100",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "environment": "main",
+        "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
+        "app_id": "ap-CmWwWdvHzlrjaW2MLinyoZ",
+        "function_call_id": "fc-01M3VJK9H8GCXTB18BNFM5E6NE",
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-CmWwWdvHzlrjaW2MLinyoZ"
+      },
+      "plan": {
+        "measured_warm_epoch_seconds": 0.7548465728759766,
+        "measured_peak_gpu_bytes": 5653252352,
+        "estimated_wall_hours": 3.5,
+        "estimated_gpu_hours": 3.5,
+        "estimated_storage_gb": 1,
+        "estimated_cost_chf": 15,
+        "resume": "One diagnosed restart restores explicit resize-before-augmentation order. Fresh v3 output path, same split IDs/seed/source draws; invalid v2 weights are not reused. Per-call subprocess timeout enforces the ceiling. No further full restart budget remains.",
+        "source_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "hardware_selection": "A100 is1.72times faster in the same corrected preflight; choose by timing/cost only, no recipe or precision change."
+      },
+      "artifact_ids": [
+        "full-convnexttiny-2-metrics-json",
+        "full-convnexttiny-2-best-keras",
+        "full-convnexttiny-2-freeze-txt",
+        "full-convnexttiny-2-hardware-txt",
+        "full-convnexttiny-2-last-keras",
+        "full-convnexttiny-2-model-json",
+        "full-convnexttiny-2-predictions-npz",
+        "full-convnexttiny-2-split-npz",
+        "full-convnexttiny-2-state-json",
+        "full-convnexttiny-2-sanitized-log"
+      ],
+      "finished_at_utc": "2026-10-01T11:47:34.473069+00:00",
+      "exit_code": 0,
+      "metrics": {
+        "model": "convnexttiny",
+        "preprocessing_order": "bilinear resize 128 to 224, then augmentation",
+        "reconstructed_recipe": true,
+        "preflight": false,
+        "test_accuracy": 0.9935787671232876,
+        "correct": 2321,
+        "test_count": 2336,
+        "parameter_count": 28023931,
+        "seed": 42,
+        "optimizer": "Adam",
+        "learning_rate": 1e-05,
+        "dropout": 0.2,
+        "dense_units": 256,
+        "batch_size": 16,
+        "maximum_epochs": 50,
+        "early_stopping_patience": 5,
+        "checkpoint_selection": "maximum validation accuracy",
+        "epochs_completed": 13,
+        "validation_best_accuracy": 0.9940043091773987,
+        "epoch_seconds": [
+          242.59766459465027,
+          152.92711734771729,
+          152.85239624977112,
+          152.24835777282715,
+          151.81765580177307,
+          152.18342185020447,
+          151.86138820648193,
+          151.3265609741211,
+          151.8397490978241,
+          152.3827850818634,
+          151.92045164108276,
+          151.19106650352478,
+          150.8149390220642
+        ],
+        "started_at_utc": "2026-10-01T11:11:54.481306+00:00",
+        "finished_at_utc": "2026-10-01T11:47:34.473069+00:00",
+        "wall_seconds": 2139.9917891025543,
+        "peak_gpu_memory": {
+          "current": 1060028928,
+          "peak": 4769851392
+        },
+        "checkpoint_reload_verified": true,
+        "optimizer_resume_verified": false,
+        "tensorflow": "2.18.0",
+        "keras": "3.8.0",
+        "weights_sha256": {
+          "models/convnext_tiny_notop.h5": "d547c096cabd03329d7be5562c5e14798aa39ed24b474157cef5e85ab9e49ef1",
+          "models/densenet121_weights_tf_dim_ordering_tf_kernels_notop.h5": "acdb8da1b8e1e82feebe6be07ef63ce75e8dcfb302eaa49065b9d0311c089d3e",
+          "models/densenet201_weights_tf_dim_ordering_tf_kernels_notop.h5": "c5dfe6671696b407fcec7b8a85c0e382acc8687c2824ed894ffb34bd49eba2ba",
+          "models/efficientnetb0_notop.h5": "0683edcf6151811fb3ddd6f098ac48df644d74592c4919a5acdee1c37554add2",
+          "models/efficientnetb3_notop.h5": "cb923fd68d56606c597e50676240920dd7ad8d0f01f4a51d9e73ca2afdbd67f3",
+          "models/efficientnetv2-b0_notop.h5": "fd2529efca107725477325b0a3de53521c37873ba2910a2600a6b26209d95285",
+          "models/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5": "f8aff69536bd77a692c594f559c798c19bf7f3f36668fc9fa00b21c6aab4797c",
+          "models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5": "66c8b43daff3fcc15bc4f30e3d2a167e21a14d9c9598a5394e5516471f4af504",
+          "models/resnet50v2_weights_tf_dim_ordering_tf_kernels_notop.h5": "5ad0f9ca220e40926a2394d52e0f9f1ea135b8022560747c85e0d82ae699a6d9"
+        },
+        "dataset_manifest_sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4",
+        "train_script_sha256": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc",
+        "files": {
+          "best.keras": "c8a8cf47a33851604d643f4ac8d8995a20e230621e08ecbfbb4226d4bab21bb6",
+          "freeze.txt": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+          "hardware.txt": "bfda2de80e454348840e2631056de1063ad742e47edda31fb0b6d7c120f9a192",
+          "last.keras": "2a0f68a39168cae4ffbcd20446ac09df36da88d23628ef26a7917621b4cc21a4",
+          "model.json": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876",
+          "predictions.npz": "2b1990d2f0a3309dbb9e1910dbde6b53f6a5bf95261dab57edaa99974120a829",
+          "split.npz": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+          "state.json": "c7b614507a3615a852ec1f55b757bea3f53394f9bde058c7f4a7ea6afc51839f"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Corrected resize-before-augmentation recipe completed training with declared early stopping, selected best validation-accuracy checkpoint, verified reload, and evaluated 2,336 test images.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "usage": {
+        "measured_training_and_evaluation_wall_seconds": 2139.9917891025543,
+        "gpu_hours": 0.5944421636395985,
+        "estimated_cost_chf": 2.5561013036502733,
+        "actual_billed_cost_chf": null,
+        "detail": "Script runtime excludes container startup. Cost is a planning estimate, not a provider invoice."
+      },
+      "verification": {
+        "prediction_artifact_sha256_verified": true,
+        "split_artifact_sha256_verified": true,
+        "test_indices_unique": 2336,
+        "test_indices_match_split": true,
+        "probability_argmax_matches_predictions": true,
+        "probabilities_finite_normalized": true,
+        "number_of_classes": 27,
+        "accuracy_recomputed_from_predictions": true,
+        "local_verifier": "NumPy 2.5.1; independent from TensorFlow training code"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "data-manifest",
+      "kind": "dataset-provenance",
+      "uri": "modal://datasets/mavi-27-class/manifest.json",
+      "sha256": "3a50647a8ed7e7c0888c2c983f5e6ffde021e6e3f16cc5815c8d2d7520fda4e4"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42/metrics.json",
+      "sha256": "149cf674d707cd4a72637130a7bd5ae228bdd3bac71437fcaddd84964a53b0da"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v2-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v2/metrics.json",
+      "sha256": "9bb1d6490d406ae89de0d98e1a4fbae2997bad76247768e79d3f57b7aae50050"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v2/metrics.json",
+      "sha256": "f154987c05910b0a7c6e9f644b945a57a7283c2319967fd2353c2a46c4a7d812"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v2/metrics.json",
+      "sha256": "c2e5586c41ebff386b6bbf2a1fed01741e22deb9d94e60492fbe8daa6495436f"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v2/metrics.json",
+      "sha256": "f9db77f39f13377aa882a4f7c84dd631648408a62e66fcd3c0afd8aa9973b106"
+    },
+    {
+      "artifact_id": "invalid-v2-train-source",
+      "kind": "executed-source",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852.py",
+      "sha256": "7c8f5e7d3056e5ad9ba08f7ce1d6c2739bb8ae572092728b22df5abb8d4e0852"
+    },
+    {
+      "artifact_id": "data-populate-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/a81cccdb850d4faddddabf8b03371f8b63165c9db416524a8be0068d3d819b82.log",
+      "sha256": "a81cccdb850d4faddddabf8b03371f8b63165c9db416524a8be0068d3d819b82"
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/43230b2c77bfe0b8e8f35e3bd485f68fdac359dbd1c5fe3bee36d13628b3e920.log",
+      "sha256": "43230b2c77bfe0b8e8f35e3bd485f68fdac359dbd1c5fe3bee36d13628b3e920"
+    },
+    {
+      "artifact_id": "full-convnexttiny-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/de9fe237c58f4fbdfe7aa3dc250c79f83b2956036262051cf08c3bbb16eaa0e8.log",
+      "sha256": "de9fe237c58f4fbdfe7aa3dc250c79f83b2956036262051cf08c3bbb16eaa0e8"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/3f974b798e715e389e6a2299705b5a1f5118d6d509a3e6afe05ed01d92cc69a7.log",
+      "sha256": "3f974b798e715e389e6a2299705b5a1f5118d6d509a3e6afe05ed01d92cc69a7"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/2a3fe2e9934100bb3ea554f242ce38af17b1fcfeb99f9c69f5870703fab1e804.log",
+      "sha256": "2a3fe2e9934100bb3ea554f242ce38af17b1fcfeb99f9c69f5870703fab1e804"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/59b9bba47b661a4dfd6ce4564ad9081cd5b6374658218645465673df123dbd8d.log",
+      "sha256": "59b9bba47b661a4dfd6ce4564ad9081cd5b6374658218645465673df123dbd8d"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v2-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/3310ff8e33a3f6dc7689790065a930d36866754e44f341deae4e76ac4f0fc432.log",
+      "sha256": "3310ff8e33a3f6dc7689790065a930d36866754e44f341deae4e76ac4f0fc432"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/7efcf11bf99cbda2ae63ad615796713912afbbfc21d5a9dbd17096c0c2813730.log",
+      "sha256": "7efcf11bf99cbda2ae63ad615796713912afbbfc21d5a9dbd17096c0c2813730"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/9d93c46a8dce387021d2f5030291babb2bbd8c817f4d939e23e1116e31b1bc88.log",
+      "sha256": "9d93c46a8dce387021d2f5030291babb2bbd8c817f4d939e23e1116e31b1bc88"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/89d1b21928b62e0d579c8694cb0861fe25564034fafd745e69c8eed46e3649cf.log",
+      "sha256": "89d1b21928b62e0d579c8694cb0861fe25564034fafd745e69c8eed46e3649cf"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/metrics.json",
+      "sha256": "eb88954b0e854b375d1df722772d469a6df911c32f1eddc2ee7983f46adfb673"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/metrics.json",
+      "sha256": "9d6e1e55493172d57da22f0afe5b1e505a25e9ff96c1363324dd26e3f18d3778"
+    },
+    {
+      "artifact_id": "full-convnexttiny-1-freeze-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v2/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+      "size_bytes": 1300
+    },
+    {
+      "artifact_id": "full-convnexttiny-1-hardware-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v2/hardware.txt",
+      "sha256": "5c23eac2edb8bf2a7db85c95a763c465a75892321f4c874e09236a6ab9f12938",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "full-convnexttiny-1-model-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v2/model.json",
+      "sha256": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876",
+      "size_bytes": 132202
+    },
+    {
+      "artifact_id": "full-convnexttiny-1-split-npz",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v2/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+      "size_bytes": 187558
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-best-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/best.keras",
+      "sha256": "1dbc730c0e4ba10868556edf7ac5d8d9796c21af38f0945cece71b326b698764",
+      "size_bytes": 75700740
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-freeze-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+      "size_bytes": 1300
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-hardware-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/hardware.txt",
+      "sha256": "7b3899a18b76d1e490658b6ef54bfae3430285ed29f53cb59c60a588e406a896",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-last-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/last.keras",
+      "sha256": "5c87903b94c876576a325562995b21a9fc665105b852cfd1082aca370be79b6b",
+      "size_bytes": 75700740
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-model-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/model.json",
+      "sha256": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6",
+      "size_bytes": 250867
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-split-npz",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+      "size_bytes": 187558
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-1-state-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v2/state.json",
+      "sha256": "35466b6365970c88b463550b56c19d105f357e8a2bb631472f56bd551c53ffac",
+      "size_bytes": 1069
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-best-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/best.keras",
+      "sha256": "713b4d393a0847cd97337882152cf4c3157fc1b147c90b81ea3dce936e5e01de",
+      "size_bytes": 31543702
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-freeze-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+      "size_bytes": 1300
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-hardware-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/hardware.txt",
+      "sha256": "5630ab8b4727a3eb551f3ce39a6be48f5b0d290ee6d9db2a86eca1a330c2fbf5",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-last-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/last.keras",
+      "sha256": "e9de1310b830d50e804b5f98163b964ae7e1d61b779c9e62c5b5e5bcbc4fe29e",
+      "size_bytes": 31543702
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-model-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/model.json",
+      "sha256": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635",
+      "size_bytes": 153549
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-split-npz",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+      "size_bytes": 187558
+    },
+    {
+      "artifact_id": "full-mobilenetv2-1-state-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v2/state.json",
+      "sha256": "ae684751d3130aebd7d9853917947dfe7cea2be03f28119deaebe9fc723285fe",
+      "size_bytes": 405
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-best-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/best.keras",
+      "sha256": "0d092703d0114c96b8804277dc72d4dfa7c67f1db2f2b1c1600912783ee44506",
+      "size_bytes": 289602520
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-freeze-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f",
+      "size_bytes": 1300
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-hardware-txt",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/hardware.txt",
+      "sha256": "340fc16964b4ebf4cb60fcf75ba8827d5480020d2f91e0bde7f5273466c7d14d",
+      "size_bytes": 1689
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-last-keras",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/last.keras",
+      "sha256": "74df4013f896b87f24a7ca94ad89fc744b8669f34894657f35296b85d8c30f46",
+      "size_bytes": 289602520
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-model-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/model.json",
+      "sha256": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104",
+      "size_bytes": 172255
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-split-npz",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1",
+      "size_bytes": 187558
+    },
+    {
+      "artifact_id": "full-resnet50v2-1-state-json",
+      "kind": "invalid-run-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v2/state.json",
+      "sha256": "5f52ca026344e2190aa5583829f8bac9be3e1f7b449e71ce64560b2198739be5",
+      "size_bytes": 409
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/metrics.json",
+      "sha256": "86878925098c00e1f500211be3d5ccc88a0d2e918ace847dabc060cc8cf700f5"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/metrics.json",
+      "sha256": "882d4079c815b17fee2ca2c45c541861bbddba82fbbd298124b947e2217e2386"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-metrics",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/metrics.json",
+      "sha256": "8e78903fbf62e190eb80723311593c678709b7dbfef07348203c280e8de530d6"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-best-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/best.keras",
+      "sha256": "b28c8300ad96405c52f205643abc258631c712cfc1b955d1a245a50d7ea93037"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-freeze-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-hardware-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/hardware.txt",
+      "sha256": "65b357c918e629a29c223e4555c7247ff86bd7336b79dd135dd7534dbd47d80e"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-last-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/last.keras",
+      "sha256": "efcb868b08f275e7f748fe207bb52f40cfdb6f655cf001319ad639ab9bec3177"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-model-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/model.json",
+      "sha256": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-predictions-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/predictions.npz",
+      "sha256": "a65cc4fcd51af2bc3f6c64b1975e08275cb416d909cfabffff25822591eb496d"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-split-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-state-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-efficientnetv2b0-seed42-v3/state.json",
+      "sha256": "192e89900f1c7a569f865e116237112c356c66ddfb71ac24f64dbb635e2718a4"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-best-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/best.keras",
+      "sha256": "72c6af7e527ba693b4ed9116a4a5abca82544bd507c52fd9840ab5c9275c58b6"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-freeze-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-hardware-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/hardware.txt",
+      "sha256": "e382430d8c8de7716649bb239a4c8cb1ec9cc2aa859cbe755bb82ec309f182be"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-last-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/last.keras",
+      "sha256": "e2b9479670f374d799d443262723b0b9372b61e6a6b5d0042eaf2f766d113c76"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-model-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/model.json",
+      "sha256": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-predictions-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/predictions.npz",
+      "sha256": "41f9402aa7217635fe4ce13804d2b1eceee032efcdbae835bffdeb1ec861c872"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-split-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-state-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-mobilenetv2-seed42-v3/state.json",
+      "sha256": "5787981e7a2c025bc45711064570d74c29f4899e2a73d2282a3177b806f3b239"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-best-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/best.keras",
+      "sha256": "3d4b425b410b30b733434764367b72e6cf4c132b8b5c0e7e99b608579f1e4c63"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-freeze-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-hardware-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/hardware.txt",
+      "sha256": "b97a2bc776da62b928076c3d94ffc7f506b7c9d662b121e09c09f1c91861de50"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-last-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/last.keras",
+      "sha256": "737832e1a5ee1ef3c770c872e58ccdf49bee88fa0a4a9c7c3e841a172e8d8e17"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-model-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/model.json",
+      "sha256": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-predictions-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/predictions.npz",
+      "sha256": "2c50ebe8cfc45198fa6ac3f2add7df8f8fa8cb162c4768706abb4f6a247da11a"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-split-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-state-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-resnet50v2-seed42-v3/state.json",
+      "sha256": "168a287f280fb80b0be408b3160c2078f931251c65419eef30a42e893abdf05a"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-best-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/best.keras",
+      "sha256": "ad5c82d8a61af13cde57c306db75c4676053dbd2cf16d85c65df58e770f6e490"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-freeze-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-hardware-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/hardware.txt",
+      "sha256": "4328c84dcc89f09b060ad157089294ae9a382659c4372626834ca709a8bdd0cc"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-last-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/last.keras",
+      "sha256": "790acc8a293a73e24aeccd86911161539bff51fef9c1814ed63033bbd566495f"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-model-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/model.json",
+      "sha256": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-predictions-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/predictions.npz",
+      "sha256": "de3b5e68ea6d7b43ce149c8db23bdd084ef9604464a2dd373100bf3feb35d566"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-split-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-state-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3/state.json",
+      "sha256": "0d033affad05c99ead3b2b584625f88aab27dbcd83088b2ec53a8dc76d8c8ffe"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-best-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/best.keras",
+      "sha256": "65928b5d96fe7cc5efafcbf44e7df2311dad82cae58e638f51304f2effbfe9ed"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-freeze-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-hardware-txt",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/hardware.txt",
+      "sha256": "c64cbebad03fe8c5fea08eb92b9d58e15fd2eb12f8c61b802894c5ff83fc4538"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-last-keras",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/last.keras",
+      "sha256": "f576f2c9c254d691a70ae8f315dedeb44aca3488a9db719761fa9296eb98d991"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-model-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/model.json",
+      "sha256": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-predictions-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/predictions.npz",
+      "sha256": "5ee9f2c1d2dfa313cb4c92762f6a332227e80ade62ef0c52b2432d28bc193088"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-split-npz",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-state-json",
+      "kind": "preflight-native-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/preflight-convnexttiny-seed42-v3-a100/state.json",
+      "sha256": "e6400c641bc3125098d64743c57e0d77b57c9fa5af20b3f4574a53bf175a82ad"
+    },
+    {
+      "artifact_id": "preflight-efficientnetv2b0-v3-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/2bfeaab54ad0b0cadfccaf30b62ae3026ea490b2a4261707ae6354bd9a3b8818.log",
+      "sha256": "2bfeaab54ad0b0cadfccaf30b62ae3026ea490b2a4261707ae6354bd9a3b8818"
+    },
+    {
+      "artifact_id": "preflight-mobilenetv2-v3-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/7b6de5b30d57bcf753d447034ef71bcfae2736d755928249a67f99b4258e34bc.log",
+      "sha256": "7b6de5b30d57bcf753d447034ef71bcfae2736d755928249a67f99b4258e34bc"
+    },
+    {
+      "artifact_id": "preflight-resnet50v2-v3-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/a072b992160892b32b0a585f8a9ba05e7a1736a33833b3ebf95c4608d0351359.log",
+      "sha256": "a072b992160892b32b0a585f8a9ba05e7a1736a33833b3ebf95c4608d0351359"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/d0beb26d7c5eee66da0c291fa897193a300ae34fba95c2f2cff54358c8158ef5.log",
+      "sha256": "d0beb26d7c5eee66da0c291fa897193a300ae34fba95c2f2cff54358c8158ef5"
+    },
+    {
+      "artifact_id": "preflight-convnexttiny-v3-a100-1-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/012c005cc98b0ecad47816b4d0e6cc4937258e9b97c0c89a697378417774683c.log",
+      "sha256": "012c005cc98b0ecad47816b4d0e6cc4937258e9b97c0c89a697378417774683c"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-metrics-json",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/metrics.json",
+      "sha256": "460552872487d175d4dcd7ad10be235cf233083243787db484a83d3cbaebd6bd"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-best-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/best.keras",
+      "sha256": "546bd0ce521f2ad4507acc51010e73c32e18c4852b7385502dd9968be4bd9899"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-freeze-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-hardware-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/hardware.txt",
+      "sha256": "4f1ab8950c033291456d3ec266fe56e561b7123c5931cfc2effc715607aa57d4"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-last-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/last.keras",
+      "sha256": "333a5883ee25bdd1ab621a391ca499bebb4f57da4499363340f62fe03071bf0e"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-model-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/model.json",
+      "sha256": "a19d833e6b4e69951d0bb25c0c61ca4de613ca6f113ad0d64f18d91d5fc797c6"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-predictions-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/predictions.npz",
+      "sha256": "d8d95296053ea21a5da33e94bb075185bf27e4e013e4b683774df425b4c49a43"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-split-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-state-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-efficientnetv2b0-seed42-v3/state.json",
+      "sha256": "f421c9b75deeeaa52073281391411298b3891c50a5a85edfa4324eb3ea0d4c5f"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-metrics-json",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/metrics.json",
+      "sha256": "5910c6bd40ad7f2032e62dafef118c182c3cbb6c0e8d433ed224cd6e2e81fbc4"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-best-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/best.keras",
+      "sha256": "11acf87b3c42c85adb57c4486779b97ed115386e461841b364db5aaee1383a50"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-freeze-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-hardware-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/hardware.txt",
+      "sha256": "45a84caa9393b4a16c4bc671ab4925b048ef9d448c55915446f10d9a281940db"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-last-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/last.keras",
+      "sha256": "feb3aa0ae2c289480c5169cc3ab51fa08bea8467929f53938ff7eb9d260f99c4"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-model-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/model.json",
+      "sha256": "e946573d7a32bfaf6063c42b15f91ef4fa7889e5132375c25604d9b47d679635"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-predictions-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/predictions.npz",
+      "sha256": "0f0534a99cba49f6a7df726733ea3729ead1909370fb91b7b37da5147aa5d472"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-split-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-state-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-mobilenetv2-seed42-v3/state.json",
+      "sha256": "fc4593a5bdb87dbd7d3fd1ca377766ea5b17a6cc11feede419b515eb9bc1f772"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-metrics-json",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/metrics.json",
+      "sha256": "95974c9a6a13e962bb37b4757337c3a8e98cc52a328c1fb9971768340f1135e4"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-best-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/best.keras",
+      "sha256": "e34074c28e0664e8bdf2f0b6cccd546e50eebe8b33ea7e32a22655771bca4907"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-freeze-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-hardware-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/hardware.txt",
+      "sha256": "622ee772d72bc9923c1ceb2176c098d34eefa790531586b95ca57706dc6a9141"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-last-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/last.keras",
+      "sha256": "584f84b7d4865f67406421ebaaf3882a3a87f185d385a2a818d314f689a2942f"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-model-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/model.json",
+      "sha256": "3ac51c126841f843ccbf28f0a7c9e1be6b16339300bdb52d4637c4cd4b998104"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-predictions-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/predictions.npz",
+      "sha256": "f3101e1fbe5f6838f141e8daa07fa98603e9d9ce33a3702855567c840939ae28"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-split-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-state-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-resnet50v2-seed42-v3/state.json",
+      "sha256": "4aa57623586e55547ddbddca5bbfbe3f6cb81081bf6892366ea5e07beaac6b84"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-metrics-json",
+      "kind": "raw-metrics",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/metrics.json",
+      "sha256": "86b9c8a061bba67c6e83763583c6ee0e996d6847d9b5be0bd659d6bbabbf8439"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-best-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/best.keras",
+      "sha256": "c8a8cf47a33851604d643f4ac8d8995a20e230621e08ecbfbb4226d4bab21bb6"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-freeze-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/freeze.txt",
+      "sha256": "f8ec8525ff0dbfffe37bcd3b69d6a36c94727ff695576d920293b9d5750dad5f"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-hardware-txt",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/hardware.txt",
+      "sha256": "bfda2de80e454348840e2631056de1063ad742e47edda31fb0b6d7c120f9a192"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-last-keras",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/last.keras",
+      "sha256": "2a0f68a39168cae4ffbcd20446ac09df36da88d23628ef26a7917621b4cc21a4"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-model-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/model.json",
+      "sha256": "a88d9703cb7a73c3c452fc4449230576775edf4fbcf877cb1baf0703c0789876"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-predictions-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/predictions.npz",
+      "sha256": "2b1990d2f0a3309dbb9e1910dbde6b53f6a5bf95261dab57edaa99974120a829"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-split-npz",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/split.npz",
+      "sha256": "b38e9816327e184c60541e81143df6bfe1417ab6917c08476a034df5949b7ae1"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-state-json",
+      "kind": "native-run-output",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/full-convnexttiny-seed42-v3-a100/state.json",
+      "sha256": "c7b614507a3615a852ec1f55b757bea3f53394f9bde058c7f4a7ea6afc51839f"
+    },
+    {
+      "artifact_id": "full-efficientnetv2b0-2-sanitized-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/d240569c271a59ce9c91a89bc2afd4ac165fac82b13644c638c9bf5e874ffd73.log",
+      "sha256": "d240569c271a59ce9c91a89bc2afd4ac165fac82b13644c638c9bf5e874ffd73"
+    },
+    {
+      "artifact_id": "full-mobilenetv2-2-sanitized-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/b485f82a5da812790b9ae8fac04bba01ff2ccda8e7d9f0d1b117e0f943beab44.log",
+      "sha256": "b485f82a5da812790b9ae8fac04bba01ff2ccda8e7d9f0d1b117e0f943beab44"
+    },
+    {
+      "artifact_id": "full-resnet50v2-2-sanitized-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/b39087f6c525be257954686064a716a4d412af42c787b88c3b270b5f5bf01a38.log",
+      "sha256": "b39087f6c525be257954686064a716a4d412af42c787b88c3b270b5f5bf01a38"
+    },
+    {
+      "artifact_id": "full-convnexttiny-2-sanitized-log",
+      "kind": "sanitized-console-log",
+      "uri": "modal://taqiyya-2025-efficientnetv2b0-results/evidence/7130a123e551fbc5fd817ce190e9f1e586035b3ccc81f05f66dbc3d98cb33139.log",
+      "sha256": "7130a123e551fbc5fd817ce190e9f1e586035b3ccc81f05f66dbc3d98cb33139"
+    }
+  ],
+  "gates": [],
+  "source_search": {
+    "date": "2026-10-01",
+    "queries": [
+      "Exact English title with code/GitHub",
+      "EfficientNetV2B0 sign language",
+      "Thifa Ziada Taqiyya EfficientNet github",
+      "Klasifikasi American Sign Language Menggunakan Arsitektur Efficientnetv2b0"
+    ],
+    "checked": [
+      "Publisher PDF including every reference: no code, supplement or repository link",
+      "DOI and author institution publication page",
+      "First author public GitHub repositories at https://github.com/thifaziada: 19 repositories, no paper implementation",
+      "First author thesis repository: front matter, abstract and introduction public; methods/code not supplied",
+      "GitHub repository searches returned no attributable implementation"
+    ],
+    "selected_preference": 3,
+    "reason": "No author implementation located after paper, author/thesis, institutional and repository discovery. Reconstruct from paper with pinned standard Keras components."
+  },
+  "guesses": [
+    {
+      "detail": "Random seed42 and exact split membership were not published. Stratified split sizes are reproduced exactly; a new random realization is used."
+    },
+    {
+      "detail": "551 extra examples inferred from Table III (23352\u221222801); augment NULL314 to865, because section II.B says augmentation addresses NULL imbalance and Figure2 shows a NULL transformation. Transformation draws are newly sampled with seed42."
+    },
+    {
+      "detail": "Use ImageNet initialization, Adam1e-5, categorical cross-entropy, ReLU dense256, softmax27 and all trainable backbone layers. Paper identifies pretrained networks but does not state optimizer, loss, hidden activation, framework, seed, layer-freezing policy or preprocessing beyond normalized arrays and bilinear resizing."
+    },
+    {
+      "detail": "Use standard application-specific input scaling after resize: EfficientNet/ConvNeXt embedded preprocessing receives [0,255]; MobileNet/ResNet receives [-1,1]. Avoid unintended double normalization of the source [0,1] array."
+    },
+    {
+      "detail": "Train only the four requested Table X final configurations; the 48-model hyperparameter search for Tables IV\u2013IX is outside the assignment."
+    },
+    {
+      "detail": "Apply augmentation before splitting as the methodology and Table III indicate, even though this can place transformed variants of one original NULL image across splits. No source lineage split was specified."
+    }
+  ],
+  "author_contact": {
+    "contacted": false,
+    "detail": "No author communication occurred."
+  },
+  "comparison_plan": {
+    "comparable_reconstruction": true,
+    "basis": "Official dataset, exact split counts, selected published hyperparameters and all four model parameter counts reproduced. Routine optimizer, seed and preprocessing details were explicitly reconstructed before full runs. Compare mechanically at the printed four-decimal fraction precision (absolute difference below 0.00005). No scientific success or failure claim; stochastic variability is not quantified by a single seed."
+  },
+  "implementation": {
+    "base_repository_commit": "0ff14a2",
+    "source_files_sha256": {
+      "Dockerfile": "cf347e6966f9e2b9b2b15a56fedbd6b2f1a23d09fbc36f5958717db4faf60753",
+      "scripts/data.sh": "c190ede8c73fdf43e94712a5cd04da6112d94dd4d813716382b5c30c3aadb39c",
+      "scripts/modal_app.py": "e54a5b59dda50fbd042e0234918457ffc61c96c06410f4ceead675970b707d9b",
+      "scripts/train.py": "2447df17949b775876dd4cdb4814e50b801d7088cfa2180ba92a7cb6d0fbe0fc"
+    },
+    "container_base_digest": "sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea",
+    "detail": "Source files were uncommitted during execution. The pinned container base, Modal image identifier, per-run executed script hash, retained historical source artifact and final committed files identify the recipe; documentation changes do not alter execution."
+  },
+  "compute_plan": {
+    "parallelism": "Four independent one-GPU model experiments, each separate Modal app invocation and output directory. Requested batch parallelism; no distributed or multi-node experiment.",
+    "estimated_total_gpu_hours": 10.5,
+    "estimated_total_cost_chf": 32,
+    "per_run_gpu_hour_ceiling": "6 for EfficientNet, MobileNet and ResNet; 8 for ConvNeXt.",
+    "per_run_cost_chf_ceiling": "15 for each of EfficientNet, MobileNet and ResNet; 20 for ConvNeXt.",
+    "detail": "Prospective corrected-run forecasts from measured preflights; ConvNeXt uses standard A100 after 1.72x faster warm timing. CHF figures are conservative planning allowances, not billed invoices or a currency conversion. Invalid early attempts are recorded separately."
+  },
+  "deviations": [
+    {
+      "id": "augmentation-order-correction",
+      "detail": "The first four full jobs transformed NULL images at 128\u00d7128 before resizing to 224\u00d7224. Figure 1 and Section II.B explicitly require resizing first. Independent review discovered this before completion; the jobs were stopped and excluded. Corrected attempts keep identical labels, indices, seeds and splits. No scores informed the change."
+    }
+  ],
+  "validation": {
+    "audit_date": "2026-10-01",
+    "checks": [
+      "Four prediction-array accuracy recomputations and artifact SHA-256 checks",
+      "Identical test membership and split artifact SHA-256 across all four models",
+      "Finite normalized 27-class probabilities with matching argmax",
+      "All four parameter counts match Table X",
+      "Selected pretrained weight hashes equal prospective official-source pins",
+      "Real-data preflights verify checkpoint reload and resumed optimizer step",
+      "Python compilation, shell syntax, git diff checks, metadata validator and privacy scan"
+    ]
+  },
+  "conclusion_assessment": {
+    "summary": "Completed four-model training reproduction with mixed conclusions. All models exceed 99% accuracy and EfficientNetV2B0 retains the observed top placement, but its margin over MobileNetV2 and ConvNeXt-Tiny is one image. Exact scores and the remaining ranking are not reproduced. The claim that EfficientNet has the fewest parameters is contradicted by both Table X and the matching model counts.",
+    "evidence": [
+      "Paper Table X and adjacent discussion, PDF page 6: published accuracies EfficientNet 0.9957, ConvNeXt 0.9940, ResNet 0.9932, MobileNet 0.9906; prose asserts highest accuracy and fewest parameters.",
+      "Four corrected retained full runs share the same test split: EfficientNet 2,322/2,336 = 99.4007%; MobileNet and ConvNeXt each 2,321/2,336 = 99.3579%; ResNet 2,318/2,336 = 99.2295%. The top margin is one image, 0.04281 percentage points.",
+      "Table X parameter counts match the reconstructed architectures: MobileNet 2,592,859; EfficientNet 6,254,187; ResNet 24,096,283; ConvNeXt 28,023,931. EfficientNet is smaller than ResNet and ConvNeXt, but not MobileNet."
+    ],
+    "limits": [
+      "These are one-seed observed rankings, not evidence that a one-image lead persists across training runs.",
+      "The reconstructed comparison uses disclosed common defaults; unpublished historical baseline training configurations were not recovered.",
+      "Augmentation precedes splitting under the paper recipe, allowing a generated NULL image and its source across splits; the benchmark result does not establish independent-source or signer generalization.",
+      "The augmentation-benefit and hyperparameter-optimality claims require omitted ablations and were not tested by the four Table X target runs. Parameter counts do not themselves measure inference speed."
+    ],
+    "assessed_at_utc": "2026-10-03T19:10:37.464934+00:00",
+    "claim_verdicts": [
+      {
+        "claim": "High ASL benchmark accuracy",
+        "verdict": "reproduced_under_declared_reconstruction",
+        "basis": "All four independently trained models achieve 99.23\u201399.40% on the common test split."
+      },
+      {
+        "claim": "EfficientNet is the most accurate of the four models",
+        "verdict": "observed_top_placement_reproduced_robust_superiority_not_established",
+        "basis": "2322 correct versus 2321/2321/2318; one seed and a one-image lead over the nearest models do not establish a stable advantage."
+      },
+      {
+        "claim": "Complete Table X ordering and exact accuracies",
+        "verdict": "not_reproduced",
+        "basis": "EfficientNet > MobileNet = ConvNeXt > ResNet replaces EfficientNet > ConvNeXt > ResNet > MobileNet; all exact accuracies differ."
+      },
+      {
+        "claim": "EfficientNet has the fewest parameters",
+        "verdict": "contradicted",
+        "basis": "MobileNet has2592859 parameters versus EfficientNet6254187. All four Table X parameter counts match our models."
+      },
+      {
+        "claim": "Augmentation benefit, optimal hyperparameters, inference speed or signer generalization",
+        "verdict": "not_assessed_by_assigned_experiments",
+        "basis": "Requires ablations, timing or an independent-source/signer protocol outside the four Table X runs."
+      }
+    ],
+    "retained_prediction_audit": {
+      "date": "2026-10-03",
+      "models": {
+        "efficientnetv2b0": {
+          "correct": 2322,
+          "test_count": 2336,
+          "accuracy_percent": 99.40068493150685,
+          "parameters": 6254187,
+          "epochs": 16,
+          "original_examples": 2289,
+          "original_correct": 2275,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "d8d95296053ea21a5da33e94bb075185bf27e4e013e4b683774df425b4c49a43"
+        },
+        "mobilenetv2": {
+          "correct": 2321,
+          "test_count": 2336,
+          "accuracy_percent": 99.35787671232876,
+          "parameters": 2592859,
+          "epochs": 32,
+          "original_examples": 2289,
+          "original_correct": 2274,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "0f0534a99cba49f6a7df726733ea3729ead1909370fb91b7b37da5147aa5d472",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 7,
+            "comparator_only_correct": 6,
+            "both_wrong": 8
+          }
+        },
+        "resnet50v2": {
+          "correct": 2318,
+          "test_count": 2336,
+          "accuracy_percent": 99.22945205479452,
+          "parameters": 24096283,
+          "epochs": 18,
+          "original_examples": 2289,
+          "original_correct": 2271,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "f3101e1fbe5f6838f141e8daa07fa98603e9d9ce33a3702855567c840939ae28",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 11,
+            "comparator_only_correct": 7,
+            "both_wrong": 7
+          }
+        },
+        "convnexttiny": {
+          "correct": 2321,
+          "test_count": 2336,
+          "accuracy_percent": 99.35787671232876,
+          "parameters": 28023931,
+          "epochs": 13,
+          "original_examples": 2289,
+          "original_correct": 2274,
+          "generated_examples": 47,
+          "generated_correct": 47,
+          "predictions_sha256": "2b1990d2f0a3309dbb9e1910dbde6b53f6a5bf95261dab57edaa99974120a829",
+          "paired_with_efficientnet": {
+            "efficientnet_only_correct": 6,
+            "comparator_only_correct": 5,
+            "both_wrong": 9
+          }
+        }
+      },
+      "method": "Hash-verify each retained predictions.npz against reproduction.json artifacts; assert2336 unique matching test indices and identical truths, probability argmax and correct-count agreement; count paired correctness disagreements. Generated examples have index>=22801 in the pinned train.py. This is local analysis of existing outputs, not new model execution.",
+      "interpretation": "The nearest-model one-image gaps arise from 7-versus-6 and6-versus-5 discordant correct predictions. All47 generated test examples are correct for every model, so their inclusion does not change the observed ranking. Excluding generated test samples would not remove possible cross-split source relationships created before splitting."
+    },
+    "completion_decision": "No additional model execution is required to close the assigned four Table X runs. Report the mixed conclusion; new seeds or ablations would answer additional questions, not fill a missing target run."
+  }
+}
