@@ -1,0 +1,119 @@
+Subject: Use project decoder and source dimensions; preserve native RGB scaling and padding
+
+--- a/CiCo/I3D_feature_extractor/datasets/videodataset.py
++++ b/CiCo/I3D_feature_extractor/datasets/videodataset.py
+@@ -74,98 +74,23 @@
+         return valid, t_beg,num_clip_list
+ 
+     def _load_rgb(self, ind, frame_ix):
+-        """Loads the video frames from file
+-            frame_ix could be range(t, t + nframes) for consecutive reading
+-                or a random sorted subset of [0, video_length] of size nframes
+-        """
+-
+-        is_consecutive = range(min(frame_ix), max(frame_ix) + 1) == frame_ix
+-        nframes = len(frame_ix)
+-        if nframes<16:
+-            nframes=16
+-            frame_ix=range(16)
+-        videofile =ind
+-        use_cv2 = True
+-        if getattr(self, "video_data_dict", False):
+-            use_cv2 = False
+-            compressed_frames = self.video_data_dict[videofile]["data"]
+-        elif getattr(self, "featurize_mode", False) and not DISABLE_CACHING:
+-            cap = None
+-            if not hasattr(self, "cached_caps"):
+-                self.cached_caps = defaultdict(OrderedDict)
+-            if videofile in self.cached_caps:
+-                cap = self.cached_caps[videofile].pop(frame_ix.start, None)
+-                assert is_consecutive, "capture caching should only use consecutive ims"
+-            if not cap:
+-                cap = cv2.VideoCapture(videofile)
+-                # Do the frame setting only once if the rest are consecutive
+-                if is_consecutive:
+-                    cap.set(propId=1, value=frame_ix[0])
+-        else:
+-            cap = cv2.VideoCapture(videofile)
+-            # Do the frame setting only once if the rest are consecutive
+-            if is_consecutive:
+-                cap.set(propId=1, value=frame_ix[0])
+-
+-        # Frame reads
+-        if getattr(self, "gpu_collation", False):
+-            msg = "expected collation dim == 256"
+-            assert self.gpu_collation == 256, msg
+-            rgb = torch.zeros(3, nframes, self.gpu_collation, self.gpu_collation)
+-        else:
+-            rgb = torch.zeros(
+-                3, nframes, self._get_img_height(ind), self._get_img_width(ind)
+-            )
+-        # rgb = torch.zeros(3, nframes, self.img_height, self.img_width)
++        # Same RGB floats and last-frame padding, decoded through project backend.
++        from simple_video_utils.frames import read_frames_exact
++        nframes = max(16, len(frame_ix))
++        if len(frame_ix) < 16:
++            frame_ix = range(16)
++        first, last = min(frame_ix), max(frame_ix)
++        frames = list(read_frames_exact(str(ind), first, last))
++        if not frames:
++            raise ValueError(f"No decodable frames in {ind}")
++        height, width = frames[0].shape[:2]
++        # PHOENIX frames are 260x210, not the hardcoded 256x256 allocation.
++        # Native gpu_collater already takes actual iH/iW and applies its grid.
++        rgb = torch.zeros(3, nframes, height, width)
+         for f, fix in enumerate(frame_ix):
+-            if use_cv2:
+-                if not is_consecutive:
+-                    cap.set(propId=1, value=fix)
+-                # frame: BGR, (240, 320, 3), dtype=uint8 0..255
+-                ret, frame = cap.read()
+-            else:
+-                ret = fix < len(compressed_frames)
+-                if ret:
+-                    frame = Image.open(compressed_frames[fix])
+-
+-            if ret:
+-                if use_cv2:
+-                    # BGR (OpenCV) to RGB (Torch)
+-                    frame = frame[:, :, [2, 1, 0]]
+-                # CxHxW (3, 240, 320), 0..1 --> np.transpose(frame, [2, 0, 1]) / 255.0
+-                rgb_t = im_to_torch(frame)
+-                rgb[:, f, :, :] = rgb_t
+-            else:
+-                # Copy last frame for temporal padding
+-                rgb[:, f, :, :] = rgb[:, f - 1, :, :]
+-        if use_cv2:
+-            if (
+-                hasattr(self, "featurize_mode")
+-                and self.featurize_mode
+-                and not DISABLE_CACHING
+-            ):
+-                if fix == self._get_nframes(ind):
+-                    cap.release()
+-                else:
+-                    # store pointer to avoid duplicate decoding
+-                    self.cached_caps[videofile][frame_ix.stop] = cap
+-                    if len(self.cached_caps[videofile]) > CAP_CACHE_LIMIT:
+-                        # we rely on OrderedDict to preserve key order
+-                        oldest_keys = list(self.cached_caps.keys())
+-                        print(
+-                            f"Cache overflow [{len(self.cached_caps[videofile])}]"
+-                            f" >{CAP_CACHE_LIMIT}, clearing half of the keys"
+-                        )
+-                        for old_key in oldest_keys[: CAP_CACHE_LIMIT // 2]:
+-                            # To guard against race conditions we supply a default for
+-                            # missing keys
+-                            self.cached_caps[videofile].pop(old_key, None)
+-            else:
+-                cap.release()
+-
+-        # rgb.view(3 * nframes, rgb.size(2), rgb.size(3))
+-        rgb = video_to_im(rgb)
+-        return rgb
++            frame = frames[min(fix - first, len(frames) - 1)]
++            rgb[:, f] = im_to_torch(frame)
++        return video_to_im(rgb)
+ 
+     def collate_fn(self, batch):
+         """Note: To enable usage with ConcatDataset, this must not rely on any attributes
