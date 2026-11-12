@@ -1,0 +1,27 @@
+Patch for impressncsu/ICCV2025_MSLR at 7dd73c4e67b2959a95f828c103269723528b9271,
+applied after 0001-data-paths.patch.
+
+Concern: missing output (the video model the script trains is never saved).
+Why necessary: resnet21D_V2.py trains with EarlyStopping(restore_best_weights=True)
+and then only writes every-5-epoch checkpoints and an xlsx of held-out
+predictions; there is no final model file for val_fusion_pred.py /
+test_fusion_pred.py to load as video_final.h5. This adds one model.save() right
+after model.fit(), persisting exactly the model the script ends with (the
+restored best-val_loss weights). Training is unchanged. Selected by the operator
+at gate protocol-training-recipe (alternative A1, 2026-11-09).
+
+diff --git a/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py b/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
+index bc1d35f..8324e71 100644
+--- a/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
++++ b/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
+@@ -258,6 +258,10 @@ history = model.fit(
+     callbacks=[save_every_five, reduce_lr, early_stop]
+ )
+ 
++# Reproduction (output-only): save the model this script ends with, i.e. the
++# EarlyStopping-restored best-val_loss weights; the script otherwise saves none.
++model.save("r2p1d_final.h5")
++
+ # ───────────────────────────────────────────────────────────────────────────────
+ # 7. FINAL VALIDATION PREDICTIONS → EXCEL
+ # ───────────────────────────────────────────────────────────────────────────────
