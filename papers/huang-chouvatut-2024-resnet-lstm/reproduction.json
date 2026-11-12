@@ -424,5 +424,107 @@
       "required_action": "Establish permission before any trained-model checkpoint is published or retained publicly."
     }
   ],
-  "noncompliance": []
+  "guesses_and_deviations": [
+    {
+      "id": "signer-split",
+      "kind": "guess",
+      "description": "Which two learners are held out.",
+      "paper_says": "8 learners train, 2 learners test (§4.2); identities are not given",
+      "used": "Held-out signers `(5, 10)`, only an inferred 8/2 convention, not an author split",
+      "effect": "LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction",
+      "status": "Gate `paper-signer-split` open",
+      "dataset_ids": [
+        "lsa64-original"
+      ]
+    },
+    {
+      "id": "frame-selection",
+      "kind": "guess",
+      "description": "Positions of the 16 frames taken from each clip.",
+      "paper_says": "Not specified",
+      "used": "Uniform 16-frame sampling"
+    },
+    {
+      "id": "resize-policy",
+      "kind": "guess",
+      "description": "Resize policy before the random crop.",
+      "paper_says": "Not specified",
+      "used": "Resize-short-side 144 then one 128 crop"
+    },
+    {
+      "id": "normalization",
+      "kind": "guess",
+      "description": "Input normalization constants.",
+      "paper_says": "Not specified",
+      "used": "ImageNet normalization"
+    },
+    {
+      "id": "pretrained-encoder",
+      "kind": "paper_deviation",
+      "description": "Source of the ImageNet-pretrained ResNet-18 weights.",
+      "paper_says": "The authors pretrained ResNet-18 on ImageNet themselves: SGD, batch 32, learning rate 0.1 decayed by a factor of 10 every 30 epochs (§3.5)",
+      "used": "torchvision `ResNet18_Weights.IMAGENET1K_V1`",
+      "basis": "The authors' pretrained weights are not published; the §3.5 recipe matches torchvision's reference ImageNet recipe",
+      "evidence": [
+        "train.py:144"
+      ]
+    },
+    {
+      "id": "projection-and-lstm",
+      "kind": "guess",
+      "description": "Width of the modified fully-connected layer and LSTM, and LSTM depth.",
+      "paper_says": "Not specified",
+      "used": "A trainable 512-unit frame projection followed by one 512-unit LSTM"
+    },
+    {
+      "id": "seed",
+      "kind": "guess",
+      "description": "Random seed.",
+      "paper_says": "Not specified",
+      "used": "2024"
+    },
+    {
+      "id": "scheduler-monitor",
+      "kind": "guess",
+      "description": "Quantity monitored by ReduceLROnPlateau.",
+      "paper_says": "Not specified",
+      "used": "Training loss",
+      "basis": "Training loss prevents the held-out clips from controlling optimization"
+    },
+    {
+      "id": "label-smoothing",
+      "kind": "guess",
+      "description": "Label-smoothing factor.",
+      "paper_says": "\"a label smoothing cross-loss function\" (§4.4); no factor given",
+      "used": "0.1",
+      "evidence": [
+        "train.py:231: `nn.CrossEntropyLoss(label_smoothing=0.1)`"
+      ]
+    },
+    {
+      "id": "optimizer",
+      "kind": "paper_internal_conflict",
+      "description": "Optimizer.",
+      "paper_says": "§4.4 says Adam, while Table 2 says SGD",
+      "used": "Adam",
+      "basis": "The reconstruction follows the detailed implementation prose. SGD otherwise appears only in §3.5, as the optimizer of the ImageNet pretraining"
+    },
+    {
+      "id": "epoch-count",
+      "kind": "guess",
+      "description": "Whether Table 3's 30-epoch row is its own 30-epoch run or the epoch-30 evaluation of a 50-epoch run.",
+      "paper_says": "\"The iteration period for each experiment was 50\" (§4.4) and Table 2 \"Epochs 50\"; Table 3 reports validation results at 10, 20, 30, 40, and 50 epochs without saying whether each row is a separate run",
+      "used": "A fixed 30-epoch run, evaluated once at epoch 30",
+      "effect": "None expected: ReduceLROnPlateau does not depend on the total epoch count, so the first 30 epochs of a 50-epoch run follow the same recipe"
+    }
+  ],
+  "noncompliance": [
+    {
+      "id": "unpermitted-checkpoint-upload",
+      "description": "The earlier, excluded fine-tuned checkpoint (`model.pt`, SHA-256 `d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0`) was public at https://huggingface.co/repro-sign/huang-chouvatut-2024-resnet-lstm (the file is unchanged since revision `7ee40aeea3e96042eaaeee5256017965d70c06f4`). Its card was relabelled from `cc-by-nc-sa-4.0` to `cc-by-nc-nd-4.0` on 2026-11-12 (revision `0e43f972f18aad2a2e6365dcb2d8a7ced9286924`) but still reports that run as `complete` with 99.6875% accuracy.",
+      "requirement": "Large artifacts are published only when their license permits redistribution; LSA64 is CC BY-NC-ND 4.0 and gate `lsa64-license-and-publication` is open",
+      "effect": "It is not reproduction evidence, and the public model card contradicts this report",
+      "resolution": "Repository made private on 2026-11-12 (anonymous access returns 401). It stays private, or is removed, until permission to publish learned weights is established at gate `lsa64-license-and-publication`"
+    }
+  ]
 }

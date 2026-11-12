@@ -42,13 +42,33 @@ The conditional result is not entered as a reproduced target result: the paper d
 
 The paper is internally inconsistent: §4.4 says Adam, while Table 2 says SGD; the reconstruction follows the detailed implementation prose. The paper describes 50-epoch experiments, but Table 3 explicitly reports the requested 30-epoch row.
 
-## Reconstruction decisions and gates
+## Guesses and deviations
 
 These choices are not presented as paper facts:
 
-- The paper does not publish signer IDs or split files. `(5, 10)` is only an inferred 8/2 convention, not an author split. It is further problematic because LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction.
-- The paper does not specify frame-selection positions, resize policy, normalization constants, the modified fully-connected/LSTM width or LSTM depth, seed, or the scheduler monitor. The code uses uniform 16-frame sampling, resize-short-side 144 then one 128 crop, ImageNet normalization, a trainable 512-unit frame projection followed by one 512-unit LSTM, seed 2024, and training loss for the scheduler. Training loss prevents the held-out clips from controlling optimization.
-- The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset, predictions, or new weights are committed or distributed. An earlier invalid checkpoint was uploaded before this review; it is not reproduction evidence and must be privatized or removed pending permission to publish learned weights.
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `signer-split` | `guess` | Which two learners are held out. | 8 learners train, 2 learners test (§4.2); identities are not given | Held-out signers `(5, 10)`, only an inferred 8/2 convention, not an author split |  | LSA64 says subject 10 was replaced between its two disjoint recording sessions. A result on this split is a conditional reconstruction, not a verified reproduction |  | Gate `paper-signer-split` open |  |  |  | `lsa64-original` |
+| `frame-selection` | `guess` | Positions of the 16 frames taken from each clip. | Not specified | Uniform 16-frame sampling |  |  |  |  |  |  |  |  |
+| `resize-policy` | `guess` | Resize policy before the random crop. | Not specified | Resize-short-side 144 then one 128 crop |  |  |  |  |  |  |  |  |
+| `normalization` | `guess` | Input normalization constants. | Not specified | ImageNet normalization |  |  |  |  |  |  |  |  |
+| `pretrained-encoder` | `paper_deviation` | Source of the ImageNet-pretrained ResNet-18 weights. | The authors pretrained ResNet-18 on ImageNet themselves: SGD, batch 32, learning rate 0.1 decayed by a factor of 10 every 30 epochs (§3.5) | torchvision `ResNet18_Weights.IMAGENET1K_V1` | The authors' pretrained weights are not published; the §3.5 recipe matches torchvision's reference ImageNet recipe |  |  |  | train.py:144 |  |  |  |
+| `projection-and-lstm` | `guess` | Width of the modified fully-connected layer and LSTM, and LSTM depth. | Not specified | A trainable 512-unit frame projection followed by one 512-unit LSTM |  |  |  |  |  |  |  |  |
+| `seed` | `guess` | Random seed. | Not specified | 2024 |  |  |  |  |  |  |  |  |
+| `scheduler-monitor` | `guess` | Quantity monitored by ReduceLROnPlateau. | Not specified | Training loss | Training loss prevents the held-out clips from controlling optimization |  |  |  |  |  |  |  |
+| `label-smoothing` | `guess` | Label-smoothing factor. | "a label smoothing cross-loss function" (§4.4); no factor given | 0.1 |  |  |  |  | train.py:231: `nn.CrossEntropyLoss(label_smoothing=0.1)` |  |  |  |
+| `optimizer` | `paper_internal_conflict` | Optimizer. | §4.4 says Adam, while Table 2 says SGD | Adam | The reconstruction follows the detailed implementation prose. SGD otherwise appears only in §3.5, as the optimizer of the ImageNet pretraining |  |  |  |  |  |  |  |
+| `epoch-count` | `guess` | Whether Table 3's 30-epoch row is its own 30-epoch run or the epoch-30 evaluation of a 50-epoch run. | "The iteration period for each experiment was 50" (§4.4) and Table 2 "Epochs 50"; Table 3 reports validation results at 10, 20, 30, 40, and 50 epochs without saying whether each row is a separate run | A fixed 30-epoch run, evaluated once at epoch 30 |  | None expected: ReduceLROnPlateau does not depend on the total epoch count, so the first 30 epochs of a 50-epoch run follow the same recipe |  |  |  |  |  |  |
+
+## Noncompliance
+
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `unpermitted-checkpoint-upload` | The earlier, excluded fine-tuned checkpoint (`model.pt`, SHA-256 `d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0`) was public at https://huggingface.co/repro-sign/huang-chouvatut-2024-resnet-lstm (the file is unchanged since revision `7ee40aeea3e96042eaaeee5256017965d70c06f4`). Its card was relabelled from `cc-by-nc-sa-4.0` to `cc-by-nc-nd-4.0` on 2026-11-12 (revision `0e43f972f18aad2a2e6365dcb2d8a7ced9286924`) but still reports that run as `complete` with 99.6875% accuracy. | Large artifacts are published only when their license permits redistribution; LSA64 is CC BY-NC-ND 4.0 and gate `lsa64-license-and-publication` is open |  | It is not reproduction evidence, and the public model card contradicts this report | Repository made private on 2026-11-12 (anonymous access returns 401). It stays private, or is removed, until permission to publish learned weights is established at gate `lsa64-license-and-publication` |
+
+## Data license and open gates
+
+The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset or predictions are committed or distributed. Weights from an earlier, excluded run were published on Hugging Face and have since been made private; see `unpermitted-checkpoint-upload` under Noncompliance.
 
 The unresolved signer identities and license/publishing question are open gates, so no target-level numerical result is claimed here. Earlier fine-tuned and purportedly frozen results are excluded: the retained code did not enforce the paper's encoder freeze, and the fine-tuned run also drove its LR schedule from the reported holdout.
 
