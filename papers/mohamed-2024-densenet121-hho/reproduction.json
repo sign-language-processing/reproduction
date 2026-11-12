@@ -1400,5 +1400,120 @@
     }
   ],
   "gates": [],
+  "guesses_and_deviations": [
+    {
+      "id": "horizontal-flip",
+      "kind": "paper_internal_conflict",
+      "description": "Whether augmentation includes a horizontal flip.",
+      "paper_says": "Algorithm 1's augmentation list is rotation, zoom, shift, and brightness, with no flip; Fig. 8's illustrative box for the DenseNet121-HHO pipeline mentions \"Horizontal Flip\" instead of rotation",
+      "used": "Algorithm 1's list; no flipping anywhere",
+      "basis": "Algorithm 1 is the one place the paper actually spells out the augmentation procedure",
+      "scope": "All eight models"
+    },
+    {
+      "id": "backbone-freezing",
+      "kind": "guess",
+      "description": "How much of each pretrained backbone is frozen.",
+      "paper_says": "\"the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning\"; no layer count for \"early\"",
+      "used": "Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234",
+      "basis": "The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. \"Match the CNN's parameter count\" is this attempt's own rule, not something the paper states",
+      "effect": "The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8)",
+      "scope": "EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO",
+      "evidence": [
+        "train.py make_model_specs()"
+      ]
+    },
+    {
+      "id": "validation-augmentation",
+      "kind": "guess",
+      "description": "Whether validation data is augmented.",
+      "paper_says": "Algorithm 1 says the augmented generator covers training and validation; only the test generator skips augmentation",
+      "used": "Training and validation augmented; test gets plain normalization",
+      "effect": "The fitness signal the two HHO searches optimize against is computed on augmented validation data",
+      "scope": "All eight models"
+    },
+    {
+      "id": "backbone-input-preprocessing",
+      "kind": "paper_deviation",
+      "description": "Input scaling for the pretrained backbones.",
+      "paper_says": "Algorithm 1 normalizes images to [0, 1] ahead of every model",
+      "used": "The [0, 1] scaling is undone and each backbone's own `preprocess_input` applied (mean-subtracted BGR for ResNet50, x/127.5-1 for DenseNet, EfficientNet's internal Rescaling+Normalization)",
+      "basis": "Each tf.keras.applications backbone was pretrained with its own preprocessing on raw [0, 255] input",
+      "effect": "Without it, ResNet50 reached ~34% test accuracy after 60 epochs and EfficientNet never escaped chance accuracy",
+      "scope": "EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO",
+      "evidence": [
+        "train.py resizing_backbone() comment"
+      ]
+    },
+    {
+      "id": "efficientnet-input-size",
+      "kind": "guess",
+      "description": "How 64x64 images become EfficientNet's 224x224 input.",
+      "paper_says": "Fig. 4: EfficientNet-B0/B3 take a 224x224x3 input; the shared preprocessing produces 64x64x3",
+      "used": "Upsize with a Keras Resizing layer to 224x224",
+      "scope": "EfficientNet-B0, EfficientNet-B3",
+      "evidence": [
+        "train.py resizing_backbone()"
+      ]
+    },
+    {
+      "id": "densenet121-activation",
+      "kind": "paper_deviation",
+      "description": "DenseNet121's final activation.",
+      "paper_says": "The last layer uses sigmoid for 32-way classification",
+      "used": "Softmax",
+      "basis": "Sigmoid doesn't make sense for a single-label, mutually-exclusive classification problem, and every other model in the paper uses softmax for the same task; the sigmoid mention is treated as a slip in the writing",
+      "scope": "DenseNet121, DenseNet121-HHO"
+    },
+    {
+      "id": "learning-rate",
+      "kind": "guess",
+      "description": "Learning rate for the models whose rate the paper omits.",
+      "paper_says": "The paper names an optimizer (Adam or Adamax) for each but never gives a rate",
+      "used": "The framework default for ResNet50, DenseNet121, and DenseNet201; 1e-4 for the plain CNN",
+      "basis": "For the CNN, Adam's default (1e-3) was tried first and collapsed to predicting the class prior; 1e-4 is the value CNN-HHO's own search converged to",
+      "scope": "CNN, ResNet50, DenseNet121, DenseNet201",
+      "evidence": [
+        "train.py make_model_specs() comment on the CNN spec"
+      ]
+    },
+    {
+      "id": "resnet50-dropout",
+      "kind": "guess",
+      "description": "The ResNet50 head's dropout rate.",
+      "paper_says": "Figure 5 just says \"Flatten \u2192 Dropout \u2192 Dense\" with no number",
+      "used": "0.5",
+      "basis": "A plain default, distinct from the two dropout rates the paper does give for other models (0.6 for EfficientNet, 0.8 for DenseNet201)",
+      "scope": "ResNet50"
+    },
+    {
+      "id": "metric-averaging",
+      "kind": "guess",
+      "description": "How precision, recall, and F1 are averaged across the 32 classes.",
+      "paper_says": "Not stated",
+      "used": "Macro averaging (unweighted mean across classes)",
+      "basis": "The standard choice when it isn't specified, and consistent with the paper's own numbers: its F1 is sometimes lower than both its precision and recall, which can't happen with micro-averaging but is normal under macro or per-class averaging on an imbalanced label set"
+    },
+    {
+      "id": "split",
+      "kind": "guess",
+      "description": "The train/val/test split.",
+      "paper_says": "64/16/20, stratified; the split itself and a seed are not published",
+      "used": "Stratified 64/16/20, seed 42",
+      "dataset_ids": [
+        "arasl2018-grayscale"
+      ]
+    },
+    {
+      "id": "hho-search",
+      "kind": "guess",
+      "description": "The HHO search budget.",
+      "paper_says": "HHO tunes hyperparameters \"to maximize validation accuracy\"; no population size, number of iterations, or cost per candidate evaluation",
+      "used": "Population 6, 4 iterations; each candidate judged by training it for 3 epochs on a 25% slice of the training data",
+      "basis": "Evaluating every candidate with a full training run would cost far more than the 5-epoch final run the paper reports; a fairly standard cheap-proxy setup",
+      "effect": "DenseNet121-HHO's search settled on a configuration that does slightly worse than the plain DenseNet121 default (95.11% vs. 96.39%), reported as-is rather than re-running the search until it beats the baseline",
+      "scope": "CNN-HHO, DenseNet121-HHO"
+    }
+  ],
   "noncompliance": []
 }
