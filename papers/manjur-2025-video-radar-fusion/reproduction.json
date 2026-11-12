@@ -3441,6 +3441,164 @@
         "note": "best_heldout_acc is each fold's held-out portion of the training set (the authors' 5-fold split), used only for the authors' checkpoint rule; it is not a target. All best epochs (165-245) fall after the resume points (120-127). seconds counts this attempt only."
       },
       "artifact_ids": []
+    },
+    {
+      "run_id": "slgcn-test-full-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2-1-319"
+      ],
+      "kind": "evaluation",
+      "purpose": "SL-GCN inference on MultiMeDaLIS Track-2 val and test with the authors' 20 published fold test configs unchanged except data, label and checkpoint paths, then their run_fusion.py: bone, joint-motion and bone-motion from the retrained run slgcn-full-002 (slgcn-retrain-full-002, best held-out epoch per fold), joint from slgcn-full-001 (slgcn-train-full-002), val/test keypoint arrays from slgcn-full-001. Writes per-stream fold-mean logits and the weighted 4-stream ensemble into runs/slgcn-full-002/. Protocol A1, gate slgcn-retrain-settings R1.",
+      "target_ids_supported": [
+        "t2-joint-val",
+        "t2-joint-test",
+        "t2-bone-val",
+        "t2-bone-test",
+        "t2-jm-val",
+        "t2-jm-test",
+        "t2-bm-val",
+        "t2-bm-test",
+        "t2-ensemble-val",
+        "t2-ensemble-test"
+      ],
+      "command": "for split in val test: .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach --env \"$MODAL_ENV\" papers/manjur-2025-video-radar-fusion/scripts/modal_app.py::slgcn_test --run-id slgcn-full-002 --split $split --data-run slgcn-full-001 --stream-runs joint=slgcn-full-001 (each followed at once by its guard; see stop_policy_enforcement)",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "slgcn-test-retrain",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-12T09:44:39Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.5,
+        "max_cost_chf": 2.5
+      },
+      "stop_policy_basis": "Two apps (val, test), one L4 each (8 cores, 32 GiB). slgcn-test-full-001 ran the same function on the same arrays in 622 s (val) and 969 s (test); expected ~0.45 L4-h and ~USD 0.70 in total at USD 1.43-1.44 per container-hour. Per app: 3600 s wall, 0.75 L4-h, CHF 1.25. Attempt-wide after this run, worst case USD 387.64 of CHF 450 and 328.9 of 380 L4-h.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "$MODAL_ENV",
+        "gpu": "L4",
+        "gpu_count": 2,
+        "gpus_per_job": 1,
+        "cpu": 8,
+        "memory_mib": 32768,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "modal_environment": "main",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "gpu_concurrency_limit": "At most 30 GPUs at once for this paper across all jobs (MAX_GPUS); this run uses 2 and nothing else runs on GPU meanwhile.",
+        "modal_app_ids": {
+          "val": "ap-nynq8N0XPQ3WC01Xn5Qlwz",
+          "test": "ap-UExfv7zCXLXDhLpxDRx2UE"
+        },
+        "dashboard": {
+          "val": "https://modal.com/apps/repro-sign/$MODAL_ENV/ap-nynq8N0XPQ3WC01Xn5Qlwz",
+          "test": "https://modal.com/apps/repro-sign/$MODAL_ENV/ap-UExfv7zCXLXDhLpxDRx2UE"
+        }
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Both slgcn_test calls exited 0: val 4,410 rows (633 s), test 7,560 rows (1,039 s), all 20 fold configs and run_fusion.py per split, no best_acc.pkl fallback. Per-stream and ensemble logits written to runs/slgcn-full-002/ (SHA-256 in outputs.files). No labels: scores come only from Kaggle.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-11-12T09:44:48Z",
+      "stop_policy_enforcement": {
+        "mechanism": "One detached guard app per split, launched by the scratchpad launcher right after its run: val app ap-nynq8N0XPQ3WC01Xn5Qlwz guarded by ap-Da3df7uDyDZhOp9UeoD9ym (first poll 09:45:00Z), test app ap-UExfv7zCXLXDhLpxDRx2UE guarded by ap-k4s8yLlDWTTkX3o3rN0rmW (first poll 09:44:59Z); each polls every 60 s with max_tasks 1; plus a local backup loop per app through the wrapper (every 120 s) that stops the app at 10:39:48Z (deadline + 10 min).",
+        "deadline_utc": "2026-11-12T10:29:48Z",
+        "deadline_formula": "guard_deadline(09:44:48Z, 1 GPU, 3600 s, 0.75 GPU-h, CHF 1.25, USD 1.50 per container-hour) = start + min(1 h, 0.75 h, 1.25/1.50 = 0.833 h) = 45 min per app; the GPU-hour ceiling binds: per app <= 0.75 L4-h and <= USD 1.13, both apps <= 1.5 L4-h and <= USD 2.25.",
+        "gap_before_enforcement": "11-12 s (launch to each guard's first poll).",
+        "headroom": "Expected 10-16 min per app (slgcn-test-full-001: 622 s val, 969 s test).",
+        "outcome": "Not triggered: val stopped 09:55:21Z and test 10:02:07Z, 27-34 min before the deadline; each guard saw at most 1 task, returned stopped_by_guard false (09:56:02Z, 10:03:02Z), and each backup loop recognised the stopped app and ended (09:57:15Z, 10:03:01Z). Upper bound from elapsed time: 0.46 L4-h, USD 0.70 at USD 1.50/h."
+      },
+      "finished_at_utc": "2026-11-12T10:02:07Z",
+      "exit_code": 0,
+      "outputs": {
+        "run_dir": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/slgcn-full-002/",
+        "files": {
+          "logit_slgcn_bm_test.csv": {
+            "sha256": "b0ee10f277685b3f987c8c1e9e9b5902cf2db5a32a3b404d806db9d97da77972",
+            "rows": 7560
+          },
+          "logit_slgcn_bm_val.csv": {
+            "sha256": "b4d72ad1b3483a026cb7d92fc53309eb369cb7e5c6d72802686ebc211a5165b3",
+            "rows": 4410
+          },
+          "logit_slgcn_bone_test.csv": {
+            "sha256": "d5f7703cc7f0c630501d9bfa20bb26e72b998f258e0edcf63a591d20e6260fc9",
+            "rows": 7560
+          },
+          "logit_slgcn_bone_val.csv": {
+            "sha256": "7e43fa6a5f94395d0b330b15e057148fd0f07650c0584d1c831d70703b4514e9",
+            "rows": 4410
+          },
+          "logit_slgcn_jm_test.csv": {
+            "sha256": "7856baf38a36a5f17699db60a2c643ecf93adad765adb79958116985874c2d8a",
+            "rows": 7560
+          },
+          "logit_slgcn_jm_val.csv": {
+            "sha256": "3573ade8ca8a1e2e1c1241ee45ada8c9820c7acc739c3dcd68e67724073c92b7",
+            "rows": 4410
+          },
+          "logit_slgcn_joint_test.csv": {
+            "sha256": "24f039e7441736ee93c22bd50e81488ee46ee97c2fd48da271fff5ade2fcdd87",
+            "rows": 7560
+          },
+          "logit_slgcn_joint_val.csv": {
+            "sha256": "c3295dc39450817c5824f43be65c60c3b2f1778efa214a297ebeec42875b2b43",
+            "rows": 4410
+          },
+          "logit_slgcnn_test.csv": {
+            "sha256": "6e8ec6da1736c8ea0d0f92f0ed35ae9744c69167d166c88a491e3b593b6a18e9",
+            "rows": 7560
+          },
+          "logit_slgcnn_val.csv": {
+            "sha256": "275eb48a718deb449d0b264f3bb49417a636d34bad65071d7a5bd653a7eb3fcd",
+            "rows": 4410
+          },
+          "test_test/summary.json": {
+            "sha256": "eb9935546907835b8a591436fe27a8082738d8feee063bd8204194532e102946",
+            "rows": null
+          },
+          "test_val/summary.json": {
+            "sha256": "49efc8b6f77ae83f9fbb0cc430819431419764856e6faf0aa9d4d033eb96e9d1",
+            "rows": null
+          }
+        },
+        "files_note": "logit_slgcnn_<split>.csv is run_fusion.py's weighted 4-stream ensemble; logit_slgcn_<stream>_<split>.csv is the 5-fold mean per stream (rows exclude the header). test_<split>/ also holds test.log, the 20 written configs and work_dir. Hashes computed on copies fetched with the wrapper's volume get, which were then deleted."
+      },
+      "observed": {
+        "val": {
+          "rows": 4410,
+          "seconds_wall": 633,
+          "best_acc_fallbacks": [],
+          "app": "ap-nynq8N0XPQ3WC01Xn5Qlwz",
+          "finished_at_utc": "2026-11-12T09:55:21Z"
+        },
+        "test": {
+          "rows": 7560,
+          "seconds_wall": 1039,
+          "best_acc_fallbacks": [],
+          "app": "ap-UExfv7zCXLXDhLpxDRx2UE",
+          "finished_at_utc": "2026-11-12T10:02:07Z"
+        },
+        "fallback_note": "No fold needed the best_acc.pkl fallback (main.py writes best_acc.pkl only when some sample is argmax'd to class 0 against the dummy labels). In slgcn-test-full-001 all five is_vector-True bone folds needed it on both splits; the authors' released bone checkpoints did not. The retrained bone folds now behave like the authors' in this respect.",
+        "stream_sources": "joint: slgcn-full-001 checkpoints (logs/sign_joint_fold<k>_250.json, slgcn-train-full-002); bone, jm, bm: slgcn-full-002 checkpoints (slgcn-retrain-full-002); keypoint arrays: slgcn-full-001/slgcn_data/<split>."
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [

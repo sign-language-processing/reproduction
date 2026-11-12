@@ -192,7 +192,23 @@ $W run --detach --env "$MODAL_ENV" $APP::guard --target-app ap-Or6VA4QMCT2DYpKBS
   --deadline-utc 2026-11-11T00:46:35Z --env-name "$MODAL_ENV" --poll-seconds 120 --max-tasks 16
 ```
 
-Its inference, fusion and submission building (`fuse`, preflighted) will be added when they run.
+Inference on the retrained streams, each split launched with its own guard (`--max-tasks 1`; deadline = launch + 45 min, where the 0.75 GPU-h per-app ceiling binds):
+
+```bash
+# 10. the authors' 20 fold test configs and run_fusion.py: bone, jm, bm from slgcn-full-002,
+#     joint from slgcn-full-001, keypoint arrays of slgcn-full-001
+for split in val test; do
+  $W run --detach --env "$MODAL_ENV" $APP::slgcn_test --run-id slgcn-full-002 --split $split \
+    --data-run slgcn-full-001 --stream-runs joint=slgcn-full-001
+done
+# their guards (started 2026-11-12T09:44:48Z): val app ap-nynq8N0XPQ3WC01Xn5Qlwz, test app ap-UExfv7zCXLXDhLpxDRx2UE
+$W run --detach --env "$MODAL_ENV" $APP::guard --target-app ap-nynq8N0XPQ3WC01Xn5Qlwz \
+  --deadline-utc 2026-11-12T10:29:48Z --env-name "$MODAL_ENV" --poll-seconds 60 --max-tasks 1
+$W run --detach --env "$MODAL_ENV" $APP::guard --target-app ap-UExfv7zCXLXDhLpxDRx2UE \
+  --deadline-utc 2026-11-12T10:29:48Z --env-name "$MODAL_ENV" --poll-seconds 60 --max-tasks 1
+```
+
+Fusion and submission building (`fuse`, preflighted) will be added when they run.
 
 **Stop-policy enforcement (from 2026-11-10).** Every declared ceiling is enforced mechanically, not only recorded.
 
@@ -290,6 +306,7 @@ Other environment decisions (details in `reproduction.json.environment_notes`):
 | `pf-slgcn-all-001` / same | 1 / 2 | Orchestrator preflight | L4, 4 cores, 16 GiB; apps `ap-Lr2YCnOg2kBppcde7I1Ex5` (a), `ap-pzjmIVsyVOEM59zTHq8SW1` (b), each with a guard (`--max-tasks 2`) | bone fold 0, 1 epoch, scratch run id; then the same without `--resume` | 19:35:36Z / 19:49:49Z | 1 / failed / `command_failed`; retry → `pf-slgcn-all-002` | `deterministic_code` | 1 h; 1 GPU-h; CHF 2 | a trained 1 epoch (exit 0). b's fold refused as intended, but the orchestrator hung: the remote `SystemExit` killed Modal's client thread, and `return_exceptions` does not catch `SystemExit`. Stopped by hand |
 | `pf-slgcn-all-002` / same | 2 / 2 | Orchestrator preflight, `RuntimeError` version | L4, 4 cores, 16 GiB; app `ap-HCloAQefYSkttk0AAC7wL3`, guard `ap-S58mAq9lznOhdNwUQirVVp` | invocation b again | 19:50:30Z / 19:51:55Z | 1 / failed / `command_failed` (the exit 1 is the tested outcome); retry decision `stop` | `deterministic_code` | 30 min; 0.5 GPU-h; CHF 1 | `failed_inputs` reported the fold's `RuntimeError`, and the orchestrator exited once after 85 s, with no hang or relaunch. Fix kept |
 | `slgcn-retrain-full-002` / same | 2 / 2 | Resume of `slgcn-retrain-full-001`; Tables 2–3 | 15 × L4, 4 cores, 16 GiB; nonpreemptible remote orchestrator; app `ap-Or6VA4QMCT2DYpKBSlMDaI`; 15 of the 30-GPU limit | as attempt 1 with `--resume`, from each fold's last checkpoint (start epoch 120–127) | 19:54:25Z / 2026-11-11T00:18:56Z | 0 / succeeded / completed | none | 24 h; 76 GPU-h; CHF 84 (the group's remainder) — **enforced** by guard app `ap-0j8xcaIF5HJlInObqB6S0b` (stop at 2026-11-11T00:46:35Z; cost binds: 15 × 4.87 h × USD 1.15; at most 16 tasks) plus a local backup stop at 00:56:35Z. Not reached: at most 16 tasks seen; finished 27.7 min before the deadline | All 15 folds reached epoch 250 and exited 0; no preemption. Best held-out epochs 165–245; mean best held-out accuracy bone 98.71%, jm 98.48%, bm 98.10% (training-set folds, not targets). Fold summaries and checkpoints under `runs/slgcn-full-002/` on the results Volume (SHA-256 per fold in `reproduction.json`). USD 66.99, 59.56 L4-h; group total USD 132.56, 117.9 L4-h |
+| `slgcn-test-full-002` / same | 1 / 2 | SL-GCN inference, retrained streams; Table 2 (and the SL-GCN input to Table 3) | 2 × L4, 8 cores, 32 GiB; apps `ap-nynq8N0XPQ3WC01Xn5Qlwz` (val), `ap-UExfv7zCXLXDhLpxDRx2UE` (test) | authors' 20 fold test configs unchanged except paths; bone/jm/bm from `slgcn-full-002`, joint from `slgcn-full-001` | 2026-11-12T09:44:48Z / 10:02:07Z | 0 / succeeded / completed | none | 1 h; 1.5 GPU-h; CHF 2.5 (per app 0.75 GPU-h, CHF 1.25) — **enforced** by guards `ap-Da3df7uDyDZhOp9UeoD9ym` (val) and `ap-k4s8yLlDWTTkX3o3rN0rmW` (test), stop at 10:29:48Z, at most 1 task each, plus local backup stops at 10:39:48Z. Not reached | val 4,410 rows (633 s), test 7,560 rows (1,039 s); no `best_acc.pkl` fallback (every `is_vector: True` bone fold needed it in `slgcn-test-full-001`). Per-stream and ensemble logits in `runs/slgcn-full-002/`, SHA-256 in `reproduction.json`. At most 0.46 L4-h, USD 0.70 |
 
 What the logit audit found:
 
