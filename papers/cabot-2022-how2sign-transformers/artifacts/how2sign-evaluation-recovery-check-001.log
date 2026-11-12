@@ -1,0 +1,128 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-nzhpKppfqQr1QRLqua8CLl
+Building image im-k72FF7MYNwtLV7pmWNiiZu
+
+=> Step 0: FROM base
+
+=> Step 1: RUN git -C /slt apply /opt/how2-patches/01-english-wer.patch
+
+=> Step 2: RUN git -C /slt apply /opt/how2-patches/02-wer-integer-range.patch
+
+=> Step 3: RUN git -C /slt apply /opt/how2-patches/03-training-recovery.patch
+
+=> Step 4: RUN git -C /slt apply /opt/how2-patches/04-evaluation-recovery.patch
+Saving image...
+Image saved, took 710.47ms
+
+Built image im-k72FF7MYNwtLV7pmWNiiZu in 3.38s
+
+
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_evaluation_recovery.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/recovery_eval.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_training_recovery.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/recovery_train.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/parallel_ctc.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/pa
+│   tches
+├── 🔨 Created function collect.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function execute.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function check_phoenix_metric.
+├── 🔨 Created function execute_how2.
+├── 🔨 Created function check_how2_metric.
+├── 🔨 Created function check_evaluation.
+├── 🔨 Created function check_evaluation_gpu.
+└── 🔨 Created function check_training_recovery.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+{"started_at_utc": "2026-10-01T15:18:30.718283+00:00", "app_id": "ap-nzhpKppfqQr1QRLqua8CLl", "function_call_id": "fc-01M3W0PVK0Q1YC0W6FVSSDM4X9", "exit_code": 0, "finished_at_utc": "2026-10-01T15:20:13.362322+00:00"}
+2026-10-01 15:18:33.582854: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:33.583598: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:33.583657: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+2026-10-01 15:18:37.358064: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2026-10-01 15:18:37.397491: E tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:967] could not open file to read NUMA node: /sys/bus/pci/devices/0000:00:05.0/numa_node
+Your kernel may have been built without NUMA support.
+2026-10-01 15:18:37.400418: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties:
+pciBusID: 0000:00:05.0 name: Tesla T4 computeCapability: 7.5
+coreClock: 1.59GHz coreCount: 40 deviceMemorySize: 14.56GiB deviceMemoryBandwidth: 298.08GiB/s
+2026-10-01 15:18:37.400508: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2026-10-01 15:18:37.401051: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcublas.so.10'; dlerror: libcublas.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:37.417705: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2026-10-01 15:18:37.427504: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2026-10-01 15:18:37.428413: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcusolver.so.10'; dlerror: libcusolver.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:37.429176: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcusparse.so.10'; dlerror: libcusparse.so.10: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:37.429747: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcudnn.so.7'; dlerror: libcudnn.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 15:18:37.429796: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1592] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2026-10-01 15:18:57.708161: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2026-10-01 15:18:57.719376: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 1000025000 Hz
+2026-10-01 15:18:57.722656: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56124011b6e0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2026-10-01 15:18:57.722720: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2026-10-01 15:18:57.725825: E tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:967] could not open file to read NUMA node: /sys/bus/pci/devices/0000:00:05.0/numa_node
+Your kernel may have been built without NUMA support.
+2026-10-01 15:18:57.728182: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56123fadbca0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2026-10-01 15:18:57.728233: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla T4, Compute Capability 7.5
+2026-10-01 15:18:57.728389: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2026-10-01 15:18:57.728676: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]
+{"evaluation_recovery": {"identity_sha256": "22eb52c37b3b91bcdb2ab3b166fb67beccd97ba84ada85e326ca865fb9ddcf95", "completed_batch_hits": 0, "new_completed_batches": 1}}
+{"evaluation_recovery": {"identity_sha256": "22eb52c37b3b91bcdb2ab3b166fb67beccd97ba84ada85e326ca865fb9ddcf95", "completed_batch_hits": 1, "new_completed_batches": 1}}
+{"evaluation_recovery": {"identity_sha256": "22eb52c37b3b91bcdb2ab3b166fb67beccd97ba84ada85e326ca865fb9ddcf95", "completed_batch_hits": 2, "new_completed_batches": 0}}
+/root/miniconda3/lib/python3.7/site-packages/torchtext/data/field.py:359: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  var = torch.tensor(arr, dtype=self.dtype, device=device)
+{"diagnostic_only": true, "native_and_resumed_complete_outputs_exact": true, "completed_batch_reused": true, "missing_batch_recomputed_once": true, "operational_config_replay_all_batches_cached": true, "cuda_rng_fresh_process_exact": true, "model_state_unchanged": true, "model_state_sha256": "f93050c677fd7397e7336970cc9ba1e0cbe9a47d2ef41369a28298c427212018", "real_record_lengths": [52, 79, 115, 154], "gloss_vocabulary": 26656, "text_vocabulary": 24607, "peak_gpu_memory_bytes": 369948160, "torch_version": "1.4.0", "torchtext_version": "0.5.0"}
+
+Runner terminated.
+✓ App completed. View run at 
+https://modal.com/apps/repro-sign/main/ap-nzhpKppfqQr1QRLqua8CLl
