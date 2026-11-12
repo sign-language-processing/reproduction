@@ -3599,6 +3599,221 @@
         "stream_sources": "joint: slgcn-full-001 checkpoints (logs/sign_joint_fold<k>_250.json, slgcn-train-full-002); bone, jm, bm: slgcn-full-002 checkpoints (slgcn-retrain-full-002); keypoint arrays: slgcn-full-001/slgcn_data/<split>."
       },
       "artifact_ids": []
+    },
+    {
+      "run_id": "compare-slgcn-author-002",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2-1-319"
+      ],
+      "kind": "evaluation",
+      "purpose": "Evidence only, no labels: align the retrained run's SL-GCN logits (slgcn-test-full-002) with the logits of the authors' released checkpoints run through the same code on the same keypoint arrays (author-slgcn-weights-check-001), per stream and for the 4-stream ensemble, on val and test; plus a determinism check of the joint stream, whose checkpoints are the same as in slgcn-test-full-001. Repeats compare-slgcn-author-001 after the is_vector retrain. Not used for any target, checkpoint choice or tuning.",
+      "target_ids_supported": [],
+      "command": "for split in val test: for s in joint bone jm bm: .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --env \"$MODAL_ENV\" papers/manjur-2025-video-radar-fusion/scripts/modal_app.py::compare_logits --ours /outputs/runs/slgcn-full-002/logit_slgcn_${s}_${split}.csv --theirs /outputs/runs/slgcn-full-001/logit_slgcn_${s}_${split}_author.csv; then the same for logit_slgcnn_${split}.csv vs logit_slgcnn_${split}_author.csv, and --ours /outputs/runs/slgcn-full-002/logit_slgcn_joint_${split}.csv --theirs /outputs/runs/slgcn-full-001/logit_slgcn_joint_${split}.csv (12 calls, sequential)",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "compare-slgcn-author-retrain",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-12T10:07:44Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "stop_policy_basis": "compare-slgcn-author-001 ran 12 such calls in 5 min 15 s. CPU only (2 cores, 8 GiB per call), one container at a time.",
+      "stop_policy_enforcement": {
+        "mechanism": "CPU run, sequential calls: the local loop launches no new call after 5,400 s, and each call is bounded by compare_logits' 1,800 s function timeout, so wall time <= 7,200 s. With one container at a time, cost <= wall x USD 0.174 per container-hour (Modal list price for 2 cores + 8 GiB, USD 0.158, + 10%) = USD 0.35 < CHF 1.",
+        "ceilings_enforced": {
+          "wall_time": "loop cut-off 5,400 s + function timeout 1,800 s",
+          "gpu_hours": "none (no GPU)",
+          "cost": "wall bound x rate, one container at a time"
+        },
+        "outcome": "Not triggered: 12 calls in 189 s (10:07:49-10:10:58Z), far below the 5,400 s cut-off."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "$MODAL_ENV",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 2,
+        "memory_mib": 8192,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "modal_environment": "main",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_ids": [
+          "ap-dyHepaIlnceqAOuRa0njN2",
+          "ap-Jf2v0w9Mk6fMEFmR8T45NX",
+          "ap-Zcd9Xp54usXjmCbybQNny4",
+          "ap-sJWcsJBjbfN94q5PXi7LOT",
+          "ap-PQIo2TaqcdbbmpvvzbHP4s",
+          "ap-mEY0UNRDje30E3FgaF4r5T",
+          "ap-y8PSEHL27HIOHPPpiPAVol",
+          "ap-AR9izlbgYQEAswAq86hkeD",
+          "ap-7Qxs5iri2DJfmlMbnpY5Jd",
+          "ap-7tiCwgSm2wQnltf5bEGupN",
+          "ap-qPiiM2RtWyatohbLECrgFE",
+          "ap-VmgmFKFCkeZDCTnQ4syBBO"
+        ]
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 12 compare_logits calls exited 0 with all ids aligned (4,410 val, 7,560 test). Evidence only; see observed.finding.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "started_at_utc": "2026-11-12T10:07:49Z",
+      "finished_at_utc": "2026-11-12T10:10:58Z",
+      "exit_code": 0,
+      "observed": {
+        "comparisons": [
+          {
+            "ours": "slgcn-full-002/logit_slgcn_joint_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_joint_val_author.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 0.9977,
+            "argmax_disagreements": 10,
+            "max_abs_diff": 10.3708,
+            "mean_abs_diff": 1.2936,
+            "pearson": 0.9646,
+            "argmax_agreement_before_retrain": 0.9977
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_bone_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_bone_val_author.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 0.9946,
+            "argmax_disagreements": 24,
+            "max_abs_diff": 9.3074,
+            "mean_abs_diff": 1.2956,
+            "pearson": 0.968,
+            "argmax_agreement_before_retrain": 0.0086
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_jm_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_jm_val_author.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 0.9952,
+            "argmax_disagreements": 21,
+            "max_abs_diff": 9.4381,
+            "mean_abs_diff": 1.2196,
+            "pearson": 0.97,
+            "argmax_agreement_before_retrain": 0.9902
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_bm_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_bm_val_author.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 0.9921,
+            "argmax_disagreements": 35,
+            "max_abs_diff": 10.4458,
+            "mean_abs_diff": 1.321,
+            "pearson": 0.9642,
+            "argmax_agreement_before_retrain": 0.9902
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcnn_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcnn_val_author.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 0.9991,
+            "argmax_disagreements": 4,
+            "max_abs_diff": 6.1954,
+            "mean_abs_diff": 0.7628,
+            "pearson": 0.9864,
+            "argmax_agreement_before_retrain": 0.9961
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_joint_val.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_joint_val.csv",
+            "common_ids": 4410,
+            "argmax_agreement": 1.0,
+            "argmax_disagreements": 0,
+            "max_abs_diff": 0.0,
+            "mean_abs_diff": 0.0,
+            "pearson": 1.0
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_joint_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_joint_test_author.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 0.9956,
+            "argmax_disagreements": 33,
+            "max_abs_diff": 9.5909,
+            "mean_abs_diff": 1.2884,
+            "pearson": 0.9644,
+            "argmax_agreement_before_retrain": 0.9956
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_bone_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_bone_test_author.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 0.9951,
+            "argmax_disagreements": 37,
+            "max_abs_diff": 9.9452,
+            "mean_abs_diff": 1.2923,
+            "pearson": 0.9679,
+            "argmax_agreement_before_retrain": 0.0085
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_jm_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_jm_test_author.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 0.9927,
+            "argmax_disagreements": 55,
+            "max_abs_diff": 8.8825,
+            "mean_abs_diff": 1.2164,
+            "pearson": 0.9696,
+            "argmax_agreement_before_retrain": 0.9889
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_bm_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_bm_test_author.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 0.9903,
+            "argmax_disagreements": 73,
+            "max_abs_diff": 10.1858,
+            "mean_abs_diff": 1.3125,
+            "pearson": 0.9641,
+            "argmax_agreement_before_retrain": 0.9852
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcnn_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcnn_test_author.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 0.9981,
+            "argmax_disagreements": 14,
+            "max_abs_diff": 6.0768,
+            "mean_abs_diff": 0.7607,
+            "pearson": 0.9862,
+            "argmax_agreement_before_retrain": 0.9918
+          },
+          {
+            "ours": "slgcn-full-002/logit_slgcn_joint_test.csv",
+            "theirs": "slgcn-full-001/logit_slgcn_joint_test.csv",
+            "common_ids": 7560,
+            "argmax_agreement": 1.0,
+            "argmax_disagreements": 0,
+            "max_abs_diff": 0.0,
+            "mean_abs_diff": 0.0,
+            "pearson": 1.0
+          }
+        ],
+        "finding": "After the is_vector False retrain, our bone stream agrees with the authors' released bone checkpoints on 99.46% (val) / 99.51% (test) of samples, up from 0.86% / 0.85% with is_vector True (compare-slgcn-author-001). Joint-motion 99.52% / 99.27% (before 99.02% / 98.89%), bone-motion 99.21% / 99.03% (before 99.02% / 98.52%), 4-stream ensemble 99.91% / 99.81% (before 99.61% / 99.18%). Joint is unchanged at 99.77% / 99.56% because its checkpoints are the same, and the determinism check reproduces slgcn-test-full-001's joint logits exactly (max abs diff 0.0, both splits). Remaining disagreement is consistent with independently trained models of the same recipe; it is not a score, and no labels were used."
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [
