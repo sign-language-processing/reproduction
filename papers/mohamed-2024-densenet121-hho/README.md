@@ -155,4 +155,7 @@ The paper leaves out a lot of implementation detail, so here's everywhere I had 
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `first-attempt-overwritten` | The first set of eight full runs (whole backbone frozen; 2026-08-30 06:03-07:18 UTC; recorded in commit aaa7d1a) was dropped from `runs` when the second set (partial unfreezing) was recorded under the same run IDs as attempt 1, and the second set overwrote its artifacts at the same paths on the results volume. | `reproduction.json.runs` records every meaningful retained attempt (AGENTS.md, evidence and completion contract) |  | The first attempt's test accuracies (CNN 96.28, CNN-HHO 87.32, EfficientNet-B0 91.09, EfficientNet-B3 86.85, ResNet50 81.09, DenseNet201 70.72, DenseNet121 85.74, DenseNet121-HHO 81.43) and artifact hashes survive only in commit aaa7d1a; its raw outputs are gone | Open: the run entries can be restored from commit aaa7d1a; the artifacts cannot |
+| `failed-attempts-removed` | Commit a3cb787 deleted the README's "What went wrong along the way" section (CNN and CNN-HHO runs at chance before the learning-rate change, EfficientNet runs killed by hand, a ResNet50 run that finished at 33.7%, reruns that reused or resumed from broken outputs until volume folders were deleted) and its "Contacting the authors" section (no contact made). | README.md reports every failed attempt and any author contact (AGENTS.md, reporting integrity) |  | These dead ends and the no-contact statement are absent from the current report | Open: both sections can be restored from commit aaa7d1a |
