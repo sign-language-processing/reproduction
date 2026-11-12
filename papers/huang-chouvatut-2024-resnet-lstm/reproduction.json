@@ -459,6 +459,17 @@
       "used": "ImageNet normalization"
     },
     {
+      "id": "pretrained-encoder",
+      "kind": "paper_deviation",
+      "description": "Source of the ImageNet-pretrained ResNet-18 weights.",
+      "paper_says": "The authors pretrained ResNet-18 on ImageNet themselves: SGD, batch 32, learning rate 0.1 decayed by a factor of 10 every 30 epochs (§3.5)",
+      "used": "torchvision `ResNet18_Weights.IMAGENET1K_V1`",
+      "basis": "The authors' pretrained weights are not published; the §3.5 recipe matches torchvision's reference ImageNet recipe",
+      "evidence": [
+        "train.py:144"
+      ]
+    },
+    {
       "id": "projection-and-lstm",
       "kind": "guess",
       "description": "Width of the modified fully-connected layer and LSTM, and LSTM depth.",
@@ -481,19 +492,30 @@
       "basis": "Training loss prevents the held-out clips from controlling optimization"
     },
     {
+      "id": "label-smoothing",
+      "kind": "guess",
+      "description": "Label-smoothing factor.",
+      "paper_says": "\"a label smoothing cross-loss function\" (§4.4); no factor given",
+      "used": "0.1",
+      "evidence": [
+        "train.py:231: `nn.CrossEntropyLoss(label_smoothing=0.1)`"
+      ]
+    },
+    {
       "id": "optimizer",
       "kind": "paper_internal_conflict",
       "description": "Optimizer.",
       "paper_says": "§4.4 says Adam, while Table 2 says SGD",
       "used": "Adam",
-      "basis": "The reconstruction follows the detailed implementation prose"
+      "basis": "The reconstruction follows the detailed implementation prose. SGD otherwise appears only in §3.5, as the optimizer of the ImageNet pretraining"
     },
     {
       "id": "epoch-count",
-      "kind": "paper_internal_conflict",
-      "description": "Number of training epochs.",
-      "paper_says": "The paper describes 50-epoch experiments, but Table 3 explicitly reports the requested 30-epoch row",
-      "used": "Fixed 30 epochs"
+      "kind": "guess",
+      "description": "Whether Table 3's 30-epoch row is its own 30-epoch run or the epoch-30 evaluation of a 50-epoch run.",
+      "paper_says": "\"The iteration period for each experiment was 50\" (§4.4) and Table 2 \"Epochs 50\"; Table 3 reports validation results at 10, 20, 30, 40, and 50 epochs without saying whether each row is a separate run",
+      "used": "A fixed 30-epoch run, evaluated once at epoch 30",
+      "effect": "None expected: ReduceLROnPlateau does not depend on the total epoch count, so the first 30 epochs of a 50-epoch run follow the same recipe"
     }
   ],
   "noncompliance": [

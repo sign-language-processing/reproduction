@@ -52,11 +52,13 @@ These choices are not presented as paper facts:
 | `frame-selection` | `guess` | Positions of the 16 frames taken from each clip. | Not specified | Uniform 16-frame sampling |  |  |  |  |  |  |  |  |
 | `resize-policy` | `guess` | Resize policy before the random crop. | Not specified | Resize-short-side 144 then one 128 crop |  |  |  |  |  |  |  |  |
 | `normalization` | `guess` | Input normalization constants. | Not specified | ImageNet normalization |  |  |  |  |  |  |  |  |
+| `pretrained-encoder` | `paper_deviation` | Source of the ImageNet-pretrained ResNet-18 weights. | The authors pretrained ResNet-18 on ImageNet themselves: SGD, batch 32, learning rate 0.1 decayed by a factor of 10 every 30 epochs (§3.5) | torchvision `ResNet18_Weights.IMAGENET1K_V1` | The authors' pretrained weights are not published; the §3.5 recipe matches torchvision's reference ImageNet recipe |  |  |  | train.py:144 |  |  |  |
 | `projection-and-lstm` | `guess` | Width of the modified fully-connected layer and LSTM, and LSTM depth. | Not specified | A trainable 512-unit frame projection followed by one 512-unit LSTM |  |  |  |  |  |  |  |  |
 | `seed` | `guess` | Random seed. | Not specified | 2024 |  |  |  |  |  |  |  |  |
 | `scheduler-monitor` | `guess` | Quantity monitored by ReduceLROnPlateau. | Not specified | Training loss | Training loss prevents the held-out clips from controlling optimization |  |  |  |  |  |  |  |
-| `optimizer` | `paper_internal_conflict` | Optimizer. | §4.4 says Adam, while Table 2 says SGD | Adam | The reconstruction follows the detailed implementation prose |  |  |  |  |  |  |  |
-| `epoch-count` | `paper_internal_conflict` | Number of training epochs. | The paper describes 50-epoch experiments, but Table 3 explicitly reports the requested 30-epoch row | Fixed 30 epochs |  |  |  |  |  |  |  |  |
+| `label-smoothing` | `guess` | Label-smoothing factor. | "a label smoothing cross-loss function" (§4.4); no factor given | 0.1 |  |  |  |  | train.py:231: `nn.CrossEntropyLoss(label_smoothing=0.1)` |  |  |  |
+| `optimizer` | `paper_internal_conflict` | Optimizer. | §4.4 says Adam, while Table 2 says SGD | Adam | The reconstruction follows the detailed implementation prose. SGD otherwise appears only in §3.5, as the optimizer of the ImageNet pretraining |  |  |  |  |  |  |  |
+| `epoch-count` | `guess` | Whether Table 3's 30-epoch row is its own 30-epoch run or the epoch-30 evaluation of a 50-epoch run. | "The iteration period for each experiment was 50" (§4.4) and Table 2 "Epochs 50"; Table 3 reports validation results at 10, 20, 30, 40, and 50 epochs without saying whether each row is a separate run | A fixed 30-epoch run, evaluated once at epoch 30 |  | None expected: ReduceLROnPlateau does not depend on the total epoch count, so the first 30 epochs of a 50-epoch run follow the same recipe |  |  |  |  |  |  |
 
 ## Noncompliance
 
