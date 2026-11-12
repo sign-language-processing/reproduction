@@ -10,13 +10,13 @@
 
 The preference level is provisional; see `status.preference_level_basis`. Published code exists for every system. SL-GCN training will need the cited SAM-SLR training configs, because the paper's repository ships only test configs.
 
-**Pipeline status:** not yet set. Training protocol A1 (published code) was chosen by the operator on 2026-11-09. The attempt-wide compute ceiling, first CHF 300 / 250 L4 GPU-hours, was raised to CHF 450 / 380 on 2026-11-10, and this paper may use at most 30 GPUs at once. Radar, video and SL-GCN training finished on 2026-11-09. The SL-GCN bone, joint-motion and bone-motion models turned out to be trained with a normalization (`is_vector: True`) that contradicts the authors' published configs (dead end, see Attempts). Following gate `slgcn-retrain-settings` (R1, operator 2026-11-10), they were retrained with `is_vector: False`. The first retrain attempt was interrupted after 120–127 of 250 epochs per fold (`slgcn-retrain-full-001`); the second resumed it and finished on 2026-11-11 (`slgcn-retrain-full-002`). SL-GCN inference, fusion and the 11 Kaggle submission files come next. No target has a terminal result yet.
+**Pipeline status:** not yet set. Training protocol A1 (published code) was chosen by the operator on 2026-11-09. The attempt-wide compute ceiling, first CHF 300 / 250 L4 GPU-hours, was raised to CHF 450 / 380 on 2026-11-10, and this paper may use at most 30 GPUs at once. Radar, video and SL-GCN training finished on 2026-11-09. The SL-GCN bone, joint-motion and bone-motion models turned out to be trained with a normalization (`is_vector: True`) that contradicts the authors' published configs (dead end, see Attempts). Following gate `slgcn-retrain-settings` (R1, operator 2026-11-10), they were retrained with `is_vector: False`. The first retrain attempt was interrupted after 120–127 of 250 epochs per fold (`slgcn-retrain-full-001`); the second resumed it and finished on 2026-11-11 (`slgcn-retrain-full-002`). SL-GCN inference (`slgcn-test-full-002`) and fusion (`fusion-full-001`) followed on 2026-11-12 and produced the 11 Kaggle submission files, which the operator submits. No target has a terminal result until those Kaggle scores return.
 
 **Numerical agreement:** `not_assessed` — no target has been produced.
 
 **Modal environment:** every Modal command for this paper runs in a Restricted Environment of the `repro-sign` workspace, written `$MODAL_ENV` throughout. Its literal name embeds an operator account name and is withheld pending the operator's confirmation; the project lead holds it.
 
-**Attempt dates:** 2026-11-04 (intake, target ledger, gates), 2026-11-06 (data, preprocessing, preflight), 2026-11-09 (protocol and compute decisions, full runs), 2026-11-10 (`is_vector` dead end, ceiling increase, retrain gate, retrain), 2026-11-11 (retrain finished), 2026-11-12 (SL-GCN inference, logit comparison)
+**Attempt dates:** 2026-11-04 (intake, target ledger, gates), 2026-11-06 (data, preprocessing, preflight), 2026-11-09 (protocol and compute decisions, full runs), 2026-11-10 (`is_vector` dead end, ceiling increase, retrain gate, retrain), 2026-11-11 (retrain finished), 2026-11-12 (SL-GCN inference, logit comparison, fusion and the 11 submission files)
 
 ## Reproduction agents
 
@@ -119,7 +119,23 @@ The full search log is in `reproduction.json.source_search`.
 
 | Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
-| all 22 targets | Tables 1–3, p.7 | see table above | MultiMeDaLIS Track-2 val (4,410) / test (7,560) | Kaggle Accuracy Score, metric version 17210 | see table above | not yet produced | — | No terminal result yet. Radar and video training and their val/test inference are done (`predict-full-001`). The SL-GCN streams trained with `is_vector: True` (`slgcn-train-full-002`) produce no targets (dead end). Bone, joint-motion and bone-motion were retrained with `is_vector: False` (`slgcn-retrain-full-002`, gate `slgcn-retrain-settings` R1). Then come SL-GCN inference, fusion and the 11 submission files, which the operator submits to Kaggle, returning each public/private score |
+| all 22 targets | Tables 1–3, p.7 | see table above | MultiMeDaLIS Track-2 val (4,410) / test (7,560) | Kaggle Accuracy Score, metric version 17210 | see table above | not yet produced | — | No terminal result yet. Radar and video training and their val/test inference are done (`predict-full-001`). The SL-GCN streams trained with `is_vector: True` (`slgcn-train-full-002`) produce no targets (dead end). Bone, joint-motion and bone-motion were retrained with `is_vector: False` (`slgcn-retrain-full-002`, gate `slgcn-retrain-settings` R1). SL-GCN inference (`slgcn-test-full-002`) and fusion (`fusion-full-001`) wrote the 11 submission files below. The operator submits them to Kaggle and returns each public (Val Top-1) and private (Test Top-1) score |
+
+**Kaggle submission files** (`fusion-full-001`, 2026-11-12; `runs/fusion-full-001/submissions/` on the results Volume, `MANIFEST.json` SHA-256 `bec96c2a…bcdc17`). Each file is `id,pred` over all 4,410 val and 7,560 test ids. One late submission to `iccv-mslr-2025-track-2` per file gives that row's two targets: the public leaderboard score is Val Top-1 and the private score is Test Top-1.
+
+| File | Table row | Targets | Rows | SHA-256 |
+| --- | --- | --- | ---: | --- |
+| `t1-radar.csv` | Table 1, radar (CNN 2D / µ-D) | `t1-radar-val`, `t1-radar-test` | 11,970 | `8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca` |
+| `t1-video.csv` | Table 1, video (ResNet(2+1)D) | `t1-video-val`, `t1-video-test` | 11,970 | `4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339` |
+| `t2-joint.csv` | Table 2, joint | `t2-joint-val`, `t2-joint-test` | 11,970 | `47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1` |
+| `t2-bone.csv` | Table 2, bone | `t2-bone-val`, `t2-bone-test` | 11,970 | `dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68` |
+| `t2-jm.csv` | Table 2, joint motion | `t2-jm-val`, `t2-jm-test` | 11,970 | `50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f` |
+| `t2-bm.csv` | Table 2, bone motion | `t2-bm-val`, `t2-bm-test` | 11,970 | `8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b` |
+| `t2-ensemble.csv` | Table 2, 4-stream ensemble | `t2-ensemble-val`, `t2-ensemble-test` | 11,970 | `916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01` |
+| `t3-radar-video.csv` | Table 3, radar + video | `t3-radar-video-val`, `t3-radar-video-test` | 11,970 | `2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7` |
+| `t3-radar-skeletal.csv` | Table 3, radar + skeletal | `t3-radar-skeletal-val`, `t3-radar-skeletal-test` | 11,970 | `a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42` |
+| `t3-skeletal-video.csv` | Table 3, skeletal + video | `t3-skeletal-video-val`, `t3-skeletal-video-test` | 11,970 | `aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c` |
+| `t3-all.csv` | Table 3, radar + skeletal + video | `t3-all-val`, `t3-all-test` | 11,970 | `61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4` |
 
 No targets are copied baselines. No scores have been produced, so no numerical agreement is assessed.
 
@@ -208,7 +224,13 @@ $W run --detach --env "$MODAL_ENV" $APP::guard --target-app ap-UExfv7zCXLXDhLpxD
   --deadline-utc 2026-11-12T10:29:48Z --env-name "$MODAL_ENV" --poll-seconds 60 --max-tasks 1
 ```
 
-Fusion and submission building (`fuse`, preflighted) will be added when they run.
+Fusion and submission building (CPU; its 1 h function timeout bounds wall time and cost):
+
+```bash
+# 11. the authors' fusion_all.py and Multimodal_fusion.py unchanged, then the 11 id,pred submission files
+$W run --env "$MODAL_ENV" $APP::fuse --out-id fusion-full-001 --slgcn-run slgcn-full-002 \
+  --tf-val predict-val-full-001 --tf-test predict-test-full-001
+```
 
 **Stop-policy enforcement (from 2026-11-10).** Every declared ceiling is enforced mechanically, not only recorded.
 
@@ -308,6 +330,7 @@ Other environment decisions (details in `reproduction.json.environment_notes`):
 | `slgcn-retrain-full-002` / same | 2 / 2 | Resume of `slgcn-retrain-full-001`; Tables 2–3 | 15 × L4, 4 cores, 16 GiB; nonpreemptible remote orchestrator; app `ap-Or6VA4QMCT2DYpKBSlMDaI`; 15 of the 30-GPU limit | as attempt 1 with `--resume`, from each fold's last checkpoint (start epoch 120–127) | 19:54:25Z / 2026-11-11T00:18:56Z | 0 / succeeded / completed | none | 24 h; 76 GPU-h; CHF 84 (the group's remainder) — **enforced** by guard app `ap-0j8xcaIF5HJlInObqB6S0b` (stop at 2026-11-11T00:46:35Z; cost binds: 15 × 4.87 h × USD 1.15; at most 16 tasks) plus a local backup stop at 00:56:35Z. Not reached: at most 16 tasks seen; finished 27.7 min before the deadline | All 15 folds reached epoch 250 and exited 0; no preemption. Best held-out epochs 165–245; mean best held-out accuracy bone 98.71%, jm 98.48%, bm 98.10% (training-set folds, not targets). Fold summaries and checkpoints under `runs/slgcn-full-002/` on the results Volume (SHA-256 per fold in `reproduction.json`). USD 66.99, 59.56 L4-h; group total USD 132.56, 117.9 L4-h |
 | `slgcn-test-full-002` / same | 1 / 2 | SL-GCN inference, retrained streams; Table 2 (and the SL-GCN input to Table 3) | 2 × L4, 8 cores, 32 GiB; apps `ap-nynq8N0XPQ3WC01Xn5Qlwz` (val), `ap-UExfv7zCXLXDhLpxDRx2UE` (test) | authors' 20 fold test configs unchanged except paths; bone/jm/bm from `slgcn-full-002`, joint from `slgcn-full-001` | 2026-11-12T09:44:48Z / 10:02:07Z | 0 / succeeded / completed | none | 1 h; 1.5 GPU-h; CHF 2.5 (per app 0.75 GPU-h, CHF 1.25) — **enforced** by guards `ap-Da3df7uDyDZhOp9UeoD9ym` (val) and `ap-k4s8yLlDWTTkX3o3rN0rmW` (test), stop at 10:29:48Z, at most 1 task each, plus local backup stops at 10:39:48Z. Not reached | val 4,410 rows (633 s), test 7,560 rows (1,039 s); no `best_acc.pkl` fallback (every `is_vector: True` bone fold needed it in `slgcn-test-full-001`). Per-stream and ensemble logits in `runs/slgcn-full-002/`, SHA-256 in `reproduction.json`. At most 0.46 L4-h, USD 0.70 |
 | `compare-slgcn-author-002` / same | 1 / 2 | Evidence only, no targets | Modal CPU, 2 cores, 8 GiB; 12 apps, one at a time | `compare_logits`, retrained-run logits vs the authors' released-weight logits; joint vs `slgcn-test-full-001` (determinism) | 2026-11-12T10:07:49Z / 10:10:58Z | 0 / succeeded / completed | none | 2 h; no GPU; CHF 1 — enforced by a 5,400 s launch cut-off plus each call's 1,800 s timeout; cost at most wall × USD 0.174/h. Not reached | Argmax agreement with the authors' (val/test): joint 99.77/99.56%, **bone 99.46/99.51%** (before 0.86/0.85%), jm 99.52/99.27%, bm 99.21/99.03%, ensemble 99.91/99.81%. Joint identical to `slgcn-test-full-001` (max abs diff 0.0) |
+| `fusion-full-001` / same | 1 / 2 | Fusion and submission files; all 22 targets | Modal CPU, 4 cores, 16 GiB; app `ap-5hTUUPM8s2kmI5QJrix2Sb` | `fuse`: the authors' `fusion_all.py` and `Multimodal_fusion.py` unchanged; SL-GCN from `slgcn-full-002`, radar/video from `predict-full-001` | 2026-11-12T10:12:25Z / 10:13:26Z | 0 / succeeded / completed | none | 1 h; no GPU; CHF 1 — enforced by the 3,600 s function timeout (cost at most 1 h × USD 0.35). Not reached | The two fusion scripts agree on both splits. 11 files × 11,970 rows with the full id set; SHA-256 in Results. Label-free consistency: ensemble vs all-modality 99.50%, skeletal+video vs all-modality 99.78% |
 
 What the logit audit found:
 

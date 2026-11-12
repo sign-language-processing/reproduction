@@ -306,7 +306,7 @@
     "preference_level": 1,
     "preference_level_basis": "Provisional. Published code exists for every system (official-code at 7dd73c4). Expected adaptations: hardcoded Windows data paths and the ICCV_MSLR_2025 project-root lookup; SL-GCN training needs the cited SAM-SLR training configs because official-code ships only test configs.",
     "blocker": null,
-    "pipeline_note": "Data populated and verified; radar and video preprocessing complete for all 24,570 samples; every pipeline stage preflighted on real data through the 11 submission files. Gates protocol-training-recipe (A1) and compute-full-plan resolved 2026-11-09, slgcn-retrain-settings (R1) on 2026-11-10. Radar, video and SL-GCN joint training done (2026-11-09); SL-GCN bone, joint-motion and bone-motion retrained with is_vector False (slgcn-retrain-full-002, finished 2026-11-11). Remaining: slgcn_test on val and test, fusion, the 11 submission files and the operator's Kaggle submissions. pipeline and blocker stay null until targets have terminal results."
+    "pipeline_note": "Data populated and verified; radar and video preprocessing complete for all 24,570 samples. Gates protocol-training-recipe (A1) and compute-full-plan resolved 2026-11-09, slgcn-retrain-settings (R1) on 2026-11-10. Radar, video and SL-GCN joint training done (2026-11-09); SL-GCN bone, joint-motion and bone-motion retrained with is_vector False (slgcn-retrain-full-002, finished 2026-11-11). SL-GCN inference (slgcn-test-full-002) and fusion (fusion-full-001) done 2026-11-12: the 11 Kaggle submission files (SHA-256 in fusion-full-001) were handed to the operator for late submission to iccv-mslr-2025-track-2. pipeline and blocker stay null until the Kaggle public/private scores return and the 22 targets get terminal results."
   },
   "datasets": [
     {
@@ -3812,6 +3812,179 @@
           }
         ],
         "finding": "After the is_vector False retrain, our bone stream agrees with the authors' released bone checkpoints on 99.46% (val) / 99.51% (test) of samples, up from 0.86% / 0.85% with is_vector True (compare-slgcn-author-001). Joint-motion 99.52% / 99.27% (before 99.02% / 98.89%), bone-motion 99.21% / 99.03% (before 99.02% / 98.52%), 4-stream ensemble 99.91% / 99.81% (before 99.61% / 99.18%). Joint is unchanged at 99.77% / 99.56% because its checkpoints are the same, and the determinism check reproduces slgcn-test-full-001's joint logits exactly (max abs diff 0.0, both splits). Remaining disagreement is consistent with independently trained models of the same recipe; it is not a score, and no labels were used."
+      },
+      "artifact_ids": []
+    },
+    {
+      "run_id": "fusion-full-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2-1-319"
+      ],
+      "kind": "evaluation",
+      "purpose": "Fusion and submission building for all 22 targets: install the radar and video logits (predict-full-001: runs predict-val-full-001, predict-test-full-001) and the SL-GCN ensemble logits (slgcn-test-full-002: run slgcn-full-002, bone/jm/bm retrained, joint from slgcn-full-001) where the authors' scripts expect them, run MSLR_radar_video/fusion_with_slgcnn/fusion_all.py and Multimodal_fusion.py unchanged, check that their 3-modality predictions agree, then write one Kaggle id,pred submission per table row over all 11,970 val + test ids (require_full True), with SHA-256 in submissions/MANIFEST.json. Protocol A1, gate slgcn-retrain-settings R1.",
+      "target_ids_supported": [
+        "t1-radar-val",
+        "t1-radar-test",
+        "t1-video-val",
+        "t1-video-test",
+        "t2-joint-val",
+        "t2-joint-test",
+        "t2-bone-val",
+        "t2-bone-test",
+        "t2-jm-val",
+        "t2-jm-test",
+        "t2-bm-val",
+        "t2-bm-test",
+        "t2-ensemble-val",
+        "t2-ensemble-test",
+        "t3-radar-video-val",
+        "t3-radar-video-test",
+        "t3-radar-skeletal-val",
+        "t3-radar-skeletal-test",
+        "t3-skeletal-video-val",
+        "t3-skeletal-video-test",
+        "t3-all-val",
+        "t3-all-test"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --env \"$MODAL_ENV\" papers/manjur-2025-video-radar-fusion/scripts/modal_app.py::fuse --out-id fusion-full-001 --slgcn-run slgcn-full-002 --tf-val predict-val-full-001 --tf-test predict-test-full-001",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "fusion-full",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-12T10:12:25Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_chf": 1.0
+      },
+      "stop_policy_basis": "pf-fuse-001 ran the same function on 59 ids in seconds; the full run reads 4 xlsx and 2 csv logit tables and writes 11 x 11,970-row csv files. CPU only (4 cores, 16 GiB), one container.",
+      "stop_policy_enforcement": {
+        "mechanism": "CPU run in one container: fuse's 3,600 s function timeout bounds wall time; cost <= 1 h x USD 0.35 per container-hour (Modal list price for 4 cores + 16 GiB, USD 0.317, + 10%) < CHF 1.",
+        "ceilings_enforced": {
+          "wall_time": "function timeout 3,600 s",
+          "gpu_hours": "none (no GPU)",
+          "cost": "timeout x rate, one container"
+        },
+        "outcome": "Not triggered: 61 s wall."
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_environment": "$MODAL_ENV",
+        "gpu": null,
+        "gpu_count": 0,
+        "cpu": 4,
+        "memory_mib": 16384,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "modal_environment": "main",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_app_id": "ap-5hTUUPM8s2kmI5QJrix2Sb",
+        "dashboard": "https://modal.com/apps/repro-sign/$MODAL_ENV/ap-5hTUUPM8s2kmI5QJrix2Sb"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "fuse exited 0 in 61 s: the authors' two fusion scripts ran unchanged and agreed on both splits, and all 11 submission files were written with 11,970 rows each and the full expected id set (require_full). SHA-256 per file in outputs.submissions. The targets are scored only when the operator submits these files to Kaggle (gate target-eval-route).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "target-eval-route"
+        ]
+      },
+      "started_at_utc": "2026-11-12T10:12:25Z",
+      "finished_at_utc": "2026-11-12T10:13:26Z",
+      "exit_code": 0,
+      "inputs": {
+        "radar_video_logits": "runs/predict-val-full-001/results/logit_{md,video}_val.xlsx and runs/predict-test-full-001/results/logit_{md,video}_test.xlsx (predict-full-001)",
+        "slgcn_logits": "runs/slgcn-full-002/logit_slgcnn_{val,test}.csv and logit_slgcn_<stream>_{val,test}.csv (slgcn-test-full-002; SHA-256 there)",
+        "radar_video_fusion": "runs/predict-<split>-full-001/results/predictions/fusion_preds_<split>.csv (the authors' prediction scripts' own radar+video fusion), copied into tf/<split>/"
+      },
+      "outputs": {
+        "run_dir": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/",
+        "submissions": {
+          "t1-radar": {
+            "file": "submissions/t1-radar.csv",
+            "rows": 11970,
+            "sha256": "8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca"
+          },
+          "t1-video": {
+            "file": "submissions/t1-video.csv",
+            "rows": 11970,
+            "sha256": "4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339"
+          },
+          "t2-joint": {
+            "file": "submissions/t2-joint.csv",
+            "rows": 11970,
+            "sha256": "47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1"
+          },
+          "t2-bone": {
+            "file": "submissions/t2-bone.csv",
+            "rows": 11970,
+            "sha256": "dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68"
+          },
+          "t2-jm": {
+            "file": "submissions/t2-jm.csv",
+            "rows": 11970,
+            "sha256": "50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f"
+          },
+          "t2-bm": {
+            "file": "submissions/t2-bm.csv",
+            "rows": 11970,
+            "sha256": "8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b"
+          },
+          "t2-ensemble": {
+            "file": "submissions/t2-ensemble.csv",
+            "rows": 11970,
+            "sha256": "916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01"
+          },
+          "t3-radar-video": {
+            "file": "submissions/t3-radar-video.csv",
+            "rows": 11970,
+            "sha256": "2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7"
+          },
+          "t3-radar-skeletal": {
+            "file": "submissions/t3-radar-skeletal.csv",
+            "rows": 11970,
+            "sha256": "a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42"
+          },
+          "t3-skeletal-video": {
+            "file": "submissions/t3-skeletal-video.csv",
+            "rows": 11970,
+            "sha256": "aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c"
+          },
+          "t3-all": {
+            "file": "submissions/t3-all.csv",
+            "rows": 11970,
+            "sha256": "61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4"
+          }
+        },
+        "submission_rule": "Each file is id,pred over the 4,410 val + 7,560 test ids (11,970 rows, ids unique, the full expected set, pred in 0-125). t1-*/t2-*: argmax of the logit table; t3-*: the authors' fusion scripts' pred column. One Kaggle submission per file gives the Val Top-1 (public leaderboard) and Test Top-1 (private leaderboard) targets of that row.",
+        "manifest_sha256": "bec96c2a982add36444cf4a85bd025c5e30922736b093bf54259c7e3bc2df73b",
+        "fusion_log_sha256": "8cd8b0e948d8750ce52c4975633d9e8a95d947c24080709b2fbd8b6799bcdc17",
+        "local_copy_note": "The operator receives the 11 files fetched with the wrapper's volume get; their SHA-256 were re-checked against MANIFEST.json after download (all match). Not committed (predictions stay on the results Volume)."
+      },
+      "observed": {
+        "fusion_scripts_agree": "fusion_all.py's fusion_slgcnn_md_video_<split>.csv and Multimodal_fusion.py's Final_LIS_prediction_<split>.csv have identical ids and predictions on both splits (fuse asserts this).",
+        "label_free_consistency": {
+          "t2-ensemble vs t3-all": 0.995,
+          "t3-skeletal-video vs t3-all": 0.9978,
+          "t2-bone vs t2-joint": 0.99,
+          "t1-video vs t3-radar-video": 0.9351,
+          "t1-radar vs t3-radar-video": 0.9205
+        },
+        "consistency_note": "Share of the 11,970 ids on which two submissions predict the same class. A sanity check of the files only, not a score; no labels exist locally."
       },
       "artifact_ids": []
     }
