@@ -62,11 +62,11 @@ These choices are not presented as paper facts:
 
 | ID | Description | Requirement | Run IDs | Effect | Resolution |
 | --- | --- | --- | --- | --- | --- |
-| `unpermitted-checkpoint-upload` | An earlier invalid checkpoint was uploaded before this review. | Large artifacts are published only when their license permits redistribution; LSA64 is CC BY-NC-ND 4.0 and gate `lsa64-license-and-publication` is open |  | It is not reproduction evidence | Must be privatized or removed pending permission to publish learned weights |
+| `unpermitted-checkpoint-upload` | The earlier, excluded fine-tuned checkpoint (`model.pt`, SHA-256 `d2f155cbf44b95322ce812159e476c7536988d416500ca5656190e54030ee8e0`) is public at https://huggingface.co/repro-sign/huang-chouvatut-2024-resnet-lstm (revision `7ee40aeea3e96042eaaeee5256017965d70c06f4`), under a `cc-by-nc-sa-4.0` card that still reports that run as `complete` with 99.6875% accuracy. | Large artifacts are published only when their license permits redistribution; LSA64 is CC BY-NC-ND 4.0 and gate `lsa64-license-and-publication` is open |  | It is not reproduction evidence, and the public model card contradicts this report | Still public as of 2026-11-12. Must be privatized or removed pending permission to publish learned weights |
 
 ## Data license and open gates
 
-The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset, predictions, or new weights are committed or distributed.
+The official LSA64 page currently licenses the data CC BY-NC-ND 4.0 for strict academic use and prohibits derivative works. The user authorized this private project-cloud run; no dataset or predictions are committed or distributed. Weights from an earlier, excluded run are published on Hugging Face; see `unpermitted-checkpoint-upload` under Noncompliance.
 
 The unresolved signer identities and license/publishing question are open gates, so no target-level numerical result is claimed here. Earlier fine-tuned and purportedly frozen results are excluded: the retained code did not enforce the paper's encoder freeze, and the fine-tuned run also drove its LR schedule from the reported holdout.
 
