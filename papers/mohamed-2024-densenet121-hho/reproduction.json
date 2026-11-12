@@ -1405,7 +1405,7 @@
       "id": "horizontal-flip",
       "kind": "paper_internal_conflict",
       "description": "Whether augmentation includes a horizontal flip.",
-      "paper_says": "Algorithm 1's augmentation list is rotation, zoom, shift, and brightness, with no flip; Fig. 8's illustrative box for the DenseNet121-HHO pipeline mentions \"Horizontal Flip\" instead of rotation",
+      "paper_says": "Algorithm 1's augmentation list is rotation, zoom, shift, and brightness, with no flip; Fig. 8's \"Image processing\" box lists Rescaling, Zooming, Shifting, Brightness Adjustment, and Horizontal Flip",
       "used": "Algorithm 1's list; no flipping anywhere",
       "basis": "Algorithm 1 is the one place the paper actually spells out the augmentation procedure",
       "scope": "All eight models"
@@ -1414,7 +1414,7 @@
       "id": "backbone-freezing",
       "kind": "guess",
       "description": "How much of each pretrained backbone is frozen.",
-      "paper_says": "\"the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning\"; no layer count for \"early\"",
+      "paper_says": "DenseNet121 (\u00a7III.B.5): \"the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning\"; ResNet50 (\u00a7III.B.3): \"with the early layers frozen to preserve pre-learned features\". EfficientNet-B0/B3 are only \"fine-tuned\" (\u00a7III.B.2), and DenseNet201's description (\u00a7III.B.4) does not mention freezing. No layer count for \"early\"",
       "used": "Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234",
       "basis": "The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. \"Match the CNN's parameter count\" is this attempt's own rule, not something the paper states",
       "effect": "The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8)",
@@ -1431,6 +1431,21 @@
       "used": "Training and validation augmented; test gets plain normalization",
       "effect": "The fitness signal the two HHO searches optimize against is computed on augmented validation data",
       "scope": "All eight models"
+    },
+    {
+      "id": "rgb-channels",
+      "kind": "guess",
+      "description": "How grayscale images become the RGB input the paper describes.",
+      "paper_says": "\"All images were resized to 64 \u00d7 64 pixels and retained in RGB format\" (\u00a7III.A); Figs. 2, 6, and 7 show 64x64x3 input",
+      "used": "Every image converted to grayscale and resized to 64x64 (648 of 54,049 are not native 64x64 grayscale), then the single channel replicated into 3 channels",
+      "basis": "The native ArASL2018 images are 64x64 grayscale",
+      "scope": "All eight models",
+      "dataset_ids": [
+        "arasl2018-grayscale"
+      ],
+      "evidence": [
+        "train.py comments at lines 26 and 63"
+      ]
     },
     {
       "id": "backbone-input-preprocessing",
@@ -1457,6 +1472,21 @@
       ]
     },
     {
+      "id": "cnn-architecture",
+      "kind": "paper_deviation",
+      "description": "The CNN's convolutional stack.",
+      "paper_says": "Fig. 2: Conv2D(32), Conv2D(32), Conv2D(64), Conv2D(128), with feature maps 64x64x32, 32x32x32, 16x16x64, 14x14x128, 7x7x128 and a Flatten of 6272 before Dense(512)",
+      "used": "Three blocks of two same-padded 3x3 convolutions (32, 64, 128 filters), each followed by MaxPooling and BatchNormalization; Flatten of 8192 before Dense(512)",
+      "effect": "About 4.5M trainable parameters, against about 3.3M for Fig. 2's shapes (the Flatten-to-Dense(512) layer alone is 4.2M vs 3.2M). The CNN's ~4.5M is the target of the backbone-freezing rule",
+      "scope": "CNN, CNN-HHO",
+      "related_ids": [
+        "backbone-freezing"
+      ],
+      "evidence": [
+        "train.py build_cnn()"
+      ]
+    },
+    {
       "id": "densenet121-activation",
       "kind": "paper_deviation",
       "description": "DenseNet121's final activation.",
@@ -1464,6 +1494,20 @@
       "used": "Softmax",
       "basis": "Sigmoid doesn't make sense for a single-label, mutually-exclusive classification problem, and every other model in the paper uses softmax for the same task; the sigmoid mention is treated as a slip in the writing",
       "scope": "DenseNet121, DenseNet121-HHO"
+    },
+    {
+      "id": "densenet121-head",
+      "kind": "paper_deviation",
+      "description": "DenseNet121's classification head.",
+      "paper_says": "Fig. 6: MaxPooling2D, BatchNormalization, Dropout (0.3), Flatten, Dense (512 units, ReLU), Dropout (0.5), Dense (32 units, Sigmoid)",
+      "used": "MaxPooling2D, BatchNormalization, Flatten, Dense (512, ReLU), Dropout, Dense (32, softmax): no Dropout (0.3) before Flatten. The remaining dropout is 0.5 for DenseNet121 and HHO-tuned for DenseNet121-HHO",
+      "scope": "DenseNet121, DenseNet121-HHO",
+      "related_ids": [
+        "densenet121-activation"
+      ],
+      "evidence": [
+        "train.py resizing_backbone() densenet121 head"
+      ]
     },
     {
       "id": "learning-rate",
@@ -1505,14 +1549,32 @@
       ]
     },
     {
+      "id": "checkpoint-selection",
+      "kind": "guess",
+      "description": "Which evaluation Table II reports.",
+      "paper_says": "\"Table II presents the best test results for each model\" (\u00a7IV); it does not say best over what (epochs, runs, or HHO candidates)",
+      "used": "One test evaluation at the end of the epoch count Table II lists; no checkpoint or run selection",
+      "scope": "All eight models"
+    },
+    {
+      "id": "results-prose-values",
+      "kind": "paper_internal_conflict",
+      "description": "Accuracies quoted in the results prose.",
+      "paper_says": "\u00a7IV's prose gives EfficientNet-B3 98.55%, ResNet50 97.90%, and CNN 94.50% with F1 94.2%; none of these appear in Table II",
+      "used": "Table II's values as the targets"
+    },
+    {
       "id": "hho-search",
       "kind": "guess",
       "description": "The HHO search budget.",
-      "paper_says": "HHO tunes hyperparameters \"to maximize validation accuracy\"; no population size, number of iterations, or cost per candidate evaluation",
-      "used": "Population 6, 4 iterations; each candidate judged by training it for 3 epochs on a 25% slice of the training data",
+      "paper_says": "HHO tunes \"the learning rate, batch size, number of filters, and dropout rates\" for CNN-HHO (\u00a7III.B.6, Fig. 7) and \"learning rate, batch size, and dropout, to maximize validation accuracy\" for DenseNet121-HHO (\u00a7III.B.7); no search ranges, population size, number of iterations, or cost per candidate evaluation",
+      "used": "Search ranges: log10 learning rate [-4, -2], batch size 16-64, dropout 0.2-0.6, and for CNN-HHO a filter-count scale 0.5-1.5. Population 6, 4 iterations; each candidate judged by training it for 3 epochs on a 25% slice of the training data",
       "basis": "Evaluating every candidate with a full training run would cost far more than the 5-epoch final run the paper reports; a fairly standard cheap-proxy setup",
       "effect": "DenseNet121-HHO's search settled on a configuration that does slightly worse than the plain DenseNet121 default (95.11% vs. 96.39%), reported as-is rather than re-running the search until it beats the baseline",
-      "scope": "CNN-HHO, DenseNet121-HHO"
+      "scope": "CNN-HHO, DenseNet121-HHO",
+      "evidence": [
+        "train.py make_model_specs() hho_bounds; --hho-population/--hho-iterations/--hho-proxy-epochs/--hho-proxy-fraction defaults"
+      ]
     }
   ],
   "noncompliance": []
