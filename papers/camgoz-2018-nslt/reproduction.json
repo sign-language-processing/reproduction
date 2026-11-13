@@ -104,8 +104,7 @@
             }
           ]
         }
-      ],
-      "deviation": "The upstream manifests point to MATLAB-resized 227x227 frame files. With the user's protocol approval, the retained simple-video-utils patch decodes the supplied MP4s at runtime and uses OpenCV cubic resize. RGB-to-BGR conversion matches the upstream OpenCV mean-subtraction convention, but this is not pixel-identical to the unpublished MATLAB resize plus image-file round trip."
+      ]
     }
   ],
   "metric_definitions": [
@@ -427,13 +426,36 @@
       "evidence": ["First segment timed out after a verified checkpoint; resumed terminal segment took 16.17 A100-hours."]
     }
   ],
-  "guesses": [
-    "The paper does not state a seed; the authors' executable default uses seed 285, although its dropout operators are not globally seeded.",
-    "The paper describes convergence around 30 epochs and half-epoch evaluation; the pinned README/defaults instead define the concrete 150000-step, development-BLEU-selected executable recipe."
-  ],
-  "deviations": [
-    "Direct MP4 decoding and OpenCV resize replaces unavailable upstream MATLAB-resized image files; this was an explicitly approved behavior-changing preprocessing deviation.",
-    "The initial 24-hour Modal segment ended at checkpoint 91000 and resumed with paired hparams/epoch state; no training restart occurred."
+  "guesses_and_deviations": [
+    {
+      "id": "seed",
+      "kind": "guess",
+      "description": "Random seed.",
+      "paper_says": "Not stated",
+      "used": "285, the authors' executable default, although its dropout operators are not globally seeded."
+    },
+    {
+      "id": "training-length",
+      "kind": "paper_code_conflict",
+      "description": "Training length, evaluation cadence and checkpoint selection.",
+      "paper_says": "\"trained until the training perplexity is converged, which took ∼30 epochs on average. We evaluate our models on dev/test sets every half-epoch, and report results for each setup using the model that performed the best on the dev set\" (§5)",
+      "used": "The pinned README/defaults' concrete 150000-step, development-BLEU-selected executable recipe; selected checkpoint 118000",
+      "basis": "Follow the authors' executable recipe"
+    },
+    {
+      "id": "video-input",
+      "kind": "code_deviation",
+      "description": "Direct MP4 decoding and OpenCV resize replaces unavailable upstream MATLAB-resized image files; this was an explicitly approved behavior-changing preprocessing deviation.",
+      "used": "simple-video-utils MP4 decoding at runtime, OpenCV cubic resize to 227x227, RGB-to-BGR conversion",
+      "basis": "The upstream manifests point to MATLAB-resized 227x227 frame files. With the user's protocol approval, the retained simple-video-utils patch decodes the supplied MP4s at runtime and uses OpenCV cubic resize. RGB-to-BGR conversion matches the upstream OpenCV mean-subtraction convention, but this is not pixel-identical to the unpublished MATLAB resize plus image-file round trip.",
+      "status": "approved",
+      "evidence": [
+        "patches/0003-simple-video-utils.patch"
+      ],
+      "dataset_ids": [
+        "phoenix-2014t-v3-videos"
+      ]
+    }
   ],
   "dead_ends": [
     "The canonical BestModel Dropbox URL returned HTTP 409 on 2026-08-20, so no author checkpoint was used."
