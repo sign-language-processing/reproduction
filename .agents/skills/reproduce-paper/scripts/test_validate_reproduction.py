@@ -143,6 +143,8 @@ def valid_document() -> dict:
             }
         ],
         "gates": [],
+        "guesses_and_deviations": [],
+        "noncompliance": [],
     }
 
 
@@ -319,6 +321,129 @@ class ValidatorTest(unittest.TestCase):
         result = self.validate(document)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("declared after the run started", result.stderr)
+
+    def guesses_and_deviations_document(self) -> dict:
+        document = valid_document()
+        document["guesses_and_deviations"] = [
+            {
+                "id": "seed",
+                "kind": "guess",
+                "description": "The paper states no seed; seed 0 is used.",
+                "used": "seed 0",
+                "basis": "No seed is reported anywhere in the paper.",
+                "effect": "Single-seed result; variance unknown.",
+                "scope": "Random seed only.",
+                "status": "adopted before the run",
+                "evidence": ["Paper section 4 omits the seed."],
+                "affects": ["train"],
+                "dataset_ids": ["data"],
+            },
+            {
+                "id": "epochs",
+                "kind": "paper_code_conflict",
+                "description": "Paper and released config disagree on epochs.",
+                "paper_says": "120 epochs",
+                "used": "120 epochs, following the paper",
+                "related_ids": ["seed"],
+            },
+            {
+                "id": "split-sections",
+                "kind": "paper_internal_conflict",
+                "description": "Two sections of the paper describe different splits.",
+                "paper_says": "Sec. 2.1: 80/20 of all images; Sec. 5.1: 500 per class",
+                "used": "500 per class, the protocol tied to the reported table",
+            },
+        ]
+        document["noncompliance"] = [
+            {
+                "id": "ceilings-not-declared",
+                "description": "Launched with only the Modal function timeout.",
+                "requirement": "stopping-criteria.md: declare GPU-hour and CHF ceilings.",
+                "run_ids": ["run-1"],
+                "effect": "Budget control only; no effect on the numbers.",
+                "resolution": "Recorded; no re-run.",
+            },
+            {
+                "id": "compute-discussion-skipped",
+                "description": "The plan was not discussed before launch.",
+                "requirement": "AGENTS.md: discuss runs over 24 GPU-hours first.",
+            },
+        ]
+        return document
+
+    def test_guesses_deviations_and_noncompliance_entries_validate(self) -> None:
+        result = self.validate(self.guesses_and_deviations_document())
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_guesses_and_deviations_and_noncompliance_are_required(self) -> None:
+        for field in ("guesses_and_deviations", "noncompliance"):
+            with self.subTest(field=field):
+                document = valid_document()
+                del document[field]
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(f"{field} must be an array", result.stderr)
+
+    def test_guess_deviation_entry_needs_id_kind_and_description(self) -> None:
+        cases = {
+            "id": "must be an object with id",
+            "kind": ".kind must be one of",
+            "description": "needs a non-empty description",
+        }
+        for field, message in cases.items():
+            with self.subTest(field=field):
+                document = self.guesses_and_deviations_document()
+                del document["guesses_and_deviations"][0][field]
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(message, result.stderr)
+
+    def test_guess_deviation_rejects_invalid_kind_and_unknown_field(self) -> None:
+        document = self.guesses_and_deviations_document()
+        entry = document["guesses_and_deviations"][0]
+        entry["kind"] = "deviation"
+        entry["detail"] = "a legacy spelling"
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".kind must be one of", result.stderr)
+        self.assertIn("unknown field 'detail'", result.stderr)
+
+    def test_guess_deviation_ids_are_unique(self) -> None:
+        document = self.guesses_and_deviations_document()
+        document["guesses_and_deviations"][1]["id"] = "seed"
+        del document["guesses_and_deviations"][1]["related_ids"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("duplicate id 'seed'", result.stderr)
+
+    def test_guess_deviation_references_must_resolve(self) -> None:
+        document = self.guesses_and_deviations_document()
+        document["guesses_and_deviations"][0]["dataset_ids"] = ["missing-dataset"]
+        document["guesses_and_deviations"][1]["related_ids"] = ["epochs"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("references unknown dataset 'missing-dataset'", result.stderr)
+        self.assertIn("references unknown sibling entry 'epochs'", result.stderr)
+
+    def test_noncompliance_needs_requirement_and_known_runs(self) -> None:
+        document = self.guesses_and_deviations_document()
+        del document["noncompliance"][0]["requirement"]
+        document["noncompliance"][0]["run_ids"] = ["missing-run"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("needs a non-empty requirement", result.stderr)
+        self.assertIn("references unknown run 'missing-run'", result.stderr)
+
+    def test_legacy_deviation_and_guess_keys_are_rejected(self) -> None:
+        document = valid_document()
+        document["deviations"] = ["prose"]
+        document["guesses"] = []
+        document["datasets"][0]["deviations"] = ["prose"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("top-level deviations is no longer supported", result.stderr)
+        self.assertIn("top-level guesses is no longer supported", result.stderr)
+        self.assertIn("datasets[0].deviations is no longer supported", result.stderr)
 
     def test_modal_gpu_run_requires_gpu_and_cost_ceilings(self) -> None:
         document = valid_document()

@@ -147,7 +147,7 @@ Read [references/evidence-and-retries.md](references/evidence-and-retries.md) fo
 
 Summarize each agent’s model, application, contribution, attribution evidence, and unknowns in the README. Historical run attribution that cannot be recovered uses `agent_ids: []` with an `agent_attribution_note`; never infer an executor from a commit coauthor alone.
 
-Remove examples and placeholders. Include every applicable guess, deviation, dead end, copied baseline, contact, source/data provenance item, exact command, environment, hardware, run ID, runtime/GPU-hours/cost, raw metric reference, and artifact hash/link. Omit inapplicable null boilerplate. Normalize genuine shared entities by ID, but do not add abstractions with one consumer or small parsed-result files when exact target values and native artifact hashes already live in `reproduction.json`.
+Remove examples and placeholders. Include every applicable guess and deviation (in `guesses_and_deviations`), every lapse from this contract (in `noncompliance`; see [references/evidence-and-retries.md](references/evidence-and-retries.md)), dead end, copied baseline, contact, source/data provenance item, exact command, environment, hardware, run ID, runtime/GPU-hours/cost, raw metric reference, and artifact hash/link. Omit inapplicable null boilerplate. Normalize genuine shared entities by ID, but do not add abstractions with one consumer or small parsed-result files when exact target values and native artifact hashes already live in `reproduction.json`.
 
 Run:
 

@@ -89,6 +89,44 @@ RETROSPECTIVE_UNKNOWN_FIELDS = {
     "stop_policy.max_gpu_hours",
     "stop_policy.max_cost_chf",
 }
+GUESS_DEVIATION_KINDS = {
+    "guess",
+    "paper_deviation",
+    "code_deviation",
+    "paper_code_conflict",
+    "paper_internal_conflict",
+}
+# Each container's fields come in two tiers. Required fields are checked on every
+# entry, so a missing one is an error. Optional fields are checked only when
+# present. A field in neither tier is rejected as unknown.
+GUESS_DEVIATION_REQUIRED_FIELDS = {"id", "kind", "description"}
+GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS = {
+    "paper_says",
+    "used",
+    "basis",
+    "effect",
+    "scope",
+    "status",
+}
+GUESS_DEVIATION_OPTIONAL_LIST_FIELDS = {
+    "evidence",
+    "related_ids",
+    "affects",
+    "dataset_ids",
+}
+GUESS_DEVIATION_FIELDS = (
+    GUESS_DEVIATION_REQUIRED_FIELDS
+    | GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS
+    | GUESS_DEVIATION_OPTIONAL_LIST_FIELDS
+)
+NONCOMPLIANCE_REQUIRED_FIELDS = {"id", "description", "requirement"}
+NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS = {"effect", "resolution"}
+NONCOMPLIANCE_OPTIONAL_LIST_FIELDS = {"run_ids"}
+NONCOMPLIANCE_FIELDS = (
+    NONCOMPLIANCE_REQUIRED_FIELDS
+    | NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS
+    | NONCOMPLIANCE_OPTIONAL_LIST_FIELDS
+)
 HISTORICAL_RECORD_HASHES = {
     "8526aecd1407305d815883725a864405e31a54c1": (
         "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6"
@@ -1022,6 +1060,95 @@ def validate_gates(
     return gates, open_gate
 
 
+def check_optional_text(
+    entry: dict[str, Any], fields: set[str], label: str, issues: list[str]
+) -> None:
+    for field in sorted(fields):
+        if field in entry and not nonempty(entry[field]):
+            issues.append(f"{label}.{field} must be a non-empty string when present")
+
+
+def check_unknown_fields(
+    entry: dict[str, Any], allowed: set[str], label: str, issues: list[str]
+) -> None:
+    for field in sorted(set(entry) - allowed):
+        issues.append(f"{label} has unknown field {field!r}")
+
+
+def validate_guesses_and_deviations(
+    document: dict[str, Any], datasets: dict[str, Any], issues: list[str]
+) -> None:
+    for field in ("deviations", "guesses"):
+        if field in document:
+            issues.append(
+                f"top-level {field} is no longer supported; use guesses_and_deviations"
+            )
+    for index, dataset in enumerate(document.get("datasets") or []):
+        if not isinstance(dataset, dict):
+            continue
+        for field in ("deviation", "deviations"):
+            if field in dataset:
+                issues.append(
+                    f"datasets[{index}].{field} is no longer supported; record it in "
+                    "guesses_and_deviations with dataset_ids"
+                )
+    entries = keyed(
+        document.get("guesses_and_deviations"), "id", "guesses_and_deviations", issues
+    )
+    for entry_id, entry in entries.items():
+        label = f"guesses_and_deviations {entry_id!r}"
+        check_unknown_fields(entry, GUESS_DEVIATION_FIELDS, label, issues)
+        if not valid_choice(entry.get("kind"), GUESS_DEVIATION_KINDS):
+            issues.append(
+                f"{label}.kind must be one of {', '.join(sorted(GUESS_DEVIATION_KINDS))}"
+            )
+        if not nonempty(entry.get("description")):
+            issues.append(f"{label} needs a non-empty description")
+        check_optional_text(entry, GUESS_DEVIATION_OPTIONAL_TEXT_FIELDS, label, issues)
+        for field in ("evidence", "affects"):
+            if field in entry and (
+                not isinstance(entry[field], list)
+                or not all(nonempty(item) for item in entry[field])
+            ):
+                issues.append(f"{label}.{field} must be an array of non-empty strings")
+        if "dataset_ids" in entry:
+            checked_references(
+                entry["dataset_ids"],
+                datasets,
+                f"{label}.dataset_ids",
+                "dataset",
+                issues,
+            )
+        if "related_ids" in entry:
+            siblings = {key: value for key, value in entries.items() if key != entry_id}
+            checked_references(
+                entry["related_ids"],
+                siblings,
+                f"{label}.related_ids",
+                "sibling entry",
+                issues,
+            )
+
+
+def validate_noncompliance(
+    document: dict[str, Any], runs: dict[str, Any], issues: list[str]
+) -> None:
+    entries = keyed(document.get("noncompliance"), "id", "noncompliance", issues)
+    for entry_id, entry in entries.items():
+        label = f"noncompliance {entry_id!r}"
+        check_unknown_fields(entry, NONCOMPLIANCE_FIELDS, label, issues)
+        for field in ("description", "requirement"):
+            if not nonempty(entry.get(field)):
+                issues.append(f"{label} needs a non-empty {field}")
+        check_optional_text(entry, NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS, label, issues)
+        # Empty or absent run_ids is valid: noncompliance can concern the plan
+        # rather than any particular run.
+        if "run_ids" in entry:
+            checked_references(
+                entry["run_ids"], runs, f"{label}.run_ids", "run", issues
+            )
+
+
 def validate_status(
     document: dict[str, Any], produced: int, target_count: int, issues: list[str]
 ) -> tuple[dict[str, Any], Any, Any, Any]:
@@ -1196,6 +1323,8 @@ def main() -> int:
         gates,
         issues,
     )
+    validate_guesses_and_deviations(document, datasets, issues)
+    validate_noncompliance(document, runs, issues)
     status, pipeline, numerical_agreement, preference = validate_status(
         document, produced, target_count, issues
     )
