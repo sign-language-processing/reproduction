@@ -7045,7 +7045,7 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "Command completed; inspect retained output for scope and any conditional limitations.",
+        "detail": "Cross-process resume verification compares all checkpoint tensors exactly and records inference differences with a 0.001 absolute guard. TensorFlow float32/TF32 kernels may differ across GPU processes; training and model parameters are unchanged. Follow-up resume-check-xception-state verified 555 tensors bit-for-bit, zero prediction difference on that process, and successful next optimizer step.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -20069,7 +20069,7 @@
       "inceptionv3"
     ],
     "compatibility_fixes": [
-      "vit-keras imports cv2; added pinned opencv-python-headless 4.8.1.78 after observed missing-module failure.",
+      "vit-keras imports cv2; added pinned opencv-python-headless 4.8.1.78 after observed missing-module failure. No model, data, optimizer or metric changes.",
       "Swin checkpoint nests positional MLP tensors in pos_emb; kcam 1.3.17 separates meta_dense_1/2. Map exact tensors, then assert every pretrained backbone weight equals archive bytes.",
       "Use atomic Modal metadata writes to prevent report collection races."
     ],
