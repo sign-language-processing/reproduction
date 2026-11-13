@@ -12,9 +12,7 @@ from pathlib import Path
 from typing import Any, NoReturn
 
 
-email_address_pattern = re.compile(
-    r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
-)
+email_address_pattern = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
 
 
 def fail(message: str) -> NoReturn:

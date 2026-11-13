@@ -284,7 +284,9 @@ def validate_agents(document: dict[str, Any], issues: list[str]) -> dict[str, An
                 issues.append(f"{label}.{field} must be a non-empty string or null")
         for field in ("model_id", "harness_version"):
             if field in agent and not nonempty(agent[field]):
-                issues.append(f"{label}.{field} must be a non-empty string when present")
+                issues.append(
+                    f"{label}.{field} must be a non-empty string when present"
+                )
         if not nonempty(agent.get("scope")):
             issues.append(f"{label}.scope must explain the contribution and unknowns")
         evidence = agent.get("evidence")

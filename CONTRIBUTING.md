@@ -22,6 +22,10 @@ checks structure, not sense.
 CI runs the same validator, plus its unit tests, on every pull request — so this is not optional,
 only earlier and faster than waiting for the run.
 
+If you change the tooling under `.agents/`, also run `ruff check` and `ruff format` (version pinned
+in the CI workflow; config in `ruff.toml`). Paper code under `papers/` is deliberately not
+formatted: run records pin its SHA-256.
+
 In the PR description, say which paper, which preference level, and what a reviewer should look
 at hardest. If the attempt stopped at a gate, say which gate and what evidence was gathered;
 a blocked attempt is a legitimate, reportable outcome and should not be dressed up as progress.
