@@ -68,6 +68,18 @@ The launcher invokes the authors' module directly with its README recipe: four r
 
 No datasets, raw videos, outputs, or checkpoints are committed to this repository. The permitted selected checkpoint bundle, hparams, and exact predictions are preserved at [repro-sign/camgoz-nslt revision `7851726`](https://huggingface.co/repro-sign/camgoz-nslt/tree/7851726a660a9441fa8e1817a8818695dee1df8b); the repository's latest revision carries this model card and evidence record. The 503,848,900-byte model data file has SHA-256 `bbace325a51197db547c18493870c5c5a87b289939b7505bd7ce73ed79831a05`.
 
+## Guesses and deviations
+
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `seed` | `guess` | Random seed. | Not stated | 285, the authors' executable default |  | The authors' dropout operators are not globally seeded |  |  |  |  |  |  |
+| `training-length` | `paper_code_conflict` | Training length, evaluation cadence and checkpoint selection. | "trained until the training perplexity is converged, which took ∼30 epochs on average. We evaluate our models on dev/test sets every half-epoch, and report results for each setup using the model that performed the best on the dev set" (§5) | The pinned README/defaults' concrete 150000-step, development-BLEU-selected executable recipe; selected checkpoint 118000 | Follow the authors' executable recipe |  |  |  |  |  |  |  |
+| `video-input` | `code_deviation` | Direct MP4 decoding and OpenCV resize replaces unavailable upstream MATLAB-resized image files; this was an explicitly approved behavior-changing preprocessing deviation. |  | simple-video-utils MP4 decoding at runtime, OpenCV cubic resize to 227x227, RGB-to-BGR conversion | The upstream manifests point to MATLAB-resized 227x227 frame files. With the user's protocol approval, the retained simple-video-utils patch decodes the supplied MP4s at runtime and uses OpenCV cubic resize. RGB-to-BGR conversion matches the upstream OpenCV mean-subtraction convention, but this is not pixel-identical to the unpublished MATLAB resize plus image-file round trip. |  |  | approved | patches/0003-simple-video-utils.patch |  |  | `phoenix-2014t-v3-videos` |
+
+## Noncompliance
+
+None.
+
 ## Execution evidence
 
 The structured run policy was backfilled from the pre-migration report (whose
