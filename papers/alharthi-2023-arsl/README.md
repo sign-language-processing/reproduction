@@ -54,21 +54,26 @@ We used the 54,049-image, 32-class [ArASL dataset, version 1](https://data.mende
 
 Training used TensorFlow/Keras 2.8, Python 3.10 and CUDA 11.2.2/cuDNN 8. The container is defined in [scripts/modal_app.py](scripts/modal_app.py), with resolved packages in [requirements.lock](requirements.lock). Each run records its environment, data and pretrained weight hashes.
 
-## Decisions and assumptions
-
-| Missing or unclear detail | Choice used here |
-| --- | --- |
-| Split membership and randomness | Stratified image split and seed 42. No claim of evaluation on unseen signers. |
-| Optimizer, learning rate and batch size | Adam, learning rate 0.0001, batch size 32, no learning-rate schedule. |
-| Classification head and trainable layers | Global pooling or the transformer class token, followed directly by a 32-class softmax, without the paper's added dense layer (see Implementation differences); train all layers. |
-| Exact pretrained checkpoints and ViT variant | Pinned ImageNet weights; ImageNet-21k BiT-M; ImageNet-21k+ImageNet-2012 ViT weights. Interpret `ViT_132` as ViT-L/32. |
-| Input processing | Convert to grayscale and repeat into RGB; bilinear resize to 224×224, or 256×256 for Swin; backbone-specific normalization. |
-| CNN-3 architecture details | Table 4's V4 filters: 256, 126, 64, 62, 16. Same-padded 3×3 convolutions, valid 2×2 pooling, LeakyReLU 0.01, batch normalization after the last convolution, dropout 0.5 and Dense(128), which Table 4 does not list (see Implementation differences). |
-| CNN augmentation | Horizontal/vertical flips and rotation within ±0.2 degrees. No random augmentation for transfer models. |
-| Loss and multiclass metric definitions | Train with cross-entropy; report cross-entropy and probability MSE separately. Use argmax accuracy, macro precision/recall/F1 and macro one-vs-rest AUC. |
-| Checkpoint selection and precision | Report epoch one and the final epoch, without best-score selection. Float32 with TensorFlow's default TF32 enabled. |
+## Guesses and deviations
 
 The paper defines MSE but reports losses as high as 17.744, which probability-space MSE cannot explain. Its averaging and threshold rules are also unclear. Neither of our loss calculations is treated as the recovered original definition.
+
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `split-and-randomness` | `guess` | Split membership and randomness. | "48645 images for training and 5404 files for validation" (§5.1); membership and seed not given | Stratified image split and seed 42. No claim of evaluation on unseen signers. |  |  |  |  |  |  |  | `arasl2018` |
+| `optimizer-lr-batch` | `guess` | Optimizer, learning rate and batch size. | Not stated | Adam, learning rate 0.0001, batch size 32, no learning-rate schedule. |  |  |  |  |  |  |  |  |
+| `classifier-head` | `paper_deviation` | Classifier heads of the transfer models and CNN-3. | Transfer models: fine-tuning "using an added dense layer and one classification layer" (§3.1), width not reported. CNN-3: Table 4 lists five convolutions followed by "fully connected layer + softmax" and 431,146 trainable parameters for CNN-3V4; §5.1 says "two fully connected layers were utilized" | Transfer models: the pooled backbone features or the ViT class token connect directly to the 32-class softmax, with no added dense layer (scripts/models.py). CNN-3: a Dense(128) layer before the softmax, giving 519,628 parameters (about 440,000 without Dense(128)) |  | Human reviewer judgment (2026-11-04): the head differences are minor for CNN-3 and all transfer models except VGG16 and VGG19. For VGG, the missing added dense layer left the classifier with too few parameters; the reviewer attributes the observed single-class collapse to it and excludes the VGG accuracy targets. The attribution has not been tested with a corrected run. |  |  | scripts/models.py |  |  |  |
+| `trainable-layers` | `guess` | Which layers are trained. | Not stated | Train all layers |  |  |  |  |  | `classifier-head` |  |  |
+| `pretrained-checkpoints` | `guess` | Exact pretrained checkpoints and ViT variant. | Model families only; ViT variants "ViT_b16 and ViT_132", BiT "BiT-m-r50x1 and BiT-m-r50x3", Swin "SwinV2Tiny256" | Pinned ImageNet weights; ImageNet-21k BiT-M; ImageNet-21k+ImageNet-2012 ViT weights. Interpret `ViT_132` as ViT-L/32. |  |  |  |  |  |  |  |  |
+| `input-processing` | `guess` | Input processing. | "ArSL images with three RGB color channels were resized to 224 × 224 pixels" (§3.3, for the CNN models) | Convert to grayscale and repeat into RGB; bilinear resize to 224×224, or 256×256 for Swin; backbone-specific normalization. |  |  |  |  |  |  |  | `arasl2018` |
+| `cnn3-architecture` | `guess` | CNN-3 architecture details. | Table 4, CNN-3V4: filters 256, 126, 64, 62, 16; 3 × 3 convolutions; 2 × 2 max pooling; "+1 batch normalization, 1 dropout"; leaky ReLU | Table 4's V4 filters: 256, 126, 64, 62, 16. Same-padded 3×3 convolutions, valid 2×2 pooling, LeakyReLU 0.01, batch normalization after the last convolution, dropout 0.5 and Dense(128), which Table 4 does not list (see Implementation differences). |  |  |  |  |  | `classifier-head` |  |  |
+| `cnn-augmentation` | `guess` | CNN augmentation. | "random rotation with 0.2 degrees and random horizontal and vertical flipping" (§3.3) | Horizontal/vertical flips and rotation within ±0.2 degrees. No random augmentation for transfer models. | Literal reading of "0.2 degrees" (scripts/models.py: RandomRotation(0.2/360.)) | If the paper's 0.2 is the Keras RandomRotation factor, the intended range is ±0.2 × 360° = ±72°; the literal reading makes rotation negligible |  |  |  |  |  |  |
+| `loss-and-metrics` | `guess` | Loss and multiclass metric definitions. | Loss defined as MSE, 1/N ∑(ypred − ytrue)² (§4.4), while reported losses reach 17.744 (VGG19, Table 7); precision, recall, F1 and AUC given as binary formulas with no averaging rule | Train with cross-entropy; report cross-entropy and probability MSE separately. Use argmax accuracy, macro precision/recall/F1 and macro one-vs-rest AUC. |  |  |  |  |  |  |  |  |
+| `checkpoint-and-precision` | `guess` | Checkpoint selection and precision. | Not stated | Report epoch one and the final epoch, without best-score selection. Float32 with TensorFlow's default TF32 enabled. |  |  |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Execution and evidence
 
