@@ -118,6 +118,13 @@ non-null GPU-hour and cost ceilings. A retrospective GPU run may use null only
 when each missing ceiling is explicitly listed as unknown. A CPU or non-compute
 run may use `null` for ceilings that do not apply.
 
+If a contemporaneous GPU run was launched without declaring its GPU-hour and
+cost ceilings, record that instead of backfilling them: set
+`stop_policy.ceilings_declared: false` (absent means `true`), keep both
+ceilings `null`, and explain what did exist before launch in a non-empty
+`stop_policy.ceilings_note`. The validator reports this as a warning, not an
+error; it remains a process deviation to disclose in the report.
+
 ### Terminal states and reason codes
 
 | State | Allowed reason codes | Meaning |

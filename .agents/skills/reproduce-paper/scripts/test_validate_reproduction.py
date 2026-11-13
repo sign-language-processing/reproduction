@@ -339,6 +339,47 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("needs max_gpu_hours", result.stderr)
 
+    def undeclared_gpu_run_document(self) -> dict:
+        document = valid_document()
+        document["runs"][0]["compute"] = {
+            "platform": "modal",
+            "modal_profile": "repro-sign",
+            "gpu_count": 1,
+            "shared_cache": {
+                "modal_volume": "huggingface-cache",
+                "mount_path": "/cache/huggingface",
+                "environment": {
+                    "HF_HOME": "/cache/huggingface",
+                    "HF_HUB_CACHE": "/cache/huggingface/hub",
+                },
+            },
+        }
+        document["runs"][0]["stop_policy"].update(
+            ceilings_declared=False,
+            ceilings_note="Only the Modal timeout existed before launch.",
+        )
+        return document
+
+    def test_undeclared_ceilings_are_a_warning(self) -> None:
+        result = self.validate(self.undeclared_gpu_run_document())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("1 warning(s)", result.stderr)
+        self.assertIn("launched without declared", result.stderr)
+
+    def test_undeclared_ceilings_need_a_note(self) -> None:
+        document = self.undeclared_gpu_run_document()
+        del document["runs"][0]["stop_policy"]["ceilings_note"]
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("needs a ceilings_note", result.stderr)
+
+    def test_undeclared_ceilings_cannot_carry_values(self) -> None:
+        document = self.undeclared_gpu_run_document()
+        document["runs"][0]["stop_policy"].update(max_gpu_hours=1.0, max_cost_chf=4.0)
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("requires null max_gpu_hours and max_cost_chf", result.stderr)
+
     def test_not_produced_requires_coded_reason_and_evidence(self) -> None:
         document = valid_document()
         document["status"] = {

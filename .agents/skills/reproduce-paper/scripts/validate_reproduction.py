@@ -328,6 +328,7 @@ def validate_runs(
     gates: dict[str, Any],
     agents: dict[str, Any],
     issues: list[str],
+    warnings: list[str],
 ) -> dict[str, Any]:
     runs = keyed(document.get("runs"), "run_id", "runs", issues)
     attempt_groups: dict[str, dict[str, Any]] = {}
@@ -389,15 +390,40 @@ def validate_runs(
             elif gpu_count > 0:
                 stop_policy = run.get("stop_policy")
                 if isinstance(stop_policy, dict):
+                    # A run launched without declared ceilings is recorded as such,
+                    # never backfilled: ceilings_declared false plus a note.
+                    undeclared = stop_policy.get("ceilings_declared") is False
+                    if undeclared and not nonempty(stop_policy.get("ceilings_note")):
+                        issues.append(
+                            f"{label}.stop_policy.ceilings_declared false needs "
+                            "a ceilings_note"
+                        )
+                    missing = []
                     for field in ("max_gpu_hours", "max_cost_chf"):
                         path = f"stop_policy.{field}"
                         if stop_policy.get(field) is None and not (
                             mode == "retrospective" and path in unknown_fields
                         ):
+                            missing.append(field)
+                    if undeclared and mode == "contemporaneous" and missing:
+                        warnings.append(
+                            f"GPU Modal {label} was launched without declared "
+                            f"{' or '.join(missing)} (ceilings_declared false)"
+                        )
+                    else:
+                        for field in missing:
                             issues.append(
                                 f"GPU Modal {label} needs {field} or an explicit "
                                 "retrospective unknown"
                             )
+                    if undeclared and any(
+                        stop_policy.get(field) is not None
+                        for field in ("max_gpu_hours", "max_cost_chf")
+                    ):
+                        issues.append(
+                            f"{label}.stop_policy.ceilings_declared false requires "
+                            "null max_gpu_hours and max_cost_chf"
+                        )
             cache = compute.get("shared_cache")
             if not isinstance(cache, dict):
                 issues.append(f"Modal {label} needs shared_cache")
@@ -1158,6 +1184,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     root = parse_args().paper_directory.resolve()
     issues: list[str] = []
+    warnings: list[str] = []
     try:
         document = json.loads((root / "reproduction.json").read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -1187,7 +1214,7 @@ def main() -> int:
     datasets = validate_datasets(document, issues)
     artifacts = validate_artifacts(root, document, issues)
     gates, open_gate = validate_gates(document, issues)
-    runs = validate_runs(document, artifacts, gates, agents, issues)
+    runs = validate_runs(document, artifacts, gates, agents, issues, warnings)
     produced, target_count, targets = validate_targets(
         document,
         datasets,
@@ -1212,6 +1239,10 @@ def main() -> int:
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
     validate_readme(root, pipeline, numerical_agreement, preference, issues)
+    if warnings:
+        print(f"{len(warnings)} warning(s):", file=sys.stderr)
+        for warning in warnings:
+            print(f"- {warning}", file=sys.stderr)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:
