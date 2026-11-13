@@ -1561,7 +1561,7 @@
       "id": "embedding-dim",
       "kind": "guess",
       "description": "Embedding dimension.",
-      "paper_says": "Not stated",
+      "paper_says": "Not restated; the paper takes its architecture from [10] (§4: \"We use the model architecture from [10]\"; the baseline is \"the Gloss2Text GRU model without attention used in [10]\")",
       "used": "1000",
       "effect": "Model capacity"
     },
@@ -1569,7 +1569,7 @@
       "id": "encoder-directionality",
       "kind": "guess",
       "description": "Encoder directionality.",
-      "paper_says": "Not stated",
+      "paper_says": "Not restated; the paper takes its architecture from [10] (§4: \"We use the model architecture from [10]\"; the baseline is \"the Gloss2Text GRU model without attention used in [10]\")",
       "used": "unidirectional 4-layer GRU",
       "effect": "Content transfer capacity"
     },
@@ -1577,9 +1577,39 @@
       "id": "no-attention-bridging",
       "kind": "guess",
       "description": "How the encoder connects to the decoder without attention.",
-      "paper_says": "\"without attention\"",
+      "paper_says": "\"the Gloss2Text GRU model without attention used in [10]\" (§4.2); the bridging itself is not restated",
       "used": "decoder layers initialised from final encoder-layer states, no other connection",
       "effect": "**Likely material** to the baseline gap"
+    },
+    {
+      "id": "residual-connections",
+      "kind": "guess",
+      "description": "Residual connections between the stacked GRU layers.",
+      "paper_says": "Not restated; the paper takes its architecture from [10] (§4: \"We use the model architecture from [10]\"; the baseline is \"the Gloss2Text GRU model without attention used in [10]\")",
+      "used": "No residual connections",
+      "basis": "[10]'s published NSLT recipe (neccam/nslt, reproduced in papers/camgoz-2018-nslt) uses residual GRU layers; whether its Gloss2Text configuration does too is not confirmed",
+      "related_ids": [
+        "no-attention-bridging"
+      ],
+      "evidence": [
+        "sbgru_slt.py Seq2Seq: plain stacked nn.GRU encoder and decoder",
+        "papers/camgoz-2018-nslt/reproduction.json run configuration: \"residual\": true"
+      ]
+    },
+    {
+      "id": "source-reversal",
+      "kind": "guess",
+      "description": "Whether the source sequence is reversed.",
+      "paper_says": "Not restated; the paper takes its architecture from [10] (§4: \"We use the model architecture from [10]\"; the baseline is \"the Gloss2Text GRU model without attention used in [10]\")",
+      "used": "Source not reversed",
+      "basis": "[10]'s published NSLT recipe (neccam/nslt, reproduced in papers/camgoz-2018-nslt) uses a reversed source; whether its Gloss2Text configuration does too is not confirmed",
+      "related_ids": [
+        "no-attention-bridging"
+      ],
+      "evidence": [
+        "sbgru_slt.py make_batches: glosses in original order",
+        "papers/camgoz-2018-nslt/reproduction.json run configuration: \"source_reverse\": true"
+      ]
     },
     {
       "id": "convergence-criterion",
@@ -1609,9 +1639,10 @@
       "id": "beam-search",
       "kind": "guess",
       "description": "Beam width and length penalty.",
-      "paper_says": "Not stated",
+      "paper_says": "Not restated; the paper takes its architecture from [10] (§4: \"We use the model architecture from [10]\"; the baseline is \"the Gloss2Text GRU model without attention used in [10]\")",
       "used": "beam 3, lp 0",
-      "effect": "Minor; greedy gives near-identical output"
+      "effect": "Minor; greedy gives near-identical output",
+      "basis": "[10]'s published recipe uses beam width 3"
     },
     {
       "id": "metric-implementation",
@@ -1625,7 +1656,7 @@
       "id": "gloss-preprocessing",
       "kind": "guess",
       "description": "Gloss preprocessing.",
-      "paper_says": "Not stated",
+      "paper_says": "\"a glosses vocabulary size of 1066 (337 singletons)\", with \"auxiliary words ... used to stand for non-manual information\" (§4.1); no preprocessing described",
       "used": "raw whitespace split",
       "effect": "vocab 1085 vs 1066",
       "dataset_ids": [
@@ -1698,11 +1729,12 @@
     },
     {
       "id": "weight-compression-rule",
-      "kind": "guess",
+      "kind": "paper_deviation",
       "description": "Weight-compression rule.",
-      "paper_says": "\"we employ a unit round off\" (§3.3); \"reduce the weight memory footprint by a factor of 16, with a required bit precision of 1\" (§4.2)",
+      "paper_says": "\"we employ a unit round off\", \"achieved by means of the mean of the weight variance [22]\" (§3.3); \"reduce the weight memory footprint by a factor of 16, with a required bit precision of 1\" (§4.2)",
       "used": "uniform per-matrix 2-bit quantisation of the last encoder layer's effective W_y",
-      "effect": "**Material & under-specified**; `,wc` rows conditional"
+      "effect": "**Material & under-specified**; `,wc` rows conditional",
+      "basis": "The paper's rule is under-specified; the uniform rule does not use the posterior variance the paper's rule is based on"
     },
     {
       "id": "seed",
