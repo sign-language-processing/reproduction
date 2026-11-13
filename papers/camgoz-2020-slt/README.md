@@ -11,6 +11,8 @@ datasets:
 
 # Sign Language Transformers reproduction
 
+> **Not part of the REPRO-SIGN study sample.** This paper was not among the papers randomly selected for reproduction. The reproduction served as an initial example for the team.
+
 **Paper ID:** `camgoz-2020-slt`
 
 **Preference level:** 1
