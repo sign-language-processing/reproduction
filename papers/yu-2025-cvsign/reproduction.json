@@ -194,10 +194,7 @@
     }
    ],
    "video_decoding": "Required; CVSign trains its own ResNet34 visual encoder on raw frames (unlike the pami0 precomputed-feature path used for SLT reproductions in this repo), so this record decodes the supplied MP4s with simple-video-utils rather than reusing the existing phoenix14t-pami0-author feature dataset.",
-   "deviations": [
-    "Reuses the manifests already verified in papers/camgoz-2018-nslt/reproduction.json for the same modal_path (video counts and manifest sha256 copied from that record); this record decodes frames itself instead of consuming precomputed CNN features, because CVSign needs raw frames to train its own visual encoder.",
-    "Superseded 2026-09-27: used only by the first attempt's runs. The MP4s are a lossy HEVC re-encoding of the release (rwth-phoenix-2014-t/raw/PROVENANCE.txt), and that attempt's loader also reversed simple-video-utils' RGB output to BGR. The current attempt uses phoenix14t-png-v3."
-   ]
+   "notes": "Reuses the manifests already verified in papers/camgoz-2018-nslt/reproduction.json for the same modal_path (video counts and manifest sha256 copied from that record); this record decodes frames itself instead of consuming precomputed CNN features, because CVSign needs raw frames to train its own visual encoder. Superseded 2026-09-27: used only by the first attempt's runs. The MP4s are a lossy HEVC re-encoding of the release (rwth-phoenix-2014-t/raw/PROVENANCE.txt), and that attempt's loader also reversed simple-video-utils' RGB output to BGR. The current attempt uses phoenix14t-png-v3."
   },
   {
    "dataset_id": "phoenix14t-png-v3",
@@ -253,11 +250,7 @@
     }
    ],
    "video_decoding": "Not used; the published pipeline reads PNG frames.",
-   "deviations": [
-    "CorrNet's dataset_preprocess-T.py cannot run end to end on this release (its CSV globs <id>/1/*.png match nothing), so its resize_dataset() is driven with CorrNet's committed split files, as its __main__ would with a CSV whose paths matched.",
-    "opencv 4.10.0.84 instead of CorrNet's pinned 4.5.5.64 (no Python 3.12 wheel); LANCZOS4 resize output was not compared across versions.",
-    "One non-frame file in the release (dev/31May_2011_Tuesday_tagesschau-4295/createDnnTrainingLabels-profile.py.lprof) is ignored, as CorrNet's *.png glob does."
-   ]
+   "notes": "One non-frame file in the release (dev/31May_2011_Tuesday_tagesschau-4295/createDnnTrainingLabels-profile.py.lprof) is ignored, as CorrNet's *.png glob does."
   }
  ],
  "metric_definitions": [
@@ -2208,5 +2201,153 @@
    "current": "im-3vxFvOHbWDafqSfkDLYxu2"
   },
   "gpu": "Modal L40S (48 GB class, the memory of the paper's single A6000)"
- }
+ },
+ "guesses_and_deviations": [
+  {
+   "id": "c-hid",
+   "kind": "guess",
+   "description": "Hidden channel width of CCA and CVA.",
+   "paper_says": "\"downsample the channels into C_hid\", no value",
+   "used": "64",
+   "basis": "Unstated",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "cca-heads",
+   "kind": "guess",
+   "description": "Number of CCA heads.",
+   "paper_says": "\"n heads\" in Fig. 2",
+   "used": "8",
+   "basis": "Unstated",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "cca-projections",
+   "kind": "guess",
+   "description": "CCA projection layers.",
+   "paper_says": "a CNN to C_hid, then \"two distinct CNNs\" for current and context frames, one CNN back to C_in",
+   "used": "1\u00d71\u00d71 convs, no bias, CorrNet's initialisation",
+   "basis": "Kernel sizes unstated; CorrNet's 1\u00d71\u00d71 convs have no bias",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "context-frames",
+   "kind": "guess",
+   "description": "Which frames in the window serve as context.",
+   "paper_says": "window of 2n+1 frames",
+   "used": "The 2n frames other than the current one",
+   "basis": "Fig. 2, \"Adjacent 4 Frames\" for a window of 5",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "window-boundary",
+   "kind": "guess",
+   "description": "Window handling at sequence edges.",
+   "paper_says": "not stated",
+   "used": "Edge frames repeated",
+   "basis": "As CorrNet's `Get_Correlation` does",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "eq5-scaling",
+   "kind": "guess",
+   "description": "Scaling of the Eq. 5 sum.",
+   "paper_says": "\u03a3 over m, i\u2032, j\u2032, no normalisation",
+   "used": "Literal sum",
+   "basis": "See the note below",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ],
+   "effect": "taken literally, CCA's output at initialisation is about 290\u00d7, 94\u00d7 and 324\u00d7 its input at layers 2, 3 and 4 (measured on CPU). CorrNet's own `Get_Correlation` gives 7.8\u00d7, 0.2\u00d7 and 0.6\u00d7. This is harmless at the start because \u03b1 = 0, and in `diagnose-loss-005` Adam moves \u03b1 only by about 1e-3 in 200 steps. It is still the least-constrained guess in the model, and a reviewer should weigh it."
+  },
+  {
+   "id": "cva-conv-block",
+   "kind": "guess",
+   "description": "CVA Conv_Block layers.",
+   "paper_says": "\"primarily consists of three CNNs with a kernel size of 1\u00d73\u00d73\"",
+   "used": "conv-BN-ReLU, conv-BN-ReLU, conv; one Conv_Block shared by every m",
+   "basis": "Norm and activation unstated",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "backbone-weights",
+   "kind": "guess",
+   "description": "Loading the ImageNet ResNet34 weights.",
+   "paper_says": "ResNet34 pretrained on ImageNet",
+   "used": "CorrNet's 3D-kernel ResNet34 loading torchvision's weights as its `resnet18()` does",
+   "basis": "Upstream `resnet34()` loads no weights",
+   "evidence": [
+    "patches/cvsign-2-cca-cva-modules.patch"
+   ]
+  },
+  {
+   "id": "tlp-regularisers",
+   "kind": "guess",
+   "description": "TLP decoder regularisers.",
+   "paper_says": "\"adopt the Temporal Decoder from TLP\"",
+   "used": "TLP's Cu/Cp at 0.001, as TLP trains its decoder",
+   "basis": "Paper names only the VE/VA losses",
+   "evidence": [
+    "patches/cvsign-1-tlp-decoder-losses.patch"
+   ]
+  },
+  {
+   "id": "checkpoint-selection",
+   "kind": "guess",
+   "description": "Checkpoint selection.",
+   "paper_says": "not stated",
+   "used": "Best dev WER over 70 epochs",
+   "basis": "Rule of the code CVSign builds on"
+  },
+  {
+   "id": "mixed-precision",
+   "kind": "guess",
+   "description": "Numerical precision.",
+   "paper_says": "not stated",
+   "used": "CorrNet's AMP",
+   "basis": "Upstream default"
+  },
+  {
+   "id": "seed",
+   "kind": "guess",
+   "description": "Random seed.",
+   "paper_says": "not stated",
+   "used": "0 (CorrNet config)",
+   "basis": "Single run, as the paper appears to report"
+  },
+  {
+   "id": "frame-preprocessing-driver",
+   "kind": "code_deviation",
+   "description": "How CorrNet's frame preprocessing is run on this release.",
+   "used": "CorrNet's dataset_preprocess-T.py cannot run end to end on this release (its CSV globs {id}/1/*.png match nothing), so its resize_dataset() is driven with CorrNet's committed split files, as its __main__ would with a CSV whose paths matched.",
+   "basis": "CorrNet's committed split files use {id}/*.png and otherwise equal the CSVs row for row (checked, 0 mismatches)",
+   "effect": "Resized frame counts equal the original PNG counts and CorrNet's recorded num_frames in every split",
+   "dataset_ids": [
+    "phoenix14t-png-v3"
+   ]
+  },
+  {
+   "id": "opencv-version",
+   "kind": "code_deviation",
+   "description": "OpenCV version for frame resizing.",
+   "used": "opencv 4.10.0.84 instead of CorrNet's pinned 4.5.5.64 (no Python 3.12 wheel); LANCZOS4 resize output was not compared across versions.",
+   "basis": "CorrNet's pinned 4.5.5 has no Python 3.12 wheel",
+   "dataset_ids": [
+    "phoenix14t-png-v3"
+   ]
+  }
+ ],
+ "noncompliance": []
 }

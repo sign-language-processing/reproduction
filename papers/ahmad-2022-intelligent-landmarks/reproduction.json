@@ -419,5 +419,131 @@
       "evidence": ["https://www.kaggle.com/datasets/grassknoted/asl-alphabet", "87,000 equals 29 classes times 3,000 images, not 28 times 3,000.", "User authorization and 28-class decision in this task on 2026-08-25."],
       "required_action": "None for the user-selected 28-class conditional attempt; retain the full release, keep NOTHING excluded from evaluation, and report the decision as a reconstruction choice."
     }
-  ]
+  ],
+  "guesses_and_deviations": [
+    {
+      "id": "landmark-implementation-isl-hs",
+      "kind": "guess",
+      "description": "ISL-HS landmark implementation and configuration.",
+      "paper_says": "The paper gives no version or configuration",
+      "used": "`mediapipe==0.10.18`, direct `Hands`; sequential tracking within each video; one hand; model complexity 1; both confidence thresholds 0.5",
+      "basis": "Preserves the stated 21-point Hands path",
+      "dataset_ids": [
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "landmark-implementation-asl",
+      "kind": "guess",
+      "description": "ASL Alphabet landmark implementation and configuration.",
+      "paper_says": "The paper gives no version or configuration",
+      "used": "`mediapipe==0.10.18`, direct `Hands`; static image mode; one hand; model complexity 1; both confidence thresholds 0.5",
+      "basis": "Preserves the stated 21-point Hands path",
+      "dataset_ids": [
+        "asl-alphabet"
+      ]
+    },
+    {
+      "id": "video-decoding",
+      "kind": "paper_deviation",
+      "description": "Video decoding.",
+      "paper_says": "OpenCV passes each frame to MediaPipe (Section II.A); decoding details unspecified",
+      "used": "`simple-video-utils==0.7.4`, RGB display-oriented frames",
+      "basis": "Study-wide decoder policy replaces the paper’s unspecified OpenCV decoding details",
+      "dataset_ids": [
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "landmark-coordinates",
+      "kind": "guess",
+      "description": "Scale of the landmark coordinates.",
+      "paper_says": "The paper describes pixel coordinates",
+      "used": "Multiply MediaPipe's normalized `x/y` by the decoded frame width/height",
+      "dataset_ids": [
+        "asl-alphabet",
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "zero-division",
+      "kind": "guess",
+      "description": "Zero-division policy for the slope and angle features.",
+      "paper_says": "The equations give no zero-division policy",
+      "used": "Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0",
+      "dataset_ids": [
+        "asl-alphabet",
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "feature-reduction",
+      "kind": "guess",
+      "description": "Feature-reduction rule.",
+      "paper_says": "Only that more than half the 440 features are correlation/dimensionally reduced",
+      "used": "Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only",
+      "basis": "Fitting on training folds only avoids test-fold leakage",
+      "dataset_ids": [
+        "asl-alphabet",
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "random-forest",
+      "kind": "guess",
+      "description": "Random Forest settings.",
+      "paper_says": "Only the 100-tree default is stated",
+      "used": "100 trees, seed 2026 + fold number, eight CPU workers, all other `scikit-learn==1.6.1` defaults",
+      "dataset_ids": [
+        "asl-alphabet",
+        "isl-hs"
+      ],
+      "evidence": [
+        "evaluate.py:166 and evaluate_asl.py:89 construct the classifier with `random_state=SEED + fold`; both write `random_state` as `SEED` into their run.json (evaluate.py:209, evaluate_asl.py:103)"
+      ]
+    },
+    {
+      "id": "isl-hs-evaluation",
+      "kind": "guess",
+      "description": "ISL-HS evaluation protocol.",
+      "paper_says": "10-fold learning curves, not tied to Table III; no folds, grouping, shuffling, or seed defined (Section III.C)",
+      "used": "Run shuffled 10-fold frame-stratified CV (seed 2026) and unshuffled 10-fold video-grouped CV; report both",
+      "basis": "Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III",
+      "dataset_ids": [
+        "isl-hs"
+      ]
+    },
+    {
+      "id": "asl-class-set",
+      "kind": "guess",
+      "description": "Which 28 ASL Alphabet classes are used.",
+      "paper_says": "\"28 gestures\" and 87,000 images; the cited source has 29 class directories (87,000 = 29 × 3,000)",
+      "used": "A-Z, SPACE, and DELETE (28 classes / 84,000 training images), excluding NOTHING; the full release is retained on Modal",
+      "basis": "User decision on 2026-08-25 at gate `asl-class-and-cloud-terms`; not a claim that the paper identifies NOTHING as the omitted class",
+      "dataset_ids": [
+        "asl-alphabet"
+      ]
+    },
+    {
+      "id": "asl-evaluation",
+      "kind": "guess",
+      "description": "ASL Alphabet evaluation protocol.",
+      "paper_says": "Split not stated",
+      "used": "Shuffled 10-fold image-level CV",
+      "dataset_ids": [
+        "asl-alphabet"
+      ]
+    },
+    {
+      "id": "asl-missing-detections",
+      "kind": "guess",
+      "description": "Handling of ASL images in which no hand is detected.",
+      "paper_says": "Not stated",
+      "used": "Excluded; 63,673 of 84,000 images (75.80%) had a detected hand",
+      "dataset_ids": [
+        "asl-alphabet"
+      ]
+    }
+  ],
+  "noncompliance": []
 }

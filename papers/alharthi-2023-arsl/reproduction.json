@@ -7045,7 +7045,7 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "Command completed; inspect retained output for scope and any conditional limitations.",
+        "detail": "Cross-process resume verification compares all checkpoint tensors exactly and records inference differences with a 0.001 absolute guard. TensorFlow float32/TF32 kernels may differ across GPU processes; training and model parameters are unchanged. Follow-up resume-check-xception-state verified 555 tensors bit-for-bit, zero prediction difference on that process, and successful next optimizer step.",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": []
@@ -19937,23 +19937,94 @@
       "resolved_at_utc": "2026-11-04T16:32:33.962986+00:00"
     }
   ],
-  "guesses": [],
-  "deviations": [
+  "guesses_and_deviations": [
     {
-      "id": "approved-conditional-protocol",
-      "description": "All reconstruction choices in README.md approved on 2026-11-04; original targets remain not produced because approval does not recover the original protocol."
+      "id": "split-and-randomness",
+      "kind": "guess",
+      "description": "Split membership and randomness.",
+      "paper_says": "\"48645 images for training and 5404 files for validation\" (§5.1); membership and seed not given",
+      "used": "Stratified image split and seed 42. No claim of evaluation on unseen signers.",
+      "dataset_ids": [
+        "arasl2018"
+      ]
     },
     {
-      "id": "checkpoint-numerical-tolerance",
-      "description": "Cross-process resume verification compares all checkpoint tensors exactly and records inference differences with a 0.001 absolute guard. TensorFlow float32/TF32 kernels may differ across GPU processes; training and model parameters are unchanged. Hypothesis is being tested. Follow-up resume-check-xception-state verified 555 tensors bit-for-bit, zero prediction difference on that process, and successful next optimizer step."
-    },
-    {
-      "id": "opencv-dependency",
-      "description": "Add opencv-python-headless==4.8.1.78 to satisfy a demonstrated undeclared vit-keras import. No model, data, optimizer or metric changes."
+      "id": "optimizer-lr-batch",
+      "kind": "guess",
+      "description": "Optimizer, learning rate and batch size.",
+      "paper_says": "Not stated",
+      "used": "Adam, learning rate 0.0001, batch size 32, no learning-rate schedule."
     },
     {
       "id": "classifier-head",
-      "description": "Two classifier-head choices differ from the paper's statements. Transfer models: the paper fine-tunes each pretrained model 'using an added dense layer and one classification layer' (width not reported); this implementation connects pooled backbone features or the ViT class token directly to the 32-class softmax (scripts/models.py). CNN-3: Table 4 lists five convolutions followed by 'fully connected layer + softmax'; this implementation adds Dense(128) before the softmax, giving 519,628 parameters against 431,146 trainable parameters for CNN-3V4 in Table 4 (about 440,000 without Dense(128)). Human reviewer judgment (2026-11-04): the head differences are minor for CNN-3 and all transfer models except VGG16 and VGG19. For VGG, the missing added dense layer left the classifier with too few parameters; the reviewer attributes the observed single-class collapse to it and excludes the VGG accuracy targets. The attribution has not been tested with a corrected run."
+      "kind": "paper_deviation",
+      "description": "Classifier heads of the transfer models and CNN-3.",
+      "paper_says": "Transfer models: fine-tuning \"using an added dense layer and one classification layer\" (§3.1), width not reported. CNN-3: Table 4 lists five convolutions followed by \"fully connected layer + softmax\" and 431,146 trainable parameters for CNN-3V4; §5.1 says \"two fully connected layers were utilized\"",
+      "used": "Transfer models: the pooled backbone features or the ViT class token connect directly to the 32-class softmax, with no added dense layer (scripts/models.py). CNN-3: a Dense(128) layer before the softmax, giving 519,628 parameters (about 440,000 without Dense(128))",
+      "effect": "Human reviewer judgment (2026-11-04): the head differences are minor for CNN-3 and all transfer models except VGG16 and VGG19. For VGG, the missing added dense layer left the classifier with too few parameters; the reviewer attributes the observed single-class collapse to it and excludes the VGG accuracy targets. The attribution has not been tested with a corrected run.",
+      "evidence": [
+        "scripts/models.py"
+      ]
+    },
+    {
+      "id": "trainable-layers",
+      "kind": "guess",
+      "description": "Which layers are trained.",
+      "paper_says": "Not stated",
+      "used": "Train all layers",
+      "related_ids": [
+        "classifier-head"
+      ]
+    },
+    {
+      "id": "pretrained-checkpoints",
+      "kind": "guess",
+      "description": "Exact pretrained checkpoints and ViT variant.",
+      "paper_says": "Model families only; ViT variants \"ViT_b16 and ViT_132\", BiT \"BiT-m-r50x1 and BiT-m-r50x3\", Swin \"SwinV2Tiny256\"",
+      "used": "Pinned ImageNet weights; ImageNet-21k BiT-M; ImageNet-21k+ImageNet-2012 ViT weights. Interpret `ViT_132` as ViT-L/32."
+    },
+    {
+      "id": "input-processing",
+      "kind": "guess",
+      "description": "Input processing.",
+      "paper_says": "\"ArSL images with three RGB color channels were resized to 224 × 224 pixels\" (§3.3, for the CNN models)",
+      "used": "Convert to grayscale and repeat into RGB; bilinear resize to 224×224, or 256×256 for Swin; backbone-specific normalization.",
+      "dataset_ids": [
+        "arasl2018"
+      ]
+    },
+    {
+      "id": "cnn3-architecture",
+      "kind": "guess",
+      "description": "CNN-3 architecture details.",
+      "paper_says": "Table 4, CNN-3V4: filters 256, 126, 64, 62, 16; 3 × 3 convolutions; 2 × 2 max pooling; \"+1 batch normalization, 1 dropout\"; leaky ReLU",
+      "used": "Table 4's V4 filters: 256, 126, 64, 62, 16. Same-padded 3×3 convolutions, valid 2×2 pooling, LeakyReLU 0.01, batch normalization after the last convolution, dropout 0.5 and Dense(128), which Table 4 does not list (see Implementation differences).",
+      "related_ids": [
+        "classifier-head"
+      ]
+    },
+    {
+      "id": "cnn-augmentation",
+      "kind": "guess",
+      "description": "CNN augmentation.",
+      "paper_says": "\"random rotation with 0.2 degrees and random horizontal and vertical flipping\" (§3.3)",
+      "used": "Horizontal/vertical flips and rotation within ±0.2 degrees. No random augmentation for transfer models.",
+      "basis": "Literal reading of \"0.2 degrees\" (scripts/models.py: RandomRotation(0.2/360.))",
+      "effect": "If the paper's 0.2 is the Keras RandomRotation factor, the intended range is ±0.2 × 360° = ±72°; the literal reading makes rotation negligible"
+    },
+    {
+      "id": "loss-and-metrics",
+      "kind": "guess",
+      "description": "Loss and multiclass metric definitions.",
+      "paper_says": "Loss defined as MSE, 1/N ∑(ypred − ytrue)² (§4.4), while reported losses reach 17.744 (VGG19, Table 7); precision, recall, F1 and AUC given as binary formulas with no averaging rule",
+      "used": "Train with cross-entropy; report cross-entropy and probability MSE separately. Use argmax accuracy, macro precision/recall/F1 and macro one-vs-rest AUC."
+    },
+    {
+      "id": "checkpoint-and-precision",
+      "kind": "guess",
+      "description": "Checkpoint selection and precision.",
+      "paper_says": "Not stated",
+      "used": "Report epoch one and the final epoch, without best-score selection. Float32 with TensorFlow's default TF32 enabled."
     }
   ],
   "contacts": [],
@@ -19998,7 +20069,7 @@
       "inceptionv3"
     ],
     "compatibility_fixes": [
-      "vit-keras imports cv2; added pinned opencv-python-headless 4.8.1.78 after observed missing-module failure.",
+      "vit-keras imports cv2; added pinned opencv-python-headless 4.8.1.78 after observed missing-module failure. No model, data, optimizer or metric changes.",
       "Swin checkpoint nests positional MLP tensors in pos_emb; kcam 1.3.17 separates meta_dense_1/2. Map exact tensors, then assert every pretrained backbone weight equals archive bytes.",
       "Use atomic Modal metadata writes to prevent report collection races."
     ],
@@ -20510,5 +20581,6 @@
     "total": 128,
     "completed_model_runs": 16,
     "basis": "Following user review, unspecified split and training settings are treated as documented reconstruction assumptions rather than grounds to exclude all results. Ordinary top-1 classification accuracy is accepted as the operational accuracy definition for this assessment. This does not establish the authors used identical settings; eligibility is based on the accepted interpretation, not numerical closeness. VGG16/VGG19 accuracy targets excluded after review of the classifier-head difference (classifier-head-review gate)."
-  }
+  },
+  "noncompliance": []
 }

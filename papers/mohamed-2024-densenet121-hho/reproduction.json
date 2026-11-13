@@ -1399,5 +1399,198 @@
       "size_bytes": 1300
     }
   ],
-  "gates": []
+  "gates": [],
+  "guesses_and_deviations": [
+    {
+      "id": "horizontal-flip",
+      "kind": "paper_internal_conflict",
+      "description": "Whether augmentation includes a horizontal flip.",
+      "paper_says": "Algorithm 1's augmentation list is rotation, zoom, shift, and brightness, with no flip; Fig. 8's \"Image processing\" box lists Rescaling, Zooming, Shifting, Brightness Adjustment, and Horizontal Flip",
+      "used": "Algorithm 1's list; no flipping anywhere",
+      "basis": "Algorithm 1 is the one place the paper actually spells out the augmentation procedure",
+      "scope": "All eight models"
+    },
+    {
+      "id": "backbone-freezing",
+      "kind": "guess",
+      "description": "How much of each pretrained backbone is frozen.",
+      "paper_says": "DenseNet121 (\u00a7III.B.5): \"the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning\"; ResNet50 (\u00a7III.B.3): \"with the early layers frozen to preserve pre-learned features\". EfficientNet-B0/B3 are only \"fine-tuned\" (\u00a7III.B.2), and DenseNet201's description (\u00a7III.B.4) does not mention freezing. No layer count for \"early\"",
+      "used": "Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234",
+      "basis": "The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. \"Match the CNN's parameter count\" is this attempt's own rule, not something the paper states",
+      "effect": "The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8)",
+      "scope": "EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO",
+      "evidence": [
+        "train.py make_model_specs()"
+      ]
+    },
+    {
+      "id": "validation-augmentation",
+      "kind": "guess",
+      "description": "Whether validation data is augmented.",
+      "paper_says": "Algorithm 1 says the augmented generator covers training and validation; only the test generator skips augmentation",
+      "used": "Training and validation augmented; test gets plain normalization",
+      "effect": "The fitness signal the two HHO searches optimize against is computed on augmented validation data",
+      "scope": "All eight models"
+    },
+    {
+      "id": "rgb-channels",
+      "kind": "guess",
+      "description": "How grayscale images become the RGB input the paper describes.",
+      "paper_says": "\"All images were resized to 64 \u00d7 64 pixels and retained in RGB format\" (\u00a7III.A); Figs. 2, 6, and 7 show 64x64x3 input",
+      "used": "Every image converted to grayscale and resized to 64x64 (648 of 54,049 are not native 64x64 grayscale), then the single channel replicated into 3 channels",
+      "basis": "The native ArASL2018 images are 64x64 grayscale",
+      "scope": "All eight models",
+      "dataset_ids": [
+        "arasl2018-grayscale"
+      ],
+      "evidence": [
+        "train.py comments at lines 26 and 63"
+      ]
+    },
+    {
+      "id": "backbone-input-preprocessing",
+      "kind": "paper_deviation",
+      "description": "Input scaling for the pretrained backbones.",
+      "paper_says": "Algorithm 1 normalizes images to [0, 1] ahead of every model",
+      "used": "The [0, 1] scaling is undone and each backbone's own `preprocess_input` applied (mean-subtracted BGR for ResNet50, x/127.5-1 for DenseNet, EfficientNet's internal Rescaling+Normalization)",
+      "basis": "Each tf.keras.applications backbone was pretrained with its own preprocessing on raw [0, 255] input",
+      "effect": "Without it, ResNet50 reached ~34% test accuracy after 60 epochs and EfficientNet never escaped chance accuracy",
+      "scope": "EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO",
+      "evidence": [
+        "train.py resizing_backbone() comment"
+      ]
+    },
+    {
+      "id": "efficientnet-input-size",
+      "kind": "guess",
+      "description": "How 64x64 images become EfficientNet's 224x224 input.",
+      "paper_says": "Fig. 4: EfficientNet-B0/B3 take a 224x224x3 input; the shared preprocessing produces 64x64x3",
+      "used": "Upsize with a Keras Resizing layer to 224x224",
+      "scope": "EfficientNet-B0, EfficientNet-B3",
+      "evidence": [
+        "train.py resizing_backbone()"
+      ]
+    },
+    {
+      "id": "cnn-architecture",
+      "kind": "paper_deviation",
+      "description": "The CNN's convolutional stack.",
+      "paper_says": "Fig. 2: Conv2D(32), Conv2D(32), Conv2D(64), Conv2D(128), with feature maps 64x64x32, 32x32x32, 16x16x64, 14x14x128, 7x7x128 and a Flatten of 6272 before Dense(512)",
+      "used": "Three blocks of two same-padded 3x3 convolutions (32, 64, 128 filters), each followed by MaxPooling and BatchNormalization; Flatten of 8192 before Dense(512)",
+      "effect": "About 4.5M trainable parameters, against about 3.3M for Fig. 2's shapes (the Flatten-to-Dense(512) layer alone is 4.2M vs 3.2M). The CNN's ~4.5M is the target of the backbone-freezing rule",
+      "scope": "CNN, CNN-HHO",
+      "related_ids": [
+        "backbone-freezing"
+      ],
+      "evidence": [
+        "train.py build_cnn()"
+      ]
+    },
+    {
+      "id": "densenet121-activation",
+      "kind": "paper_deviation",
+      "description": "DenseNet121's final activation.",
+      "paper_says": "The last layer uses sigmoid for 32-way classification",
+      "used": "Softmax",
+      "basis": "Sigmoid doesn't make sense for a single-label, mutually-exclusive classification problem, and every other model in the paper uses softmax for the same task; the sigmoid mention is treated as a slip in the writing",
+      "scope": "DenseNet121, DenseNet121-HHO"
+    },
+    {
+      "id": "densenet121-head",
+      "kind": "paper_deviation",
+      "description": "DenseNet121's classification head.",
+      "paper_says": "Fig. 6: MaxPooling2D, BatchNormalization, Dropout (0.3), Flatten, Dense (512 units, ReLU), Dropout (0.5), Dense (32 units, Sigmoid)",
+      "used": "MaxPooling2D, BatchNormalization, Flatten, Dense (512, ReLU), Dropout, Dense (32, softmax): no Dropout (0.3) before Flatten. The remaining dropout is 0.5 for DenseNet121 and HHO-tuned for DenseNet121-HHO",
+      "scope": "DenseNet121, DenseNet121-HHO",
+      "related_ids": [
+        "densenet121-activation"
+      ],
+      "evidence": [
+        "train.py resizing_backbone() densenet121 head"
+      ]
+    },
+    {
+      "id": "learning-rate",
+      "kind": "guess",
+      "description": "Learning rate for the models whose rate the paper omits.",
+      "paper_says": "The paper names an optimizer (Adam or Adamax) for each but never gives a rate",
+      "used": "The framework default for ResNet50, DenseNet121, and DenseNet201; 1e-4 for the plain CNN",
+      "basis": "For the CNN, Adam's default (1e-3) was tried first and collapsed to predicting the class prior; 1e-4 is the value CNN-HHO's own search converged to",
+      "scope": "CNN, ResNet50, DenseNet121, DenseNet201",
+      "evidence": [
+        "train.py make_model_specs() comment on the CNN spec"
+      ]
+    },
+    {
+      "id": "resnet50-dropout",
+      "kind": "guess",
+      "description": "The ResNet50 head's dropout rate.",
+      "paper_says": "Figure 5 just says \"Flatten \u2192 Dropout \u2192 Dense\" with no number",
+      "used": "0.5",
+      "basis": "A plain default, distinct from the two dropout rates the paper does give for other models (0.6 for EfficientNet, 0.8 for DenseNet201)",
+      "scope": "ResNet50"
+    },
+    {
+      "id": "metric-averaging",
+      "kind": "guess",
+      "description": "How precision, recall, and F1 are averaged across the 32 classes.",
+      "paper_says": "Not stated",
+      "used": "Macro averaging (unweighted mean across classes)",
+      "basis": "The standard choice when it isn't specified, and consistent with the paper's own numbers: its F1 is sometimes lower than both its precision and recall, which can't happen with micro-averaging but is normal under macro or per-class averaging on an imbalanced label set"
+    },
+    {
+      "id": "split",
+      "kind": "guess",
+      "description": "The train/val/test split.",
+      "paper_says": "64/16/20, stratified; the split itself and a seed are not published",
+      "used": "Stratified 64/16/20, seed 42",
+      "dataset_ids": [
+        "arasl2018-grayscale"
+      ]
+    },
+    {
+      "id": "checkpoint-selection",
+      "kind": "guess",
+      "description": "Which evaluation Table II reports.",
+      "paper_says": "\"Table II presents the best test results for each model\" (\u00a7IV); it does not say best over what (epochs, runs, or HHO candidates)",
+      "used": "One test evaluation at the end of the epoch count Table II lists; no checkpoint or run selection",
+      "scope": "All eight models"
+    },
+    {
+      "id": "results-prose-values",
+      "kind": "paper_internal_conflict",
+      "description": "Accuracies quoted in the results prose.",
+      "paper_says": "\u00a7IV's prose gives EfficientNet-B3 98.55%, ResNet50 97.90%, and CNN 94.50% with F1 94.2%; none of these appear in Table II",
+      "used": "Table II's values as the targets"
+    },
+    {
+      "id": "hho-search",
+      "kind": "guess",
+      "description": "The HHO search budget.",
+      "paper_says": "HHO tunes \"the learning rate, batch size, number of filters, and dropout rates\" for CNN-HHO (\u00a7III.B.6, Fig. 7) and \"learning rate, batch size, and dropout, to maximize validation accuracy\" for DenseNet121-HHO (\u00a7III.B.7); no search ranges, population size, number of iterations, or cost per candidate evaluation",
+      "used": "Search ranges: log10 learning rate [-4, -2], batch size 16-64, dropout 0.2-0.6, and for CNN-HHO a filter-count scale 0.5-1.5. Population 6, 4 iterations; each candidate judged by training it for 3 epochs on a 25% slice of the training data",
+      "basis": "Evaluating every candidate with a full training run would cost far more than the 5-epoch final run the paper reports; a fairly standard cheap-proxy setup",
+      "effect": "DenseNet121-HHO's search settled on a configuration that does slightly worse than the plain DenseNet121 default (95.11% vs. 96.39%), reported as-is rather than re-running the search until it beats the baseline",
+      "scope": "CNN-HHO, DenseNet121-HHO",
+      "evidence": [
+        "train.py make_model_specs() hho_bounds; --hho-population/--hho-iterations/--hho-proxy-epochs/--hho-proxy-fraction defaults"
+      ]
+    }
+  ],
+  "noncompliance": [
+    {
+      "id": "first-attempt-overwritten",
+      "description": "The first set of eight full runs (whole backbone frozen; 2026-08-30 06:03-07:18 UTC; recorded in commit aaa7d1a) was dropped from `runs` when the second set (partial unfreezing) was recorded under the same run IDs as attempt 1, and the second set overwrote its artifacts at the same paths on the results volume.",
+      "requirement": "`reproduction.json.runs` records every meaningful retained attempt (AGENTS.md, evidence and completion contract)",
+      "effect": "The first attempt's test accuracies (CNN 96.28, CNN-HHO 87.32, EfficientNet-B0 91.09, EfficientNet-B3 86.85, ResNet50 81.09, DenseNet201 70.72, DenseNet121 85.74, DenseNet121-HHO 81.43) and artifact hashes survive only in commit aaa7d1a; its raw outputs are gone",
+      "resolution": "Open: the run entries can be restored from commit aaa7d1a; the artifacts cannot"
+    },
+    {
+      "id": "failed-attempts-removed",
+      "description": "Commit a3cb787 deleted the README's \"What went wrong along the way\" section (CNN and CNN-HHO runs at chance before the learning-rate change, EfficientNet runs killed by hand, a ResNet50 run that finished at 33.7%, reruns that reused or resumed from broken outputs until volume folders were deleted) and its \"Contacting the authors\" section (no contact made).",
+      "requirement": "README.md reports every failed attempt and any author contact (AGENTS.md, reporting integrity)",
+      "effect": "These dead ends and the no-contact statement are absent from the current report",
+      "resolution": "Open: both sections can be restored from commit aaa7d1a"
+    }
+  ]
 }
