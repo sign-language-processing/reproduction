@@ -91,9 +91,18 @@ The authors' plateau rule stopped training normally at step 4,400 and selected c
 
 ## Guesses and deviations
 
-- The paper does not state the Table 4 seed; seed 42 comes from the published config.
-- The repository config searches translation alphas -1 through 5 and uses `learning_rate_min: 1e-7`; the paper says alphas 0 through 2 and `1e-6`. This reproduction treats the published code/config as the executable recipe.
-- The paper does not identify the original hardware. The legacy framework ran without modification on an available T4.
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `target-configuration` | `guess` | Which Table 4 configuration the assignment refers to. | Table 4 reports several recognition/translation loss weightings | The supplied joint lambda_R=1, lambda_T=1 configuration and matching Table 4 row |  |  |  |  |  |  |  |  |
+| `seed` | `guess` | Random seed for the Table 4 run. | Not stated | One seed-42 run | The published configuration pins seed 42 |  |  |  |  |  |  |  |
+| `length-penalty-alpha` | `paper_code_conflict` | Length-penalty alpha search range. | "a length penalty [74] with α values ranging from 0 to 2" (§5.1) | The published config's translation alphas -1 through 5 | The published config was treated as the executable recipe |  |  |  |  |  |  |  |
+| `learning-rate-min` | `paper_code_conflict` | Learning rate at which training stops. | "This continues until the learning rate drops below 10−6" (§5.1) | The published config's learning_rate_min=1e-7 | The published config was treated as the executable recipe |  |  |  |  |  |  |  |
+| `environment-packaging` | `code_deviation` | Dependency packaging for the published environment. |  | The Dockerfile omits two conda self-management pins, replaces three unavailable patch releases (TensorBoard 2.1.2 to 2.1.1, tensorflow-estimator 2.1.2 to 2.1.0, and warmup-scheduler 0.1.1 to 0.3), and pins typing-extensions for the Python 3.7 child |  | Model code and configuration values were not changed |  |  | Dockerfile |  |  |  |
+| `hardware` | `guess` | Hardware. | Not identified | One Tesla T4 |  | The legacy framework ran without modification |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Attempts, failures, and dead ends
 
