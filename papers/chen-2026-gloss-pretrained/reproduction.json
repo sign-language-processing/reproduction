@@ -41,7 +41,7 @@
       "kind": "code",
       "url": "https://github.com/kayoyin/transformer-slt",
       "revision_or_sha256": "d119fbb642d653a987a2e1b2cd1541c88df7f2ef",
-      "role": "Code for ref [33] (Yin & Read, STMC-Transformer), which the target paper says its Transformer-tiny baseline follows (Section IV-A2). Also the source of the exact 82709/4000/1000 ASLG-PC12 gloss-text split and Phoenix2014T gloss/text files used across this line of gloss-to-text papers; used by data.sh to populate datasets/aslg-pc12."
+      "role": "Code for ref [33] (Yin & Read, STMC-Transformer), which the target paper says its Transformer-tiny baseline follows (Section IV-A2). Also the source of the ASLG-PC12 gloss-text split (82710/4000/1000 pairs; Table 4a's 82709 is the train files' newline count) and Phoenix2014T gloss/text files used across this line of gloss-to-text papers; used by data.sh to populate datasets/aslg-pc12."
     },
     {
       "source_id": "hf-mbart-large-cc25",
@@ -76,7 +76,7 @@
       "kind": "dataset",
       "url": "https://huggingface.co/datasets/achrafothman/aslg_pc12",
       "revision_or_sha256": "cb7cd272db8fcd4004ee04ddf50e194c15ea24d6",
-      "role": "Upstream ASLG-PC12 corpus license confirmation (CC0 / public domain). The actual train/dev/test files used come from the pinned kayoyin/transformer-slt commit, which preserves the exact split boundaries (82709/4000/1000) matching the paper's Table 4a."
+      "role": "Upstream ASLG-PC12 corpus license confirmation (CC0 / public domain). The actual train/dev/test files used come from the pinned kayoyin/transformer-slt commit, which preserves the split boundaries (82710/4000/1000 pairs; Table 4a's 82709 is the train files' newline count)."
     },
     {
       "source_id": "phoenix2014t-page",
@@ -169,7 +169,7 @@
       "splits": [
         {
           "name": "train",
-          "sample_count": 82709,
+          "sample_count": 82710,
           "files": [
             {
               "path": "train.gloss",
@@ -210,7 +210,7 @@
           ]
         }
       ],
-      "deviation": "Newly populated by this reproduction's data.sh (was absent from the shared datasets Volume before this attempt)."
+      "notes": "Newly populated by this reproduction's data.sh (was absent from the shared datasets Volume before this attempt)."
     },
     {
       "dataset_id": "csl-daily-gloss-text",
@@ -4723,7 +4723,7 @@
       "gate_id": "aslg-pc12-data",
       "type": "data",
       "status": "resolved",
-      "reason": "ASLG-PC12 gloss-text pairs were absent from the shared datasets Volume. Populated via data.sh from the pinned kayoyin/transformer-slt commit d119fbb642d653a987a2e1b2cd1541c88df7f2ef (Apache-2.0 code; CC0 upstream corpus). Verified split counts 82709/4000/1000 train/dev/test, matching the paper's Table 4a exactly.",
+      "reason": "ASLG-PC12 gloss-text pairs were absent from the shared datasets Volume. Populated via data.sh from the pinned kayoyin/transformer-slt commit d119fbb642d653a987a2e1b2cd1541c88df7f2ef (Apache-2.0 code; CC0 upstream corpus). Verified split counts 82710/4000/1000 train/dev/test pairs. The train files have no final newline, so newline counting (wc -l) gives 82709, the count Table 4a reports; dev/test match exactly.",
       "required_action": "None; resolved. Keep data.sh idempotent for future re-population.",
       "evidence": [
         "papers/chen-2026-gloss-pretrained/data.sh",
@@ -4753,17 +4753,129 @@
       ]
     }
   ],
-  "guesses": [
-    "BLEU/ROUGE-L/METEOR toolkit, tokenizer, and case-sensitivity are not named by the paper; defaulted to sacrebleu / rouge-score / nltk METEOR (see gate 'metric-implementation').",
-    "Checkpoint-selection rule for Table 6 is not restated in Section IV/V; defaulted to best-development-set-BLEU selection (standard practice, matching the pinned kayoyin/transformer-slt repo's convention for the Transformer-tiny systems).",
-    "ASLG-PC12: the pinned kayoyin/transformer-slt train.gloss/train.en files contain 82710 lines by Python line-splitting, one more than Table 4a's stated 82709 (likely a trailing-newline counting artifact in the paper's own reporting, not a data-identity issue: dev/test counts 4000/1000 match exactly). Verified via the 'check_data' Modal function on 2026-08-31; using the file's true content (82710 train pairs) rather than truncating.",
-    "Batch size / step budget for mBART/mT5 finetuning are not stated by the paper. First full run (mt5-small/phoenix, batch_size=16, epochs=10 -> 4440 total steps) produced near-zero BLEU. Root-cause diagnosis via per-step loss tracing (not a code bug): the paper-specified warmup_steps=2500 consumed 56% of Phoenix2014T's 4440-step budget at epochs=10, leaving too few high-LR steps to converge on the smallest dataset (loss did fall 50->12 but not enough for fluent output). RESOLVED with a fixed uniform step budget across all three datasets: max_steps=40000, eval/save every 4000 steps, batch_size=16 (all still undocumented by the paper). This keeps warmup at 6.25% of training for every dataset instead of varying 8%-56% by dataset size. Verified via extended loss tracing (3000 steps) that loss keeps falling well past warmup completion, supporting this fix.",
-    "Decoding/inference settings for the mBART/mT5 systems are not stated by the paper. First full runs at default generation config (no explicit num_beams/no_repeat_ngram_size) produced fluent but degenerate, repetition-looped text for mT5 checkpoints (verified directly via modal_app.py::inspect_checkpoint on real weights: e.g. 'und nun die wettervorhersage fur morgen' repeated many times), causing near-zero BLEU despite falling loss; mBART was not observed to collapse this way. Fixed by setting model.generation_config.num_beams=4 and no_repeat_ngram_size=3 uniformly for every system (standard defaults, and num_beams=4 matches ref [33]'s own translate.py beam_size=4 usage for this benchmark family). Re-evaluated already-finished checkpoints (mbart-csldaily, mt5-small-csldaily) from their saved weights under the fixed config rather than retraining.",
-    "Ref [33]'s tools/rouge.py strips all non-ASCII characters (REMOVE_CHAR_PATTERN=[^A-Za-z0-9]) before scoring, which empties CSL-Daily's Chinese text entirely (rouge-l=0.0 observed for both mbart-csldaily and mt5-small-csldaily regardless of translation quality). Immaterial to this reproduction: Table 6 does not report ROUGE-L/METEOR for CSL-Daily (only BLEU-1..4), so no target depends on this tool limitation; noted for completeness.",
-    "mT5 systems substantially underperform mBART and the paper's reported mT5 numbers on Phoenix2014T/ASLG-PC12 (much less so on CSL-Daily). Verified this is not the earlier repetition bug: generated text is fluent, grammatical, non-repeating German, but shows mode collapse to generic weather-forecast templates ('und nun die wettervorhersage fur morgen X') rather than gloss-specific translation, i.e. genuine undertraining/underfitting relative to mBART at the same step budget, not a decoding artifact (verified via modal_app.py::inspect_checkpoint on real checkpoint-40000 weights, 2026-08-31). One concrete, unavoidable implementation asymmetry: T5Config exposes only a single dropout_rate (set to the paper's 0.3), with no separate attention-dropout parameter, whereas mBART's BartConfig lets attention_dropout=0.1 be set separately as the paper specifies. mT5 therefore trains with ~3x higher effective attention dropout than mBART in this reproduction, a plausible contributing cause not chosen for tuning purposes. Not further adjusted to chase the published mT5 numbers, per policy (never tune toward the published score)."
-  ],
-  "deviations": [
-    "Three minimal compatibility patches were required to make the finetuning pipeline run (none change protocol/results, all are environment/API compatibility): (1) uninstalled the NGC 26.04 image's broken `apex` package (transformers unconditionally imports apex.amp when apex is importable; this apex build no longer has that submodule; training uses native bf16, not apex AMP). (2) Copied ref [33]'s wordnet_key_value*.txt files into tools/ alongside rouge.py, since its pkg_resources-based lookup resolves them relative to the script's own directory, not cwd \u2014 a pre-existing repo layout quirk. (3) Retained patch patches/0001-meteor-tokenize.patch: ref [33]'s tools/meteor.py calls nltk.meteor() with raw strings, which modern nltk (>=3.7) rejects (requires pre-tokenized input); patched to lowercase+split, matching the same repo's own bleu.py convention. All three were diagnosed and fixed one at a time via the mT5-small/Phoenix2014T preflight on 2026-08-31, and are captured in modal_app.py and patches/0001-meteor-tokenize.patch (sha256 f4b2c004b72d914fab73cf2c20e8932e6dad7d4f2b840cd9d6ba24b0cba75ddc)."
+  "guesses_and_deviations": [
+    {
+      "id": "metric-toolkit",
+      "kind": "guess",
+      "description": "BLEU, ROUGE-L and METEOR implementation.",
+      "paper_says": "BLEU/ROUGE-L/METEOR cited to Papineni et al. 2002 / Lin 2004 only",
+      "used": "Ref [33]'s own bundled `tools/{bleu,rouge,meteor}.py` (nltk-based corpus BLEU, lowercased/whitespace-tokenized; a pltrdy/rouge-style ROUGE-L with stemming; nltk METEOR), invoked unmodified except the one retained nltk-API patch",
+      "basis": "No toolkit named by the paper, but the paper explicitly says its Transformer baseline follows [33]; reusing [33]'s own scoring code for the whole table (not just the baseline) is more evidence-grounded than an arbitrary third-party toolkit",
+      "effect": "Reproduced values may still differ slightly from whatever toolkit the paper's own mBART/mT5 evaluation used, which it does not name. Ref [33]'s tools/rouge.py strips all non-ASCII characters (REMOVE_CHAR_PATTERN=[^A-Za-z0-9]) before scoring, which empties CSL-Daily's Chinese text entirely (rouge-l=0.0 for both mbart-csldaily and mt5-small-csldaily); immaterial, since Table 6 reports only BLEU-1..4 for CSL-Daily",
+      "status": "Gate `metric-implementation` resolved"
+    },
+    {
+      "id": "checkpoint-selection",
+      "kind": "guess",
+      "description": "Checkpoint selection for Table 6.",
+      "paper_says": "Not restated for Section IV/V",
+      "used": "Best-development-set corpus-BLEU-4 (nltk, lowercased/whitespace) via `load_best_model_at_end`",
+      "basis": "Standard practice; matches \"best-development-set\" framing used elsewhere in the paper; matches the pinned kayoyin/transformer-slt repo's convention for the Transformer-tiny systems",
+      "effect": "Could shift results if the paper actually used final-step or a different rule"
+    },
+    {
+      "id": "csl-daily-scoring-tokenization",
+      "kind": "guess",
+      "description": "CSL-Daily target text tokenization for scoring.",
+      "paper_says": "Table 4b shows unsegmented Chinese characters",
+      "used": "Whitespace-separate each character before scoring (character-level BLEU/ROUGE/METEOR)",
+      "basis": "Matches Zhou et al. (2021)'s convention for this exact corpus; word-level scoring on unsegmented Chinese would be meaningless",
+      "effect": "Only affects CSL-Daily targets; Phoenix2014T/ASLG-PC12 are scored as-is",
+      "dataset_ids": [
+        "csl-daily-gloss-text"
+      ]
+    },
+    {
+      "id": "aslg-pc12-train-count",
+      "kind": "guess",
+      "description": "ASLG-PC12 training-set size.",
+      "paper_says": "Table 4a states 82709",
+      "used": "Loaded file contains 82710 lines (verified via `check_data` on 2026-08-31)",
+      "basis": "train.gloss and train.en end without a final newline: they contain 82709 newline characters and 82710 non-empty lines. Newline counting (wc -l) therefore gives 82709, most likely how Table 4a's count was obtained; dev/test (4000/1000) match exactly",
+      "effect": "Immaterial to results; using the file's true content rather than truncating to match the paper's stated count",
+      "evidence": [
+        "Re-counted on 2026-11-13 from the datasets Volume copies, whose SHA-256s match datasets[aslg-pc12-gloss-text].splits: 82709 newline characters, 82710 lines, 0 empty lines in each train file"
+      ],
+      "dataset_ids": [
+        "aslg-pc12-gloss-text"
+      ]
+    },
+    {
+      "id": "finetuning-step-budget",
+      "kind": "guess",
+      "description": "Batch size and step budget for mBART/mT5 finetuning.",
+      "paper_says": "Only label smoothing, Adam betas/eps, max LR, warmup_steps=2500 are given for the mBART/mT5 systems",
+      "used": "batch_size=16, a fixed max_steps=40000 uniform across all three datasets, eval/save every 4000 steps",
+      "basis": "A first full run at epochs=10 (4440 total steps for Phoenix2014T) produced near-zero BLEU: per-step loss tracing showed this was undertraining, not a bug — warmup_steps=2500 consumed 56% of that short schedule, leaving too few high-LR steps for the smallest dataset. A uniform large step budget keeps warmup at a small (6.25%), constant fraction of training for every dataset The first full run was mt5-small/phoenix at batch_size=16, epochs=10; its loss did fall 50->12 but not enough for fluent output. Verified via extended loss tracing (3000 steps) that loss keeps falling well past warmup completion.",
+      "effect": "Real result quality now depends on this guessed step budget rather than the paper's (unstated) one; recorded as the best-available default, not a paper-specified value"
+    },
+    {
+      "id": "decoding-settings",
+      "kind": "guess",
+      "description": "Decoding settings for the mBART/mT5 systems.",
+      "paper_says": "Not stated; §IV-A4 says \"most parameters follow the default HuggingFace implementations\"",
+      "used": "model.generation_config.num_beams=4 and no_repeat_ngram_size=3, uniformly for every system",
+      "basis": "First full runs at default generation config (no explicit num_beams/no_repeat_ngram_size) produced fluent but degenerate, repetition-looped text for mT5 checkpoints (verified directly via modal_app.py::inspect_checkpoint on real weights: e.g. 'und nun die wettervorhersage fur morgen' repeated many times), causing near-zero BLEU despite falling loss; mBART was not observed to collapse this way. Standard defaults, and num_beams=4 matches ref [33]'s own translate.py beam_size=4 usage for this benchmark family.",
+      "effect": "Re-evaluated already-finished checkpoints (mbart-csldaily, mt5-small-csldaily) from their saved weights under the fixed config rather than retraining.",
+      "evidence": [
+        "train_finetune.py: generation_config.num_beams = 4, no_repeat_ngram_size = 3"
+      ]
+    },
+    {
+      "id": "mt5-attention-dropout",
+      "kind": "paper_deviation",
+      "description": "Attention dropout for the mT5 systems.",
+      "paper_says": "\"The general dropout rate is 0.3 and the attention dropout is 0.1\" (§IV-A2)",
+      "used": "T5Config's single dropout_rate=0.3, which also covers attention; mBART's BartConfig sets attention_dropout=0.1 separately",
+      "basis": "One concrete, unavoidable implementation asymmetry: T5Config exposes only a single dropout_rate (set to the paper's 0.3), with no separate attention-dropout parameter. Not chosen for tuning purposes.",
+      "effect": "mT5 therefore trains with ~3x higher effective attention dropout than mBART in this reproduction, a plausible contributing cause of the mT5 gap. mT5 systems substantially underperform mBART and the paper's reported mT5 numbers on Phoenix2014T/ASLG-PC12 (much less so on CSL-Daily). Verified this is not the earlier repetition bug: generated text is fluent, grammatical, non-repeating German, but shows mode collapse to generic weather-forecast templates ('und nun die wettervorhersage fur morgen X') rather than gloss-specific translation, i.e. genuine undertraining/underfitting relative to mBART at the same step budget, not a decoding artifact (verified via modal_app.py::inspect_checkpoint on real checkpoint-40000 weights, 2026-08-31). Not further adjusted to chase the published mT5 numbers, per policy (never tune toward the published score).",
+      "evidence": [
+        "train_finetune.py: dropout_kwargs"
+      ]
+    },
+    {
+      "id": "table6-seed-policy",
+      "kind": "guess",
+      "description": "Number of runs per Table 6 system and dataset.",
+      "paper_says": "§III-B averages three random seeds for the Table 2/3 study; §IV and Table 6 do not restate a seed policy",
+      "used": "A single run per system/dataset",
+      "basis": "User decision at gate `seed-policy-table6`",
+      "status": "Gate `seed-policy-table6` resolved"
+    },
+    {
+      "id": "baseline-hyperparameters",
+      "kind": "guess",
+      "description": "Transformer-tiny and +Back-translation hyperparameters.",
+      "paper_says": "Table 5 is captioned \"Hyperparameters of transformer models used in Section III\" — it does not apply to Table 6. Section IV-A2 only says the baseline \"follows [33]\"",
+      "used": "Ref [33]'s own documented Sample Usage recipe (`kayoyin/transformer-slt` README), invoked verbatim including its own `-early_stopping 3` criterion",
+      "basis": "Initially (incorrectly) assumed Table 5's numbers applied to Table 6; corrected after re-reading Table 5's own caption. Using the pinned upstream's own recipe directly is both the least-invasive reading of \"follow [33]\" and avoids porting Section III's differently-scoped hyperparameters (which also use a different LR-scaling convention, `decay_method=noam`, that Table 5's raw `7e-4` would not transfer to correctly)",
+      "effect": "This is the target with the closest reproduction (BLEU-4 within ~1-2 points on all 3 datasets), suggesting the correction was the right call"
+    },
+    {
+      "id": "backtranslation-data",
+      "kind": "paper_deviation",
+      "description": "Source and selection of the 30K in-domain German sentences for +Back-translation.",
+      "paper_says": "Section III-C: cross-entropy-difference selection (Moore & Lewis 2010) from Common Crawl, targeting the weather-forecast domain; footnote 6 states the intended source (tagesschau.de) is inaccessible even to the paper's own authors",
+      "used": "Background corpus: 400K sentences streamed from `allenai/c4` (mc4, German, Common-Crawl-derived). In-domain seed: Phoenix2014T's own training text (weather-forecast register). Selection: word-level unigram LM (add-1 smoothed) cross-entropy difference, not a full n-gram LM",
+      "basis": "The paper's own source is unrecoverable in principle, so exact reproduction is impossible; this substitutes a same-family (Common Crawl) source and a simplified (unigram, not full n-gram) version of the cited selection method, sufficient to visibly bias selection toward weather-related text (manually spot-checked)",
+      "effect": "This reproduction's own +Back-translation result *underperforms* its own plain Transformer baseline (21.07 vs 22.42 BLEU-4), the opposite of the paper's reported improvement (21.41→22.78) — plausibly because the substitute data is noisier than the paper's actual (now-inaccessible) source, not a pipeline defect",
+      "dataset_ids": [
+        "phoenix2014t-gloss-text"
+      ]
+    },
+    {
+      "id": "compatibility-fixes",
+      "kind": "code_deviation",
+      "description": "Environment and API-compatibility fixes to the finetuning and baseline pipelines.",
+      "used": "Uninstall the NGC 26.04 image's apex package; copy ref [33]'s wordnet_key_value*.txt into tools/; patches/0001-meteor-tokenize.patch (both images); patches/0002-beam-search-float-div.patch (baseline image only)",
+      "basis": "Each fixes a demonstrated failure; see the patch table under Environment and patches",
+      "effect": "None on the trained model, data, or protocol",
+      "evidence": [
+        "patches/0001-meteor-tokenize.patch (sha256 f4b2c004b72d914fab73cf2c20e8932e6dad7d4f2b840cd9d6ba24b0cba75ddc)",
+        "patches/0002-beam-search-float-div.patch (sha256 fd3dc80d0eae3d6e61d3fc3d7fd05c72c694b5b1ba0a7c0112c25605d91f333a)",
+        "modal_app.py"
+      ]
+    }
   ],
   "dead_ends": [
     "The REPRO-SIGN survey tool record for this paper (repro-sign-survey-frontend.fly.dev/paper.html?id=550614802c03abf554dd1f3a4e65abfa34e6c07a) required authenticated PocketBase access with no public read rule; could not be used as the assignment source.",
