@@ -169,7 +169,7 @@
       "splits": [
         {
           "name": "train",
-          "sample_count": 82709,
+          "sample_count": 82710,
           "files": [
             {
               "path": "train.gloss",
@@ -4723,7 +4723,7 @@
       "gate_id": "aslg-pc12-data",
       "type": "data",
       "status": "resolved",
-      "reason": "ASLG-PC12 gloss-text pairs were absent from the shared datasets Volume. Populated via data.sh from the pinned kayoyin/transformer-slt commit d119fbb642d653a987a2e1b2cd1541c88df7f2ef (Apache-2.0 code; CC0 upstream corpus). Verified split counts 82709/4000/1000 train/dev/test, matching the paper's Table 4a exactly.",
+      "reason": "ASLG-PC12 gloss-text pairs were absent from the shared datasets Volume. Populated via data.sh from the pinned kayoyin/transformer-slt commit d119fbb642d653a987a2e1b2cd1541c88df7f2ef (Apache-2.0 code; CC0 upstream corpus). Verified split counts 82710/4000/1000 train/dev/test pairs. The train files have no final newline, so newline counting (wc -l) gives 82709, the count Table 4a reports; dev/test match exactly.",
       "required_action": "None; resolved. Keep data.sh idempotent for future re-population.",
       "evidence": [
         "papers/chen-2026-gloss-pretrained/data.sh",
@@ -4791,8 +4791,11 @@
       "description": "ASLG-PC12 training-set size.",
       "paper_says": "Table 4a states 82709",
       "used": "Loaded file contains 82710 lines (verified via `check_data` on 2026-08-31)",
-      "basis": "Off-by-one, most likely a trailing-newline counting artifact in the paper's own reporting; dev/test (4000/1000) match exactly",
+      "basis": "train.gloss and train.en end without a final newline: they contain 82709 newline characters and 82710 non-empty lines. Newline counting (wc -l) therefore gives 82709, most likely how Table 4a's count was obtained; dev/test (4000/1000) match exactly",
       "effect": "Immaterial to results; using the file's true content rather than truncating to match the paper's stated count",
+      "evidence": [
+        "Re-counted on 2026-11-13 from the datasets Volume copies, whose SHA-256s match datasets[aslg-pc12-gloss-text].splits: 82709 newline characters, 82710 lines, 0 empty lines in each train file"
+      ],
       "dataset_ids": [
         "aslg-pc12-gloss-text"
       ]
