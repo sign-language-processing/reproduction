@@ -103,28 +103,32 @@ To check our data preparation, decoding and scoring independently of CVSign, we 
 
 Why CorrNet: CVSign's encoder has CorrNet's structure. Modules sit after ResNet layers 2, 3 and 4 behind zero-initialised residual gates, affinities are weighted by `sigmoid(·) − 0.5` (Eq. 4 and CorrNet's `Get_Correlation`), and the paper writes kernels as 1×3×3 and 1×1×1, which is CorrNet's 3D-kernel ResNet. CorrNet's `configs/baseline.yaml` already has CVSign's batch size, optimiser, VAC loss weights and SMKD shared weight-normalised classifier. CorrNet is pinned to its last commit touching code (2023-11-23, before CVSign); HEAD `a812814` differs only in demos. Neither CorrNet nor TLP ships a licence file; both are run unmodified apart from `patches/` and are not redistributed.
 
-## Implementing CCA and CVA: unstated details
+## Guesses and deviations
 
-`patches/cvsign-2-cca-cva-modules.patch` puts CCA and CVA, written from Sec. II, into CorrNet's `modules/resnet.py`. The patch marks each unstated value inline:
-
-| Detail | Paper | Our choice | Why |
-| --- | --- | --- | --- |
-| C_hid (CCA and CVA) | "downsample the channels into C_hid", no value | 64 | Unstated |
-| CCA heads | "n heads" in Fig. 2 | 8 | Unstated |
-| CCA projections | a CNN to C_hid, then "two distinct CNNs" for current and context frames, one CNN back to C_in | 1×1×1 convs, no bias, CorrNet's initialisation | Kernel sizes unstated; CorrNet's 1×1×1 convs have no bias |
-| Context frames | window of 2n+1 frames | The 2n frames other than the current one | Fig. 2, "Adjacent 4 Frames" for a window of 5 |
-| Window boundary | not stated | Edge frames repeated | As CorrNet's `Get_Correlation` does |
-| Eq. 5 scaling | Σ over m, i′, j′, no normalisation | Literal sum | See the note below |
-| CVA Conv_Block | "primarily consists of three CNNs with a kernel size of 1×3×3" | conv-BN-ReLU, conv-BN-ReLU, conv; one Conv_Block shared by every m | Norm and activation unstated |
-| Backbone | ResNet34 pretrained on ImageNet | CorrNet's 3D-kernel ResNet34 loading torchvision's weights as its `resnet18()` does | Upstream `resnet34()` loads no weights |
-| TLP regularisers | "adopt the Temporal Decoder from TLP" | TLP's Cu/Cp at 0.001, as TLP trains its decoder | Paper names only the VE/VA losses |
-| Checkpoint selection | not stated | Best dev WER over 70 epochs | Rule of the code CVSign builds on |
-| Mixed precision | not stated | CorrNet's AMP | Upstream default |
-| Seed | not stated | 0 (CorrNet config) | Single run, as the paper appears to report |
-
-On Eq. 5: taken literally, CCA's output at initialisation is about 290×, 94× and 324× its input at layers 2, 3 and 4 (measured on CPU). CorrNet's own `Get_Correlation` gives 7.8×, 0.2× and 0.6×. This is harmless at the start because α = 0, and in `diagnose-loss-005` Adam moves α only by about 1e-3 in 200 steps. It is still the least-constrained guess in the model, and a reviewer should weigh it.
+`patches/cvsign-2-cca-cva-modules.patch` puts CCA and CVA, written from Sec. II, into CorrNet's `modules/resnet.py`. The patch marks each unstated value inline. The table also lists two frame-preprocessing deviations from CorrNet's code; see *Data provenance and permissions*.
 
 With the gates at zero, the patched encoder reproduces torchvision's ImageNet ResNet34 per frame to 1.4e-6, which confirms the weights load. The checkpointed CCA gives bit-identical outputs and gradients to the uncheckpointed one.
+
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `c-hid` | `guess` | Hidden channel width of CCA and CVA. | "downsample the channels into C_hid", no value | 64 | Unstated |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `cca-heads` | `guess` | Number of CCA heads. | "n heads" in Fig. 2 | 8 | Unstated |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `cca-projections` | `guess` | CCA projection layers. | a CNN to C_hid, then "two distinct CNNs" for current and context frames, one CNN back to C_in | 1×1×1 convs, no bias, CorrNet's initialisation | Kernel sizes unstated; CorrNet's 1×1×1 convs have no bias |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `context-frames` | `guess` | Which frames in the window serve as context. | window of 2n+1 frames | The 2n frames other than the current one | Fig. 2, "Adjacent 4 Frames" for a window of 5 |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `window-boundary` | `guess` | Window handling at sequence edges. | not stated | Edge frames repeated | As CorrNet's `Get_Correlation` does |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `eq5-scaling` | `guess` | Scaling of the Eq. 5 sum. | Σ over m, i′, j′, no normalisation | Literal sum | See the note below | taken literally, CCA's output at initialisation is about 290×, 94× and 324× its input at layers 2, 3 and 4 (measured on CPU). CorrNet's own `Get_Correlation` gives 7.8×, 0.2× and 0.6×. This is harmless at the start because α = 0, and in `diagnose-loss-005` Adam moves α only by about 1e-3 in 200 steps. It is still the least-constrained guess in the model, and a reviewer should weigh it. |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `cva-conv-block` | `guess` | CVA Conv_Block layers. | "primarily consists of three CNNs with a kernel size of 1×3×3" | conv-BN-ReLU, conv-BN-ReLU, conv; one Conv_Block shared by every m | Norm and activation unstated |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `backbone-weights` | `guess` | Loading the ImageNet ResNet34 weights. | ResNet34 pretrained on ImageNet | CorrNet's 3D-kernel ResNet34 loading torchvision's weights as its `resnet18()` does | Upstream `resnet34()` loads no weights |  |  |  | patches/cvsign-2-cca-cva-modules.patch |  |  |  |
+| `tlp-regularisers` | `guess` | TLP decoder regularisers. | "adopt the Temporal Decoder from TLP" | TLP's Cu/Cp at 0.001, as TLP trains its decoder | Paper names only the VE/VA losses |  |  |  | patches/cvsign-1-tlp-decoder-losses.patch |  |  |  |
+| `checkpoint-selection` | `guess` | Checkpoint selection. | not stated | Best dev WER over 70 epochs | Rule of the code CVSign builds on |  |  |  |  |  |  |  |
+| `mixed-precision` | `guess` | Numerical precision. | not stated | CorrNet's AMP | Upstream default |  |  |  |  |  |  |  |
+| `seed` | `guess` | Random seed. | not stated | 0 (CorrNet config) | Single run, as the paper appears to report |  |  |  |  |  |  |  |
+| `frame-preprocessing-driver` | `code_deviation` | How CorrNet's frame preprocessing is run on this release. |  | CorrNet's dataset_preprocess-T.py cannot run end to end on this release (its CSV globs {id}/1/*.png match nothing), so its resize_dataset() is driven with CorrNet's committed split files, as its __main__ would with a CSV whose paths matched. | CorrNet's committed split files use {id}/*.png and otherwise equal the CSVs row for row (checked, 0 mismatches) | Resized frame counts equal the original PNG counts and CorrNet's recorded num_frames in every split |  |  |  |  |  | `phoenix14t-png-v3` |
+| `opencv-version` | `code_deviation` | OpenCV version for frame resizing. |  | opencv 4.10.0.84 instead of CorrNet's pinned 4.5.5.64 (no Python 3.12 wheel); LANCZOS4 resize output was not compared across versions. | CorrNet's pinned 4.5.5 has no Python 3.12 wheel |  |  |  |  |  |  | `phoenix14t-png-v3` |
+
+## Noncompliance
+
+None.
 
 ## Environment and patches
 
