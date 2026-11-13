@@ -363,6 +363,7 @@
       "dataset_id": "phoenix2014-multisigner-v3",
       "name": "RWTH-PHOENIX-Weather 2014",
       "version_or_subset": "phoenix-2014.v3.tar.gz, multisigner subset; not PHOENIX-2014-T or signer-independent SI5",
+      "notes": "Export PHOENIX-2014-T label corrected to paper PHOENIX-2014 multisigner; no substitute dataset used.",
       "license_or_permission": "Official multisigner README states non-commercial CC 4.0 with attribution; RWTH database portal names CC BY-NC-SA 4.0. Existing project-cloud copy inspected read-only for non-commercial reproduction. No new registration or redistribution.",
       "cloud_processing_allowed": true,
       "permission_basis": "Existing shared study dataset; official CC non-commercial research terms permit copying/adaptation. Raw frames not republished.",
@@ -9095,12 +9096,146 @@
     "compute": "A100-80GB preflight-3 completed in 271.44 seconds, peak allocated memory 16.35 GB. Full training not launched."
   },
   "contacts": [],
-  "deviations": [
-    "Export PHOENIX-2014-T label corrected to paper PHOENIX-2014 multisigner; no substitute dataset used.",
-    "Conditional reconstruction proposal authorized on 2026-11-02; missing original settings remain documented.",
-    "User-approved exclusion of one known broken PHOENIX training clip:5671 effective examples from5672 source CSV rows, matching pinned benchmark preprocessing. Dev/test unchanged.",
-    "User-approved rejection sampling of temporal augmentation scales within[0.8,1.2] when a drawn length cannot support the CTC target. Full audit finds one remaining clip affected; no additional exclusions.",
-    "Authorized post-training evaluation variant uses per-video statistics in every BatchNorm layer instead of stored running statistics; fixed original epoch52 selection and all other inference settings retained. Not asserted to recover the original authors' protocol; original scores retained."
+  "guesses_and_deviations": [
+    {
+      "id": "batch-size",
+      "kind": "guess",
+      "description": "Batch size and sequence padding.",
+      "paper_says": "Not stated",
+      "used": "One full video per optimizer step, no temporal truncation",
+      "effect": "Every BatchNorm layer normalizes by that video's own statistics during training (see per-video-batchnorm-evaluation)",
+      "related_ids": [
+        "per-video-batchnorm-evaluation"
+      ]
+    },
+    {
+      "id": "seed-and-precision",
+      "kind": "guess",
+      "description": "Seed, initialization and precision.",
+      "paper_says": "Not stated",
+      "used": "Random initialization, FP32, seed 42"
+    },
+    {
+      "id": "backbone-channels",
+      "kind": "guess",
+      "description": "Spatial backbone channel sequence.",
+      "paper_says": "Table 2 backbone begins 3->32->32->64; cited FCN text says 3->32->64->64. Follow the assigned Table 2 rather than silently importing a different backbone.",
+      "used": "The assigned Table 2, which differs from the channel sequence in the cited FCN paper"
+    },
+    {
+      "id": "optimizer-details",
+      "kind": "guess",
+      "description": "Adam settings, weight decay and loss reduction.",
+      "paper_says": "\"We use the Adam optimizer [34] to optimize our model, where the initial learning rate is set to 10−4\"; L2 regularization coefficient 10−4 (§5)",
+      "used": "Adam at 1e-4 (default betas/epsilon), coupled weight decay 1e-4, per-sequence summed CTC loss, 60 epochs"
+    },
+    {
+      "id": "lr-milestones",
+      "kind": "guess",
+      "description": "Learning-rate decay epochs.",
+      "paper_says": "\"After 40 epochs, we decay the learning rate by 0.5 every 5 epochs\" (§5)",
+      "used": "Halving at epochs 45, 50 and 55"
+    },
+    {
+      "id": "spatial-crop",
+      "kind": "guess",
+      "description": "Random crop granularity.",
+      "paper_says": "\"randomly crop the video frames to 224× 224\"; center crop for testing (§5)",
+      "used": "Frames resized to 256 × 256 (RGB in [0, 1]); one shared random 224 × 224 crop per video. Center crop for evaluation."
+    },
+    {
+      "id": "temporal-augmentation",
+      "kind": "guess",
+      "description": "Temporal augmentation.",
+      "paper_says": "\"we also scale up the training video sequence by +20% and then scale down by - 20%\" (§5); Wording of temporal +20% then -20% augmentation does not specify sampling/interpolation or mapping cached GFE alignments through augmentation.",
+      "used": "Nearest-neighbor resampling at a uniform factor in [0.8, 1.2]",
+      "related_ids": [
+        "ctc-valid-augmentation"
+      ]
+    },
+    {
+      "id": "decoding",
+      "kind": "guess",
+      "description": "CTC decoding.",
+      "paper_says": "CTC decoder (greedy versus beam), beam width/LM, scoring normalization and deletion/insertion tie-breaking.",
+      "used": "Greedy CTC decoding without a language model"
+    },
+    {
+      "id": "checkpoint-selection",
+      "kind": "guess",
+      "description": "Checkpoint selection.",
+      "paper_says": "Checkpoint selection and seeds are not documented.",
+      "used": "Earliest lowest-dev-WER checkpoint; test evaluated only after selection"
+    },
+    {
+      "id": "scoring",
+      "kind": "guess",
+      "description": "WER scoring implementation.",
+      "paper_says": "Not stated",
+      "used": "The pinned CorrNet mirror of the PHOENIX evaluator (preprocess.sh, mergectmstm.py) with NIST sclite",
+      "evidence": [
+        "https://github.com/hulianyuyy/CorrNet/tree/a812814f4deefda0b75ab1dcc90b106c62912263"
+      ]
+    },
+    {
+      "id": "vocabulary",
+      "kind": "guess",
+      "description": "Gloss vocabulary.",
+      "paper_says": "Not stated",
+      "used": "1,231 training glosses plus blank. Dev/test tokens are not added.",
+      "effect": "Six dev clips contain seven tokens absent from the training vocabulary; they count in every WER.",
+      "dataset_ids": [
+        "phoenix2014-multisigner-v3"
+      ]
+    },
+    {
+      "id": "gfe-settings",
+      "kind": "guess",
+      "description": "GFE auxiliary-loss settings.",
+      "paper_says": "GFE loss weight, enable epoch, alignment refresh schedule and handling of temporal augmentation are not specified for mLTSF. FCN uses weight 0.05, activation after epoch 15 and refresh every 10 epochs, but trains RWTH for 80 rather than 60 epochs.",
+      "used": "FCN auxiliary head with loss weight 0.05, blank balancing, activation at epoch 16, canonical-input alignments refreshed before epochs 16, 26, 36, 46 and 56. Mapping cached alignments through temporal augmentation uses an inferred nearest-timestep formula recorded in reproduction.json.",
+      "scope": "mLTSF-Net + GFE (not completed)",
+      "basis": "The proposed cached-alignment temporal mapping is a substantive conditional inference, not a recovered fact. A strict reproduction requires authoritative augmentation/alignment-handling instructions."
+    },
+    {
+      "id": "broken-training-clip",
+      "kind": "paper_deviation",
+      "description": "User-approved exclusion of one known broken PHOENIX training clip:5671 effective examples from5672 source CSV rows, matching pinned benchmark preprocessing. Dev/test unchanged.",
+      "paper_says": "5,672 training videos",
+      "used": "Training clip 13April_2011_Wednesday_tagesschau_default-14 (16 frames, 16 glosses) cannot fit a valid CTC path and is excluded, leaving 5,671 training videos",
+      "basis": "The pinned CorrNet preprocessing drops the same clip as broken",
+      "status": "Gate `known-broken-training-clip` resolved",
+      "evidence": [
+        "https://github.com/hulianyuyy/CorrNet/blob/a812814f4deefda0b75ab1dcc90b106c62912263/preprocess/dataset_preprocess.py#L15"
+      ],
+      "dataset_ids": [
+        "phoenix2014-multisigner-v3"
+      ]
+    },
+    {
+      "id": "ctc-valid-augmentation",
+      "kind": "guess",
+      "description": "User-approved rejection sampling of temporal augmentation scales within[0.8,1.2] when a drawn length cannot support the CTC target. Full audit finds one remaining clip affected; no additional exclusions.",
+      "used": "When a drawn temporal scale makes a clip too short for its CTC target, the scale is redrawn within [0.8, 1.2]",
+      "effect": "Only one 74-frame clip is affected",
+      "status": "Gate `ctc-valid-augmentation` resolved",
+      "related_ids": [
+        "temporal-augmentation"
+      ]
+    },
+    {
+      "id": "per-video-batchnorm-evaluation",
+      "kind": "guess",
+      "description": "Authorized post-training evaluation variant uses per-video statistics in every BatchNorm layer instead of stored running statistics; fixed original epoch52 selection and all other inference settings retained. Not asserted to recover the original authors' protocol; original scores retained.",
+      "paper_says": "BatchNorm after every convolution layer; inference behavior not stated",
+      "used": "Each BatchNorm layer uses the current video's statistics (spatial layers over its frames and positions, temporal layers over its time steps). Stored buffers stay unchanged; no labels or other videos are used.",
+      "basis": "Stored statistics cost about 10 dev WER points and badly degrade even training-set predictions (diagnostic bn-generalization-diagnostic-2)",
+      "effect": "Per-video normalization was chosen after training and dev diagnostics and after the stored-statistics test score was seen.",
+      "status": "Gate `adapted-normalization-evaluation` resolved",
+      "related_ids": [
+        "batch-size"
+      ]
+    }
   ],
   "implementation": {
     "approved": "2026-11-02",
