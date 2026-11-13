@@ -3862,264 +3862,435 @@
     "terminal_app_state": "stopped; zero active tasks",
     "platform_preemptions_observed": 4
   },
-  "guesses": [],
-  "deviations": [
+  "guesses_and_deviations": [
     {
-      "deviation_id": "conditional-58000-subset",
-      "status": "approved",
-      "scope": "Dataset selection only; other protocol decisions remain open.",
+      "id": "conditional-58000-subset",
+      "kind": "paper_internal_conflict",
       "description": "Use 2000 images per class across all 29 classes, selected deterministically with a fixed random seed, instead of an unavailable original subset manifest.",
+      "paper_says": "2,000 images \u00d7 29 classes implies 58,000, but Table 1 prints 30,000; no subset list.",
+      "used": "2,000 images per class, sampled without replacement from sorted filenames.",
       "basis": "Follows the per-class counts in Table 1; the printed total of 30000 is inconsistent with those counts.",
-      "effect": "Scores from this subset are conditional evidence, not directly comparable reproduced targets."
+      "effect": "Scores from this subset are conditional evidence, not directly comparable reproduced targets.",
+      "scope": "Dataset selection only; other protocol decisions remain open.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-stratified-split",
-      "status": "approved",
-      "scope": "Train/validation/test partition of the approved 58000-image subset.",
+      "id": "conditional-stratified-split",
+      "kind": "guess",
       "description": "Use 36540 training, 4060 validation and 17400 test images, stratified equally across 29 classes; fixed seed 42.",
+      "paper_says": "Reports 70/30 train/test; no split files or validation partition.",
+      "used": "Stratified split; reserve 10% of the training portion for validation: 36,540 / 4,060 / 17,400.",
       "basis": "Paper specifies 70/30 training/testing but does not identify a validation split. Reserve 10% of the 70% training portion for validation.",
-      "effect": "Validation is an explicit reconstruction assumption; final test data remains excluded from tuning and checkpoint selection."
+      "effect": "Validation is an explicit reconstruction assumption; final test data remains excluded from tuning and checkpoint selection.",
+      "scope": "Train/validation/test partition of the approved 58000-image subset.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-wiener-filter",
-      "status": "approved",
-      "scope": "Wiener preprocessing only.",
+      "id": "randomness",
+      "kind": "guess",
+      "description": "Seeds and shuffle policy.",
+      "paper_says": "Seeds and shuffle policy unspecified.",
+      "used": "Seed 42; NumPy PCG64 for sampling/search; deterministic PyTorch; seeded shuffle each epoch.",
+      "status": "executed"
+    },
+    {
+      "id": "conditional-wiener-filter",
+      "kind": "guess",
       "description": "Use a 3x3 local neighborhood independently per RGB channel, estimating noise power from mean local variance of each image channel; same procedure for all splits.",
+      "paper_says": "Window, channel handling and noise estimate unspecified.",
+      "used": "3\u00d73 per RGB channel; estimate noise from mean local variance. Stop on nonfinite output.",
       "basis": "Paper specifies Wiener filtering without numerical settings or channel handling.",
-      "effect": "Explicit conditional preprocessing assumption, not recovered author configuration."
+      "effect": "Explicit conditional preprocessing assumption, not recovered author configuration.",
+      "scope": "Wiener preprocessing only.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-feature-extractors",
-      "status": "approved",
-      "scope": "Exact backbone variants and pretrained weight identities.",
+      "id": "conditional-input-pipeline",
+      "kind": "guess",
+      "description": "Decode RGB, apply approved Wiener filtering at original resolution, clip filtered pixels to their valid range, resize the whole image to 224x224 with antialiased bilinear interpolation and no cropping, scale to [0,1], then normalize using RGB mean (0.485,0.456,0.406) and standard deviation (0.229,0.224,0.225). Feed the same transformed image to all backbones.",
+      "paper_says": "No complete resize/normalization recipe.",
+      "used": "Filter at original size, clip, resize to 224\u00d7224 with antialiased bilinear interpolation, scale to [0,1], then ImageNet normalization; no crop.",
+      "basis": "The paper does not define a complete image transformation pipeline.",
+      "effect": "Explicit conditional preprocessing assumptions; the subsequent no-augmentation decision is implemented.",
+      "scope": "Input resolution, interpolation, scaling, normalization and transformation order.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-no-augmentation",
+      "kind": "guess",
+      "description": "Use no random image augmentation; apply approved deterministic preprocessing to all splits. Shuffle training examples reproducibly each epoch.",
+      "paper_says": "No explicit policy found.",
+      "used": "No random augmentation.",
+      "basis": "No explicit augmentation policy was located in the full paper. This is unreported, not verified absent in the original experiment.",
+      "effect": "Documented reconstruction assumption; do not introduce transformations later to seek agreement with the published scores.",
+      "scope": "Image augmentation and training example order.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-feature-extractors",
+      "kind": "guess",
       "description": "Torchvision ResNeXt-101 32x8d, VGG-19 without batch normalization, and ViT-Base/16, all with explicit IMAGENET1K_V1 weight variants.",
+      "paper_says": "Names ResNeXt101, VGG19 and ViT without exact variants/checkpoints.",
+      "used": "Torchvision ResNeXt101-32x8d, VGG19 without batch normalization and ViT-B/16; ImageNet-1K V1 weights.",
       "basis": "Paper names ResNeXt101, VGG19 and ViT but leaves exact variants/checkpoints unidentified.",
-      "effect": "Documented conditional initialization and architecture choices; subsequent approved decisions specify training and fusion."
+      "effect": "Documented conditional initialization and architecture choices; subsequent approved decisions specify training and fusion.",
+      "scope": "Exact backbone variants and pretrained weight identities.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-spatial-fusion",
-      "status": "approved",
-      "scope": "Spatial feature alignment, fusion operator and BiGRU input sequence.",
+      "id": "conditional-feature-endpoints",
+      "kind": "guess",
+      "description": "Use ResNeXt101 layer4 output (2048x7x7), VGG19 features including final pooling (512x7x7), and final normalized ViT patch tokens (768x14x14, pooled to 7x7). Exclude original classification heads and ViT classification token from fusion. Concatenate into 49 vectors of 3328 features without an added projection.",
+      "paper_says": "Extraction layers unspecified.",
+      "used": "ResNeXt layer4, VGG final pooling and ViT final normalized patch tokens; omit classification heads and the ViT class token.",
+      "basis": "The paper names backbone families but does not identify extraction layers.",
+      "effect": "Explicit architecture reconstruction choices; verify tensor shapes before training.",
+      "scope": "Exact backbone feature extraction endpoints and fused dimensionality.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-spatial-fusion",
+      "kind": "guess",
       "description": "Average-pool backbone spatial features to a 7x7 grid, concatenate vectors at each corresponding location, then form a row-major sequence of 49 vectors. Use ViT patch tokens without the classification token; process each image independently.",
+      "paper_says": "No fusion operator or sequence definition for static images.",
+      "used": "Pool ViT to 7\u00d77; concatenate spatially into 49 row-major vectors of 3,328 features. No projection or sequences across images.",
       "basis": "The paper describes fused ResNeXt101/VGG19/ViT features and a BiGRU but does not define fusion or a sequence construction for static images.",
-      "effect": "Material architecture assumption for the conditional reconstruction; not evidence of the original implementation."
+      "effect": "Material architecture assumption for the conditional reconstruction; not evidence of the original implementation.",
+      "scope": "Spatial feature alignment, fusion operator and BiGRU input sequence.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-bigru-classifier",
-      "status": "approved",
-      "scope": "BiGRU dimensions, image representation and classification head.",
+      "id": "conditional-bigru-classifier",
+      "kind": "guess",
       "description": "One bidirectional GRU layer with 256 hidden units per direction. Concatenate final directional hidden states to 512 dimensions, apply dropout 0.5, then a linear 29-class head. Retain standard sigmoid/tanh GRU activations; do not add an unspecified ReLU.",
+      "paper_says": "Width, depth, output aggregation and dropout placement unspecified; generic ReLU setting is ambiguous.",
+      "used": "One layer, 256 units/direction; concatenate final states, dropout 0.5, linear 29-class head. Standard sigmoid/tanh gates; no added ReLU.",
       "basis": "The paper specifies BiGRU, dropout 0.5 and a generic ReLU setting but leaves classifier dimensions, aggregation, dropout placement and ReLU placement unresolved.",
-      "effect": "Explicit classifier reconstruction assumptions; not recovered author configuration."
+      "effect": "Explicit classifier reconstruction assumptions; not recovered author configuration.",
+      "scope": "BiGRU dimensions, image representation and classification head.",
+      "status": "approved"
     },
     {
-      "deviation_id": "conditional-two-stage-finetuning",
-      "status": "superseded",
-      "scope": "Training duration and backbone freeze/unfreeze schedule.",
+      "id": "final-training-duration",
+      "kind": "paper_internal_conflict",
+      "description": "Final training duration.",
+      "paper_says": "Settings say 50 epochs; curve discussion says 0\u201325.",
+      "used": "Complete 50 epochs.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-two-stage-finetuning"
+      ]
+    },
+    {
+      "id": "executed-cost-reduction-protocol",
+      "kind": "guess",
+      "description": "One-dimensional classifier LR search; fixed final ViT LR 0.001. CNNs remain frozen throughout. Same approved data, model, batch size and final 50 epochs.",
+      "paper_says": "ViT text mentions gradual unfreezing; no schedule or equivalent CNN recipe.",
+      "used": "CNNs always frozen; ViT frozen for five epochs, then fine-tuned for 45.",
+      "basis": "Explicit approval after rereading paper and measuring cost; exact published training recipe remains unavailable.",
+      "effect": "Substantially reduces cost; result is conditional, not a comparable original-target reproduction.",
+      "scope": "Classifier-only cached search and frozen-CNN/ViT fine-tuning final training.",
+      "status": "executed"
+    },
+    {
+      "id": "module-modes",
+      "kind": "guess",
+      "description": "Module modes and normalization statistics for frozen and trainable modules.",
+      "paper_says": "Freezing and normalization-statistic handling unspecified.",
+      "used": "Frozen backbones stay in evaluation mode; trainable modules use training mode. All modules use evaluation mode for validation/test.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-training-modes"
+      ]
+    },
+    {
+      "id": "gradient-optimizer",
+      "kind": "guess",
+      "description": "Gradient optimizer.",
+      "paper_says": "Gives learning rate 0.01, but no complete optimizer recipe.",
+      "used": "SGD, momentum 0.9, zero weight decay, no learning-rate decay.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-base-optimizer"
+      ]
+    },
+    {
+      "id": "conditional-loss-final-checkpoint",
+      "kind": "guess",
+      "description": "Use standard multiclass cross-entropy with equal class weights and no label smoothing. Complete 50 final-run epochs and select the checkpoint with the lowest validation misclassification count, retaining the earlier checkpoint on ties. Evaluate the test set only after training and selection finish.",
+      "paper_says": "Exact classification loss unspecified. Unclear whether to continue the winning trial or how to select the final checkpoint.",
+      "used": "Equal-weight multiclass cross-entropy, no label smoothing. Train afresh; select lowest validation error over all 50 epochs, earliest on ties. Test only after selection.",
+      "basis": "The paper does not establish its exact loss or final checkpoint selection rule.",
+      "effect": "Explicit reconstruction assumptions. Candidate search fitness remains based on fixed epoch-10 checkpoints and is unchanged.",
+      "scope": "Training loss and final-run checkpoint selection.",
+      "status": "approved"
+    },
+    {
+      "id": "search-parameters",
+      "kind": "guess",
+      "description": "Parameters tuned by the search and their bounds.",
+      "paper_says": "Does not identify the tuned parameters or ranges.",
+      "used": "Search classifier learning rate in [0.001, 0.01]; keep final ViT rate fixed at 0.001.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-search-space",
+        "executed-cost-reduction-protocol"
+      ]
+    },
+    {
+      "id": "search-coordinates-1d",
+      "kind": "guess",
+      "description": "Search coordinate representation and boundary handling.",
+      "paper_says": "Representation and out-of-range handling unspecified.",
+      "used": "One normalized coordinate x in [0,1], decoded as 10^(\u22123+x); clip final proposals.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-search-coordinates"
+      ]
+    },
+    {
+      "id": "search-initialization-1d",
+      "kind": "guess",
+      "description": "Initial search population and random generator.",
+      "paper_says": "Requires random initialization but omits distribution and seed.",
+      "used": "First agent at learning rate 0.01; four independent log-uniform draws using a separate seed-42 RNG.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-search-initialization"
+      ]
+    },
+    {
+      "id": "conditional-search-budget",
+      "kind": "guess",
+      "description": "Use 5 search agents and at most 20 candidate evaluations in total, including initial population, mutation trials and failed candidate training attempts. Include the approved base configuration among the initial five.",
+      "paper_says": "Population and iteration parameters have no numerical values.",
+      "used": "Five agents; three iterations after initialization; at most 20 evaluations, including failures.",
+      "basis": "The paper names population size and iteration limit without numerical values.",
+      "effect": "Bounded exploratory reconstruction search; this does not establish convergence, candidate duration or permission to exceed the project compute gate.",
+      "scope": "CS-IGWO population size and candidate evaluation ceiling.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-search-iterations",
+      "kind": "guess",
+      "description": "Set T=3. Initialize t=0, execute while t<T and increment after each completed iteration; use t/3 in the paper schedules. Keep the 20-candidate-evaluation limit independent, allowing early termination even within an iteration without schedule renormalization.",
+      "paper_says": "Numerical iteration limit absent; relation to evaluation count unclear.",
+      "used": "Use t=0,1,2 and t/3 in the printed schedules; keep the evaluation ceiling separate.",
+      "basis": "Paper specifies a maximum iteration parameter but provides no numerical value.",
+      "effect": "Fills a missing numerical setting while retaining iteration-based scheduling; execution may end before completing three iterations.",
+      "scope": "Numerical maximum search iteration count and independent stopping ceiling.",
+      "status": "approved"
+    },
+    {
+      "id": "candidate-training-cached",
+      "kind": "guess",
+      "description": "Candidate training duration, resets and backbone updates.",
+      "paper_says": "Trial duration, resets and backbone updates unspecified.",
+      "used": "Ten classifier-only epochs on cached fixed features, with identical seeded initialization for every trial.",
+      "status": "executed",
+      "related_ids": [
+        "conditional-candidate-training"
+      ]
+    },
+    {
+      "id": "conditional-search-fitness",
+      "kind": "guess",
+      "description": "Minimize ordinary multiclass misclassification rate on the approved validation split using each candidate's epoch-10 checkpoint. On equal validation misclassification counts, retain the earlier-evaluated candidate. Exclude test data entirely from selection.",
+      "paper_says": "Defines classification error but not its partition, checkpoint or tie rule.",
+      "used": "Validation error at candidate epoch 10; earlier-evaluated candidate wins ties.",
+      "basis": "Paper describes minimizing classifier error without a clear evaluation partition or candidate checkpoint rule.",
+      "effect": "Candidate fitness uses multiclass error rather than assuming equivalence to the paper's class-average accuracy; final reporting metrics remain a separate decision.",
+      "scope": "Search fitness, candidate checkpoint and tie-breaking.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-synchronous-search",
+      "kind": "guess",
+      "description": "Fix the current leaders for an entire iteration, generate all five agent positions, evaluate the resulting candidates, refresh the leaders, then increment t.",
+      "paper_says": "Algorithm gives an update order but leaves implementation details open.",
+      "used": "Use the best three evaluated candidates; hold leaders fixed while proposing a whole generation, then evaluate and refresh.",
+      "basis": "Algorithm 1 places fitness evaluation and leader refresh after the loop over search agents.",
+      "effect": "Normal execution uses 5 initialization evaluations plus 3 rounds of 5 evaluations, totaling 20. The independent ceiling still applies to failed attempts/retries; no extra intermediate evaluations are authorized.",
+      "scope": "Population proposal generation and leader refresh timing.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-gwo-proposals",
+      "kind": "guess",
+      "description": "For each current agent X and fixed leader L, use A=2*a*r1-a, C=2*r2, D=abs(C*L-X), and proposal L-A*D, with independent uniform draws per coordinate/leader/agent. Use the target paper a=2-2*(t/T)**2 and its approved weighted combination.",
+      "paper_says": "A, C, distances and leader-derived positions are incompletely defined.",
+      "used": "Fill these from original GWO, with independent draws per leader/agent/coordinate; retain the paper's nonlinear a schedule.",
+      "basis": "Target paper invokes GWO coefficients and proposal positions without fully specifying their construction. Definitions are taken from original GWO, DOI 10.1016/j.advengsoft.2013.12.007.",
+      "effect": "Explicit completion of omitted algorithm definitions without extra fitness evaluations; does not replace the target paper coefficient schedule or weighting.",
+      "scope": "Definitions of A, C, D and leader-derived X1/X2/X3 proposals.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-leader-weighting",
+      "kind": "paper_internal_conflict",
+      "description": "Use the printed error-proportional weights for the three leaders, despite the prose contradiction. If the sum of their errors is zero, use equal weights of 1/3. Do not substitute inverse-error weights.",
+      "paper_says": "Error-proportional weights conflict with prose saying the best leader gets the greatest weight.",
+      "used": "Keep the printed weights; use equal thirds if all three errors are zero.",
+      "basis": "Equation 6 weights by raw fitness; Equation 16 defines fitness as classifier error to minimize. Prose claims the best leader has the greatest weight.",
+      "effect": "Retains published formula behavior; the zero-denominator fallback is a reconstruction assumption.",
+      "scope": "Interpretation of Equation 6 and zero-error fallback.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-equation7-interpretation",
+      "kind": "guess",
+      "description": "Retain Equation 7's division by three after the error-weighted sum of leader-derived positions; do not replace it with a conventional weighted average.",
+      "paper_says": "Divides by three despite weights already summing to one.",
+      "used": "Keep the extra division literally.",
+      "basis": "Equation 6 weights sum to one, but Equation 7 explicitly divides their weighted sum by three.",
+      "effect": "Preserves the printed formula and its scaling toward coordinate zero; subsequently approved normalized coordinates and clipping are implemented.",
+      "scope": "Literal interpretation of the weighted position update.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-mutation-proposals",
+      "kind": "guess",
+      "description": "Mutate each leader-derived proposal separately using P*(1+gamma1*Gaussian(0,1)+gamma2*Cauchy(0,1)), with gamma1=(t/T)**2 and gamma2=1-(t/T)**2. Draw independently per coordinate, proposal and agent. Interpret Equation 11 as the arithmetic mean of the three distinct mutated proposals.",
+      "paper_says": "Repeated symbols obscure candidate identity and random draws.",
+      "used": "Mutate each leader-derived position separately with Gaussian/Cauchy noise and the printed mixing coefficients; average the three results.",
+      "basis": "Paper supplies distributions and mixing coefficients but repeats candidate symbols and does not specify whether draws are shared.",
+      "effect": "Explicit executable interpretation of notation and stochastic granularity; no intermediate fitness evaluations are introduced.",
+      "scope": "Equations 8-11 mutation notation, aggregation and random draws.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-mutation-selection",
+      "kind": "guess",
+      "description": "Repair Equation 12 as strict-improvement greedy selection only when valid comparable fitness scores for the exact mutated and pre-mutation candidates already exist. Do not add training or validation evaluations solely for the repair. Otherwise retain the literal mutated output at this step.",
+      "paper_says": "Comparison and outcomes use indistinguishable symbols.",
+      "used": "Use strict-improvement selection only when both exact candidates already have cached fitness; keep the pre-mutation candidate on ties. Otherwise keep the mutated output, without extra evaluations.",
+      "basis": "Equation 12 uses indistinguishable candidate notation for its comparison and outcomes; Algorithm 1 describes greedy selection.",
+      "effect": "Conditional correction with zero additional fitness evaluations. Never substitute the parent wolf score for the score of a different pre-mutation position. Existing evaluation budget remains unchanged.",
+      "scope": "Equation 12 mutation acceptance rule.",
+      "status": "approved_conditional; Earlier unconditional greedy selection is narrowed by the subsequent instruction prohibiting evaluation overhead for this repair."
+    },
+    {
+      "id": "conditional-crow-starting-position",
+      "kind": "guess",
+      "description": "Use the position from the immediately preceding mutation/selection step as X_N(t+1), then apply the crow movement. Do not insert an intermediate fitness evaluation solely to connect these stages.",
+      "paper_says": "X_N(t+1) is not clearly defined.",
+      "used": "Use the preceding mutation/selection output; add no intermediate fitness evaluation.",
+      "basis": "The variable is not clearly defined; Algorithm 1 places mutation/selection immediately before the crow update.",
+      "effect": "Explicit interpretation of the intermediate position. Retains the separate requirement that any Equation 12 correction introduce no additional evaluation overhead.",
+      "scope": "Meaning of X_N(t+1) in Equations 13 and 14.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-crow-flight-length",
+      "kind": "guess",
+      "description": "Use flight length 1.0 with one reproducibly drawn uniform scalar in [0,1) for each crow movement proposal, shared across both coordinates.",
+      "paper_says": "Flight length and random-draw granularity unspecified.",
+      "used": "Flight length 1; one uniform movement scalar per agent.",
+      "basis": "Paper introduces flight length but does not give its value or the granularity of random draws.",
+      "effect": "Defines the crow movement step as interpolation toward its selected destination; other transforms and boundary clipping are unchanged.",
+      "scope": "Flight-length value and random-number convention in Equations 13 and 14.",
+      "status": "approved"
+    },
+    {
+      "id": "conditional-crow-branch-selection",
+      "kind": "paper_internal_conflict",
+      "description": "Treat Algorithm 1 P as Equation 15 AP and use the printed AP=1-1.01*(t/T)**3 without clipping. Choose Equation 13 when a fresh uniform scalar is below AP, otherwise Equation 14. Keep this draw separate from the movement scalar.",
+      "paper_says": "Algorithm P and equation AP use different names; printed AP can become negative.",
+      "used": "Treat P as AP; use raw Eq. 15 without clipping. A separate draw selects Eq. 13 when below AP, otherwise Eq. 14.",
+      "basis": "Paper uses differing probability symbols; its formula reaches a negative value at t=T.",
+      "effect": "Latest fidelity instruction supersedes the earlier approved clipping. Symbol mapping remains an explicit interpretation; negative AP yields the Equation 14 branch.",
+      "scope": "Equation 15 probability and Algorithm 1 branch selection.",
+      "status": "approved; Probability clipping to [0,1] was approved earlier, then removed to follow the printed expression literally."
+    },
+    {
+      "id": "conditional-evaluation-metrics",
+      "kind": "guess",
+      "description": "Calculate one-vs-rest accuracy, precision, sensitivity, specificity and F1 for each of 29 classes, then report their unweighted means as percentages. Set undefined ratios to zero and record each case. Report ordinary multiclass accuracy separately and preserve the confusion matrix.",
+      "paper_says": "Per-class results and averages lack an exact implementation.",
+      "used": "One-vs-rest metrics, unweighted mean over 29 classes; also report ordinary accuracy. Set undefined ratios to zero and record them.",
+      "basis": "Paper reports per-class results and averages without an available exact metric implementation.",
+      "effect": "Plausible but unverified interpretation; reported scores remain conditional evidence, not comparable reproduced targets.",
+      "scope": "Final per-class and aggregated reporting metrics.",
+      "status": "approved"
+    },
+    {
+      "id": "precision-and-software",
+      "kind": "paper_deviation",
+      "description": "Numerical precision and software environment.",
+      "paper_says": "Python 3.6.5 reported; full dependency and precision settings unavailable.",
+      "used": "Pinned PyTorch/CUDA image; float32, no mixed precision or TF32.",
+      "status": "executed"
+    },
+    {
+      "id": "hardware",
+      "kind": "paper_deviation",
+      "description": "Hardware.",
+      "paper_says": "Reports i5-8600K, GTX 1050 Ti 4 GB and 16 GB RAM.",
+      "used": "Agreed substitute: one T4, six CPU cores and 16 GiB RAM. Runtime is not directly comparable.",
+      "status": "executed"
+    },
+    {
+      "id": "conditional-two-stage-finetuning",
+      "kind": "guess",
       "description": "Use 50 total epochs: epochs 1-5 train the BiGRU and classification head with all backbone parameters frozen; epochs 6-50 train the entire model with all backbones unfrozen simultaneously.",
       "basis": "Paper states 50 epochs and describes progressive unfreezing without a schedule; curve discussion refers to 0-25 epochs.",
       "effect": "Uses the explicit 50-epoch setting; warm-up length and simultaneous unfreezing are conditional reconstruction choices. Subsequent decisions specify learning rates.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "Training duration and backbone freeze/unfreeze schedule.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-base-optimizer",
-      "status": "superseded",
-      "scope": "Base gradient optimizer, learning rates and regularization settings.",
+      "id": "conditional-base-optimizer",
+      "kind": "guess",
       "description": "SGD with momentum 0.9 and zero weight decay. BiGRU/head learning rate 0.01 for epochs 1-50; backbone learning rate 0.001 once unfrozen in epochs 6-50. No learning-rate decay.",
       "basis": "Paper gives learning rate 0.01 but not a gradient optimizer, momentum, parameter-group rates or decay schedule.",
       "effect": "Explicit conditional base configuration; metaheuristic search and its potential overrides are not yet approved.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "Base gradient optimizer, learning rates and regularization settings.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-search-space",
-      "status": "superseded",
-      "scope": "CS-IGWO search dimensions, bounds and base candidate.",
+      "id": "conditional-search-space",
+      "kind": "guess",
       "description": "Search BiGRU/head learning rate from 0.001 to 0.01 and backbone learning-rate multiplier from 0.01 to 0.1, both logarithmically. Include head rate 0.01 and multiplier 0.1 as an initial candidate. Keep architecture and dropout fixed.",
       "basis": "Paper describes hyperparameter optimization but does not identify the optimized parameters or bounds.",
       "effect": "Authorizes learning-rate overrides within these ranges; subsequent decisions specify search budget and candidate evaluation.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "CS-IGWO search dimensions, bounds and base candidate.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-search-budget",
-      "status": "approved",
-      "scope": "CS-IGWO population size and candidate evaluation ceiling.",
-      "description": "Use 5 search agents and at most 20 candidate evaluations in total, including initial population, mutation trials and failed candidate training attempts. Include the approved base configuration among the initial five.",
-      "basis": "The paper names population size and iteration limit without numerical values.",
-      "effect": "Bounded exploratory reconstruction search; this does not establish convergence, candidate duration or permission to exceed the project compute gate."
-    },
-    {
-      "deviation_id": "conditional-candidate-training",
-      "status": "superseded",
-      "scope": "Candidate training duration, reset policy and final training procedure.",
+      "id": "conditional-candidate-training",
+      "kind": "guess",
       "description": "Train each search candidate for 10 epochs (5 frozen plus 5 unfrozen) using the approved training split, with identical pretrained weights and seeded classifier initialization. Evaluate on validation only. Train the selected configuration afresh for 50 epochs (5 frozen plus 45 unfrozen), without continuing a trial checkpoint.",
       "basis": "The paper does not specify candidate evaluation duration or whether trials share initialization; the previously approved final training duration is 50 epochs.",
       "effect": "Short trials may rank learning rates differently from full runs. Record this limitation; include search and final training in measured compute estimates before launch.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "Candidate training duration, reset policy and final training procedure.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-search-fitness",
-      "status": "approved",
-      "scope": "Search fitness, candidate checkpoint and tie-breaking.",
-      "description": "Minimize ordinary multiclass misclassification rate on the approved validation split using each candidate's epoch-10 checkpoint. On equal validation misclassification counts, retain the earlier-evaluated candidate. Exclude test data entirely from selection.",
-      "basis": "Paper describes minimizing classifier error without a clear evaluation partition or candidate checkpoint rule.",
-      "effect": "Candidate fitness uses multiclass error rather than assuming equivalence to the paper's class-average accuracy; final reporting metrics remain a separate decision."
-    },
-    {
-      "deviation_id": "conditional-loss-final-checkpoint",
-      "status": "approved",
-      "scope": "Training loss and final-run checkpoint selection.",
-      "description": "Use standard multiclass cross-entropy with equal class weights and no label smoothing. Complete 50 final-run epochs and select the checkpoint with the lowest validation misclassification count, retaining the earlier checkpoint on ties. Evaluate the test set only after training and selection finish.",
-      "basis": "The paper does not establish its exact loss or final checkpoint selection rule.",
-      "effect": "Explicit reconstruction assumptions. Candidate search fitness remains based on fixed epoch-10 checkpoints and is unchanged."
-    },
-    {
-      "deviation_id": "conditional-evaluation-metrics",
-      "status": "approved",
-      "scope": "Final per-class and aggregated reporting metrics.",
-      "description": "Calculate one-vs-rest accuracy, precision, sensitivity, specificity and F1 for each of 29 classes, then report their unweighted means as percentages. Set undefined ratios to zero and record each case. Report ordinary multiclass accuracy separately and preserve the confusion matrix.",
-      "basis": "Paper reports per-class results and averages without an available exact metric implementation.",
-      "effect": "Plausible but unverified interpretation; reported scores remain conditional evidence, not comparable reproduced targets."
-    },
-    {
-      "deviation_id": "conditional-input-pipeline",
-      "status": "approved",
-      "scope": "Input resolution, interpolation, scaling, normalization and transformation order.",
-      "description": "Decode RGB, apply approved Wiener filtering at original resolution, clip filtered pixels to their valid range, resize the whole image to 224x224 with antialiased bilinear interpolation and no cropping, scale to [0,1], then normalize using RGB mean (0.485,0.456,0.406) and standard deviation (0.229,0.224,0.225). Feed the same transformed image to all backbones.",
-      "basis": "The paper does not define a complete image transformation pipeline.",
-      "effect": "Explicit conditional preprocessing assumptions; the subsequent no-augmentation decision is implemented."
-    },
-    {
-      "deviation_id": "conditional-no-augmentation",
-      "status": "approved",
-      "scope": "Image augmentation and training example order.",
-      "description": "Use no random image augmentation; apply approved deterministic preprocessing to all splits. Shuffle training examples reproducibly each epoch.",
-      "basis": "No explicit augmentation policy was located in the full paper. This is unreported, not verified absent in the original experiment.",
-      "effect": "Documented reconstruction assumption; do not introduce transformations later to seek agreement with the published scores."
-    },
-    {
-      "deviation_id": "conditional-feature-endpoints",
-      "status": "approved",
-      "scope": "Exact backbone feature extraction endpoints and fused dimensionality.",
-      "description": "Use ResNeXt101 layer4 output (2048x7x7), VGG19 features including final pooling (512x7x7), and final normalized ViT patch tokens (768x14x14, pooled to 7x7). Exclude original classification heads and ViT classification token from fusion. Concatenate into 49 vectors of 3328 features without an added projection.",
-      "basis": "The paper names backbone families but does not identify extraction layers.",
-      "effect": "Explicit architecture reconstruction choices; verify tensor shapes before training."
-    },
-    {
-      "deviation_id": "conditional-leader-weighting",
-      "status": "approved",
-      "scope": "Interpretation of Equation 6 and zero-error fallback.",
-      "description": "Use the printed error-proportional weights for the three leaders, despite the prose contradiction. If the sum of their errors is zero, use equal weights of 1/3. Do not substitute inverse-error weights.",
-      "basis": "Equation 6 weights by raw fitness; Equation 16 defines fitness as classifier error to minimize. Prose claims the best leader has the greatest weight.",
-      "effect": "Retains published formula behavior; the zero-denominator fallback is a reconstruction assumption."
-    },
-    {
-      "deviation_id": "conditional-equation7-interpretation",
-      "status": "approved",
-      "scope": "Literal interpretation of the weighted position update.",
-      "description": "Retain Equation 7's division by three after the error-weighted sum of leader-derived positions; do not replace it with a conventional weighted average.",
-      "basis": "Equation 6 weights sum to one, but Equation 7 explicitly divides their weighted sum by three.",
-      "effect": "Preserves the printed formula and its scaling toward coordinate zero; subsequently approved normalized coordinates and clipping are implemented."
-    },
-    {
-      "deviation_id": "conditional-mutation-selection",
-      "status": "approved_conditional",
-      "scope": "Equation 12 mutation acceptance rule.",
-      "description": "Repair Equation 12 as strict-improvement greedy selection only when valid comparable fitness scores for the exact mutated and pre-mutation candidates already exist. Do not add training or validation evaluations solely for the repair. Otherwise retain the literal mutated output at this step.",
-      "basis": "Equation 12 uses indistinguishable candidate notation for its comparison and outcomes; Algorithm 1 describes greedy selection.",
-      "effect": "Conditional correction with zero additional fitness evaluations. Never substitute the parent wolf score for the score of a different pre-mutation position. Existing evaluation budget remains unchanged.",
-      "superseded_detail": "Earlier unconditional greedy selection is narrowed by the subsequent instruction prohibiting evaluation overhead for this repair."
-    },
-    {
-      "deviation_id": "conditional-search-coordinates",
-      "status": "superseded",
-      "scope": "Search coordinate representation and boundary handling.",
+      "id": "conditional-search-coordinates",
+      "kind": "guess",
       "description": "Apply search equations in normalized [0,1] coordinates. Decode head learning rate as 10**(-3+x_head) and backbone multiplier as 10**(-2+x_multiplier). Clip out-of-range proposals to [0,1] before evaluation.",
       "basis": "The paper does not specify the representation or boundary policy for the approved logarithmic hyperparameter ranges.",
       "effect": "Makes coordinate zero the lower parameter bound, so the retained Equation 7 division scales weighted positions toward the lower bounds. This is a material reconstruction convention.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "Search coordinate representation and boundary handling.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-crow-flight-length",
-      "status": "approved",
-      "scope": "Flight-length value and random-number convention in Equations 13 and 14.",
-      "description": "Use flight length 1.0 with one reproducibly drawn uniform scalar in [0,1) for each crow movement proposal, shared across both coordinates.",
-      "basis": "Paper introduces flight length but does not give its value or the granularity of random draws.",
-      "effect": "Defines the crow movement step as interpolation toward its selected destination; other transforms and boundary clipping are unchanged."
-    },
-    {
-      "deviation_id": "conditional-crow-branch-selection",
-      "status": "approved",
-      "scope": "Equation 15 probability and Algorithm 1 branch selection.",
-      "description": "Treat Algorithm 1 P as Equation 15 AP and use the printed AP=1-1.01*(t/T)**3 without clipping. Choose Equation 13 when a fresh uniform scalar is below AP, otherwise Equation 14. Keep this draw separate from the movement scalar.",
-      "basis": "Paper uses differing probability symbols; its formula reaches a negative value at t=T.",
-      "effect": "Latest fidelity instruction supersedes the earlier approved clipping. Symbol mapping remains an explicit interpretation; negative AP yields the Equation 14 branch.",
-      "superseded_detail": "Probability clipping to [0,1] was approved earlier, then removed to follow the printed expression literally."
-    },
-    {
-      "deviation_id": "conditional-search-iterations",
-      "status": "approved",
-      "scope": "Numerical maximum search iteration count and independent stopping ceiling.",
-      "description": "Set T=3. Initialize t=0, execute while t<T and increment after each completed iteration; use t/3 in the paper schedules. Keep the 20-candidate-evaluation limit independent, allowing early termination even within an iteration without schedule renormalization.",
-      "basis": "Paper specifies a maximum iteration parameter but provides no numerical value.",
-      "effect": "Fills a missing numerical setting while retaining iteration-based scheduling; execution may end before completing three iterations."
-    },
-    {
-      "deviation_id": "conditional-crow-starting-position",
-      "status": "approved",
-      "scope": "Meaning of X_N(t+1) in Equations 13 and 14.",
-      "description": "Use the position from the immediately preceding mutation/selection step as X_N(t+1), then apply the crow movement. Do not insert an intermediate fitness evaluation solely to connect these stages.",
-      "basis": "The variable is not clearly defined; Algorithm 1 places mutation/selection immediately before the crow update.",
-      "effect": "Explicit interpretation of the intermediate position. Retains the separate requirement that any Equation 12 correction introduce no additional evaluation overhead."
-    },
-    {
-      "deviation_id": "conditional-synchronous-search",
-      "status": "approved",
-      "scope": "Population proposal generation and leader refresh timing.",
-      "description": "Fix the current leaders for an entire iteration, generate all five agent positions, evaluate the resulting candidates, refresh the leaders, then increment t.",
-      "basis": "Algorithm 1 places fitness evaluation and leader refresh after the loop over search agents.",
-      "effect": "Normal execution uses 5 initialization evaluations plus 3 rounds of 5 evaluations, totaling 20. The independent ceiling still applies to failed attempts/retries; no extra intermediate evaluations are authorized."
-    },
-    {
-      "deviation_id": "conditional-training-modes",
-      "status": "superseded",
-      "scope": "Backbone normalization statistics and module modes during warm-up, fine-tuning and evaluation.",
+      "id": "conditional-training-modes",
+      "kind": "guess",
       "description": "During epochs 1-5, keep all backbones in evaluation mode with parameters and running statistics frozen while training the BiGRU/head with dropout. From epoch 6, use training mode for all components, permitting backbone parameter/statistic updates. Use evaluation mode for the entire model during validation/testing.",
       "basis": "The paper does not specify how freezing interacts with normalization statistics or module modes.",
       "effect": "Makes the initial feature extractors fully fixed; consistently applies to candidate and final training.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
+      "scope": "Backbone normalization statistics and module modes during warm-up, fine-tuning and evaluation.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     },
     {
-      "deviation_id": "conditional-gwo-proposals",
-      "status": "approved",
-      "scope": "Definitions of A, C, D and leader-derived X1/X2/X3 proposals.",
-      "description": "For each current agent X and fixed leader L, use A=2*a*r1-a, C=2*r2, D=abs(C*L-X), and proposal L-A*D, with independent uniform draws per coordinate/leader/agent. Use the target paper a=2-2*(t/T)**2 and its approved weighted combination.",
-      "basis": "Target paper invokes GWO coefficients and proposal positions without fully specifying their construction. Definitions are taken from original GWO, DOI 10.1016/j.advengsoft.2013.12.007.",
-      "effect": "Explicit completion of omitted algorithm definitions without extra fitness evaluations; does not replace the target paper coefficient schedule or weighting."
-    },
-    {
-      "deviation_id": "conditional-mutation-proposals",
-      "status": "approved",
-      "scope": "Equations 8-11 mutation notation, aggregation and random draws.",
-      "description": "Mutate each leader-derived proposal separately using P*(1+gamma1*Gaussian(0,1)+gamma2*Cauchy(0,1)), with gamma1=(t/T)**2 and gamma2=1-(t/T)**2. Draw independently per coordinate, proposal and agent. Interpret Equation 11 as the arithmetic mean of the three distinct mutated proposals.",
-      "basis": "Paper supplies distributions and mixing coefficients but repeats candidate symbols and does not specify whether draws are shared.",
-      "effect": "Explicit executable interpretation of notation and stochastic granularity; no intermediate fitness evaluations are introduced."
-    },
-    {
-      "deviation_id": "conditional-search-initialization",
-      "status": "superseded",
-      "scope": "Initial search population and random generator.",
+      "id": "conditional-search-initialization",
+      "kind": "guess",
       "description": "Initialize agent 1 at normalized (1,1); sample the other four uniformly and independently in [0,1)^2 with dedicated seed-42 search RNG. Evaluate in numbered order.",
       "basis": "Paper requires random initialization but omits seed/distribution; inclusion of the base candidate was separately approved.",
       "effect": "Reproducible log-uniform initialization with one deliberately included base candidate.",
-      "superseded_by": "conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
-    },
-    {
-      "deviation_id": "executed-cost-reduction-protocol",
-      "status": "executed",
-      "scope": "Classifier-only cached search and frozen-CNN/ViT fine-tuning final training.",
-      "description": "One-dimensional classifier LR search; fixed final ViT LR 0.001. CNNs remain frozen throughout. Same approved data, model, batch size and final 50 epochs.",
-      "basis": "Explicit approval after rereading paper and measuring cost; exact published training recipe remains unavailable.",
-      "effect": "Substantially reduces cost; result is conditional, not a comparable original-target reproduction."
+      "scope": "Initial search population and random generator.",
+      "status": "superseded: superseded by conditional_cost_revision and current conditional_architecture/conditional_optimization; original text retained as decision history."
     }
   ],
   "contacts": [],
