@@ -3973,7 +3973,7 @@
         "submission_rule": "Each file is id,pred over the 4,410 val + 7,560 test ids (11,970 rows, ids unique, the full expected set, pred in 0-125). t1-*/t2-*: argmax of the logit table; t3-*: the authors' fusion scripts' pred column. One Kaggle submission per file gives the Val Top-1 (public leaderboard) and Test Top-1 (private leaderboard) targets of that row.",
         "manifest_sha256": "bec96c2a982add36444cf4a85bd025c5e30922736b093bf54259c7e3bc2df73b",
         "fusion_log_sha256": "8cd8b0e948d8750ce52c4975633d9e8a95d947c24080709b2fbd8b6799bcdc17",
-        "local_copy_note": "The operator receives the 11 files fetched with the wrapper's volume get; their SHA-256 were re-checked against MANIFEST.json after download (all match). Not committed (predictions stay on the results Volume)."
+        "local_copy_note": "The operator receives the 11 files fetched with the wrapper's volume get; their SHA-256 were re-checked against MANIFEST.json after download (all match). Not committed (predictions stay on the results Volume). 2026-11-13: before submitting, the operator asked for a durable copy and a check. The 11 files and MANIFEST.json were confirmed on the results Volume in $MODAL_ENV (a VolumeFS v2 Volume, written by fusion-full-001 on 2026-11-12, unchanged since) and recorded as artifacts submission-* and submission-manifest. A fresh volume get of the submissions folder, the agent's earlier local download, and the operator's local copy outside the repository were each hashed: all 33 SHA-256 match the values above, and MANIFEST.json matches manifest_sha256. Nothing was re-uploaded."
       },
       "observed": {
         "fusion_scripts_agree": "fusion_all.py's fusion_slgcnn_md_video_<split>.csv and Multimodal_fusion.py's Final_LIS_prediction_<split>.csv have identical ids and predictions on both splits (fuse asserts this).",
@@ -3986,7 +3986,20 @@
         },
         "consistency_note": "Share of the 11,970 ids on which two submissions predict the same class. A sanity check of the files only, not a score; no labels exist locally."
       },
-      "artifact_ids": []
+      "artifact_ids": [
+        "submission-t1-radar",
+        "submission-t1-video",
+        "submission-t2-joint",
+        "submission-t2-bone",
+        "submission-t2-jm",
+        "submission-t2-bm",
+        "submission-t2-ensemble",
+        "submission-t3-radar-video",
+        "submission-t3-radar-skeletal",
+        "submission-t3-skeletal-video",
+        "submission-t3-all",
+        "submission-manifest"
+      ]
     }
   ],
   "artifacts": [
@@ -4021,6 +4034,102 @@
       "sha256": "1509da158eea874d8cd24c70f37051a73ac7b2659b310bfb881c800d7aecc8d8",
       "size_bytes": 837,
       "description": "pip freeze of the data-population image."
+    },
+    {
+      "artifact_id": "submission-t1-radar",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t1-radar.csv",
+      "sha256": "8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca",
+      "size_bytes": 103718,
+      "description": "Kaggle late-submission file for t1-radar-val, t1-radar-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t1-video",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t1-video.csv",
+      "sha256": "4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339",
+      "size_bytes": 103769,
+      "description": "Kaggle late-submission file for t1-video-val, t1-video-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t2-joint",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t2-joint.csv",
+      "sha256": "47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1",
+      "size_bytes": 103775,
+      "description": "Kaggle late-submission file for t2-joint-val, t2-joint-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t2-bone",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t2-bone.csv",
+      "sha256": "dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68",
+      "size_bytes": 103779,
+      "description": "Kaggle late-submission file for t2-bone-val, t2-bone-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t2-jm",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t2-jm.csv",
+      "sha256": "50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f",
+      "size_bytes": 103768,
+      "description": "Kaggle late-submission file for t2-jm-val, t2-jm-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t2-bm",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t2-bm.csv",
+      "sha256": "8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b",
+      "size_bytes": 103774,
+      "description": "Kaggle late-submission file for t2-bm-val, t2-bm-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t2-ensemble",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t2-ensemble.csv",
+      "sha256": "916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01",
+      "size_bytes": 103776,
+      "description": "Kaggle late-submission file for t2-ensemble-val, t2-ensemble-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t3-radar-video",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t3-radar-video.csv",
+      "sha256": "2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7",
+      "size_bytes": 103758,
+      "description": "Kaggle late-submission file for t3-radar-video-val, t3-radar-video-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t3-radar-skeletal",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t3-radar-skeletal.csv",
+      "sha256": "a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42",
+      "size_bytes": 103781,
+      "description": "Kaggle late-submission file for t3-radar-skeletal-val, t3-radar-skeletal-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t3-skeletal-video",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t3-skeletal-video.csv",
+      "sha256": "aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c",
+      "size_bytes": 103777,
+      "description": "Kaggle late-submission file for t3-skeletal-video-val, t3-skeletal-video-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-t3-all",
+      "kind": "kaggle_submission",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/t3-all.csv",
+      "sha256": "61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4",
+      "size_bytes": 103777,
+      "description": "Kaggle late-submission file for t3-all-val, t3-all-test: id,pred over the 4,410 val + 7,560 test ids (11,970 rows). Public score = Val Top-1, private score = Test Top-1. Raw prediction output of fusion-full-001; not in Git."
+    },
+    {
+      "artifact_id": "submission-manifest",
+      "kind": "submission_manifest",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/MANIFEST.json",
+      "sha256": "bec96c2a982add36444cf4a85bd025c5e30922736b093bf54259c7e3bc2df73b",
+      "size_bytes": 1809,
+      "description": "fusion-full-001's manifest of the 11 submission files (file, rows, SHA-256)."
     }
   ],
   "compute_assessment": {
