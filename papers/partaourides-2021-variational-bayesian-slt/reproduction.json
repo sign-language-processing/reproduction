@@ -266,8 +266,7 @@
         "row_counts": "train 7096 / dev 519 / test 642 -- exact match to paper Section 4.1 (total 8257)",
         "german_train_vocab": "2887 types, 1077 singletons -- exact match to paper Section 4.1",
         "gloss_train_vocab": "1085 types / 355 singletons on raw whitespace-split orth vs paper's 1066 / 337; ~19-type gap attributed to unspecified gloss cleaning (e.g. dropping __ON__/__OFF__/__EMOTION__/__PU__ non-manual markers). Recorded as a preprocessing guess."
-      },
-      "deviation": "None for data identity. Gloss preprocessing detail is unspecified by the paper; see guesses."
+      }
     }
   ],
   "metric_definitions": [
@@ -1549,5 +1548,170 @@
     "changed": "Nothing. No author information reached this attempt, so every hyperparameter listed in guesses/deviations remains an independent inference from the paper text.",
     "sent_by": "Carlos Escolano, from a personal mail client outside this repository; the text at author-contact.md is the email sent"
   },
+  "guesses_and_deviations": [
+    {
+      "id": "framework",
+      "kind": "paper_deviation",
+      "description": "Implementation framework.",
+      "paper_says": "\"We implement our model in TensorFlow\" (§4)",
+      "used": "PyTorch reimplementation",
+      "effect": "Should be behaviour-neutral; unverifiable without author code"
+    },
+    {
+      "id": "embedding-dim",
+      "kind": "guess",
+      "description": "Embedding dimension.",
+      "paper_says": "Not stated",
+      "used": "1000",
+      "effect": "Model capacity"
+    },
+    {
+      "id": "encoder-directionality",
+      "kind": "guess",
+      "description": "Encoder directionality.",
+      "paper_says": "Not stated",
+      "used": "unidirectional 4-layer GRU",
+      "effect": "Content transfer capacity"
+    },
+    {
+      "id": "no-attention-bridging",
+      "kind": "guess",
+      "description": "How the encoder connects to the decoder without attention.",
+      "paper_says": "\"without attention\"",
+      "used": "decoder layers initialised from final encoder-layer states, no other connection",
+      "effect": "**Likely material** to the baseline gap"
+    },
+    {
+      "id": "convergence-criterion",
+      "kind": "guess",
+      "description": "Convergence criterion.",
+      "paper_says": "\"until convergence\"",
+      "used": "early stop on dev BLEU-4, patience 20 evals (≤250 epochs)",
+      "effect": "Baseline plateaued ~epoch 70, so longer training alone is unlikely to close the gap, but not ruled out"
+    },
+    {
+      "id": "lr-schedule",
+      "kind": "guess",
+      "description": "Learning-rate schedule.",
+      "paper_says": "\"Adam [20], with learning rate 0.00001\" (§4); no schedule",
+      "used": "constant 1e-5, no warmup/decay",
+      "effect": "Possible cause of the plateau"
+    },
+    {
+      "id": "checkpoint-selection",
+      "kind": "guess",
+      "description": "Checkpoint selection.",
+      "paper_says": "Not stated",
+      "used": "best dev BLEU-4",
+      "effect": "Standard"
+    },
+    {
+      "id": "beam-search",
+      "kind": "guess",
+      "description": "Beam width and length penalty.",
+      "paper_says": "Not stated",
+      "used": "beam 3, lp 0",
+      "effect": "Minor; greedy gives near-identical output"
+    },
+    {
+      "id": "metric-implementation",
+      "kind": "guess",
+      "description": "BLEU and ROUGE implementation.",
+      "paper_says": "\"BLUE and ROUGE\"",
+      "used": "sacrebleu 13a/lc; rouge-score ROUGE-L F1",
+      "effect": "Scale/offset vs the paper's unknown scripts"
+    },
+    {
+      "id": "gloss-preprocessing",
+      "kind": "guess",
+      "description": "Gloss preprocessing.",
+      "paper_says": "Not stated",
+      "used": "raw whitespace split",
+      "effect": "vocab 1085 vs 1066",
+      "dataset_ids": [
+        "phoenix-2014t-gloss2text"
+      ]
+    },
+    {
+      "id": "ibp-alpha",
+      "kind": "guess",
+      "description": "IBP innovation α.",
+      "paper_says": "Not stated",
+      "used": "1.0",
+      "effect": "**Material** — drives the KL that freezes `bp`/`sb`"
+    },
+    {
+      "id": "cutoff-tau",
+      "kind": "guess",
+      "description": "Cutoff threshold τ.",
+      "paper_says": "\"a cut-off threshold, τ\" (§3.3); no value",
+      "used": "0.5",
+      "effect": "Inference sparsity"
+    },
+    {
+      "id": "gumbel-lambda-schedule",
+      "kind": "guess",
+      "description": "Gumbel-Softmax λ schedule.",
+      "paper_says": "\"we anneal the values of the hyperparameter λ similar to [19]\" (§3.2)",
+      "used": "1.0 → 0.5 linear over 20k steps",
+      "effect": "Relaxation tightness"
+    },
+    {
+      "id": "mc-samples",
+      "kind": "guess",
+      "description": "MC samples in the ELBO.",
+      "paper_says": "\"All the posterior expectations in the ELBO are computed by drawing MC samples\" (§3.2); no sample count",
+      "used": "1",
+      "effect": "Gradient variance"
+    },
+    {
+      "id": "kl-warmup",
+      "kind": "guess",
+      "description": "KL warm-up.",
+      "paper_says": "Not stated",
+      "used": "linear 0→1 over 2000 steps",
+      "effect": "Did not prevent KL domination"
+    },
+    {
+      "id": "kumaraswamy-init",
+      "kind": "guess",
+      "description": "Kumaraswamy a,b initialisation.",
+      "paper_says": "Not stated",
+      "used": "a=10, b=1 (sticks near 1 at init)",
+      "effect": "Changed from a=b=1 after preflight underflow of π_k"
+    },
+    {
+      "id": "gaussian-sigma-init",
+      "kind": "guess",
+      "description": "Gaussian σ initialisation.",
+      "paper_says": "Not stated",
+      "used": "σ≈1 (`wy_sigma_init=1.0`)",
+      "effect": "**Fix** — the initial −5 rho gave KL_w≈140k and crushed `repar`; corrected to the Bayes-by-Backprop convention"
+    },
+    {
+      "id": "kl-z-estimator",
+      "kind": "paper_deviation",
+      "description": "KL(q(z)‖p(z)) estimator.",
+      "paper_says": "MC (Eq. 14)",
+      "used": "analytic Bernoulli KL",
+      "effect": "Deviation for numerical stability; same quantity in expectation"
+    },
+    {
+      "id": "weight-compression-rule",
+      "kind": "guess",
+      "description": "Weight-compression rule.",
+      "paper_says": "\"we employ a unit round off\" (§3.3); \"reduce the weight memory footprint by a factor of 16, with a required bit precision of 1\" (§4.2)",
+      "used": "uniform per-matrix 2-bit quantisation of the last encoder layer's effective W_y",
+      "effect": "**Material & under-specified**; `,wc` rows conditional"
+    },
+    {
+      "id": "seed",
+      "kind": "guess",
+      "description": "Seed policy.",
+      "paper_says": "Not stated",
+      "used": "single seed = 1",
+      "effect": "Paper reports one value per cell"
+    }
+  ],
   "noncompliance": []
 }

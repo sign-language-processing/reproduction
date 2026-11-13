@@ -205,29 +205,32 @@ attempts; none approached (longest run 18 min, ~0.3 GPU-h). Raw metrics: artifac
 
 ## Guesses and deviations
 
-| Detail | Paper says | This attempt used | Effect |
-| --- | --- | --- | --- |
-| Framework | TensorFlow | PyTorch reimplementation | Should be behaviour-neutral; unverifiable without author code |
-| Embedding dim | — | 1000 | Model capacity |
-| Encoder directionality | — | unidirectional 4-layer GRU | Content transfer capacity |
-| "no attention" bridging | "without attention" | decoder layers initialised from final encoder-layer states, no other connection | **Likely material** to the baseline gap |
-| Convergence criterion | "until convergence" | early stop on dev BLEU-4, patience 20 evals (≤250 epochs) | Baseline plateaued ~epoch 70, so longer training alone is unlikely to close the gap, but not ruled out |
-| LR schedule | "ADAM, lr 0.00001" | constant 1e-5, no warmup/decay | Possible cause of the plateau |
-| Checkpoint selection | — | best dev BLEU-4 | Standard |
-| Beam width / length penalty | — | beam 3, lp 0 | Minor; greedy gives near-identical output |
-| BLEU / ROUGE implementation | "BLUE and ROUGE" | sacrebleu 13a/lc; rouge-score ROUGE-L F1 | Scale/offset vs the paper's unknown scripts |
-| Gloss preprocessing | — | raw whitespace split | vocab 1085 vs 1066 |
-| IBP innovation α | — | 1.0 | **Material** — drives the KL that freezes `bp`/`sb` |
-| Cutoff threshold τ | mentioned | 0.5 | Inference sparsity |
-| Gumbel-Softmax λ schedule | "annealed similar to [19]" | 1.0 → 0.5 linear over 20k steps | Relaxation tightness |
-| MC samples in ELBO | "draw MC samples" | 1 | Gradient variance |
-| KL warm-up | — | linear 0→1 over 2000 steps | Did not prevent KL domination |
-| Kumaraswamy a,b init | — | a=10, b=1 (sticks near 1 at init) | Changed from a=b=1 after preflight underflow of π_k |
-| Gaussian σ init | — | σ≈1 (`wy_sigma_init=1.0`) | **Fix** — the initial −5 rho gave KL_w≈140k and crushed `repar`; corrected to the Bayes-by-Backprop convention |
-| KL(q(z)‖p(z)) estimator | MC (Eq. 14) | analytic Bernoulli KL | Deviation for numerical stability; same quantity in expectation |
-| KL(q(W)‖p(W)) estimator | MC (Eq. 15) | MC (closed-form available via flag) | Faithful |
-| Weight-compression rule | "unit round off", "×16", "bit precision 1" | uniform per-matrix 2-bit quantisation of the last encoder layer's effective W_y | **Material & under-specified**; `,wc` rows conditional |
-| Seed policy | — | single seed = 1 | Paper reports one value per cell |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `framework` | `paper_deviation` | Implementation framework. | "We implement our model in TensorFlow" (§4) | PyTorch reimplementation |  | Should be behaviour-neutral; unverifiable without author code |  |  |  |  |  |  |
+| `embedding-dim` | `guess` | Embedding dimension. | Not stated | 1000 |  | Model capacity |  |  |  |  |  |  |
+| `encoder-directionality` | `guess` | Encoder directionality. | Not stated | unidirectional 4-layer GRU |  | Content transfer capacity |  |  |  |  |  |  |
+| `no-attention-bridging` | `guess` | How the encoder connects to the decoder without attention. | "without attention" | decoder layers initialised from final encoder-layer states, no other connection |  | **Likely material** to the baseline gap |  |  |  |  |  |  |
+| `convergence-criterion` | `guess` | Convergence criterion. | "until convergence" | early stop on dev BLEU-4, patience 20 evals (≤250 epochs) |  | Baseline plateaued ~epoch 70, so longer training alone is unlikely to close the gap, but not ruled out |  |  |  |  |  |  |
+| `lr-schedule` | `guess` | Learning-rate schedule. | "Adam [20], with learning rate 0.00001" (§4); no schedule | constant 1e-5, no warmup/decay |  | Possible cause of the plateau |  |  |  |  |  |  |
+| `checkpoint-selection` | `guess` | Checkpoint selection. | Not stated | best dev BLEU-4 |  | Standard |  |  |  |  |  |  |
+| `beam-search` | `guess` | Beam width and length penalty. | Not stated | beam 3, lp 0 |  | Minor; greedy gives near-identical output |  |  |  |  |  |  |
+| `metric-implementation` | `guess` | BLEU and ROUGE implementation. | "BLUE and ROUGE" | sacrebleu 13a/lc; rouge-score ROUGE-L F1 |  | Scale/offset vs the paper's unknown scripts |  |  |  |  |  |  |
+| `gloss-preprocessing` | `guess` | Gloss preprocessing. | Not stated | raw whitespace split |  | vocab 1085 vs 1066 |  |  |  |  |  | `phoenix-2014t-gloss2text` |
+| `ibp-alpha` | `guess` | IBP innovation α. | Not stated | 1.0 |  | **Material** — drives the KL that freezes `bp`/`sb` |  |  |  |  |  |  |
+| `cutoff-tau` | `guess` | Cutoff threshold τ. | "a cut-off threshold, τ" (§3.3); no value | 0.5 |  | Inference sparsity |  |  |  |  |  |  |
+| `gumbel-lambda-schedule` | `guess` | Gumbel-Softmax λ schedule. | "we anneal the values of the hyperparameter λ similar to [19]" (§3.2) | 1.0 → 0.5 linear over 20k steps |  | Relaxation tightness |  |  |  |  |  |  |
+| `mc-samples` | `guess` | MC samples in the ELBO. | "All the posterior expectations in the ELBO are computed by drawing MC samples" (§3.2); no sample count | 1 |  | Gradient variance |  |  |  |  |  |  |
+| `kl-warmup` | `guess` | KL warm-up. | Not stated | linear 0→1 over 2000 steps |  | Did not prevent KL domination |  |  |  |  |  |  |
+| `kumaraswamy-init` | `guess` | Kumaraswamy a,b initialisation. | Not stated | a=10, b=1 (sticks near 1 at init) |  | Changed from a=b=1 after preflight underflow of π_k |  |  |  |  |  |  |
+| `gaussian-sigma-init` | `guess` | Gaussian σ initialisation. | Not stated | σ≈1 (`wy_sigma_init=1.0`) |  | **Fix** — the initial −5 rho gave KL_w≈140k and crushed `repar`; corrected to the Bayes-by-Backprop convention |  |  |  |  |  |  |
+| `kl-z-estimator` | `paper_deviation` | KL(q(z)‖p(z)) estimator. | MC (Eq. 14) | analytic Bernoulli KL |  | Deviation for numerical stability; same quantity in expectation |  |  |  |  |  |  |
+| `weight-compression-rule` | `guess` | Weight-compression rule. | "we employ a unit round off" (§3.3); "reduce the weight memory footprint by a factor of 16, with a required bit precision of 1" (§4.2) | uniform per-matrix 2-bit quantisation of the last encoder layer's effective W_y |  | **Material & under-specified**; `,wc` rows conditional |  |  |  |  |  |  |
+| `seed` | `guess` | Seed policy. | Not stated | single seed = 1 |  | Paper reports one value per cell |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Attempts, failures, and dead ends
 
