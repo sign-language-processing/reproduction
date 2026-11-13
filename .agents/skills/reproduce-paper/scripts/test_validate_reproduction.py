@@ -200,16 +200,20 @@ class ValidatorTest(unittest.TestCase):
 
     def test_explicit_unknown_attribution_is_valid(self) -> None:
         document = valid_document()
-        document["agents"][0].update({
-            "model": None,
-            "harness": None,
-            "scope": "Historical reproduction; model and application unknown.",
-            "evidence": ["Original commit and PR do not record agent identity."],
-        })
-        document["runs"][0].update({
-            "agent_ids": [],
-            "agent_attribution_note": "Historical commit/PR evidence does not identify the executor.",
-        })
+        document["agents"][0].update(
+            {
+                "model": None,
+                "harness": None,
+                "scope": "Historical reproduction; model and application unknown.",
+                "evidence": ["Original commit and PR do not record agent identity."],
+            }
+        )
+        document["runs"][0].update(
+            {
+                "agent_ids": [],
+                "agent_attribution_note": "Historical commit/PR evidence does not identify the executor.",
+            }
+        )
         result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
 
@@ -799,9 +803,7 @@ class ValidatorTest(unittest.TestCase):
             self.assertEqual(
                 written["assignment"]["record"]["finalized_by"], "[redacted]"
             )
-            self.assertIn(
-                "[redacted]", written["assignment"]["normalized"]["comments"]
-            )
+            self.assertIn("[redacted]", written["assignment"]["normalized"]["comments"])
 
     def test_candidate_ingestion_preserves_existing_sections(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
