@@ -4246,7 +4246,7 @@
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
-        "detail": "fuse exited 0 in 61 s: the authors' two fusion scripts ran unchanged and agreed on both splits, and all 11 submission files were written with 11,970 rows each and the full expected id set (require_full). SHA-256 per file in outputs.submissions. The targets are scored only when the operator submits these files to Kaggle (gate target-eval-route).",
+        "detail": "fuse exited 0 in 61 s: the authors' two fusion scripts ran unchanged and agreed on both splits, and all 11 submission files were written with 11,970 rows each and the full expected id set (require_full). SHA-256 per file in outputs.submissions. The targets are scored only when the operator submits these files to Kaggle (gate target-eval-route). Note added 2026-11-14: the operator delegated the submissions, and the reproduction agent submitted the 11 files with the human reproducer's Kaggle account in kaggle-score-001 (gates[target-eval-route].resolution.updates).",
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [
@@ -4845,7 +4845,7 @@
         "l4_gpu_hours": "~75-85 (pose ~35, radar <0.5, video 5-15, SL-GCN ~33, inference/test ~2)",
         "usd": "~100-115"
       },
-      "possible_reduction": "Pose already runs 4 unmodified demo.py processes per L4. SL-GCN uses 8.4 GiB of 24 and could share a GPU two or three runs at a time without code changes; not yet measured.",
+      "possible_reduction": "Pose already runs 4 unmodified demo.py processes per L4. SL-GCN uses 8.4 GiB of 24 and could share a GPU two or three runs at a time without code changes. Measured on 2026-11-09 by bench-slgcn-pack2-001: joint and bone fold 0 sharing one L4 took ~94 s per job-epoch versus ~89 s alone, because the GPU is already saturated, so packing saves no GPU-hours; the full SL-GCN runs used one L4 per job.",
       "storage": "Dataset ~22 GB raw plus derived PNG/h5 in the results Volume; SL-GCN saves every epoch (20 runs x 250 checkpoints; size to be measured)."
     },
     "preflight_recording_note": "The preflight calls (pf-*, bench-*, inspect_inputs) were disposable measurements launched without a contemporaneous stop-policy declaration, so they appear here as evidence with Modal app IDs rather than as run entries. They inform the compute and protocol gates below.",
@@ -5163,13 +5163,24 @@
   "patches": [
     {
       "patch_id": "upstream-data-paths",
-      "path": "upstream.patch",
+      "path": "patches/0001-data-paths.patch",
       "sha256": "1c97eec2c52431ff6ccbe0000fe569764c29b4e8501f813af928bdaee1a534da",
       "applies_to": "official-code at 7dd73c4e67b2959a95f828c103269723528b9271",
       "concern": "Hardcoded data paths: the authors' Windows directories in 8 scripts, the hand-edited DIR = \"Test\" split toggle in val_md_gen.py and val_video_resized.py, and the empty input/output paths in Pose_estimation/demo.py become environment variables (MSLR_TRAIN_DIR, MSLR_VAL_DIR, MSLR_TEST_DIR, MSLR_SPLIT, POSE_INPUT_DIR, POSE_OUTPUT_DIR).",
       "demonstrated_failure": "The scripts cannot run outside the authors' Windows machine: every data path is a literal C:\\ path, and demo.py has empty input/output paths.",
       "behavioral_effect": "None; 14 lines changed, each a path assignment or split selector.",
       "untouched": "fusion_pred_trainval.py (internal 80/20 fusion-weight search, out of scope)."
+    },
+    {
+      "patch_id": "video-save-final-model",
+      "path": "patches/0002-video-save-final-model.patch",
+      "sha256": "10f1219ee83256766ebd63210fae9270c7480462eb588767f63107428210c9ae",
+      "applies_to": "official-code at 7dd73c4e67b2959a95f828c103269723528b9271, after patches/0001-data-paths.patch",
+      "concern": "Missing output: the video model that MSLR_radar_video/resnet21D_V2.py trains is never saved as a final model.",
+      "demonstrated_failure": "resnet21D_V2.py trains with EarlyStopping(restore_best_weights=True), then writes only every-5-epoch checkpoints and an xlsx of held-out predictions; there is no final model file for val_fusion_pred.py and test_fusion_pred.py to load as video_final.h5.",
+      "why_necessary": "Inference on the official val and test sets needs the trained video model; without a saved final model the Table 1 video row and every Table 3 fusion with video cannot be produced. Protocol A1 includes this patch (operator decision 2026-11-09, gate protocol-training-recipe).",
+      "behavioral_effect": "None on training: one model.save('r2p1d_final.h5') right after model.fit() persists exactly the model the script ends with (the restored best-val_loss weights; epoch 83 of 113 in train-video-full-001).",
+      "evidence": "Applies after 0001 on a fresh checkout of 7dd73c4 in both images; guesses_and_deviations[video-final-save-patch]."
     }
   ],
   "environment_notes": [
