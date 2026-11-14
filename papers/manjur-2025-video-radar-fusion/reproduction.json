@@ -211,8 +211,8 @@
       "source_id": "kaggle-competition",
       "kind": "evaluation_service",
       "url": "https://www.kaggle.com/competitions/iccv-mslr-2025-track-2",
-      "revision_or_sha256": "competition id 102067; metadata and leaderboard read 2026-11-04",
-      "role": "Only distribution point for the challenge data and the only scorer of the concealed val/test labels. Public metadata on 2026-11-04: deadline 2025-06-23T11:59:00Z, totalSolutionRows 11970, leaderboardPercentage 37, scoreTruncationNumDecimals 5, evaluation algorithm 474 'Accuracy Score' (latestCompetitionMetricVersionId 17210), license CC BY-NC-SA 4.0 (agreementRequired false), rulesRequired true, maxDailySubmissions 2, maxTeamSize 1, locked true, showPrivateLeaderboard true. Leaderboard team 'IMPRESS NCSU' (submission 45543069): public 0.99614, private 0.99708."
+      "revision_or_sha256": "competition id 102067; metadata and leaderboard read 2026-11-04; 11 late submissions scored 2026-11-14 (run kaggle-score-001)",
+      "role": "Only distribution point for the challenge data and the only scorer of the concealed val/test labels. Public metadata on 2026-11-04: deadline 2025-06-23T11:59:00Z, totalSolutionRows 11970, leaderboardPercentage 37, scoreTruncationNumDecimals 5, evaluation algorithm 474 'Accuracy Score' (latestCompetitionMetricVersionId 17210), license CC BY-NC-SA 4.0 (agreementRequired false), rulesRequired true, maxDailySubmissions 2, maxTeamSize 1, locked true, showPrivateLeaderboard true. Leaderboard team 'IMPRESS NCSU' (submission 45543069): public 0.99614, private 0.99708. Late submissions were open on 2026-11-14 and scored the 11 files of fusion-full-001 (kaggle-score-001); submission-limits then reported 100 per day for this account (gates[target-eval-route].resolution.updates)."
     },
     {
       "source_id": "signeval-2025-summary",
@@ -407,7 +407,7 @@
       "name": "Top-1 accuracy (Kaggle 'Accuracy Score')",
       "direction": "higher_is_better",
       "implementation": "Kaggle evaluation algorithm 474 'Accuracy Score' (sklearn.metrics.accuracy_score) against the concealed 11,970-row solution of iccv-mslr-2025-track-2; public leaderboard on 37% of rows (inferred to be the 4,410 validation rows), private leaderboard on the remaining rows (inferred to be the 7,560 test rows).",
-      "version": "Kaggle latestCompetitionMetricVersionId 17210 as listed on 2026-11-04",
+      "version": "Kaggle latestCompetitionMetricVersionId 17210 as listed on 2026-11-04; not re-checked on 2026-11-14, when the 11 late submissions were scored",
       "aggregation": "Micro accuracy over all rows of the split from one submission of all 11,970 ids; the paper reports no seeds or repeats.",
       "unit_or_scale": "Percent. Kaggle displays the fraction truncated to 5 decimals (scoreTruncationNumDecimals 5); paper tables round to 2 decimals and the prose quotes 3."
     }
@@ -5124,7 +5124,7 @@
     "copied_scores": "Queue 'no'. Confirmed: every Table 1-3 value is from the authors' own systems on the challenge splits.",
     "includes_human_evaluation": "Queue 'no'. Confirmed: no human evaluation in the paper.",
     "potential_ethical_concerns": "Queue 'no'. The organisers' SignEval 2025 summary (source signeval-2025-summary, Section 4.2) states that each of the 126 items was 'performed 205 times by a proficient signer', recorded with radar, RGB-D video and depth sensors; the Manjur paper does not describe the signer. The data was released by the organisers under CC BY-NC-SA 4.0 and the competition rules for the challenge; no new participants are involved. Gates data-kaggle-competition and data-kaggle-download-forbidden restricted access and processing to the operator's Restricted Environment ($MODAL_ENV).",
-    "compute_requirements": "Queue 'N/A'. The paper states no hardware or runtime; see compute_assessment."
+    "compute_requirements": "Queue 'N/A'. The paper states no hardware or runtime; see compute_assessment for the preflight-based estimates. This attempt used USD 385.81 and 327.9 L4 GPU-hours of Modal compute in total (compute_budget.spend_checkpoints, 2026-11-14), within ceilings of CHF 450 and 380 L4 GPU-hours."
   },
   "contacts": [
     {
@@ -5138,8 +5138,9 @@
       "purpose": "Obtain the authors' released radar/video .h5 models as evidence only: hash them, read their optimizer state (iteration count, learning rate) to see whether they match the held-out-split scripts or a full-set retrain, and optionally check that they reproduce the committed prediction CSVs.",
       "timing": "Made before the independent attempt finished: the full training runs (pose-full-001, train-radar-full-001, train-video-full-001) had started but were still running. AGENTS.md asks that authors be contacted only after an independent attempt (Team S data-access requests excepted); this request is recorded as an exception to that timing.",
       "use_restriction": "Evidence only. The weights will not replace training, will not be used to produce or select any target value, and will not change the protocol (A1) or any checkpoint choice.",
-      "status": "pending: no response recorded",
-      "what_it_changed": "Nothing so far."
+      "status": "pending as of 2026-11-14 (operator report): no reply from the authors and no access granted",
+      "what_it_changed": "Nothing as of 2026-11-14.",
+      "status_as_of": "2026-11-14"
     }
   ],
   "deviations": [
