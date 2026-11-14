@@ -8,13 +8,23 @@
 
 **Preference level:** 3
 
-**Status:** `complete`
+**Pipeline status:** `complete`
 
-**Numerical agreement:** not fully reproduced
+**Numerical agreement:** `does_not_agree` — all nine Table III targets produced comparable values; the four training accuracies are within 1.21 points, while all five augmented-validation accuracies are 11.43 to 14.50 points above the paper.
 
 Every Table III target was produced by a fully documented conditional reconstruction; the paper provides no executable artifact.
 
 **Attempt date:** 2026-08-28
+
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `original-reproduction-agent` | unknown | unknown | Implementation of the reconstruction and execution of all three retained runs, including the bounded split diagnostic. | Audited 2026-11-06: none of the nine commits touching this directory carries a model or agent-application trailer, starting with [`3937eda`](https://github.com/sign-language-processing/reproduction/commit/3937eda), and [PR #37](https://github.com/sign-language-processing/reproduction/pull/37) reports results and omissions only, identifying no executing model in its body, comments or reviews. |
+
+Mirrors `reproduction.json.agents`. No model or application has been inferred from a human
+account or a branch name, so all three retained runs carry `agent_ids: []` with an
+`agent_attribution_note`.
 
 ## Scope and target contract
 
@@ -26,7 +36,7 @@ The implementation includes the two CNNs, their probability-average ensemble, an
 
 | Artifact | Canonical source | Pin | Role |
 | --- | --- | --- | --- |
-| Paper PDF | User-provided [`03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf`](/Users/amitmoryossef/Downloads/03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf) | SHA-256 above | Table III and protocol |
+| Paper PDF | User-provided `03785db2dc052c9c21dfefc690b03b8ad0703d9d.pdf` (operator-local path omitted; the SHA-256 is the identifier) | SHA-256 above | Table III and protocol |
 | Bibliographic record | [IEEE DOI](https://doi.org/10.1109/JCSSE58229.2023.10202089) | accessed 2026-08-27 | Canonical citation |
 | Dataset | [Kaggle ASL Alphabet](https://www.kaggle.com/datasets/grassknoted/asl-alphabet) | version 1 archive SHA-256 `7c572f14fbaff94f98835cfe71c7582dd379a5176e7c4f83dbf3a30e4b3f68c4` | Exact 29-class image release |
 
@@ -95,18 +105,22 @@ The Modal image is `tensorflow/tensorflow:2.15.0-gpu` (resolved digest `sha256:2
 
 There are no patches because no published code exists. `train.py` implements the CNNs and ensemble: Figure 4 supplies SLRNet-8’s visible layers; Section III.B/Table II supply OCNN’s five convolutions, pooling, batch normalization, dropout, dense layers, and output regularization; Section III.C supplies the average-probability ensemble. `svm.py` is the small separate Table III SVM evaluator. Comments identify the paper-derived items.
 
-## Decisions not specified by the paper
+## Guesses and deviations
 
-| Detail | Paper says | This attempt uses | Why |
-| --- | --- | --- | --- |
-| Random split and augmentation seed | Random 80:20 split; no seed | `2026`, stratified by class | Makes the reported conditional reconstruction repeatable without claiming the authors’ split |
-| Split-order sensitivity | No split file or seed | One fixed lexicographic-per-class 80:20 diagnostic, never used as a replacement result | Tests whether the retained random partition alone causes the validation gap; it did not |
-| Image resizing | SLRNet-8 source architecture takes 64×64; Table III does not repeat size | 64×64 RGB | Only explicit SLRNet-8 input evidence; applied consistently to both networks |
-| Convolution padding | Not specified | `same` | Preserves the Figure 4 spatial path for the listed pooling layers |
-| Optimizer / learning rate | Not specified | Adam, `1e-3` | Conventional minimal Keras default-like choice, recorded rather than inferred as author setting |
-| CNN checkpoint rule | Table III pairs training accuracy with maximum validation accuracy | Select maximum augmented-validation accuracy | Matches the table’s stated comparison framing |
-| Augmentation samples | Ranges/factor stated, sampled transforms not | Deterministic ImageDataGenerator transforms | Exactly implements stated ranges and tenfold cardinality |
-| RBF-SVM details | Only “RBF kernel” and 696,000 augmented training images | SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma="scale")` | Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `random-split-seed` | `guess` | Seed for the random 80:20 split and for augmentation. | Random 80:20 split; no seed | `2026`, stratified by class | Makes the reported conditional reconstruction repeatable without claiming the authors’ split |  |  |  |  |  |  |  |
+| `split-order-diagnostic` | `guess` | Sensitivity of the results to the order of the train/validation split. | No split file or seed | One fixed lexicographic-per-class 80:20 diagnostic, never used as a replacement result | Tests whether the retained random partition alone causes the validation gap; it did not |  |  |  |  | `random-split-seed` |  |  |
+| `image-resizing` | `guess` | Input image size for both networks. | SLRNet-8 source architecture takes 64×64; Table III does not repeat size | 64×64 RGB | Only explicit SLRNet-8 input evidence; applied consistently to both networks |  |  |  |  |  |  |  |
+| `convolution-padding` | `guess` | Padding mode of the convolution layers. | Not specified | `same` | Preserves the Figure 4 spatial path for the listed pooling layers |  |  |  |  |  |  |  |
+| `optimizer-learning-rate` | `guess` | Optimizer and learning rate. | Not specified | Adam, `1e-3` | Conventional minimal Keras default-like choice, recorded rather than inferred as author setting |  |  |  |  |  |  |  |
+| `cnn-checkpoint-rule` | `guess` | Rule for selecting the reported CNN checkpoint. | Table III pairs training accuracy with maximum validation accuracy | Select maximum augmented-validation accuracy | Matches the table’s stated comparison framing |  |  |  |  |  |  |  |
+| `augmentation-samples` | `guess` | How the augmented samples are drawn. | Ranges/factor stated, sampled transforms not | Deterministic ImageDataGenerator transforms | Exactly implements stated ranges and tenfold cardinality |  |  |  |  |  |  |  |
+| `rbf-svm-details` | `guess` | Feature layer and hyperparameters of the RBF-SVM. | Only “RBF kernel” and 696,000 augmented training images | SLR global-average-pool / OCNN flatten; scikit-learn `SVC(C=1, gamma="scale")` | Final tensors before the inferred dense classifier stages; defaults are explicit rather than score-tuned |  |  |  |  |  |  |  |
+
+## Noncompliance
+
+None.
 
 ## Execution evidence and attempts
 

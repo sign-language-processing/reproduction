@@ -44,23 +44,31 @@ The author-uploaded [full text](https://www.researchgate.net/publication/3615708
 
 The paper describes ASL Alphabet as 87,000 200×200 colour images and “28 gestures.” The cited source instead has 29 class directories—A-Z, SPACE, DELETE, and NOTHING—and 87,000 = 29 × 3,000. The entire source release, including NOTHING and its test files, is retained on Modal. The user resolved the *training* ambiguity on 2026-08-25: train/evaluate with A-Z, SPACE, and DELETE (28 classes / 84,000 training images), excluding NOTHING. This is a documented reconstruction choice, not a claim that the paper identifies NOTHING as the omitted class.
 
-## Conditional ISL-HS run decisions
+## Guesses and deviations
 
 The user authorized a documented attempt to obtain the expected result despite the unpublished Table III evaluation details. The following are reconstruction decisions, not claims about the authors’ setup:
 
-| Missing detail | Conditional decision | Why |
-| --- | --- | --- |
-| Landmark implementation | `mediapipe==0.10.18`, direct `Hands`; sequential tracking within each video; one hand; model complexity 1; both confidence thresholds 0.5 | Preserves the stated 21-point Hands path. The paper gives no version or configuration. |
-| Video decoding | `simple-video-utils==0.7.4`, RGB display-oriented frames | Study-wide decoder policy replaces the paper’s unspecified OpenCV decoding details. |
-| Landmark coordinates | Multiply MediaPipe's normalized `x/y` by the decoded frame width/height | The paper describes pixel coordinates. |
-| Zero division | Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0 | The equations give no zero-division policy. |
-| Feature reduction | Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only | The paper only says more than half the 440 features are correlation/dimensionally reduced. This avoids test-fold leakage. |
-| Random Forest | 100 trees, seed 2026, eight CPU workers, all other `scikit-learn==1.6.1` defaults | Only the 100-tree default is stated. |
-| Evaluation | Run shuffled 10-fold frame-stratified CV (seed 2026) and unshuffled 10-fold video-grouped CV; report both | Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III. |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `landmark-implementation-isl-hs` | `guess` | ISL-HS landmark implementation and configuration. | The paper gives no version or configuration | `mediapipe==0.10.18`, direct `Hands`; sequential tracking within each video; one hand; model complexity 1; both confidence thresholds 0.5 | Preserves the stated 21-point Hands path |  |  |  |  |  |  | `isl-hs` |
+| `landmark-implementation-asl` | `guess` | ASL Alphabet landmark implementation and configuration. | The paper gives no version or configuration | `mediapipe==0.10.18`, direct `Hands`; static image mode; one hand; model complexity 1; both confidence thresholds 0.5 | Preserves the stated 21-point Hands path |  |  |  |  |  |  | `asl-alphabet` |
+| `video-decoding` | `paper_deviation` | Video decoding. | OpenCV passes each frame to MediaPipe (Section II.A); decoding details unspecified | `simple-video-utils==0.7.4`, RGB display-oriented frames | Study-wide decoder policy replaces the paper’s unspecified OpenCV decoding details |  |  |  |  |  |  | `isl-hs` |
+| `landmark-coordinates` | `guess` | Scale of the landmark coordinates. | The paper describes pixel coordinates | Multiply MediaPipe's normalized `x/y` by the decoded frame width/height |  |  |  |  |  |  |  | `asl-alphabet`; `isl-hs` |
+| `zero-division` | `guess` | Zero-division policy for the slope and angle features. | The equations give no zero-division policy | Preserve vertical-slope `atan(±∞)`; replace indeterminate/non-finite feature values with 0 |  |  |  |  |  |  |  | `asl-alphabet`; `isl-hs` |
+| `feature-reduction` | `guess` | Feature-reduction rule. | Only that more than half the 440 features are correlation/dimensionally reduced | Greedy absolute-Pearson correlation filter, threshold 0.95, fit on each training fold only | Fitting on training folds only avoids test-fold leakage |  |  |  |  |  |  | `asl-alphabet`; `isl-hs` |
+| `random-forest` | `guess` | Random Forest settings. | Only the 100-tree default is stated | 100 trees, seed 2026 + fold number, eight CPU workers, all other `scikit-learn==1.6.1` defaults |  |  |  |  | evaluate.py:166 and evaluate_asl.py:89 construct the classifier with `random_state=SEED + fold`; both write `random_state` as `SEED` into their run.json (evaluate.py:209, evaluate_asl.py:103) |  |  | `asl-alphabet`; `isl-hs` |
+| `isl-hs-evaluation` | `guess` | ISL-HS evaluation protocol. | 10-fold learning curves, not tied to Table III; no folds, grouping, shuffling, or seed defined (Section III.C) | Run shuffled 10-fold frame-stratified CV (seed 2026) and unshuffled 10-fold video-grouped CV; report both | Frame CV may be closest to an unspecified frame-level implementation but leaks video siblings; grouped CV is the leakage audit. Neither is silently selected as Table III |  |  |  |  |  |  | `isl-hs` |
+| `asl-class-set` | `guess` | Which 28 ASL Alphabet classes are used. | "28 gestures" and 87,000 images; the cited source has 29 class directories (87,000 = 29 × 3,000) | A-Z, SPACE, and DELETE (28 classes / 84,000 training images), excluding NOTHING; the full release is retained on Modal | User decision on 2026-08-25 at gate `asl-class-and-cloud-terms`; not a claim that the paper identifies NOTHING as the omitted class |  |  |  |  |  |  | `asl-alphabet` |
+| `asl-evaluation` | `guess` | ASL Alphabet evaluation protocol. | Split not stated | Shuffled 10-fold image-level CV |  |  |  |  |  |  |  | `asl-alphabet` |
+| `asl-missing-detections` | `guess` | Handling of ASL images in which no hand is detected. | Not stated | Excluded; 63,673 of 84,000 images (75.80%) had a detected hand |  |  |  |  |  |  |  | `asl-alphabet` |
+
+## Noncompliance
+
+None.
+
+## Retained preflight evidence
 
 The real-data preflight uses two videos/class and two folds to exercise decoding, detection, the exact 440-feature extractor, fold-local reduction, fitting, and both evaluators. The full conditional run uses all 18 videos/class and ten folds.
-
-### Retained preflight evidence
 
 The corrected preflight decoded the first 60 frames from 52 videos (two per
 class) and MediaPipe detected a hand in all 3,120 frames. Its seeded,

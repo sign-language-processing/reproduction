@@ -19,20 +19,29 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<
 Fix every reported issue before pushing. Then read your own diff end to end — the validator
 checks structure, not sense.
 
+CI runs the same validator, plus its unit tests, on every pull request — so this is not optional,
+only earlier and faster than waiting for the run.
+
+If you change the tooling under `.agents/`, also run `ruff check` and `ruff format` (version pinned
+in the CI workflow; config in `ruff.toml`). Paper code under `papers/` is deliberately not
+formatted: run records pin its SHA-256.
+
 In the PR description, say which paper, which preference level, and what a reviewer should look
 at hardest. If the attempt stopped at a gate, say which gate and what evidence was gathered;
 a blocked attempt is a legitimate, reportable outcome and should not be dressed up as progress.
 
 ## Reviewing a reproduction PR
 
-### 1. Run the validator first
+### 1. Read the validator's verdict first
+
+CI runs it for you on every pull request, so start from that check rather than from the diff. To
+reproduce the result locally:
 
 ```bash
 python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/<paper-slug>
 ```
 
-Do this before reading anything. It already enforces a large share of what used to be reviewed
-by hand, including:
+It already enforces a large share of what used to be reviewed by hand, including:
 
 - `status.pipeline` and `status.numerical_agreement` are drawn from the allowed vocabularies, so
   invented values like `not_fully_reproduced` are rejected;
@@ -54,11 +63,16 @@ by hand, including:
 - every result points to a real run and artifact by internal ID;
 - `README.md` contains no `<…>` placeholders (note this forbids literal angle brackets anywhere
   in the report, inline HTML included);
-- `schema_version` is gone, since there is one current contract.
+- `schema_version` is gone, since there is one current contract;
+- `guesses_and_deviations` and `noncompliance` are present, every entry has a unique `id` and a
+  `description`, each fidelity entry has a valid `kind`, each noncompliance entry cites its
+  `requirement`, references resolve, and no field is misspelled. The legacy `deviations`,
+  `guesses` and per-dataset `deviation` keys are rejected.
 
-Some records committed before the current contract still fail. Hold a PR to its own paper
-directory; do not ask a contributor to repair unrelated legacy records, but do flag them in a
-separate issue.
+Every committed record validates, and CI fails on any that does not — there is no allowlist for
+legacy records. If a PR's own record fails, that is the PR's to fix. If an *unrelated* record
+starts failing, hold the PR to its own paper directory and raise the other one separately rather
+than asking a contributor to repair it.
 
 ### 2. Read the report as a stranger would
 
@@ -131,6 +145,14 @@ candidate and matched up with Team S's pool during analysis. Do not substitute t
 slug there; the slug is the path, not the identity. A `direct_user_request` assignment has no
 platform record, and uses the paper slug instead. The validator does not cross-check this line
 against the JSON the way it does the statuses, so it is on the reviewer.
+
+**Guesses, deviations and noncompliance are filed correctly.** The validator checks the shape, not
+the classification. Check each `kind`: a `guess` is only where the paper is silent; the paper
+disagreeing with its own released code is a `paper_code_conflict`, and the paper contradicting
+itself is a `paper_internal_conflict` — neither is a guess or a `paper_deviation`. Check that nothing about the attempt's own process — an undeclared ceiling, an
+unset environment variable, a skipped discussion — sits in `guesses_and_deviations`; that belongs in
+`noncompliance`, and the converse. An empty array is a claim that there are none, so it deserves the
+same scrutiny as a full one.
 
 **Pins are immutable.** Every Git source pinned to a full commit SHA, never a branch or tag;
 non-Git artifacts carrying a checksum; Hugging Face revisions pinned. A reviewer should be able

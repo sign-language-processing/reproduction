@@ -95,7 +95,9 @@ papers/<paper-slug>/
 └── artifacts/               # optional; multiple small raw files kept in Git
 ```
 
-Keep one machine-readable truth: assignment provenance, agent attribution, paper/source pins, datasets, metric definitions, targets and results, runs, artifacts, guesses, deviations, contacts, gates, and status all live in `reproduction.json` with stable internal IDs. Do not create parallel candidate/target/metric/run JSON files. `README.md` is both the complete human report and, when weights are published, the Hugging Face model card.
+Keep one machine-readable truth: assignment provenance, agent attribution, paper/source pins, datasets, metric definitions, targets and results, runs, artifacts, guesses and deviations, noncompliance, contacts, gates, and status all live in `reproduction.json` with stable internal IDs. Do not create parallel candidate/target/metric/run JSON files. `README.md` is both the complete human report and, when weights are published, the Hugging Face model card.
+
+Record fidelity to the paper in `guesses_and_deviations` and lapses from this contract in `noncompliance`. Both arrays are always present, `[]` when empty, and their fields are defined in `.agents/skills/reproduce-paper/references/evidence-and-retries.md`. A guess or deviation concerns the paper and its released artifacts; noncompliance concerns this attempt's own process. Never file one as the other.
 
 Do not create empty directories or a directory for one file. A lone executable, patch, or small raw artifact stays at the paper root with a descriptive name; create `scripts/`, `patches/`, or `artifacts/` only when there are multiple related files. Large logs, predictions, checkpoints, native result objects, and datasets stay on Modal or another permitted store and are recorded by immutable URI and hash in `reproduction.json`.
 

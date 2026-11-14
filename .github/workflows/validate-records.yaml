@@ -1,0 +1,56 @@
+name: Validate reproduction records
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validator unit tests
+        run: |
+          python3 -m unittest discover \
+            --start-directory .agents/skills/reproduce-paper/scripts \
+            --pattern 'test_*.py' --verbose
+
+      - name: Validate every committed paper record
+        if: always()
+        run: |
+          status=0
+          for paper in papers/*/; do
+            if ! python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py "$paper"; then
+              echo "::error title=Invalid record::$(basename "$paper") does not validate"
+              status=1
+            fi
+          done
+          exit $status
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ruff
+        run: python3 -m pip install ruff==0.17.4
+
+      - name: Lint
+        run: ruff check --output-format=github
+
+      - name: Check formatting
+        if: always()
+        run: ruff format --check --diff

@@ -99,8 +99,7 @@
           ]
         }
       ],
-      "video_decoding": "Not used; the published pipeline consumes precomputed features.",
-      "deviations": []
+      "video_decoding": "Not used; the published pipeline consumes precomputed features."
     }
   ],
   "metric_definitions": [
@@ -342,15 +341,59 @@
       "size_bytes": 301505
     }
   ],
-  "guesses": [
-    "The assignment was resolved to the supplied joint lambda_R=1, lambda_T=1 configuration and matching Table 4 row.",
-    "The paper does not identify the Table 4 seed; the published configuration pins seed 42, so this reproduction uses one seed-42 run."
-  ],
-  "deviations": [
-    "The Dockerfile omits two conda self-management pins, replaces three unavailable dependency patch releases, and pins typing-extensions for the Python 3.7 child; model code and configuration values were not changed.",
-    "The supplied config searches translation alphas -1 through 5 and uses learning_rate_min=1e-7, while the paper states alphas 0 through 2 and learning_rate_min=1e-6. The published config was treated as the executable recipe."
+  "guesses_and_deviations": [
+    {
+      "id": "target-configuration",
+      "kind": "guess",
+      "description": "Which Table 4 configuration the assignment refers to.",
+      "paper_says": "Table 4 reports several recognition/translation loss weightings",
+      "used": "The supplied joint lambda_R=1, lambda_T=1 configuration and matching Table 4 row"
+    },
+    {
+      "id": "seed",
+      "kind": "guess",
+      "description": "Random seed for the Table 4 run.",
+      "paper_says": "Not stated",
+      "used": "One seed-42 run",
+      "basis": "The published configuration pins seed 42"
+    },
+    {
+      "id": "length-penalty-alpha",
+      "kind": "paper_code_conflict",
+      "description": "Length-penalty alpha search range.",
+      "paper_says": "\"a length penalty [74] with α values ranging from 0 to 2\" (§5.1)",
+      "used": "The published config's translation alphas -1 through 5",
+      "basis": "The published config was treated as the executable recipe"
+    },
+    {
+      "id": "learning-rate-min",
+      "kind": "paper_code_conflict",
+      "description": "Learning rate at which training stops.",
+      "paper_says": "\"This continues until the learning rate drops below 10−6\" (§5.1)",
+      "used": "The published config's learning_rate_min=1e-7",
+      "basis": "The published config was treated as the executable recipe"
+    },
+    {
+      "id": "environment-packaging",
+      "kind": "code_deviation",
+      "description": "Dependency packaging for the published environment.",
+      "used": "The Dockerfile omits two conda self-management pins, replaces three unavailable patch releases (TensorBoard 2.1.2 to 2.1.1, tensorflow-estimator 2.1.2 to 2.1.0, and warmup-scheduler 0.1.1 to 0.3), and pins typing-extensions for the Python 3.7 child",
+      "effect": "Model code and configuration values were not changed",
+      "evidence": [
+        "Dockerfile"
+      ]
+    },
+    {
+      "id": "hardware",
+      "kind": "guess",
+      "description": "Hardware.",
+      "paper_says": "Not identified",
+      "used": "One Tesla T4",
+      "effect": "The legacy framework ran without modification"
+    }
   ],
   "dead_ends": [
     "A third-party feature mirror produced about 11 BLEU but had different archive sizes and vocabulary. The path and all bespoke compatibility tooling were discarded after the authors' restored files were found."
-  ]
+  ],
+  "noncompliance": []
 }

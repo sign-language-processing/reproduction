@@ -84,11 +84,19 @@ For Modal runs, record profile `repro-sign`, environment, app/function-call IDs,
 
 ## Guesses and deviations
 
-| Detail | Paper/evidence says | This attempt used | Rationale | Effect on interpretation |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |  |  |  |  |  |  |
 
-Include every missing detail filled in and every departure from the published protocol, even if it seems harmless.
+Mirror `reproduction.json.guesses_and_deviations`: one column per field the validator allows, one row per entry, and an empty cell where an entry lacks an optional field. Include every missing detail filled in and every departure from the published protocol or released code, even if it seems harmless. Kind is `guess` (the paper is silent), `paper_deviation`, `code_deviation`, `paper_code_conflict` (the paper and the released code disagree), or `paper_internal_conflict` (the paper contradicts itself). Write "None." when the list is empty.
+
+## Noncompliance
+
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
+Mirror `reproduction.json.noncompliance` the same way, one column per allowed field: every point where this attempt did not meet a requirement of the study's own contract, such as a ceiling not declared before launch. These concern the process, not fidelity to the paper, so they never belong under Guesses and deviations. Write "None." when the list is empty.
 
 ## Attempts, failures, and dead ends
 
