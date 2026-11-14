@@ -19,11 +19,12 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.319",
-      "scope": "Continuation from 2026-11-06 in the same conversation after the operator's gate decisions: recorded the target and data gate resolutions, created the $MODAL_ENV Volumes, wrote scripts/data.sh and scripts/modal_app.py, and executes the data population and later Modal runs. Attribution of the SL-GCN training configuration (recorded 2026-11-10 at the operator's request): the agent inferred it, including is_vector True for bone, joint-motion and bone-motion, from SAM-SLR's original training configs. The authors' published fold configs contain a train_feeder_args section with is_vector False for all four streams; the agent did not surface it. Protocol option A1, as the agent presented it to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's. See dead_ends[slgcn-is-vector-true].",
+      "scope": "Continuation from 2026-11-06 in the same conversation after the operator's gate decisions: recorded the target and data gate resolutions, created the $MODAL_ENV Volumes, wrote scripts/data.sh and scripts/modal_app.py, and executes the data population and later Modal runs. Attribution of the SL-GCN training configuration (recorded 2026-11-10 at the operator's request): the agent inferred it, including is_vector True for bone, joint-motion and bone-motion, from SAM-SLR's original training configs. The authors' published fold configs contain a train_feeder_args section with is_vector False for all four streams; the agent did not surface it. Protocol option A1, as the agent presented it to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's. See dead_ends[slgcn-is-vector-true]. From 2026-11-14, under the operator's explicit delegation (gates[target-eval-route].resolution.updates), made the 11 Kaggle late submissions with the human reproducer's Kaggle account (run kaggle-score-001).",
       "evidence": [
         "Session system context on 2026-11-06 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
         "`claude --version` in the session on 2026-11-06 returned 2.1.319 (Claude Code); the 2026-11-04 work ran under 2.1.318.",
-        "Session transcript (this conversation): the agent read the authors' joint fold config on 2026-11-04 and SAM-SLR's joint train config on 2026-11-06 (is_vector False in both), wrote slgcn_train to load SAM-SLR train_<stream>.yaml on 2026-11-06, and first compared the authors' bone/jm/bm fold configs with SAM-SLR's field by field on 2026-11-09 at about 19:12Z, after the bone stream failed (compare-slgcn-author-001)."
+        "Session transcript (this conversation): the agent read the authors' joint fold config on 2026-11-04 and SAM-SLR's joint train config on 2026-11-06 (is_vector False in both), wrote slgcn_train to load SAM-SLR train_<stream>.yaml on 2026-11-06, and first compared the authors' bone/jm/bm fold configs with SAM-SLR's field by field on 2026-11-09 at about 19:12Z, after the bone stream failed (compare-slgcn-author-001).",
+        "`claude --version` in the session on 2026-11-14 returned 2.1.319 (Claude Code); the kaggle-score-001 ledger records each submission the agent made."
       ]
     }
   ],
@@ -300,13 +301,13 @@
     }
   ],
   "status": {
-    "pipeline": null,
-    "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "Not assessed: no target has been produced yet.",
+    "pipeline": "complete",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in papers/pu-2024-siformer. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is does_not_agree. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (deviation published-code-over-paper-text); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.",
     "preference_level": 1,
     "preference_level_basis": "Provisional. Published code exists for every system (official-code at 7dd73c4). Expected adaptations: hardcoded Windows data paths and the ICCV_MSLR_2025 project-root lookup; SL-GCN training needs the cited SAM-SLR training configs because official-code ships only test configs.",
     "blocker": null,
-    "pipeline_note": "Data populated and verified; radar and video preprocessing complete for all 24,570 samples. Gates protocol-training-recipe (A1) and compute-full-plan resolved 2026-11-09, slgcn-retrain-settings (R1) on 2026-11-10. Radar, video and SL-GCN joint training done (2026-11-09); SL-GCN bone, joint-motion and bone-motion retrained with is_vector False (slgcn-retrain-full-002, finished 2026-11-11). SL-GCN inference (slgcn-test-full-002) and fusion (fusion-full-001) done 2026-11-12: the 11 Kaggle submission files (SHA-256 in fusion-full-001) were handed to the operator for late submission to iccv-mslr-2025-track-2. pipeline and blocker stay null until the Kaggle public/private scores return and the 22 targets get terminal results."
+    "pipeline_note": "Complete 2026-11-14: all 22 targets produced. Radar, video and SL-GCN joint trained 2026-11-09; bone, joint-motion and bone-motion retrained with is_vector False (slgcn-retrain-full-002, 2026-11-11); SL-GCN inference (slgcn-test-full-002) and fusion (fusion-full-001) 2026-11-12; the 11 submission files were scored by Kaggle on 2026-11-14 (kaggle-score-001), submitted by the reproduction agent with the human reproducer's Kaggle account under the operator's explicit delegation (gates[target-eval-route].resolution.updates)."
   },
   "datasets": [
     {
@@ -504,7 +505,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 92.61,
       "prose_value": 92.607,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.111,
+        "difference": -1.499,
+        "kaggle_score": 0.91111,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t1-radar",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.91111 of t1-radar.csv (SHA-256 8492f7b0...), submitted 2026-11-14T14:13:30Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t1-radar-test",
@@ -516,7 +533,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 93.03,
       "prose_value": 93.029,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.415,
+        "difference": -1.615,
+        "kaggle_score": 0.91415,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t1-radar",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.91415 of t1-radar.csv (SHA-256 8492f7b0...), submitted 2026-11-14T14:13:30Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t1-video-val",
@@ -528,7 +561,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 94.01,
       "prose_value": 94.013,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.7,
+        "difference": -2.31,
+        "kaggle_score": 0.917,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t1-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.917 of t1-video.csv (SHA-256 4ed6ab11...), submitted 2026-11-14T14:13:56Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t1-video-test",
@@ -541,7 +590,23 @@
       "original_value": 93.74,
       "prose_value": 93.737,
       "value_note": "No k/7,560 truncates to the prose 93.737; Table 1's 93.74 is used.",
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 91.997,
+        "difference": -1.743,
+        "kaggle_score": 0.91997,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t1-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.91997 of t1-video.csv (SHA-256 4ed6ab11...), submitted 2026-11-14T14:13:56Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-joint-val",
@@ -552,7 +617,23 @@
       "split": "official validation (4,410; Kaggle public leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.31,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.387,
+        "difference": 0.077,
+        "kaggle_score": 0.99387,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-joint",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99387 of t2-joint.csv (SHA-256 47a47cb3...), submitted 2026-11-14T14:14:22Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-joint-test",
@@ -563,7 +644,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.07,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.1,
+        "difference": 0.03,
+        "kaggle_score": 0.991,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-joint",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.991 of t2-joint.csv (SHA-256 47a47cb3...), submitted 2026-11-14T14:14:22Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-bone-val",
@@ -574,7 +671,23 @@
       "split": "official validation (4,410; Kaggle public leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.11,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.092,
+        "difference": -0.018,
+        "kaggle_score": 0.99092,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-bone",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99092 of t2-bone.csv (SHA-256 dd7b02f4...), submitted 2026-11-14T14:14:49Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-bone-test",
@@ -585,7 +698,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.04,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.1,
+        "difference": 0.06,
+        "kaggle_score": 0.991,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-bone",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.991 of t2-bone.csv (SHA-256 dd7b02f4...), submitted 2026-11-14T14:14:49Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-jm-val",
@@ -596,7 +725,23 @@
       "split": "official validation (4,410; Kaggle public leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 98.62,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.752,
+        "difference": 0.132,
+        "kaggle_score": 0.98752,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-jm",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.98752 of t2-jm.csv (SHA-256 50fb3d5b...), submitted 2026-11-14T14:15:15Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-jm-test",
@@ -607,7 +752,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 98.61,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.637,
+        "difference": 0.027,
+        "kaggle_score": 0.98637,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-jm",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.98637 of t2-jm.csv (SHA-256 50fb3d5b...), submitted 2026-11-14T14:15:15Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-bm-val",
@@ -618,7 +779,23 @@
       "split": "official validation (4,410; Kaggle public leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 98.66,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.707,
+        "difference": 0.047,
+        "kaggle_score": 0.98707,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-bm",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.98707 of t2-bm.csv (SHA-256 8bf1497a...), submitted 2026-11-14T14:15:41Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-bm-test",
@@ -629,7 +806,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 98.56,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 98.293,
+        "difference": -0.267,
+        "kaggle_score": 0.98293,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-bm",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.98293 of t2-bm.csv (SHA-256 8bf1497a...), submitted 2026-11-14T14:15:41Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-ensemble-val",
@@ -640,7 +833,23 @@
       "split": "official validation (4,410; Kaggle public leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.34,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.251,
+        "difference": -0.089,
+        "kaggle_score": 0.99251,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-ensemble",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99251 of t2-ensemble.csv (SHA-256 916584b3...), submitted 2026-11-14T14:13:03Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t2-ensemble-test",
@@ -651,7 +860,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.29,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.272,
+        "difference": -0.018,
+        "kaggle_score": 0.99272,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t2-ensemble",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.99272 of t2-ensemble.csv (SHA-256 916584b3...), submitted 2026-11-14T14:13:03Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-radar-video-val",
@@ -663,7 +888,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 97.19,
       "prose_value": 97.188,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 95.986,
+        "difference": -1.204,
+        "kaggle_score": 0.95986,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-radar-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.95986 of t3-radar-video.csv (SHA-256 2094f3aa...), submitted 2026-11-14T14:16:08Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-radar-video-test",
@@ -674,7 +915,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 97.42,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 96.494,
+        "difference": -0.926,
+        "kaggle_score": 0.96494,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-radar-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.96494 of t3-radar-video.csv (SHA-256 2094f3aa...), submitted 2026-11-14T14:16:08Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-radar-skeletal-val",
@@ -686,7 +943,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.37,
       "prose_value": 99.365,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.478,
+        "difference": 0.108,
+        "kaggle_score": 0.99478,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-radar-skeletal",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99478 of t3-radar-skeletal.csv (SHA-256 a48ed305...), submitted 2026-11-14T14:16:34Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-radar-skeletal-test",
@@ -697,7 +970,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.44,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.497,
+        "difference": 0.057,
+        "kaggle_score": 0.99497,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-radar-skeletal",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.99497 of t3-radar-skeletal.csv (SHA-256 a48ed305...), submitted 2026-11-14T14:16:34Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-skeletal-video-val",
@@ -709,7 +998,23 @@
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.5,
       "prose_value": 99.501,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.523,
+        "difference": 0.023,
+        "kaggle_score": 0.99523,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-skeletal-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99523 of t3-skeletal-video.csv (SHA-256 aeb97ce0...), submitted 2026-11-14T14:17:01Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-skeletal-video-test",
@@ -720,7 +1025,23 @@
       "split": "official test (7,560; Kaggle private leaderboard)",
       "metric_id": "kaggle-top1-accuracy",
       "original_value": 99.55,
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.55,
+        "difference": 0.0,
+        "kaggle_score": 0.9955,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-skeletal-video",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.9955 of t3-skeletal-video.csv (SHA-256 aeb97ce0...), submitted 2026-11-14T14:17:01Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-all-val",
@@ -733,7 +1054,23 @@
       "original_value": 99.61,
       "prose_value": 99.614,
       "leaderboard_value": "IMPRESS NCSU public 0.99614 (submission 45543069)",
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.569,
+        "difference": -0.041,
+        "kaggle_score": 0.99569,
+        "leaderboard": "public",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-all",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle public score 0.99569 of t3-all.csv (SHA-256 61ef9b7f...), submitted 2026-11-14T14:12:36Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     },
     {
       "target_id": "t3-all-test",
@@ -746,7 +1083,23 @@
       "original_value": 99.71,
       "prose_value": 99.708,
       "leaderboard_value": "IMPRESS NCSU private 0.99708 (submission 45543069)",
-      "copied_baseline": false
+      "copied_baseline": false,
+      "result": {
+        "status": "produced",
+        "reproduced_value": 99.656,
+        "difference": -0.054,
+        "kaggle_score": 0.99656,
+        "leaderboard": "private",
+        "run_ids": [
+          "fusion-full-001",
+          "kaggle-score-001"
+        ],
+        "artifact_ids": [
+          "submission-t3-all",
+          "kaggle-submissions-list"
+        ],
+        "note": "Kaggle private score 0.99656 of t3-all.csv (SHA-256 61ef9b7f...), submitted 2026-11-14T14:12:36Z; percent = score x 100. Difference against the table's 2-decimal value."
+      }
     }
   ],
   "target_ledger_note": "22 numbers: Table 1 (2 systems x val/test), Table 2 (5 x val/test), Table 3 (4 x val/test). All are the authors' own systems evaluated on the challenge splits; none is copied from earlier work (queue copied_scores 'no', confirmed against the tables and text). The Section 5 internal 80/20-split values (88.18, 89.68, 92.50, 90.70, 95.83) are out of scope by the operator's assignment. Targets carry no terminal result yet: the attempt is paused before any experiment.",
@@ -4000,6 +4353,261 @@
         "submission-t3-all",
         "submission-manifest"
       ]
+    },
+    {
+      "run_id": "kaggle-score-001",
+      "agent_ids": [
+        "claude-opus-5-5-claude-code-2-1-319"
+      ],
+      "kind": "evaluation",
+      "purpose": "Score the 11 fusion-full-001 submission files on Kaggle (iccv-mslr-2025-track-2, late submissions): the public score of each file is its row's Val Top-1 and the private score its Test Top-1. Made by the reproduction agent with the human reproducer's Kaggle account under the operator's explicit delegation of 2026-11-14.",
+      "target_ids_supported": [
+        "t1-radar-val",
+        "t1-radar-test",
+        "t1-video-val",
+        "t1-video-test",
+        "t2-joint-val",
+        "t2-joint-test",
+        "t2-bone-val",
+        "t2-bone-test",
+        "t2-jm-val",
+        "t2-jm-test",
+        "t2-bm-val",
+        "t2-bm-test",
+        "t2-ensemble-val",
+        "t2-ensemble-test",
+        "t3-radar-video-val",
+        "t3-radar-video-test",
+        "t3-radar-skeletal-val",
+        "t3-radar-skeletal-test",
+        "t3-skeletal-video-val",
+        "t3-skeletal-video-test",
+        "t3-all-val",
+        "t3-all-test"
+      ],
+      "command": "For each file in order (t3-all, t2-ensemble, t1-radar, t1-video, t2-joint, t2-bone, t2-jm, t2-bm, t3-radar-video, t3-radar-skeletal, t3-skeletal-video): shasum -a 256 <file>.csv (must equal fusion-full-001); kaggle competitions submissions iccv-mslr-2025-track-2 -v (file not yet submitted); kaggle competitions submission-limits iccv-mslr-2025-track-2 --json (numAllowedNow >= 1); kaggle competitions submit iccv-mslr-2025-track-2 -f <file>.csv -m \"repro-sign manjur2025 <file>.csv <first 8 SHA-256 chars>\"; then kaggle competitions submissions iccv-mslr-2025-track-2 -v every 20 s until the row is complete. Finally kaggle competitions submissions iccv-mslr-2025-track-2 -v > submissions-list.csv (artifact kaggle-submissions-list). kaggle CLI 2.2.5 takes the competition as a positional argument (no -c). Driven by a local python3 -I script in the agent's scratch space, not committed because it names the operator's local folder; its checks are listed in stop_policy_enforcement.",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "kaggle-score",
+        "number": 1,
+        "max_attempts": 1
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-14T14:11:42Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": null,
+        "max_cost_chf": null
+      },
+      "stop_policy_basis": "11 sequential CLI submissions of ~104 kB files, each scored by Kaggle before the next; no paid compute (Kaggle scoring is free, no Modal resources). 3 h covers 11 x (upload + up to ~15 min scoring) with margin. The cost ceiling was declared as 0 (no paid compute) and is recorded as null because the run contract accepts only a positive ceiling or null.",
+      "stop_policy_enforcement": {
+        "mechanism": "Local driver (python3 -I): checks the deadline before each submission and each poll; every kaggle call has a subprocess timeout (submit 600 s, list/limits 120 s); any failed check stops the driver with no retry. No paid compute (Kaggle scoring is free; no Modal resources).",
+        "ceilings_enforced": {
+          "wall_time": "driver deadline check before each submission and each poll (deadline 2026-11-14T17:11:42Z) plus per-call subprocess timeouts",
+          "gpu_hours": "none (no GPU)",
+          "cost": "none (no paid compute)"
+        },
+        "per_file_rules": [
+          "launch only before the run deadline",
+          "SHA-256 of the file must equal the table value (fusion-full-001)",
+          "the submissions list must not already contain this description or file name (each file exactly once)",
+          "submission-limits numAllowedNow must be >= 1",
+          "kaggle competitions submit must exit 0 and report success within 600 s",
+          "the submission must reach status complete within 1,800 s"
+        ],
+        "unexpected_score_rule": "Stop before the next submission if the status is error or anything other than complete, if publicScore or privateScore is missing, non-numeric or outside [0, 1], or if either is below 0.50. Every published value is >= 92.61 %, so a score below 0.50 indicates a format, id or label-mapping fault, not training variation. The rule only stops the run; nothing is resubmitted or changed.",
+        "outcome": "Not triggered: all 11 files passed every check and were scored, each by the driver's first poll 21 s after submission (poll interval 20 s); the driver finished at 2026-11-14T14:17:21Z, before its deadline. numAllowedNow before each submission: 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90."
+      },
+      "compute": {
+        "platform": "local_cpu",
+        "hardware": "Apple silicon laptop (Darwin arm64), CPU only; scoring by Kaggle",
+        "gpu_count": 0,
+        "kaggle_cli": "2.2.5"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 11 files were submitted exactly once in the agreed order and scored by Kaggle with status complete; every SHA-256 matched fusion-full-001 before submission and every score passed the declared plausibility rule. Scores per file in outputs.submissions; raw list in artifact kaggle-submissions-list.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": [
+          "target-eval-route"
+        ]
+      },
+      "started_at_utc": "2026-11-14T14:12:33Z",
+      "finished_at_utc": "2026-11-14T14:17:21Z",
+      "exit_code": 0,
+      "inputs": {
+        "submission_files": "fusion-full-001 outputs.submissions (artifacts submission-*), from the operator's local copy verified on 2026-11-13 and re-hashed before each submission",
+        "competition": "iccv-mslr-2025-track-2 (late submissions)"
+      },
+      "outputs": {
+        "submissions": {
+          "t3-all.csv": {
+            "sha256": "61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4",
+            "message": "repro-sign manjur2025 t3-all.csv 61ef9b7f",
+            "hash_checked_at_utc": "2026-11-14T14:12:33Z",
+            "submitted_at_utc": "2026-11-14T14:12:36Z",
+            "kaggle_submission_ref": 58345576,
+            "kaggle_date": "2026-11-14 14:12:35.077000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99569,
+            "private_score": 0.99656,
+            "seconds_to_score": 21,
+            "num_allowed_before": 100
+          },
+          "t2-ensemble.csv": {
+            "sha256": "916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01",
+            "message": "repro-sign manjur2025 t2-ensemble.csv 916584b3",
+            "hash_checked_at_utc": "2026-11-14T14:12:59Z",
+            "submitted_at_utc": "2026-11-14T14:13:03Z",
+            "kaggle_submission_ref": 58345583,
+            "kaggle_date": "2026-11-14 14:13:01.587000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99251,
+            "private_score": 0.99272,
+            "seconds_to_score": 21,
+            "num_allowed_before": 99
+          },
+          "t1-radar.csv": {
+            "sha256": "8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca",
+            "message": "repro-sign manjur2025 t1-radar.csv 8492f7b0",
+            "hash_checked_at_utc": "2026-11-14T14:13:26Z",
+            "submitted_at_utc": "2026-11-14T14:13:30Z",
+            "kaggle_submission_ref": 58345595,
+            "kaggle_date": "2026-11-14 14:13:28.440000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.91111,
+            "private_score": 0.91415,
+            "seconds_to_score": 21,
+            "num_allowed_before": 98
+          },
+          "t1-video.csv": {
+            "sha256": "4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339",
+            "message": "repro-sign manjur2025 t1-video.csv 4ed6ab11",
+            "hash_checked_at_utc": "2026-11-14T14:13:52Z",
+            "submitted_at_utc": "2026-11-14T14:13:56Z",
+            "kaggle_submission_ref": 58345609,
+            "kaggle_date": "2026-11-14 14:13:54.610000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.917,
+            "private_score": 0.91997,
+            "seconds_to_score": 21,
+            "num_allowed_before": 97
+          },
+          "t2-joint.csv": {
+            "sha256": "47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1",
+            "message": "repro-sign manjur2025 t2-joint.csv 47a47cb3",
+            "hash_checked_at_utc": "2026-11-14T14:14:19Z",
+            "submitted_at_utc": "2026-11-14T14:14:22Z",
+            "kaggle_submission_ref": 58345623,
+            "kaggle_date": "2026-11-14 14:14:21.070000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99387,
+            "private_score": 0.991,
+            "seconds_to_score": 21,
+            "num_allowed_before": 96
+          },
+          "t2-bone.csv": {
+            "sha256": "dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68",
+            "message": "repro-sign manjur2025 t2-bone.csv dd7b02f4",
+            "hash_checked_at_utc": "2026-11-14T14:14:45Z",
+            "submitted_at_utc": "2026-11-14T14:14:49Z",
+            "kaggle_submission_ref": 58345629,
+            "kaggle_date": "2026-11-14 14:14:47.320000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99092,
+            "private_score": 0.991,
+            "seconds_to_score": 21,
+            "num_allowed_before": 95
+          },
+          "t2-jm.csv": {
+            "sha256": "50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f",
+            "message": "repro-sign manjur2025 t2-jm.csv 50fb3d5b",
+            "hash_checked_at_utc": "2026-11-14T14:15:11Z",
+            "submitted_at_utc": "2026-11-14T14:15:15Z",
+            "kaggle_submission_ref": 58345641,
+            "kaggle_date": "2026-11-14 14:15:13.610000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.98752,
+            "private_score": 0.98637,
+            "seconds_to_score": 21,
+            "num_allowed_before": 94
+          },
+          "t2-bm.csv": {
+            "sha256": "8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b",
+            "message": "repro-sign manjur2025 t2-bm.csv 8bf1497a",
+            "hash_checked_at_utc": "2026-11-14T14:15:37Z",
+            "submitted_at_utc": "2026-11-14T14:15:41Z",
+            "kaggle_submission_ref": 58345655,
+            "kaggle_date": "2026-11-14 14:15:39.810000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.98707,
+            "private_score": 0.98293,
+            "seconds_to_score": 21,
+            "num_allowed_before": 93
+          },
+          "t3-radar-video.csv": {
+            "sha256": "2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7",
+            "message": "repro-sign manjur2025 t3-radar-video.csv 2094f3aa",
+            "hash_checked_at_utc": "2026-11-14T14:16:04Z",
+            "submitted_at_utc": "2026-11-14T14:16:08Z",
+            "kaggle_submission_ref": 58345671,
+            "kaggle_date": "2026-11-14 14:16:06.427000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.95986,
+            "private_score": 0.96494,
+            "seconds_to_score": 21,
+            "num_allowed_before": 92
+          },
+          "t3-radar-skeletal.csv": {
+            "sha256": "a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42",
+            "message": "repro-sign manjur2025 t3-radar-skeletal.csv a48ed305",
+            "hash_checked_at_utc": "2026-11-14T14:16:30Z",
+            "submitted_at_utc": "2026-11-14T14:16:34Z",
+            "kaggle_submission_ref": 58345683,
+            "kaggle_date": "2026-11-14 14:16:32.833000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99478,
+            "private_score": 0.99497,
+            "seconds_to_score": 21,
+            "num_allowed_before": 91
+          },
+          "t3-skeletal-video.csv": {
+            "sha256": "aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c",
+            "message": "repro-sign manjur2025 t3-skeletal-video.csv aeb97ce0",
+            "hash_checked_at_utc": "2026-11-14T14:16:57Z",
+            "submitted_at_utc": "2026-11-14T14:17:01Z",
+            "kaggle_submission_ref": 58345703,
+            "kaggle_date": "2026-11-14 14:16:59.417000",
+            "status": "SubmissionStatus.COMPLETE",
+            "public_score": 0.99523,
+            "private_score": 0.9955,
+            "seconds_to_score": 21,
+            "num_allowed_before": 90
+          }
+        },
+        "raw_list_artifact": "kaggle-submissions-list"
+      },
+      "observed": {
+        "comparability_decision": "Decided before any score was seen: all 22 targets are comparable. Every system ran the published code under the operator-approved protocols A1 (gate protocol-training-recipe) and R1 (gate slgcn-retrain-settings). The inferred SL-GCN schedule fields are disclosed guesses that were approved at the protocol gate before the full run. Each file is scored by Kaggle against the same concealed solution, public/private partition and 5-decimal truncation that produced the paper's numbers. The is_vector True models (option V1) remain conditional evidence and feed no target. A returned score is recorded as produced whatever its distance from the paper.",
+        "comparability_decided_at_utc": "2026-11-14T14:11:42Z",
+        "agreement_rule": {
+          "declared_at_utc": "2026-11-14T14:13:22Z",
+          "rule": "status.numerical_agreement is 'agrees' only if every produced value equals its published table value at the table's 2-decimal precision (the reproduced percent rounds to the published value, |difference| < 0.005 pp); otherwise 'does_not_agree'. No score-matching tolerance is asserted (as in papers/pu-2024-siformer); every raw difference is recorded for the human reviewer.",
+          "timing_note": "Written at 2026-11-14T14:13:22Z, after the submission driver had started (first submission 14:12:33Z). At that moment the driver's log already held one score (t3-all.csv, 14:12:57Z), but the agent had not read the driver's output; it read all scores together after the driver finished (14:17:21Z). The comparability decision was declared earlier, at 14:11:42Z, before any submission."
+        }
+      },
+      "artifact_ids": [
+        "kaggle-quota-check-limits-json",
+        "kaggle-quota-check-limits-txt",
+        "kaggle-quota-check-competitions-list",
+        "kaggle-score-driver-ledger",
+        "kaggle-submissions-list"
+      ]
     }
   ],
   "artifacts": [
@@ -4130,6 +4738,46 @@
       "sha256": "bec96c2a982add36444cf4a85bd025c5e30922736b093bf54259c7e3bc2df73b",
       "size_bytes": 1809,
       "description": "fusion-full-001's manifest of the 11 submission files (file, rows, SHA-256)."
+    },
+    {
+      "artifact_id": "kaggle-quota-check-limits-json",
+      "kind": "kaggle_cli_output",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/kaggle-score-001/quota-check-2026-11-14T1405Z/submission-limits.json",
+      "sha256": "2474302f713858bbd1c8dd94363c588f751c2445c5113fdfe4d76eb57c70140f",
+      "size_bytes": 27,
+      "description": "stdout of `kaggle competitions submission-limits iccv-mslr-2025-track-2 --json` at 2026-11-14T14:05:13Z, before any submission: numAllowedNow 100."
+    },
+    {
+      "artifact_id": "kaggle-quota-check-limits-txt",
+      "kind": "kaggle_cli_output",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/kaggle-score-001/quota-check-2026-11-14T1405Z/submission-limits.txt",
+      "sha256": "dcdbf35aa6d003c80952f490d3fa89fc7e2ca26a4c36c3c536b2f864682a3bb5",
+      "size_bytes": 66,
+      "description": "Output of `kaggle competitions submission-limits iccv-mslr-2025-track-2` at 2026-11-14T14:05:24Z: submissions today 0, lifetime 0, remaining today 100."
+    },
+    {
+      "artifact_id": "kaggle-quota-check-competitions-list",
+      "kind": "kaggle_cli_output",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/kaggle-score-001/quota-check-2026-11-14T1405Z/competitions-list.json",
+      "sha256": "de4fef0f80a1f7bfd711326bb535bb5eca8cef258954d2d3eabe1f3bbfe04b91",
+      "size_bytes": 242,
+      "description": "stdout of `kaggle competitions list --search iccv-mslr-2025-track-2 --format json` at 2026-11-14T14:05:39Z (deadline 2025-06-23T11:59:00, userHasEntered true; the daily-limit field is not part of this view)."
+    },
+    {
+      "artifact_id": "kaggle-score-driver-ledger",
+      "kind": "run_log",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/kaggle-score-001/driver-ledger.jsonl",
+      "sha256": "5b27f7e62acb68e2e32ca3d9e0fcab0e65e0183e8633704c3beba4ce5a448016",
+      "size_bytes": 11237,
+      "description": "The submission driver's JSON-lines log (2026-11-14T14:12:33Z-14:17:21Z): per file the SHA-256 check, the message, numAllowedNow before submitting, the submit command's output (submission ref, remaining count, success line) and the scored status and scores."
+    },
+    {
+      "artifact_id": "kaggle-submissions-list",
+      "kind": "raw_metric_output",
+      "uri": "modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/kaggle-score-001/submissions-list.csv",
+      "sha256": "271141dd7d548f40b5ceda08767462263709709b87e63430896c9f59c2acda35",
+      "size_bytes": 1595,
+      "description": "Raw stdout of `kaggle competitions submissions iccv-mslr-2025-track-2 -v` after all 11 submissions were scored (2026-11-14): one row per submission with file name, date, description (message), status, publicScore (Val Top-1) and privateScore (Test Top-1). The source of every reproduced value."
     }
   ],
   "compute_assessment": {
@@ -4253,7 +4901,21 @@
         "selected_alternative": "A-kaggle-late-submissions",
         "decision": "The operator will make the Kaggle submissions: the agent prepares one 11,970-row CSV per table row (11 CSVs) and records their SHA-256; the operator submits at most two per day and returns each public and private leaderboard score with the submission URL or screenshot and date. The operator reports that late submission is open, that they accepted the competition rules (on 2026-11-06, as corrected by the operator), and that `kaggle competitions files -c iccv-mslr-2025-track-2` lists the data with their account.",
         "metric_caveat": "Every tabled value, and every reproduced value, is an external leaderboard score computed by Kaggle against a concealed solution. The labels cannot be inspected, verified or hashed by this study; only the submitted prediction files (by SHA-256) and the returned scores (by submission URL or screenshot and date) are recorded. Repeating the attempt requires a Kaggle account that has joined iccv-mslr-2025-track-2 and accepted its rules, and the competition still accepting late submissions.",
-        "alternative_b_not_requested": "Alternative B (Team S request for organiser labels) was not requested. Option A scores predictions against the same hidden solution, public/private partition and 5-decimal truncation that produced the paper's numbers, so it needs no inferred val/test-to-leaderboard mapping. The organisers deliberately keep the labels concealed (2026 host statement), so a request was unlikely to succeed, and it would add an external contact without improving comparability."
+        "alternative_b_not_requested": "Alternative B (Team S request for organiser labels) was not requested. Option A scores predictions against the same hidden solution, public/private partition and 5-decimal truncation that produced the paper's numbers, so it needs no inferred val/test-to-leaderboard mapping. The organisers deliberately keep the labels concealed (2026 host statement), so a request was unlikely to succeed, and it would add an external contact without improving comparability.",
+        "updates": [
+          {
+            "date": "2026-11-14",
+            "decided_by": "operator",
+            "kind": "delegation",
+            "update": "The operator delegated the Kaggle submissions to the reproduction agent as of 2026-11-14. The agent made them with the human reproducer's Kaggle account, through the kaggle CLI already configured on the operator's machine, without reading, printing or logging its credentials. Rules set by the operator: submit from the operator's local copy of the 11 files; each file exactly once, in the order t3-all, t2-ensemble, then table order; check each file's SHA-256 against fusion-full-001 first; message 'repro-sign manjur2025 <file> <first 8 hash chars>'; never resubmit a file or a variant of it; select no final submissions, change no team settings and take no other account action; stop and report on any rejection, error, unexpected score or quota other than expected. This supersedes the 2026-11-05 workflow in which the operator submitted and returned scores with a URL or screenshot; the evidence is now the raw submissions list (artifact kaggle-submissions-list)."
+          },
+          {
+            "date": "2026-11-14",
+            "decided_by": "operator",
+            "kind": "quota",
+            "update": "The competition's written rules stated 2 submissions per day (maxDailySubmissions 2 in Kaggle's metadata read on 2026-11-04; it governed the competition period up to the 2025-06-23 deadline). On 2026-11-14 at 14:05 UTC, before any submission, Kaggle's submission-limits for this account reported 0 submissions today, 0 lifetime and 100 remaining today (numAllowedNow 100). The agent stopped and reported the difference; the operator ruled that the current submission-limits output is the authoritative late-submission quota and asked for all 11 files on 2026-11-14. Artifacts kaggle-quota-check-limits-json, kaggle-quota-check-limits-txt, kaggle-quota-check-competitions-list."
+          }
+        ]
       },
       "submission_format": "CSV with header 'id,pred': one row per val and test sample id (11,970 rows), pred = class index 0-125; format of the authors' *_all.csv files in earlier-author-code. Kaggle rowIdColumnName is 'id'."
     },
@@ -4705,6 +5367,12 @@
         "billed_usd": 385.14,
         "billed_l4_gpu_hours": 327.4,
         "note": "All manjur-2025-radar-fusion apps, complete through 2026-11-11 (daily report; no app of this paper ran after 00:19Z on 2026-11-11). Includes slgcn-retrain-full-001 (USD 65.57, 58.34 L4-h) and slgcn-retrain-full-002 (USD 66.99, 59.56 L4-h). Remaining under CHF 450 / 380 L4-h (USD counted 1:1 as CHF): ~CHF 64.86 and ~52.6 L4-h, for slgcn_test (val and test) and fusion."
+      },
+      {
+        "as_of": "2026-11-14T14:19Z",
+        "billed_usd": 385.81,
+        "billed_l4_gpu_hours": 327.9,
+        "note": "All apps of this paper in $MODAL_ENV, complete through 2026-11-12 (daily report). 2026-11-12 added USD 0.67 and ~0.5 L4-h (slgcn-test-full-002, compare-slgcn-author-002, fusion-full-001 and their guards). Nothing of this paper ran on Modal on 2026-11-13 or 2026-11-14 (only Volume ls/get/put), and Kaggle scoring is free. By resource: L4 USD 262.30, CPU 75.09, memory 48.40, egress 0.02. Final unless further runs are made: ~CHF 64.19 and ~52.1 L4-h left under CHF 450 / 380 L4-h (USD counted 1:1 as CHF)."
       }
     ],
     "stop_policy_enforcement": {
