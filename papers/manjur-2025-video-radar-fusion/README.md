@@ -10,9 +10,15 @@
 
 Level 2: the published code at the pinned commit runs every system once two patches are applied at image build. `patches/0001-data-paths.patch` replaces the authors' hardcoded Windows data paths and hand-edited split selectors (containerization), and `patches/0002-video-save-final-model.patch` adds the missing save of the trained video model (protocol A1). No upstream code is vendored. SL-GCN training uses SAM-SLR's training configs, pinned at `de6c53a6`, because the paper's repository ships only test configs; the inferred fields are listed as guesses.
 
-**Pipeline status:** `complete` — all 22 in-scope targets produced comparable values on 2026-11-14. Training protocol A1 (published code) was chosen by the operator on 2026-11-09. The attempt-wide compute ceiling, first CHF 300 / 250 L4 GPU-hours, was raised to CHF 450 / 380 on 2026-11-10, and this paper may use at most 30 GPUs at once. Radar, video and SL-GCN training finished on 2026-11-09. The SL-GCN bone, joint-motion and bone-motion models turned out to be trained with a normalization (`is_vector: True`) that contradicts the authors' published configs (dead end, see Attempts). Following gate `slgcn-retrain-settings` (R1, operator 2026-11-10), they were retrained with `is_vector: False`. The first retrain attempt was interrupted after 120–127 of 250 epochs per fold (`slgcn-retrain-full-001`); the second resumed it and finished on 2026-11-11 (`slgcn-retrain-full-002`). SL-GCN inference (`slgcn-test-full-002`) and fusion (`fusion-full-001`) followed on 2026-11-12 and produced the 11 Kaggle submission files. On 2026-11-14 the reproduction agent submitted them with the human reproducer's Kaggle account, under the operator's explicit delegation, and Kaggle scored all 11 (`kaggle-score-001`).
+**Pipeline status:** `complete` — all 22 in-scope targets produced.
 
-**Numerical agreement:** `does_not_agree` — All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in `papers/pu-2024-siformer`. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is does_not_agree. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (`published-code-over-paper-text`, a `paper_code_conflict` under Guesses and deviations); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.
+**Numerical agreement:** `does_not_agree` — 1 of 22 values equals the paper at two decimals; basis under Results.
+
+This attempt targets Tables 1–3 of the paper: top-1 accuracy of eleven systems (radar alone, video alone, four skeletal SL-GCN streams and their ensemble, and four fusions) on the official validation and test sets of the ICCV 2025 MSLR Track-2 challenge, 22 numbers in all. Both sets have hidden labels, so every number, the paper's and ours, is a score Kaggle computes when a prediction file is submitted to the competition. We trained every model with the authors' released code, built one prediction file per table row and submitted each file once.
+
+Against the paper, the 16 values that use the skeletal stream (all of Table 2, and the three Table 3 fusions that include it) land between 0.27 points below and 0.13 points above it; the three-modality fusion scores 99.57 / 99.66 (val / test) against the paper's 99.61 / 99.71. Radar alone and video alone (Table 1) are 1.5 to 2.3 points below, and the radar + video fusion is about 1 point below (−1.20 val, −0.93 test). One of the 22 values equals the paper at two decimals.
+
+Caveats: the scores come from Kaggle's hidden labels, which cannot be inspected, and which leaderboard is validation and which is test is an inference (well supported, but stated neither by the paper nor by the host). The released code trains on held-out splits (80% for radar, 95% for video, five folds per SL-GCN stream), not on the full training set the paper describes; we followed the code. The SL-GCN training schedule and fold assignment are not published, so they are guesses. Each model was trained once.
 
 **Modal environment:** every Modal command for this paper runs in a Restricted Environment of the `repro-sign` workspace, written `$MODAL_ENV` throughout. Its literal name embeds an operator account name and is withheld at the operator's request (confirmed by the operator on 2026-11-14); the project lead holds it.
 
@@ -129,6 +135,26 @@ This replaces the screenshot workflow above: the evidence is now the raw `kaggle
 The full search log is in `reproduction.json.source_search`.
 
 ## Results
+
+Top-1 accuracy (%). Val is each file's Kaggle public score, Test its private score; Diff is ours minus the paper, in percentage points.
+
+| Row | Paper Val | Ours Val | Diff | Paper Test | Ours Test | Diff |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Table 1, radar (CNN 2D / µ-D) | 92.61 | 91.111 | -1.499 | 93.03 | 91.415 | -1.615 |
+| Table 1, video (ResNet(2+1)D) | 94.01 | 91.700 | -2.310 | 93.74 | 91.997 | -1.743 |
+| Table 2, SL-GCN joint | 99.31 | 99.387 | +0.077 | 99.07 | 99.100 | +0.030 |
+| Table 2, SL-GCN bone | 99.11 | 99.092 | -0.018 | 99.04 | 99.100 | +0.060 |
+| Table 2, SL-GCN joint motion | 98.62 | 98.752 | +0.132 | 98.61 | 98.637 | +0.027 |
+| Table 2, SL-GCN bone motion | 98.66 | 98.707 | +0.047 | 98.56 | 98.293 | -0.267 |
+| Table 2, skeletal ensemble | 99.34 | 99.251 | -0.089 | 99.29 | 99.272 | -0.018 |
+| Table 3, radar + video | 97.19 | 95.986 | -1.204 | 97.42 | 96.494 | -0.926 |
+| Table 3, radar + skeletal | 99.37 | 99.478 | +0.108 | 99.44 | 99.497 | +0.057 |
+| Table 3, skeletal + video | 99.50 | 99.523 | +0.023 | 99.55 | 99.550 | +0.000 |
+| Table 3, skeletal + video + radar | 99.61 | 99.569 | -0.041 | 99.71 | 99.656 | -0.054 |
+
+**Agreement assessment.** All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in `papers/pu-2024-siformer`. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is `does_not_agree`. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (`published-code-over-paper-text`, a `paper_code_conflict` under Guesses and deviations); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.
+
+Per target, with run and evidence:
 
 | Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
@@ -488,6 +514,8 @@ Each row mirrors one entry of `reproduction.json.noncompliance`: a point where t
 | `kaggle-driver-not-committed` | The local script that made the 11 Kaggle submissions in kaggle-score-001 is not committed. | AGENTS.md, Evidence and completion contract: 'setup, data, train, and evaluation entry points are idempotent and documented' and 'a third party can repeat the attempt from the committed files and referenced immutable artifacts alone'. | `kaggle-score-001` | The scoring step can be repeated from the documented kaggle CLI commands, and the driver's log is an artifact (kaggle-score-driver-ledger), but the driver's exact code cannot be reviewed. | Not committed because it names the operator's local folder (operator privacy). The README lists the equivalent commands and the driver's checks. |
 
 ## Attempts, failures, and dead ends
+
+**Timeline.** Training protocol A1 (published code) was chosen by the operator on 2026-11-09. The attempt-wide compute ceiling, first CHF 300 / 250 L4 GPU-hours, was raised to CHF 450 / 380 on 2026-11-10, and this paper may use at most 30 GPUs at once. Radar, video and SL-GCN training finished on 2026-11-09. The SL-GCN bone, joint-motion and bone-motion models turned out to be trained with a normalization (`is_vector: True`) that contradicts the authors' published configs (dead end, see Attempts). Following gate `slgcn-retrain-settings` (R1, operator 2026-11-10), they were retrained with `is_vector: False`. The first retrain attempt was interrupted after 120–127 of 250 epochs per fold (`slgcn-retrain-full-001`); the second resumed it and finished on 2026-11-11 (`slgcn-retrain-full-002`). SL-GCN inference (`slgcn-test-full-002`) and fusion (`fusion-full-001`) followed on 2026-11-12 and produced the 11 Kaggle submission files. On 2026-11-14 the reproduction agent submitted them with the human reproducer's Kaggle account, under the operator's explicit delegation, and Kaggle scored all 11 (`kaggle-score-001`).
 
 - **Label search.** Searched Hugging Face, Zenodo, GitHub, the web, the challenge site and later papers. Nothing found, and the host's 2026 statement points the other way. Result: gate `target-eval-route`, which the operator resolved by choosing Kaggle late submissions.
 - **Leaderboard mapping.** Confirmed by the IMPRESS NCSU and CPAMI (UW) leaderboard entries, the competition metadata and the denominator arithmetic.
