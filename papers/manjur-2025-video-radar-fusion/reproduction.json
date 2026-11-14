@@ -7,25 +7,18 @@
       "model_id": "claude-opus-5-5",
       "harness": "Claude Code",
       "harness_version": "2.1.318",
-      "scope": "Assignment intake, target-ledger resolution from the paper, source search and pinning, Kaggle competition metadata and leaderboard reading, read-only inspection of the Modal repro-sign Volumes, the CPU audit of the authors' released logits (run audit-author-logits-001), and preparation of the target and data gates. No data download, container build, training or Modal compute.",
+      "scope": "One conversation from 2026-11-04 to 2026-11-14. 2026-11-04: Assignment intake, target-ledger resolution from the paper, source search and pinning, Kaggle competition metadata and leaderboard reading, read-only inspection of the Modal repro-sign Volumes, the CPU audit of the authors' released logits (run audit-author-logits-001), and preparation of the target and data gates. No data download, container build, training or Modal compute. From 2026-11-06, same conversation: Continuation from 2026-11-06 in the same conversation after the operator's gate decisions: recorded the target and data gate resolutions, created the $MODAL_ENV Volumes, wrote scripts/data.sh and scripts/modal_app.py, and executes the data population and later Modal runs. Attribution of the SL-GCN training configuration (recorded 2026-11-10 at the operator's request): the agent inferred it, including is_vector True for bone, joint-motion and bone-motion, from SAM-SLR's original training configs. The authors' published fold configs contain a train_feeder_args section with is_vector False for all four streams; the agent did not surface it. Protocol option A1, as the agent presented it to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's. See dead_ends[slgcn-is-vector-true]. From 2026-11-14, under the operator's explicit delegation (gates[target-eval-route].resolution.updates), made the 11 Kaggle late submissions with the human reproducer's Kaggle account (run kaggle-score-001).",
       "evidence": [
-        "Session system context on 2026-11-04 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
-        "`claude --version` in the session on 2026-11-04 returned 2.1.318 (Claude Code)."
-      ]
-    },
-    {
-      "agent_id": "claude-opus-5-5-claude-code-2-1-319",
-      "model": "Claude Opus 5.5",
-      "model_id": "claude-opus-5-5",
-      "harness": "Claude Code",
-      "harness_version": "2.1.319",
-      "scope": "Continuation from 2026-11-06 in the same conversation after the operator's gate decisions: recorded the target and data gate resolutions, created the $MODAL_ENV Volumes, wrote scripts/data.sh and scripts/modal_app.py, and executes the data population and later Modal runs. Attribution of the SL-GCN training configuration (recorded 2026-11-10 at the operator's request): the agent inferred it, including is_vector True for bone, joint-motion and bone-motion, from SAM-SLR's original training configs. The authors' published fold configs contain a train_feeder_args section with is_vector False for all four streams; the agent did not surface it. Protocol option A1, as the agent presented it to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's. See dead_ends[slgcn-is-vector-true]. From 2026-11-14, under the operator's explicit delegation (gates[target-eval-route].resolution.updates), made the 11 Kaggle late submissions with the human reproducer's Kaggle account (run kaggle-score-001).",
-      "evidence": [
-        "Session system context on 2026-11-06 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
-        "`claude --version` in the session on 2026-11-06 returned 2.1.319 (Claude Code); the 2026-11-04 work ran under 2.1.318.",
+        "Session system context on 2026-11-04 and 2026-11-06 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
+        "Application version: the session transcript (written by the running Claude Code client) records version 2.1.318 on every one of its entries from 2026-11-04T10:31Z to 2026-11-14T15:00Z (3,985 entries, no other value), and the operator saw a Claude Code v2.1.318 session banner on 2026-11-09. The running application was therefore 2.1.318 throughout.",
+        "`claude --version` returned 2.1.318 on 2026-11-04 and 2.1.319 on 2026-11-06, 2026-11-10 and 2026-11-14. That command reports the CLI installed on disk, which was updated to 2.1.319 between 2026-11-04 and 2026-11-06 while this session kept running 2.1.318; it does not identify the running session.",
+        "Correction 2026-11-14 (operator review): until then this record split the conversation into two agent entries, the second (agent_id claude-opus-5-5-claude-code-2-1-319, harness_version 2.1.319, from 2026-11-06) based on `claude --version`. The model and the running application never changed, so the entries were merged; every run attributed to the second entry is attributed to this one, with unchanged contributions.",
+        "Effort setting: the session transcript records effort 'xhigh' on every entry that carries an effort field (1,728 entries, 2026-11-04 to 2026-11-14, no other value).",
+        "Limit: the version and effort values come from the client's own transcript plus one operator observation of the banner; no independent record of the running version exists. The transcript does not record which turns used extended reasoning, only the session setting.",
         "Session transcript (this conversation): the agent read the authors' joint fold config on 2026-11-04 and SAM-SLR's joint train config on 2026-11-06 (is_vector False in both), wrote slgcn_train to load SAM-SLR train_<stream>.yaml on 2026-11-06, and first compared the authors' bone/jm/bm fold configs with SAM-SLR's field by field on 2026-11-09 at about 19:12Z, after the bone stream failed (compare-slgcn-author-001).",
-        "`claude --version` in the session on 2026-11-14 returned 2.1.319 (Claude Code); the kaggle-score-001 ledger records each submission the agent made."
-      ]
+        "The kaggle-score-001 driver log records each Kaggle submission the agent made on 2026-11-14."
+      ],
+      "effort_setting": "xhigh"
     }
   ],
   "assignment": {
@@ -193,15 +186,19 @@
       "source_id": "author-weights-slgcn",
       "kind": "author_artifact",
       "url": "https://drive.google.com/file/d/14kS0_yFGE0217vzck71Ni_Z2_TsEFHvV/view",
-      "revision_or_sha256": "unpinned: file page public (title save_models.zip) on 2026-11-04; not downloaded",
-      "role": "Considered. The 20 SL-GCN fold checkpoints referenced by the test configs. Not needed for a retraining reproduction; checksum to be recorded if later used."
+      "revision_or_sha256": "6f33af6be53e996ace44160b6771882e16cc433f0a1879b6fbdcea5d4414921e",
+      "role": "Evidence only, never used in place of training: the 20 SL-GCN fold checkpoints named in the authors' test configs (plain state dicts, no optimizer state). author-slgcn-weights-check-001 ran them through the authors' test configs on this attempt's keypoints (argmax identical to the authors' released SL-GCN logits on all val and test samples); they are also the reference in compare-slgcn-author-001 and compare-slgcn-author-002.",
+      "size_bytes": 285817696,
+      "retrieved": "2026-11-09 from https://drive.usercontent.google.com/download?id=14kS0_yFGE0217vzck71Ni_Z2_TsEFHvV&export=download&confirm=t; stored at modal://$MODAL_ENV/manjur-2025-radar-fusion-results/author_weights/save_models.zip"
     },
     {
       "source_id": "hrnet-wholebody-weights",
       "kind": "weights",
-      "url": "https://drive.google.com/file/d/1f_c3uKTDQ4DR3CrwMSI8qdsTKJvKVt7p/view",
-      "revision_or_sha256": "unpinned: file page public (title hrnet_w48_coco_wholebody_384x288-6e061c6a_20200922.pth) on 2026-11-04; not downloaded",
-      "role": "Pose-extraction weights required by Pose_estimation/demo.py. The filename matches the MMPose COCO-WholeBody HRNet-w48 release; checksum to be recorded at download."
+      "url": "https://download.openmmlab.com/mmpose/top_down/hrnet/hrnet_w48_coco_wholebody_384x288-6e061c6a_20200922.pth",
+      "revision_or_sha256": "6e061c6a16ef994b1dc0a69d1d22473dbb8673afda4effca3baef0bd4c1e6976",
+      "role": "Pose-extraction weights for Pose_estimation/demo.py. Used: OpenMMLab's release URL, downloaded at image build and checked against this SHA-256 (scripts/modal_app.py HRNET_URL, HRNET_SHA256). The authors link a Google Drive file of the same name; downloaded once on 2026-11-14 for comparison only, it is byte-identical (254,976,239 bytes, same SHA-256). Deviation hrnet-weights-source.",
+      "size_bytes": 254976239,
+      "authors_link": "https://drive.google.com/file/d/1f_c3uKTDQ4DR3CrwMSI8qdsTKJvKVt7p/view (Pose_estimation/readme.md at 7dd73c4)"
     },
     {
       "source_id": "sam-slr",
@@ -304,8 +301,8 @@
     "pipeline": "complete",
     "numerical_agreement": "does_not_agree",
     "numerical_agreement_basis": "All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in papers/pu-2024-siformer. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is does_not_agree. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (deviation published-code-over-paper-text); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.",
-    "preference_level": 1,
-    "preference_level_basis": "Provisional. Published code exists for every system (official-code at 7dd73c4). Expected adaptations: hardcoded Windows data paths and the ICCV_MSLR_2025 project-root lookup; SL-GCN training needs the cited SAM-SLR training configs because official-code ships only test configs.",
+    "preference_level": 2,
+    "preference_level_basis": "Level 2 (CONTRIBUTING.md: a pinned upstream commit plus patches/*.patch, no vendored upstream code). The published code (official-code at 7dd73c4) runs every system once two patches are applied at image build: patches/0001-data-paths.patch replaces the authors' hardcoded Windows data paths, the empty demo.py input/output paths and the hand-edited split selectors with environment variables (containerization); patches/0002-video-save-final-model.patch adds the missing save of the trained video model (missing output; protocol A1). SL-GCN training uses SAM-SLR's training configs, pinned at de6c53a6, because the authors' repository ships only test configs; the inferred fields are guesses, not patches. Everything else is this attempt's glue in scripts/modal_app.py (Modal entry points, sharding, fold data, checkpoint selection, guards).",
     "blocker": null,
     "pipeline_note": "Complete 2026-11-14: all 22 targets produced. Radar, video and SL-GCN joint trained 2026-11-09; bone, joint-motion and bone-motion retrained with is_vector False (slgcn-retrain-full-002, 2026-11-11); SL-GCN inference (slgcn-test-full-002) and fusion (fusion-full-001) 2026-11-12; the 11 submission files were scored by Kaggle on 2026-11-14 (kaggle-score-001), submitted by the reproduction agent with the human reproducer's Kaggle account under the operator's explicit delegation (gates[target-eval-route].resolution.updates)."
   },
@@ -1165,7 +1162,7 @@
     {
       "run_id": "data-populate-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "data_population",
       "purpose": "Download the Kaggle competition archive into $MODAL_ENV Volume datasets, extract, verify split counts, write SHA-256 manifest and provenance.",
@@ -1226,7 +1223,7 @@
     {
       "run_id": "data-populate-rules-accepted-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "data_population",
       "purpose": "Rerun of scripts/data.sh after gate data-kaggle-download-forbidden was resolved (competition rules accepted 2026-11-06).",
@@ -1290,7 +1287,7 @@
     {
       "run_id": "prep-radar-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preprocessing",
       "purpose": "Authors' radar preprocessing (micro-Doppler PNGs, 3 per sample) for all 24,570 samples; protocol-independent.",
@@ -1347,7 +1344,7 @@
     {
       "run_id": "prep-radar-full-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preprocessing",
       "purpose": "Authors' radar preprocessing (micro-Doppler PNGs, 3 per sample) for all 24,570 samples; protocol-independent. Retry after fixing the temp-directory reuse bug.",
@@ -1403,7 +1400,7 @@
     {
       "run_id": "prep-video-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preprocessing",
       "purpose": "Authors' video preprocessing (resized 64x96x96 grayscale .h5, 1 per sample) for all 24,570 samples; protocol-independent.",
@@ -1459,7 +1456,7 @@
     {
       "run_id": "bench-slgcn-cpu4-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "throughput_benchmark",
       "purpose": "Does halving the CPU/memory request slow SL-GCN training? (CPU+memory were ~80% of the L4 charge in bench-slgcn-001.) Speed only: fold data is bench-slgcn-001 (630 real keypointed samples replicated x16), so accuracies are meaningless.",
@@ -1517,7 +1514,7 @@
     {
       "run_id": "bench-slgcn-pack2-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "throughput_benchmark",
       "purpose": "Do two SL-GCN trainings sharing one L4 run at close to single-job speed (halving GPU-hours)? Speed only: fold data is bench-slgcn-001 (630 real keypointed samples replicated x16), so accuracies are meaningless.",
@@ -1575,7 +1572,7 @@
     {
       "run_id": "pose-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "pose_extraction",
       "purpose": "Authors' HRNet whole-body extraction (Pose_estimation/demo.py, unchanged except paths) for every RGB video of train, val and test; 64 shards x 4 concurrent processes per L4; resumes over the 689 videos done in preflights.",
@@ -1638,7 +1635,7 @@
     {
       "run_id": "train-radar-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "Authors' md_cnn_3branch.py, unchanged except paths, on all 12,600 training samples (its own stratified 80/20 split, seed 42, up to 100 epochs, early stopping). Protocol A1.",
@@ -1712,7 +1709,7 @@
     {
       "run_id": "train-video-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "Authors' resnet21D_V2.py, unchanged except paths and the output-only final save (patches 0001, 0002), on all 12,600 training samples (its own 95/5 split, seed 42, up to 200 epochs, early stopping with best-weight restore). Protocol A1.",
@@ -1798,7 +1795,7 @@
     {
       "run_id": "slgcn-data-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preprocessing",
       "purpose": "Authors' SL-GCN generators (sign_gendata_test.py with 27 keypoints, gen_bone_data_test.py, gen_motion_data_test.py) for the 5 stratified folds (StratifiedKFold seed 1, inferred) of all 12,600 labelled training samples (train/held-out each) and for all val and test samples.",
@@ -1854,7 +1851,7 @@
     {
       "run_id": "slgcn-train-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "SL-GCN 4 streams x 5 folds, 250 epochs each with SAM-SLR's train config (126 classes, one GPU, checkpoint every epoch); best held-out top-1 epoch per fold. Protocol A1.",
@@ -1926,7 +1923,7 @@
     {
       "run_id": "pf-slgcn-resume-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Test the resume path added after slgcn-train-full-001 was interrupted, on a scratch run id with the real fold-0 joint data: train 2 epochs, then resume=True to epoch 3. Checks that main.py's 'delete it? y/n' prompt takes the non-destructive branch, that the epoch-1 checkpoint loads through main.py's weights option, that training continues at epoch 3 with the epoch-based LR, and that the eval records of all 3 epochs exist.",
@@ -1990,7 +1987,7 @@
     {
       "run_id": "slgcn-train-full-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "Resume of slgcn-train-full-001 after its external interruption: each of the 20 stream x fold trainings continues to epoch 250 from its last checkpoint that has a held-out eval record, through the authors' main.py weights/start_epoch options (verified in pf-slgcn-resume-001). Same configs, data and per-epoch checkpointing; best held-out top-1 epoch per fold over all 250 epochs. Protocol A1.",
@@ -2249,7 +2246,7 @@
     {
       "run_id": "author-slgcn-weights-check-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evidence_check",
       "purpose": "Inference-only evidence: the authors' released SL-GCN fold checkpoints (save_models.zip, SHA-256 6f33af6be53e996ace44160b6771882e16cc433f0a1879b6fbdcea5d4414921e) run through the authors' 20 published test configs and run_fusion.py on this attempt's HRNet keypoints for val and test, compared with the authors' released logit_slgcnn_{val,test}.csv. Tests whether this attempt's pose and SL-GCN data pipeline reproduces the authors' inputs. Not a target result.",
@@ -2333,7 +2330,7 @@
     {
       "run_id": "slgcn-test-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "Our trained SL-GCN: the authors' 20 fold test configs (paths substituted: data, labels, each fold's best held-out checkpoint from slgcn-train-full-002), then their run_fusion.py, on official val and test. Writes logit_slgcnn_<split>.csv (4-stream weighted ensemble) and per-stream fold-mean logits logit_slgcn_<stream>_<split>.csv for Table 2 and the fusion. Same code path as author-slgcn-weights-check-001 without --author-weights. Protocol A1.",
@@ -2435,7 +2432,7 @@
     {
       "run_id": "compare-slgcn-author-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evidence",
       "purpose": "Evidence only, no labels: align our SL-GCN logits (slgcn-test-full-001) with the logits of the authors' released checkpoints run through the same code (author-slgcn-weights-check-001), per stream and for the 4-stream ensemble, on val and test. Prompted by every bone fold needing the best_acc.pkl fallback (no sample argmax'd to class 0) with our weights but none with the authors'. Not used for any target, checkpoint choice or tuning.",
@@ -2606,7 +2603,7 @@
     {
       "run_id": "slgcn-isvector-check-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evidence",
       "purpose": "Evidence for the is_vector gate, not a target run: our val SL-GCN logits with test_feeder_args.is_vector True for bone, jm and bm (SAM-SLR's test normalization, the one our models were trained with) instead of the authors' default False, then compare_logits of each stream with the authors' released-weight logits and with our joint stream. Val only; no labels; nothing tuned.",
@@ -2744,7 +2741,7 @@
     {
       "run_id": "slgcn-v1-test-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evidence",
       "purpose": "Option V1 of gate is-vector-normalization on the test split, completing the val run in slgcn-isvector-check-001: our slgcn-train-full-002 folds with test_feeder_args.is_vector True for bone, jm and bm. Kept as conditional evidence by the operator's decision (2026-11-10), not as target results.",
@@ -2820,7 +2817,7 @@
     {
       "run_id": "predict-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "The authors' val_fusion_pred.py and test_fusion_pred.py, unchanged except paths, with our trained radar (train-radar-full-001) and video (train-video-full-001) models installed as final_weights/{radar,video}_final.h5, on all official val (4,410) and test (7,560) samples. Writes the per-modality logit/prob xlsx and prediction files that Table 1 and the fusion consume. Protocol A1.",
@@ -2926,7 +2923,7 @@
     {
       "run_id": "pf-slgcn-retrain-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Preflight for the R1 retrain (gate slgcn-retrain-settings): bone fold 0 for 2 epochs on slgcn-full-001's fold data with authors_is_vector (is_vector False in both feeders) into a scratch run id. Checks the written config, the data_run path, a held-out eval record and a checkpoint per epoch, and that held-out accuracy rises above chance (1/126).",
@@ -2997,7 +2994,7 @@
     {
       "run_id": "slgcn-retrain-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "Gate slgcn-retrain-settings, R1: retrain SL-GCN bone, joint-motion and bone-motion (5 folds each) with is_vector False in both feeders (the authors' setting) and SAM-SLR's train schedule otherwise (250 epochs, base_lr 0.1, step [150, 200], warm_up_epoch 20), on slgcn-full-001's folds and keypoints, into run directory slgcn-full-002. Best held-out top-1 epoch per fold. Joint stays from slgcn-train-full-002. Protocol A1.",
@@ -3143,7 +3140,7 @@
     {
       "run_id": "pf-guard-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Test the stop-policy guard before relying on it: guard A (throwaway, deadline 23:59Z, target the retrain app) runs as its own app; guard B targets guard A's app with a deadline about 90 s ahead and must stop it from inside a Modal container and then return. CPU only; the retrain is not touched.",
@@ -3210,7 +3207,7 @@
     {
       "run_id": "pf-guard-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Repeat of pf-guard-001 with the gRPC-based guard: test the stop-policy guard before relying on it: guard A (throwaway, deadline 23:59Z, target the retrain app) runs as its own app; guard B targets guard A's app with a deadline about 90 s ahead and must stop it from inside a Modal container and then return. CPU only; the retrain is not touched.",
@@ -3275,7 +3272,7 @@
     {
       "run_id": "pf-guard-sync-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Test of the synchronizer-based guard (after pf-guard-001/002): guard A (throwaway, deadline 23:59Z, target the retrain app) runs as its own app; guard B targets guard A's app with a deadline about 60 s ahead and must stop it from inside a Modal container and then return. CPU only; the retrain is not touched.",
@@ -3346,7 +3343,7 @@
     {
       "run_id": "pf-guard-tasks-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Test of the guard's new task-count limit (max_tasks), added after slgcn-retrain-full-001: guard A (throwaway; target a nonexistent app id, deadline 23:59Z, so it keeps polling) runs as its own app with 1 task; guard B targets A with a far deadline and --max-tasks 0, and must stop A after two consecutive polls over the limit and then return. CPU only.",
@@ -3412,7 +3409,7 @@
     {
       "run_id": "pf-slgcn-all-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Test of slgcn_all after slgcn-retrain-full-001 (nonpreemptible orchestrator; failed folds collected with return_exceptions instead of cancelling the rest). Invocation a: bone fold 0, 1 epoch, into a scratch run id, must succeed. Invocation b: the same again without --resume, so the fold refuses to overwrite its checkpoints; slgcn_all must report the failed input and exit once, with no crash or relaunch loop. Both launched with a deadline guard (max_tasks 2) and a local backup.",
@@ -3483,7 +3480,7 @@
     {
       "run_id": "pf-slgcn-all-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "preflight",
       "purpose": "Rerun of pf-slgcn-all-001 invocation b after slgcn_train's refusals became RuntimeError: slgcn_all on the existing scratch run (bone fold 0 already has epoch-0.pt) without --resume must collect the failed input, print it under failed_inputs, and exit once with no hang or relaunch.",
@@ -3550,7 +3547,7 @@
     {
       "run_id": "slgcn-retrain-full-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "training",
       "purpose": "Attempt 2 of the R1 retrain (gate slgcn-retrain-settings): resume all 15 bone/jm/bm folds of runs/slgcn-full-002 from their last checkpoint with an eval record (epochs 120-127) to epoch 250, with the same settings (is_vector False via --authors-is-vector, SAM-SLR schedule, slgcn-full-001's fold data). Joint stays from slgcn-full-001.",
@@ -3798,7 +3795,7 @@
     {
       "run_id": "slgcn-test-full-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "SL-GCN inference on MultiMeDaLIS Track-2 val and test with the authors' 20 published fold test configs unchanged except data, label and checkpoint paths, then their run_fusion.py: bone, joint-motion and bone-motion from the retrained run slgcn-full-002 (slgcn-retrain-full-002, best held-out epoch per fold), joint from slgcn-full-001 (slgcn-train-full-002), val/test keypoint arrays from slgcn-full-001. Writes per-stream fold-mean logits and the weighted 4-stream ensemble into runs/slgcn-full-002/. Protocol A1, gate slgcn-retrain-settings R1.",
@@ -3956,7 +3953,7 @@
     {
       "run_id": "compare-slgcn-author-002",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "Evidence only, no labels: align the retrained run's SL-GCN logits (slgcn-test-full-002) with the logits of the authors' released checkpoints run through the same code on the same keypoint arrays (author-slgcn-weights-check-001), per stream and for the 4-stream ensemble, on val and test; plus a determinism check of the joint stream, whose checkpoints are the same as in slgcn-test-full-001. Repeats compare-slgcn-author-001 after the is_vector retrain. Not used for any target, checkpoint choice or tuning.",
@@ -4171,7 +4168,7 @@
     {
       "run_id": "fusion-full-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "Fusion and submission building for all 22 targets: install the radar and video logits (predict-full-001: runs predict-val-full-001, predict-test-full-001) and the SL-GCN ensemble logits (slgcn-test-full-002: run slgcn-full-002, bone/jm/bm retrained, joint from slgcn-full-001) where the authors' scripts expect them, run MSLR_radar_video/fusion_with_slgcnn/fusion_all.py and Multimodal_fusion.py unchanged, check that their 3-modality predictions agree, then write one Kaggle id,pred submission per table row over all 11,970 val + test ids (require_full True), with SHA-256 in submissions/MANIFEST.json. Protocol A1, gate slgcn-retrain-settings R1.",
@@ -4357,7 +4354,7 @@
     {
       "run_id": "kaggle-score-001",
       "agent_ids": [
-        "claude-opus-5-5-claude-code-2-1-319"
+        "claude-opus-5-5-claude-code"
       ],
       "kind": "evaluation",
       "purpose": "Score the 11 fusion-full-001 submission files on Kaggle (iccv-mslr-2025-track-2, late submissions): the public score of each file is its row's Val Top-1 and the private score its Test Top-1. Made by the reproduction agent with the human reproducer's Kaggle account under the operator's explicit delegation of 2026-11-14.",
@@ -5126,7 +5123,7 @@
   "candidate_flags": {
     "copied_scores": "Queue 'no'. Confirmed: every Table 1-3 value is from the authors' own systems on the challenge splits.",
     "includes_human_evaluation": "Queue 'no'. Confirmed: no human evaluation in the paper.",
-    "potential_ethical_concerns": "Queue 'no'. The data shows one proficient signer (frontal RGB video) and was released by the organisers under CC BY-NC-SA 4.0 for the challenge. No new participants. The consent and cloud-processing basis will be confirmed with the competition rules at the data gate.",
+    "potential_ethical_concerns": "Queue 'no'. The organisers' SignEval 2025 summary (source signeval-2025-summary, Section 4.2) states that each of the 126 items was 'performed 205 times by a proficient signer', recorded with radar, RGB-D video and depth sensors; the Manjur paper does not describe the signer. The data was released by the organisers under CC BY-NC-SA 4.0 and the competition rules for the challenge; no new participants are involved. Gates data-kaggle-competition and data-kaggle-download-forbidden restricted access and processing to the operator's Restricted Environment ($MODAL_ENV).",
     "compute_requirements": "Queue 'N/A'. The paper states no hardware or runtime; see compute_assessment."
   },
   "contacts": [
@@ -5191,7 +5188,7 @@
       "rule": "The authors' SL-GCN training settings, as evidenced by their published fold configs and released weights.",
       "deviation": "slgcn-train-full-001/002 used SAM-SLR's train configs, which set is_vector True for bone, jm and bm (authors: False) and a schedule (250 epochs, base_lr 0.1, step [150, 200], warm-up 20) that differs from the values in the authors' fold configs (100, 0.01, [50], 0), which are themselves in conflict with their checkpoint names.",
       "reason": "Agent inference from the cited basis (dead_ends[slgcn-is-vector-true]); not disclosed at gate protocol-training-recipe.",
-      "decision_evidence": "Agent inference; operator ruling 2026-11-10 that is_vector True is a dead end; schedule pending gate slgcn-retrain-settings.",
+      "decision_evidence": "Agent inference; operator ruling 2026-11-10 that is_vector True is a dead end; schedule settled by gate slgcn-retrain-settings (R1, operator 2026-11-10).",
       "effect_on_results": "Bone stream unusable under the authors' test configs (chance-level agreement). These models produce no target values; they remain as conditional evidence (V1). Bone, jm and bm are retrained with is_vector False under gate slgcn-retrain-settings (R1); the LR schedule stays SAM-SLR's (guesses slgcn-lr-schedule)."
     },
     {
@@ -5241,6 +5238,14 @@
       "reason": "Estimate extrapolated from a 20-sample preflight; no timeout enforced the GPU-hour ceiling.",
       "decision_evidence": "Recorded after the fact (runs[predict-full-001].observed.stop_policy_overrun).",
       "effect_on_results": "None on outputs; spend stays inside the attempt-wide ceilings. From 2026-11-10 every ceiling is enforced mechanically (compute_budget.stop_policy_enforcement)."
+    },
+    {
+      "deviation_id": "hrnet-weights-source",
+      "rule": "The authors' Pose_estimation/readme.md (7dd73c4) links the HRNet-w48 COCO-WholeBody checkpoint as Google Drive file 1f_c3uKTDQ4DR3CrwMSI8qdsTKJvKVt7p (hrnet_w48_coco_wholebody_384x288-6e061c6a_20200922.pth).",
+      "deviation": "The PyTorch image downloads the file of the same name from OpenMMLab's release URL (https://download.openmmlab.com/mmpose/top_down/hrnet/hrnet_w48_coco_wholebody_384x288-6e061c6a_20200922.pth) and checks SHA-256 6e061c6a16ef994b1dc0a69d1d22473dbb8673afda4effca3baef0bd4c1e6976.",
+      "reason": "Agent choice when the image was written (2026-11-06); the reason was not recorded at the time. The OpenMMLab URL is the checkpoint's public release and downloads without Google Drive's confirmation step.",
+      "decision_evidence": "No operator decision. The two files were not compared until 2026-11-14, when, at the operator's request, the Drive file was downloaded once (https://drive.usercontent.google.com/download?id=1f_c3uKTDQ4DR3CrwMSI8qdsTKJvKVt7p&export=download&confirm=t, HTTP 200, 254,976,239 bytes) and hashed, not loaded: its SHA-256 equals the OpenMMLab file's.",
+      "effect_on_results": "None: the weights are byte-identical."
     }
   ],
   "unrecorded_attempts": [
@@ -5259,7 +5264,7 @@
       "why_not_a_run_entry": "As above."
     }
   ],
-  "modal_environment_note": "$MODAL_ENV denotes this paper's Restricted Environment in the repro-sign workspace (default member role No Access; operator Contributor; the two workspace Owners as administrators). Its literal name embeds an operator account name and is withheld from the report pending the operator's explicit confirmation; the project lead holds it. Every Modal command for this paper runs with --env \"$MODAL_ENV\".",
+  "modal_environment_note": "$MODAL_ENV denotes this paper's Restricted Environment in the repro-sign workspace (default member role No Access; operator Contributor; the two workspace Owners as administrators). Its literal name embeds an operator account name and is withheld from the report at the operator's request (confirmed by the operator on 2026-11-14); the project lead holds it. Every Modal command for this paper runs with --env \"$MODAL_ENV\".",
   "patches": [
     {
       "patch_id": "upstream-data-paths",
@@ -5447,11 +5452,18 @@
         "compare-slgcn-author-001: our bone stream under the authors' test configs agrees with the authors' bone stream on 0.86% (val) / 0.85% (test), chance level. Cause: gen_bone_data_test.py leaves node 0 as an absolute position; is_vector False subtracts node 0's mean from every node."
       ],
       "classification": "Dead end, not an ambiguity: the inference contradicted published evidence (operator, 2026-11-10).",
-      "attribution": "The SL-GCN training configuration, including is_vector True for bone, joint-motion and bone-motion, was inferred by the reproduction agent (claude-opus-5-5-claude-code-2-1-319) from SAM-SLR's original training configs. The authors' published fold configs contained a train_feeder_args section with is_vector False for all four streams, which the agent did not surface. Protocol option A1, as presented to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's.",
+      "attribution": "The SL-GCN training configuration, including is_vector True for bone, joint-motion and bone-motion, was inferred by the reproduction agent (claude-opus-5-5-claude-code) from SAM-SLR's original training configs. The authors' published fold configs contained a train_feeder_args section with is_vector False for all four streams, which the agent did not surface. Protocol option A1, as presented to the human reproducer, described the training config only as \"SAM-SLR train config\" and did not disclose this contradicting evidence; the human approval of A1 was given on that basis. The inference was the agent's, not the human reproducer's.",
       "why_the_section_was_discounted": "The session record shows no explicit assessment of that section. The agent described official-code as having \"no training configs\" (gate protocol-training-recipe) and treated the fold configs as test-phase files (phase: test) whose training-related fields are not authoritative. Several of those fields do contradict the released checkpoints (num_epoch 100 and step [50] against weights paths sign_*_fold*_250/epoch-176..249), but the record does not show that this conflict was weighed at the time. The agent read only the joint fold config, where is_vector is False in both sources, and did not diff the bone, jm and bm configs field by field until 2026-11-09 after the bone stream failed.",
       "what_should_have_happened": "The conflict between the authors' fold configs (is_vector False) and SAM-SLR's train configs (is_vector True) should have been raised as an alternative at protocol gate protocol-training-recipe before the full run.",
-      "kept_or_reverted": "Reverted for target results: the is_vector True models stay as retained runs and as conditional evidence (option V1: slgcn-isvector-check-001, slgcn-v1-test-001) but produce no target. Retraining with the authors' settings awaits gate slgcn-retrain-settings.",
+      "kept_or_reverted": "Reverted for target results: the is_vector True models stay as retained runs and as conditional evidence (option V1: slgcn-isvector-check-001, slgcn-v1-test-001) but produce no target. Bone, jm and bm were retrained with is_vector False under gate slgcn-retrain-settings (R1, 2026-11-10) in slgcn-retrain-full-001/002, and those models produce the targets.",
       "cost": "slgcn-train-full-001 + 002: USD 174.13 / 155.25 L4 GPU-hours (all four streams; the joint stream is not affected by is_vector)."
     }
-  ]
+  ],
+  "effort": {
+    "human_reproducer_hours_approx": 5,
+    "human_basis": "The operator's own estimate, reported 2026-11-14: about 5 hours of the human reproducer's time on this attempt, separate from agent runtime and from compute.",
+    "agent_runtime": "Not measured as one figure; per-run wall times are in runs[].",
+    "gpu_hours": "327.9 L4 GPU-hours billed on Modal (compute_budget.spend_checkpoints, 2026-11-14).",
+    "agent_effort_setting": "xhigh (agents[claude-opus-5-5-claude-code].effort_setting)"
+  }
 }
