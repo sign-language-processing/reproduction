@@ -24,6 +24,75 @@ Caveats: the scores come from Kaggle's hidden labels, which cannot be inspected,
 
 **Attempt dates:** 2026-11-04 (intake, target ledger, gates), 2026-11-06 (data, preprocessing, preflight), 2026-11-09 (protocol and compute decisions, full runs), 2026-11-10 (`is_vector` dead end, ceiling increase, retrain gate, retrain), 2026-11-11 (retrain finished), 2026-11-12 (SL-GCN inference, logit comparison, fusion and the 11 submission files), 2026-11-13 (durable copies of the submission files and hash check), 2026-11-14 (Kaggle submissions under the operator's delegation, scores, targets)
 
+## Results
+
+Top-1 accuracy (%). Val is each file's Kaggle public score, Test its private score; Diff is ours minus the paper, in percentage points.
+
+| Row | Paper Val | Ours Val | Diff | Paper Test | Ours Test | Diff |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Table 1, radar (CNN 2D / µ-D) | 92.61 | 91.111 | -1.499 | 93.03 | 91.415 | -1.615 |
+| Table 1, video (ResNet(2+1)D) | 94.01 | 91.700 | -2.310 | 93.74 | 91.997 | -1.743 |
+| Table 2, SL-GCN joint | 99.31 | 99.387 | +0.077 | 99.07 | 99.100 | +0.030 |
+| Table 2, SL-GCN bone | 99.11 | 99.092 | -0.018 | 99.04 | 99.100 | +0.060 |
+| Table 2, SL-GCN joint motion | 98.62 | 98.752 | +0.132 | 98.61 | 98.637 | +0.027 |
+| Table 2, SL-GCN bone motion | 98.66 | 98.707 | +0.047 | 98.56 | 98.293 | -0.267 |
+| Table 2, skeletal ensemble | 99.34 | 99.251 | -0.089 | 99.29 | 99.272 | -0.018 |
+| Table 3, radar + video | 97.19 | 95.986 | -1.204 | 97.42 | 96.494 | -0.926 |
+| Table 3, radar + skeletal | 99.37 | 99.478 | +0.108 | 99.44 | 99.497 | +0.057 |
+| Table 3, skeletal + video | 99.50 | 99.523 | +0.023 | 99.55 | 99.550 | +0.000 |
+| Table 3, skeletal + video + radar | 99.61 | 99.569 | -0.041 | 99.71 | 99.656 | -0.054 |
+
+**Agreement assessment.** All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in `papers/pu-2024-siformer`. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is `does_not_agree`. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (`published-code-over-paper-text`, a `paper_code_conflict` under Guesses and deviations); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.
+
+Per target, with run and evidence:
+
+| Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
+| `t1-radar-val` | Table 1, Val Top-1 | `radar-mdcnn` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 92.61 | 91.111 | -1.499 | produced; `kaggle-score-001` ref 58345595, public score 0.91111 of `t1-radar.csv` |
+| `t1-radar-test` | Table 1, Test Top-1 | `radar-mdcnn` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 93.03 | 91.415 | -1.615 | produced; `kaggle-score-001` ref 58345595, private score 0.91415 of `t1-radar.csv` |
+| `t1-video-val` | Table 1, Val Top-1 | `video-r2plus1d` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 94.01 | 91.700 | -2.310 | produced; `kaggle-score-001` ref 58345609, public score 0.91700 of `t1-video.csv` |
+| `t1-video-test` | Table 1, Test Top-1 | `video-r2plus1d` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 93.74 | 91.997 | -1.743 | produced; `kaggle-score-001` ref 58345609, private score 0.91997 of `t1-video.csv` |
+| `t2-joint-val` | Table 2, Val Top-1 | `slgcn-joint` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.31 | 99.387 | +0.077 | produced; `kaggle-score-001` ref 58345623, public score 0.99387 of `t2-joint.csv` |
+| `t2-joint-test` | Table 2, Test Top-1 | `slgcn-joint` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.07 | 99.100 | +0.030 | produced; `kaggle-score-001` ref 58345623, private score 0.99100 of `t2-joint.csv` |
+| `t2-bone-val` | Table 2, Val Top-1 | `slgcn-bone` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.11 | 99.092 | -0.018 | produced; `kaggle-score-001` ref 58345629, public score 0.99092 of `t2-bone.csv` |
+| `t2-bone-test` | Table 2, Test Top-1 | `slgcn-bone` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.04 | 99.100 | +0.060 | produced; `kaggle-score-001` ref 58345629, private score 0.99100 of `t2-bone.csv` |
+| `t2-jm-val` | Table 2, Val Top-1 | `slgcn-joint-motion` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 98.62 | 98.752 | +0.132 | produced; `kaggle-score-001` ref 58345641, public score 0.98752 of `t2-jm.csv` |
+| `t2-jm-test` | Table 2, Test Top-1 | `slgcn-joint-motion` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 98.61 | 98.637 | +0.027 | produced; `kaggle-score-001` ref 58345641, private score 0.98637 of `t2-jm.csv` |
+| `t2-bm-val` | Table 2, Val Top-1 | `slgcn-bone-motion` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 98.66 | 98.707 | +0.047 | produced; `kaggle-score-001` ref 58345655, public score 0.98707 of `t2-bm.csv` |
+| `t2-bm-test` | Table 2, Test Top-1 | `slgcn-bone-motion` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 98.56 | 98.293 | -0.267 | produced; `kaggle-score-001` ref 58345655, private score 0.98293 of `t2-bm.csv` |
+| `t2-ensemble-val` | Table 2, Val Top-1 | `slgcn-ensemble` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.34 | 99.251 | -0.089 | produced; `kaggle-score-001` ref 58345583, public score 0.99251 of `t2-ensemble.csv` |
+| `t2-ensemble-test` | Table 2, Test Top-1 | `slgcn-ensemble` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.29 | 99.272 | -0.018 | produced; `kaggle-score-001` ref 58345583, private score 0.99272 of `t2-ensemble.csv` |
+| `t3-radar-video-val` | Table 3, Val Top-1 | `fusion-radar-video` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 97.19 | 95.986 | -1.204 | produced; `kaggle-score-001` ref 58345671, public score 0.95986 of `t3-radar-video.csv` |
+| `t3-radar-video-test` | Table 3, Test Top-1 | `fusion-radar-video` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 97.42 | 96.494 | -0.926 | produced; `kaggle-score-001` ref 58345671, private score 0.96494 of `t3-radar-video.csv` |
+| `t3-radar-skeletal-val` | Table 3, Val Top-1 | `fusion-radar-skeletal` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.37 | 99.478 | +0.108 | produced; `kaggle-score-001` ref 58345683, public score 0.99478 of `t3-radar-skeletal.csv` |
+| `t3-radar-skeletal-test` | Table 3, Test Top-1 | `fusion-radar-skeletal` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.44 | 99.497 | +0.057 | produced; `kaggle-score-001` ref 58345683, private score 0.99497 of `t3-radar-skeletal.csv` |
+| `t3-skeletal-video-val` | Table 3, Val Top-1 | `fusion-skeletal-video` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.50 | 99.523 | +0.023 | produced; `kaggle-score-001` ref 58345703, public score 0.99523 of `t3-skeletal-video.csv` |
+| `t3-skeletal-video-test` | Table 3, Test Top-1 | `fusion-skeletal-video` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.55 | 99.550 | +0.000 | produced; `kaggle-score-001` ref 58345703, private score 0.99550 of `t3-skeletal-video.csv` |
+| `t3-all-val` | Table 3, Val Top-1 | `fusion-all` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.61 | 99.569 | -0.041 | produced; `kaggle-score-001` ref 58345576, public score 0.99569 of `t3-all.csv` |
+| `t3-all-test` | Table 3, Test Top-1 | `fusion-all` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.71 | 99.656 | -0.054 | produced; `kaggle-score-001` ref 58345576, private score 0.99656 of `t3-all.csv` |
+
+Metric version 17210 is Kaggle's `latestCompetitionMetricVersionId` for this competition as read on 2026-11-04; it was not re-checked on 2026-11-14, when the files were scored.
+
+**Kaggle submission files** (`fusion-full-001`, 2026-11-12; `MANIFEST.json` SHA-256 `bec96c2a…2df73b`). Each file is `id,pred` over all 4,410 val and 7,560 test ids. One late submission to `iccv-mslr-2025-track-2` per file gives that row's two targets: the public leaderboard score is Val Top-1 and the private score is Test Top-1.
+
+The files are kept as raw artifacts on this paper's restricted results Volume under `modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/`, one file per row as named in the table. They are recorded as artifacts `submission-t1-radar` … `submission-t3-all` (the file name without `.csv`) and `submission-manifest`, and are not in Git. On 2026-11-13, before submission, three copies were hashed: a fresh download from the Volume, the agent's earlier download, and the operator's local copy outside the repository. All 33 SHA-256 match the table below, and `MANIFEST.json` matches its recorded hash.
+
+| File | Table row | Targets | Rows | SHA-256 | Kaggle ref | Public (Val Top-1) | Private (Test Top-1) |
+| --- | --- | --- | ---: | --- | ---: | ---: | ---: |
+| `t1-radar.csv` | Table 1, radar (CNN 2D / µ-D) | `t1-radar-val`, `t1-radar-test` | 11,970 | `8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca` | 58345595 | 0.91111 | 0.91415 |
+| `t1-video.csv` | Table 1, video (ResNet(2+1)D) | `t1-video-val`, `t1-video-test` | 11,970 | `4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339` | 58345609 | 0.91700 | 0.91997 |
+| `t2-joint.csv` | Table 2, joint | `t2-joint-val`, `t2-joint-test` | 11,970 | `47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1` | 58345623 | 0.99387 | 0.99100 |
+| `t2-bone.csv` | Table 2, bone | `t2-bone-val`, `t2-bone-test` | 11,970 | `dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68` | 58345629 | 0.99092 | 0.99100 |
+| `t2-jm.csv` | Table 2, joint motion | `t2-jm-val`, `t2-jm-test` | 11,970 | `50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f` | 58345641 | 0.98752 | 0.98637 |
+| `t2-bm.csv` | Table 2, bone motion | `t2-bm-val`, `t2-bm-test` | 11,970 | `8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b` | 58345655 | 0.98707 | 0.98293 |
+| `t2-ensemble.csv` | Table 2, 4-stream ensemble | `t2-ensemble-val`, `t2-ensemble-test` | 11,970 | `916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01` | 58345583 | 0.99251 | 0.99272 |
+| `t3-radar-video.csv` | Table 3, radar + video | `t3-radar-video-val`, `t3-radar-video-test` | 11,970 | `2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7` | 58345671 | 0.95986 | 0.96494 |
+| `t3-radar-skeletal.csv` | Table 3, radar + skeletal | `t3-radar-skeletal-val`, `t3-radar-skeletal-test` | 11,970 | `a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42` | 58345683 | 0.99478 | 0.99497 |
+| `t3-skeletal-video.csv` | Table 3, skeletal + video | `t3-skeletal-video-val`, `t3-skeletal-video-test` | 11,970 | `aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c` | 58345703 | 0.99523 | 0.99550 |
+| `t3-all.csv` | Table 3, radar + skeletal + video | `t3-all-val`, `t3-all-test` | 11,970 | `61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4` | 58345576 | 0.99569 | 0.99656 |
+
+Every file had been scored by the driver's first poll, 21 s after its submission, on 2026-11-14 (14:12:35–14:16:59 UTC, in the order `t3-all`, `t2-ensemble`, then table order). The raw list is artifact `kaggle-submissions-list` (`runs/kaggle-score-001/submissions-list.csv` on the results Volume, SHA-256 `271141dd…acda35`). No targets are copied baselines.
+
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
@@ -133,75 +202,6 @@ This replaces the screenshot workflow above: the evidence is now the raw `kaggle
 | FusionEnsemble-Net, CAST | arXiv 2508.09362, arXiv 2605.08663 | `60dfbbf2…942e44`, `38612556…d0d9a5` | Considered; corroborate the val/test = public/private mapping (FusionEnsemble-Net); no label release |
 
 The full search log is in `reproduction.json.source_search`.
-
-## Results
-
-Top-1 accuracy (%). Val is each file's Kaggle public score, Test its private score; Diff is ours minus the paper, in percentage points.
-
-| Row | Paper Val | Ours Val | Diff | Paper Test | Ours Test | Diff |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Table 1, radar (CNN 2D / µ-D) | 92.61 | 91.111 | -1.499 | 93.03 | 91.415 | -1.615 |
-| Table 1, video (ResNet(2+1)D) | 94.01 | 91.700 | -2.310 | 93.74 | 91.997 | -1.743 |
-| Table 2, SL-GCN joint | 99.31 | 99.387 | +0.077 | 99.07 | 99.100 | +0.030 |
-| Table 2, SL-GCN bone | 99.11 | 99.092 | -0.018 | 99.04 | 99.100 | +0.060 |
-| Table 2, SL-GCN joint motion | 98.62 | 98.752 | +0.132 | 98.61 | 98.637 | +0.027 |
-| Table 2, SL-GCN bone motion | 98.66 | 98.707 | +0.047 | 98.56 | 98.293 | -0.267 |
-| Table 2, skeletal ensemble | 99.34 | 99.251 | -0.089 | 99.29 | 99.272 | -0.018 |
-| Table 3, radar + video | 97.19 | 95.986 | -1.204 | 97.42 | 96.494 | -0.926 |
-| Table 3, radar + skeletal | 99.37 | 99.478 | +0.108 | 99.44 | 99.497 | +0.057 |
-| Table 3, skeletal + video | 99.50 | 99.523 | +0.023 | 99.55 | 99.550 | +0.000 |
-| Table 3, skeletal + video + radar | 99.61 | 99.569 | -0.041 | 99.71 | 99.656 | -0.054 |
-
-**Agreement assessment.** All 22 in-scope targets produced comparable values (comparability decided at 2026-11-14T14:11:42Z, before any submission; run kaggle-score-001 observed.comparability_decision). Rule, written before the agent read any score (observed.agreement_rule): 'agrees' only if every produced value rounds to its published 2-decimal table value; no score-matching tolerance is asserted, as in `papers/pu-2024-siformer`. 1 of 22 values equals its published value (t3-skeletal-video-test, 99.550 vs 99.55), so the record is `does_not_agree`. Raw differences in percentage points: the 16 values that use the skeletal stream (all of Table 2; Table 3 radar+skeletal, skeletal+video and all three) lie between -0.267 and +0.132 (t3-all -0.041 val, -0.054 test); radar alone and video alone (Table 1) lie between -2.310 and -1.499; radar+video (Table 3) -1.204 val and -0.926 test. One training run per system (the paper reports no seeds or repeats). The Table 1 models come from the published code's held-out-split training, not the full-training-set retrain the paper's text describes (`published-code-over-paper-text`, a `paper_code_conflict` under Guesses and deviations); no run measures how much of the Table 1 gap this explains. The scientific reading is left to the human reviewer.
-
-Per target, with run and evidence:
-
-| Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
-| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
-| `t1-radar-val` | Table 1, Val Top-1 | `radar-mdcnn` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 92.61 | 91.111 | -1.499 | produced; `kaggle-score-001` ref 58345595, public score 0.91111 of `t1-radar.csv` |
-| `t1-radar-test` | Table 1, Test Top-1 | `radar-mdcnn` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 93.03 | 91.415 | -1.615 | produced; `kaggle-score-001` ref 58345595, private score 0.91415 of `t1-radar.csv` |
-| `t1-video-val` | Table 1, Val Top-1 | `video-r2plus1d` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 94.01 | 91.700 | -2.310 | produced; `kaggle-score-001` ref 58345609, public score 0.91700 of `t1-video.csv` |
-| `t1-video-test` | Table 1, Test Top-1 | `video-r2plus1d` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 93.74 | 91.997 | -1.743 | produced; `kaggle-score-001` ref 58345609, private score 0.91997 of `t1-video.csv` |
-| `t2-joint-val` | Table 2, Val Top-1 | `slgcn-joint` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.31 | 99.387 | +0.077 | produced; `kaggle-score-001` ref 58345623, public score 0.99387 of `t2-joint.csv` |
-| `t2-joint-test` | Table 2, Test Top-1 | `slgcn-joint` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.07 | 99.100 | +0.030 | produced; `kaggle-score-001` ref 58345623, private score 0.99100 of `t2-joint.csv` |
-| `t2-bone-val` | Table 2, Val Top-1 | `slgcn-bone` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.11 | 99.092 | -0.018 | produced; `kaggle-score-001` ref 58345629, public score 0.99092 of `t2-bone.csv` |
-| `t2-bone-test` | Table 2, Test Top-1 | `slgcn-bone` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.04 | 99.100 | +0.060 | produced; `kaggle-score-001` ref 58345629, private score 0.99100 of `t2-bone.csv` |
-| `t2-jm-val` | Table 2, Val Top-1 | `slgcn-joint-motion` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 98.62 | 98.752 | +0.132 | produced; `kaggle-score-001` ref 58345641, public score 0.98752 of `t2-jm.csv` |
-| `t2-jm-test` | Table 2, Test Top-1 | `slgcn-joint-motion` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 98.61 | 98.637 | +0.027 | produced; `kaggle-score-001` ref 58345641, private score 0.98637 of `t2-jm.csv` |
-| `t2-bm-val` | Table 2, Val Top-1 | `slgcn-bone-motion` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 98.66 | 98.707 | +0.047 | produced; `kaggle-score-001` ref 58345655, public score 0.98707 of `t2-bm.csv` |
-| `t2-bm-test` | Table 2, Test Top-1 | `slgcn-bone-motion` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 98.56 | 98.293 | -0.267 | produced; `kaggle-score-001` ref 58345655, private score 0.98293 of `t2-bm.csv` |
-| `t2-ensemble-val` | Table 2, Val Top-1 | `slgcn-ensemble` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.34 | 99.251 | -0.089 | produced; `kaggle-score-001` ref 58345583, public score 0.99251 of `t2-ensemble.csv` |
-| `t2-ensemble-test` | Table 2, Test Top-1 | `slgcn-ensemble` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.29 | 99.272 | -0.018 | produced; `kaggle-score-001` ref 58345583, private score 0.99272 of `t2-ensemble.csv` |
-| `t3-radar-video-val` | Table 3, Val Top-1 | `fusion-radar-video` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 97.19 | 95.986 | -1.204 | produced; `kaggle-score-001` ref 58345671, public score 0.95986 of `t3-radar-video.csv` |
-| `t3-radar-video-test` | Table 3, Test Top-1 | `fusion-radar-video` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 97.42 | 96.494 | -0.926 | produced; `kaggle-score-001` ref 58345671, private score 0.96494 of `t3-radar-video.csv` |
-| `t3-radar-skeletal-val` | Table 3, Val Top-1 | `fusion-radar-skeletal` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.37 | 99.478 | +0.108 | produced; `kaggle-score-001` ref 58345683, public score 0.99478 of `t3-radar-skeletal.csv` |
-| `t3-radar-skeletal-test` | Table 3, Test Top-1 | `fusion-radar-skeletal` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.44 | 99.497 | +0.057 | produced; `kaggle-score-001` ref 58345683, private score 0.99497 of `t3-radar-skeletal.csv` |
-| `t3-skeletal-video-val` | Table 3, Val Top-1 | `fusion-skeletal-video` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.50 | 99.523 | +0.023 | produced; `kaggle-score-001` ref 58345703, public score 0.99523 of `t3-skeletal-video.csv` |
-| `t3-skeletal-video-test` | Table 3, Test Top-1 | `fusion-skeletal-video` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.55 | 99.550 | +0.000 | produced; `kaggle-score-001` ref 58345703, private score 0.99550 of `t3-skeletal-video.csv` |
-| `t3-all-val` | Table 3, Val Top-1 | `fusion-all` | Track-2 val (4,410), Kaggle public | Kaggle Accuracy Score (474), version 17210 | 99.61 | 99.569 | -0.041 | produced; `kaggle-score-001` ref 58345576, public score 0.99569 of `t3-all.csv` |
-| `t3-all-test` | Table 3, Test Top-1 | `fusion-all` | Track-2 test (7,560), Kaggle private | Kaggle Accuracy Score (474), version 17210 | 99.71 | 99.656 | -0.054 | produced; `kaggle-score-001` ref 58345576, private score 0.99656 of `t3-all.csv` |
-
-Metric version 17210 is Kaggle's `latestCompetitionMetricVersionId` for this competition as read on 2026-11-04; it was not re-checked on 2026-11-14, when the files were scored.
-
-**Kaggle submission files** (`fusion-full-001`, 2026-11-12; `MANIFEST.json` SHA-256 `bec96c2a…2df73b`). Each file is `id,pred` over all 4,410 val and 7,560 test ids. One late submission to `iccv-mslr-2025-track-2` per file gives that row's two targets: the public leaderboard score is Val Top-1 and the private score is Test Top-1.
-
-The files are kept as raw artifacts on this paper's restricted results Volume under `modal://$MODAL_ENV/manjur-2025-radar-fusion-results/runs/fusion-full-001/submissions/`, one file per row as named in the table. They are recorded as artifacts `submission-t1-radar` … `submission-t3-all` (the file name without `.csv`) and `submission-manifest`, and are not in Git. On 2026-11-13, before submission, three copies were hashed: a fresh download from the Volume, the agent's earlier download, and the operator's local copy outside the repository. All 33 SHA-256 match the table below, and `MANIFEST.json` matches its recorded hash.
-
-| File | Table row | Targets | Rows | SHA-256 | Kaggle ref | Public (Val Top-1) | Private (Test Top-1) |
-| --- | --- | --- | ---: | --- | ---: | ---: | ---: |
-| `t1-radar.csv` | Table 1, radar (CNN 2D / µ-D) | `t1-radar-val`, `t1-radar-test` | 11,970 | `8492f7b0a7eb8f82490bb465b9b4ac5a6d2ec73c252955537429e74a19587aca` | 58345595 | 0.91111 | 0.91415 |
-| `t1-video.csv` | Table 1, video (ResNet(2+1)D) | `t1-video-val`, `t1-video-test` | 11,970 | `4ed6ab11c5e5bf785c511b815af147d80aa3a36297810eacdf05079e964dd339` | 58345609 | 0.91700 | 0.91997 |
-| `t2-joint.csv` | Table 2, joint | `t2-joint-val`, `t2-joint-test` | 11,970 | `47a47cb3f9e86138992097d99d0bb33c9b08649d0c0f49be1b23f5679b104df1` | 58345623 | 0.99387 | 0.99100 |
-| `t2-bone.csv` | Table 2, bone | `t2-bone-val`, `t2-bone-test` | 11,970 | `dd7b02f436470eb603d113acaac0949e1e8e5774086f7ae724a25365d854bf68` | 58345629 | 0.99092 | 0.99100 |
-| `t2-jm.csv` | Table 2, joint motion | `t2-jm-val`, `t2-jm-test` | 11,970 | `50fb3d5b09d1cc13117805ca458b70d916a9313507e6ee46a081967202266a5f` | 58345641 | 0.98752 | 0.98637 |
-| `t2-bm.csv` | Table 2, bone motion | `t2-bm-val`, `t2-bm-test` | 11,970 | `8bf1497ac93604773c760cded6f55f89e36a75c136d7f123379edce827fb629b` | 58345655 | 0.98707 | 0.98293 |
-| `t2-ensemble.csv` | Table 2, 4-stream ensemble | `t2-ensemble-val`, `t2-ensemble-test` | 11,970 | `916584b34ba6489a1f0f45ae90bf62c4497a045b76e9b6960bd4996faac58e01` | 58345583 | 0.99251 | 0.99272 |
-| `t3-radar-video.csv` | Table 3, radar + video | `t3-radar-video-val`, `t3-radar-video-test` | 11,970 | `2094f3aa27b58c9ae21118a5e62dc2801a2755885223ead5296eeee915927bd7` | 58345671 | 0.95986 | 0.96494 |
-| `t3-radar-skeletal.csv` | Table 3, radar + skeletal | `t3-radar-skeletal-val`, `t3-radar-skeletal-test` | 11,970 | `a48ed305edc120a9c0f099bb2f4b928b52cbe1b76f58c61140a45fb642898a42` | 58345683 | 0.99478 | 0.99497 |
-| `t3-skeletal-video.csv` | Table 3, skeletal + video | `t3-skeletal-video-val`, `t3-skeletal-video-test` | 11,970 | `aeb97ce0dbbca257a2edb49e6eb9f92332ec046896748a098b39bdd97f73725c` | 58345703 | 0.99523 | 0.99550 |
-| `t3-all.csv` | Table 3, radar + skeletal + video | `t3-all-val`, `t3-all-test` | 11,970 | `61ef9b7f089c699c7b65bfce93a39d630a3b993494e283919fa82005703724d4` | 58345576 | 0.99569 | 0.99656 |
-
-Every file had been scored by the driver's first poll, 21 s after its submission, on 2026-11-14 (14:12:35–14:16:59 UTC, in the order `t3-all`, `t2-ensemble`, then table order). The raw list is artifact `kaggle-submissions-list` (`runs/kaggle-score-001/submissions-list.csv` on the results Volume, SHA-256 `271141dd…acda35`). No targets are copied baselines.
 
 ## How to repeat this
 
