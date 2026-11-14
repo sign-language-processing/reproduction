@@ -205,7 +205,7 @@
       "kind": "code",
       "url": "https://github.com/jackyjsy/CVPR21Chal-SLR",
       "revision_or_sha256": "de6c53a6fbbc08a5d9a728e33614a4541836714c",
-      "role": "Cited experimental basis for SL-GCN ([16]). Contains the SL-GCN training configs (SL-GCN/config/sign/train/*.yaml) and the labelled data generator (SL-GCN/data_gen/sign_gendata.py) that official-code omits. Not this paper's artifact."
+      "role": "Cited experimental basis for SL-GCN ([16]). Used only for its SL-GCN training configs (SL-GCN/config/sign/train/*.yaml), which official-code omits. Its labelled data generator (SL-GCN/data_gen/sign_gendata.py) was not used: the training arrays come from the authors' own sign_gendata_test.py with a label file (guesses_and_deviations[slgcn-training-data-generation]). Not this paper's artifact."
     },
     {
       "source_id": "kaggle-competition",
@@ -5313,6 +5313,32 @@
   },
   "guesses_and_deviations": [
     {
+      "id": "leaderboard-mapping",
+      "kind": "guess",
+      "description": "Which Kaggle leaderboard is Val Top-1 and which is Test Top-1: neither the paper nor the competition host states it.",
+      "paper_says": "Tables 1-3 report 'Val Top-1' and 'Test Top-1' on the official validation and test sets, whose labels were withheld from participants (Secs. 4.3 and 5). The competition has one 11,970-row solution scored as a public and a private leaderboard; the host does not say which rows each covers.",
+      "used": "Public leaderboard score = Val Top-1 over the 4,410 validation rows; private leaderboard score = Test Top-1 over the 7,560 test rows, for each of the 11 submission files.",
+      "basis": "The authors' own leaderboard entry matches Table 3, leaderboardPercentage matches the validation share, and the published values fit those denominators (evidence). Inferred on 2026-11-04, before any submission (protocol_notes[leaderboard-mapping]).",
+      "effect": "All 22 targets depend on it: each reproduced value is its file's public (val) or private (test) Kaggle score.",
+      "status": "Corroborated; not stated by the paper or the host.",
+      "evidence": [
+        "IMPRESS NCSU leaderboard entry (submission 45543069): public 0.99614, private 0.99708, equal to the paper's three-modality val/test values 99.614/99.708 (Table 3: 99.61/99.71)",
+        "Kaggle metadata leaderboardPercentage 37 = 4,410 / 11,970 (36.8%)",
+        "Denominator arithmetic: among 3,000-6,000 only N = 4,410 makes every published val value a 5-decimal-truncated k/N; N = 7,560 does the same for every published test value except the prose 93.737",
+        "CPAMI (UW) entry: public 0.99365, private 0.99444, equal to the val 99.37 / test 99.44 in its own paper (FusionEnsemble-Net)"
+      ],
+      "related_ids": [
+        "video-test-prose-value",
+        "test-split-size"
+      ],
+      "affects": [
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "multimedalis-iccv-mslr-2025-track-2"
+      ]
+    },
+    {
       "id": "published-code-over-paper-text",
       "kind": "paper_code_conflict",
       "description": "The paper says every model was retrained on the full training set after model selection; the released code trains only on held-out splits and has no full-training-set run.",
@@ -5453,7 +5479,8 @@
       "related_ids": [
         "slgcn-training-config-sam-slr",
         "slgcn-lr-schedule",
-        "slgcn-epoch-length"
+        "slgcn-epoch-length",
+        "slgcn-training-data-generation"
       ]
     },
     {
@@ -5582,6 +5609,48 @@
       "affects": [
         "evaluate"
       ]
+    },
+    {
+      "id": "software-environment",
+      "kind": "guess",
+      "description": "Software versions: the paper states none and the released code pins none.",
+      "paper_says": "The paper gives no software versions. In the released code (7dd73c4) the only requirements file is Pose_estimation/requirements.txt, which lists pytorch, torchvision, opencv, yacs and natsort without versions; the radar/video and SL-GCN code ship none.",
+      "used": "Radar CNN and ResNet(2+1)D: Python 3.11 slim with tensorflow[and-cuda]==2.15.1 (Keras 2.15.0), numpy 1.26.4, opencv-python-headless 4.10.0.84, h5py 3.11.0, pandas 2.2.2, scikit-learn 1.5.2, matplotlib 3.9.2, openpyxl 3.1.5. HRNet and SL-GCN: the project base image ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (Python 3.12, torch 2.11.0a0+eb65b36914.nv26.02, CUDA 13.1) plus yacs 0.1.8, natsort 8.4.0, opencv-python-headless 4.11.0.86 and scikit-learn 1.5.2.",
+      "basis": "The radar/video code uses Keras 2 APIs (keras.backend K.abs inside Lambda layers, .h5 load_model with custom_objects) that Keras 3 removed; TensorFlow 2.15 is the last release where tf.keras is Keras 2 and needs Python 3.11 or older, so the Python 3.12 base image cannot host it. HRNet and SL-GCN start from the project base image, as AGENTS.md prescribes, plus only the packages their imports need. Image checks on an L4 (2026-11-06) confirmed both stacks see the GPU.",
+      "effect": "Kernel and library-default differences from the authors' unstated versions are possible and not measured. In the PyTorch image the authors' released SL-GCN weights reproduce their released logits (identical argmax, Pearson at least 0.99999; author-slgcn-weights-check-001); no equivalent check exists for the TensorFlow stack, because the authors' radar/video weights are not public.",
+      "status": "Chosen before the preflights (2026-11-06); environment_notes.",
+      "evidence": [
+        "scripts/modal_app.py BASE_IMAGE, tf_image and torch_image definitions",
+        "environment_notes",
+        "author-slgcn-weights-check-001"
+      ],
+      "affects": [
+        "preprocess",
+        "train",
+        "evaluate"
+      ]
+    },
+    {
+      "id": "slgcn-training-data-generation",
+      "kind": "guess",
+      "description": "How the labelled SL-GCN training arrays were built: the paper is silent and the released code ships only generators named for test data.",
+      "paper_says": "The paper does not describe SL-GCN data generation. The released code's SL-GCN/data_gen holds sign_gendata_test.py, gen_bone_data_test.py and gen_motion_data_test.py only. sign_gendata_test.py writes dummy labels by default but reads a name,label file when --label_path is given (its commented-out default points to a train_labels.csv). SAM-SLR's labelled generator (SL-GCN/data_gen/sign_gendata.py at de6c53a6) is not in the released code.",
+      "used": "The authors' own generators, run per fold on this attempt's HRNet keypoints: sign_gendata_test.py --points 27 --label_path with each fold's train or held-out labels, then gen_bone_data_test.py and gen_motion_data_test.py (slgcn_data in scripts/modal_app.py; run slgcn-data-full-001). The same generators without labels built the val and test arrays. SAM-SLR's generator was not used; SAM-SLR supplies only the training configs.",
+      "basis": "The released generator already supports labelled input, so the training arrays use exactly the preprocessing (27-keypoint selection, bone and motion derivation) that produced the authors' val/test arrays. The authors' released SL-GCN weights reproduce their logits on arrays from these generators (author-slgcn-weights-check-001).",
+      "effect": "None known on preprocessing, which matches the released code; fold membership is a separate guess (slgcn-fold-assignment).",
+      "status": "Adopted before the first SL-GCN training (2026-11-09).",
+      "evidence": [
+        "slgcn-data-full-001",
+        "SL-GCN/data_gen/sign_gendata_test.py at 7dd73c4 (label_path handling)"
+      ],
+      "related_ids": [
+        "slgcn-fold-assignment",
+        "slgcn-training-config"
+      ],
+      "affects": [
+        "preprocess",
+        "train"
+      ]
     }
   ],
   "noncompliance": [
@@ -5595,18 +5664,8 @@
     },
     {
       "id": "predict-full-gpu-hour-overrun",
-      "description": "predict-full-001 used 3.27 L4 GPU-hours against its declared 2.0 GPU-hour ceiling.",
-      "requirement": "stopping-criteria.md: 'A ceiling is a maximum'; AGENTS.md: declare ceilings before launch (the declared ceiling was 2.0 GPU-hours).",
-      "run_ids": [
-        "predict-full-001"
-      ],
-      "effect": "None on outputs. Cost USD 4.68, within the run's CHF 5 and the attempt-wide ceilings.",
-      "resolution": "Estimate extrapolated from a 20-sample preflight; no timeout enforced the GPU-hour ceiling. Recorded after the fact (runs[predict-full-001].observed.stop_policy_overrun). From 2026-11-10 ceilings are enforced by a deadline guard (ceilings-not-enforced-before-2026-11-10)."
-    },
-    {
-      "id": "ceilings-not-enforced-before-2026-11-10",
-      "description": "Until 2026-11-10 14:21Z only Modal function timeouts bounded runs. They limit wall time but not GPU-hours or cost, so the declared GPU-hour and cost ceilings of the GPU runs launched before then were recorded but not enforced.",
-      "requirement": "stopping-criteria.md: 'A ceiling is a maximum', so a declared ceiling must hold; the operator's instruction of 2026-11-10 that every declared ceiling be enforced mechanically, not only recorded. The contract itself prescribes no enforcement mechanism.",
+      "description": "predict-full-001 used 3.27 L4 GPU-hours against its declared 2.0 GPU-hour ceiling. Until 2026-11-10 14:21Z only Modal function timeouts bounded runs; they limit wall time but not GPU-hours or cost, so the GPU-hour and cost ceilings of the 15 GPU runs launched before then (run_ids) were declared but not enforced, and predict-full-001's was exceeded.",
+      "requirement": "stopping-criteria.md: 'A ceiling is a maximum'; AGENTS.md: 'Declare ceilings before launch' (predict-full-001 declared 2.0 GPU-hours). The contract prescribes no enforcement mechanism; the operator required one on 2026-11-10.",
       "run_ids": [
         "bench-slgcn-cpu4-001",
         "bench-slgcn-pack2-001",
@@ -5624,8 +5683,8 @@
         "pf-slgcn-retrain-001",
         "slgcn-retrain-full-001"
       ],
-      "effect": "Only predict-full-001 exceeded a declared ceiling (predict-full-gpu-hour-overrun); the other runs stayed within theirs by their recorded usage.",
-      "resolution": "From 2026-11-10 every GPU run launches with a deadline guard app plus a local backup stop, and from slgcn-retrain-full-002 a running-task limit (compute_budget.stop_policy_enforcement). slgcn-retrain-full-001 was covered from 14:21Z; between its launch at 13:20Z and 14:21Z only its 24 h timeouts applied."
+      "effect": "None on outputs. predict-full-001 cost USD 4.68, within its CHF 5 and the attempt-wide ceilings; the other runs stayed within their declared ceilings by their recorded usage.",
+      "resolution": "Estimate extrapolated from a 20-sample preflight; no timeout enforced the GPU-hour ceiling. Recorded after the fact (runs[predict-full-001].observed.stop_policy_overrun). From 2026-11-10 every GPU run launches with a deadline guard app plus a local backup stop, and from slgcn-retrain-full-002 a running-task limit (compute_budget.stop_policy_enforcement). slgcn-retrain-full-001 was covered from 14:21Z; between its launch at 13:20Z and 14:21Z only its 24 h timeouts applied."
     },
     {
       "id": "full-runs-without-team-discussion",
