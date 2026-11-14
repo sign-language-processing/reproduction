@@ -5699,6 +5699,17 @@
       "resolution": "The SL-GCN retrain (slgcn-retrain-full-001/002, 135 and 76 GPU-h) was approved by the project lead in #repro-sign-team-r on 2026-11-10, together with the raised ceilings; the 2026-11-09 runs were not discussed beforehand."
     },
     {
+      "id": "slgcn-resume-not-verified-before-full-run",
+      "description": "SL-GCN checkpoint resume was not verified before the full runs. The 2026-11-06 preflight pf-slgcn-002 saved a checkpoint every epoch and reloaded them in its test phase, but never resumed training from one. slgcn-train-full-001 (2026-11-09 10:18Z) was launched without any resume path; one was added and first verified by pf-slgcn-resume-001 (13:04Z), after the run had been interrupted at 12:40Z. slgcn-retrain-full-001 (2026-11-10 13:20Z) was launched without --resume, and its preflight pf-slgcn-retrain-001 did not test what Modal's automatic retry of a preempted fold would do: the retries refused to overwrite their checkpoints, and that refusal turned three preemptions into a cancelled run.",
+      "requirement": "AGENTS.md, Environment and compute gate, before a full run: 'Complete a representative preflight that ... saves/reloads a checkpoint when applicable' and 'Verify checkpoint/resume behavior and set an explicit retry/cost ceiling in the run entry.'",
+      "run_ids": [
+        "slgcn-train-full-001",
+        "slgcn-retrain-full-001"
+      ],
+      "effect": "No checkpoint was lost and no value changed: both runs were resumed from each fold's last checkpoint (slgcn-train-full-002, slgcn-retrain-full-002), recorded as code_deviations slgcn-training-resumed and slgcn-retrain-resumed (SGD momentum and data-order RNG restart at the resume point). The retrain group's total, USD 132.56 and 117.9 L4-h, matches its uninterrupted estimate of about USD 132 and 117 L4-h.",
+      "resolution": "After the first interruption: a resume path verified by pf-slgcn-resume-001 and used by slgcn-train-full-002. After the retrain cancellation: refusals raise RuntimeError, the orchestrator collects failed folds and runs nonpreemptible (pf-slgcn-all-002), and slgcn-retrain-full-002 ran with --resume, so a preempted fold's automatic retry continues from its own last checkpoint. Radar and video are not included: the published scripts have no resume path, their save/reload was verified when the inference preflight reloaded the preflight models, and neither full run was interrupted."
+    },
+    {
       "id": "author-contact-before-independent-attempt",
       "description": "On 2026-11-09 the operator requested access to the authors' Google Drive folder of final radar and video weights while this attempt's full runs were still in progress.",
       "requirement": "AGENTS.md, Reporting integrity: 'Contact original authors only after an independent attempt, except for Team S-coordinated data-access requests'.",
