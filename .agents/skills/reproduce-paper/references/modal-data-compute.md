@@ -111,7 +111,7 @@ HF_HOME=/cache/huggingface
 HF_HUB_CACHE=/cache/huggingface/hub
 ```
 
-If a run mounted the cache without these variables, record each one as `null` in `compute.shared_cache.environment` and explain what happened in a non-empty `compute.shared_cache.environment_note`. Never backfill values that were not set. The validator reports this as a warning; disclose it as a process deviation in the report. A wrong non-null value, or null values without a note, remain errors.
+If a run mounted the cache without these variables, record each one as `null` in `compute.shared_cache.environment`. Never backfill values that were not set. Record the lapse as a `noncompliance` entry (see `evidence-and-retries.md`) whose `run_ids` include that run, with the cache requirement as its `requirement`. The validator accepts null values only for runs named in such an entry. A wrong non-null value is always an error.
 
 Use the shared cache for Hugging Face Hub downloads, model weights, tokenizers, and reusable Hub assets. Pin repository revisions in code/config and record them in the run entry; a cache hit does not establish identity or provenance.
 

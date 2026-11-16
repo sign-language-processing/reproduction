@@ -459,23 +459,36 @@ class ValidatorTest(unittest.TestCase):
                 "modal_volume": "huggingface-cache",
                 "mount_path": "/cache/huggingface",
                 "environment": {"HF_HOME": None, "HF_HUB_CACHE": None},
-                "environment_note": "The image did not set the cache variables.",
             },
         }
+        document["noncompliance"] = [
+            {
+                "id": "hf-cache-environment-unset",
+                "description": "The image did not set the cache variables.",
+                "requirement": "AGENTS.md: set HF_HOME and HF_HUB_CACHE on the cache.",
+                "run_ids": ["run-1"],
+            }
+        ]
         return document
 
-    def test_unset_cache_environment_with_note_is_a_warning(self) -> None:
+    def test_unset_cache_environment_with_noncompliance_validates(self) -> None:
         result = self.validate(self.unset_cache_environment_document())
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("1 warning(s)", result.stderr)
-        self.assertIn("without the cache environment", result.stderr)
+        self.assertEqual(result.stderr, "")
 
-    def test_unset_cache_environment_needs_a_note(self) -> None:
+    def test_unset_cache_environment_needs_noncompliance(self) -> None:
         document = self.unset_cache_environment_document()
-        del document["runs"][0]["compute"]["shared_cache"]["environment_note"]
+        document["noncompliance"] = []
         result = self.validate(document)
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("has invalid cache environment", result.stderr)
+        self.assertIn("ran without the cache environment", result.stderr)
+
+    def test_unset_cache_noncompliance_must_name_the_run(self) -> None:
+        document = self.unset_cache_environment_document()
+        document["noncompliance"][0]["run_ids"] = []
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ran without the cache environment", result.stderr)
 
     def test_wrong_cache_environment_value_stays_an_error(self) -> None:
         document = self.unset_cache_environment_document()

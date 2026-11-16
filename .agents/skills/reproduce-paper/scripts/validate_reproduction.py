@@ -368,9 +368,15 @@ def validate_runs(
     gates: dict[str, Any],
     agents: dict[str, Any],
     issues: list[str],
-    warnings: list[str],
 ) -> dict[str, Any]:
     runs = keyed(document.get("runs"), "run_id", "runs", issues)
+    noncompliant_run_ids = {
+        run_id
+        for entry in document.get("noncompliance") or []
+        if isinstance(entry, dict) and isinstance(entry.get("run_ids"), list)
+        for run_id in entry["run_ids"]
+        if isinstance(run_id, str)
+    }
     attempt_groups: dict[str, dict[str, Any]] = {}
     paper_id = document.get("paper_id")
     registered_source_hash = (
@@ -457,18 +463,20 @@ def validate_runs(
                 if not isinstance(environment, dict) or any(
                     environment.get(key) != value for key, value in expected.items()
                 ):
-                    # Variables that were not set are recorded as null with a note.
+                    # Variables that were not set are recorded as null, and the
+                    # lapse is recorded as noncompliance naming this run.
                     unset = isinstance(environment, dict) and all(
                         key in environment and environment[key] in (None, value)
                         for key, value in expected.items()
                     )
-                    if unset and nonempty(cache.get("environment_note")):
-                        warnings.append(
-                            f"Modal {label} ran without the cache environment "
-                            "(environment_note)"
-                        )
-                    else:
+                    if not unset:
                         issues.append(f"Modal {label} has invalid cache environment")
+                    elif run_id not in noncompliant_run_ids:
+                        issues.append(
+                            f"Modal {label} ran without the cache environment; "
+                            "record it in a noncompliance entry whose run_ids "
+                            "include this run"
+                        )
     for group_id, group in attempt_groups.items():
         numbers = group["numbers"]
         expected = set(range(1, max(numbers) + 1))
@@ -1299,7 +1307,6 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     root = parse_args().paper_directory.resolve()
     issues: list[str] = []
-    warnings: list[str] = []
     try:
         document = json.loads((root / "reproduction.json").read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -1329,7 +1336,7 @@ def main() -> int:
     datasets = validate_datasets(document, issues)
     artifacts = validate_artifacts(root, document, issues)
     gates, open_gate = validate_gates(document, issues)
-    runs = validate_runs(document, artifacts, gates, agents, issues, warnings)
+    runs = validate_runs(document, artifacts, gates, agents, issues)
     produced, target_count, targets = validate_targets(
         document,
         datasets,
@@ -1356,10 +1363,6 @@ def main() -> int:
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
     validate_readme(root, pipeline, numerical_agreement, preference, issues)
-    if warnings:
-        print(f"{len(warnings)} warning(s):", file=sys.stderr)
-        for warning in warnings:
-            print(f"- {warning}", file=sys.stderr)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:
