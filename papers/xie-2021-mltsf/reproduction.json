@@ -2345,6 +2345,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.08457,
+          "gpu_hours_basis": "upper_bound",
+          "cost_usd": 0.211425,
+          "cost_basis": "rate_estimate",
+          "source": "No Modal app ID was recorded, so billing cannot be matched. GPU-hours = finished_at_utc - started_at_utc x gpu_count 1; cost = GPU-hours x A100-80GB rate 2.50 USD/h (billing rates, read 2026-11-16), GPU only, excluding CPU and memory; A100-80GB assumed from the paper's other runs"
         }
       },
       "purpose": "Real median/p95/max videos, optimizer steps with GFE, checkpoint roundtrip, scorer self-check and tiny-dev evaluation.",
@@ -2456,6 +2463,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.020066,
+          "gpu_hours_basis": "upper_bound",
+          "cost_usd": 0.050165,
+          "cost_basis": "rate_estimate",
+          "source": "No Modal app ID was recorded, so billing cannot be matched. GPU-hours = finished_at_utc - started_at_utc x gpu_count 1; cost = GPU-hours x A100-80GB rate 2.50 USD/h (billing rates, read 2026-11-16), GPU only, excluding CPU and memory; A100-80GB assumed from the paper's other runs"
         }
       },
       "purpose": "Concurrent frame enumeration replaces observed serial metadata bottleneck.",
@@ -2539,7 +2553,14 @@
             "test_model.py": "9319a2493a63d4f07e3dd4186db4579ffa86ff1955d92b9d0a82b7e8729fef7e"
           }
         },
-        "gpu_hours": 0.07540011466416666
+        "gpu_hours": 0.07540011466416666,
+        "usage": {
+          "gpu_hours": 0.0754,
+          "gpu_hours_basis": "upper_bound",
+          "cost_usd": 0.1885,
+          "cost_basis": "rate_estimate",
+          "source": "No Modal app ID was recorded, so billing cannot be matched. GPU-hours = finished_at_utc - started_at_utc x gpu_count 1; cost = GPU-hours x A100-80GB rate 2.50 USD/h (billing rates, read 2026-11-16), GPU only, excluding CPU and memory; A100-80GB assumed from the paper's other runs"
+        }
       },
       "purpose": "Concurrent frame enumeration replaces observed serial metadata bottleneck.",
       "started_at_utc": "2026-11-02T14:44:10.039327+00:00",
@@ -2662,7 +2683,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu_hours": 0.034474437243333336
+        "gpu_hours": 0.034474437243333336,
+        "usage": {
+          "gpu_hours": 0.03928,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.10238,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-XuaEFtjB9CjnSLq1Pslcna; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
+        }
       },
       "purpose": "Test exact pixel/RNG and checkpoint equivalence; matched-length first-read timings, warm serial versus prefetched training, longest permitted augmented video, real optimizer resume and tiny evaluation. Does not launch full training.",
       "exit_code": 1,
@@ -2994,7 +3022,14 @@
           "cuda": "13.1",
           "gpu": "NVIDIA A100-SXM4-80GB, 610.57.04, 81920 MiB"
         },
-        "allocation_note": "Modal supplied an A100-SXM4-80GB despite the A100-40GB request. Peak reserved memory supports a 40GB fit; physical 40GB-card throughput and actual invoice are not verified."
+        "allocation_note": "Modal supplied an A100-SXM4-80GB despite the A100-40GB request. Peak reserved memory supports a 40GB fit; physical 40GB-card throughput and actual invoice are not verified.",
+        "usage": {
+          "gpu_hours": 0.04764,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.124191,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-X0dnVAazhdoNlWo4QXtJuz; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
+        }
       },
       "run_id": "cost-benchmark-2",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xie-2021-mltsf/scripts/modal_app.py::benchmark --run-id cost-benchmark-2",
@@ -3613,6 +3648,13 @@
           "seconds_upper_bound": 1811.0,
           "tasks": 0,
           "no_remaining_containers_verified": true
+        },
+        "usage": {
+          "gpu_hours": 0.498558,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.299442,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-au0zuR75CEnjm6u3sXjDWb; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "First bounded segment of the authorized60-epoch conditional reconstruction; preserve complete progress for continuation.",
@@ -3720,6 +3762,13 @@
           "seconds_upper_bound": 2165.0,
           "tasks": 0,
           "no_remaining_containers_verified": true
+        },
+        "usage": {
+          "gpu_hours": 0.589487,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.536439,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-5ZiZbyHFkCsbIttOsleDPx; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "First bounded segment of the authorized60-epoch conditional reconstruction; preserve complete progress for continuation.",
@@ -5176,6 +5225,13 @@
           "seconds_upper_bound": 22320.0,
           "tasks": 0,
           "no_remaining_containers_verified": true
+        },
+        "usage": {
+          "gpu_hours": 6.178075,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 16.102536,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-wybJ8hh9bxrf8FpVLWwyjy; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "Sequential base-only continuation from epoch1/step4600 after approved single broken-clip exclusion and CTC-valid augmentation guard; retain completed optimizer updates.",
@@ -5583,6 +5639,13 @@
             "modal_app.py": "337f97a156d51999f1da9d54cc440e2e76d144da59a56b49d60aeef8856b0ea4",
             "benchmark.py": "676515cc886ccef23d584696468de56d6ff271fb7cc05368f018b9ba1db0594c"
           }
+        },
+        "usage": {
+          "gpu_hours": 23.009273,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 59.971368,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-jwXPWXWCFpNZXQiZaDTMWU; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "Source-identical BASE continuation from the CPU-verified epoch10/step1000 checkpoint after platform preemption. Preserve model/optimizer/RNG; GFE stays paused. New bounded segment, not an automatic retry.",
@@ -6437,6 +6500,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.0,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 4.6e-05,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-AXI81YypL7F18A5U2pzvs2; no GPU rows billed for this app: no GPU container ran"
         }
       },
       "purpose": "Finish BASE epochs58-60 and final evaluation from verified epoch58/step368; scientific source, model/optimizer/RNG and protocol unchanged. GFE stays paused.",
@@ -6573,6 +6643,13 @@
             "benchmark.py": "676515cc886ccef23d584696468de56d6ff271fb7cc05368f018b9ba1db0594c",
             "experiment.py": "2a4c13477d30eab5147d066e81e872927acb473c8398e5a693f8291834366d07"
           }
+        },
+        "usage": {
+          "gpu_hours": 1.503829,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 3.919579,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-SHGlIeN5jmahUaG31si1hk, ap-e9LTmSS9yxnaRIA7BiIty7; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16); ap-SHGlIeN5jmahUaG31si1hk has no billing rows (no cost incurred)"
         }
       },
       "purpose": "Finish BASE epochs58-60 and final evaluation from verified epoch58/step368; scientific source, model/optimizer/RNG and protocol unchanged. GFE stays paused. Prior segment4 launch stopped before invoking training; this launch reuses the now-built image and never reuses its attempt identity.",
@@ -6813,6 +6890,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.028053,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.073219,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-SzZZWO0X875Lt3YdemiDkB; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "User-authorized investigation of batch normalization train/eval mismatch and generalization. Read-only immutable BASE checkpoints52 and60; fixed128train/128dev center-crop samples. Four normalization modes at52; running/all-video modes at60. No training, checkpoint changes, GFE or test-set tuning.",
@@ -6949,6 +7033,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.04542,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.118429,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-jOp6I1jPN3w52pAt9gxosi; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "purpose": "User-authorized investigation of batch normalization train/eval mismatch and generalization. Read-only immutable BASE checkpoints52 and60; fixed128train/128dev center-crop samples. Four normalization modes at52; running/all-video modes at60. No training, checkpoint changes, GFE or test-set tuning.",
@@ -7395,6 +7486,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.098921,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.257886,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-P1vaPZdAAjjn6gkSzARBwL; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "execution_state": "terminal",
