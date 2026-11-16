@@ -137,7 +137,7 @@ Proceed without asking only inside the root compute gate. If the estimate is nea
 - Mount `huggingface-cache` and set the required Hugging Face cache environment on every Modal reproduction function.
 - Make training checkpointable and test resume before the full run.
 - Keep the `datasets` Volume read-only during experiments; write checkpoints/results to a separate paper-specific Volume or other permitted destination.
-- Record the Modal app ID, function-call/run ID, environment, GPU, image ID/digest, start/end timestamps, terminal state, and dashboard/log links.
+- Record every Modal app ID in `compute.modal_app_ids` as soon as the launch output shows it (the app's dashboard URL contains it), including the new app of each resume. Also record the function-call/run ID, environment, GPU, image ID/digest, start/end timestamps, terminal state, and dashboard/log links.
 - Monitor to completion. Fetch final logs and output manifests even after a remote failure.
 - Cancel runaway or clearly invalid work within the recorded stop ceiling; preserve evidence before retrying.
 

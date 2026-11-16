@@ -362,6 +362,48 @@ def validate_artifacts(
     return artifacts
 
 
+MODAL_APP_ID = re.compile(r"\bap-[0-9A-Za-z]{22}\b")
+LEGACY_APP_ID_FIELDS = ("app_id", "modal_app_id")
+
+
+def validate_modal_app_ids(
+    run_id: str, run: dict[str, Any], noncompliant_run_ids: set[str], issues: list[str]
+) -> None:
+    label = f"run {run_id!r}"
+    compute = run.get("compute") if isinstance(run.get("compute"), dict) else {}
+    for where, obj in (("", run), ("compute.", compute), ("modal.", run.get("modal"))):
+        if isinstance(obj, dict):
+            for field in LEGACY_APP_ID_FIELDS:
+                if field in obj:
+                    issues.append(
+                        f"{label}.{where}{field} is replaced by compute.modal_app_ids"
+                    )
+    app_ids = compute.get("modal_app_ids")
+    mentioned = set(
+        MODAL_APP_ID.findall(
+            json.dumps({**run, "compute": {**compute, "modal_app_ids": None}})
+        )
+    )
+    if app_ids is None:
+        if compute.get("platform") == "modal" or mentioned:
+            issues.append(f"Modal {label} needs compute.modal_app_ids")
+        return
+    if not isinstance(app_ids, list) or not all(
+        isinstance(app_id, str) and MODAL_APP_ID.fullmatch(app_id) for app_id in app_ids
+    ):
+        issues.append(f"{label}.compute.modal_app_ids must be a list of Modal app IDs")
+        return
+    if len(set(app_ids)) != len(app_ids):
+        issues.append(f"{label}.compute.modal_app_ids has duplicates")
+    for app_id in sorted(mentioned - set(app_ids)):
+        issues.append(f"{label} mentions {app_id} but compute.modal_app_ids omits it")
+    if not app_ids and run_id not in noncompliant_run_ids:
+        issues.append(
+            f"Modal {label} has no app ID; record the lapse in a noncompliance "
+            "entry whose run_ids include this run"
+        )
+
+
 def validate_runs(
     document: dict[str, Any],
     artifacts: dict[str, Any],
@@ -422,6 +464,7 @@ def validate_runs(
             unknown_fields,
             issues,
         )
+        validate_modal_app_ids(run_id, run, noncompliant_run_ids, issues)
         compute = run.get("compute")
         if isinstance(compute, dict) and compute.get("platform") == "modal":
             if compute.get("modal_profile") != "repro-sign":

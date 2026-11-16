@@ -18,6 +18,10 @@ HISTORICAL_PAPER_ID = "camgoz-2020-slt"
 HISTORICAL_SHA = "9fe456f04eae036309ce538cd0e650299002390772d2d4daddcc815bb29bc15f"
 
 
+APP_ID = "ap-" + "A" * 22
+OTHER_APP_ID = "ap-" + "b1" * 11
+
+
 def valid_document() -> dict:
     return {
         "paper_id": "test-paper",
@@ -454,6 +458,7 @@ class ValidatorTest(unittest.TestCase):
         document["runs"][0]["compute"] = {
             "platform": "modal",
             "modal_profile": "repro-sign",
+            "modal_app_ids": [APP_ID],
             "gpu_count": 0,
             "shared_cache": {
                 "modal_volume": "huggingface-cache",
@@ -497,6 +502,98 @@ class ValidatorTest(unittest.TestCase):
         result = self.validate(document)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("has invalid cache environment", result.stderr)
+
+    def modal_run_document(self) -> dict:
+        document = valid_document()
+        document["runs"][0]["compute"] = {
+            "platform": "modal",
+            "modal_profile": "repro-sign",
+            "modal_app_ids": [APP_ID],
+            "gpu_count": 0,
+            "shared_cache": {
+                "modal_volume": "huggingface-cache",
+                "mount_path": "/cache/huggingface",
+                "environment": {
+                    "HF_HOME": "/cache/huggingface",
+                    "HF_HUB_CACHE": "/cache/huggingface/hub",
+                },
+            },
+        }
+        return document
+
+    def assert_invalid(self, document: dict, message: str) -> None:
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(message, result.stderr)
+
+    def test_modal_run_with_app_ids_validates(self) -> None:
+        document = self.modal_run_document()
+        document["runs"][0]["compute"]["modal_app_ids"].append(OTHER_APP_ID)
+        document["runs"][0]["compute"]["dashboard_url"] = (
+            f"https://modal.com/apps/repro-sign/main/{OTHER_APP_ID}"
+        )
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_modal_run_requires_app_ids(self) -> None:
+        document = self.modal_run_document()
+        del document["runs"][0]["compute"]["modal_app_ids"]
+        self.assert_invalid(document, "needs compute.modal_app_ids")
+
+    def test_app_ids_must_be_modal_app_ids(self) -> None:
+        for value in ("ap-x", ["unknown"], ["ap-short"], [APP_ID, APP_ID]):
+            with self.subTest(value=value):
+                document = self.modal_run_document()
+                document["runs"][0]["compute"]["modal_app_ids"] = value
+                message = (
+                    "has duplicates"
+                    if value == [APP_ID, APP_ID]
+                    else ("must be a list of Modal app IDs")
+                )
+                self.assert_invalid(document, message)
+
+    def test_missing_app_id_needs_noncompliance(self) -> None:
+        document = self.modal_run_document()
+        document["runs"][0]["compute"]["modal_app_ids"] = []
+        self.assert_invalid(document, "has no app ID")
+        document["noncompliance"] = [
+            {
+                "id": "app-id-not-recorded",
+                "description": "The launch output with the app ID was lost.",
+                "requirement": "AGENTS.md: record the Modal app ID of every run.",
+                "run_ids": ["run-1"],
+            }
+        ]
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_every_mentioned_app_id_is_listed(self) -> None:
+        document = self.modal_run_document()
+        document["runs"][0]["detail"] = f"Resumed in {OTHER_APP_ID}."
+        self.assert_invalid(
+            document, f"mentions {OTHER_APP_ID} but compute.modal_app_ids omits it"
+        )
+
+    def test_run_mentioning_an_app_id_needs_app_ids(self) -> None:
+        document = valid_document()
+        document["runs"][0]["modal"] = {"dashboard_url": f"https://x/{APP_ID}"}
+        self.assert_invalid(document, "needs compute.modal_app_ids")
+
+    def test_legacy_app_id_fields_are_rejected(self) -> None:
+        for where, field in (
+            ("compute", "modal_app_id"),
+            ("compute", "app_id"),
+            ("run", "app_id"),
+            ("modal", "app_id"),
+        ):
+            with self.subTest(where=where, field=field):
+                document = self.modal_run_document()
+                run = document["runs"][0]
+                target = {"run": run, "compute": run["compute"]}.get(where)
+                if target is None:
+                    target = run.setdefault("modal", {})
+                target[field] = APP_ID
+                self.assert_invalid(document, "is replaced by compute.modal_app_ids")
 
     def test_modal_gpu_run_requires_gpu_and_cost_ceilings(self) -> None:
         document = valid_document()
