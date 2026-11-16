@@ -370,6 +370,13 @@ def validate_runs(
     issues: list[str],
 ) -> dict[str, Any]:
     runs = keyed(document.get("runs"), "run_id", "runs", issues)
+    noncompliant_run_ids = {
+        run_id
+        for entry in document.get("noncompliance") or []
+        if isinstance(entry, dict) and isinstance(entry.get("run_ids"), list)
+        for run_id in entry["run_ids"]
+        if isinstance(run_id, str)
+    }
     attempt_groups: dict[str, dict[str, Any]] = {}
     paper_id = document.get("paper_id")
     registered_source_hash = (
@@ -456,7 +463,20 @@ def validate_runs(
                 if not isinstance(environment, dict) or any(
                     environment.get(key) != value for key, value in expected.items()
                 ):
-                    issues.append(f"Modal {label} has invalid cache environment")
+                    # Variables that were not set are recorded as null, and the
+                    # lapse is recorded as noncompliance naming this run.
+                    unset = isinstance(environment, dict) and all(
+                        key in environment and environment[key] in (None, value)
+                        for key, value in expected.items()
+                    )
+                    if not unset:
+                        issues.append(f"Modal {label} has invalid cache environment")
+                    elif run_id not in noncompliant_run_ids:
+                        issues.append(
+                            f"Modal {label} ran without the cache environment; "
+                            "record it in a noncompliance entry whose run_ids "
+                            "include this run"
+                        )
     for group_id, group in attempt_groups.items():
         numbers = group["numbers"]
         expected = set(range(1, max(numbers) + 1))

@@ -449,6 +449,55 @@ class ValidatorTest(unittest.TestCase):
         self.assertIn("top-level guesses is no longer supported", result.stderr)
         self.assertIn("datasets[0].deviations is no longer supported", result.stderr)
 
+    def unset_cache_environment_document(self) -> dict:
+        document = valid_document()
+        document["runs"][0]["compute"] = {
+            "platform": "modal",
+            "modal_profile": "repro-sign",
+            "gpu_count": 0,
+            "shared_cache": {
+                "modal_volume": "huggingface-cache",
+                "mount_path": "/cache/huggingface",
+                "environment": {"HF_HOME": None, "HF_HUB_CACHE": None},
+            },
+        }
+        document["noncompliance"] = [
+            {
+                "id": "hf-cache-environment-unset",
+                "description": "The image did not set the cache variables.",
+                "requirement": "AGENTS.md: set HF_HOME and HF_HUB_CACHE on the cache.",
+                "run_ids": ["run-1"],
+            }
+        ]
+        return document
+
+    def test_unset_cache_environment_with_noncompliance_validates(self) -> None:
+        result = self.validate(self.unset_cache_environment_document())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
+
+    def test_unset_cache_environment_needs_noncompliance(self) -> None:
+        document = self.unset_cache_environment_document()
+        document["noncompliance"] = []
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ran without the cache environment", result.stderr)
+
+    def test_unset_cache_noncompliance_must_name_the_run(self) -> None:
+        document = self.unset_cache_environment_document()
+        document["noncompliance"][0]["run_ids"] = []
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ran without the cache environment", result.stderr)
+
+    def test_wrong_cache_environment_value_stays_an_error(self) -> None:
+        document = self.unset_cache_environment_document()
+        environment = document["runs"][0]["compute"]["shared_cache"]["environment"]
+        environment["HF_HOME"] = "/root/.cache/huggingface"
+        result = self.validate(document)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("has invalid cache environment", result.stderr)
+
     def test_modal_gpu_run_requires_gpu_and_cost_ceilings(self) -> None:
         document = valid_document()
         document["runs"][0]["compute"] = {

@@ -111,6 +111,8 @@ HF_HOME=/cache/huggingface
 HF_HUB_CACHE=/cache/huggingface/hub
 ```
 
+If a run mounted the cache without these variables, record each one as `null` in `compute.shared_cache.environment`. Never backfill values that were not set. Record the lapse as a `noncompliance` entry (see `evidence-and-retries.md`) whose `run_ids` include that run, with the cache requirement as its `requirement`. The validator accepts null values only for runs named in such an entry. A wrong non-null value is always an error.
+
 Use the shared cache for Hugging Face Hub downloads, model weights, tokenizers, and reusable Hub assets. Pin repository revisions in code/config and record them in the run entry; a cache hit does not establish identity or provenance.
 
 Do not use this Volume as the authoritative home for datasets, checkpoints, predictions, metrics, logs, or secrets. Material needed for the exact dataset goes under `/datasets/<slug>` subject to the data gate. Outputs go to paper-specific storage.
