@@ -2553,14 +2553,14 @@
             "test_model.py": "9319a2493a63d4f07e3dd4186db4579ffa86ff1955d92b9d0a82b7e8729fef7e"
           }
         },
-        "gpu_hours": 0.07540011466416666,
         "usage": {
           "gpu_hours": 0.0754,
           "gpu_hours_basis": "upper_bound",
           "cost_usd": 0.1885,
           "cost_basis": "rate_estimate",
           "source": "No Modal app ID was recorded, so billing cannot be matched. GPU-hours = finished_at_utc - started_at_utc x gpu_count 1; cost = GPU-hours x A100-80GB rate 2.50 USD/h (billing rates, read 2026-11-16), GPU only, excluding CPU and memory; A100-80GB assumed from the paper's other runs"
-        }
+        },
+        "wall_time_hours": 0.07540011466416666
       },
       "purpose": "Concurrent frame enumeration replaces observed serial metadata bottleneck.",
       "started_at_utc": "2026-11-02T14:44:10.039327+00:00",
@@ -2683,14 +2683,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu_hours": 0.034474437243333336,
         "usage": {
           "gpu_hours": 0.03928,
           "gpu_hours_basis": "measured",
           "cost_usd": 0.10238,
           "cost_basis": "billed",
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-XuaEFtjB9CjnSLq1Pslcna; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
-        }
+        },
+        "wall_time_hours": 0.034474437243333336
       },
       "purpose": "Test exact pixel/RNG and checkpoint equivalence; matched-length first-read timings, warm serial versus prefetched training, longest permitted augmented video, real optimizer resume and tiny evaluation. Does not launch full training.",
       "exit_code": 1,
@@ -3014,7 +3014,6 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "gpu_hours": 0.04419335906249999,
         "gpu_requested": "A100-40GB",
         "gpu_observed": "NVIDIA A100-SXM4-80GB, 610.57.04, 81920 MiB",
         "environment": {
@@ -3022,14 +3021,15 @@
           "cuda": "13.1",
           "gpu": "NVIDIA A100-SXM4-80GB, 610.57.04, 81920 MiB"
         },
-        "allocation_note": "Modal supplied an A100-SXM4-80GB despite the A100-40GB request. Peak reserved memory supports a 40GB fit; physical 40GB-card throughput and actual invoice are not verified.",
+        "allocation_note": "Modal supplied an A100-SXM4-80GB despite the A100-40GB request. Peak reserved memory supports a 40GB fit; physical 40GB-card throughput is not verified.",
         "usage": {
           "gpu_hours": 0.04764,
           "gpu_hours_basis": "measured",
           "cost_usd": 0.124191,
           "cost_basis": "billed",
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-X0dnVAazhdoNlWo4QXtJuz; GPU-hours = GPU cost / A100-40GB 2.10 USD/h (billing rates, read 2026-11-16)"
-        }
+        },
+        "wall_time_hours": 0.04419335906249999
       },
       "run_id": "cost-benchmark-2",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/xie-2021-mltsf/scripts/modal_app.py::benchmark --run-id cost-benchmark-2",

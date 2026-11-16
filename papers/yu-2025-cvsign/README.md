@@ -207,9 +207,9 @@ All runs are in `reproduction.json.runs` with Modal app IDs (incomplete for `io-
 | Checkpoint | 829 MB per epoch |
 | Resume | epoch 1 continued from the epoch-0 checkpoint; mean loss 182.6 → 111.0 |
 
-**Full run (`full-phoenix14t-002`), measured:** 63 epochs at about 33 min each (32 min training, 1.5 min dev evaluation), on one L40S. That is **36.8 GPU-hours** of container time, including three recomputed epochs and staging, or about **USD 118** at USD 3.22/h. The approved ceilings were 70 GPU-hours, CHF 200 and 4 days. `eval-phoenix14t-002` took about 10 minutes more. The preflight projected 55 GPU-hours because its subset was weighted toward long clips.
+**Full run (`full-phoenix14t-002`), measured:** 63 epochs at about 33 min each (32 min training, 1.5 min dev evaluation), on one L40S. Modal billing gives **36.79 GPU-hours** and **USD 118.43**, including three recomputed epochs and staging. The approved ceilings were 70 GPU-hours, CHF 200 and 4 days. `eval-phoenix14t-002` took about 10 minutes more. The preflight projected 55 GPU-hours because its subset was weighted toward long clips.
 
-About 2.1 L40S GPU-hours of diagnostics and preflights plus about 1.5 CPU-hours of preprocessing were spent on 2026-09-27.
+About 2.1 L40S GPU-hours of diagnostics and preflights plus about 1.5 CPU-hours of preprocessing were spent on 2026-09-27. The 12 retained GPU runs among them billed 1.37 GPU-hours and USD 4.41.
 
 ## Attempts, failures and dead ends
 

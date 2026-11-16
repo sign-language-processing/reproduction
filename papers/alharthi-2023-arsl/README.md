@@ -80,7 +80,7 @@ The paper defines MSE but reports losses as high as 17.744, which probability-sp
 
 ## Execution and evidence
 
-Runs used A100 GPUs on Modal, with up to four models training concurrently. Eight interrupted jobs resumed from verified checkpoints. The conservative total is **13.76 GPU-hours**, including preflights and interruptions, within the approved 22.33-hour ceiling. Actual billed cost was not retrieved.
+Runs used A100 GPUs on Modal, with up to four models training concurrently. Eight interrupted jobs resumed from verified checkpoints. Modal billing for the retained runs' apps totals **13.57 GPU-hours** and **USD 37.10**, including preflights and interruptions, within the approved 22.33-hour ceiling. Billing charged the A100-40GB rate.
 
 All 250 epoch evaluations were retained. We independently recomputed seven metrics from each model's first and final predictions: all 224 values matched within floating-point precision. Checkpoint recovery preserved earlier epoch artifacts byte-for-byte.
 

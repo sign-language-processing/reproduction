@@ -156,7 +156,7 @@ python3 papers/xie-2021-mltsf/scripts/test_pipeline.py
 - `model.py` implements the network, CTC decoding, forced alignment and GFE; `experiment.py` loads frames, trains with resumable checkpoints, selects on dev, evaluates test and runs the scorer; `modal_app.py` runs everything in the container; `evaluate_adapted.py` and `diagnose_bn.py` implement the per-video normalization evaluation and diagnostic. The tests cover CTC path optimality, neighbor selection and alignment mapping, checkpoint/BatchNorm equivalence, loader pixels and RNG, and interrupted-training resume.
 - Training resumes from the run directory's latest checkpoint, including mid-epoch position, optimizer and RNG state. It checkpoints every 100 videos or five minutes.
 - The Dockerfile pins the shared base image by digest. Runs used an NVIDIA A100-SXM4-40GB (driver 610.57.04) with PyTorch 2.11.0a0+eb65b36914.nv26.02 and CUDA 13.1, eight CPU cores and 16 GiB RAM. Datasets are mounted read-only and the shared Hugging Face cache at `/cache/huggingface`.
-- mLTSF-Net training took about 31 A100 GPU-hours across four segments. The whole attempt was conservatively accounted at USD 114 of a USD 160 user-authorized ceiling.
+- mLTSF-Net training took about 31 A100 GPU-hours across four segments (billed 31.19 GPU-hours, USD 81.29). The whole attempt was conservatively accounted at USD 114 of a USD 160 user-authorized ceiling; its retained GPU runs billed 32.22 GPU-hours and USD 83.96, three of them estimated because they have no app ID.
 - CUDA CTC gradients are nondeterministic, so repeated GPU runs do not reproduce bitwise-identical trajectories.
 
 ## Limitations
