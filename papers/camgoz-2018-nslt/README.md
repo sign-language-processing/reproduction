@@ -9,6 +9,8 @@ datasets:
 
 # Neural Sign Language Translation reproduction
 
+**Paper ID:** `camgoz-2018-nslt`
+
 This is a faithful run of the authors' published `neccam/nslt` Luong recipe for Camgoz et al., *Neural Sign Language Translation* (CVPR 2018). It targets the Luong row of Table 5, not the separate Bahdanau system in Table 6.
 
 > **Not part of the REPRO-SIGN study sample.** This paper was not among the papers randomly selected for reproduction. The reproduction served as an initial example for the team.

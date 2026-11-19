@@ -1,5 +1,7 @@
 # Xie et al. (2021): mLTSF-Net, Table 3 — conditional reproduction
 
+**Paper ID:** `a514cc9796034bcc01450ac968b2f576fa35c70f`
+
 **Pipeline status:** `insufficient_information`
 **Numerical agreement:** `not_assessed`
 **Preference level:** 3

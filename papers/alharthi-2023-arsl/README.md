@@ -1,5 +1,7 @@
 # Arabic sign language recognition reproduction
 
+**Paper ID:** `4982792cd3441ab3dbcc93761e3a1778b92a433f`
+
 Alharthi and Alzahrani, *Vision Transformers and Transfer Learning Approaches for Arabic Sign Language Recognition*. Applied Sciences, 2023. [Paper](https://doi.org/10.3390/app132111625).
 
 **Preference level:** 3

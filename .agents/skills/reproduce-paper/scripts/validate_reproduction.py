@@ -1348,6 +1348,12 @@ def validate_readme(
         re.MULTILINE,
     ):
         issues.append("README.md preference level does not match reproduction.json")
+    if not re.search(
+        rf"^\*\*Paper ID:\*\*\s+`{re.escape(str(document.get('paper_id')))}`\s*$",
+        text,
+        re.MULTILINE,
+    ):
+        issues.append("README.md Paper ID line does not match reproduction.json")
     for heading, key in (
         ("Guesses and deviations", "guesses_and_deviations"),
         ("Noncompliance", "noncompliance"),

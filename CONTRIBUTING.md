@@ -144,8 +144,9 @@ annotation and reviewing platform ([repro-sign-survey-ui](https://github.com/bri
 not the platform's internal record `id`. It is the value the export was downloaded by, so that a report can be traced back to the exact annotated
 candidate and matched up with Team S's pool during analysis. Do not substitute the directory
 slug there; the slug is the path, not the identity. A `direct_user_request` assignment has no
-platform record, and uses the paper slug instead. The validator does not cross-check this line
-against the JSON the way it does the statuses, so it is on the reviewer.
+platform record, and uses the paper slug instead; this includes papers outside the study sample,
+such as the Camgoz examples. The validator checks that the line matches the JSON; whether
+`paper_id` is the right ID is on the reviewer.
 
 **Guesses, deviations and noncompliance are filed correctly.** The validator checks the shape, not
 the classification. Check each `kind`: a `guess` is only where the paper is silent; the paper
