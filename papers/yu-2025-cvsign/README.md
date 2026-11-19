@@ -128,7 +128,9 @@ With the gates at zero, the patched encoder reproduces torchvision's ImageNet Re
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `modal-app-ids-incomplete` | io-gpu-probe-001 ran several probe apps but recorded only two app IDs. The record's former modal_app_id value read: "ap-ntSRJUo5LsTzGqS0BLKpOT (io_probe phoenix14 w=4); ap-NOpSUTL3cXqOhS5oLCl8Ih (gpu_probe A100); plus io_probe w=16/32 and gpu_probe L4/A10G/T4 apps". | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `io-gpu-probe-001` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
 
 ## Environment and patches
 
@@ -193,7 +195,7 @@ The `diagnose_*` entry points behind the cuDNN CTC diagnosis are no longer in th
 
 ## Execution evidence and compute
 
-All runs are in `reproduction.json.runs` with Modal app IDs, timestamps, ceilings and artifact hashes. Outputs live on the Modal Volume `yu-2025-cvsign-results` under `runs/{run_id}/`: upstream `log.txt`, `dev.txt`, `test.txt`, sclite outputs, checkpoints and `dirty.patch`, the exact source diff each run used.
+All runs are in `reproduction.json.runs` with Modal app IDs (incomplete for `io-gpu-probe-001`; see Noncompliance), timestamps, ceilings and artifact hashes. Outputs live on the Modal Volume `yu-2025-cvsign-results` under `runs/{run_id}/`: upstream `log.txt`, `dev.txt`, `test.txt`, sclite outputs, checkpoints and `dirty.patch`, the exact source diff each run used.
 
 `preflight-phoenix14t-004` (one L40S, 46068 MiB):
 
