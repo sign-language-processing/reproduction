@@ -113,10 +113,19 @@ Authentication, license/access, and budget/protocol failures have
 failure permits the initial attempt plus at most three retries, so
 `max_attempts` may not exceed 4.
 
-For Modal runs, record `compute.gpu_count`. A contemporaneous GPU run has
-non-null GPU-hour and cost ceilings. A retrospective GPU run may use null only
-when each missing ceiling is explicitly listed as unknown. A CPU or non-compute
-run may use `null` for ceilings that do not apply.
+For Modal runs, record `compute.gpu_count` and `compute.modal_app_ids`: every
+Modal app ID (`ap-` plus 22 letters or digits) the run used, in a list, because
+a resumed or relaunched run can span several apps. Any app ID mentioned
+elsewhere in the run entry must also be in that list, and a run that names a
+Modal app declares `compute.platform: "modal"`. The ID fields `app_id`
+and `modal_app_id`, on the run, its `compute`, or its `modal` object, are
+rejected. A run whose app ID was not recorded keeps an empty list, and the
+lapse is recorded as a `noncompliance` entry whose `run_ids` include it.
+
+A contemporaneous GPU run has non-null GPU-hour and cost ceilings. A
+retrospective GPU run may use null only when each missing ceiling is explicitly
+listed as unknown. A CPU or non-compute run may use `null` for ceilings that do
+not apply.
 
 ### Terminal states and reason codes
 

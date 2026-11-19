@@ -74,7 +74,9 @@ The user authorized documented protocol judgments. We retained the published imp
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `hf-cache-setup-not-recorded` | The run entry does not record whether huggingface-cache was mounted or the HF variables set, and it names no source hash that matches a retained version of its Modal app, so the setup cannot be checked. Every committed version of scripts/modal_app.py that defines these functions (fingerprint, full_fingerprint, rectification_check, prepare) mounts the cache and sets both variables for them, but none is known to be the code that ran. | AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface with HF_HOME and HF_HUB_CACHE set. | `spoter-fingerprint-001`, `spoter-fingerprint-002`, `spoter-fingerprint-003`, `spoter-whole-corpus-001`, `rectification-check-001`, `prepare-lsa64-tiny-001`, `prepare-wlasl100-tiny-001`, `prepare-lsa64-tiny-002`, `prepare-wlasl100-tiny-002` | Cache reuse only; the run's outputs do not depend on it. |  |
 
 ## Sources and data provenance
 
@@ -134,7 +136,7 @@ The tiny preparation ID is the directory expected by the adapter; repeat prepara
 
 Wait for preparation to complete before launching training. Repeat with `wlasl100` and corresponding fresh IDs. Preparation is idempotent against source and derived-file hashes. Training invokes the pinned `train.py`; evaluation occurs inside its epoch loop. Completed output is recognized by its metrics artifact. Epoch resume was verified in preflight; any retry must first preserve its prior invocation metadata and follow the recorded attempt ceiling.
 
-The `datasets` and `huggingface-cache` handles explicitly select VolumeFS v2. Training/evaluation mounts datasets read-only; only controlled acquisition/preparation writes them. Shared cache mounts read-write at `/cache/huggingface`, with `HF_HOME` and `HF_HUB_CACHE` set. No Hub model is downloaded. Outputs use the existing paper-specific Volume; datasets never use that Volume except temporary tiny preflight slices.
+The `datasets` and `huggingface-cache` handles explicitly select VolumeFS v2. Training/evaluation mounts datasets read-only; only controlled acquisition/preparation writes them. Shared cache mounts read-write at `/cache/huggingface`, with `HF_HOME` and `HF_HUB_CACHE` set. This is verified from the executed source for the six full-data preparation, preflight and full runs; the nine earlier diagnostic and tiny-preparation runs did not record which source ran (see Noncompliance). No Hub model is downloaded. Outputs use the existing paper-specific Volume; datasets never use that Volume except temporary tiny preflight slices.
 
 ## Runs, failures and resources
 
