@@ -119,7 +119,7 @@ Optional fields, with these spellings and no others: `paper_says` (what the pape
   {
     "id": "ceilings-not-declared",
     "description": "Two GPU runs were launched with only the Modal function timeout.",
-    "requirement": "stopping-criteria.md: a contemporaneous GPU run declares GPU-hour and CHF ceilings before launch.",
+    "requirement": "stopping-criteria.md: a contemporaneous GPU run declares GPU-hour and cost ceilings before launch.",
     "run_ids": ["full-1", "full-2"],
     "effect": "Budget control only; the reported values are unaffected.",
     "resolution": "Recorded rather than backfilled; no re-run."
