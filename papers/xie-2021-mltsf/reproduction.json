@@ -2225,6 +2225,7 @@
         "max_cost_chf": 3.0
       },
       "compute": {
+        "platform": "modal",
         "modal_app_ids": [
           "ap-RKqZ1ribBRvQbSG8EnSVGG"
         ],
@@ -2248,7 +2249,6 @@
         "gate_ids": []
       },
       "modal": {
-        "profile": "repro-sign",
         "function_call_id": "fc-01M6EA8SM8SSZW3B5XN3BW6WXV",
         "url": "https://modal.com/apps/repro-sign/main/ap-RKqZ1ribBRvQbSG8EnSVGG"
       },
@@ -9463,6 +9463,15 @@
         "preflight-3"
       ],
       "effect": "Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing."
+    },
+    {
+      "id": "hf-cache-setup-not-recorded",
+      "description": "The run entry does not record whether huggingface-cache was mounted or the HF variables set, and it names no source hash that matches a retained version of its Modal app, so the setup cannot be checked. The committed scripts/modal_app.py mounts the cache and the paper Dockerfile sets both variables, but neither is known to be the code that ran.",
+      "requirement": "AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface with HF_HOME and HF_HUB_CACHE set.",
+      "run_ids": [
+        "data-audit-1"
+      ],
+      "effect": "Cache reuse only; the run's outputs do not depend on it."
     }
   ]
 }
