@@ -1,8 +1,10 @@
 # Siformer: comparative conclusion reproduced
 
+**Paper ID:** `d4719e6c4d9e7031bba559ad7e9a0fd84082194b`
+
 Muxin Pu, Mei Kuan Lim and Chun Yong Chong. *Siformer: Feature-isolated Transformer for Efficient Skeleton-based Sign Language Recognition*. ACM Multimedia 2024. [DOI](https://doi.org/10.1145/3664647.3681578) · [Paper, arXiv v1](https://arxiv.org/abs/2503.20436v1) · [Official code](https://github.com/mpuu00001/Siformer).
 
-Paper ID: `d4719e6c4d9e7031bba559ad7e9a0fd84082194b`. Attempt date: 2026-10-01. Scientific review: 2026-10-02.
+Attempt date: 2026-10-01. Scientific review: 2026-10-02.
 
 **Preference level:** 2
 

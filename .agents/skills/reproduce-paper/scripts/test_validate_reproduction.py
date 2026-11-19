@@ -161,7 +161,9 @@ def readme_section(heading: str, entries: list) -> str:
 
 def readme_text(document: dict) -> str:
     return (
-        "**Preference level:** 1\n\n**Pipeline status:** `"
+        "**Paper ID:** `"
+        + str(document["paper_id"])
+        + "`\n\n**Preference level:** 1\n\n**Pipeline status:** `"
         + str(document["status"]["pipeline"])
         + "`\n\n**Numerical agreement:** `"
         + str(document["status"]["numerical_agreement"])
@@ -222,6 +224,19 @@ class ValidatorTest(unittest.TestCase):
     def test_valid_record(self) -> None:
         result = self.validate(valid_document())
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_readme_paper_id_matches_record(self) -> None:
+        document = valid_document()
+        for name, readme in {
+            "missing": readme_text(document).replace("**Paper ID:**", "Paper ID:"),
+            "other id": readme_text(document).replace(
+                f"`{document['paper_id']}`", "`other-paper`"
+            ),
+        }.items():
+            with self.subTest(name):
+                result = self.validate(document, readme)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Paper ID line", result.stderr)
 
     def test_readme_sections_mirror_entry_ids(self) -> None:
         document = valid_document()
