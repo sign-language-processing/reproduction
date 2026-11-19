@@ -164,6 +164,13 @@ direct-assignment provenance) and its source hash, with no invented queue-review
 it; unknown identity is `null` with an explanation, never a plausible guess. Modal runs record
 the `repro-sign` profile, app and run IDs, GPU, and timings — and never token IDs or credentials.
 
+**GPU usage is billed before merge.** Every GPU Modal run carries `compute.usage`. Contributors
+without billing access record estimates (`upper_bound` / `rate_estimate`); CI accepts them because
+the author cannot do better. If you merge, you hold the Owner or Manager role: before merging,
+replace each estimate whose run lists `compute.modal_app_ids` with `measured` / `billed` values
+from the recipe in `references/stopping-criteria.md`, and update `source`. Only runs without a
+recorded app ID keep estimates.
+
 **Data is gated, not assumed.** Each dataset entry should establish version, subset, split,
 preprocessing, access path, licence or permission basis, expected counts, and a checksum.
 `available: yes` in a queue record proves nothing. A substituted or similarly named dataset is a
