@@ -26,7 +26,7 @@ Identity as reported by the live session; the version is the installation on the
 
 ## Scope and target contract
 
-The portal requests **Table 3** — TABLE III (Model Comparison), whose columns give the proposed ResNet (0.9777, 0.9790, 0.9777, 0.9773) and an LSTM comparison (0.8875, 0.8930, 0.8875, 0.8867). All eight are in `reproduction.json.targets`. No machine-readable portal export existed, so the record was transcribed into `assignment.normalized`; `assignment.kind` stays `direct_user_request`, and four radio fields that did not render are `null` rather than guessed.
+The portal requests **Table 3** — TABLE III (Model Comparison), whose columns give the proposed ResNet (0.9777, 0.9790, 0.9777, 0.9773) and an LSTM comparison (0.8875, 0.8930, 0.8875, 0.8867). All eight are in `reproduction.json.targets`. The attempt started from a manual transcription of the portal's web form. A Reproduction Tracker export downloaded on 2026-11-05, after the attempt, now replaces it as `assignment.record`. Every transcribed value agrees with the export, which also supplies the radio fields that had not rendered.
 
 §IV states the paper "adopted the same training parameters as our previous work[19]", so [19] (Oulad-Naoui et al., ICEIS 2024) and the ArabSign dataset paper were pinned; they supply most of what this paper omits.
 
@@ -62,6 +62,7 @@ Inconsistencies in the paper, none affecting the targets: the abstract claims "9
 | Artifact | Canonical source | Pinned revision / SHA-256 | Role |
 | --- | --- | --- | --- |
 | Paper PDF | doi:10.1109/PAIS66004.2025.11126496 | `0afdb6457dbfe7300d6a2c883d06676527bd39ecb658e59c17f48514db9d147c` | Targets and disclosed protocol |
+| Queue export (`reproductions-8b224ecbd42da766efba45d17b34b3a1255c2345-2026-11-05.json`) | REPRO-SIGN queue | `844c192390586272b5b43bde18a354d2f248a53819600263ff049b99a8b6fe09` | Assignment provenance, downloaded after the attempt |
 | Prior LSTM paper [19] | doi:10.2991/978-94-6463-496-9_24 | `c0d48f5e3c2a1ef2c560a7dd2bf36a41f6be7c9207648904720944b1a101a95f` | Inherited preprocessing, split, optimizer, and the copied accuracy |
 | ArabSign dataset paper | arXiv:2210.03951 | `7be6d45db9a17116201957bae100940d95b0f7fe36cf587b59b6aaa5ea94ccc8` | Dataset composition; documents no split though the distribution ships one |
 | ArabSign data/code | github.com/Hamzah-Luqman/ArabSign | `8f6e127a054052228027d6da98005f991d300a7b` | Project page; no data, no licence. Links the Drive folders used |
@@ -182,7 +183,7 @@ Preceding jobs, for traceability rather than retained runs: the RGB transfer `fc
 
 ## Candidate flags, ethics, and human evaluation
 
-The portal's ethics, human-evaluation, and copied-score radio values did not survive transcription and are `null` — a gap in our copy, not a clearance. The assignee raised `copied_scores` with the annotator; that query is outstanding and changes no recorded result. The paper reports no human evaluation.
+The queue record flags `copied_scores: yes` and `potential_ethical_concerns: yes`, and `includes_human_evaluation: no`. These values were not visible during the attempt, because the transcribed form did not render them. They agree with what it found independently: the LSTM column is a copied baseline, the signer-consent question is handled by the ethics gate below, and the paper reports no human evaluation. During the attempt, the assignee raised `copied_scores` with the annotator; that query predates the export, and its answer is not recorded here.
 
 **Ethics gate `arabsign-signer-consent`, resolved 2026-09-21.** ArabSign is colour video of six identifiable signers with no consent basis documented anywhere. Access, processing, storage, and reporting rest on the direct grant of the author, who collected the corpus and is its data controller; the reproduction adds no participants, keeps its copy private, redistributes nothing, and publishes no imagery, every retained artifact being a pose array, run manifest, or metric history. The residual unknown is the original recording's consent basis, which no reproduction of this paper can establish. If the study later publishes weights or derived imagery for ArabSign, those terms should be obtained from KFUPM first.
 

@@ -18,7 +18,7 @@ Before the full scores, the attempt was classified conditional because the paper
 
 ## Scope and measured results
 
-The assignment selects the two **Siformer (Ours)** rows in Table 6, page 8. Comparison rows are outside the execution scope and are used only as paper-reported evidence for the comparative conclusion; they were not rerun or independently verified against their original sources. The tracker export nests the final paper in `expand.paper`, has no `confirmation` property, and distinguishes database `id` from `paper_id`. The direct user assignment, actual redacted record and original export hash are preserved without inventing queue-review fields.
+The assignment selects the two **Siformer (Ours)** rows in Table 6, page 8. Comparison rows are outside the execution scope and are used only as paper-reported evidence for the comparative conclusion; they were not rerun or independently verified against their original sources. The assignment is the Reproduction Tracker export, preserved as a queue record with addresses redacted and its original hash.
 
 | Dataset | Published top-1 | Reproduced top-1 | Raw difference | Selected epoch |
 | --- | ---: | ---: | ---: | ---: |
