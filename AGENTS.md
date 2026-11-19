@@ -133,7 +133,7 @@ If the Modal CLI is unavailable, install it with `python3 -m pip install modal`.
 modal setup
 ```
 
-If the `repro-sign` profile or authentication is unavailable or invalid, ask the user to run `modal setup` and select/confirm the `repro-sign` workspace. Resume only after the wrapper preflight succeeds. Confirm both canonical v2 Volumes—`datasets` and `huggingface-cache`—before a run. Record the profile, function-call or run ID, environment, GPU, timestamps, and dashboard/log links in the `reproduction.json` run entry, and every Modal app ID the run used in `compute.modal_app_ids`; billing can only be matched by app ID. Never record token IDs, secrets, or credential-file contents.
+If the `repro-sign` profile or authentication is unavailable or invalid, ask the user to run `modal setup` and select/confirm the `repro-sign` workspace. Resume only after the wrapper preflight succeeds. Confirm both canonical v2 Volumes—`datasets` and `huggingface-cache`—before a run. Record the profile, function-call or run ID, environment, GPU, timestamps, and dashboard/log links in the `reproduction.json` run entry, every Modal app ID the run used in `compute.modal_app_ids` (billing can only be matched by app ID), and each GPU run's actual GPU-hours and cost in `compute.usage` (see `stopping-criteria.md`). Never record token IDs, secrets, or credential-file contents.
 
 ## Environment and compute gate
 

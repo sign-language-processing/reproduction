@@ -13,7 +13,7 @@ Capture:
 - container image reference/digest and dependency lock/freeze artifact;
 - config, seed, precision, effective batch, checkpoint input/output;
 - dataset volume/version/splits/counts/checksums;
-- hardware, GPU count/type, peak memory, wall time, GPU-hours, and cost when available;
+- hardware, GPU count/type, peak memory, wall time, and actual GPU-hours and cost in `compute.usage` (see `stopping-criteria.md`);
 - Modal profile `repro-sign`, environment, app and function-call/run IDs, and links when applicable;
 - shared cache mount `huggingface-cache`, its mount path, and Hugging Face cache environment when the run uses Modal;
 - bounded stdout/stderr and immutable references/hashes for large logs or outputs;
