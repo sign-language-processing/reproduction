@@ -127,6 +127,9 @@ NONCOMPLIANCE_FIELDS = (
     | NONCOMPLIANCE_OPTIONAL_TEXT_FIELDS
     | NONCOMPLIANCE_OPTIONAL_LIST_FIELDS
 )
+USAGE_FIELDS = {"gpu_hours", "gpu_hours_basis", "cost_usd", "cost_basis", "source"}
+GPU_HOURS_BASES = {"measured", "upper_bound", "estimated"}
+COST_BASES = {"billed", "rate_estimate"}
 HISTORICAL_RECORD_HASHES = {
     "8526aecd1407305d815883725a864405e31a54c1": (
         "6c215d86e281c7cb7c4accde67efae0f5d9da44b33852bd3310dd0eb51aad1b6"
@@ -406,6 +409,28 @@ def validate_modal_app_ids(
         )
 
 
+def validate_usage(usage: Any, label: str, issues: list[str]) -> None:
+    usage_label = f"{label}.compute.usage"
+    if usage is None:
+        issues.append(f"GPU Modal {label} needs compute.usage")
+        return
+    if not isinstance(usage, dict):
+        issues.append(f"{usage_label} must be an object")
+        return
+    check_unknown_fields(usage, USAGE_FIELDS, usage_label, issues)
+    for field in ("gpu_hours", "cost_usd"):
+        if not finite_number(usage.get(field), nonnegative=True):
+            issues.append(f"{usage_label}.{field} must be a nonnegative number")
+    if not valid_choice(usage.get("gpu_hours_basis"), GPU_HOURS_BASES):
+        issues.append(
+            f"{usage_label}.gpu_hours_basis must be one of {sorted(GPU_HOURS_BASES)}"
+        )
+    if not valid_choice(usage.get("cost_basis"), COST_BASES):
+        issues.append(f"{usage_label}.cost_basis must be one of {sorted(COST_BASES)}")
+    if not nonempty(usage.get("source")):
+        issues.append(f"{usage_label}.source must be a non-empty string")
+
+
 def validate_runs(
     document: dict[str, Any],
     artifacts: dict[str, Any],
@@ -490,6 +515,13 @@ def validate_runs(
                                 f"GPU Modal {label} needs {field} or an explicit "
                                 "retrospective unknown"
                             )
+                validate_usage(compute.get("usage"), label, issues)
+                for field in compute:
+                    if "gpu_hours" in field or "cost" in field:
+                        issues.append(
+                            f"{label}.compute.{field}: record GPU-hours and cost "
+                            "only in compute.usage"
+                        )
             cache = compute.get("shared_cache")
             if cache is None and run_id in noncompliant_run_ids:
                 pass  # cache use not recorded or not mounted; the lapse is recorded

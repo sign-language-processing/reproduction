@@ -634,6 +634,87 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("needs max_gpu_hours", result.stderr)
 
+    def gpu_run_document(self, started_at: str) -> dict:
+        document = valid_document()
+        run = document["runs"][0]
+        run["started_at_utc"] = started_at
+        run["finished_at_utc"] = started_at.replace("T10:00", "T10:30")
+        run["stop_policy"]["declared_at_utc"] = started_at.replace("T10:00", "T09:55")
+        run["stop_policy"]["max_gpu_hours"] = 1.0
+        run["stop_policy"]["max_cost_chf"] = 5.0
+        run["compute"] = {
+            "platform": "modal",
+            "modal_profile": "repro-sign",
+            "modal_app_ids": [APP_ID],
+            "gpu_count": 1,
+            "shared_cache": {
+                "modal_volume": "huggingface-cache",
+                "mount_path": "/cache/huggingface",
+                "environment": {
+                    "HF_HOME": "/cache/huggingface",
+                    "HF_HUB_CACHE": "/cache/huggingface/hub",
+                },
+            },
+            "usage": {
+                "gpu_hours": 0.5,
+                "gpu_hours_basis": "measured",
+                "cost_usd": 1.1,
+                "cost_basis": "billed",
+                "source": "modal billing report --start 2026-11-20 -r h, app ap-x",
+            },
+        }
+        return document
+
+    def test_gpu_run_with_usage_validates(self) -> None:
+        result = self.validate(self.gpu_run_document("2026-11-20T10:00:00Z"))
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_gpu_run_requires_usage(self) -> None:
+        for started_at in ("2026-08-20T10:00:00Z", "2026-11-20T10:00:00Z"):
+            with self.subTest(started_at=started_at):
+                document = self.gpu_run_document(started_at)
+                del document["runs"][0]["compute"]["usage"]
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("needs compute.usage", result.stderr)
+
+    def test_cpu_run_may_omit_usage(self) -> None:
+        document = self.gpu_run_document("2026-11-20T10:00:00Z")
+        compute = document["runs"][0]["compute"]
+        compute["gpu_count"] = 0
+        del compute["usage"]
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_usage_fields_are_controlled(self) -> None:
+        cases = {
+            "gpu_hours": (-1, "gpu_hours must be a nonnegative number"),
+            "cost_usd": (None, "cost_usd must be a nonnegative number"),
+            "gpu_hours_basis": ("guess", "gpu_hours_basis must be one of"),
+            "cost_basis": ("invoice", "cost_basis must be one of"),
+            "source": ("", "source must be a non-empty string"),
+            "cost_chf": (1.0, "unknown field 'cost_chf'"),
+        }
+        for field, (value, message) in cases.items():
+            with self.subTest(field=field):
+                document = self.gpu_run_document("2026-11-20T10:00:00Z")
+                document["runs"][0]["compute"]["usage"][field] = value
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(message, result.stderr)
+
+    def test_gpu_hours_and_cost_only_in_usage(self) -> None:
+        for field in ("gpu_hours", "process_gpu_hours", "cost_chf", "cost_note"):
+            with self.subTest(field=field):
+                document = self.gpu_run_document("2026-11-20T10:00:00Z")
+                document["runs"][0]["compute"][field] = 1.0
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(
+                    f"compute.{field}: record GPU-hours and cost only in compute.usage",
+                    result.stderr,
+                )
+
     def test_not_produced_requires_coded_reason_and_evidence(self) -> None:
         document = valid_document()
         document["status"] = {

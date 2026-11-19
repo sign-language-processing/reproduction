@@ -127,6 +127,65 @@ retrospective GPU run may use null only when each missing ceiling is explicitly
 listed as unknown. A CPU or non-compute run may use `null` for ceilings that do
 not apply.
 
+### Actual compute usage
+
+Ceilings say what a run may use; `compute.usage` records what it did use. Every
+GPU Modal run records it, whatever its terminal state: an interrupted or failed
+run still consumed GPU time. CPU runs may omit it.
+
+```json
+"compute": {
+  "platform": "modal",
+  "modal_profile": "repro-sign",
+  "modal_app_id": "ap-...",
+  "gpu_count": 1,
+  "usage": {
+    "gpu_hours": 3.42,
+    "gpu_hours_basis": "measured",
+    "cost_usd": 12.3,
+    "cost_basis": "billed",
+    "source": "modal_repro_sign.sh billing report --start 2026-11-20 --end 2026-11-21 -r h --show-resources --json, read 2026-11-21: rows with object_id ap-...; GPU cost / L40S rate 1.95 USD/h"
+  }
+}
+```
+
+All five fields are required, and no other fields are allowed. `source` says
+how both numbers were obtained: the command, when it was run, the app IDs, and
+any rate or apportioning used. `usage` is the only place a GPU run records
+GPU-hours and cost: other `compute` fields whose names contain `gpu_hours` or
+`cost` are rejected. Raw durations, such as `wall_time_hours` or a process's
+measured seconds, may stay beside it.
+
+- `gpu_hours` is the GPU time Modal bills for the run: the wall time of its
+  GPU-attached containers, multiplied by `gpu_count`. Choose
+  `gpu_hours_basis`:
+  - `measured`: taken from Modal's records. From billing: run the report below
+    with `--show-resources`, sum the GPU rows (for example `L40S`) for the run's
+    app, and divide by that GPU's hourly rate from
+    `modal_repro_sign.sh billing rates`;
+  - `upper_bound`: bounded by a longer interval that contains it, such as the
+    run's `started_at_utc` to `finished_at_utc` times `gpu_count`, which also
+    covers image build and queueing;
+  - `estimated`: anything weaker.
+- `cost_usd` is in US dollars, the currency Modal bills in. Do not convert it to
+  CHF in the record; the study converts totals once, at one rate, when it
+  compares them with the CHF budget.
+- `cost_basis: billed` reads Modal's billing data: run
+  `modal_repro_sign.sh billing report` over the run's interval and sum the
+  `cost` of every row whose `object_id` is one of the run's app IDs. If the app
+  also served other runs, apportion its cost and say how in `source`. Billing
+  data can lag by a few hours; record the cost once the report covers the whole
+  run.
+- `cost_basis: rate_estimate` multiplies `gpu_hours` by the GPU's rate from
+  `modal_repro_sign.sh billing rates`. It covers the GPU only, not CPU or
+  memory; say so in `source`.
+
+Billing history is retained, so the same recipe recovers usage for past runs
+from their recorded app IDs. A daily report (`-r d`) can span at most 31 days;
+query longer ranges in pieces. `billing rates` returns current rates only, so
+GPU-hours derived from older billing assume the rate has not changed; note the
+rate in `source`.
+
 ### Terminal states and reason codes
 
 | State | Allowed reason codes | Meaning |
