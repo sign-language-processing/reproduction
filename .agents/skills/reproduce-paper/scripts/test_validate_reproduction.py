@@ -173,6 +173,27 @@ def readme_text(document: dict) -> str:
     )
 
 
+def tracker_export(**paper: object) -> dict:
+    """A Reproduction Tracker export: one reproductions record, paper expanded."""
+    fields = {
+        "id": "paper-record",
+        "paper_id": "paper-1",
+        "status": "final",
+        "title": "A paper",
+        **paper,
+    }
+    return {
+        "collectionName": "reproductions",
+        "id": "reproduction-record",
+        "paper": "paper-record",
+        "status": "in_progress",
+        "assignees": [],
+        "url": [],
+        "comments": "",
+        "expand": {"paper": fields},
+    }
+
+
 class ValidatorTest(unittest.TestCase):
     def validate(
         self, document: dict, readme: str | None = None
@@ -1049,144 +1070,117 @@ class ValidatorTest(unittest.TestCase):
                 )
                 self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_candidate_ingestion_creates_current_record_shape(self) -> None:
+    def ingest(
+        self, export: object, existing: dict | None = None
+    ) -> tuple[subprocess.CompletedProcess[str], dict | None]:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            source = root / "candidates.json"
+            source = root / "reproductions-paper-1-2026-11-19.json"
             output = root / "reproduction.json"
-            source.write_text(
-                json.dumps(
-                    [
-                        {
-                            "paper_id": "paper-1",
-                            "confirmation": "confirmed",
-                            "status": "final",
-                        }
-                    ]
-                ),
-                encoding="utf-8",
-            )
+            source.write_text(json.dumps(export), encoding="utf-8")
+            if existing is not None:
+                output.write_text(json.dumps(existing), encoding="utf-8")
             result = subprocess.run(
                 ["python3", str(INGESTER), str(source), "paper-1", str(output)],
                 check=False,
                 capture_output=True,
                 text=True,
             )
-            self.assertEqual(result.returncode, 0, result.stderr)
-            written = json.loads(output.read_text())
-            self.assertEqual(written["paper_id"], "paper-1")
-            self.assertEqual(written["assignment"]["kind"], "queue_record")
+            written = json.loads(output.read_text()) if output.exists() else None
+            return result, written
+
+    def test_candidate_ingestion_creates_current_record_shape(self) -> None:
+        result, written = self.ingest(tracker_export())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(written["paper_id"], "paper-1")
+        self.assertEqual(written["assignment"]["kind"], "queue_record")
+        self.assertEqual(written["assignment"]["normalized"]["title"], "A paper")
+
+    def test_candidate_ingestion_rejects_ineligible_exports(self) -> None:
+        wrong_relation = tracker_export()
+        wrong_relation["paper"] = "other"
+        cases = {
+            "candidate list": [tracker_export()],
+            "paper export": tracker_export()["expand"]["paper"],
+            "not final": tracker_export(status="flagged"),
+            "other paper": tracker_export(paper_id="paper-2"),
+            "wrong relation": wrong_relation,
+        }
+        for name, export in cases.items():
+            with self.subTest(name):
+                result, written = self.ingest(export)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIsNone(written)
 
     def test_candidate_ingestion_redacts_email_addresses(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root / "candidates.json"
-            output = root / "reproduction.json"
-            source.write_text(
-                json.dumps(
-                    [
-                        {
-                            "paper_id": "paper-1",
-                            "confirmation": "confirmed",
-                            "status": "final",
-                            "finalized_by": "reviewer@example.com",
-                            "comments": "See reviewer@example.com for the note.",
-                            "status_history": [
-                                {"by": "editor@example.org", "after": "final"}
-                            ],
-                            "expand": {
-                                "datasets": [
-                                    {
-                                        "id": "dataset-1",
-                                        "name": "Example",
-                                        "assignees": ["owner@example.edu"],
-                                        "comments": "",
-                                        "url": [],
-                                    }
-                                ]
-                            },
-                        }
-                    ]
-                ),
-                encoding="utf-8",
-            )
-            result = subprocess.run(
-                ["python3", str(INGESTER), str(source), "paper-1", str(output)],
-                check=False,
-                capture_output=True,
-                text=True,
-            )
-            self.assertEqual(result.returncode, 0, result.stderr)
-            written = json.loads(output.read_text())
-            stored = json.dumps(written["assignment"])
-            self.assertNotIn("@", stored)
-            self.assertEqual(written["assignment"]["record"]["status"], "final")
-            self.assertEqual(
-                written["assignment"]["record"]["finalized_by"], "[redacted]"
-            )
-            self.assertIn("[redacted]", written["assignment"]["normalized"]["comments"])
+        export = tracker_export(
+            finalized_by="reviewer@example.com",
+            comments="See reviewer@example.com for the note.",
+            status_history=[{"by": "editor@example.org", "after": "final"}],
+            expand={
+                "datasets": [
+                    {
+                        "id": "dataset-1",
+                        "name": "Example",
+                        "assignees": ["owner@example.edu"],
+                        "comments": "",
+                        "url": [],
+                    }
+                ]
+            },
+        )
+        export["assignees"] = ["assignee@example.com"]
+        result, written = self.ingest(export)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("@", json.dumps(written["assignment"]))
+        paper = written["assignment"]["record"]["expand"]["paper"]
+        self.assertEqual(paper["finalized_by"], "[redacted]")
+        self.assertIn("[redacted]", written["assignment"]["normalized"]["comments"])
 
     def test_candidate_ingestion_preserves_existing_sections(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root / "candidates.json"
-            output = root / "reproduction.json"
-            source.write_text(
-                json.dumps(
-                    [
-                        {
-                            "paper_id": "paper-1",
-                            "confirmation": "confirmed",
-                            "status": "final",
-                        }
-                    ]
-                ),
-                encoding="utf-8",
-            )
-            output.write_text(
-                json.dumps({"paper_id": "paper-1", "paper": {"title": "Preserved"}}),
-                encoding="utf-8",
-            )
-            result = subprocess.run(
-                ["python3", str(INGESTER), str(source), "paper-1", str(output)],
-                check=False,
-                capture_output=True,
-                text=True,
-            )
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(
-                json.loads(output.read_text())["paper"]["title"], "Preserved"
-            )
+        result, written = self.ingest(
+            tracker_export(), {"paper_id": "paper-1", "paper": {"title": "Preserved"}}
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(written["paper"]["title"], "Preserved")
 
     def test_candidate_ingestion_rejects_retired_version_field(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            source = root / "candidates.json"
-            output = root / "reproduction.json"
-            source.write_text(
-                json.dumps(
-                    [
-                        {
-                            "paper_id": "paper-1",
-                            "confirmation": "confirmed",
-                            "status": "final",
-                        }
-                    ]
-                ),
-                encoding="utf-8",
-            )
-            output.write_text(
-                json.dumps({"schema_version": "retired", "paper_id": "paper-1"}),
-                encoding="utf-8",
-            )
-            result = subprocess.run(
-                ["python3", str(INGESTER), str(source), "paper-1", str(output)],
-                check=False,
-                capture_output=True,
-                text=True,
-            )
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn("retired version field", result.stderr)
+        result, _ = self.ingest(
+            tracker_export(), {"schema_version": "retired", "paper_id": "paper-1"}
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("retired version field", result.stderr)
+
+    def test_queue_record_must_be_a_final_tracker_export(self) -> None:
+        document = valid_document()
+        document["assignment"] = {
+            "kind": "queue_record",
+            "source": {"path": "export.json", "sha256": "a" * 64},
+            "record": tracker_export(paper_id=document["paper_id"]),
+        }
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        legacy = {
+            "paper_id": document["paper_id"],
+            "confirmation": "confirmed",
+            "status": "final",
+        }
+        for name, record in {
+            "legacy": legacy,
+            "not final": tracker_export(
+                paper_id=document["paper_id"], status="needs_review"
+            ),
+            "other paper": tracker_export(),
+            "legacy unconfirmed": {**legacy, "confirmation": "pending"},
+        }.items():
+            with self.subTest(name):
+                document["assignment"]["record"] = record
+                result = self.validate(document)
+                if name == "legacy":
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                else:
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn("queue record", result.stderr)
 
 
 if __name__ == "__main__":
