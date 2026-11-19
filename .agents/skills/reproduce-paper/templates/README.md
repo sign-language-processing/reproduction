@@ -88,7 +88,7 @@ For Modal runs, record profile `repro-sign`, environment, app/function-call IDs,
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
-Mirror `reproduction.json.guesses_and_deviations`: one column per field the validator allows, one row per entry, and an empty cell where an entry lacks an optional field. Include every missing detail filled in and every departure from the published protocol or released code, even if it seems harmless. Kind is `guess` (the paper is silent), `paper_deviation`, `code_deviation`, `paper_code_conflict` (the paper and the released code disagree), or `paper_internal_conflict` (the paper contradicts itself). Write "None." when the list is empty.
+Mirror `reproduction.json.guesses_and_deviations`: one column per field the validator allows, one row per entry, and an empty cell where an entry lacks an optional field. Write each ID in backticks; the validator checks that every ID appears under its heading. Include every missing detail filled in and every departure from the published protocol or released code, even if it seems harmless. Kind is `guess` (the paper is silent), `paper_deviation`, `code_deviation`, `paper_code_conflict` (the paper and the released code disagree), or `paper_internal_conflict` (the paper contradicts itself). Write "None." when the list is empty.
 
 ## Noncompliance
 

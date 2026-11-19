@@ -1300,6 +1300,7 @@ def validate_status(
 
 def validate_readme(
     root: Path,
+    document: dict[str, Any],
     pipeline: Any,
     numerical_agreement: Any,
     preference: Any,
@@ -1330,6 +1331,33 @@ def validate_readme(
         re.MULTILINE,
     ):
         issues.append("README.md preference level does not match reproduction.json")
+    for heading, key in (
+        ("Guesses and deviations", "guesses_and_deviations"),
+        ("Noncompliance", "noncompliance"),
+    ):
+        match = re.search(
+            rf"^## {heading}[ \t]*\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL
+        )
+        if match is None:
+            issues.append(f"README.md needs a '## {heading}' section")
+            continue
+        section = match.group(1)
+        entries = document.get(key)
+        ids = [
+            str(entry.get("id"))
+            for entry in (entries if isinstance(entries, list) else [])
+            if isinstance(entry, dict)
+        ]
+        if not ids and section.strip() != "None.":
+            issues.append(
+                f"README.md '## {heading}' must read 'None.' when {key} is empty"
+            )
+        missing = [entry_id for entry_id in ids if f"`{entry_id}`" not in section]
+        if missing:
+            issues.append(
+                f"README.md '## {heading}' does not list {key} IDs: "
+                + ", ".join(missing)
+            )
 
 
 def validate_status_blocker(
@@ -1451,7 +1479,7 @@ def main() -> int:
     )
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
-    validate_readme(root, pipeline, numerical_agreement, preference, issues)
+    validate_readme(root, document, pipeline, numerical_agreement, preference, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:

@@ -152,8 +152,31 @@ def valid_document() -> dict:
     }
 
 
+def readme_section(heading: str, entries: list) -> str:
+    rows = "".join(
+        f"| `{entry.get('id')}` |\n" for entry in entries if isinstance(entry, dict)
+    )
+    return f"## {heading}\n\n" + (rows or "None.\n") + "\n"
+
+
+def readme_text(document: dict) -> str:
+    return (
+        "**Preference level:** 1\n\n**Pipeline status:** `"
+        + str(document["status"]["pipeline"])
+        + "`\n\n**Numerical agreement:** `"
+        + str(document["status"]["numerical_agreement"])
+        + "`\n\n"
+        + readme_section(
+            "Guesses and deviations", document.get("guesses_and_deviations") or []
+        )
+        + readme_section("Noncompliance", document.get("noncompliance") or [])
+    )
+
+
 class ValidatorTest(unittest.TestCase):
-    def validate(self, document: dict) -> subprocess.CompletedProcess[str]:
+    def validate(
+        self, document: dict, readme: str | None = None
+    ) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             metric_bytes = b"{}\n"
@@ -165,14 +188,9 @@ class ValidatorTest(unittest.TestCase):
             (root / "reproduction.json").write_text(
                 json.dumps(document), encoding="utf-8"
             )
-            (root / "README.md").write_text(
-                "**Preference level:** 1\n\n**Pipeline status:** `"
-                + document["status"]["pipeline"]
-                + "`\n\n**Numerical agreement:** `"
-                + document["status"]["numerical_agreement"]
-                + "`\n",
-                encoding="utf-8",
-            )
+            if readme is None:
+                readme = readme_text(document)
+            (root / "README.md").write_text(readme, encoding="utf-8")
             return subprocess.run(
                 ["python3", str(VALIDATOR), str(root)],
                 check=False,
@@ -183,6 +201,45 @@ class ValidatorTest(unittest.TestCase):
     def test_valid_record(self) -> None:
         result = self.validate(valid_document())
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_readme_sections_mirror_entry_ids(self) -> None:
+        document = valid_document()
+        document["noncompliance"] = [
+            {
+                "id": "ceiling-late",
+                "description": "Ceiling declared after launch.",
+                "requirement": "Declare ceilings before launch.",
+                "run_ids": [document["runs"][0]["run_id"]],
+                "effect": "None on results.",
+            }
+        ]
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        empty = valid_document()
+        cases = {
+            "id not listed": (
+                document,
+                readme_text(document).replace("| `ceiling-late` |", "None."),
+                "## Noncompliance",
+            ),
+            "empty list, not None.": (
+                empty,
+                readme_text(empty).replace(
+                    "## Noncompliance\n\nNone.", "## Noncompliance\n\nSee below."
+                ),
+                "## Noncompliance",
+            ),
+            "section missing": (
+                empty,
+                readme_text(empty).replace("## Guesses and deviations", "## Guesses"),
+                "## Guesses and deviations",
+            ),
+        }
+        for name, (doc, readme, heading) in cases.items():
+            with self.subTest(name):
+                result = self.validate(doc, readme)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(heading, result.stderr)
 
     def test_agent_attribution_is_required(self) -> None:
         for value in (None, [], [{"agent_id": "executor"}]):
