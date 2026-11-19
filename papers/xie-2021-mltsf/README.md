@@ -126,7 +126,9 @@ The paper specifies the architecture (Tables 1–2), input size, augmentation, o
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `modal-app-id-not-recorded` | The five runs launched between data-audit-1 and cost-benchmark-1 on 2026-11-02 (14:26 to 14:50 UTC) record no Modal app ID; the runs before and after them do. | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `data-audit-2`, `preflight-1`, `data-audit-3`, `preflight-2`, `preflight-3` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
 
 ## Data
 

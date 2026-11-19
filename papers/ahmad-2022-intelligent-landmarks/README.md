@@ -64,7 +64,9 @@ The user authorized a documented attempt to obtain the expected result despite t
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `modal-app-id-not-recorded` | The retrospective record of asl-alphabet-preflight carries no Modal app ID; the already-committed report it was backfilled from did not preserve one, unlike the paper's other Modal runs. | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `asl-alphabet-preflight` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
 
 ## Retained preflight evidence
 

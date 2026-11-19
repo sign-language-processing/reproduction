@@ -317,7 +317,9 @@ Total measured GPU time across all mBART/mT5 reeval/scoring runs: ~24 minutes (t
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `modal-app-id-not-recorded` | The app ID of reeval-mt5-large-csldaily was not recorded. The record's former modal_app_id value read: "unknown (app list lost overnight local-session disconnect; scores.json content on the results Volume is the authoritative evidence)". | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `reeval-mt5-large-csldaily` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
 
 ## Attempts, failures, and dead ends
 

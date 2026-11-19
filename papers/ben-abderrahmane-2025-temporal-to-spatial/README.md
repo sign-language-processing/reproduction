@@ -170,7 +170,9 @@ Preceding jobs, for traceability rather than retained runs: the RGB transfer `fc
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `modal-app-id-not-recorded` | Both training runs record their Modal function-call IDs but not the app IDs of the apps that ran them. | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `train-uniform10`, `train-first10` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
 
 ## Attempts, failures, and dead ends
 

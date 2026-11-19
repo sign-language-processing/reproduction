@@ -500,6 +500,7 @@
         "gate_ids": []
       },
       "compute": {
+        "modal_app_ids": [],
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_function_call_id": "fc-01M310JMS6YZFNCFK8J4AHZM56",
@@ -554,6 +555,7 @@
         "gate_ids": []
       },
       "compute": {
+        "modal_app_ids": [],
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_function_call_id": "fc-01M310JC95SP6Z72JB8KYDMJVT",
@@ -826,5 +828,16 @@
       "effect": "0.05%; cannot materially affect a metric"
     }
   ],
-  "noncompliance": []
+  "noncompliance": [
+    {
+      "id": "modal-app-id-not-recorded",
+      "description": "Both training runs record their Modal function-call IDs but not the app IDs of the apps that ran them.",
+      "requirement": "AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids).",
+      "run_ids": [
+        "train-uniform10",
+        "train-first10"
+      ],
+      "effect": "Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing."
+    }
+  ]
 }
