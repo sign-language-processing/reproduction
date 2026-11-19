@@ -140,18 +140,18 @@ The `datasets` and `huggingface-cache` handles explicitly select VolumeFS v2. Tr
 
 ## Runs, failures and resources
 
-The initial `preflight-001` failed on the loader namespace; `preflight-002` resolved that but found missing OpenCV; `preflight-003` completed three training steps and model/optimizer/scheduler checkpoint reload. Its 0/8 diagnostic evaluation used an unrectified tiny subset and is not a target result. Those calls totaled about 38.46 function seconds (0.0107 GPU-hours), excluding builds/startup.
+The initial `preflight-001` failed on the loader namespace; `preflight-002` resolved that but found missing OpenCV; `preflight-003` completed three training steps and model/optimizer/scheduler checkpoint reload. Its 0/8 diagnostic evaluation used an unrectified tiny subset and is not a target result. Those calls totaled about 38.46 function seconds; Modal billing for their apps, including builds and startup, is 0.0293 GPU-hours and USD 0.04.
 
 Both `prepare-*-tiny-001` builds failed on CRLF patch matching before any remote function or GPU ran. Their scoped second attempts completed. Sanitized failed-build logs are immutable by hash. The new `preflight-resolved-*-001` runs trained two epochs, resumed to three, verified optimizer step advancement and evaluated real rectified data with unchanged author augmentation. LSA64 used 64/16 records and 27.19 script seconds; WLASL used 80/80 and 56.45 seconds. Both peaked near 1.093 GB allocated GPU memory. WLASL's zero tiny-subset validation score produced no best-validation checkpoint because upstream initializes the best score to zero; its independent resume state was valid. Full runs explicitly require a selected checkpoint.
 
 The predeclared full plan conservatively estimated 3 and 5.5 A10G-hours. Actual full scripts completed as follows:
 
-| Full run | Script wall time | GPU-hours | Planning-rate estimate | Modal app |
+| Full run | Script wall time | Billed GPU-hours | Billed cost | Modal app |
 | --- | ---: | ---: | ---: | --- |
-| `full-resolved-lsa64-001` | 2685.46 s | 0.7460 | CHF 1.86 | [ap-aYZf4WIHaS1xO1S7yaOUQZ](https://modal.com/apps/repro-sign/main/ap-aYZf4WIHaS1xO1S7yaOUQZ) |
-| `full-resolved-wlasl100-001` | 3146.27 s | 0.8740 | CHF 2.18 | [ap-0WW5WdqVe0j5qpaxatH808](https://modal.com/apps/repro-sign/main/ap-0WW5WdqVe0j5qpaxatH808) |
+| `full-resolved-lsa64-001` | 2685.46 s | 0.7818 | USD 1.26 | [ap-aYZf4WIHaS1xO1S7yaOUQZ](https://modal.com/apps/repro-sign/main/ap-aYZf4WIHaS1xO1S7yaOUQZ) |
+| `full-resolved-wlasl100-001` | 3146.27 s | 0.8772 | USD 1.42 | [ap-0WW5WdqVe0j5qpaxatH808](https://modal.com/apps/repro-sign/main/ap-0WW5WdqVe0j5qpaxatH808) |
 
-These are script-duration GPU-hour estimates, excluding some cold-start/container overhead, CPU preparation, earlier diagnostics and storage. CHF uses a prospective conservative rate of CHF 2.50/GPU-hour, not an invoice. Actual billed CHF is unavailable. LSA64's enforced ceiling was 6 hours/CHF 15 and WLASL's 8 hours/CHF 20, each at most two attempts; both completed their first full attempt. No score-based restart or tuning occurred. All run commands, UTC timestamps, exit codes, function-call IDs, source hashes and controlled terminal records are in `reproduction.json`.
+Billed figures come from Modal billing for each run's app and include container startup; they exclude CPU preparation, earlier diagnostics and storage. All retained GPU runs together billed 1.73 GPU-hours and USD 2.78. LSA64's enforced ceiling was 6 hours/CHF 15 and WLASL's 8 hours/CHF 20, each at most two attempts; both completed their first full attempt. No score-based restart or tuning occurred. All run commands, UTC timestamps, exit codes, function-call IDs, source hashes and controlled terminal records are in `reproduction.json`.
 
 Acquisition also retained its dead ends: a redundant slow local WLASL download was canceled, and a CPU function acquired the checked author files; an initial local invocation unnecessarily required the newly created output Volume to be v2, then removed that requirement without changing the canonical v2 Volumes. No data access restriction was bypassed.
 

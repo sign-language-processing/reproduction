@@ -281,7 +281,6 @@
         "hardware": "NVIDIA Tesla T4 15360 MiB, driver 580.95.05",
         "gpu_count": 1,
         "wall_time_hours": 1.548545431467222,
-        "gpu_hours": 1.548545431467222,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -289,6 +288,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 1.551111,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.107717,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-7aW0BiKItDEIHlMKv525Y7; GPU-hours = GPU cost / T4 0.59 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "artifact_ids": [

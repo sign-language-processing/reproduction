@@ -569,9 +569,13 @@
           }
         },
         "measured_function_seconds": 16.951714,
-        "measured_function_gpu_hours": 0.004708809444444444,
-        "cost_chf": null,
-        "cost_note": "Billing not queried; measured function time excludes image build/cold start and is not an invoice."
+        "usage": {
+          "gpu_hours": 0.018471,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.027691,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-bAaXG4qdduI2uJHIwEUpub; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
+        }
       },
       "purpose": "Three optimizer steps, checkpoint round-trip and eight-sample evaluation of unrectified author data, conditional diagnostic evidence only.",
       "started_at_utc": "2026-10-01T10:22:42.908238+00:00",
@@ -644,9 +648,13 @@
           }
         },
         "measured_function_seconds": 3.702772,
-        "measured_function_gpu_hours": 0.0010285477777777778,
-        "cost_chf": null,
-        "cost_note": "Billing not queried; measured function time excludes image build/cold start and is not an invoice."
+        "usage": {
+          "gpu_hours": 0.002222,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0032,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-l6ob1qOY1CFvTY6spwzn4O; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
+        }
       },
       "purpose": "Three optimizer steps, checkpoint round-trip and eight-sample evaluation of unrectified author data, conditional diagnostic evidence only.",
       "started_at_utc": "2026-10-01T10:24:13.073489+00:00",
@@ -719,10 +727,14 @@
           }
         },
         "measured_function_seconds": 17.804971,
-        "measured_function_gpu_hours": 0.004945825277777777,
-        "cost_chf": null,
-        "cost_note": "Billing not queried; measured function time excludes image build/cold start and is not an invoice.",
-        "peak_memory_bytes": 1080499200
+        "peak_memory_bytes": 1080499200,
+        "usage": {
+          "gpu_hours": 0.008656,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.012832,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-3iqF1KM1ukwbwAu8XrdNEV; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
+        }
       },
       "purpose": "Three optimizer steps, checkpoint round-trip and eight-sample evaluation of unrectified author data, conditional diagnostic evidence only.",
       "started_at_utc": "2026-10-01T10:25:41.029463+00:00",
@@ -1786,6 +1798,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.011111,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.017816,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-w0dIYVZIHfIeaXQP2UI8Ov; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "artifact_ids": [
@@ -1941,6 +1960,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.025421,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.04076,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-26IahrepfjWwUPnaDkCXRL; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "artifact_ids": [
@@ -2094,6 +2120,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.781752,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.263177,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-aYZf4WIHaS1xO1S7yaOUQZ; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "artifact_ids": [
@@ -3118,12 +3151,7 @@
           "out-checkpoints/lsa64/checkpoint_v_9.pth": "014e7ac44ae8514e27047a321a1639f38c305128123ddacb6a5880fd1a1c4563"
         }
       },
-      "usage": {
-        "script_wall_seconds": 2685.4570508003235,
-        "gpu_hours": 0.7459602918889787,
-        "estimated_cost_chf": 1.864900729722447,
-        "actual_billed_cost_chf": null
-      },
+      "script_wall_seconds": 2685.4570508003235,
       "independent_verification": {
         "tool": "NumPy2.5.1",
         "finite_logits": true,
@@ -3240,6 +3268,13 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "usage": {
+          "gpu_hours": 0.877222,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.418019,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-0WW5WdqVe0j5qpaxatH808; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
       "artifact_ids": [
@@ -4264,12 +4299,7 @@
           "out-checkpoints/wlasl100/checkpoint_v_9.pth": "08064eafda403f08a9d244ae0f9f456c43c07dba1da8886a57e2a0b1291cc17b"
         }
       },
-      "usage": {
-        "script_wall_seconds": 3146.2674696445465,
-        "gpu_hours": 0.873963186012374,
-        "estimated_cost_chf": 2.184907965030935,
-        "actual_billed_cost_chf": null
-      },
+      "script_wall_seconds": 3146.2674696445465,
       "independent_verification": {
         "tool": "NumPy2.5.1",
         "finite_logits": true,
