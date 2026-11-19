@@ -116,7 +116,8 @@ failure permits the initial attempt plus at most three retries, so
 For Modal runs, record `compute.gpu_count` and `compute.modal_app_ids`: every
 Modal app ID (`ap-` plus 22 letters or digits) the run used, in a list, because
 a resumed or relaunched run can span several apps. Any app ID mentioned
-elsewhere in the run entry must also be in that list. The ID fields `app_id`
+elsewhere in the run entry must also be in that list, and a run that names a
+Modal app declares `compute.platform: "modal"`. The ID fields `app_id`
 and `modal_app_id`, on the run, its `compute`, or its `modal` object, are
 rejected. A run whose app ID was not recorded keeps an empty list, and the
 lapse is recorded as a `noncompliance` entry whose `run_ids` include it.

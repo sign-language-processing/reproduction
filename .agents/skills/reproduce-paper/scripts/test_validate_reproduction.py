@@ -579,6 +579,26 @@ class ValidatorTest(unittest.TestCase):
         document["runs"][0]["modal"] = {"dashboard_url": f"https://x/{APP_ID}"}
         self.assert_invalid(document, "needs compute.modal_app_ids")
 
+    def test_run_naming_an_app_must_declare_modal(self) -> None:
+        document = self.modal_run_document()
+        del document["runs"][0]["compute"]["platform"]
+        self.assert_invalid(document, "compute.platform must be 'modal'")
+
+    def test_missing_shared_cache_needs_noncompliance(self) -> None:
+        document = self.modal_run_document()
+        del document["runs"][0]["compute"]["shared_cache"]
+        self.assert_invalid(document, "needs shared_cache, or a noncompliance entry")
+        document["noncompliance"] = [
+            {
+                "id": "hf-cache-not-recorded",
+                "description": "The run entry does not record the cache mount.",
+                "requirement": "AGENTS.md: every Modal run mounts huggingface-cache.",
+                "run_ids": ["run-1"],
+            }
+        ]
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_legacy_app_id_fields_are_rejected(self) -> None:
         for where, field in (
             ("compute", "modal_app_id"),

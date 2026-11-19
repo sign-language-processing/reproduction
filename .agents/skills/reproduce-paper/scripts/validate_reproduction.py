@@ -384,6 +384,8 @@ def validate_modal_app_ids(
             json.dumps({**run, "compute": {**compute, "modal_app_ids": None}})
         )
     )
+    if (app_ids or mentioned) and compute.get("platform") != "modal":
+        issues.append(f"{label} names a Modal app, so compute.platform must be 'modal'")
     if app_ids is None:
         if compute.get("platform") == "modal" or mentioned:
             issues.append(f"Modal {label} needs compute.modal_app_ids")
@@ -489,8 +491,13 @@ def validate_runs(
                                 "retrospective unknown"
                             )
             cache = compute.get("shared_cache")
-            if not isinstance(cache, dict):
-                issues.append(f"Modal {label} needs shared_cache")
+            if cache is None and run_id in noncompliant_run_ids:
+                pass  # cache use not recorded or not mounted; the lapse is recorded
+            elif not isinstance(cache, dict):
+                issues.append(
+                    f"Modal {label} needs shared_cache, or a noncompliance entry "
+                    "whose run_ids include this run"
+                )
             else:
                 if cache.get("modal_volume") != "huggingface-cache":
                     issues.append(f"Modal {label} must use 'huggingface-cache'")
