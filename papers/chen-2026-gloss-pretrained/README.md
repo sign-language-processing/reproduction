@@ -271,33 +271,31 @@ All four are environment/dependency-compatibility fixes with no effect on the tr
 
 ## Execution evidence
 
-| Run ID | Kind | Config | Start/end (UTC) | Exit / state | Modal app | GPU-hours |
-| --- | --- | --- | --- | --- | --- | ---: |
-| Run ID | Kind | Config | Start/end (UTC) | Exit / state | Modal app | GPU-hours |
-| --- | --- | --- | --- | --- | --- | ---: |
-| `preflight-mt5-small-phoenix` | preflight | 0.02, batch=4 | 2026-08-31T13:01:46Z - 2026-08-31T13:03:51Z | 0 / succeeded | `ap-Pbxhi3vPsb7QvDMxA49r7q` | 0.03 |
-| `reeval-mbart-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T15:54:08Z - 2026-08-31T15:56:40Z | 0 / succeeded | `ap-P0pGfnCDnfut4VXi6hSrW2` | 0.04 |
-| `reeval-mt5-small-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T15:54:13Z - 2026-08-31T15:56:26Z | 0 / succeeded | `ap-MNYRcjgzkl2DPHJmUUwZdJ` | 0.04 |
-| `reeval-mbart-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T16:01:13Z - 2026-08-31T16:06:21Z | 0 / succeeded | `ap-UOq4iWlpwR0rfewbwL3uzB` | 0.09 |
-| `reeval-mt5-base-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:00:46Z - 2026-08-31T17:02:19Z | 0 / succeeded | `ap-Yr9ULepkTHuw5roMIylNov` | 0.03 |
-| `reeval-mt5-small-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T16:58:00Z - 2026-08-31T16:59:30Z | 0 / succeeded | `ap-fDt8CedDTj7wILrD7TEJ0j` | 0.03 |
-| `reeval-mt5-small-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:00:00Z - 2026-08-31T17:02:00Z | 0 / succeeded | `ap-QJkrl7MDKPEkWcBvrVhVIH` | 0.03 |
-| `reeval-mt5-base-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:04:05Z - 2026-08-31T17:06:08Z | 0 / succeeded | `ap-MdtpBTDGky6WVQndqBqfaJ` | 0.03 |
-| `reeval-mt5-large-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:17:23Z - 2026-08-31T18:24:12Z | 0 / succeeded | `ap-CYinJDA4MnmckRwl5y1Ix0` | 0.11 |
-| `reeval-mbart-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:40:00Z - 2026-08-31T18:41:30Z | 0 / succeeded | `ap-U8L7Wq7jCYIbaJUfztsjqa` | 0.03 |
-| `reeval-mt5-large-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:20:00Z - 2026-08-31T23:00:00Z | 0 / succeeded | `unknown (app list lost overnight local-session disconnect; scores.json content on the results Volume is the authoritative evidence)` | 4.67 |
-| `reeval-mt5-base-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-09-01T07:07:45Z - 2026-09-01T07:11:28Z | 0 / succeeded | `ap-DmB4fxYygSBbXEp5ppldgU` | 0.06 |
-| `reeval-mt5-large-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-09-01T07:07:48Z - 2026-09-01T07:18:46Z | 0 / succeeded | `ap-q4aXY6UaPuCSjzuVJM2LBv` | 0.18 |
-| `baseline-phoenix-transformer` | full_reproduction_terminal_segment | model_step_1200 (best by dev accuracy/ppl), batch=2048 | 2026-09-01T06:23:00Z - 2026-09-01T06:28:00Z | 0 / succeeded | `ap-LdVxTFB0PgikTgtuqygni5` | 0.08 |
-| `baseline-csldaily-transformer` | full_reproduction_terminal_segment | model_step_1700, batch=2048 | 2026-09-01T08:28:52Z - 2026-09-01T08:33:02Z | 0 / succeeded | `ap-8JgrUBFknKXfMhGQ2thA2r` | 0.07 |
-| `baseline-aslgpc12-transformer` | full_reproduction_terminal_segment | model_step_3400, batch=2048 | 2026-09-01T08:28:48Z - 2026-09-01T08:39:21Z | 0 / succeeded | `ap-QR2imJvVWrADyUo0BtAj26` | 0.18 |
-| `baseline-phoenix-backtranslation` | full_reproduction_terminal_segment | model_step_2700, batch=2048 | 2026-09-01T11:27:18Z - 2026-09-01T11:37:18Z | 0 / succeeded | `ap-UMxhPgJudqZ3y6ZkJHaiot` | 0.17 |
+| Run ID | Kind | Config | Start/end (UTC) | Exit / state | Modal app | GPU-hours | Cost (USD) |
+| --- | --- | --- | --- | --- | --- | ---: | ---: |
+| `preflight-mt5-small-phoenix` | preflight | 0.02, batch=4 | 2026-08-31T13:01:46Z - 2026-08-31T13:03:51Z | 0 / succeeded | `ap-Pbxhi3vPsb7QvDMxA49r7q` | 0.02 | 0.06 |
+| `reeval-mbart-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T15:54:08Z - 2026-08-31T15:56:40Z | 0 / succeeded | `ap-P0pGfnCDnfut4VXi6hSrW2` | 0.04 | 0.10 |
+| `reeval-mt5-small-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T15:54:13Z - 2026-08-31T15:56:26Z | 0 / succeeded | `ap-MNYRcjgzkl2DPHJmUUwZdJ` | 0.03 | 0.07 |
+| `reeval-mbart-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T16:01:13Z - 2026-08-31T16:06:21Z | 0 / succeeded | `ap-UOq4iWlpwR0rfewbwL3uzB` | 0.03 | 0.08 |
+| `reeval-mt5-base-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:00:46Z - 2026-08-31T17:02:19Z | 0 / succeeded | `ap-Yr9ULepkTHuw5roMIylNov` | 0.02 | 0.06 |
+| `reeval-mt5-small-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T16:58:00Z - 2026-08-31T16:59:30Z | 0 / succeeded | `ap-fDt8CedDTj7wILrD7TEJ0j` | 0.03 | 0.07 |
+| `reeval-mt5-small-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:00:00Z - 2026-08-31T17:02:00Z | 0 / succeeded | `ap-QJkrl7MDKPEkWcBvrVhVIH` | 0.04 | 0.09 |
+| `reeval-mt5-base-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T17:04:05Z - 2026-08-31T17:06:08Z | 0 / succeeded | `ap-MdtpBTDGky6WVQndqBqfaJ` | 0.03 | 0.07 |
+| `reeval-mt5-large-phoenix` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:17:23Z - 2026-08-31T18:24:12Z | 0 / succeeded | `ap-CYinJDA4MnmckRwl5y1Ix0` | 0.11 | 0.28 |
+| `reeval-mbart-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:40:00Z - 2026-08-31T18:41:30Z | 0 / succeeded | `ap-U8L7Wq7jCYIbaJUfztsjqa` | 0.03 | 0.08 |
+| `reeval-mt5-large-csldaily` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-08-31T18:20:00Z - 2026-08-31T23:00:00Z | 0 / succeeded | `unknown (app list lost overnight local-session disconnect; scores.json content on the results Volume is the authoritative evidence)` | 4.67 (upper bound) | 9.80 (estimate) |
+| `reeval-mt5-base-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-09-01T07:07:45Z - 2026-09-01T07:11:28Z | 0 / succeeded | `ap-DmB4fxYygSBbXEp5ppldgU` | 0.04 | 0.11 |
+| `reeval-mt5-large-aslgpc12` | full_reproduction_reevaluation | checkpoint-40000, batch=16 | 2026-09-01T07:07:48Z - 2026-09-01T07:18:46Z | 0 / succeeded | `ap-q4aXY6UaPuCSjzuVJM2LBv` | 0.18 | 0.45 |
+| `baseline-phoenix-transformer` | full_reproduction_terminal_segment | model_step_1200 (best by dev accuracy/ppl), batch=2048 | 2026-09-01T06:23:00Z - 2026-09-01T06:28:00Z | 0 / succeeded | `ap-LdVxTFB0PgikTgtuqygni5` | 0.09 | 0.23 |
+| `baseline-csldaily-transformer` | full_reproduction_terminal_segment | model_step_1700, batch=2048 | 2026-09-01T08:28:52Z - 2026-09-01T08:33:02Z | 0 / succeeded | `ap-8JgrUBFknKXfMhGQ2thA2r` | 0.07 | 0.17 |
+| `baseline-aslgpc12-transformer` | full_reproduction_terminal_segment | model_step_3400, batch=2048 | 2026-09-01T08:28:48Z - 2026-09-01T08:39:21Z | 0 / succeeded | `ap-QR2imJvVWrADyUo0BtAj26` | 0.17 | 0.43 |
+| `baseline-phoenix-backtranslation` | full_reproduction_terminal_segment | model_step_2700, batch=2048 | 2026-09-01T11:27:18Z - 2026-09-01T11:37:18Z | 0 / succeeded | `ap-UMxhPgJudqZ3y6ZkJHaiot` | 0.16 | 0.41 |
 
 The preflight (`preflight-mt5-small-phoenix`) exercised the real path end-to-end before any full run was committed. All 12 mBART/mT5 full training runs used a fixed max_steps=40000, batch_size=16 schedule (see Guesses and deviations); training itself is not separately retained as a `run` entry (12 training launches, several interrupted by Modal GPU preemption and auto-restarted — see Attempts, failures, and dead ends), only the final generation+scoring step against each finished checkpoint is retained as a `reeval-*` run, since that is what determines the reported score. Two of the twelve (mbart-csldaily, mt5-large-csldaily) reused a training run's own already-correct final predict/score step rather than a separate reevaluate() call, because their training launch was already using the fixed generation config when it produced its own checkpoint; the rest used a separate `reevaluate()` call against the finished checkpoint after a generation-config bug (see Attempts, failures, and dead ends) was found and fixed mid-session.
 
 The 4 Transformer-tiny/+Back-translation runs (`baseline-*`) use ref [33]'s own recipe end-to-end (preprocess/train/translate all in one `train_baseline` call, with `-early_stopping` from the pinned recipe determining the actual step count rather than a guessed budget) and are retained as single terminal-segment runs each. `+Back-translation`'s run additionally required German-corpus-fetch, sentence-selection, and reverse-model sub-steps recorded in `reproduction.json`'s observation text rather than as independent `runs` entries, since they are preparation steps feeding the one retained training run.
 
-Total measured GPU time across all mBART/mT5 reeval/scoring runs: ~24 minutes (the training runs themselves, not separately billed as `runs` entries here, ran roughly 1-4 hours each on a single A100, occasionally longer after preemption-triggered restarts). The 4 Transformer-tiny/+Back-translation training runs (including the augmentation sub-steps) took under 20 minutes total, reflecting how much smaller and faster ref [33]'s architecture is; see individual `compute` blocks in reproduction.json for what is recorded.
+GPU-hours and cost come from Modal billing for each run's app (`compute.usage` in reproduction.json); `reeval-mt5-large-csldaily` has no recorded app ID, so its figures are an upper bound from its timestamps. Billed GPU time across the mBART/mT5 preflight and reeval/scoring runs with app IDs is about 36 minutes, including container startup. The 4 Transformer-tiny/+Back-translation training runs (including the augmentation sub-steps) billed about 29 minutes and USD 1.23 in total, reflecting how much smaller and faster ref [33]'s architecture is. The mBART/mT5 training runs themselves, not retained as `runs` entries here, ran roughly 1-4 hours each on a single A100, occasionally longer after preemption-triggered restarts; Modal billing shows 49 further apps for this paper on 2026-08-31 and 2026-09-01 that no retained run references, totalling about 47 GPU-hours and USD 117.01.
 
 ## Guesses and deviations
 
