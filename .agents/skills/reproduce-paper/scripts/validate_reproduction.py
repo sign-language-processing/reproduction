@@ -409,7 +409,7 @@ def validate_modal_app_ids(
         )
 
 
-def validate_usage(usage: Any, label: str, issues: list[str]) -> None:
+def validate_usage(usage: Any, app_ids: Any, label: str, issues: list[str]) -> None:
     usage_label = f"{label}.compute.usage"
     if usage is None:
         issues.append(f"GPU Modal {label} needs compute.usage")
@@ -427,6 +427,11 @@ def validate_usage(usage: Any, label: str, issues: list[str]) -> None:
         )
     if not valid_choice(usage.get("cost_basis"), COST_BASES):
         issues.append(f"{usage_label}.cost_basis must be one of {sorted(COST_BASES)}")
+    elif usage["cost_basis"] == "billed" and not app_ids:
+        issues.append(
+            f"{usage_label}.cost_basis 'billed' needs compute.modal_app_ids to "
+            "match billing; use 'rate_estimate'"
+        )
     if not nonempty(usage.get("source")):
         issues.append(f"{usage_label}.source must be a non-empty string")
 
@@ -515,7 +520,9 @@ def validate_runs(
                                 f"GPU Modal {label} needs {field} or an explicit "
                                 "retrospective unknown"
                             )
-                validate_usage(compute.get("usage"), label, issues)
+                validate_usage(
+                    compute.get("usage"), compute.get("modal_app_ids"), label, issues
+                )
                 for field in compute:
                     if "gpu_hours" in field or "cost" in field:
                         issues.append(

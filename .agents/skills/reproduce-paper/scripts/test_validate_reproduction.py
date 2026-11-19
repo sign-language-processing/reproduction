@@ -678,6 +678,23 @@ class ValidatorTest(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("needs compute.usage", result.stderr)
 
+    def test_billed_usage_needs_app_ids(self) -> None:
+        document = self.gpu_run_document("2026-11-20T10:00:00Z")
+        document["runs"][0]["compute"]["modal_app_ids"] = []
+        document["noncompliance"] = [
+            {
+                "id": "app-id-not-recorded",
+                "description": "The launch output with the app ID was lost.",
+                "requirement": "AGENTS.md: record the Modal app ID of every run.",
+                "run_ids": ["run-1"],
+            }
+        ]
+        self.assert_invalid(document, "cost_basis 'billed' needs compute.modal_app_ids")
+        usage = document["runs"][0]["compute"]["usage"]
+        usage.update(gpu_hours_basis="upper_bound", cost_basis="rate_estimate")
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_cpu_run_may_omit_usage(self) -> None:
         document = self.gpu_run_document("2026-11-20T10:00:00Z")
         compute = document["runs"][0]["compute"]

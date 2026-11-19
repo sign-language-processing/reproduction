@@ -137,7 +137,7 @@ run still consumed GPU time. CPU runs may omit it.
 "compute": {
   "platform": "modal",
   "modal_profile": "repro-sign",
-  "modal_app_id": "ap-...",
+  "modal_app_ids": ["ap-..."],
   "gpu_count": 1,
   "usage": {
     "gpu_hours": 3.42,
@@ -172,10 +172,11 @@ measured seconds, may stay beside it.
   compares them with the CHF budget.
 - `cost_basis: billed` reads Modal's billing data: run
   `modal_repro_sign.sh billing report` over the run's interval and sum the
-  `cost` of every row whose `object_id` is one of the run's app IDs. If the app
-  also served other runs, apportion its cost and say how in `source`. Billing
-  data can lag by a few hours; record the cost once the report covers the whole
-  run.
+  `cost` of every row whose `object_id` is listed in `compute.modal_app_ids`.
+  It therefore needs a non-empty list; a run whose app ID was not recorded can
+  only be estimated. If an app also served other runs, apportion its cost and
+  say how in `source`. Billing data can lag by a few hours; record the cost
+  once the report covers the whole run.
 - `cost_basis: rate_estimate` multiplies `gpu_hours` by the GPU's rate from
   `modal_repro_sign.sh billing rates`. It covers the GPU only, not CPU or
   memory; say so in `source`.
@@ -185,6 +186,24 @@ from their recorded app IDs. A daily report (`-r d`) can span at most 31 days;
 query longer ranges in pieces. `billing rates` returns current rates only, so
 GPU-hours derived from older billing assume the rate has not changed; note the
 rate in `source`.
+
+#### Who records billed usage
+
+Reading billing requires the Owner or Manager role in the `repro-sign`
+workspace; Members cannot. A contributor without that role records an estimate
+when the run ends:
+
+- `gpu_hours`: `upper_bound`, `finished_at_utc` minus `started_at_utc`, times
+  `gpu_count`;
+- `cost_usd`: `rate_estimate`, `gpu_hours` times the GPU's rate from
+  `modal_repro_sign.sh billing rates`, with the rate and the date it was read
+  in `source`. This estimate covers the GPU only, so unlike the hours it is not
+  an upper bound: CPU and memory are billed on top.
+
+The reviewer who merges the pull request, holding one of those roles, replaces
+every estimate whose run has an app ID with `measured` and `billed` values from
+the recipe above, and updates `source`. After merge, only runs without a
+recorded app ID keep estimates.
 
 ### Terminal states and reason codes
 
