@@ -265,13 +265,30 @@ def validate_assignment(document: dict[str, Any], issues: list[str]) -> None:
         record = assignment.get("record")
         if not isinstance(record, dict):
             issues.append("queue assignment must preserve record")
-        elif (
-            record.get("paper_id") != document.get("paper_id")
-            or record.get("id") not in (None, document.get("paper_id"))
-            or record.get("confirmation") != "confirmed"
-            or record.get("status") != "final"
-        ):
-            issues.append("queue record is not final/confirmed or has inconsistent IDs")
+        elif "confirmation" in record:  # retired candidate-list export format
+            if (
+                record.get("paper_id") != document.get("paper_id")
+                or record.get("id") not in (None, document.get("paper_id"))
+                or record.get("confirmation") != "confirmed"
+                or record.get("status") != "final"
+            ):
+                issues.append(
+                    "queue record is not final/confirmed or has inconsistent IDs"
+                )
+        else:
+            expand = record.get("expand")
+            paper = expand.get("paper") if isinstance(expand, dict) else None
+            if (
+                record.get("collectionName") != "reproductions"
+                or not isinstance(paper, dict)
+                or paper.get("paper_id") != document.get("paper_id")
+                or record.get("paper") != paper.get("id")
+                or paper.get("status") != "final"
+            ):
+                issues.append(
+                    "queue record must be a Reproduction Tracker export whose "
+                    "expand.paper is final and matches paper_id"
+                )
 
 
 def validate_agents(document: dict[str, Any], issues: list[str]) -> dict[str, Any]:

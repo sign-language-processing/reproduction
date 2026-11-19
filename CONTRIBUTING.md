@@ -139,8 +139,9 @@ match `reproduction.json.paper_id`:
 **Paper ID:** `8526aecd1407305d815883725a864405e31a54c1`
 ```
 
-For a queue-backed assignment this is the reviewing platform's own unique record ID — the value
-the record was selected by — so that a report can be traced back to the exact annotated
+For a queue-backed assignment this is the paper's `paper_id` on the queue, the study's
+annotation and reviewing platform ([repro-sign-survey-ui](https://github.com/bricksdont/repro-sign-survey-ui)),
+not the platform's internal record `id`. It is the value the export was downloaded by, so that a report can be traced back to the exact annotated
 candidate and matched up with Team S's pool during analysis. Do not substitute the directory
 slug there; the slug is the path, not the identity. A `direct_user_request` assignment has no
 platform record, and uses the paper slug instead. The validator does not cross-check this line
@@ -158,7 +159,7 @@ same scrutiny as a full one.
 non-Git artifacts carrying a checksum; Hugging Face revisions pinned. A reviewer should be able
 to fetch exactly what ran.
 
-**Provenance and attribution hold up.** `assignment` preserves one final/confirmed record (or
+**Provenance and attribution hold up.** `assignment` preserves one queue record for a final paper (or
 direct-assignment provenance) and its source hash, with no invented queue-review fields.
 `agents` records model and harness separately, and each run's `agent_ids` points at whoever ran
 it; unknown identity is `null` with an explanation, never a plausible guess. Modal runs record

@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Import one final/confirmed candidate into a paper reproduction record."""
+"""Import a reproduction-tracker export into a paper's reproduction record.
+
+The export is the "Download JSON" file from a paper's page in the REPRO-SIGN
+Reproduction Tracker (https://github.com/bricksdont/repro-sign-survey-ui): one
+`reproductions` record with its paper under `expand.paper`.
+"""
 
 from __future__ import annotations
 
@@ -74,25 +79,24 @@ def normalize_metric_records(record: dict[str, Any]) -> list[dict[str, Any]]:
     return metrics
 
 
-def select_record(records: Any, paper_id: str) -> dict[str, Any]:
-    if not isinstance(records, list):
-        fail("candidate export must be a top-level JSON array")
-    matches = [
-        item
-        for item in records
-        if isinstance(item, dict) and item.get("paper_id") == paper_id
-    ]
-    if len(matches) != 1:
-        fail(f"expected exactly one record for {paper_id!r}, found {len(matches)}")
-
-    record = matches[0]
-    if record.get("id") not in (None, paper_id):
-        fail("record id and paper_id do not match")
-    if record.get("confirmation") != "confirmed":
-        fail("candidate confirmation must be 'confirmed'")
-    if record.get("status") != "final":
-        fail("candidate status must be 'final'")
-    return record
+def select_paper(record: Any, paper_id: str) -> dict[str, Any]:
+    """Check the export and return its paper."""
+    if not isinstance(record, dict) or record.get("collectionName") != "reproductions":
+        fail(
+            "export must be one Reproduction Tracker record "
+            "(collectionName 'reproductions'), not a list or a paper export"
+        )
+    expand = record.get("expand")
+    paper = expand.get("paper") if isinstance(expand, dict) else None
+    if not isinstance(paper, dict):
+        fail("export has no expand.paper")
+    if paper.get("paper_id") != paper_id:
+        fail(f"export is for paper {paper.get('paper_id')!r}, not {paper_id!r}")
+    if record.get("paper") != paper.get("id"):
+        fail("export's paper relation does not match expand.paper.id")
+    if paper.get("status") != "final":
+        fail("paper status must be 'final'")
+    return paper
 
 
 def redact_email_addresses(value: Any) -> Any:
@@ -106,7 +110,7 @@ def redact_email_addresses(value: Any) -> Any:
 
 
 def build_assignment(
-    source: Path, source_bytes: bytes, record: dict[str, Any]
+    source: Path, source_bytes: bytes, record: dict[str, Any], paper: dict[str, Any]
 ) -> dict[str, Any]:
     return redact_email_addresses(
         {
@@ -116,21 +120,20 @@ def build_assignment(
                 "sha256": hashlib.sha256(source_bytes).hexdigest(),
             },
             "normalized": {
-                "title": record.get("title"),
-                "year": record.get("year"),
-                "venue": record.get("venue"),
-                "pdf_url": record.get("pdf_url"),
-                "code_repos": normalize_repositories(record.get("code_repos")),
-                "what_to_reproduce": record.get("what_to_reproduce"),
-                "metric_ids": record.get("metrics", []),
-                "metric_records": normalize_metric_records(record),
-                "datasets": normalize_datasets(record),
-                "copied_scores": record.get("copied_scores"),
-                "compute_requirements": record.get("compute_requirements"),
-                "includes_human_evaluation": record.get("includes_human_evaluation"),
-                "potential_ethical_concerns": record.get("potential_ethical_concerns"),
-                "comments": record.get("comments", ""),
-                "flag_reason": record.get("flag_reason", ""),
+                "title": paper.get("title"),
+                "year": paper.get("year"),
+                "venue": paper.get("venue"),
+                "pdf_url": paper.get("pdf_url"),
+                "code_repos": normalize_repositories(paper.get("code_repos")),
+                "what_to_reproduce": paper.get("what_to_reproduce"),
+                "metric_ids": paper.get("metrics", []),
+                "metric_records": normalize_metric_records(paper),
+                "datasets": normalize_datasets(paper),
+                "copied_scores": paper.get("copied_scores"),
+                "compute_requirements": paper.get("compute_requirements"),
+                "includes_human_evaluation": paper.get("includes_human_evaluation"),
+                "potential_ethical_concerns": paper.get("potential_ethical_concerns"),
+                "comments": paper.get("comments", ""),
             },
             "record": record,
         }
@@ -139,7 +142,7 @@ def build_assignment(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source", type=Path, help="JSON candidate export")
+    parser.add_argument("source", type=Path, help="Reproduction Tracker JSON export")
     parser.add_argument("paper_id", help="exact paper_id to select")
     parser.add_argument("output", type=Path, help="reproduction.json destination")
     return parser.parse_args()
@@ -149,9 +152,9 @@ def main() -> int:
     args = parse_args()
     try:
         source_bytes = args.source.read_bytes()
-        records = json.loads(source_bytes)
-        record = select_record(records, args.paper_id)
-        assignment = build_assignment(args.source, source_bytes, record)
+        record = json.loads(source_bytes)
+        paper = select_paper(record, args.paper_id)
+        assignment = build_assignment(args.source, source_bytes, record, paper)
 
         if args.output.exists():
             output = json.loads(args.output.read_text(encoding="utf-8"))
@@ -179,7 +182,7 @@ def main() -> int:
         print(f"candidate ingestion failed: {exc}", file=sys.stderr)
         return 2
 
-    print(f"imported final/confirmed candidate {args.paper_id} into {args.output}")
+    print(f"imported final paper {args.paper_id} into {args.output}")
     return 0
 
 
