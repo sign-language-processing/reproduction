@@ -73,7 +73,10 @@ The paper defines MSE but reports losses as high as 17.744, which probability-sp
 
 ## Noncompliance
 
-None.
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `hf-cache-setup-not-recorded` | The run entry does not record whether huggingface-cache was mounted or the HF variables set, and it names no source hash that matches a retained version of its Modal app, so the setup cannot be checked. The one committed version of scripts/modal_app.py mounts the cache and sets both variables for prepare, but it is not known to be the code that ran. | AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface with HF_HOME and HF_HUB_CACHE set. | `prepare-split` | Cache reuse only; the run's outputs do not depend on it. |  |
+| `hf-cache-not-mounted` | scripts/base_probe.py mounts no Volume, so this probe of the shared base image ran without huggingface-cache. | AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface with HF_HOME and HF_HUB_CACHE set. | `base-image-probe` | None on results: the probe downloads nothing from Hugging Face. |  |
 
 ## Execution and evidence
 
