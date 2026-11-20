@@ -318,6 +318,7 @@ GPU-hours and cost come from Modal billing for each run's app (`compute.usage` i
 | ID | Description | Requirement | Run IDs | Effect | Resolution |
 | --- | --- | --- | --- | --- | --- |
 | `modal-app-id-not-recorded` | The app ID of reeval-mt5-large-csldaily was not recorded. The record's former modal_app_id value read: "unknown (app list lost overnight local-session disconnect; scores.json content on the results Volume is the authoritative evidence)". | AGENTS.md, Modal workspace invariant: record the Modal app ID of every run (now compute.modal_app_ids). | `reeval-mt5-large-csldaily` | Modal billing cannot be matched to the run, so its GPU-hours and cost cannot be read from billing. |  |
+| `preflight-code-not-committed` | The modal_app.py that ran preflight-mt5-small-phoenix (2026-08-31) was recorded as 13,008 bytes with SHA-256 fc3daf73f73287f0d2d63f0d45d29dc2353406616b410f54a64653f531296323. No committed version matches it: the file was committed once, in 7b12017, at 23,172 bytes, so the code that ran was a working copy that later grew. The artifact keeps the recorded hash and size, with uri null. | AGENTS.md, Evidence and completion contract: a third party can repeat the attempt from the committed files and referenced immutable artifacts alone. | `preflight-mt5-small-phoenix` | The preflight cannot be repeated exactly. It produced no target value; every reported score comes from later runs. |  |
 
 ## Attempts, failures, and dead ends
 

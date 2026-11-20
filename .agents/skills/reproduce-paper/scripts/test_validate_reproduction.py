@@ -225,6 +225,51 @@ class ValidatorTest(unittest.TestCase):
         result = self.validate(valid_document())
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_local_artifact_hash_and_size_are_verified(self) -> None:
+        document = valid_document()
+        document["artifacts"][0]["size_bytes"] = 3  # metrics.json is "{}\n"
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        document["artifacts"][0]["size_bytes"] = 4
+        self.assert_invalid(document, "size_bytes is 4, but metrics.json has 3")
+        document = valid_document()
+        document["artifacts"].append(
+            {
+                "artifact_id": "copy",
+                "kind": "metrics",
+                "uri": "metrics.json",
+                "sha256": "a" * 64,
+            }
+        )
+        self.assert_invalid(
+            document, "artifact 'copy'.sha256 does not match metrics.json"
+        )
+
+    def test_unstored_artifact_needs_noncompliance(self) -> None:
+        document = valid_document()
+        document["artifacts"].append(
+            {
+                "artifact_id": "lost-code",
+                "kind": "entrypoint",
+                "uri": None,
+                "sha256": "a" * 64,
+            }
+        )
+        document["runs"][0]["artifact_ids"] = ["metrics", "lost-code"]
+        self.assert_invalid(document, "artifact 'lost-code'.uri is null")
+        document["noncompliance"] = [
+            {
+                "id": "code-not-committed",
+                "description": "The code that ran was never committed.",
+                "requirement": "AGENTS.md: repeatable from committed files.",
+                "run_ids": [document["runs"][0]["run_id"]],
+            }
+        ]
+        result = self.validate(document)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        del document["artifacts"][1]["uri"]
+        self.assert_invalid(document, "needs uri; use null")
+
     def test_readme_paper_id_matches_record(self) -> None:
         document = valid_document()
         for name, readme in {

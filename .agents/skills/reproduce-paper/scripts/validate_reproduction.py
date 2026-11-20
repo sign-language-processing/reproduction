@@ -392,14 +392,49 @@ def validate_artifacts(
     root: Path, document: dict[str, Any], issues: list[str]
 ) -> dict[str, Any]:
     artifacts = keyed(document.get("artifacts"), "artifact_id", "artifacts", issues)
+    noncompliant_run_ids = {
+        run_id
+        for entry in document.get("noncompliance") or []
+        if isinstance(entry, dict)
+        for run_id in entry.get("run_ids") or []
+    }
+    # An artifact whose recorded bytes are stored nowhere (uri null) is accepted
+    # only when a noncompliance entry names a run that cites it.
+    unstored_ok = {
+        artifact_id
+        for run in document.get("runs") or []
+        if isinstance(run, dict) and run.get("run_id") in noncompliant_run_ids
+        for artifact_id in run.get("artifact_ids") or []
+    }
     for artifact_id, artifact in artifacts.items():
         label = f"artifact {artifact_id!r}"
         if not nonempty(artifact.get("kind")):
             issues.append(f"{label} needs kind")
-        check_reference(root, artifact.get("uri"), f"{label}.uri", issues)
+        if "uri" not in artifact:
+            issues.append(f"{label} needs uri; use null if no copy was stored")
+        elif artifact["uri"] is None:
+            if artifact_id not in unstored_ok:
+                issues.append(
+                    f"{label}.uri is null; record the lapse in a noncompliance "
+                    "entry whose run_ids include a run citing this artifact"
+                )
+        else:
+            check_reference(root, artifact.get("uri"), f"{label}.uri", issues)
         check_sha(artifact.get("sha256"), f"{label}.sha256", issues)
         if "size_bytes" in artifact and not isinstance(artifact["size_bytes"], int):
             issues.append(f"{label}.size_bytes must be an integer")
+        uri = artifact.get("uri")
+        if nonempty(uri) and not uri.startswith(EXTERNAL_PREFIXES):
+            path = root / uri
+            if path.is_file():
+                data = path.read_bytes()
+                if hashlib.sha256(data).hexdigest() != artifact.get("sha256"):
+                    issues.append(f"{label}.sha256 does not match {uri}")
+                size = artifact.get("size_bytes")
+                if isinstance(size, int) and size != len(data):
+                    issues.append(
+                        f"{label}.size_bytes is {size}, but {uri} has {len(data)}"
+                    )
     return artifacts
 
 
