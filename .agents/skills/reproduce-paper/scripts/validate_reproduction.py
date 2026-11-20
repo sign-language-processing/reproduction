@@ -570,13 +570,19 @@ def validate_runs(
                             "only in compute.usage"
                         )
             cache = compute.get("shared_cache")
-            if cache is None and run_id in noncompliant_run_ids:
-                pass  # cache use not recorded or not mounted; the lapse is recorded
-            elif not isinstance(cache, dict):
+            if "shared_cache" not in compute:
                 issues.append(
-                    f"Modal {label} needs shared_cache, or a noncompliance entry "
-                    "whose run_ids include this run"
+                    f"Modal {label} needs shared_cache; use null if the cache was "
+                    "not mounted or its setup was not recorded"
                 )
+            elif cache is None:
+                if run_id not in noncompliant_run_ids:
+                    issues.append(
+                        f"Modal {label} has shared_cache null; record the lapse in "
+                        "a noncompliance entry whose run_ids include this run"
+                    )
+            elif not isinstance(cache, dict):
+                issues.append(f"Modal {label} shared_cache must be an object or null")
             else:
                 if cache.get("modal_volume") != "huggingface-cache":
                     issues.append(f"Modal {label} must use 'huggingface-cache'")

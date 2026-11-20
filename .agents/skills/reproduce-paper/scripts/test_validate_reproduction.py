@@ -677,10 +677,12 @@ class ValidatorTest(unittest.TestCase):
         del document["runs"][0]["compute"]["platform"]
         self.assert_invalid(document, "compute.platform must be 'modal'")
 
-    def test_missing_shared_cache_needs_noncompliance(self) -> None:
+    def test_null_shared_cache_needs_noncompliance(self) -> None:
         document = self.modal_run_document()
         del document["runs"][0]["compute"]["shared_cache"]
-        self.assert_invalid(document, "needs shared_cache, or a noncompliance entry")
+        self.assert_invalid(document, "needs shared_cache; use null")
+        document["runs"][0]["compute"]["shared_cache"] = None
+        self.assert_invalid(document, "shared_cache null; record the lapse")
         document["noncompliance"] = [
             {
                 "id": "hf-cache-not-recorded",
@@ -691,6 +693,8 @@ class ValidatorTest(unittest.TestCase):
         ]
         result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
+        del document["runs"][0]["compute"]["shared_cache"]  # entry alone is not enough
+        self.assert_invalid(document, "needs shared_cache; use null")
 
     def test_legacy_app_id_fields_are_rejected(self) -> None:
         for where, field in (

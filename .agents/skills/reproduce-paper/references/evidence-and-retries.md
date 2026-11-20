@@ -104,9 +104,10 @@ Optional fields, with these spellings and no others: `paper_says` (what the pape
 
 - `stop_policy.max_gpu_hours` and the cost ceiling (`max_cost_chf` or `max_cost_usd`): `null`, for ceilings not declared before launch;
 - `compute.modal_app_ids`: `[]`, for an app ID that was not recorded;
+- `compute.shared_cache`: `null`, for a cache that was not mounted or whose setup was not recorded;
 - `HF_HOME` and `HF_HUB_CACHE` in `compute.shared_cache.environment`: `null`, for variables that were not set.
 
-The one exception is `compute.shared_cache` itself, which is omitted entirely when the cache was not mounted or its setup was not recorded. Every other field keeps its usual rules.
+A missing key is always an error. Every other field keeps its usual rules.
 
 ```json
 "guesses_and_deviations": [
