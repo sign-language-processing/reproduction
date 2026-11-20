@@ -237,7 +237,50 @@
   "metric_definitions": [],
   "experiments": [],
   "targets": [],
-  "runs": [],
+  "runs": [
+    {
+      "run_id": "populate-dataset-1",
+      "kind": "data_population",
+      "purpose": "Upload the authors' archive to the shared datasets Volume, extract it, and write a per-file SHA-256 manifest.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kenshimov-2021-kazakh-sl-cnn/data.sh resized_gray_dataset.7z",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-20T16:18:46Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_usd": 2.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    }
+  ],
   "artifacts": [],
   "gates": [
     {
