@@ -1,8 +1,12 @@
 name: Publish a Docker image
 
+# Builds and publishes the base image only for image tags, never for repository
+# releases. To release an image, push a tag image-v<NGC version>.<build> on the
+# commit to build, for example image-v26.04.01. The image is tagged v26.04.01
+# and :latest. Then update the pinned digest in AGENTS.md (see CONTRIBUTING.md).
 on:
-  release:
-    types: [created]
+  push:
+    tags: ['image-v*']
 
 env:
   REGISTRY: ghcr.io
@@ -33,6 +37,9 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # image-v26.04.01 -> v26.04.01, the scheme of the existing image tags
+          tags: type=match,pattern=image-(v.*),group=1
+          flavor: latest=true
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -53,3 +60,8 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Report the digest to pin
+        run: |
+          echo "Published \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.push.outputs.digest }}\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "Update the pinned digest in AGENTS.md to this value." >> "$GITHUB_STEP_SUMMARY"
