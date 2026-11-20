@@ -134,7 +134,7 @@ With the gates at zero, the patched encoder reproduces torchvision's ImageNet Re
 
 ## Environment and patches
 
-- `Dockerfile`: `ghcr.io/sign-language-processing/reproduction:latest` (NGC PyTorch 26.02: PyTorch 2.11.0a0, CUDA 13.1, cuDNN 9.19, Python 3.12). On top: SCTK, ctcdecode, `opencv-python-headless==4.10.0.84`, `scipy==1.13.1`, `gdown==5.2.0`, pristine CorrNet at `/opt/CorrNet`, and the patched CVSign tree at `/workspace/CVSign`. CorrNet's own pins (opencv 4.5.5, scipy 1.7, numpy 1.20) have no Python 3.12 wheels; SciPy 1.13 is the newest that still ships `scipy.misc`, which CorrNet imports.
+- `Dockerfile`: `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291` (image release v26.02.02; NGC PyTorch 26.02: PyTorch 2.11.0a0, CUDA 13.1, cuDNN 9.19, Python 3.12). The runs' Dockerfile referenced `:latest`, which resolved to this digest throughout; the committed file now pins it, so its hash differs from the recorded `dockerfile_sha256`. On top: SCTK, ctcdecode, `opencv-python-headless==4.10.0.84`, `scipy==1.13.1`, `gdown==5.2.0`, pristine CorrNet at `/opt/CorrNet`, and the patched CVSign tree at `/workspace/CVSign`. CorrNet's own pins (opencv 4.5.5, scipy 1.7, numpy 1.20) have no Python 3.12 wheels; SciPy 1.13 is the newest that still ships `scipy.misc`, which CorrNet imports.
 - `TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1`: upstream `torch.load` of its own checkpoints, which carry numpy RNG state, fails under PyTorch ≥ 2.6 defaults.
 - Upstream is run as published through `main.py --config ./configs/cvsign.yaml`. `main.py`'s "remove existing work dir?" prompt is answered `n` on stdin, so resumed runs keep their files.
 

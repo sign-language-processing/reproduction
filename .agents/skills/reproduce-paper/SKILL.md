@@ -104,7 +104,7 @@ Invoke the pinned upstream config and entry point directly. Do not carry a copie
 
 Provide the fewest idempotent commands that cover setup/data/train/eval and a container definition. Keep a lone helper, patch, or small raw artifact at the paper root; use `scripts/`, `patches/`, or `artifacts/` only for multiple related files. Never add separate generated manifests, datasets, checkpoints, or large logs. Separate immutable setup from data and run-time configuration. Pin dependencies or preserve a resolved lock/freeze. Parameterize only values that actually vary.
 
-Use the root GPU base image unless the evidence requires otherwise. Keep datasets and outputs mounted, never baked into the image. Capture the built image digest and source/patch hashes.
+Use the root GPU base image unless the evidence requires otherwise, pinned by digest as `AGENTS.md` shows, never as `:latest`. Keep datasets and outputs mounted, never baked into the image. Capture the built image digest and source/patch hashes.
 
 Use `simple-video-utils` for every path that decodes video files, consulting `libraries/simple-video-utils.md` when present. If the published pipeline consumes precomputed features, preserve that path instead of introducing video decoding.
 

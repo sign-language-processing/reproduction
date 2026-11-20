@@ -139,13 +139,13 @@ If the `repro-sign` profile or authentication is unavailable or invalid, ask the
 
 ## Environment and compute gate
 
-GPU reproductions normally start from:
+GPU reproductions normally start from the study base image, pinned by digest:
 
 ```dockerfile
-FROM ghcr.io/sign-language-processing/reproduction:latest
+FROM ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291
 ```
 
-The image supplies NVIDIA NGC PyTorch, FFmpeg 4.x, decord, and `INSTALLED_STABLE_PACKAGES`. CPU-only reproductions should use a small `python:3.X-slim` matching the paper. Consult `libraries/*.md` for each heavy dependency before changing the environment.
+That digest is image release `v26.02.02`, the current `:latest`. `:latest` is mutable and moves with every image release, so never commit it in a `FROM` or `from_registry`; use it only to look up the current digest (`docker pull ghcr.io/sign-language-processing/reproduction:latest` prints it), then pin that digest and record it in the run entry. The image supplies NVIDIA NGC PyTorch, FFmpeg 4.x, decord, and `INSTALLED_STABLE_PACKAGES`. CPU-only reproductions should use a small `python:3.X-slim` matching the paper. Consult `libraries/*.md` for each heavy dependency before changing the environment.
 
 Choose CUDA and framework versions for the hardware that will actually run the job. Blackwell GPUs require recent kernels; A100/H100 jobs may use older versions when needed. Try the repository base image first and prefer a small compatibility patch over downgrading CUDA.
 
