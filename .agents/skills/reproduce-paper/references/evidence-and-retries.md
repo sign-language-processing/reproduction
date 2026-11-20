@@ -106,6 +106,7 @@ Optional fields, with these spellings and no others: `paper_says` (what the pape
 - `compute.modal_app_ids`: `[]`, for an app ID that was not recorded;
 - `compute.shared_cache`: `null`, for a cache that was not mounted or whose setup was not recorded;
 - `HF_HOME` and `HF_HUB_CACHE` in `compute.shared_cache.environment`: `null`, for variables that were not set.
+- `artifacts[].uri`: `null`, for an artifact whose hash was recorded but whose bytes were never committed or stored, such as code that ran from an uncommitted working copy. Keep the recorded `sha256` and `size_bytes`. The entry must name a run that lists the artifact in its `artifact_ids`. A local `uri` must match its file's `sha256` and `size_bytes`, so never point it at a different version.
 
 A missing key is always an error. Every other field keeps its usual rules.
 
