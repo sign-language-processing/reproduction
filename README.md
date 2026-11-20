@@ -102,8 +102,8 @@ the [`repro-sign`](https://huggingface.co/repro-sign) organization on Hugging Fa
 ## Also in this repository
 
 - **[`Dockerfile`](Dockerfile)** — the shared GPU base image
-  (`ghcr.io/sign-language-processing/reproduction:latest`): NVIDIA NGC PyTorch, FFmpeg, decord,
-  `simple-video-utils`. Most reproductions start `FROM` it.
+  (`ghcr.io/sign-language-processing/reproduction`): NVIDIA NGC PyTorch, FFmpeg, decord,
+  `simple-video-utils`. Reproductions that use it pin it by digest; see `AGENTS.md`.
 - **[`libraries/`](libraries)** — hard-won build notes for dependencies that routinely break
   (decord, FFmpeg, flash-attn). Read these before changing an environment.
 - **[`.agents/skills/reproduce-paper/`](.agents/skills/reproduce-paper)** — the agent workflow:

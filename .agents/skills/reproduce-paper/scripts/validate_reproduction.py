@@ -1461,6 +1461,33 @@ def validate_readme(
             )
 
 
+STUDY_IMAGE_TAG = re.compile(r"sign-language-processing/reproduction:[\w.-]+")
+LATEST_BASE = re.compile(
+    r"""(?:^\s*FROM\s+\S+|from_registry\(\s*['"][^'"]+):latest\b""", re.MULTILINE
+)
+
+
+def validate_base_images(root: Path, issues: list[str]) -> None:
+    """Committed container definitions pin base images; tags are mutable."""
+    for path in sorted(root.rglob("*")):
+        if not path.is_file() or not (
+            path.name.startswith("Dockerfile") or path.suffix in (".py", ".sh")
+        ):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        name = path.relative_to(root)
+        if STUDY_IMAGE_TAG.search(text):
+            issues.append(
+                f"{name} references the study base image by tag; pin it by digest "
+                "(@sha256:...) as AGENTS.md shows"
+            )
+        elif LATEST_BASE.search(text):
+            issues.append(f"{name} uses a :latest base image; pin a digest or version")
+
+
 def validate_status_blocker(
     status: dict[str, Any],
     pipeline: Any,
@@ -1581,6 +1608,7 @@ def main() -> int:
     if open_gate and pipeline == "complete":
         issues.append("a complete pipeline cannot retain an open gate")
     validate_readme(root, document, pipeline, numerical_agreement, preference, issues)
+    validate_base_images(root, issues)
     if issues:
         print(f"validation failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:

@@ -1,7 +1,7 @@
 """Test the study base image before selecting the paper's older TF stack."""
 import modal
 app = modal.App('arsl-4982792c-base-probe')
-image = modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction:latest')
+image = modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291')
 @app.function(image=image, timeout=300)
 def probe():
     import subprocess,sys

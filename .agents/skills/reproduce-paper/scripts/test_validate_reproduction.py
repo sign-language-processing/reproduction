@@ -198,7 +198,10 @@ def tracker_export(**paper: object) -> dict:
 
 class ValidatorTest(unittest.TestCase):
     def validate(
-        self, document: dict, readme: str | None = None
+        self,
+        document: dict,
+        readme: str | None = None,
+        files: dict[str, str] | None = None,
     ) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -214,6 +217,8 @@ class ValidatorTest(unittest.TestCase):
             if readme is None:
                 readme = readme_text(document)
             (root / "README.md").write_text(readme, encoding="utf-8")
+            for name, text in (files or {}).items():
+                (root / name).write_text(text, encoding="utf-8")
             return subprocess.run(
                 ["python3", str(VALIDATOR), str(root)],
                 check=False,
@@ -269,6 +274,32 @@ class ValidatorTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         del document["artifacts"][1]["uri"]
         self.assert_invalid(document, "needs uri; use null")
+
+    def test_base_images_are_pinned(self) -> None:
+        image = "ghcr.io/sign-language-processing/reproduction"
+        pinned = f"FROM {image}@sha256:{'a' * 64}\nRUN echo ok:latest\n"
+        result = self.validate(valid_document(), files={"Dockerfile": pinned})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        cases = {
+            "Dockerfile": (
+                f"FROM {image}:latest\n",
+                "references the study base image by tag",
+            ),
+            "Dockerfile.gpu": (
+                f"FROM {image}:v26.02.02\n",
+                "references the study base image by tag",
+            ),
+            "modal_app.py": (
+                "image = modal.Image.from_registry('python:latest')\n",
+                "uses a :latest base image",
+            ),
+            "Dockerfile.cpu": ("FROM python:latest\n", "uses a :latest base image"),
+        }
+        for name, (text, message) in cases.items():
+            with self.subTest(name):
+                result = self.validate(valid_document(), files={name: text})
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(f"{name} {message}", result.stderr)
 
     def test_readme_paper_id_matches_record(self) -> None:
         document = valid_document()
