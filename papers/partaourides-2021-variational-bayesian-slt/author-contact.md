@@ -1,6 +1,6 @@
 # Author-contact email — SENT
 
-Status: drafted and sent 2026-09-08 by Carlos Escolano, from a personal mail client outside
+Status: drafted and sent 2026-09-08 by a study team member, from a personal mail client outside
 this repository. No reply as of 2026-09-30 (22 days); the reproduction was closed on that
 basis. See `reproduction.json.author_contact`.
 
@@ -102,4 +102,4 @@ paper fairly.
 Thank you very much for your time.
 
 Best regards,
-Carlos Escolano — REPRO-SIGN reproducibility study
+[redacted] — REPRO-SIGN reproducibility study
