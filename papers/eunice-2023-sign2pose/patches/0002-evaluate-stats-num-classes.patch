@@ -1,0 +1,23 @@
+Size evaluate()'s per-class statistics by the model's class count (correctness: genuine execution bug).
+
+Demonstrated failure (run training-preflight, WLASL2000, --num_classes 2000):
+  File "/opt/spoter/spoter/utils.py", line 52, in evaluate
+    stats[int(labels[0][0])][1] += 1
+  KeyError: 1158
+evaluate() hardcodes `stats = {i: [0, 0] for i in range(101)}`, so any label >= 101 crashes validation and
+test. SPOTER itself was only run with 100 classes. The dict only feeds the optional per-label printout;
+accuracy computation is unchanged.
+
+diff --git a/spoter/utils.py b/spoter/utils.py
+index af40226..e67b799 100644
+--- a/spoter/utils.py
++++ b/spoter/utils.py
+@@ -35,7 +35,7 @@ def train_epoch(model, dataloader, criterion, optimizer, device, scheduler=None)
+ def evaluate(model, dataloader, device, print_stats=False):
+ 
+     pred_correct, pred_all = 0, 0
+-    stats = {i: [0, 0] for i in range(101)}
++    stats = {i: [0, 0] for i in range(model.linear_class.out_features)}
+ 
+     for i, data in enumerate(dataloader):
+         inputs, labels = data

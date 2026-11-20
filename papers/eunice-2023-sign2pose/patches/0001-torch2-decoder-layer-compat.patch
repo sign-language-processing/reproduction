@@ -1,0 +1,29 @@
+Torch 2 compatibility for SPOTERTransformerDecoderLayer (correctness: API compatibility).
+
+Demonstrated failure (run upstream-check, torch 2.11, NGC 26.02):
+  torch/nn/modules/transformer.py: seq_len = _get_seq_len(tgt, self.layers[0].self_attn.batch_first)
+  AttributeError: 'SPOTERTransformerDecoderLayer' object has no attribute 'self_attn'
+torch >= 2 also passes tgt_is_causal / memory_is_causal to every decoder layer.
+
+Fix: keep the inherited self_attn module instead of deleting it, and accept the two new keyword arguments.
+The overridden forward() still never calls self_attn, so its parameters receive no gradient and SGD never
+updates them; the computation is unchanged. Only the stored parameter count grows.
+
+diff --git a/spoter/spoter_model.py b/spoter/spoter_model.py
+index 9462ce1..3055c25 100644
+--- a/spoter/spoter_model.py
++++ b/spoter/spoter_model.py
+@@ -19,11 +19,10 @@ class SPOTERTransformerDecoderLayer(nn.TransformerDecoderLayer):
+     def __init__(self, d_model, nhead, dim_feedforward, dropout, activation):
+         super(SPOTERTransformerDecoderLayer, self).__init__(d_model, nhead, dim_feedforward, dropout, activation)
+ 
+-        del self.self_attn
+-
+     def forward(self, tgt: torch.Tensor, memory: torch.Tensor, tgt_mask: Optional[torch.Tensor] = None,
+                 memory_mask: Optional[torch.Tensor] = None, tgt_key_padding_mask: Optional[torch.Tensor] = None,
+-                memory_key_padding_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
++                memory_key_padding_mask: Optional[torch.Tensor] = None, tgt_is_causal: bool = False,
++                memory_is_causal: bool = False) -> torch.Tensor:
+ 
+         tgt = tgt + self.dropout1(tgt)
+         tgt = self.norm1(tgt)
