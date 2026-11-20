@@ -199,3 +199,17 @@ conflict of interest and hand it to someone else.
 
 Interpretation of outcomes is Team C's job. Reviewers here confirm that the numbers and evidence
 are sound, not whether a paper "passed".
+
+## Releasing the base image
+
+The base image `ghcr.io/sign-language-processing/reproduction` is versioned separately from the
+repository. Repository releases (`v2.0.0`, …) never build it; only image tags do.
+
+1. Merge the `Dockerfile` change to `main`.
+2. Push a tag `image-v<NGC version>.<build>` on that commit, for example `image-v26.04.01` for the
+   first build on NGC PyTorch 26.04. The workflow publishes the image as `v26.04.01` and moves
+   `:latest`.
+3. The workflow run's summary shows the new digest. Open a PR that updates the pinned digest in
+   `AGENTS.md`. Agents start using the new image only once that PR merges.
+
+Existing reproductions keep the digest they pinned; never repoint them to a newer image.
