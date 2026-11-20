@@ -100,7 +100,13 @@ The paper and its code contradicting each other is common, and so is the paper c
 
 Optional fields, with these spellings and no others: `paper_says` (what the paper or code states), `used` (what this attempt did instead), `basis` (why), `effect` (the consequence for interpretation or comparability), `scope` (which part of the protocol the entry covers), `status` (free-form, e.g. "adopted before the run"), `evidence` (array of strings), `related_ids` (other entries in this array), `affects` (pipeline stages, e.g. `["train", "evaluate"]`), and `dataset_ids` (entries in `datasets`, for a deviation that concerns one or more datasets). Datasets carry no deviation fields of their own.
 
-`noncompliance` records the points where this attempt did not meet a requirement of the study's own contract — a ceiling not declared before launch, a required environment variable not set, a compute discussion skipped. It concerns the process, not the paper, and never goes in `guesses_and_deviations`. Each entry needs a unique `id`, a `description`, and a `requirement` citing the rule that was not met. Optional: `run_ids` (empty or absent when the lapse concerns the plan rather than a run), `effect`, and `resolution`. Record the lapse here rather than backfilling a value that was never set. The validator accepts a missing value only where the contract allows a lapse to be recorded: a GPU run's undeclared ceilings, an unrecorded Modal app ID, and an unmounted or unrecorded shared cache or its environment. It accepts it only for runs whose IDs the entry's `run_ids` include. Every other required field stays required.
+`noncompliance` records the points where this attempt did not meet a requirement of the study's own contract — a ceiling not declared before launch, a required environment variable not set, a compute discussion skipped. It concerns the process, not the paper, and never goes in `guesses_and_deviations`. Each entry needs a unique `id`, a `description`, and a `requirement` citing the rule that was not met. Optional: `run_ids` (empty or absent when the lapse concerns the plan rather than a run), `effect`, and `resolution`. Record the lapse here rather than backfilling a value that was never set. A required key is never removed. A lapse keeps the key and records itself in the value, and the validator accepts these values only for runs whose IDs the entry's `run_ids` include:
+
+- `stop_policy.max_gpu_hours` and the cost ceiling (`max_cost_chf` or `max_cost_usd`): `null`, for ceilings not declared before launch;
+- `compute.modal_app_ids`: `[]`, for an app ID that was not recorded;
+- `HF_HOME` and `HF_HUB_CACHE` in `compute.shared_cache.environment`: `null`, for variables that were not set.
+
+The one exception is `compute.shared_cache` itself, which is omitted entirely when the cache was not mounted or its setup was not recorded. Every other field keeps its usual rules.
 
 ```json
 "guesses_and_deviations": [
