@@ -243,19 +243,21 @@
     {
       "gate_id": "ksl-data-cloud-use",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "The dataset is not public and carries no license. The queue record says the authors granted permission to reproduce and supplied the archive, but does not state that project-cloud processing and storage are permitted. The dataset is absent from the shared Modal Volume 'datasets'.",
       "evidence": [
         "Queue record, dataset entry: license empty, permission_to_reproduce 'yes', correspondence 'contacted_got_reply', on_modal empty.",
         "modal volume ls datasets / on 2026-11-20 lists 31 directories, none for this dataset.",
         "Four sampled images show one hand against a wall, no face."
       ],
-      "required_action": "A study team member confirms that the authors' permission covers processing and storing the images in the repro-sign Modal workspace, and authorizes populating /datasets/<slug> on the shared Volume."
+      "required_action": "A study team member confirms that the authors' permission covers processing and storing the images in the repro-sign Modal workspace, and authorizes populating /datasets/<slug> on the shared Volume.",
+      "resolved_at": "2026-11-20",
+      "resolution": "A study team member confirmed that the images may be uploaded to and processed in the repro-sign Modal workspace, and authorized populating /datasets/ksl-fingerspelling-kenshimov-2021 on the shared Volume. The copy stays private to the workspace; no image is redistributed or committed."
     },
     {
       "gate_id": "ksl-subset-and-split",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "The paper trains on 2,100 images, 50 per class, with a random 80/10/10 split. The supplied archive holds 14,249 images, 142 to 446 per class. Neither the paper nor the notebooks identify which 50 images per class were used, and the authors' split was unseeded, so the 210-image test set cannot be recovered.",
       "evidence": [
         "Paper Sec. 5.1: 2,100 images, 42 classes, 50 each; random split into 1,680 / 210 / 210.",
@@ -263,12 +265,14 @@
         "Compare_nets.ipynb: 'Taking the first 50 names from os.listdir was a different subset every time the directory order changed' and 'The 2022 split was an unseeded train_test_split'.",
         "Paper Fig. 9 and Fig. 10: the two test confusion matrices have different per-class counts, so LeNet and EfficientNet were tested on different random splits."
       ],
-      "required_action": "Decide the subset rule and the split seed before any training run, and whether values obtained under them count as produced targets or as conditional evidence."
+      "required_action": "Decide the subset rule and the split seed before any training run, and whether values obtained under them count as produced targets or as conditional evidence.",
+      "resolved_at": "2026-11-20",
+      "resolution": "Decided by a study team member before any training run. Subset: the first 50 files of each class folder in lexicographic file-name order. Split: random 80/10/10, not stratified, as in Read_data.ipynb, with seed 42 for both train_test_split calls and for weight initialization. Seeds 1, 2, 3 and 4 are run as supplementary evidence only and never replace the seed-42 values. Values obtained under these choices count as produced targets."
     },
     {
       "gate_id": "ksl-penalty-metric",
       "type": "target",
-      "status": "open",
+      "status": "resolved",
       "reason": "Table 1's Penalty column cannot be computed from the paper. Fig. 4 shows only a 12x12 excerpt of the 42x42 penalty matrix, and the stated formula S = -(1/N) * sum(A) yields values at or below zero, while Table 1 reports 3.017 to 3.130.",
       "evidence": [
         "Paper Eq. (2) and Fig. 4, captioned 'Example of penalty matrix values': 12 of 42 classes shown.",
@@ -289,7 +293,9 @@
           "decision_needed": "Whether to close them without contacting the authors."
         }
       ],
-      "required_action": "Choose between requesting the matrix from the authors and closing the four Penalty targets as not produced."
+      "required_action": "Choose between requesting the matrix from the authors and closing the four Penalty targets as not produced.",
+      "resolved_at": "2026-11-20",
+      "resolution": "A study team member chose alternative 'not-produced': the four Penalty targets are closed as not produced, reason metric_ambiguous, without contacting the authors for now."
     }
   ],
   "guesses_and_deviations": [],
