@@ -262,7 +262,7 @@ gate applies.
 
 ## Author and team contact
 
-The author-contact email at `author-contact.md` was **sent 2026-09-08** by Carlos Escolano,
+The author-contact email at `author-contact.md` was **sent 2026-09-08** by a study team member,
 from a personal mail client outside this repository, to c.partaourides@cut.ac.cy and
 sotirios.chatzis@cut.ac.cy, cc ai.voskou@edu.cut.ac.cy and dkosmo@upatras.gr. It listed every
 missing hyperparameter with the value this attempt used, gave the reproduced-vs-paper
