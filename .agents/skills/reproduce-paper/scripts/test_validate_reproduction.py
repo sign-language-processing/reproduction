@@ -677,10 +677,12 @@ class ValidatorTest(unittest.TestCase):
         del document["runs"][0]["compute"]["platform"]
         self.assert_invalid(document, "compute.platform must be 'modal'")
 
-    def test_missing_shared_cache_needs_noncompliance(self) -> None:
+    def test_null_shared_cache_needs_noncompliance(self) -> None:
         document = self.modal_run_document()
         del document["runs"][0]["compute"]["shared_cache"]
-        self.assert_invalid(document, "needs shared_cache, or a noncompliance entry")
+        self.assert_invalid(document, "needs shared_cache; use null")
+        document["runs"][0]["compute"]["shared_cache"] = None
+        self.assert_invalid(document, "shared_cache null; record the lapse")
         document["noncompliance"] = [
             {
                 "id": "hf-cache-not-recorded",
@@ -691,6 +693,8 @@ class ValidatorTest(unittest.TestCase):
         ]
         result = self.validate(document)
         self.assertEqual(result.returncode, 0, result.stderr)
+        del document["runs"][0]["compute"]["shared_cache"]  # entry alone is not enough
+        self.assert_invalid(document, "needs shared_cache; use null")
 
     def test_legacy_app_id_fields_are_rejected(self) -> None:
         for where, field in (
@@ -783,6 +787,28 @@ class ValidatorTest(unittest.TestCase):
             },
         }
         return document
+
+    def test_undeclared_ceilings_need_a_noncompliance_entry(self) -> None:
+        for started_at, cost_field in (
+            ("2026-10-01T10:00:00Z", "max_cost_chf"),
+            ("2026-11-21T10:00:00Z", "max_cost_usd"),
+        ):
+            with self.subTest(cost_field=cost_field):
+                document = self.gpu_run_document(started_at)
+                document["runs"][0]["stop_policy"].update(
+                    {"max_gpu_hours": None, cost_field: None}
+                )
+                self.assert_invalid(document, f"needs {cost_field}, an explicit")
+                document["noncompliance"] = [
+                    {
+                        "id": "ceilings-not-declared",
+                        "description": "Launched with only the Modal timeout.",
+                        "requirement": "stopping-criteria.md: declare ceilings.",
+                        "run_ids": ["run-1"],
+                    }
+                ]
+                result = self.validate(document)
+                self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_gpu_run_with_usage_validates(self) -> None:
         result = self.validate(self.gpu_run_document("2026-11-20T10:00:00Z"))

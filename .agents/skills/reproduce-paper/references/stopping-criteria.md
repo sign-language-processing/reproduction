@@ -129,9 +129,12 @@ and `modal_app_id`, on the run, its `compute`, or its `modal` object, are
 rejected. A run whose app ID was not recorded keeps an empty list, and the
 lapse is recorded as a `noncompliance` entry whose `run_ids` include it.
 
-A contemporaneous GPU run has non-null GPU-hour and cost ceilings. A
-retrospective GPU run may use null only when each missing ceiling is explicitly
-listed as unknown. A CPU or non-compute run may use `null` for ceilings that do
+A contemporaneous GPU run has non-null GPU-hour and cost ceilings. If it was
+launched without declaring them, keep them `null` rather than backfilling, and
+record the lapse as a `noncompliance` entry whose `run_ids` include the run; its
+`description` says what limited the run instead, such as a Modal function
+timeout. A retrospective GPU run may use null only when each missing ceiling is
+explicitly listed as unknown. A CPU or non-compute run may use `null` for ceilings that do
 not apply.
 
 ### Actual compute usage

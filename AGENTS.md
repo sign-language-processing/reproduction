@@ -119,7 +119,7 @@ Requests for data access and author-held data are coordinated with Team S. If ac
 
 ### Shared Hugging Face cache
 
-Every Modal reproduction run uses the shared Volume `huggingface-cache`, created with VolumeFS v2. Mount it read-write at `/cache/huggingface` and set at least `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub` so model, tokenizer, and Hub artifact downloads are reused across papers. If a run mounted the cache without these variables, record them as `null` in its `compute.shared_cache.environment`; never backfill them. Record the lapse as a `noncompliance` entry whose `run_ids` include that run; the validator rejects null values otherwise. If a run did not mount the cache, or its record does not say how the cache was set up, omit `compute.shared_cache` and record that lapse the same way; never infer the setup from code that may not be what ran.
+Every Modal reproduction run uses the shared Volume `huggingface-cache`, created with VolumeFS v2. Mount it read-write at `/cache/huggingface` and set at least `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub` so model, tokenizer, and Hub artifact downloads are reused across papers. If a run mounted the cache without these variables, record them as `null` in its `compute.shared_cache.environment`; never backfill them. Record the lapse as a `noncompliance` entry whose `run_ids` include that run; the validator rejects null values otherwise. If a run did not mount the cache, or its record does not say how the cache was set up, set `compute.shared_cache` to `null` and record that lapse the same way; never infer the setup from code that may not be what ran.
 
 The cache is an optimization, never a source of provenance. Pin every Hugging Face revision and record its repository/revision or artifact hash. Do not store canonical datasets, checkpoints, final results, credentials, or evidence in `huggingface-cache`; datasets remain under the shared `datasets` Volume and outputs use paper-specific storage.
 
@@ -186,7 +186,8 @@ Classify failures before retrying:
 retained run must use the controlled recording provenance, attempt, stop-policy,
 terminal classification, reason-code, and failure-class fields defined in
 `.agents/skills/reproduce-paper/references/stopping-criteria.md`. Declare ceilings
-before launch. Do not invent synonymous status or reason strings; put nuance in
+before launch; if a run was launched without them, keep them `null`, never
+backfill, and record the lapse as a `noncompliance` entry naming the run. Do not invent synonymous status or reason strings; put nuance in
 the detail field. Retrospective unknowns exist only for migrating already-
 committed evidence and may never hide a terminal classification.
 

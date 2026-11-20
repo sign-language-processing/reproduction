@@ -552,11 +552,13 @@ def validate_runs(
                     for field in ("max_gpu_hours", cost_ceiling_field(stop_policy)):
                         path = f"stop_policy.{field}"
                         if stop_policy.get(field) is None and not (
-                            mode == "retrospective" and path in unknown_fields
+                            (mode == "retrospective" and path in unknown_fields)
+                            or run_id in noncompliant_run_ids  # launched undeclared
                         ):
                             issues.append(
-                                f"GPU Modal {label} needs {field} or an explicit "
-                                "retrospective unknown"
+                                f"GPU Modal {label} needs {field}, an explicit "
+                                "retrospective unknown, or a noncompliance entry "
+                                "whose run_ids include this run"
                             )
                 validate_usage(
                     compute.get("usage"), compute.get("modal_app_ids"), label, issues
@@ -568,13 +570,19 @@ def validate_runs(
                             "only in compute.usage"
                         )
             cache = compute.get("shared_cache")
-            if cache is None and run_id in noncompliant_run_ids:
-                pass  # cache use not recorded or not mounted; the lapse is recorded
-            elif not isinstance(cache, dict):
+            if "shared_cache" not in compute:
                 issues.append(
-                    f"Modal {label} needs shared_cache, or a noncompliance entry "
-                    "whose run_ids include this run"
+                    f"Modal {label} needs shared_cache; use null if the cache was "
+                    "not mounted or its setup was not recorded"
                 )
+            elif cache is None:
+                if run_id not in noncompliant_run_ids:
+                    issues.append(
+                        f"Modal {label} has shared_cache null; record the lapse in "
+                        "a noncompliance entry whose run_ids include this run"
+                    )
+            elif not isinstance(cache, dict):
+                issues.append(f"Modal {label} shared_cache must be an object or null")
             else:
                 if cache.get("modal_volume") != "huggingface-cache":
                     issues.append(f"Modal {label} must use 'huggingface-cache'")
