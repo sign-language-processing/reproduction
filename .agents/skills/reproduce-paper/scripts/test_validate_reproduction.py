@@ -727,6 +727,27 @@ class ValidatorTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("needs max_gpu_hours", result.stderr)
 
+    def test_cost_ceiling_currency_follows_declaration_date(self) -> None:
+        old = self.gpu_run_document("2026-11-19T10:00:00Z")
+        new = self.gpu_run_document("2026-11-21T10:00:00Z")
+        for document in (old, new):
+            result = self.validate(document)
+            self.assertEqual(result.returncode, 0, result.stderr)
+        old["runs"][0]["stop_policy"]["max_cost_usd"] = 4.0  # both, before cut-off
+        self.assertEqual(self.validate(old).returncode, 0)
+        cases = {
+            "CHF after cut-off": {"max_cost_chf": 5.0},
+            "USD ceiling missing": {"max_cost_usd": None},
+        }
+        for name, change in cases.items():
+            with self.subTest(name):
+                document = self.gpu_run_document("2026-11-21T10:00:00Z")
+                stop_policy = document["runs"][0]["stop_policy"]
+                stop_policy.update(change)
+                result = self.validate(document)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("max_cost_usd", result.stderr)
+
     def gpu_run_document(self, started_at: str) -> dict:
         document = valid_document()
         run = document["runs"][0]
@@ -734,7 +755,12 @@ class ValidatorTest(unittest.TestCase):
         run["finished_at_utc"] = started_at.replace("T10:00", "T10:30")
         run["stop_policy"]["declared_at_utc"] = started_at.replace("T10:00", "T09:55")
         run["stop_policy"]["max_gpu_hours"] = 1.0
-        run["stop_policy"]["max_cost_chf"] = 5.0
+        stop_policy = run["stop_policy"]
+        if stop_policy["declared_at_utc"] >= "2026-11-20":
+            del stop_policy["max_cost_chf"]
+            stop_policy["max_cost_usd"] = 5.0
+        else:
+            stop_policy["max_cost_chf"] = 5.0
         run["compute"] = {
             "platform": "modal",
             "modal_profile": "repro-sign",

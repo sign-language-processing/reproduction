@@ -32,7 +32,7 @@ terminal classification:
     "declared_at_utc": "2026-08-28T09:55:00Z",
     "max_wall_time_seconds": 86400,
     "max_gpu_hours": 24.0,
-    "max_cost_chf": 100.0
+    "max_cost_usd": 100.0
   },
   "terminal": {
     "state": "succeeded",
@@ -57,8 +57,15 @@ required; use explicit `null` only where this contract permits it.
 For new work, use `recording.mode: contemporaneous` with an empty
 `unknown_fields` array and a null `source_record_sha256`. The start, finish, and
 declaration are UTC timestamps, the declaration precedes the start, and
-`max_wall_time_seconds` is positive. `max_gpu_hours` and `max_cost_chf` are
+`max_wall_time_seconds` is positive. `max_gpu_hours` and `max_cost_usd` are
 positive when they apply and `null` otherwise.
+
+The cost ceiling is in US dollars, the currency Modal bills in and
+`compute.usage.cost_usd` records, so the two compare without conversion. Runs
+whose ceiling was declared before 2026-11-20, or whose declaration time is a
+retrospective unknown, keep the `max_cost_chf` they were declared with: never
+convert or relabel a declared ceiling. Such a run may also carry
+`max_cost_usd`. A run declared from 2026-11-20 uses `max_cost_usd` only.
 
 For a historical run whose original stop policy was not recorded, keep the same
 shape and use explicit unknowns:

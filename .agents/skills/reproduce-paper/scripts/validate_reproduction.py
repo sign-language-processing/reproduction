@@ -183,6 +183,27 @@ def parse_utc_timestamp(value: Any, label: str, issues: list[str]) -> datetime |
     return parsed
 
 
+# Cost ceilings declared from this instant are in USD, Modal's billing currency.
+COST_CEILING_USD_FROM = datetime(2026, 11, 20, tzinfo=timezone.utc)
+
+
+def cost_ceiling_field(stop_policy: dict[str, Any]) -> str:
+    """The stop_policy field that holds this run's cost ceiling.
+
+    Ceilings declared earlier, or with no recorded declaration time, keep the
+    CHF field they were declared in; they are never converted.
+    """
+    try:
+        declared = datetime.fromisoformat(
+            str(stop_policy.get("declared_at_utc")).replace("Z", "+00:00")
+        )
+    except ValueError:
+        return "max_cost_chf"
+    if declared.tzinfo is None or declared < COST_CEILING_USD_FROM:
+        return "max_cost_chf"
+    return "max_cost_usd"
+
+
 def check_sha(value: Any, label: str, issues: list[str]) -> None:
     if not isinstance(value, str) or not SHA256.fullmatch(value):
         issues.append(f"{label} must be a lowercase SHA-256")
@@ -528,7 +549,7 @@ def validate_runs(
             elif gpu_count > 0:
                 stop_policy = run.get("stop_policy")
                 if isinstance(stop_policy, dict):
-                    for field in ("max_gpu_hours", "max_cost_chf"):
+                    for field in ("max_gpu_hours", cost_ceiling_field(stop_policy)):
                         path = f"stop_policy.{field}"
                         if stop_policy.get(field) is None and not (
                             mode == "retrospective" and path in unknown_fields
@@ -747,14 +768,21 @@ def validate_run_stopping(
     if not isinstance(stop_policy, dict):
         issues.append(f"{label} needs stop_policy")
     else:
+        cost_field = cost_ceiling_field(stop_policy)
         for field in (
             "declared_at_utc",
             "max_wall_time_seconds",
             "max_gpu_hours",
-            "max_cost_chf",
+            cost_field,
         ):
             if field not in stop_policy:
                 issues.append(f"{label}.stop_policy needs {field}")
+        if cost_field == "max_cost_usd" and "max_cost_chf" in stop_policy:
+            issues.append(
+                f"{label}.stop_policy declares its cost ceiling in USD "
+                "(max_cost_usd); max_cost_chf is only for runs declared before "
+                f"{COST_CEILING_USD_FROM.date()}"
+            )
         timestamps: dict[str, datetime | None] = {}
         for value, path in (
             (run.get("started_at_utc"), "started_at_utc"),
@@ -782,7 +810,12 @@ def validate_run_stopping(
             and finished_at < started_at
         ):
             issues.append(f"{label}.finished_at_utc precedes started_at_utc")
-        for field in ("max_wall_time_seconds", "max_gpu_hours", "max_cost_chf"):
+        for field in (
+            "max_wall_time_seconds",
+            "max_gpu_hours",
+            "max_cost_chf",
+            "max_cost_usd",
+        ):
             value = stop_policy.get(field)
             path = f"stop_policy.{field}"
             if value is None:
@@ -891,7 +924,9 @@ def validate_run_stopping(
     reached_limits = {
         "wall_time_ceiling_reached": "max_wall_time_seconds",
         "gpu_hour_ceiling_reached": "max_gpu_hours",
-        "cost_ceiling_reached": "max_cost_chf",
+        "cost_ceiling_reached": cost_ceiling_field(stop_policy)
+        if isinstance(stop_policy, dict)
+        else "max_cost_usd",
     }
     limit_field = reached_limits.get(reason_code)
     if limit_field and (
