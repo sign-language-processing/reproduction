@@ -1,0 +1,137 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-lqmv6UsQKsjQ9mSSgszQzS
+✓ Created objects.
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/modal_app.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/prepare_how2.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/check_evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/data.sh
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/collect.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/evaluation.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/sc
+│   ripts/run.py
+├── 🔨 Created mount 
+│   <worktree>/papers/cabot-2022-how2sign-transformers/pa
+│   tches
+├── 🔨 Created function execute.
+├── 🔨 Created function finish_acquisition.
+├── 🔨 Created function audit_data.
+├── 🔨 Created function acquire_data.
+├── 🔨 Created function prepare_how2.
+├── 🔨 Created function acquire_validation.
+├── 🔨 Created function collect.
+├── 🔨 Created function inspect_data.
+├── 🔨 Created function check_phoenix_metric.
+├── 🔨 Created function execute_how2.
+├── 🔨 Created function check_how2_metric.
+└── 🔨 Created function check_evaluation.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 11.4.3
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+{"started_at_utc": "2026-10-01T14:04:28.796595+00:00", "app_id": "ap-lqmv6UsQKsjQ9mSSgszQzS", "function_call_id": "fc-01M3VWFNQGQXK2FE1XJGYP73NP", "exit_code": 1, "finished_at_utc": "2026-10-01T14:04:48.832116+00:00"}
+2026-10-01 14:04:36.971539: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 14:04:36.972345: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 14:04:36.972431: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+2026-10-01 14:04:40.058680: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+2026-10-01 14:04:40.058751: E tensorflow/stream_executor/cuda/cuda_driver.cc:351] failed call to cuInit: UNKNOWN ERROR (303)
+2026-10-01 14:04:40.058813: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (modal): /proc/driver/nvidia/version does not exist
+Traceback (most recent call last):
+  File "/opt/check_evaluation.py", line 24, in <module>
+    model = build_model(cfg['model'], gv, tv, 1024, True, True)
+  File "/slt/signjoey/model.py", line 372, in build_model
+    txt_padding_idx = txt_vocab.stoi[PAD_TOKEN]
+AttributeError: 'int' object has no attribute 'stoi'
+
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 292, in check_evaluation
+    if meta['exit_code']:raise RuntimeError('Equivalence diagnostic failed')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Equivalence diagnostic failed
+Stopping app - uncaught exception raised locally: RuntimeError('Equivalence diagnostic failed').
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ <worktree>/papers/cabot-2022-how2sign-transformers/sc │
+│ ripts/modal_app.py:297 in main                                               │
+│                                                                              │
+│   296 │   if mode=='check-evaluation':                                       │
+│ ❱ 297 │   │   check_evaluation.remote(run_id); return                        │
+│   298 │   if mode=='check-phoenix-metric':                                   │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ob │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_fu │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ <local-python-root>/Caskroom/miniconda/base/lib/python3.14/site-packages/modal/_ut │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VWFPBM8MD6X57088Y4QB1R)...      │
+│                                                                              │
+│ /root/modal_app.py:292 in check_evaluation                                   │
+│                                                                              │
+│ ❱ 292 if meta['exit_code']:raise RuntimeError('Equivalence diagnostic failed │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+RuntimeError: Equivalence diagnostic failed
