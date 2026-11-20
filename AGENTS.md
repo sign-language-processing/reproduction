@@ -186,7 +186,8 @@ Classify failures before retrying:
 retained run must use the controlled recording provenance, attempt, stop-policy,
 terminal classification, reason-code, and failure-class fields defined in
 `.agents/skills/reproduce-paper/references/stopping-criteria.md`. Declare ceilings
-before launch. Do not invent synonymous status or reason strings; put nuance in
+before launch; if a run was launched without them, keep them `null`, never
+backfill, and record the lapse as a `noncompliance` entry naming the run. Do not invent synonymous status or reason strings; put nuance in
 the detail field. Retrospective unknowns exist only for migrating already-
 committed evidence and may never hide a terminal classification.
 

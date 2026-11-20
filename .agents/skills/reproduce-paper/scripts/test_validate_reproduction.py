@@ -784,6 +784,28 @@ class ValidatorTest(unittest.TestCase):
         }
         return document
 
+    def test_undeclared_ceilings_need_a_noncompliance_entry(self) -> None:
+        for started_at, cost_field in (
+            ("2026-10-01T10:00:00Z", "max_cost_chf"),
+            ("2026-11-21T10:00:00Z", "max_cost_usd"),
+        ):
+            with self.subTest(cost_field=cost_field):
+                document = self.gpu_run_document(started_at)
+                document["runs"][0]["stop_policy"].update(
+                    {"max_gpu_hours": None, cost_field: None}
+                )
+                self.assert_invalid(document, f"needs {cost_field}, an explicit")
+                document["noncompliance"] = [
+                    {
+                        "id": "ceilings-not-declared",
+                        "description": "Launched with only the Modal timeout.",
+                        "requirement": "stopping-criteria.md: declare ceilings.",
+                        "run_ids": ["run-1"],
+                    }
+                ]
+                result = self.validate(document)
+                self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_gpu_run_with_usage_validates(self) -> None:
         result = self.validate(self.gpu_run_document("2026-11-20T10:00:00Z"))
         self.assertEqual(result.returncode, 0, result.stderr)

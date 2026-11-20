@@ -552,11 +552,13 @@ def validate_runs(
                     for field in ("max_gpu_hours", cost_ceiling_field(stop_policy)):
                         path = f"stop_policy.{field}"
                         if stop_policy.get(field) is None and not (
-                            mode == "retrospective" and path in unknown_fields
+                            (mode == "retrospective" and path in unknown_fields)
+                            or run_id in noncompliant_run_ids  # launched undeclared
                         ):
                             issues.append(
-                                f"GPU Modal {label} needs {field} or an explicit "
-                                "retrospective unknown"
+                                f"GPU Modal {label} needs {field}, an explicit "
+                                "retrospective unknown, or a noncompliance entry "
+                                "whose run_ids include this run"
                             )
                 validate_usage(
                     compute.get("usage"), compute.get("modal_app_ids"), label, issues
