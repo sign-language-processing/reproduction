@@ -1,0 +1,32 @@
+Decode the test split with the configured testing.forward_type.
+
+Applies to: Atrewin/SignXmDA b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5 after
+0001-gloss-decoding-mirror-training.patch.
+
+Execution bug. prediction_XmDA.test() passes
+forward_type=cfg["testing"]["forward_type"] to both dev decoding passes but
+not to the final test pass, which then falls back to validate_on_data's
+default "sign". For a forward_type=gloss teacher, whose upstream config sets
+the test split to the training pickle to produce KD references, the training
+set is therefore translated by feeding sign features into a model trained on
+glosses. Run preflight-phoenix14t-teacher-attempt-2: dev BLEU-4 19.83, but on
+the training set BLEU-4 0.76 with WER 100 (all deletions), and 5,012 of 7,096
+translations start with "in der neuen woche".
+
+Behavior: unchanged for every model tested with testing.forward_type sign
+(all baselines and the mixup/kd/xmda students); gloss teachers decode the test
+split on their gloss input, as their dev passes already do. The same omission
+in test_model_average() is left alone because training_XmDA never calls it.
+
+diff --git a/signjoey/prediction_XmDA.py b/signjoey/prediction_XmDA.py
+index bab1edf..b6c0668 100644
+--- a/signjoey/prediction_XmDA.py
++++ b/signjoey/prediction_XmDA.py
+@@ -580,6 +580,7 @@ def test(
+ 
+     test_best_result = validate_on_data(
+         model=model,
++        forward_type=cfg["testing"]["forward_type"],
+         data=test_data,
+         batch_size=batch_size,
+         use_cuda=use_cuda,

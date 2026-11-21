@@ -1,0 +1,80 @@
+Validate and decode forward_type=gloss models with the training-time gloss input.
+
+Applies to: Atrewin/SignXmDA b6e2ca4ea81cab41cf858e1d0ce948a778cb09a5
+Used by: the conditional teacher runs only (gate teacher-gloss-decoding,
+resolved as patch-mirror-training by the assignee on 2026-10-29).
+
+INVENTED BEHAVIOR CHOICE. In training, Batch_Sign repeats every gloss by
+ratio = sum(sgn_lengths) // sum(gls_lengths) (min 1) and exposes
+gls_input_mask / gls_input_lengths, which get_loss_for_batch(gloss) reads.
+The plain Batch built by prediction_XmDA for validation and test has no such
+fields, so validating a forward_type=gloss model raises AttributeError
+('Batch' object has no attribute 'gls_input_mask'; run
+preflight-phoenix14t-teacher), and run_batch(gloss) feeds un-repeated
+glosses. This patch makes Batch build the gloss input exactly as Batch_Sign
+does, using the sign lengths present in every split, and makes
+run_batch(gloss) use the repeated input, mask and lengths, consistent with
+get_loss_for_batch. The authors' development fork Atrewin/slt commit
+9ecb427b159de5aaaa6bd21a5957f74d752564c1 ("all extend gloss") added the
+repetition to the training batch classes and get_loss_for_batch and left
+Batch and run_batch without it, so no author evidence shows how, or whether,
+this path was ever decoded.
+
+Scope: Batch is only constructed in prediction_XmDA (validation and test) by
+the training_XmDA entry point, and run_batch is only called there, so the
+training path is unchanged. gls, gls_lengths and gls_mask keep their values;
+the sign path (forward_type sign, all baselines) reads none of the changed
+fields.
+
+diff --git a/signjoey/batch.py b/signjoey/batch.py
+index 88365d5..7fe1d91 100644
+--- a/signjoey/batch.py
++++ b/signjoey/batch.py
+@@ -113,12 +113,15 @@ class Batch:
+             #self.num_gls_tokens = gls_lengths.sum().detach().clone().numpy()
+             # @jinhui
+ 
+-            self.gls_input = gls
++            ratio = int(max(torch.sum(self.sgn_lengths)// torch.sum(gls_lengths), 1))
++            self.gls_input = gls.repeat_interleave(ratio, dim=1)
++            self.gls_input_lengths = gls_lengths * ratio
++            self.gls_input_mask = (self.gls_input != gla_pad_index).unsqueeze(1)
+             self.gls_lengths = gls_lengths
+ 
+             self.gls = gls
+             # we exclude the padded areas from the loss computation
+-            self.gls_mask = (self.gls_input != gla_pad_index).unsqueeze(1)
++            self.gls_mask = (self.gls != gla_pad_index).unsqueeze(1)
+             self.num_gls_tokens = (self.gls != gla_pad_index).data.sum().item()
+ 
+         if use_cuda:
+@@ -142,6 +145,7 @@ class Batch:
+             self.gls = self.gls.cuda()
+             self.gls_mask = self.gls_mask.cuda()
+             self.gls_input = self.gls_input.cuda()
++            self.gls_input_mask = self.gls_input_mask.cuda()
+ 
+     def sort_by_sgn_lengths(self):
+         """
+@@ -167,6 +171,8 @@ class Batch:
+ 
+             self.gls_mask = self.gls_mask[perm_index]
+             self.gls_input = self.gls_input[perm_index]
++            self.gls_input_mask = self.gls_input_mask[perm_index]
++            self.gls_input_lengths = self.gls_input_lengths[perm_index]
+ 
+         if self.txt is not None:
+             self.txt = self.txt[perm_index]
+diff --git a/signjoey/model.py b/signjoey/model.py
+index 4dc275d..5d16edc 100644
+--- a/signjoey/model.py
++++ b/signjoey/model.py
+@@ -724,7 +724,7 @@ class SignMixupModel(nn.Module):
+         """
+         # @jinhui 这里不知道为什么要单独写如x
+         if forward_type == "gloss":
+-            x, x_mask, x_lengths = batch.gls_input, batch.gls_mask, batch.gls_lengths
++            x, x_mask, x_lengths = batch.gls_input, batch.gls_input_mask, batch.gls_input_lengths
+         elif forward_type == "sign":
+             x, x_mask, x_lengths = batch.sgn, batch.sgn_mask, batch.sgn_lengths
+         else:
