@@ -1,0 +1,152 @@
+Patch for impressncsu/ICCV2025_MSLR at 7dd73c4e67b2959a95f828c103269723528b9271.
+
+Concern: hardcoded data paths (correctness/containerization only).
+Why necessary: the published scripts hardcode the authors' Windows data
+directories (and leave Pose_estimation/demo.py's input/output paths empty),
+and val_md_gen.py / val_video_resized.py select the split by a hand-edited
+DIR = "Test" line. In the container these become environment variables:
+MSLR_TRAIN_DIR, MSLR_VAL_DIR, MSLR_TEST_DIR, MSLR_SPLIT ("Test" or "Val"),
+POSE_INPUT_DIR, POSE_OUTPUT_DIR. No other line changes; behaviour is unchanged.
+fusion_pred_trainval.py (internal 80/20 fusion-weight search, out of scope)
+is left untouched.
+
+diff --git a/MSLR_radar_video/cnn_models_radar+video/md_cnn_3branch.py b/MSLR_radar_video/cnn_models_radar+video/md_cnn_3branch.py
+index 35a850f..865b605 100644
+--- a/MSLR_radar_video/cnn_models_radar+video/md_cnn_3branch.py
++++ b/MSLR_radar_video/cnn_models_radar+video/md_cnn_3branch.py
+@@ -16,7 +16,7 @@ import pandas as pd
+ # CONFIGURATION
+ # ───────────────────────────────────────────────────────────────────────────────
+ ############## Chnage Based on your data directory ###############################
+-BASE_DIR     = r"C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\train"
++BASE_DIR     = os.environ["MSLR_TRAIN_DIR"]
+ ##################################################################################
+ NUM_CLASSES  = 126
+ VALID_SPLIT  = 0.2
+diff --git a/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py b/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
+index c59ac4e..bc1d35f 100644
+--- a/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
++++ b/MSLR_radar_video/cnn_models_radar+video/resnet21D_V2.py
+@@ -19,7 +19,7 @@ from tensorflow.keras import layers, models, callbacks, optimizers
+ # 1. CONFIGURATION & SEEDS
+ # ───────────────────────────────────────────────────────────────────────────────
+ ############## Chnage Based on your data directory ###############################
+-BASE_TRAIN_DIR = r"C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\train"
++BASE_TRAIN_DIR = os.environ["MSLR_TRAIN_DIR"]
+ ##################################################################################
+ RANDOM_SEED    = 42
+ NUM_CLASSES    = 126
+diff --git a/MSLR_radar_video/data_processing/train_md_gen.py b/MSLR_radar_video/data_processing/train_md_gen.py
+index 2c0d3dd..e2fa045 100644
+--- a/MSLR_radar_video/data_processing/train_md_gen.py
++++ b/MSLR_radar_video/data_processing/train_md_gen.py
+@@ -14,7 +14,7 @@ from microdp_utils import compute_microdoppler, save_spectrogram
+ 
+ ############## Chnage Based on your data directory ###############################
+ # ─── CONFIG ────────────────────────────────────────────────────────────────────
+-BASE_DIR      = r'C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\train'
++BASE_DIR      = os.environ['MSLR_TRAIN_DIR']
+ ##################################################################################
+ 
+ INTERP_FACTOR = 2
+diff --git a/MSLR_radar_video/data_processing/train_video_resized.py b/MSLR_radar_video/data_processing/train_video_resized.py
+index 6bcf9f5..735788f 100644
+--- a/MSLR_radar_video/data_processing/train_video_resized.py
++++ b/MSLR_radar_video/data_processing/train_video_resized.py
+@@ -8,7 +8,7 @@ import h5py
+ # ───────────────────────────────────────────────────────────────────────────────
+ ############## Chnage Based on your data directory ###############################
+ # Base “train” directory containing class folders (e.g., “0_A”, “1_B”, …)
+-BASE_TRAIN_DIR = r"C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\train"
++BASE_TRAIN_DIR = os.environ["MSLR_TRAIN_DIR"]
+ ##################################################################################
+ 
+ # Target dimensions
+diff --git a/MSLR_radar_video/data_processing/val_md_gen.py b/MSLR_radar_video/data_processing/val_md_gen.py
+index ce99c3a..e5feffa 100644
+--- a/MSLR_radar_video/data_processing/val_md_gen.py
++++ b/MSLR_radar_video/data_processing/val_md_gen.py
+@@ -1,12 +1,12 @@
+ import os
+ from microdp_utils import compute_microdoppler, save_spectrogram
+ 
+-DIR = "Test" # change it to Test or Val depending on which data we are processing
++DIR = os.environ["MSLR_SPLIT"] # "Test" or "Val"
+ 
+ ############## Chnage Based on your data directory ###############################
+ # ─── CONFIG ────────────────────────────────────────────────────────────────────
+-VAL_DIR       = r'C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\val'
+-Test_DIR      = r'C:/Users/sb3682.ECE-2V7QHQ3/My Stuff/kaggle_comp/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/test'
++VAL_DIR       = os.environ['MSLR_VAL_DIR']
++Test_DIR      = os.environ['MSLR_TEST_DIR']
+ ##################################################################################
+ 
+ if DIR == "Test":
+diff --git a/MSLR_radar_video/data_processing/val_video_resized.py b/MSLR_radar_video/data_processing/val_video_resized.py
+index 228bf30..d0f669c 100644
+--- a/MSLR_radar_video/data_processing/val_video_resized.py
++++ b/MSLR_radar_video/data_processing/val_video_resized.py
+@@ -7,12 +7,12 @@ import numpy as np
+ # CONFIGURATION
+ # ───────────────────────────────────────────────────────────────────────────────
+ 
+-DIR = "Test" # change it to Test or Val depending on which data we are processing
++DIR = os.environ["MSLR_SPLIT"] # "Test" or "Val"
+ 
+ ############## Chnage Based on your data directory ###############################
+ # Path to the validation folder containing subfolders SAMPLE_<num>
+-VAL_DIR = r"C:\Users\sb3682.ECE-2V7QHQ3\My Stuff\kaggle_comp\Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val\val"
+-Test_DIR      = r'C:/Users/sb3682.ECE-2V7QHQ3/My Stuff/kaggle_comp/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/test'
++VAL_DIR = os.environ["MSLR_VAL_DIR"]
++Test_DIR      = os.environ['MSLR_TEST_DIR']
+ ##################################################################################
+ 
+ if DIR == "Test":
+diff --git a/MSLR_radar_video/prediction_script/test_fusion_pred.py b/MSLR_radar_video/prediction_script/test_fusion_pred.py
+index 963ab0b..3925393 100644
+--- a/MSLR_radar_video/prediction_script/test_fusion_pred.py
++++ b/MSLR_radar_video/prediction_script/test_fusion_pred.py
+@@ -12,7 +12,7 @@ from pathlib import Path
+ # 1. USER‐ADJUST THESE PATHS
+ # ───────────────────────────────────────────────────────────────────────────────
+ ############## Chnage Based on your data directory ###############################
+-BASE_VAL_DIR     = r"C:/Users/sb3682.ECE-2V7QHQ3/My Stuff/kaggle_comp/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Test/test"
++BASE_VAL_DIR     = os.environ["MSLR_TEST_DIR"]
+ ##################################################################################
+ 
+ SCRIPT_PATH = Path(__file__).resolve()
+diff --git a/MSLR_radar_video/prediction_script/val_fusion_pred.py b/MSLR_radar_video/prediction_script/val_fusion_pred.py
+index ff064df..38e3f81 100644
+--- a/MSLR_radar_video/prediction_script/val_fusion_pred.py
++++ b/MSLR_radar_video/prediction_script/val_fusion_pred.py
+@@ -13,7 +13,7 @@ from pathlib import Path
+ # 1. === USER‐ADJUST THESE PATHS ===
+ # ───────────────────────────────────────────────────────────────────────────────
+ ############## Chnage Based on your data directory ###############################
+-BASE_VAL_DIR     = r"C:/Users/sb3682.ECE-2V7QHQ3/My Stuff/kaggle_comp/Sessioni CHALLENGE ICCV MSLR 2025 Track 2 - Train Val/val"
++BASE_VAL_DIR     = os.environ["MSLR_VAL_DIR"]
+ ##################################################################################
+ 
+ SCRIPT_PATH = Path(__file__).resolve()
+diff --git a/Pose_estimation/demo.py b/Pose_estimation/demo.py
+index e40d073..c5c3f33 100644
+--- a/Pose_estimation/demo.py
++++ b/Pose_estimation/demo.py
+@@ -94,7 +94,7 @@ def main():
+             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+         ])
+ 
+-        input_path ='' # insert the directory of mp4 files    './test_videos'
++        input_path = os.environ['POSE_INPUT_DIR'] # directory of SAMPLE_x video files
+         paths = []
+         names = []
+         for root, _, fnames in natsorted(os.walk(input_path)):
+@@ -111,7 +111,7 @@ def main():
+         #paths = paths[::-1]
+         #names = names[::-1]
+ 
+-        output_dir ='' # insert the directory where the keypoint .npy files will be saved npy     './wholepose_test_npy' 
++        output_dir = os.environ['POSE_OUTPUT_DIR'] # keypoint .npy output directory
+         os.makedirs(output_dir, exist_ok=True) 
+         
+         for i, path in enumerate(paths):
