@@ -1,0 +1,129 @@
+SC2SLR: supply the missing AlphaPose keypoint glue
+
+Why: main.py imports AlphaPose.get_image_keypoint and dataset/dataloader_video.py
+imports AlphaPose.keypoint_to_heatmap.get_heatmap, but AlphaPose/ is in the
+released .gitignore and neither module exists in the commit, in upstream
+AlphaPose, or anywhere GitHub code search reaches. Without them the code fails
+at import (preference level 1 is impossible).
+
+What the reconstruction does (each item is a documented guess, recorded in
+reproduction.json.guesses_and_deviations):
+- Keypoint_getter serves Halpe-136 keypoints that AlphaPose computed once per
+  frame (modal_app.py extract_keypoints) instead of running AlphaPose inside
+  the data loader on every augmented frame of every epoch, which would mean
+  ~10^8 detector+pose passes. It keeps the paper's 90 keypoints (Sec. 3.2:
+  7 upper body, 9 nose, 12 eye, 20 mouth, 42 hand).
+- render_heatmap draws confidence-weighted Gaussians (sigma 4 px at 256x256,
+  max over keypoints) - the (T,224,224) heatmap the released normalize() adds
+  to the video. The heatmap is rendered before augmentation as a 4th channel,
+  so the released crop and temporal-rescale transforms move it with the frames;
+  normalize() splits it off again exactly where the released code calls
+  get_heatmap. Nothing else in the released fusion changes.
+Applies to: https://github.com/christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition @ 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa (git apply from the repo root)
+---
+diff --git a/AlphaPose/get_image_keypoint.py b/AlphaPose/get_image_keypoint.py
+new file mode 100644
+index 0000000..b7932de
+--- /dev/null
++++ b/AlphaPose/get_image_keypoint.py
+@@ -0,0 +1,24 @@
++import os
++import numpy as np
++
++# Halpe-136 indices of the paper's 90 keypoints (Sec. 3.2): 7 upper body
++# (neck, shoulders, elbows, wrists), 41 face (9 nose, 12 eyes, 20 mouth of the
++# 68-point face block that starts at 26) and 42 hand (left 94-114, right 115-135).
++UPPER_BODY = [18, 5, 6, 7, 8, 9, 10]
++FACE = list(range(26 + 27, 26 + 36)) + list(range(26 + 36, 26 + 48)) + list(range(26 + 48, 26 + 68))
++HANDS = list(range(94, 136))
++SELECTED = UPPER_BODY + FACE + HANDS
++
++
++class Keypoint_getter():
++    """Serves AlphaPose Halpe-136 keypoints precomputed once per frame.
++
++    Files live at <dataset_root>/keypoints-halpe136/<split>/<clip>.npy and hold
++    a (T, 136, 3) float32 array of x, y (pixels of the 256x256 frames) and
++    confidence, in sorted frame-file order.
++    """
++
++    def __call__(self, prefix, folder):
++        clip = os.path.dirname(folder).rstrip("/")
++        keypoints = np.load(os.path.join(prefix, "keypoints-halpe136", clip + ".npy"))
++        return keypoints[:, SELECTED]
+diff --git a/AlphaPose/keypoint_to_heatmap.py b/AlphaPose/keypoint_to_heatmap.py
+new file mode 100644
+index 0000000..d797abf
+--- /dev/null
++++ b/AlphaPose/keypoint_to_heatmap.py
+@@ -0,0 +1,33 @@
++import numpy as np
++import torch
++
++SIGMA = 4.0  # pixels at 256x256; not stated in the paper
++RADIUS = int(3 * SIGMA)
++
++
++def render_heatmap(keypoints, height, width):
++    """(T, K, 3) keypoints -> (T, H, W) uint8: per pixel, the max over keypoints
++    of confidence * Gaussian(sigma); frames without a detection stay zero."""
++    heatmap = np.zeros((len(keypoints), height, width), dtype=np.float32)
++    offsets = np.arange(-RADIUS, RADIUS + 1)
++    for t, frame in enumerate(keypoints):
++        for x, y, conf in frame:
++            conf = min(max(conf, 0.0), 1.0)
++            cx, cy = int(round(x)), int(round(y))
++            if conf <= 0 or not (-RADIUS <= cx < width + RADIUS and -RADIUS <= cy < height + RADIUS):
++                continue
++            xs, ys = cx + offsets, cy + offsets
++            gx = np.exp(-((xs - x) ** 2) / (2 * SIGMA ** 2))
++            gy = np.exp(-((ys - y) ** 2) / (2 * SIGMA ** 2))
++            keep_x, keep_y = (xs >= 0) & (xs < width), (ys >= 0) & (ys < height)
++            patch = conf * np.outer(gy[keep_y], gx[keep_x])
++            region = heatmap[t, ys[keep_y][0]:ys[keep_y][-1] + 1, xs[keep_x][0]:xs[keep_x][-1] + 1]
++            np.maximum(region, patch, out=region)
++    return np.round(heatmap * 255).astype(np.uint8)
++
++
++def get_heatmap(video, keypoint_getter):
++    """Returns the keypoint heatmap channel of an augmented (T, 4, H, W) video
++    as a (T, H, W) tensor in [0, 1]; it was rendered by the feeder before
++    augmentation so that crops and temporal resampling apply to both alike."""
++    return video[:, 3].float() / 255.0
+diff --git a/dataset/dataloader_video.py b/dataset/dataloader_video.py
+index 6c522f3..3c3a6de 100644
+--- a/dataset/dataloader_video.py
++++ b/dataset/dataloader_video.py
+@@ -20,7 +20,7 @@ import torch.utils.data as data
+ import matplotlib.pyplot as plt
+ from utils import video_augmentation
+ from torch.utils.data.sampler import Sampler
+-from AlphaPose.keypoint_to_heatmap import get_heatmap
++from AlphaPose.keypoint_to_heatmap import get_heatmap, render_heatmap
+ 
+ sys.path.append("..")
+ global kernel_sizes 
+@@ -98,7 +98,14 @@ class BaseFeeder(data.Dataset):
+                 continue
+             if phase in self.dict.keys():
+                 label_list.append(self.dict[phase][0])
+-        return [cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB) for img_path in img_list], label_list, fi
++        frames = [cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB) for img_path in img_list]
++        # Keypoints are precomputed per frame (see AlphaPose/get_image_keypoint.py) and
++        # carried as a 4th channel so that augmentation crops and resamples them with the frames.
++        keypoints = self.keypoint_getter(self.prefix, fi['folder'])
++        if len(keypoints) != len(frames):
++            raise ValueError(f"{fi['fileid']}: {len(keypoints)} keypoint frames for {len(frames)} images")
++        heatmap = render_heatmap(keypoints, *frames[0].shape[:2])
++        return [np.dstack([img, heat]) for img, heat in zip(frames, heatmap)], label_list, fi
+ 
+     def read_features(self, index):
+         # load file info
+@@ -110,6 +117,7 @@ class BaseFeeder(data.Dataset):
+         # print(np.ndarray(video[0]).shape)
+         video, label = self.data_aug(video, label, file_id)
+         keypoints = get_heatmap(video, self.keypoint_getter)         # NORMALIZED(T,224,224)
++        video = video[:, :3]
+         # video, label = self.deep_aug(video, label, file_id)
+         video = video.float() / 127.5 - 1      # T,3,224,224
+         video = video + keypoints.unsqueeze(1)

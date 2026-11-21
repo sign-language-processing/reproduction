@@ -1,0 +1,37 @@
+SC2SLR: compute the CTC loss without cuDNN
+
+Why: criterion_calculation passes CPU int32 targets, which makes current
+PyTorch (NGC image of ghcr.io/sign-language-processing/reproduction) route
+nn.CTCLoss to cuDNN's CTC kernel. There it returns non-finite gradients:
+under AMP the GradScaler keeps halving its scale and training diverges.
+Runs full-p14-1/full-p14t-1 (loss rising in epoch 0; 1608/1774 PHOENIX-2014T
+batches skipped as 'loss is nan') and the matched 200-step diagnostics on
+the same 800 PHOENIX-2014T clips: as released, 40 steps with non-finite
+gradients, final scale 6e-8, mean loss per 50 steps 213/144/190/223
+(diagnose-p14t-released-2); with only this change, 5 steps (AMP
+calibration), scale 2048, loss 179/103/93/89 (diagnose-p14t-ctc-nocudnn-2).
+PyTorch's native CTC kernel computes the same loss; nothing else changes.
+Same fix as papers/yu-2025-cvsign/patches/corrnet-ctc-without-cudnn.patch
+for the same criterion code.
+Applies to: SC2SLR @ 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa after sc2slr-1..3
+---
+diff --git a/slr_network.py b/slr_network.py
+index 21ca0c2..a21c8da 100644
+--- a/slr_network.py
++++ b/slr_network.py
+@@ -125,7 +125,13 @@ class SLRModel(nn.Module):
+         return loss
+ 
+     def criterion_init(self):
+-        self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++        ctc_loss = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++
++        def ctc_loss_without_cudnn(*args):
++            with torch.backends.cudnn.flags(enabled=False):
++                return ctc_loss(*args)
++
++        self.loss['CTCLoss'] = ctc_loss_without_cudnn
+         self.loss['distillation'] = SeqKD(T=8)
+         self.loss['NTXent'] = NTXent(temperature=0.5)
+         return self.loss
+\ No newline at end of file
