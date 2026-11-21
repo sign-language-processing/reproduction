@@ -1,0 +1,36 @@
+sen: compute the CTC loss without cuDNN
+
+Why: criterion_calculation passes CPU int32 targets, so on this stack
+(PyTorch 2.11 / NGC 26.02, cuDNN 9.19) nn.CTCLoss takes cuDNN's CTC kernel
+even when the two sequences of a batch differ in length. PyTorch 1.x used
+cuDNN only when every input length equalled T, so upstream originally ran
+the native kernel for such batches. On real batches the cuDNN loss value is
+right but its gradient w.r.t. the logits is wrong whenever lengths differ:
+cosine similarity to a float64 CPU reference 0.06-0.96, max abs error up to
+2.65 against a reference max of 0.39; equal-length batches and the native
+kernel match to ~1e-5 (ctc_check.py --arm compare-grads, runs
+ctc-diagnostics-{vac,corrnet}-phoenix-001, preflight-{smkd,tlp}-gsl-002,
+preflight-tlp-phoenix-002). Under AMP, GradScaler then skipped 26-50 of 60
+updates (7-8 without cuDNN). Disabling cuDNN for the CTC call alone restores
+the native computation; nothing else changes. Same change as
+papers/yu-2025-cvsign/patches/corrnet-ctc-without-cudnn.patch.
+Applies to: sen @ c9a4c7ebd0489e22496c00f9f31d930c0d968ad8 (git apply from the repo root)
+---
+diff --git a/slr_network.py b/slr_network.py
+index 2eab8a7..89cc0d7 100644
+--- a/slr_network.py
++++ b/slr_network.py
+@@ -108,6 +108,12 @@ class SLRModel(nn.Module):
+         return loss
+ 
+     def criterion_init(self):
+-        self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++        ctc_loss = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
++
++        def ctc_loss_without_cudnn(*args):
++            with torch.backends.cudnn.flags(enabled=False):
++                return ctc_loss(*args)
++
++        self.loss['CTCLoss'] = ctc_loss_without_cudnn
+         self.loss['distillation'] = SeqKD(T=8)
+         return self.loss
