@@ -227,9 +227,9 @@
     }
   ],
   "status": {
-    "pipeline": null,
-    "numerical_agreement": null,
-    "numerical_agreement_basis": "Why agreement was or was not assessed, including scope and criterion",
+    "pipeline": "partial",
+    "numerical_agreement": "does_not_agree",
+    "numerical_agreement_basis": "Assessed on the 12 produced targets from the seed-42 runs, comparing each value with Table 1 at the precision Table 1 prints. The four parameter counts agree: 1.07, 35.5, 23.7 and 64.2 M. None of the four accuracies and none of the four losses agree: accuracy is 1.000, 0.914, 0.510 and 0.024 against 0.990, 0.990, 0.642 and 0.967. The LeNet accuracy differs by 2 of 210 test images; EfficientNetB7 is at chance level against a published 0.967. The four Penalty targets were not produced and are not assessed. The authors' subset and test split cannot be recovered, and seeds 1 to 4 show that accuracy after exactly 20 epochs varies widely between seeds, so a reviewer should weigh single-run differences accordingly.",
     "preference_level": 3,
     "blocker": null
   },
@@ -804,15 +804,16 @@
         "note": "Only the local upload client ran (modal volume put through the repro-sign wrapper). It created no Modal app and used no Modal compute."
       },
       "terminal": {
-        "state": "stopped",
-        "reason_code": "wall_time_ceiling_reached",
-        "detail": "The archive upload hung: the client sat idle with open connections and transferred nothing. It was found on 2026-11-23 and killed. Nothing had reached the Volume (the dataset path did not exist) and no app had started.",
+        "state": "interrupted",
+        "reason_code": "external_interruption",
+        "detail": "The archive upload stalled: the client sat idle with open connections and transferred nothing, most likely after the launching machine slept or lost its network. The leftover client was found and killed on 2026-11-23, about 66 hours after launch and far past the 3,600 s ceiling (see noncompliance populate-ceiling-not-enforced). Nothing had reached the Volume and no app had started.",
         "failure_class": "transient_infrastructure",
         "retry_decision": "retry",
         "next_run_id": "populate-dataset-2",
         "gate_ids": []
       },
-      "observed": "modal volume ls datasets ksl-fingerspelling-kenshimov-2021/ on 2026-11-23: path does not exist. modal app list: no app for this paper."
+      "observed": "modal volume ls datasets ksl-fingerspelling-kenshimov-2021/ on 2026-11-23: path does not exist. modal app list: no app for this paper.",
+      "artifact_ids": []
     },
     {
       "run_id": "populate-dataset-2",
@@ -856,7 +857,9 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "cpu": 4
+        "cpu": 4,
+        "billed_usd": 0.0109,
+        "billed_source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-rV6QE9aNOR2CzzF9eg5BJi (CPU, memory, network egress)."
       },
       "terminal": {
         "state": "succeeded",
@@ -866,7 +869,8 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       },
-      "observed": "manifest.json summary: images 14249, classes 42, per-class 142 to 446, unreadable ['H/17.jpg'], MANIFEST.sha256 SHA-256 7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857. check_modal_dataset.sh confirmed the path and manifest."
+      "observed": "manifest.json summary: images 14249, classes 42, per-class 142 to 446, unreadable ['H/17.jpg'], MANIFEST.sha256 SHA-256 7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857. check_modal_dataset.sh confirmed the path and manifest.",
+      "artifact_ids": []
     },
     {
       "run_id": "preflight-1",
@@ -911,7 +915,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZDASBZJ10VM3AJEEN3E02"
+        "function_call_id": "fc-01M83ZDASBZJ10VM3AJEEN3E02",
+        "usage": {
+          "gpu_hours": 0.0386,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.035,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-ZPl1Wi4yy2IzhZo19TJHYy; GPU-hours = T4 cost USD 0.0228 / rate 0.59 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "9aca93a1c68bc74fdad532930a1bf69345b644bf48a98e5838152c9519b4393f"
@@ -925,7 +936,8 @@
         "next_run_id": "preflight-2",
         "gate_ids": []
       },
-      "observed": "Parameter counts: lenet 1,071,162; alexnet 35,498,090; resnet50 23,667,498, equal to Table 1's 1.07, 35.5 and 23.7 M. Reloaded weights reproduced the test metrics exactly for all three. Fit time for 1 epoch on 336 images: 6.1 s, 3.3 s, 19.9 s. Peak GPU memory: 1.01, 2.37, 7.79 GB. Hypothesis for the retry: a GPU with more memory runs EfficientNetB7 at the same batch size, so the protocol stays unchanged."
+      "observed": "Parameter counts: lenet 1,071,162; alexnet 35,498,090; resnet50 23,667,498, equal to Table 1's 1.07, 35.5 and 23.7 M. Reloaded weights reproduced the test metrics exactly for all three. Fit time for 1 epoch on 336 images: 6.1 s, 3.3 s, 19.9 s. Peak GPU memory: 1.01, 2.37, 7.79 GB. Hypothesis for the retry: a GPU with more memory runs EfficientNetB7 at the same batch size, so the protocol stays unchanged.",
+      "artifact_ids": []
     },
     {
       "run_id": "preflight-2",
@@ -970,7 +982,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZKEVBGD0B17DCSQD4RPNJ"
+        "function_call_id": "fc-01M83ZKEVBGD0B17DCSQD4RPNJ",
+        "usage": {
+          "gpu_hours": 0.027,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0654,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-H78CJWswYM4oF9rT8cjAFj; GPU-hours = A100-40GB cost USD 0.0568 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
@@ -983,7 +1002,8 @@
         "retry_decision": "not_needed",
         "gate_ids": []
       },
-      "observed": "Parameter count 64,204,093, equal to Table 1's 64.2 M. Reloaded weights reproduced the test metrics exactly. Fit time for 1 epoch (6 steps, including graph tracing): 55.2 s. Peak GPU memory 31.83 GB. Hypothesis supported: more GPU memory runs the unchanged batch size."
+      "observed": "Parameter count 64,204,093, equal to Table 1's 64.2 M. Reloaded weights reproduced the test metrics exactly. Fit time for 1 epoch (6 steps, including graph tracing): 55.2 s. Peak GPU memory 31.83 GB. Hypothesis supported: more GPU memory runs the unchanged batch size.",
+      "artifact_ids": []
     },
     {
       "run_id": "full-lenet-seed42",
@@ -1038,7 +1058,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZR70RYNQDDAT6FS395QEW"
+        "function_call_id": "fc-01M83ZR70RYNQDDAT6FS395QEW",
+        "usage": {
+          "gpu_hours": 0.0115,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0277,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-VhUPUamp1nWvu0zkXH0YUY; GPU-hours = A100-40GB cost USD 0.0241 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
@@ -1133,7 +1160,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZR71BVCV54MKHACW1SB9X"
+        "function_call_id": "fc-01M83ZR71BVCV54MKHACW1SB9X",
+        "usage": {
+          "gpu_hours": 0.013,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0313,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-0NMbj7dEz11AhvqaYuZdiR; GPU-hours = A100-40GB cost USD 0.0272 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
@@ -1228,7 +1262,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZR71SE4K32Y9JS364CS0V"
+        "function_call_id": "fc-01M83ZR71SE4K32Y9JS364CS0V",
+        "usage": {
+          "gpu_hours": 0.0286,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0691,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-fRoSxMpHiLhqIIm5J0Hw82; GPU-hours = A100-40GB cost USD 0.0600 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
@@ -1323,7 +1364,14 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "function_call_id": "fc-01M83ZR72FYPN8ZDWRH12665S1"
+        "function_call_id": "fc-01M83ZR72FYPN8ZDWRH12665S1",
+        "usage": {
+          "gpu_hours": 0.2065,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.4991,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-vAFZf91UpTGsYaKLbIB6NM; GPU-hours = A100-40GB cost USD 0.4336 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
+        }
       },
       "source_sha256": {
         "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
@@ -1373,9 +1421,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet --run-id supplementary-lenet-seeds1-4 --seeds 1,2,3,4",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:52:38Z",
+      "finished_at_utc": "2026-11-23T10:53:50Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -1408,9 +1456,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-tDExmdQxcQkz8AQN7Y5FKw"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 610.57.04, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -1418,7 +1468,108 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M840JRHEBT2G1SKWZATAXSPQ",
+        "usage": {
+          "gpu_hours": 0.0178,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0431,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-tDExmdQxcQkz8AQN7Y5FKw; GPU-hours = A100-40GB cost USD 0.0374 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
         }
+      },
+      "source_sha256": {
+        "modal_app.py": "d238876cf61f0c703c9b90dfeefa66da731ed54086e35e2c9de80fd00cc0237e"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "supplementary-lenet-seeds1-4-lenet-seed1-metrics",
+        "supplementary-lenet-seeds1-4-lenet-seed2-metrics",
+        "supplementary-lenet-seeds1-4-lenet-seed3-metrics",
+        "supplementary-lenet-seeds1-4-lenet-seed4-metrics",
+        "supplementary-lenet-seeds1-4-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "lenet",
+          "seed": 1,
+          "total_params": 1071162,
+          "test_accuracy": 0.9952380657196045,
+          "test_loss": 0.02657121792435646,
+          "test_correct": 209,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 0.9952380657196045,
+          "reloaded_test_accuracy": 0.9952380657196045,
+          "fit_seconds": 10.8,
+          "peak_gpu_memory_gb": 1.22,
+          "weights_sha256": "7db30cd3b810c736854600fb90906f0ee0e332aa66d9dd074cb5ebf87b5c564a"
+        },
+        {
+          "model": "lenet",
+          "seed": 2,
+          "total_params": 1071162,
+          "test_accuracy": 0.009523809887468815,
+          "test_loss": 3.816333055496216,
+          "test_correct": 2,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 1,
+          "final_train_accuracy": 0.02559523843228817,
+          "final_val_accuracy": 0.01904761977493763,
+          "reloaded_test_accuracy": 0.009523809887468815,
+          "fit_seconds": 6.3,
+          "peak_gpu_memory_gb": 0.73,
+          "weights_sha256": "3d682d5a00f510842fae5e55517b2921e0c7c392b5690074890d88e57a201bce"
+        },
+        {
+          "model": "lenet",
+          "seed": 3,
+          "total_params": 1071162,
+          "test_accuracy": 0.9952380657196045,
+          "test_loss": 0.01916942559182644,
+          "test_correct": 209,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 0.9904761910438538,
+          "reloaded_test_accuracy": 0.9952380657196045,
+          "fit_seconds": 6.2,
+          "peak_gpu_memory_gb": 1.0,
+          "weights_sha256": "613cc204d9e315d104080c075ff007a5b0843924e2076efcde1d29ba69108201"
+        },
+        {
+          "model": "lenet",
+          "seed": 4,
+          "total_params": 1071162,
+          "test_accuracy": 1.0,
+          "test_loss": 0.00012298273213673383,
+          "test_correct": 210,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 0.9857142567634583,
+          "reloaded_test_accuracy": 1.0,
+          "fit_seconds": 6.2,
+          "peak_gpu_memory_gb": 1.29,
+          "weights_sha256": "b49e2e6df86bdddec1a06845a244b9411f1e91e339ced6d076dd6a4d83e7778f"
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for lenet seed 1, lenet seed 2, lenet seed 3, lenet seed 4.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -1429,9 +1580,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models alexnet --run-id supplementary-alexnet-seeds1-4 --seeds 1,2,3,4",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:52:38Z",
+      "finished_at_utc": "2026-11-23T10:54:17Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -1464,9 +1615,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-CDCTmEatOTYW0oeCXLTtHt"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 610.57.04, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -1474,7 +1627,108 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M840JRHKZYMPM2HTY96S5BAQ",
+        "usage": {
+          "gpu_hours": 0.0253,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0611,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-CDCTmEatOTYW0oeCXLTtHt; GPU-hours = A100-40GB cost USD 0.0531 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
         }
+      },
+      "source_sha256": {
+        "modal_app.py": "d238876cf61f0c703c9b90dfeefa66da731ed54086e35e2c9de80fd00cc0237e"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "supplementary-alexnet-seeds1-4-alexnet-seed1-metrics",
+        "supplementary-alexnet-seeds1-4-alexnet-seed2-metrics",
+        "supplementary-alexnet-seeds1-4-alexnet-seed3-metrics",
+        "supplementary-alexnet-seeds1-4-alexnet-seed4-metrics",
+        "supplementary-alexnet-seeds1-4-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "alexnet",
+          "seed": 1,
+          "total_params": 35498090,
+          "test_accuracy": 0.2571428716182709,
+          "test_loss": 50.55473709106445,
+          "test_correct": 54,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 17,
+          "final_train_accuracy": 0.9791666865348816,
+          "final_val_accuracy": 0.20000000298023224,
+          "reloaded_test_accuracy": 0.2571428716182709,
+          "fit_seconds": 16.4,
+          "peak_gpu_memory_gb": 2.54,
+          "weights_sha256": "9a3f2f30499d740615d91a6c7d72fbf0dca9e941eec0d71d812a1736d181d66e"
+        },
+        {
+          "model": "alexnet",
+          "seed": 2,
+          "total_params": 35498090,
+          "test_accuracy": 0.961904764175415,
+          "test_loss": 0.23063968122005463,
+          "test_correct": 202,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 0.9851190447807312,
+          "final_val_accuracy": 0.9666666388511658,
+          "reloaded_test_accuracy": 0.961904764175415,
+          "fit_seconds": 11.3,
+          "peak_gpu_memory_gb": 2.11,
+          "weights_sha256": "a7dbe39587a3615cf2dd8a814279fda0f1189196136f980e7fab0a6bb813cbf4"
+        },
+        {
+          "model": "alexnet",
+          "seed": 3,
+          "total_params": 35498090,
+          "test_accuracy": 0.3047619163990021,
+          "test_loss": 45.492977142333984,
+          "test_correct": 64,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 22,
+          "final_train_accuracy": 0.9886904954910278,
+          "final_val_accuracy": 0.29523810744285583,
+          "reloaded_test_accuracy": 0.3047619163990021,
+          "fit_seconds": 11.4,
+          "peak_gpu_memory_gb": 2.98,
+          "weights_sha256": "d016f956da306261deb0d4bc59feabdb7dad8576273eb03740f8c66f719b1e15"
+        },
+        {
+          "model": "alexnet",
+          "seed": 4,
+          "total_params": 35498090,
+          "test_accuracy": 0.7476190328598022,
+          "test_loss": 3.0100796222686768,
+          "test_correct": 157,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 35,
+          "final_train_accuracy": 0.9922618865966797,
+          "final_val_accuracy": 0.7523809671401978,
+          "reloaded_test_accuracy": 0.7476190328598022,
+          "fit_seconds": 11.9,
+          "peak_gpu_memory_gb": 2.91,
+          "weights_sha256": "b7659b85fb330b641cc234edf165df7ddaf096e09d6e1d5f1d8142073fd69b68"
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for alexnet seed 1, alexnet seed 2, alexnet seed 3, alexnet seed 4.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -1485,9 +1739,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models resnet50 --run-id supplementary-resnet50-seeds1-4 --seeds 1,2,3,4",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:52:38Z",
+      "finished_at_utc": "2026-11-23T10:57:44Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -1520,9 +1774,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-cR9glDP6xWj2rDNBoyRfzb"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 620.70.06, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -1530,7 +1786,108 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M840JRHJPBMKCFC25VNBWN14",
+        "usage": {
+          "gpu_hours": 0.0826,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.1997,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-cR9glDP6xWj2rDNBoyRfzb; GPU-hours = A100-40GB cost USD 0.1735 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
         }
+      },
+      "source_sha256": {
+        "modal_app.py": "d238876cf61f0c703c9b90dfeefa66da731ed54086e35e2c9de80fd00cc0237e"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "supplementary-resnet50-seeds1-4-resnet50-seed1-metrics",
+        "supplementary-resnet50-seeds1-4-resnet50-seed2-metrics",
+        "supplementary-resnet50-seeds1-4-resnet50-seed3-metrics",
+        "supplementary-resnet50-seeds1-4-resnet50-seed4-metrics",
+        "supplementary-resnet50-seeds1-4-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "resnet50",
+          "seed": 1,
+          "total_params": 23667498,
+          "test_accuracy": 0.10952381044626236,
+          "test_loss": 11.515071868896484,
+          "test_correct": 23,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 12,
+          "final_train_accuracy": 0.9815475940704346,
+          "final_val_accuracy": 0.10476190596818924,
+          "reloaded_test_accuracy": 0.10952381044626236,
+          "fit_seconds": 64.2,
+          "peak_gpu_memory_gb": 7.47,
+          "weights_sha256": "01187f81b2fba619dd975e9ed3a9422e8c1a19049d65fbcb339d9700273efec8"
+        },
+        {
+          "model": "resnet50",
+          "seed": 2,
+          "total_params": 23667498,
+          "test_accuracy": 0.5142857432365417,
+          "test_loss": 3.887685537338257,
+          "test_correct": 108,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 30,
+          "final_train_accuracy": 0.9982143044471741,
+          "final_val_accuracy": 0.5571428537368774,
+          "reloaded_test_accuracy": 0.5142857432365417,
+          "fit_seconds": 57.9,
+          "peak_gpu_memory_gb": 6.15,
+          "weights_sha256": "db2b37f9f43fdd513a0ca8901688619249c3a5747df088c2634c8872484cc39a"
+        },
+        {
+          "model": "resnet50",
+          "seed": 3,
+          "total_params": 23667498,
+          "test_accuracy": 0.261904776096344,
+          "test_loss": 5.888195037841797,
+          "test_correct": 55,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 22,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 0.19523809850215912,
+          "reloaded_test_accuracy": 0.261904776096344,
+          "fit_seconds": 59.6,
+          "peak_gpu_memory_gb": 5.97,
+          "weights_sha256": "429ff9ebaeb85896921420d5327ea941da658fa7b2f9d3022460e4daa7bb93b8"
+        },
+        {
+          "model": "resnet50",
+          "seed": 4,
+          "total_params": 23667498,
+          "test_accuracy": 0.41904762387275696,
+          "test_loss": 5.056255340576172,
+          "test_correct": 88,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 22,
+          "final_train_accuracy": 0.9898809790611267,
+          "final_val_accuracy": 0.3761904835700989,
+          "reloaded_test_accuracy": 0.41904762387275696,
+          "fit_seconds": 57.8,
+          "peak_gpu_memory_gb": 6.11,
+          "weights_sha256": "a51407d9a25c163ad4191cbbadf2fc6e3576de3bb65e8e05be861bba13cf6d65"
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for resnet50 seed 1, resnet50 seed 2, resnet50 seed 3, resnet50 seed 4.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -1541,9 +1898,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id supplementary-efficientnetb7-seeds1-4 --seeds 1,2,3,4",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:52:38Z",
+      "finished_at_utc": "2026-11-23T11:39:43Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -1576,9 +1933,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-JTLpqrg5Mt1Po9vlwKUqqw"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 620.70.06, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -1586,7 +1945,108 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M840JRHS5Q9C9YR0VBPP4GQ5",
+        "usage": {
+          "gpu_hours": 0.7823,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.8909,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-JTLpqrg5Mt1Po9vlwKUqqw; GPU-hours = A100-40GB cost USD 1.6428 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
         }
+      },
+      "source_sha256": {
+        "modal_app.py": "d238876cf61f0c703c9b90dfeefa66da731ed54086e35e2c9de80fd00cc0237e"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed1-metrics",
+        "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed2-metrics",
+        "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed3-metrics",
+        "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed4-metrics",
+        "supplementary-efficientnetb7-seeds1-4-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "efficientnetb7",
+          "seed": 1,
+          "total_params": 64204093,
+          "test_accuracy": 0.02380952425301075,
+          "test_loss": 22.26145362854004,
+          "test_correct": 5,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 1,
+          "final_train_accuracy": 0.9785714149475098,
+          "final_val_accuracy": 0.03809523954987526,
+          "reloaded_test_accuracy": 0.02380952425301075,
+          "fit_seconds": 679.3,
+          "peak_gpu_memory_gb": 34.22,
+          "weights_sha256": "86f47cade27de2febdf0fe8ccdabd807d4d0facbf5629be4185898683573f3e2"
+        },
+        {
+          "model": "efficientnetb7",
+          "seed": 2,
+          "total_params": 64204093,
+          "test_accuracy": 0.02857142873108387,
+          "test_loss": 69.028564453125,
+          "test_correct": 6,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 2,
+          "final_train_accuracy": 0.9773809313774109,
+          "final_val_accuracy": 0.02857142873108387,
+          "reloaded_test_accuracy": 0.02857142873108387,
+          "fit_seconds": 675.8,
+          "peak_gpu_memory_gb": 35.15,
+          "weights_sha256": "0fc4bf4d7aef64ee3655ca2571fbd64ea18caeb37c0e9fcacd52ea1d388fb4a0"
+        },
+        {
+          "model": "efficientnetb7",
+          "seed": 3,
+          "total_params": 64204093,
+          "test_accuracy": 0.02857142873108387,
+          "test_loss": 16.372386932373047,
+          "test_correct": 6,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 2,
+          "final_train_accuracy": 0.987500011920929,
+          "final_val_accuracy": 0.009523809887468815,
+          "reloaded_test_accuracy": 0.02857142873108387,
+          "fit_seconds": 668.1,
+          "peak_gpu_memory_gb": 34.66,
+          "weights_sha256": "0b7982576e7704dac9ead99fe76700ac0f91e2c1b2d5537e04ef1e00a90fd589"
+        },
+        {
+          "model": "efficientnetb7",
+          "seed": 4,
+          "total_params": 64204093,
+          "test_accuracy": 0.03809523954987526,
+          "test_loss": 12.280717849731445,
+          "test_correct": 8,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 9,
+          "final_train_accuracy": 0.9750000238418579,
+          "final_val_accuracy": 0.05238095298409462,
+          "reloaded_test_accuracy": 0.03809523954987526,
+          "fit_seconds": 665.5,
+          "peak_gpu_memory_gb": 35.01,
+          "weights_sha256": "3ca7c941624c9d4bccd71515115e563a22574cc012a6d9f224e6f9431358505c"
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for efficientnetb7 seed 1, efficientnetb7 seed 2, efficientnetb7 seed 3, efficientnetb7 seed 4.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -1597,9 +2057,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id diagnose-efficientnetb7-raw-pixels-seed42 --seeds 42 --pixel-scale raw",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:52:38Z",
+      "finished_at_utc": "2026-11-23T11:04:53Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -1627,9 +2087,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-3RWuDMvphy2OpNAl22XLyL"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 610.57.04, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -1637,7 +2099,54 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M840JRHJHA99YD9ZH3HED009",
+        "usage": {
+          "gpu_hours": 0.2016,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.4872,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-23 --end 2026-11-24 -r h --show-resources --json, read 2026-11-23T11:41Z: rows with object_id ap-3RWuDMvphy2OpNAl22XLyL; GPU-hours = A100-40GB cost USD 0.4233 / rate 2.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU, CPU and memory rows."
         }
+      },
+      "source_sha256": {
+        "modal_app.py": "d238876cf61f0c703c9b90dfeefa66da731ed54086e35e2c9de80fd00cc0237e"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "diagnose-efficientnetb7-raw-pixels-seed42-metrics",
+        "diagnose-efficientnetb7-raw-pixels-seed42-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "efficientnetb7",
+          "seed": 42,
+          "total_params": 64204093,
+          "test_accuracy": 0.3761904835700989,
+          "test_loss": 4.379572868347168,
+          "test_correct": 79,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 27,
+          "final_train_accuracy": 0.9714285731315613,
+          "final_val_accuracy": 0.3333333432674408,
+          "reloaded_test_accuracy": 0.3761904835700989,
+          "fit_seconds": 675.9,
+          "peak_gpu_memory_gb": 34.05,
+          "weights_sha256": "f21def2f88aaf7e570194bb889319d94253da36764b8f23fbcf041ed68008a99"
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for efficientnetb7 seed 42.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     }
   ],
@@ -1695,6 +2204,160 @@
       "artifact_id": "full-efficientnetb7-seed42-pip-freeze",
       "kind": "dependency_freeze",
       "uri": "modal://ksl-f912577b-results/full-efficientnetb7-seed42/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "supplementary-lenet-seeds1-4-lenet-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-lenet-seeds1-4/lenet-seed1/metrics.json",
+      "sha256": "400ab4ab26cd9fea864e111673fb4394542d70c83560e098c3784ce526f81ae5",
+      "size_bytes": 19887
+    },
+    {
+      "artifact_id": "supplementary-lenet-seeds1-4-lenet-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-lenet-seeds1-4/lenet-seed2/metrics.json",
+      "sha256": "80504a70ea14e47783e57f3403166f27e904c756fb98f5f51186a053e2542312",
+      "size_bytes": 20068
+    },
+    {
+      "artifact_id": "supplementary-lenet-seeds1-4-lenet-seed3-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-lenet-seeds1-4/lenet-seed3/metrics.json",
+      "sha256": "a02b56fe001e1d9c0b6eb2395b7ba47323c46253bb79ba16c2061518317ff283",
+      "size_bytes": 19843
+    },
+    {
+      "artifact_id": "supplementary-lenet-seeds1-4-lenet-seed4-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-lenet-seeds1-4/lenet-seed4/metrics.json",
+      "sha256": "ab8154d41cd099a24331091edde0a33a691f60d18d085c38432487d7c25aef32",
+      "size_bytes": 19900
+    },
+    {
+      "artifact_id": "supplementary-lenet-seeds1-4-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/supplementary-lenet-seeds1-4/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "supplementary-alexnet-seeds1-4-alexnet-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-alexnet-seeds1-4/alexnet-seed1/metrics.json",
+      "sha256": "ed1dd3fd280cf50f33476218376eff87de05621c5cd5747d57572b660266adab",
+      "size_bytes": 19924
+    },
+    {
+      "artifact_id": "supplementary-alexnet-seeds1-4-alexnet-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-alexnet-seeds1-4/alexnet-seed2/metrics.json",
+      "sha256": "fc127c9d2678c994f75d9ad415114130e29b62e391bf183b015df3fbfbc67845",
+      "size_bytes": 20002
+    },
+    {
+      "artifact_id": "supplementary-alexnet-seeds1-4-alexnet-seed3-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-alexnet-seeds1-4/alexnet-seed3/metrics.json",
+      "sha256": "b8ce236a301db8aeda1e1cf152c625a13aa79fc73c44b3f2d9a352f6dbb45227",
+      "size_bytes": 19984
+    },
+    {
+      "artifact_id": "supplementary-alexnet-seeds1-4-alexnet-seed4-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-alexnet-seeds1-4/alexnet-seed4/metrics.json",
+      "sha256": "cbbcf480a33a05c127a41dfe39b9fb5bd135367600e20de8d623ac4a5422e764",
+      "size_bytes": 20004
+    },
+    {
+      "artifact_id": "supplementary-alexnet-seeds1-4-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/supplementary-alexnet-seeds1-4/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "supplementary-resnet50-seeds1-4-resnet50-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-resnet50-seeds1-4/resnet50-seed1/metrics.json",
+      "sha256": "d1e52bfdc2664f0e574158851aab351144cb3e7f542b7b5b92c6fd814c0ebf4d",
+      "size_bytes": 20065
+    },
+    {
+      "artifact_id": "supplementary-resnet50-seeds1-4-resnet50-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-resnet50-seeds1-4/resnet50-seed2/metrics.json",
+      "sha256": "b6246d4e80c2830f5110d753c56903d8353360494ae5cda7af20aa21e0347143",
+      "size_bytes": 19990
+    },
+    {
+      "artifact_id": "supplementary-resnet50-seeds1-4-resnet50-seed3-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-resnet50-seeds1-4/resnet50-seed3/metrics.json",
+      "sha256": "786c18ddad8b2aa0829752bf9ddf97ae95c3c5127f1f876dcdd7425b32032a2a",
+      "size_bytes": 19991
+    },
+    {
+      "artifact_id": "supplementary-resnet50-seeds1-4-resnet50-seed4-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-resnet50-seeds1-4/resnet50-seed4/metrics.json",
+      "sha256": "e2ecd9d6f694dac3a064a38ea595a4a6c7b612e85563c03f1c7ae9ea415f5585",
+      "size_bytes": 20057
+    },
+    {
+      "artifact_id": "supplementary-resnet50-seeds1-4-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/supplementary-resnet50-seeds1-4/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-efficientnetb7-seeds1-4/efficientnetb7-seed1/metrics.json",
+      "sha256": "c4840ebd501bf7af97b7c8e6d1b3ce4695490b7983ca2927217703e9afbe7130",
+      "size_bytes": 20093
+    },
+    {
+      "artifact_id": "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-efficientnetb7-seeds1-4/efficientnetb7-seed2/metrics.json",
+      "sha256": "2cbc4f81ff214cc3d9b3200494da5f5896df6d98265e0bddd2a17beec08f1f47",
+      "size_bytes": 20082
+    },
+    {
+      "artifact_id": "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed3-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-efficientnetb7-seeds1-4/efficientnetb7-seed3/metrics.json",
+      "sha256": "4eeda11e0ea33be1ea659bd82c4f29a3acc8e7b3bd0308d840da1ea7417a16ae",
+      "size_bytes": 20058
+    },
+    {
+      "artifact_id": "supplementary-efficientnetb7-seeds1-4-efficientnetb7-seed4-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/supplementary-efficientnetb7-seeds1-4/efficientnetb7-seed4/metrics.json",
+      "sha256": "90829a136fb1a01220d421b3ad827f71fd02844f2b58dc067be815c272f897df",
+      "size_bytes": 20078
+    },
+    {
+      "artifact_id": "supplementary-efficientnetb7-seeds1-4-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/supplementary-efficientnetb7-seeds1-4/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "diagnose-efficientnetb7-raw-pixels-seed42-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/diagnose-efficientnetb7-raw-pixels-seed42/efficientnetb7-seed42/metrics.json",
+      "sha256": "dfaaf8f102b17935e2026834a3f16e3f79461a66a41e17d1fc3ff02eb02a07d6",
+      "size_bytes": 20043
+    },
+    {
+      "artifact_id": "diagnose-efficientnetb7-raw-pixels-seed42-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/diagnose-efficientnetb7-raw-pixels-seed42/pip-freeze.txt",
       "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
       "size_bytes": 1125
     }
@@ -1758,7 +2421,249 @@
       "resolution": "A study team member chose alternative 'not-produced': the four Penalty targets are closed as not produced, reason metric_ambiguous, without contacting the authors for now."
     }
   ],
-  "guesses_and_deviations": [],
+  "guesses_and_deviations": [
+    {
+      "id": "subset-first-50-per-class",
+      "kind": "guess",
+      "description": "Which 2,100 of the archive's 14,249 images the paper used.",
+      "paper_says": "Sec. 5.1: '2,100 images for 42 classes of gestures, 50 images for each class'. The selection is not described.",
+      "used": "The first 50 files of each class folder in lexicographic file-name order.",
+      "basis": "Compare_nets.ipynb says the original took 'the first 50 names from os.listdir'. Decided at gate ksl-subset-and-split.",
+      "effect": "The images are consecutive frames, so the subset covers a short stretch of each class's recording. A different selection could change every accuracy and loss value.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "ksl-fingerspelling"
+      ]
+    },
+    {
+      "id": "split-seed-42",
+      "kind": "guess",
+      "description": "The random 80/10/10 split and the weight initialization seed.",
+      "paper_says": "Sec. 5.1: 'randomly split' into 1,680 / 210 / 210. Read_data.ipynb calls train_test_split twice without a seed.",
+      "used": "Unstratified train_test_split(test_size=0.2) then train_test_split(test_size=0.5), both with random_state 42; tf.keras.utils.set_random_seed(42).",
+      "basis": "The authors' split cannot be recovered. Seed 42 was fixed at gate ksl-subset-and-split before any run.",
+      "effect": "The 210 test images differ from the authors'. Seeds 1 to 4 show the spread: accuracy ranges from 0.010 to 1.000 for LeNet, 0.257 to 0.962 for AlexNet, 0.110 to 0.514 for ResNet50.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data",
+        "train",
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "ksl-fingerspelling"
+      ]
+    },
+    {
+      "id": "input-120x320-gray-unit-scale",
+      "kind": "guess",
+      "description": "Input size, color and pixel scaling.",
+      "paper_says": "Not stated. The paper's LeNet description mentions 32x32 inputs in general terms only.",
+      "used": "PIL convert('L'), resize((320, 120)) with Pillow 10.4.0's default resampling, float32, divided by 255; shape (120, 320, 1).",
+      "basis": "Read_data.ipynb, the authors' original data loading. All four of Table 1's parameter counts match this input shape.",
+      "effect": "Defines every model's input. For EfficientNetB7 see efficientnet-double-rescaling.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data",
+        "train",
+        "evaluate"
+      ]
+    },
+    {
+      "id": "lenet-architecture",
+      "kind": "guess",
+      "description": "The LeNet variant.",
+      "paper_says": "Sec. 4 describes the classic seven-layer LeNet on 32x32 inputs; it does not give the layers used.",
+      "used": "Conv 6@5x5 tanh, average pool 3/2, conv 16@5x5 same tanh, average pool 2/2, conv 16@5x5 same tanh, max pool 2/2, dense 120, dense 84, softmax 42.",
+      "basis": "The LeNet builder in Compare_nets.ipynb, without its later augmentation layers. It has 1,071,162 parameters on this input, equal to Table 1's 1.07 M.",
+      "effect": "Determines the LeNet row.",
+      "status": "adopted before the runs",
+      "evidence": [
+        "preflight-1 and full-lenet-seed42: count_params() = 1,071,162."
+      ],
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "alexnet-architecture",
+      "kind": "guess",
+      "description": "The AlexNet variant; neither the paper nor the notebooks give its layers.",
+      "paper_says": "Sec. 4 describes AlexNet in general terms.",
+      "used": "Conv 96@11x11 stride 4, BN, max pool 3/2, conv 256@5x5 same, BN, max pool 3/2, conv 384@3x3 same, BN, conv 384@1x1, BN, conv 256@1x1, BN, max pool 3/2, flatten, dense 4096, dropout 0.5, dense 4096, dropout 0.5, softmax 42.",
+      "basis": "A widely copied Keras AlexNet. Compare_nets.ipynb says 'The 2022 version used 1x1 filters' in the last convolutional block. On this input it has 35,498,090 parameters, equal to Table 1's 35.5 M.",
+      "effect": "Determines the AlexNet row. Another architecture with the same count cannot be excluded; the dropout rate has no parameters and is unverified.",
+      "status": "adopted before the runs",
+      "evidence": [
+        "preflight-1 and full-alexnet-seed42: count_params() = 35,498,090."
+      ],
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "resnet50-efficientnetb7-keras-applications",
+      "kind": "guess",
+      "description": "ResNet50 and EfficientNetB7 implementation, head and initialization.",
+      "paper_says": "Named only; no head, pretraining or library is stated.",
+      "used": "tf.keras.applications.ResNet50 and EfficientNetB7 with weights=None, input_shape (120, 320, 1), classes=42 (global average pooling and a softmax layer).",
+      "basis": "Parameter counts 23,667,498 and 64,204,093 equal Table 1's 23.7 M and 64.2 M. Compare_nets.ipynb's log says ResNet50 'Finished from scratch with RMSprop'. ImageNet weights need three channels, and the original loading is single-channel.",
+      "effect": "Determines both rows. If the authors used ImageNet weights for EfficientNetB7, this attempt's from-scratch training differs materially.",
+      "status": "adopted before the runs",
+      "evidence": [
+        "preflight-1: resnet50 count_params() = 23,667,498.",
+        "preflight-2: efficientnetb7 count_params() = 64,204,093."
+      ],
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "efficientnet-double-rescaling",
+      "kind": "guess",
+      "description": "EfficientNetB7 receives pixels divided by 255, although Keras' EfficientNet rescales by 1/255 internally.",
+      "paper_says": "Not stated.",
+      "used": "The same divided-by-255 input as the other models, so EfficientNetB7 effectively sees values in [0, 1/255].",
+      "basis": "Read_data.ipynb divides all data by 255 before any model. Compare_nets.ipynb, written later, warns that 'dividing first would feed it near-zero inputs', which suggests the original runs did so.",
+      "effect": "Material. With this input EfficientNetB7 reaches 0.966 training accuracy but chance-level test accuracy. The diagnostic run with 0-255 inputs reaches 0.376 test accuracy.",
+      "status": "adopted before the runs",
+      "evidence": [
+        "full-efficientnetb7-seed42: 5/210 correct, 2 distinct predicted classes.",
+        "diagnose-efficientnetb7-raw-pixels-seed42: 79/210 correct."
+      ],
+      "affects": [
+        "train",
+        "evaluate"
+      ]
+    },
+    {
+      "id": "rmsprop-defaults",
+      "kind": "guess",
+      "description": "RMSprop hyperparameters.",
+      "paper_says": "Sec. 5.2: 'root mean square propagation (rmsprop) optimizer'. No learning rate or other setting.",
+      "used": "Keras optimizer='rmsprop' defaults in TensorFlow 2.8.0: learning rate 0.001, rho 0.9, epsilon 1e-7, no momentum.",
+      "basis": "The default of the library the authors used.",
+      "effect": "Affects all accuracy and loss values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "batch-size-64",
+      "kind": "guess",
+      "description": "Batch size.",
+      "paper_says": "Not stated.",
+      "used": "64 for all four models.",
+      "basis": "Compare_nets.ipynb's log of the original runs gives 'batch 64' for LeNet and AlexNet. No value is recorded for ResNet50 or EfficientNetB7.",
+      "effect": "EfficientNetB7 at batch 64 needed 31.8 to 34.3 GB of GPU memory. The paper's RTX 2080 has 8 GB, so the authors' EfficientNetB7 batch size, input or model must have differed from this attempt's.",
+      "status": "adopted before the runs",
+      "evidence": [
+        "preflight-1: ResourceExhaustedError on a 15 GB T4.",
+        "full-efficientnetb7-seed42: peak GPU memory 34.31 GB."
+      ],
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "final-epoch-evaluation",
+      "kind": "guess",
+      "description": "Which weights are evaluated.",
+      "paper_says": "Sec. 5.2: 'The training process chose 20 epochs'. No checkpoint selection or early stopping is described.",
+      "used": "The weights after the 20th epoch, evaluated once on the test split.",
+      "basis": "The paper describes no selection.",
+      "effect": "Validation accuracy of AlexNet, ResNet50 and EfficientNetB7 is still unstable at epoch 20, so the reported value depends on where training stops.",
+      "status": "adopted before the runs",
+      "affects": [
+        "evaluate"
+      ]
+    },
+    {
+      "id": "software-tf-2-8",
+      "kind": "guess",
+      "description": "Framework versions.",
+      "paper_says": "Not stated. Read_data.ipynb's metadata shows Python 3.7.3 and standalone Keras ('Using TensorFlow backend').",
+      "used": "TensorFlow 2.8.0 and Keras 2.8.0 on Python 3.10, CUDA 11.2, cuDNN 8.",
+      "basis": "The oldest TensorFlow that this study has run on Modal's Python and GPUs; the authors' exact versions are unknown.",
+      "effect": "Initializers, RMSprop and the Keras application models may differ in detail from the authors' versions.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train",
+        "evaluate"
+      ]
+    },
+    {
+      "id": "hardware-a100",
+      "kind": "paper_deviation",
+      "description": "GPU.",
+      "paper_says": "Sec. 4: 'NVIDIA RTX 2080 8Gb'.",
+      "used": "NVIDIA A100-SXM4-40GB on Modal for every full, supplementary and diagnostic run.",
+      "basis": "EfficientNetB7 at batch 64 does not fit in 15 GB; one GPU type was used for all models.",
+      "effect": "None expected on the metrics beyond GPU nondeterminism.",
+      "status": "adopted after preflight-1 failed, before the full runs",
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "lenet-without-batch-normalization",
+      "kind": "paper_code_conflict",
+      "description": "Batch normalization in LeNet.",
+      "paper_says": "Sec. 5.2: 'The batch normalization ... are applied for all the networks'. The authors' LeNet builder in Compare_nets.ipynb has no batch normalization.",
+      "used": "The authors' builder, without batch normalization.",
+      "basis": "The builder reproduces Table 1's parameter count. The notebook is the authors' code but was supplied privately, not released.",
+      "effect": "Adding batch normalization would add 152 parameters, which Table 1's rounding cannot show, so the paper's actual LeNet remains uncertain.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train"
+      ]
+    },
+    {
+      "id": "dataset-size-statements",
+      "kind": "paper_internal_conflict",
+      "description": "The dataset size.",
+      "paper_says": "Abstract: 'more than 10122 gesture samples'. Sec. 4, 5.1 and 7: 2,100 images, 50 per class. The supplied archive holds 14,249 images.",
+      "used": "2,100 images, 50 per class, as the experimental sections state.",
+      "basis": "Sec. 5.1 gives the split counts 1,680 / 210 / 210, which only fit 2,100.",
+      "effect": "None beyond the subset guess.",
+      "status": "adopted before the runs",
+      "related_ids": [
+        "subset-first-50-per-class"
+      ],
+      "affects": [
+        "data"
+      ]
+    },
+    {
+      "id": "efficientnet-accuracy-statements",
+      "kind": "paper_internal_conflict",
+      "description": "EfficientNetB7's published test accuracy.",
+      "paper_says": "Table 1 and Sec. 7: 0.967. Fig. 10's confusion matrix sums to 210 with one error, 209/210 = 0.995, over 41 classes. Sec. 5.2 says it 'had no errors' and that the test matrix 'contains only 40 classes'.",
+      "used": "Table 1's 0.967 as the target value.",
+      "basis": "The assignment is Table 1.",
+      "effect": "The published value this attempt compares against is itself uncertain. Fig. 9 and Fig. 10 also have different per-class counts, so LeNet and EfficientNetB7 were scored on different test splits.",
+      "status": "adopted before the runs",
+      "affects": [
+        "evaluate"
+      ]
+    },
+    {
+      "id": "total-params-count",
+      "kind": "guess",
+      "description": "How 'Total params' is counted.",
+      "paper_says": "Table 1 column 'Total params (M)', no definition.",
+      "used": "Model.count_params(): trainable and non-trainable parameters, divided by 1e6.",
+      "basis": "The name matches Keras' model summary line 'Total params'.",
+      "effect": "None: all four values round to Table 1's.",
+      "status": "adopted before the runs",
+      "affects": [
+        "evaluate"
+      ]
+    }
+  ],
   "noncompliance": [
     {
       "id": "populate-ceiling-not-enforced",
