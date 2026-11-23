@@ -1,0 +1,151 @@
+✓ Initialized. View run at 
+https://modal.com/apps/repro-sign/main/ap-OkPK15AL83MGibmLot42IW
+Building image im-eSE7y6dyjiCjSTyTCulChF
+
+=> Step 0: FROM base
+
+=> Step 1: RUN python -m pip install simple-video-utils==0.7.4
+Looking in indexes: http://pypi-mirror.modal.local:5555/simple
+Collecting simple-video-utils==0.7.4
+  Downloading http://pypi-mirror.modal.local:5555/simple/simple-video-utils/simple_video_utils-0.7.4-py3-none-any.whl.metadata (4.2 kB)
+Collecting av>=18.0.0 (from simple-video-utils==0.7.4)
+  Downloading http://pypi-mirror.modal.local:5555/simple/av/av-19.0.0-cp312-abi3-manylinux_2_28_x86_64.whl.metadata (5.0 kB)
+Collecting numpy (from simple-video-utils==0.7.4)
+  Downloading http://pypi-mirror.modal.local:5555/simple/numpy/numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+Downloading http://pypi-mirror.modal.local:5555/simple/simple-video-utils/simple_video_utils-0.7.4-py3-none-any.whl (19 kB)
+Downloading http://pypi-mirror.modal.local:5555/simple/av/av-19.0.0-cp312-abi3-manylinux_2_28_x86_64.whl (35.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.0/35.0 MB 655.0 MB/s eta 0:00:00
+Downloading http://pypi-mirror.modal.local:5555/simple/numpy/numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 743.7 MB/s eta 0:00:00
+Installing collected packages: numpy, av, simple-video-utils
+
+Successfully installed av-19.0.0 numpy-2.5.3 simple-video-utils-0.7.4
+
+[notice] A new release of pip is available: 25.1.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+Saving image...
+Image saved, took 896.24ms
+
+Built image im-eSE7y6dyjiCjSTyTCulChF in 5.04s
+
+
+Building image im-OblIUyzxMLmxn8eTSDWhq0
+
+=> Step 0: FROM base
+
+=> Step 1: ENV HF_HOME=/cache/huggingface
+
+=> Step 2: ENV HF_HUB_CACHE=/cache/huggingface/hub
+Saving image...
+Image saved, took 384.15ms
+
+Built image im-OblIUyzxMLmxn8eTSDWhq0 in 982.05ms
+
+
+✓ Created objects.
+├── 🔨 Created mount 
+└── 🔨 Created function audit.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py", line 25, in _open_video
+    return av.open(source, metadata_errors="replace", **av_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "av/container/core.py", line 479, in av.container.core.open
+    def open(
+TypeError: open() got an unexpected keyword argument 'metadata_errors'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/pkg/modal/_runtime/container_io_manager.py", line 977, in handle_input_exception
+    yield
+  File "/pkg/modal/_container_entrypoint.py", line 187, in run_input_sync
+    values = io_context.call_function_sync()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/pkg/modal/_runtime/container_io_manager.py", line 265, in call_function_sync
+    expected_value_or_values = self.finalized_function.callable(*args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/modal_app.py", line 22, in audit
+    meta=video_metadata(str(p));frames=list(read_frames_exact(str(p),start_frame=0,end_frame=2))
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py", line 328, in video_metadata
+    with _open_container(url_or_path) as container:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py", line 42, in _open_container
+    container = source if reused else _open_video(source)
+                                      ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py", line 28, in _open_video
+    raise RuntimeError(msg) from e
+RuntimeError: Failed to open video
+Stopping app - uncaught exception raised locally: RuntimeError('Failed to open video').
+Runner terminated.
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ in main                                                                      │
+│                                                                              │
+│   29 @app.local_entrypoint()                                                 │
+│ ❱ 30 def main():audit.remote()                                               │
+│   31                                                                         │
+│                                                                              │
+│ ject.py:46 in wrapped                                                        │
+│                                                                              │
+│    45 │   │   await self.hydrate()                                           │
+│ ❱  46 │   │   return await method(self, *args, **kwargs)                     │
+│    47                                                                        │
+│                                                                              │
+│ nctions.py:1841 in remote                                                    │
+│                                                                              │
+│   1840 │   │                                                                 │
+│ ❱ 1841 │   │   return await self._call_function(args, kwargs)                │
+│   1842                                                                       │
+│                                                                              │
+│ nctions.py:1778 in _call_function                                            │
+│                                                                              │
+│   1777 │   │                                                                 │
+│ ❱ 1778 │   │   return await invocation.run_function()                        │
+│   1779                                                                       │
+│                                                                              │
+│ nctions.py:502 in run_function                                               │
+│                                                                              │
+│    501 │   │   │   # No more retries left.                                   │
+│ ❱  502 │   │   │   return await _process_result(                             │
+│    503 │   │   │   │   await_response.output.result, await_response.output.d │
+│                                                                              │
+│ ils/function_utils.py:572 in _process_result                                 │
+│                                                                              │
+│   571 │   │   │                                                              │
+│ ❱ 572 │   │   │   raise exc_with_hints(exc)                                  │
+│   573                                                                        │
+│                                                                              │
+│     ...Remote call to Modal Function (ta-01M3VGREXS0T5Y2PBQAFNX86MR)...      │
+│                                                                              │
+│ /root/modal_app.py:22 in audit                                               │
+│                                                                              │
+│ ❱ 22 meta=video_metadata(str(p));frames=list(read_frames_exact(str(p),start_ │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py:328   │
+│ in video_metadata                                                            │
+│                                                                              │
+│ ❱ 328 with _open_container(url_or_path) as container:                        │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/contextlib.py:137 in __enter__                     │
+│                                                                              │
+│ ❱ 137 return next(self.gen)                                                  │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py:42 in │
+│ _open_container                                                              │
+│                                                                              │
+│ ❱ 42 container = source if reused else _open_video(source)                   │
+│                                                                              │
+│                                                                              │
+│ /usr/local/lib/python3.12/site-packages/simple_video_utils/metadata.py:28 in │
+│ _open_video                                                                  │
+│                                                                              │
+│ ❱ 28 raise RuntimeError(msg) from e                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+RuntimeError: Failed to open video
