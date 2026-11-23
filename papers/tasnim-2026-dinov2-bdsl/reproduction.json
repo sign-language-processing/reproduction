@@ -190,7 +190,7 @@
       ],
       "modal_volume": "datasets",
       "modal_path": "bdsl49-v6-recognition",
-      "preprocessing": "Originalcropped recognitionimages; bilinear224x224,ImageNetmean/std. Trainhorizontalflipp.4,affinep.4(rotation10deg,translation.1,scale.9\u20131.1),ColorJitterp.4withinferredranges(.2,.2,.2,.1). Test uses same augmented transforms, fixed final evaluationseed314159; deterministicresize/normalize diagnostic also retained.",
+      "preprocessing": "Originalcropped recognitionimages; bilinear224x224,ImageNetmean/std. Trainhorizontalflipp.4,affinep.4(rotation10deg,translation.1,scale.9–1.1),ColorJitterp.4withinferredranges(.2,.2,.2,.1). Test uses same augmented transforms, fixed final evaluationseed314159; deterministicresize/normalize diagnostic also retained.",
       "manifest": {
         "dataset": "BDSL49",
         "version": 6,
@@ -367,7 +367,7 @@
   "experiments": [
     {
       "experiment_id": "vit-s-bdsl",
-      "system": "DINOv2ViT-S/14distillednoregisters,384CLS\u2192linear256\u2192ReLU\u2192linear49; allparametersunfrozen",
+      "system": "DINOv2ViT-S/14distillednoregisters,384CLS→linear256→ReLU→linear49; allparametersunfrozen",
       "dataset_id": "bdsl49-recognition",
       "checkpoint_rule": "Finalepoch30 assection5.1 states; do notselectbesttestepoch.",
       "config": {
@@ -470,9 +470,11 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-HPvKBCIVQgjsY4KcoTvLuI",
         "function_call_id": "fc-01M3VGDJPV6DEP9XEXNEZHP27E",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-HPvKBCIVQgjsY4KcoTvLuI"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-HPvKBCIVQgjsY4KcoTvLuI",
+        "modal_app_ids": [
+          "ap-HPvKBCIVQgjsY4KcoTvLuI"
+        ]
       },
       "finished_at_utc": "2026-10-01T10:36:45.830208+00:00",
       "exit_code": 1,
@@ -527,10 +529,12 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-dIJLXob4GcESbqEN4bXjiU",
         "function_call_id": "fc-01M3VH04JMYFS1DA7WE0VSYYF4",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-dIJLXob4GcESbqEN4bXjiU",
-        "image_reference": "modal.Image.debian_slim(python_version=3.12)"
+        "image_reference": "modal.Image.debian_slim(python_version=3.12)",
+        "modal_app_ids": [
+          "ap-dIJLXob4GcESbqEN4bXjiU"
+        ]
       },
       "source_detail": "Normalbrowserdownload revealedpublicS3redirect forRecognition_1;Recognition_2 downloadedwithbrowser anduploadedwithwrapper,verifiedbothsides sha25628be109329fa794b0a9ad1dc027f8f17868a6573344db1a330e280db3ba61c4a. Localtaskcopydeletedafterchecksumcheck.",
       "finished_at_utc": "2026-10-01T10:48:35.949653+00:00",
@@ -585,8 +589,17 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-TQo83oWWJRzhlFQbjGa0Rk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TQo83oWWJRzhlFQbjGa0Rk"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TQo83oWWJRzhlFQbjGa0Rk",
+        "modal_app_ids": [
+          "ap-TQo83oWWJRzhlFQbjGa0Rk"
+        ],
+        "usage": {
+          "gpu_hours": 0.10431115,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.14782976,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-TQo83oWWJRzhlFQbjGa0Rk. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "finished_at_utc": "2026-10-01T10:55:49.323166+00:00",
       "exit_code": 1,
@@ -647,10 +660,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-8GavxFjVklSf1xLFxf5S0C",
         "function_call_id": "fc-01M3VHMJBBNXNP19YMAC8GGTJX",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-8GavxFjVklSf1xLFxf5S0C",
-        "image_id": "im-hpPgI168qFkdaYP7lprSJ3"
+        "image_id": "im-hpPgI168qFkdaYP7lprSJ3",
+        "modal_app_ids": [
+          "ap-8GavxFjVklSf1xLFxf5S0C"
+        ],
+        "usage": {
+          "gpu_hours": 0.05702342,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08083045,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-8GavxFjVklSf1xLFxf5S0C. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "hypothesis": "Sequential archive staging preserves data bytes and eliminates cold per-image remote latency.",
       "finished_at_utc": "2026-10-01T10:56:10.236331+00:00",
@@ -776,10 +798,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-RilRDcbPMrjvAWeXA1RURm",
         "function_call_id": "fc-01M3VHTP5ANE30S6BSG6TEHT0P",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RilRDcbPMrjvAWeXA1RURm",
-        "environment": "main"
+        "environment": "main",
+        "modal_app_ids": [
+          "ap-RilRDcbPMrjvAWeXA1RURm"
+        ],
+        "usage": {
+          "gpu_hours": 0.58431495,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.84773657,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-RilRDcbPMrjvAWeXA1RURm. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "estimated_wall_hours": 2,
@@ -1330,26 +1361,6 @@
     "selected_preference": 3,
     "reason": "No target-author implementation found. Reconstruct classificationrecipe while using unmodifiedpinnedofficialbackbone; unrelatedBdSL-Model-Comparisonrepository notused as authorscode."
   },
-  "guesses": [
-    {
-      "detail": "Seed42 chosen becausepaperseedabsent. Officialdataset splits areusedunchanged; no inventedhistoricalsplit."
-    },
-    {
-      "detail": "ColorJitterranges notstated; choose brightness/contrast/saturation0.2,hue0.1 withoutscoretuning."
-    },
-    {
-      "detail": "Section4 andFigure4 explicitly specify test augmentation. Use same transforms as training for primary evaluation, with final single-drawseed314159 declared before scores. Fig9 displays original-looking images but does not establish model input transforms. Deterministic resize/normalization evaluation is diagnostic only; never select protocol basedonscore."
-    },
-    {
-      "detail": "Paper14745total is inconsistent withits11774+2940split. OfficialreleaseV6 is14714 andexactlymatchesintendedsplit; treattotalastextualcountdiscrepancy, notchangeddata."
-    },
-    {
-      "detail": "Use finalepoch30, fullfloat32, defaultAdam betas(.9,.999),epsilon1e-8,zeroweightdecay, standardbilinearresizeandzeroaffinefill. No optimization choices tunedtowardreportedscore."
-    },
-    {
-      "detail": "Use torchSDPA through officialXFORMERS_DISABLED=1 option becausemodernNGCenvironmentkernelcompatibility. This preservesexactattentionmathwithoutpatchingauthorbackbone."
-    }
-  ],
   "author_contact": {
     "contacted": false,
     "detail": "No authorscontacted."
@@ -1369,12 +1380,6 @@
     "container_base_digest": "sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea",
     "detail": "Source files were uncommitted during execution. The pinned container base, Modal image identifier, per-run executed script hash, retained historical source artifact and final committed files identify the recipe; documentation changes do not alter execution."
   },
-  "deviations": [
-    {
-      "id": "weight-check-timing",
-      "detail": "The retained full execution loads official weights from the same cache artifact hash-verified by its preflight, then measures their SHA256 again in final metrics. Review added a pre-load hash assertion to the committed entry point for fresh future repetitions. This does not change the weights or model; accept the current result only if its final SHA256 equals the predeclared official artifact."
-    }
-  ],
   "conclusion_assessment": {
     "summary": "The assigned Table 5 comparative conclusion is reproduced: trained ViT-S-BDSL reaches 99.2177% accuracy and 99.2168% macro F1, exceeding every reported comparator with that metric in Table 5 (best accuracy 98.10%; best F1 98%). This is accepted as a valid reproduction of the in-scope comparative finding. Exact 99.7% values were not recovered.",
     "evidence": [
@@ -1395,5 +1400,38 @@
       "decision": "accepted_reproduction_of_table5_comparative_conclusion",
       "basis": "Human scientific review accepts preservation of the Table 5 advantage despite a lower absolute score. The agent checked the table and retained measurements; no new execution or tolerance change."
     }
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "guess-1",
+      "kind": "guess",
+      "description": "Seed42 chosen becausepaperseedabsent. Officialdataset splits areusedunchanged; no inventedhistoricalsplit."
+    },
+    {
+      "id": "guess-2",
+      "kind": "guess",
+      "description": "ColorJitterranges notstated; choose brightness/contrast/saturation0.2,hue0.1 withoutscoretuning."
+    },
+    {
+      "id": "guess-3",
+      "kind": "guess",
+      "description": "Section4 andFigure4 explicitly specify test augmentation. Use same transforms as training for primary evaluation, with final single-drawseed314159 declared before scores. Fig9 displays original-looking images but does not establish model input transforms. Deterministic resize/normalization evaluation is diagnostic only; never select protocol basedonscore."
+    },
+    {
+      "id": "guess-4",
+      "kind": "paper_internal_conflict",
+      "description": "Paper14745total is inconsistent withits11774+2940split. OfficialreleaseV6 is14714 andexactlymatchesintendedsplit; treattotalastextualcountdiscrepancy, notchangeddata."
+    },
+    {
+      "id": "guess-5",
+      "kind": "guess",
+      "description": "Use finalepoch30, fullfloat32, defaultAdam betas(.9,.999),epsilon1e-8,zeroweightdecay, standardbilinearresizeandzeroaffinefill. No optimization choices tunedtowardreportedscore."
+    },
+    {
+      "id": "guess-6",
+      "kind": "guess",
+      "description": "Use torchSDPA through officialXFORMERS_DISABLED=1 option becausemodernNGCenvironmentkernelcompatibility. This preservesexactattentionmathwithoutpatchingauthorbackbone."
+    }
+  ],
+  "noncompliance": []
 }

@@ -1,5 +1,7 @@
 # A vision transformer-based fine-tuned DINOv2 model for bangla sign language recognition
 
+**Paper ID:** `875504600f866fc910739cbff0b230d65670c155`
+
 Syeda Anika Tasnim, Rifath Mahmud, Tanvir Ahmed, and Debajyoti Karmaker (2026), Multimedia Tools and Applications 85:163. [Publisher DOI](https://doi.org/10.1007/s11042-026-21376-6).
 
 **Conclusion:** The assigned Table 5 comparative finding is reproduced. Our trained model reaches **99.2177% accuracy and 99.2168% macro F1**, above every reported Table 5 comparator for the respective metric. Scientific review accepted this as a valid reproduction on 2026-10-03; the exact published 99.7% values remain unmatched.
@@ -58,7 +60,7 @@ Independent review found no result-changing discrepancy. The retained execution 
 
 The primary evaluation classified 2917 of 2940 images correctly after all 30 epochs, using the fixed augmented-test seed declared before training. Numerical agreement uses a ±0.05 percentage-point rounding bound, separate from completion; no settings were tuned toward the published score. The separate deterministic-test diagnostic is preserved in the raw metrics and has no role in selecting the primary result.
 
-The full run used one A10G for 34.53 measured minutes (0.575 GPU-hours), excluding container startup. Peak allocated GPU memory was 3.128 GB. Estimated runtime cost is CHF 1.44; actual billed cost is unavailable. The prospective ceiling was four hours and CHF 10. Modal app `ap-RilRDcbPMrjvAWeXA1RURm`, call `fc-01M3VHTP5ANE30S6BSG6TEHT0P`, in the `repro-sign` main environment produced the native artifacts at `modal://tasnim-2026-dinov2-bdsl-results/full-seed42/`; reproduction.json links every metric and output checksum.
+The full run used one A10G for 34.53 measured minutes (0.575 GPU-hours), excluding container startup. Peak allocated GPU memory was 3.128 GB. Estimated runtime cost is CHF 1.44; Billed usage is reconciled below. The prospective ceiling was four hours and CHF 10. Modal app `ap-RilRDcbPMrjvAWeXA1RURm`, call `fc-01M3VHTP5ANE30S6BSG6TEHT0P`, in the `repro-sign` main environment produced the native artifacts at `modal://tasnim-2026-dinov2-bdsl-results/full-seed42/`; reproduction.json links every metric and output checksum.
 
 The initial direct Mendeley acquisition returned HTTP403 and was retained as failed; ordinary browser acquisition resolved it. The first GPU preflight was stopped before training because copying thousands of individual cold-volume files was slow. The corrected staging copies and verifies the two archives sequentially, extracts locally, then verifies every image hash. Its representative preflight completed in 40.60 seconds with checkpoint reload and optimizer resume verified; the full run then completed without a restart. Final backbone SHA256 is the same predeclared `b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9`.
 
@@ -75,3 +77,20 @@ Table 4 addresses a separate transformer comparison outside this assigned Table 
 The existing independent review GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
 
 On 2026-10-03, the GPT-6/Codex orchestrator verified the Table 5 comparisons and recorded the accepted scientific interpretation. This was later report maintenance, not a new experiment; all target values, execution attribution, artifact hashes and the exact numerical-agreement criterion are preserved.
+
+## Guesses and deviations
+
+- `guess-1` — Seed42 chosen becausepaperseedabsent. Officialdataset splits areusedunchanged; no inventedhistoricalsplit.
+- `guess-2` — ColorJitterranges notstated; choose brightness/contrast/saturation0.2,hue0.1 withoutscoretuning.
+- `guess-3` — Section4 andFigure4 explicitly specify test augmentation. Use same transforms as training for primary evaluation, with final single-drawseed314159 declared before scores. Fig9 displays original-looking images but does not establish model input transforms. Deterministic resize/normalization evaluation is diagnostic only; never select protocol basedonscore.
+- `guess-4` — Paper14745total is inconsistent withits11774+2940split. OfficialreleaseV6 is14714 andexactlymatchesintendedsplit; treattotalastextualcountdiscrepancy, notchangeddata.
+- `guess-5` — Use finalepoch30, fullfloat32, defaultAdam betas(.9,.999),epsilon1e-8,zeroweightdecay, standardbilinearresizeandzeroaffinefill. No optimization choices tunedtowardreportedscore.
+- `guess-6` — Use torchSDPA through officialXFORMERS_DISABLED=1 option becausemodernNGCenvironmentkernelcompatibility. This preservesexactattentionmathwithoutpatchingauthorbackbone.
+
+## Noncompliance
+
+None.
+
+## Modal billing reconciliation
+
+Modal billing attributes 0.7456 GPU-hours and USD 1.0764 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
