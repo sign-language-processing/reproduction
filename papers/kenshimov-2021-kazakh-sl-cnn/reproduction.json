@@ -233,7 +233,53 @@
     "preference_level": 3,
     "blocker": null
   },
-  "datasets": [],
+  "datasets": [
+    {
+      "dataset_id": "ksl-fingerspelling",
+      "name": "Kazakh Sign Language fingerspelling images (Kenshimov et al. 2021), authors' archive resized_gray_dataset.7z",
+      "version_or_subset": "Archive SHA-256 baf1f1436f2d827b03d88c6b42db783d4e9ca0b84b7bb82fc8ee2f133e494ec2: 14,249 grayscale 1280x720 JPEGs, 42 classes. Experiments use the first 50 files per class in lexicographic file-name order (2,100 images).",
+      "source": "Supplied privately by the authors to the study on request; not published. Queue dataset record lc1a3wrizj82i1e.",
+      "license_or_permission": "No license. The authors granted the study permission to reproduce (queue record: permission_to_reproduce 'yes') and supplied the files. Gate ksl-data-cloud-use records the confirmation that this covers the study's Modal workspace.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "ksl-fingerspelling-kenshimov-2021",
+      "preprocessing": "PIL convert('L'), resize((320, 120)), float32, divide by 255, as in Read_data.ipynb.",
+      "expected_counts": "Paper Sec. 5.1: 2,100 images, 42 classes, 50 each; 1,680 / 210 / 210.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 1680,
+          "files": [
+            {
+              "path": "ksl-fingerspelling-kenshimov-2021/MANIFEST.sha256",
+              "sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+            }
+          ]
+        },
+        {
+          "name": "validation",
+          "sample_count": 210,
+          "files": [
+            {
+              "path": "ksl-fingerspelling-kenshimov-2021/MANIFEST.sha256",
+              "sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 210,
+          "files": [
+            {
+              "path": "ksl-fingerspelling-kenshimov-2021/MANIFEST.sha256",
+              "sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Random and unstratified: sklearn train_test_split(test_size=0.2) then train_test_split(test_size=0.5) on the remainder, both with the run's seed. Each run's metrics.json lists its test files."
+    }
+  ],
   "metric_definitions": [
     {
       "metric_id": "total-params",
@@ -540,9 +586,9 @@
         "reproduction-agent"
       ],
       "command": "papers/kenshimov-2021-kazakh-sl-cnn/data.sh resized_gray_dataset.7z",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:26:53Z",
+      "finished_at_utc": "2026-11-23T10:31:22Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -562,8 +608,63 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-rV6QE9aNOR2CzzF9eg5BJi"
+        ],
         "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Archive uploaded and verified by SHA-256, extracted to /datasets/ksl-fingerspelling-kenshimov-2021/resized_gray_dataset, and a per-file manifest written: 14,249 images, 42 classes, one file (H/17.jpg) failing PIL verification.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "manifest.json summary: images 14249, classes 42, per-class 142 to 446, unreadable ['H/17.jpg'], MANIFEST.sha256 SHA-256 7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857. check_modal_dataset.sh confirmed the path and manifest."
+    },
+    {
+      "run_id": "preflight-1",
+      "kind": "preflight",
+      "purpose": "Exercise the real path cheaply: load real images, build all four models and confirm their parameter counts, train 1 epoch on 10 images per class, save and reload weights, evaluate the test split. Measures time and GPU memory.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet,alexnet,resnet50,efficientnetb7 --run-id preflight-1 --seeds 42 --epochs 1 --per-class 10",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:32:03Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 2.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "T4",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
