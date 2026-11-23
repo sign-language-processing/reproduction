@@ -1,26 +1,28 @@
 # Xu et al. (2023): Improved SKResNet-TCN
 
-**Pipeline status:** `partial` — the proposed method's three quantities were produced for the authorized approximate scope; eleven baseline cells remain unproduced.
+**Paper ID:** `2be3c68e9731c401b36cc8d1d0588b59f86077ae`
 
-**Numerical agreement:** `does_not_agree`
+**Pipeline status:** `insufficient_information`
 
-**Current state:** The requested parameter-sized attempt is complete. No human execution decision is pending.
+**Numerical agreement:** `not_assessed`
+
+**Current state:** The requested parameter-sized run finished. Exact Table 4 comparison still requires the authors’ architecture and evaluation protocol.
 
 **Preference level:** 3
 
-**Conclusion:** The paper-sized reconstruction does not support the claimed joint accuracy/efficiency advantage: it reached 81.87500% accuracy, below the paper's 100% and every Table 4 baseline accuracy (98.20–100%). Matching approximate capacity did not recover the recognition conclusion.
+**Result:** The specified approximation reached 81.875% accuracy. Table 4 reports 100% for an architecture whose exact dimensions are unavailable.
 
 The completed model has **12.222880M parameters**, within 0.95% of the paper's 12.34M, and **68.3473G counted operations** versus 62.50G. Those values describe the documented reconstructed model, not recovered author code. The earlier 28.53M/55.15625% attempt is preserved below and in the assessment history. Repeat the current recipe using the commands in the parameter-sized reconstruction section.
 
 Xu, Xuebin; Meng, Kan; Chen, Chen; Lu, Longbin. [Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network](https://doi.org/10.1155/2023/9503961). *Journal of Sensors*, 2023, article 9503961.
 
-The assignment is a direct user request using the current tracker export. Its original SHA256 and redacted record are preserved in `reproduction.json`. The current export has `expand.paper.status=final`, no confirmation field, and distinct paper/database IDs. GPT-6 using Codex performed the source investigation, data audit, and reporting. A separate master agent, also identified as GPT-6 using Codex, independently reviewed rendered architecture figures and comparison provenance; it did not execute the original CPU audit runs. The conditional extension below has separate implementation and execution attribution. Session instructions establish those identities; exact model and harness versions were not exposed.
+The assignment uses the preserved final-paper tracker export. Its original SHA256 and redacted record are preserved in `reproduction.json`. The current export has `expand.paper.status=final`, no confirmation field, and distinct paper/database IDs. GPT-6 using Codex performed the source investigation, data audit, and reporting. A separate master agent, also identified as GPT-6 using Codex, independently reviewed rendered architecture figures and comparison provenance; it did not execute the original CPU audit runs. The conditional extension below has separate implementation and execution attribution. Session instructions establish those identities; exact model and harness versions were not exposed.
 
 ## Target scope
 
-Table 4, p. 8 compares the proposed system with cited earlier systems. All fourteen numeric cells remain in the ledger. The proposed method’s three cells now carry measured values for the explicitly authorized approximate reconstruction; their original exact-author assessment remains archived. The comparison cells retain a provenance limitation: citations alone do not establish whether each number was copied or remeasured, so none is silently exempted from scope. Earlier SPOTER Table 5 contains the same I3D 98.91 and MEMP 99.06 accuracy values, but the origins of the other parameter/FLOP/accuracy cells are not fully established.
+Table 4, p. 8 compares the proposed system with cited earlier systems. All fourteen numeric cells remain in the ledger. The proposed method’s three measured values describe the explicitly authorized approximation and remain conditional. The comparison cells retain a provenance limitation: citations alone do not establish whether each number was copied or remeasured, so none is silently exempted from scope. Earlier SPOTER Table 5 contains the same I3D 98.91 and MEMP 99.06 accuracy values, but the origins of the other parameter/FLOP/accuracy cells are not fully established.
 
-| Table 4 system | Parameters (millions) | Computation (GFLOPs) | LSA64 accuracy (%) | Reproduced |
+| Table 4 system | Parameters (millions) | Computation (GFLOPs) | LSA64 accuracy (%) | Conditional measurements or missing evidence |
 |---|---:|---:|---:|---|
 | I3D | 12.39 | 111.60 | 98.91 | None produced; provenance unresolved |
 | (2+1)D-SLR | 33.30 | Not reported | 98.20 | None produced; provenance unresolved |
@@ -60,7 +62,7 @@ The canonical v2 `datasets` Volume contains `lsa64`, with source archive SHA256 
 python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/xu-2023-skresnet-tcn
 ```
 
-The retained run ID is immutable; use a fresh ID when repeating. The CPU container uses Python 3.12, `simple-video-utils 0.7.4`, and `av 18.0.0`. Datasets are read-only; shared v2 `huggingface-cache` is mounted at `/cache/huggingface`; outputs use `2be3c68e-skresnet-results`. No GPU was requested for these original audits. Each diagnostic was bounded at 900 seconds / CHF 1. Actual billed cost is unavailable.
+The retained run ID is immutable; use a fresh ID when repeating. The CPU container uses Python 3.12, `simple-video-utils 0.7.4`, and `av 18.0.0`. Datasets are read-only; shared v2 `huggingface-cache` is mounted at `/cache/huggingface`; outputs use `2be3c68e-skresnet-results`. No GPU was requested for these original audits. Each diagnostic was bounded at 900 seconds / CHF 1. Billed usage is reconciled below.
 
 Three cheap execution failures were preserved: newest PyAV 19 rejects the decoder's `metadata_errors` argument; trying PyAV 16 was rejected by the package's `av>=18` constraint; PyAV 18 decoded successfully but the audit serializer incorrectly assumed a dataclass. The final script pins supported PyAV 18 and reads the documented metadata attributes. These are data-audit environment/glue changes, not changes to the proposed model.
 
@@ -135,7 +137,7 @@ An architecture-only CPU audit measured **12,222,880 parameters**, **0.949% belo
 
 The completed preflight trained seven real effective-batch updates, instantiated a fresh model and Ranger optimizer, verified every restored state tensor exactly, took a real resumed update, and evaluated 64 held-out samples. It measured 13.303 GB peak allocated GPU memory, 0.13210 seconds per warm microbatch and **68.3473G counted operations** (9.36% above the paper's 62.50G; unsupported operators retained). The 102.62-second preflight forecast approximately two GPU-hours for the full run, within a five-hour ceiling. A durable per-run claim ties source hashes and the Modal function call to an immutable deadline. Provider recovery requires an existing checkpoint, permits at most three execution segments and never starts new training from initialization. A process watchdog covers setup, training, collection and final output commit. Logs and execution records are preserved separately for every segment.
 
-The additional ceiling is six GPU-hours / CHF 24 across the revision, separate from the completed earlier attempt. A cancelled 29-second app lifecycle is conservatively counted in this allowance although no native training output exists. The preflight is capped at 30 minutes / CHF 2, and any full run at five hours / CHF 20. Limits are ceilings; actual billing is not yet available. The original five-hour attempt and consumed resume remain closed.
+The additional ceiling is six GPU-hours / CHF 24 across the revision, separate from the completed earlier attempt. A cancelled 29-second app lifecycle is conservatively counted in this allowance although no native training output exists. The preflight is capped at 30 minutes / CHF 2, and any full run at five hours / CHF 20. Limits are ceilings; Billed usage is reconciled below. The original five-hour attempt and consumed resume remain closed.
 
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/xu-2023-skresnet-tcn/scripts/size_audit_modal.py
@@ -157,12 +159,33 @@ The new implementation/execution/reporting agent is GPT-6 using Codex; exact mod
 
 All 1,000 updates and 20 validation passes completed. The earliest maximum-validation checkpoint was step 1000 (validation accuracy 81.5625%). Only then were the two test paths evaluated. Primary prediction indices exactly match the 640 unique held-out records; every class contributes ten test videos and none overlaps the training or validation split. Independently recomputed correct counts and accuracy match native output exactly.
 
-The requested capacity adjustment improved accuracy from the earlier 55.15625% to **81.875%**, an increase of **26.71875 percentage points**. It still falls **18.125 points below the paper’s 100%** and below every Table 4 baseline accuracy (98.20–100%). This reconstruction therefore **does not support the claimed joint accuracy and efficiency advantage**.
+The requested capacity adjustment improved accuracy from the earlier 55.15625% to **81.875%**, an increase of **26.71875 percentage points**. It still falls **18.125 points below the paper’s 100%** and below every Table 4 baseline accuracy (98.20–100%). The capacity-constrained model did not reach the reported accuracy. The claim for the original architecture remains unassessed.
 
 The compact model meets the requested approximate parameter budget. Its measured counts are below the totals printed for Table 4 baselines, but the parameter budget was selected by construction and operation-count conventions are not known to be identical. Baselines were not rerun. The paper’s (2+1)D-SLR citation discrepancy (98.2% versus 98.7% in the source abstract) remains documented; our recognition result is below both values. No further human action is required to finish this attempt, and no architecture or optimizer choices were changed to seek a better score.
 
-Run `paper-sized-full-seed42-001`, app `ap-w8cKY5RzlyHvHHSKx7ODbY`, call `fc-01M41FTN7PF1YX24MECYTZY6ME` completed from 2026-10-03T18:18:46.572982+00:00 to 2026-10-03T19:36:38.811529+00:00 in one execution segment, with no provider recovery. The overall wrapper interval was 4,672.24 seconds (**1.29784 A100 80GB GPU-hours**), including staging, training and evaluation. Native peak allocation was 13.179 GB; warm microbatches averaged 0.12828 seconds. Estimated full-run cost is **CHF 4.54**, derived from the prospective CHF 7/two-hour forecast. Actual billing is unavailable; startup and final hashing/commit after the execution timestamp are excluded from this interval. The original five-hour deadline and additional six-GPU-hour/CHF 24 ceiling were not reset or exceeded.
+Run `paper-sized-full-seed42-001`, app `ap-w8cKY5RzlyHvHHSKx7ODbY`, call `fc-01M41FTN7PF1YX24MECYTZY6ME` completed from 2026-10-03T18:18:46.572982+00:00 to 2026-10-03T19:36:38.811529+00:00 in one execution segment, with no provider recovery. The overall wrapper interval was 4,672.24 seconds (**1.29784 A100 80GB GPU-hours**), including staging, training and evaluation. Native peak allocation was 13.179 GB; warm microbatches averaged 0.12828 seconds. Estimated full-run cost is **CHF 4.54**, derived from the prospective CHF 7/two-hour forecast. Billed usage is reconciled below; startup and final hashing/commit after the execution timestamp are excluded from this interval. The original five-hour deadline and additional six-GPU-hour/CHF 24 ceiling were not reset or exceeded.
 
 All **15 closed artifact payloads (313,477,169 bytes)**, including both checkpoints, were downloaded and independently SHA-256/byte-count verified against the final wrapper manifest. The committed `artifacts/paper-sized-terminal-verification.json` records this audit. Source hashes match the reviewed prelaunch commit, the complete 20-entry validation history selects the reported checkpoint, and the dataset manifest pin matches exactly. The wrapper’s closed-log hash supersedes the earlier console snapshot embedded in native metrics. Secondary accuracy has a native raw metric but no saved per-example predictions, so no independent secondary recomputation is claimed. Large evidence remains at `modal://2be3c68e-skresnet-results/paper-sized-full-seed42-001/`.
 
 Setup diagnostics are preserved: an initial count-audit module import failure; a cancelled 29-second app after a failed per-run ledger append; and a local preflight CLI syntax failure fixed before any remote preflight-002 execution. Cancelled-app records use exit-code sentinel `-1` for an unobserved native exit, with explicit native status `null`; they do not invent a process return code. The new GPT-6/Codex agent executed and reported this revision; the root orchestrator independently reviewed the source before launch. Earlier executor attribution remains separate.
+
+## Guesses and deviations
+
+- `conditional-backbone` — Use timm 1.0.22 skresnext50_32x4d, the grouped model equivalent to the original SKNet-50 reference, with random initialization, 224-square input, max spatial pooling and Mish. Its size is not chosen to match 12.34M parameters or 62.50 GFLOPs. This is not the missing author architecture.
+- `conditional-temporal` — Use the cited pinned TCN TemporalBlock three times: width 256, kernel 3, sawtooth block dilations 1/2/5 and dropout 0.2. Mish replaces ReLU as described in the paper. Temporal max pooling feeds a 64-class classifier.
+- `conditional-keyframes` — Bilinear resize to 224-square RGB; mean absolute grayscale frame differences; three-frame moving average; select the strongest 32 local maxima in chronological order. Fill shortages uniformly, then repeat the last frame if the video has fewer than 32 frames. Smoothing, resizing and filling are declared interpretations.
+- `conditional-split-training` — Seed 42 per-class 60/20/20 split gives 1,920/640/640 videos. Ranger at learning rate 0.0001 uses library defaults. Interpret 1,000 iterations as optimizer steps, with effective batch 128 accumulated over 32 microbatches of four videos. BatchNorm sees 128 frames per microbatch, an explicit protocol deviation. Validation every 50 steps selects the earliest best checkpoint.
+- `conditional-resume` — Validate every 50 steps. Atomically save training state every 60 steps (four complete training epochs), and at termination. Embed the selected best model in the resume state so an interrupted later checkpoint cannot be reused accidentally. Seven exact-effective-batch preflight steps exercise Ranger Lookahead synchronization at step six, followed by state reload and another optimizer step.
+- `conditional-input-augmentation` — Scale RGB to [0,1] and normalize with ImageNet means (0.485,0.456,0.406) and standard deviations (0.229,0.224,0.225), without pretrained weights. Flip whole videos horizontally with probability 0.5 during training and primary test evaluation. Validation is unaugmented. Test seed 314159 was fixed before scores.
+
+- `parameter-sized-architecture` — Stage depths [1, 2, 2, 1] and TCN width 224 were selected before training to approximate the published parameter budget. The measurements are conditional.
+
+## Noncompliance
+
+- `cache-setup-unrecorded` — The retained run entries do not establish the required shared cache mount and environment. AGENTS.md requires the shared Hugging Face cache and both cache environment variables. Affected runs: `data-preflight-001`, `data-preflight-002`, `data-preflight-003`, `data-preflight-004`, `conditional-data-001`, `conditional-preflight-001`, `conditional-full-seed42-001`, `paper-sized-audit-001`, `paper-sized-audit-002`, `paper-sized-preflight-001`.
+
+## Modal billing reconciliation
+
+Modal billing attributes 4.1315 GPU-hours and USD 14.0076 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+For `paper-sized-preflight-002`, `paper-sized-full-seed42-001`, the recorded launcher SHA-256 matches the source that mounts and configures the shared cache.

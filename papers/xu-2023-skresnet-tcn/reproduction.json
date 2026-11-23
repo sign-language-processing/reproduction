@@ -16,7 +16,7 @@
       "harness": "Codex",
       "scope": "Independent source, figure, and comparison-provenance review only; no run execution contribution. Exact model_id and harness_version unavailable in session. On 2026-10-02, reviewed the actual paper claims against retained terminal evidence and documented claim-level conclusions; no new model execution.",
       "evidence": [
-        "Parent /root session message on 2026-10-01: independently rendered PDF pages 4\u20135; Figures 2\u20134 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
+        "Parent /root session message on 2026-10-01: independently rendered PDF pages 4–5; Figures 2–4 use schematic C/h/w and k,d variables and illustrative d=1,2 without actual widths/depths/input resolution.",
         "Parent /root supplied the primary (2+1)D-SLR abstract discrepancy lead; executing agent independently verified its 98.7% versus Xu Table 4 98.2%. Session identifies GPT-6 using Codex but exposes no exact model or application version.",
         "2026-10-02 GPT-6/Codex session attestation: compared paper conclusions with retained metrics, documented supported and untested claims, and preserved all original run/target records. Exact model and harness versions remain unavailable."
       ]
@@ -70,7 +70,7 @@
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-2be3c68e9731c401b36cc8d1d0588b59f86077ae-2026-10-01.json",
       "sha256": "5b5662ce3a6881a7f0caf4ca170ff173db78aa4a1c348dadb6f728229e5cb034"
@@ -161,7 +161,7 @@
           "sub_area_of_slp": [
             "Isolated signing videos"
           ],
-          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long\u2013short term memory, which effectively saves computational cost and time cost.",
+          "textual_conclusion": "The accuracy is 100% on the Argentine LSA64 dataset, and the experimental results show that the model in this paper has the advantages of fewer model parameters, smaller operations, and higher accuracy in sign language recognition compared with traditional 3D convolutional networks and long–short term memory, which effectively saves computational cost and time cost.",
           "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
           "venue": "Hindawi Journal of Sensors",
           "what_to_reproduce": "Table 4",
@@ -175,7 +175,48 @@
     },
     "evidence": [
       "Direct user assignment via current tracker. Current export has expand.paper.status=final and no confirmation field; database record ID is distinct from paper_id. Reviewer and assignee contact details redacted."
-    ]
+    ],
+    "normalized": {
+      "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
+      "year": 2023,
+      "venue": "Hindawi Journal of Sensors",
+      "pdf_url": "https://downloads.hindawi.com/journals/js/2023/9503961.pdf",
+      "code_repos": [],
+      "what_to_reproduce": "Table 4",
+      "metric_ids": [
+        "wzc6kxyuhls6lut"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        }
+      ],
+      "datasets": [
+        {
+          "id": "ogmzk93uoqpbpf5",
+          "name": "LSA64",
+          "available": "yes",
+          "license": "CC BY-NC-SA 4.0",
+          "urls": [
+            "https://facundoq.github.io/datasets/lsa64/",
+            "https://zenodo.org/record/6674324/files/LSA64_Full.zip?download=",
+            "https://zenodo.org/record/6674324/files/LSA64_Cut.zip?download=1"
+          ],
+          "comments": "LSA64 (Ronchetti et al., 2016) is the Argentine Sign Language dataset provided by III-\nLIDI (Informatics Institute) at the Informatics Faculty of the National University of La\nPlata (UNLP) available at: https://facundoq.github.io/datasets/lsa64/."
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "yes",
+      "comments": ""
+    },
+    "detail": "Final-paper Reproduction Tracker export retained with redactions and its original source hash."
   },
   "paper": {
     "title": "Isolated Word Sign Language Recognition Based on Improved SKResNet-TCN Network",
@@ -262,11 +303,30 @@
     }
   ],
   "status": {
-    "pipeline": "partial",
-    "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "All three own-row quantities were measured for the authorized approximate scope. They differ from the printed Table4 values at its reported precision; raw differences are preserved. Parameter closeness is design calibration, operations use a disclosed one-FMA convention, and primary accuracy uses the preregistered reconstructed split/validation selection. Eleven baseline cells remain unproduced; their published numbers are comparison context, not independently rerun baselines.",
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "No comparable Table 4 targets were produced. Both reconstructions retain their measured values as conditional evidence.",
     "preference_level": 3,
-    "blocker": null
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "The exact architecture and evaluation protocol are unspecified, and the cited comparison rows lack per-cell provenance.",
+      "target_ids": [
+        "table4-i3d-parameters",
+        "table4-i3d-flops",
+        "table4-i3d-accuracy",
+        "table4-2-1-d-slr-parameters",
+        "table4-2-1-d-slr-accuracy",
+        "table4-i3d-glr-csa-parameters",
+        "table4-i3d-glr-csa-flops",
+        "table4-i3d-glr-csa-accuracy",
+        "table4-memp-parameters",
+        "table4-memp-flops",
+        "table4-memp-accuracy",
+        "table4-ours-parameters",
+        "table4-ours-flops",
+        "table4-ours-accuracy"
+      ]
+    }
   },
   "datasets": [
     {
@@ -385,7 +445,7 @@
       "metric_id": "accuracy",
       "name": "Top1 classification accuracy",
       "direction": "higher",
-      "implementation": "Exactly correct argmax video classifications /640held-out videos \u00d7100; primarywhole-video horizontalflip probability0.5 atseed314159 after validation-only checkpoint selection.",
+      "implementation": "Exactly correct argmax video classifications /640held-out videos ×100; primarywhole-video horizontalflip probability0.5 atseed314159 after validation-only checkpoint selection.",
       "version": "NumPy equality/mean; native dependency freeze retained.",
       "aggregation": "single model/test partition",
       "unit_or_scale": "percent",
@@ -400,7 +460,7 @@
       "unresolved": "Widths/depth/inputdimensions/dilationsequence/keyframe-smoothing and baseunification; iteration versus epoch; Figure7 says testbest at656.",
       "system": "Improved SKResNet-TCN",
       "checkpoint_rule": "Figure7 reports best test state at656iterations; validation selection unspecified",
-      "paper_evidence": "Sections3.3\u20133.6,4.1,Table4"
+      "paper_evidence": "Sections3.3–3.6,4.1,Table4"
     },
     {
       "experiment_id": "conditional-sknet50-tcn",
@@ -409,7 +469,7 @@
       "recipe": "timm 1.0.22 skresnext50_32x4d; random initialization, Mish and max pooling; cited TCN blocks with width 256, kernel 3 and dilations 1/2/5; Ranger 1e-4, 1,000 steps, effective batch 128, microbatch 4; seed 42",
       "checkpoint_rule": "Maximum validation accuracy every 50 steps; earliest tie; test only after training.",
       "comparability": "Conditional evidence: the author architecture is unavailable. This assessment and all configuration choices were fixed before scores.",
-      "paper_evidence": "Sections 3\u20134, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
+      "paper_evidence": "Sections 3–4, Table 1 and Table 4; the missing architecture dimensions are explicitly reconstructed in guesses.",
       "conditional_result": {
         "run_id": "conditional-full-seed42-001",
         "artifact_ids": [
@@ -447,7 +507,7 @@
       "recipe": "timm1.0.22 grouped skresnext50_32x4d with stage depths[1,2,2,1]; random initialization, Mish, max representation pooling; pinned cited TCN blocks width224/kernel3/dilations1,2,5/dropout0.2; Ranger0.3.0 lr1e-4;1,000 optimizer updates/effectivebatch128/microbatch4/seed42; existing32-frame224px preprocessing and1,920/640/640split.",
       "checkpoint_rule": "Earliest maximum validation accuracy among the20scheduled evaluations every50updates; primary augmented test seed314159 only after training, secondary deterministic evaluation separately.",
       "comparability": "Explicitly authorized approximate reconstruction fixed before accuracy. New own-row values assess the requested approximate scope, not an exact author implementation. Parameter closeness is design calibration; operation counts use1FMA convention with unsupportedoperators disclosed. Same held-out video accuracy metric, reconstructed class-balanced split; shared signers across partitions prevent signer-independent claims.",
-      "paper_evidence": "PaperSections3\u20134;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details.",
+      "paper_evidence": "PaperSections3–4;Tables1,2,4; explicit instruction authorizes approximate parameter-sized reconstruction and scientific comparison using available details.",
       "result": {
         "run_id": "paper-sized-full-seed42-001",
         "artifact_ids": [
@@ -827,19 +887,27 @@
       "original_value": 12.34,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
-        "status": "produced",
-        "reproduced_value": 12.22288,
-        "difference": -0.11711999999999989,
         "run_ids": [
           "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
           "paper-sized-full-metrics-json"
         ],
-        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper leaves the stage depths, widths and input shape unresolved. The compact model uses dimensions chosen before training to approach the published parameter budget. Its counts and accuracy describe that conditional architecture and split."
+        },
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 12.22288; difference from published value -0.11712 in the target's unit."
+        ]
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
@@ -855,19 +923,27 @@
       "original_value": 62.5,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
-        "status": "produced",
-        "reproduced_value": 68.347287552,
-        "difference": 5.847287551999997,
         "run_ids": [
           "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
           "paper-sized-full-metrics-json"
         ],
-        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper leaves the stage depths, widths and input shape unresolved. The compact model uses dimensions chosen before training to approach the published parameter budget. Its counts and accuracy describe that conditional architecture and split."
+        },
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 68.347287552; difference from published value +5.847287552 in the target's unit."
+        ]
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     },
@@ -883,19 +959,27 @@
       "original_value": 100.0,
       "copied_baseline": false,
       "evidence": [
-        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+        "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
       ],
       "result": {
-        "status": "produced",
-        "reproduced_value": 81.875,
-        "difference": -18.125,
         "run_ids": [
           "paper-sized-full-seed42-001"
         ],
         "artifact_ids": [
           "paper-sized-full-metrics-json"
         ],
-        "assessment_note": "Value produced for the explicitly authorized approximate reconstruction. Exact historical target assessment preserved in assessment_history. Parameter closeness was constrained before accuracy and is not independent confirmation."
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper leaves the stage depths, widths and input shape unresolved. The compact model uses dimensions chosen before training to approach the published parameter budget. Its counts and accuracy describe that conditional architecture and split."
+        },
+        "gate_ids": [
+          "architecture"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 81.875; difference from published value -18.125 in the target's unit."
+        ]
       },
       "assessment_scope": "New authorized approximate reconstruction; exact historical target definition/result retained in assessment_history."
     }
@@ -924,7 +1008,13 @@
         "max_cost_chf": 1
       },
       "compute": {
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-OkPK15AL83MGibmLot42IW"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-01T10:39:19Z",
       "finished_at_utc": "2026-10-01T10:39:40Z",
@@ -932,7 +1022,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-OkPK15AL83MGibmLot42IW",
         "task_id": "ta-01M3VGREXS0T5Y2PBQAFNX86MR",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OkPK15AL83MGibmLot42IW"
       },
@@ -971,7 +1060,13 @@
         "max_cost_chf": 1
       },
       "compute": {
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-IRpHz2vtjd6PoxIdrcPYkS"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-01T10:40:17+00:00",
       "finished_at_utc": "2026-10-01T10:40:19+00:00",
@@ -979,7 +1074,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-IRpHz2vtjd6PoxIdrcPYkS",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-IRpHz2vtjd6PoxIdrcPYkS"
       },
       "terminal": {
@@ -1017,7 +1111,13 @@
         "max_cost_chf": 1
       },
       "compute": {
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-YIykPJ7OafUrlxeO827hOo"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-01T10:40:37+00:00",
       "finished_at_utc": "2026-10-01T10:40:57+00:00",
@@ -1025,7 +1125,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-YIykPJ7OafUrlxeO827hOo",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YIykPJ7OafUrlxeO827hOo"
       },
       "terminal": {
@@ -1063,7 +1162,13 @@
         "max_cost_chf": 1
       },
       "compute": {
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-Q5jTR7jRU1BbyHlNewufsy"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "artifact_ids": [
         "data-audit-freeze",
@@ -1076,7 +1181,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-Q5jTR7jRU1BbyHlNewufsy",
         "function_call_id": "fc-01M3VGW17RQMT228VPF0C8Q3Y0",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Q5jTR7jRU1BbyHlNewufsy"
       },
@@ -1114,7 +1218,13 @@
       "compute": {
         "gpu_count": 0,
         "cpu_count": 16,
-        "memory_mb": 32768
+        "memory_mb": 32768,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-JEMJetvAmhcr5mOTlHkVLv"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "artifact_ids": [
         "conditional-data-execution-json",
@@ -1130,7 +1240,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-JEMJetvAmhcr5mOTlHkVLv",
         "function_call_id": "fc-01M3VS6NHV4N2BSFCQA353JJ4N",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-JEMJetvAmhcr5mOTlHkVLv",
         "image_id": "im-Uu4wuwsaA67VCRgY85sXbg"
@@ -1170,7 +1279,20 @@
         "gpu_count": 1,
         "gpu": "A100-80GB",
         "cpu_count": 8,
-        "memory_mb": 65536
+        "memory_mb": 65536,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-f0q0RR1sqr3taTgKGauuAq"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.04406419,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.14939524,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-f0q0RR1sqr3taTgKGauuAq. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "artifact_ids": [
         "conditional-preflight-best-pt",
@@ -1193,7 +1315,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-f0q0RR1sqr3taTgKGauuAq",
         "function_call_id": "fc-01M3VSQ25HF8PSQGFGKW8WQ02R",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-f0q0RR1sqr3taTgKGauuAq",
         "image_id": "im-27GkSAaCIkScXRICNFFJg7"
@@ -1248,11 +1369,22 @@
         "cpu_count": 8,
         "memory_mb": 65536,
         "estimated_wall_hours": 3.5,
-        "estimated_gpu_hours": 3.5,
-        "estimated_cost_chf": 11,
         "forecast_basis": "Measured seven-step whole training/evaluation phase 80.42 seconds, scaled conservatively to 1,000 optimizer steps, plus 20 full validation passes, final primary/secondary tests, staging and atomic checkpoint writes. Warm microbatch 0.26455 seconds; peak 27.345 GB. Exact same model, microbatch and precision as preflight.",
         "aggregate_ceiling": "At most five GPU-hours / CHF20 across initial execution and one checkpoint-only resume. No full restart.",
-        "resume_enforcement": "Orchestrator polls container IDs and deadline every 60 seconds. Stop the app if any third container is observed or UTC reaches 2026-10-01T18:20:18Z, preserving the original aggregate five-hour ceiling. Only the initial container and one replay from step 480 are allowed; no full restart."
+        "resume_enforcement": "Orchestrator polls container IDs and deadline every 60 seconds. Stop the app if any third container is observed or UTC reaches 2026-10-01T18:20:18Z, preserving the original aggregate five-hour ceiling. Only the initial container and one replay from step 480 are allowed; no full restart.",
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-0zyXHBpA6HkvCxedlnkv2E"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 2.73457189,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 9.27129254,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-0zyXHBpA6HkvCxedlnkv2E. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "artifact_ids": [
         "conditional-preemption-platform-log",
@@ -1277,7 +1409,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-0zyXHBpA6HkvCxedlnkv2E",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-0zyXHBpA6HkvCxedlnkv2E",
         "function_call_id": "fc-01M3VSZ2HFDKYVJ06QRGDJZSJ7",
         "image_id": "im-27GkSAaCIkScXRICNFFJg7"
@@ -1366,7 +1497,13 @@
         "profile": "repro-sign",
         "gpu_count": 0,
         "cpu": 4,
-        "memory_gib": 16
+        "memory_gib": 16,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-zxa9pMmsy7GnyeoMyORfXf"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:36:47+00:00",
       "finished_at_utc": "2026-10-03T18:07:09+00:00",
@@ -1382,8 +1519,7 @@
       "detail": "Eight architecture-only parameter counts from conventional grouped SK depth/TCN-width choices plus canonical SK18 alternative; no dataset or accuracy used. Exact source saved in Git; no training.",
       "modal": {
         "profile": "repro-sign",
-        "environment": "main",
-        "app_id": "ap-zxa9pMmsy7GnyeoMyORfXf"
+        "environment": "main"
       },
       "native_exit_code": null,
       "exit_code_note": "-1 is a ledger sentinel for explicitly cancelled app with no observed native process exit; it is not a claimed child return code.",
@@ -1418,7 +1554,13 @@
         "profile": "repro-sign",
         "gpu_count": 0,
         "cpu": 4,
-        "memory_gib": 16
+        "memory_gib": 16,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-HBIaemuAL5UFI6eRq5IajJ"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:07:09.995988+00:00",
       "finished_at_utc": "2026-10-03T18:07:20.920337+00:00",
@@ -1435,7 +1577,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-HBIaemuAL5UFI6eRq5IajJ",
         "function_call_id": "fc-01M41F5DN9NAT0BPHPPDAA12Z9"
       },
       "measurements": {
@@ -1488,7 +1629,20 @@
         "gpu_count": 1,
         "gpu": "A100-80GB",
         "cpu_count": 8,
-        "memory_mb": 65536
+        "memory_mb": 65536,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-NFTpIBVjUstfey6GCNflb0"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-NFTpIBVjUstfey6GCNflb0. GPU rates from modal_repro_sign.sh billing rates --json. The completed billing window has no charged GPU rows for this app."
+        },
+        "modal_profile": "repro-sign"
       },
       "run_id": "paper-sized-preflight-001",
       "started_at_utc": "2026-10-03T18:10:43+00:00",
@@ -1496,8 +1650,7 @@
       "exit_code": -1,
       "modal": {
         "profile": "repro-sign",
-        "environment": "main",
-        "app_id": "ap-NFTpIBVjUstfey6GCNflb0"
+        "environment": "main"
       },
       "terminal": {
         "state": "stopped",
@@ -1539,7 +1692,28 @@
         "gpu_count": 1,
         "gpu": "A100-80GB",
         "cpu_count": 8,
-        "memory_mb": 65536
+        "memory_mb": 65536,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-mv1jQvRWCeRLaLQBFAOhew"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.05290065,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.17935435,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-mv1jQvRWCeRLaLQBFAOhew. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:15:04.648019+00:00",
       "finished_at_utc": "2026-10-03T18:16:47.266691+00:00",
@@ -1556,7 +1730,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-mv1jQvRWCeRLaLQBFAOhew",
         "function_call_id": "fc-01M41FKMF2P4EFPZAJ5KFJH49K",
         "task_id": "ta-01M41FKMQ8H7WH9TWYCXQ2KG7R"
       },
@@ -1623,11 +1796,30 @@
         "gpu": "A100-80GB",
         "cpu_count": 8,
         "memory_mb": 65536,
-        "estimated_gpu_hours": 2,
-        "estimated_cost_chf": 7,
-        "forecast_basis": "Preflight warmmicrobatch0.13210s \u00d732000=4227s training; sevenupdates plus preflightvalidation/twoevalpaths48.03s, full\u22481.2\u20132h including20fullvalidationpasses,2testpasses,staging,checkpointwrites andmargin.13.303GBpeak. Fivehour/CHF20maximum includes up tothreeprovidersegments and nofreshrestart; wholeprocess immutabledeadline watchdog.",
+        "forecast_basis": "Preflight warmmicrobatch0.13210s ×32000=4227s training; sevenupdates plus preflightvalidation/twoevalpaths48.03s, full≈1.2–2h including20fullvalidationpasses,2testpasses,staging,checkpointwrites andmargin.13.303GBpeak. Fivehour/CHF20maximum includes up tothreeprovidersegments and nofreshrestart; wholeprocess immutabledeadline watchdog.",
         "aggregate_ceiling": "Additional6GPUh/CHF24 includes allnewruns. Preflight102.62s, cancelledapp29s conservativelycharged; CPUcount10.92s. Full5h ceiling leaves room belowaggregate.",
-        "deadline_utc": "2026-10-03T23:18:46.568692+00:00"
+        "deadline_utc": "2026-10-03T23:18:46.568692+00:00",
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-w8cKY5RzlyHvHHSKx7ODbY"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 1.30000429,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 4.40753454,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-w8cKY5RzlyHvHHSKx7ODbY. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:18:46.572982+00:00",
       "finished_at_utc": "2026-10-03T19:36:38.811529+00:00",
@@ -1667,7 +1859,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-w8cKY5RzlyHvHHSKx7ODbY",
         "function_call_id": "fc-01M41FTN7PF1YX24MECYTZY6ME",
         "task_id": "ta-01M41FTNAE1KYEWW210P0H7PJR",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-w8cKY5RzlyHvHHSKx7ODbY",
@@ -2222,9 +2413,9 @@
       "gate_id": "architecture",
       "status": "resolved",
       "evidence": [
-        "Sections3.3\u20133.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
+        "Sections3.3–3.6 give module-level equations and generic figures only. No depth/channel counts, TCN widths/kernel/actual hybrid dilation sequence or input resizing. Section4.1 says1000iterations and besttest656; exact split and selection protocol not released.",
         "Official article/PDF/data-availability/references examined. GitHub repository search SKResNet-TCN and9503961 both return0. Exacttitle/model/authorwebsearch yields paper/citations, no author code. GenericSKNet/TCN artifacts cannot resolve missing hybrid specification.",
-        "Independent master review rendered PDF pages 4\u20135: Figures 2\u20134 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
+        "Independent master review rendered PDF pages 4–5: Figures 2–4 are schematic with C/h/w and k,d variables and illustrative d=1,2, and do not resolve actual widths, depths, or input resolution.",
         "2026-10-01 judgment review: ordinary split/seed/iteration/default choices are declared rather than gated; missing core architecture still prevents exact target attribution. Conditional execution proceeds independently."
       ],
       "type": "protocol",
@@ -2252,64 +2443,16 @@
     "Webexacttitle+code/GitHub; authorXuebinXu+SKResNet",
     "CitedLi2019officialSKNet URL404; citedBai2018TCN pinnedsource inspected"
   ],
-  "guesses": [
-    {
-      "guess_id": "conditional-backbone",
-      "detail": "Use timm 1.0.22 skresnext50_32x4d, the grouped model equivalent to the original SKNet-50 reference, with random initialization, 224-square input, max spatial pooling and Mish. Its size is not chosen to match 12.34M parameters or 62.50 GFLOPs. This is not the missing author architecture."
-    },
-    {
-      "guess_id": "conditional-temporal",
-      "detail": "Use the cited pinned TCN TemporalBlock three times: width 256, kernel 3, sawtooth block dilations 1/2/5 and dropout 0.2. Mish replaces ReLU as described in the paper. Temporal max pooling feeds a 64-class classifier."
-    },
-    {
-      "guess_id": "conditional-keyframes",
-      "detail": "Bilinear resize to 224-square RGB; mean absolute grayscale frame differences; three-frame moving average; select the strongest 32 local maxima in chronological order. Fill shortages uniformly, then repeat the last frame if the video has fewer than 32 frames. Smoothing, resizing and filling are declared interpretations."
-    },
-    {
-      "guess_id": "conditional-split-training",
-      "detail": "Seed 42 per-class 60/20/20 split gives 1,920/640/640 videos. Ranger at learning rate 0.0001 uses library defaults. Interpret 1,000 iterations as optimizer steps, with effective batch 128 accumulated over 32 microbatches of four videos. BatchNorm sees 128 frames per microbatch, an explicit protocol deviation. Validation every 50 steps selects the earliest best checkpoint."
-    },
-    {
-      "guess_id": "conditional-comparability",
-      "detail": "All new architecture and training outputs are conditional evidence, never comparable target values regardless of numerical closeness. Execution choices are resolved; the exact author architecture and historical comparison provenance remain unknown."
-    },
-    {
-      "guess_id": "conditional-resume",
-      "detail": "Validate every 50 steps. Atomically save training state every 60 steps (four complete training epochs), and at termination. Embed the selected best model in the resume state so an interrupted later checkpoint cannot be reused accidentally. Seven exact-effective-batch preflight steps exercise Ranger Lookahead synchronization at step six, followed by state reload and another optimizer step."
-    },
-    {
-      "guess_id": "conditional-input-augmentation",
-      "detail": "Scale RGB to [0,1] and normalize with ImageNet means (0.485,0.456,0.406) and standard deviations (0.229,0.224,0.225), without pretrained weights. Flip whole videos horizontally with probability 0.5 during training and primary test evaluation. Validation is unaugmented. Test seed 314159 was fixed before scores."
-    }
-  ],
-  "deviations": [
-    "No substitute architecture or split was invented; data-only preflight does not yield a recognition metric.",
-    {
-      "deviation_id": "authorized-conditional-reconstruction",
-      "detail": "After independent source/dataaudit, declared reconstructionchoices are executed as conditional evidence. Noauthormodelclaim, no tuningtowardpublishedparameter/FLOP/accuracy values."
-    }
-  ],
   "author_contact": {
     "contacted": false,
     "reason": "No author contact authorized."
   },
   "conclusion_assessment": {
-    "summary": "The parameter-sized reconstruction reached 81.875% accuracy (524/640), versus the paper\u2019s 100% and Table 4 baseline accuracies of 98.20\u2013100%. This is 26.71875 percentage points above the earlier larger reconstruction, but it does not support the paper\u2019s claimed joint accuracy and efficiency advantage.",
-    "assessed_at_utc": "2026-10-03T19:38:02.357275+00:00",
-    "human_execution_blocker": null,
-    "scope": "Explicitly authorized approximate reconstruction using all available paper details and documented missing dimensions. Exact historical attempt remains archived.",
-    "capacity_and_operations": "Measured 12.222880M parameters (0.949% below 12.34M) and 68.347287552G counted operations (9.356% above 62.50G). Both are below paper-reported baseline totals, but parameter scale was preselected and cross-paper operation conventions remain unknown.",
+    "scope": "Authorized conditional architecture sized to the reported parameter budget",
+    "detail": "The compact model reached 81.875% accuracy, with 12.222880M parameters and 68.347287552G counted operations. These measurements do not establish agreement with Table 4.",
     "evidence": [
       "paper-sized-full-seed42-001",
-      "paper-sized-full-metrics-json",
-      "paper-sized-full-independent-verification-json",
-      "PaperTable4 and Sections4.3,5"
-    ],
-    "limits": [
-      "Missing author architecture, initialization, image size, split and meaning of iterations are resolved here by explicit assumptions, not recovered facts. A mismatch in this reconstructed recipe does not refute every possible unpublished author configuration.",
-      "The paper-reported comparison models were not independently rerun. The (2+1)D-SLR source abstract says98.7% while Xu Table4 says98.2%; this unresolved citation discrepancy does not alter a result below both values.",
-      "Parameter closeness was used to select the architecture before training and is not an independent numerical reproduction claim. Unsupported FLOP operators and the one-FMA convention are preserved.",
-      "One seed and one fixed640-video test partition; no signer-independent generalization claim. Secondary test accuracy is native output without saved per-example secondary predictions."
+      "paper-sized-full-metrics-json"
     ]
   },
   "assessment_history": [
@@ -2708,7 +2851,7 @@
           "original_value": 12.34,
           "copied_baseline": false,
           "evidence": [
-            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
           ],
           "result": {
             "status": "not_produced",
@@ -2730,7 +2873,7 @@
               "architecture"
             ],
             "evidence": [
-              "Table4 and Sections3\u20134;source-search audit.",
+              "Table4 and Sections3–4;source-search audit.",
               "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
             ]
           }
@@ -2747,7 +2890,7 @@
           "original_value": 62.5,
           "copied_baseline": false,
           "evidence": [
-            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
           ],
           "result": {
             "status": "not_produced",
@@ -2769,7 +2912,7 @@
               "architecture"
             ],
             "evidence": [
-              "Table4 and Sections3\u20134;source-search audit.",
+              "Table4 and Sections3–4;source-search audit.",
               "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
             ]
           }
@@ -2786,7 +2929,7 @@
           "original_value": 100.0,
           "copied_baseline": false,
           "evidence": [
-            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21\u201324, without retraining protocol."
+            "Table4 marks only SKResNet-TCN(Ours) as proposed method; other rows cite references21–24, without retraining protocol."
           ],
           "result": {
             "status": "not_produced",
@@ -2808,7 +2951,7 @@
               "architecture"
             ],
             "evidence": [
-              "Table4 and Sections3\u20134;source-search audit.",
+              "Table4 and Sections3–4;source-search audit.",
               "Completed full conditional reconstruction is preserved separately; the missing author architecture still prevents a comparable target value."
             ]
           }
@@ -2849,5 +2992,62 @@
       "cost_note": "Actual billing unavailable; full-run estimate uses CHF3.5/hour. The29-second cancelled app interval is conservatively counted despite no observed native GPU execution. CPU audit10.924349seconds; all totals below additional6GPUh/CHF24."
     }
   },
-  "execution_state": "complete"
+  "execution_state": "complete",
+  "guesses_and_deviations": [
+    {
+      "id": "conditional-backbone",
+      "kind": "guess",
+      "description": "Use timm 1.0.22 skresnext50_32x4d, the grouped model equivalent to the original SKNet-50 reference, with random initialization, 224-square input, max spatial pooling and Mish. Its size is not chosen to match 12.34M parameters or 62.50 GFLOPs. This is not the missing author architecture."
+    },
+    {
+      "id": "conditional-temporal",
+      "kind": "guess",
+      "description": "Use the cited pinned TCN TemporalBlock three times: width 256, kernel 3, sawtooth block dilations 1/2/5 and dropout 0.2. Mish replaces ReLU as described in the paper. Temporal max pooling feeds a 64-class classifier."
+    },
+    {
+      "id": "conditional-keyframes",
+      "kind": "guess",
+      "description": "Bilinear resize to 224-square RGB; mean absolute grayscale frame differences; three-frame moving average; select the strongest 32 local maxima in chronological order. Fill shortages uniformly, then repeat the last frame if the video has fewer than 32 frames. Smoothing, resizing and filling are declared interpretations."
+    },
+    {
+      "id": "conditional-split-training",
+      "kind": "guess",
+      "description": "Seed 42 per-class 60/20/20 split gives 1,920/640/640 videos. Ranger at learning rate 0.0001 uses library defaults. Interpret 1,000 iterations as optimizer steps, with effective batch 128 accumulated over 32 microbatches of four videos. BatchNorm sees 128 frames per microbatch, an explicit protocol deviation. Validation every 50 steps selects the earliest best checkpoint."
+    },
+    {
+      "id": "conditional-resume",
+      "kind": "guess",
+      "description": "Validate every 50 steps. Atomically save training state every 60 steps (four complete training epochs), and at termination. Embed the selected best model in the resume state so an interrupted later checkpoint cannot be reused accidentally. Seven exact-effective-batch preflight steps exercise Ranger Lookahead synchronization at step six, followed by state reload and another optimizer step."
+    },
+    {
+      "id": "conditional-input-augmentation",
+      "kind": "guess",
+      "description": "Scale RGB to [0,1] and normalize with ImageNet means (0.485,0.456,0.406) and standard deviations (0.229,0.224,0.225), without pretrained weights. Flip whole videos horizontally with probability 0.5 during training and primary test evaluation. Validation is unaugmented. Test seed 314159 was fixed before scores."
+    },
+    {
+      "id": "parameter-sized-architecture",
+      "kind": "guess",
+      "description": "Missing spatial stage depths and temporal width were set to [1, 2, 2, 1] and 224 before training, with a capacity target within 1% of the printed parameter count.",
+      "effect": "The parameter count is a design constraint. All three model measurements are conditional."
+    }
+  ],
+  "noncompliance": [
+    {
+      "id": "cache-setup-unrecorded",
+      "description": "The retained run entries do not establish the required shared cache mount and environment.",
+      "requirement": "AGENTS.md requires the shared Hugging Face cache and both cache environment variables.",
+      "run_ids": [
+        "data-preflight-001",
+        "data-preflight-002",
+        "data-preflight-003",
+        "data-preflight-004",
+        "conditional-data-001",
+        "conditional-preflight-001",
+        "conditional-full-seed42-001",
+        "paper-sized-audit-001",
+        "paper-sized-audit-002",
+        "paper-sized-preflight-001"
+      ]
+    }
+  ]
 }
