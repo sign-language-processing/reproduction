@@ -1,5 +1,7 @@
 # Arabic sign language letters recognition using Vision Transformer
 
+**Paper ID:** `0285c23739b329f99b0a5a83f4e203817433fe68`
+
 **TL;DR:** The full three-epoch reconstruction completed: **99.40799% accuracy (8,060/8,108)** versus the published **99.3%**.
 **Decision:** No execution decision awaits human input. This is an eligible documented reconstruction; exact historical membership and training settings remain unknown.
 
@@ -72,7 +74,7 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/a
 
 Setup, training, checkpoint verification and tiny evaluation are contained in the single Modal entry point. Data population is unnecessary because the exact licensed corpus already exists in the canonical Volume. The added full_train.py entry point implements the declared reconstruction; --exact-preflight tests its real optimizer/scheduler/checkpoint path and --full executes the fixed three-epoch schedule. The entry point resumes an existing epoch checkpoint and returns existing terminal metrics instead of overwriting them.
 
-GPT-6 using Codex performed discovery, implementation, execution and reporting. These model/application names come from session instructions; exact model ID and harness version were not exposed. The tracker export and source hash are retained with operator emails redacted. The current tracker schema has final paper status, a distinct database ID and no confirmation field, so this is preserved as a direct user-authorized assignment without fabricating legacy queue confirmation.
+GPT-6 using Codex performed discovery, implementation, execution and reporting. These model/application names come from session instructions; exact model ID and harness version were not exposed. The tracker export and source hash are retained with operator emails redacted. The tracker export records final paper status and the matching paper ID.
 
 An independent GPT-6/Codex reviewer (`compute-inventory-reviewer`) visually checked the paper on 2026-10-01 and confirmed that page 9 states 54,049 images while page 10 Table 2 prints 37,853 / 8,111 / 8,111, totaling 54,075. This is a printed inconsistency, not an OCR error or rounding of 54,049. Page 11 confirms the selected ViT-L model, but supplies no split identifier that resolves the discrepancy. The reviewer contributed no implementation changes or experiments. Attribution comes from an explicit session attestation; exact model ID/version and harness version were unavailable.
 
@@ -87,3 +89,18 @@ The tested high accuracy and ordering above the paper's reported CNN baselines w
 Those five literature baselines were not rerun on our split; the preserved reported ordering is not a new controlled head-to-head comparison. This single seeded reconstruction does not establish statistical equivalence or recover historical membership/settings. Webcam generalization, efficiency and the other ViT variants were outside the executed scope. These are interpretation limits, not unresolved execution decisions.
 
 The existing executing GPT-6/Codex agent performed this paper-to-result assessment and report update without new experiments. Exact model/build and application versions remain unavailable; its session attestation is recorded in the ledger.
+
+## Guesses and deviations
+
+- `diagnostic-defaults` — Disposable preflight uses seed 42, AdamW lr5e-5, batch8, RGB conversion and pinned pretrained image processor, full-parameter float32 fine-tuning, 4 training steps plus one resumed step and 32 held-out diagnostic examples. These engineering defaults are not claimed as published hyperparameters.
+- `authorized-reconstruction` — User explicitly authorized resolving the count inconsistency from the authoritative 54,049-image corpus and paper 70/15/15 ratio. Seed 42 NumPy permutation assigns 37,834 train, 8,107 validation, 8,108 test; no historical membership claim. Omitted settings fixed before scores to ordinary Transformers 4.46.3 defaults: 3 epochs, batch 8, AdamW learning rate 5e-5, betas 0.9/0.999, epsilon 1e-8, weight decay 0, linear decay, no warmup, gradient norm clip 1, float32 all-parameter fine-tuning,final checkpoint. Generic paper freeze-last-layer advice does not identify a concrete frozen-layer recipe; train newly initialized 32-class head and full encoder as retained preflight.
+- `split-discrepancy` — Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy.
+- `secondary-reporting-inconsistency` — Table 3 large model precision/F1 are 99.3/99.4, but conclusion states 99.4/99.3. Table4 requests accuracy only, so this does not alter selected target.
+
+## Noncompliance
+
+None.
+
+## Modal billing reconciliation
+
+Modal billing attributes 0.5658 GPU-hours and USD 1.5482 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.

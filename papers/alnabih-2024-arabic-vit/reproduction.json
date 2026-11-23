@@ -30,12 +30,12 @@
       "evidence": [
         "Explicit root session attestation on 2026-10-01: GPT-6 using Codex; exact variant/version not exposed.",
         "Root reviewed full_train.py split boundaries totaling 54,049, disjoint test membership, declared AdamW/scheduler/three epochs, deterministic per-epoch shuffle, final-checkpoint test once, and optimizer/scheduler restoration. No correctness issue found.",
-        "Explicit root review on2026-10-01: all54,049 split indices are unique and disjoint; saved predictions contain exactly8,108 test indices, valid0\u201331 labels/predictions, and8,060 correct. Accuracy independently recomputes99.40799210656142%; prediction/split SHA-256 match native metrics. Review only, no execution."
+        "Explicit root review on2026-10-01: all54,049 split indices are unique and disjoint; saved predictions contain exactly8,108 test indices, valid0–31 labels/predictions, and8,060 correct. Accuracy independently recomputes99.40799210656142%; prediction/split SHA-256 match native metrics. Review only, no execution."
       ]
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-0285c23739b329f99b0a5a83f4e203817433fe68-2026-10-01.json",
       "sha256": "41e16df2f96a6036a6f66a1355f35392eac96fb3b8dadef27713011bfbecffcb"
@@ -163,11 +163,76 @@
       "status": "in_progress",
       "url": []
     },
-    "detail": "User directly authorized selection and execution from authenticated tracker. Export has final paper status but no confirmation field; database IDs differ from paper_id. No queue confirmation was inferred."
+    "detail": "Final-paper Reproduction Tracker export retained with redactions and its original source hash.",
+    "normalized": {
+      "title": "Arabic sign language letters recognition using Vision Transformer",
+      "year": 2024,
+      "venue": "Multimedia Tools and Applications",
+      "pdf_url": "https://doi.org/10.1007/s11042-024-18681-3",
+      "code_repos": [],
+      "what_to_reproduce": "Table 4",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "whj6bhf2ro5g8c0",
+        "89xqke8qlyqq6mb",
+        "398630tq0zlaufq"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "whj6bhf2ro5g8c0",
+          "name": "Precision",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "89xqke8qlyqq6mb",
+          "name": "Recall",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "398630tq0zlaufq",
+          "name": "F1",
+          "url": []
+        }
+      ],
+      "datasets": [
+        {
+          "id": "0rl07ms2n5hrk7h",
+          "name": "Arabic Sign Language ArSL dataset",
+          "available": "yes",
+          "license": "",
+          "urls": [
+            "https://www.kaggle.com/datasets/sabribelmadoui/arabic-sign-language-unaugmented-dataset"
+          ],
+          "comments": ""
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "yes",
+      "comments": "The paper repeatedly describes signs as hand gestures and the task as hand gesture recognition"
+    }
   },
   "paper": {
     "title": "Arabic sign language letters recognition using Vision Transformer",
-    "citation": "Alnabih, A. F. and Maghari, A. Y. (2024). Multimedia Tools and Applications 83:81725\u201381739. DOI 10.1007/s11042-024-18681-3.",
+    "citation": "Alnabih, A. F. and Maghari, A. Y. (2024). Multimedia Tools and Applications 83:81725–81739. DOI 10.1007/s11042-024-18681-3.",
     "url": "https://doi.org/10.1007/s11042-024-18681-3",
     "pdf_sha256": "86832f502c9b905498a1bbb930d7d4174a9a1914b96012936a42be8a3e55144e",
     "accessed_at": "2026-10-01"
@@ -490,14 +555,11 @@
         "environment": "main",
         "gpu_count": 1,
         "gpu": "NVIDIA A100-SXM4-80GB",
-        "modal_app_id": "ap-MnO9XWQI6DX92jPHoVajZc",
         "modal_task_id": "ta-01M3VG248FKZ839EP476RA9DDR",
         "modal_image_id": "im-VsmEEbnMoCD0ZCEe0jbT2Q",
         "image_oci_digest": null,
         "image_digest_note": "Immutable Modal image ID recorded; OCI digest not exposed.",
         "wall_time_seconds": 22.937093,
-        "gpu_hours_function_body": 0.006371414722222223,
-        "actual_billed_cost_chf": null,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -505,6 +567,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "modal_app_ids": [
+          "ap-MnO9XWQI6DX92jPHoVajZc"
+        ],
+        "usage": {
+          "gpu_hours": 0.01617636,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.04526414,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-MnO9XWQI6DX92jPHoVajZc. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
         }
       },
       "conditional_metric": {
@@ -556,14 +628,11 @@
         "environment": "main",
         "gpu_count": 1,
         "gpu": "NVIDIA A100-SXM4-80GB",
-        "modal_app_id": "ap-h9s3z4AnBPieEhfRwEzsLw",
         "modal_task_id": "ta-01M3VG4TGE8232SVB5TSD4B0RR",
         "modal_image_id": "im-VsmEEbnMoCD0ZCEe0jbT2Q",
         "image_oci_digest": null,
         "image_digest_note": "Immutable Modal image ID recorded; OCI digest not exposed.",
         "wall_time_seconds": 18.630317,
-        "gpu_hours_function_body": 0.005175088055555556,
-        "actual_billed_cost_chf": null,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -571,6 +640,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "modal_app_ids": [
+          "ap-h9s3z4AnBPieEhfRwEzsLw"
+        ],
+        "usage": {
+          "gpu_hours": 0.01569526,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.04173519,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-h9s3z4AnBPieEhfRwEzsLw. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
         }
       },
       "conditional_metric": {
@@ -635,11 +714,9 @@
         "environment": "main",
         "gpu_count": 1,
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-RthHmV35hOXJnSmo9EjdSO",
         "modal_task_id": "ta-01M3VRVJAGTPPV6AMV49TZTZQR",
         "modal_image_id": "im-QYb8LEzeWRz0i8DEwfGPG4",
         "wall_time_seconds": 85.59505891799927,
-        "gpu_hours_function_body": 0.023776405254999796,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -647,6 +724,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "modal_app_ids": [
+          "ap-RthHmV35hOXJnSmo9EjdSO"
+        ],
+        "usage": {
+          "gpu_hours": 0.02945773,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08028594,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-RthHmV35hOXJnSmo9EjdSO. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
         }
       },
       "started_at_utc": "2026-10-01T13:01:36.681668+00:00",
@@ -719,14 +806,10 @@
         "environment": "main",
         "gpu_count": 1,
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-RdF4Y4BNq6tsVhriLvV6lU",
         "modal_task_id": "ta-01M3VS2N4Y7DC3GG4NS2F8N1WR",
         "modal_image_id": "im-QYb8LEzeWRz0i8DEwfGPG4",
         "modal_function_call_id": "fc-01M3VS0YV0HYCW6CZKTHJNHV8M",
         "wall_time_seconds": 1708.2121722698212,
-        "gpu_hours_function_body": 0.47450338118606145,
-        "estimated_gpu_cost_usd": 1.1854992475552557,
-        "actual_billed_cost_chf": null,
         "wall_time_note": "Native UTC timestamps bracket the script training/evaluation. Wrapper wall includes imports, final artifact hashing and subprocess startup; neither is a billing measurement.",
         "image_oci_digest": "sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291",
         "shared_cache": {
@@ -736,6 +819,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "modal_app_ids": [
+          "ap-RdF4Y4BNq6tsVhriLvV6lU"
+        ],
+        "usage": {
+          "gpu_hours": 0.5045198,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.38094644,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-RdF4Y4BNq6tsVhriLvV6lU. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
         }
       },
       "comparability": "Eligible documented reconstruction; reassessed before primary test with fixed recipe unchanged. See comparability_reassessment.",
@@ -1003,34 +1096,6 @@
     ],
     "conclusion": "No author implementation, split file, or finetuned checkpoint found. Generic unrelated Arabic sign repositories are not faithful experimental artifacts. Preference level 3 applies only to diagnostic reimplementation."
   },
-  "guesses": [
-    {
-      "id": "diagnostic-defaults",
-      "detail": "Disposable preflight uses seed 42, AdamW lr5e-5, batch8, RGB conversion and pinned pretrained image processor, full-parameter float32 fine-tuning, 4 training steps plus one resumed step and 32 held-out diagnostic examples. These engineering defaults are not claimed as published hyperparameters."
-    },
-    {
-      "id": "authorized-reconstruction",
-      "detail": "User explicitly authorized resolving the count inconsistency from the authoritative 54,049-image corpus and paper 70/15/15 ratio. Seed 42 NumPy permutation assigns 37,834 train, 8,107 validation, 8,108 test; no historical membership claim. Omitted settings fixed before scores to ordinary Transformers 4.46.3 defaults: 3 epochs, batch 8, AdamW learning rate 5e-5, betas 0.9/0.999, epsilon 1e-8, weight decay 0, linear decay, no warmup, gradient norm clip 1, float32 all-parameter fine-tuning,final checkpoint. Generic paper freeze-last-layer advice does not identify a concrete frozen-layer recipe; train newly initialized 32-class head and full encoder as retained preflight."
-    }
-  ],
-  "deviations": [
-    {
-      "id": "split-discrepancy",
-      "detail": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy."
-    },
-    {
-      "id": "reopened-full-run",
-      "detail": "Original attempt stopped after engineering diagnostics. Explicit user steering authorized documented judgment calls; the separate fixed three-epoch full reconstruction completed. Original diagnostics and the pre-test comparability reassessment are preserved."
-    },
-    {
-      "id": "secondary-reporting-inconsistency",
-      "detail": "Table 3 large model precision/F1 are 99.3/99.4, but conclusion states 99.4/99.3. Table4 requests accuracy only, so this does not alter selected target."
-    },
-    {
-      "id": "return-serialization",
-      "detail": "First diagnostic finished remotely but returned a TorchVersion object requiring local torch. Return JSON string instead; rerun a new bounded hypothesis test, preserving first run artifacts."
-    }
-  ],
   "contacts": [],
   "environment": {
     "base_image": "ghcr.io/sign-language-processing/reproduction:latest",
@@ -1125,5 +1190,28 @@
       "Webcam generalization, efficiency claims and the other ViT variants were outside the executed target scope."
     ],
     "assessed_at_utc": "2026-10-02T06:52:00+00:00"
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "diagnostic-defaults",
+      "kind": "guess",
+      "description": "Disposable preflight uses seed 42, AdamW lr5e-5, batch8, RGB conversion and pinned pretrained image processor, full-parameter float32 fine-tuning, 4 training steps plus one resumed step and 32 held-out diagnostic examples. These engineering defaults are not claimed as published hyperparameters."
+    },
+    {
+      "id": "authorized-reconstruction",
+      "kind": "guess",
+      "description": "User explicitly authorized resolving the count inconsistency from the authoritative 54,049-image corpus and paper 70/15/15 ratio. Seed 42 NumPy permutation assigns 37,834 train, 8,107 validation, 8,108 test; no historical membership claim. Omitted settings fixed before scores to ordinary Transformers 4.46.3 defaults: 3 epochs, batch 8, AdamW learning rate 5e-5, betas 0.9/0.999, epsilon 1e-8, weight decay 0, linear decay, no warmup, gradient norm clip 1, float32 all-parameter fine-tuning,final checkpoint. Generic paper freeze-last-layer advice does not identify a concrete frozen-layer recipe; train newly initialized 32-class head and full encoder as retained preflight."
+    },
+    {
+      "id": "split-discrepancy",
+      "kind": "paper_internal_conflict",
+      "description": "Table 2 totals 54,075 images, whereas sections 3.2 and 4.1 and the cited dataset specify 54,049. Unreleased split membership cannot reconcile the 26-image discrepancy."
+    },
+    {
+      "id": "secondary-reporting-inconsistency",
+      "kind": "paper_internal_conflict",
+      "description": "Table 3 large model precision/F1 are 99.3/99.4, but conclusion states 99.4/99.3. Table4 requests accuracy only, so this does not alter selected target."
+    }
+  ],
+  "noncompliance": []
 }
