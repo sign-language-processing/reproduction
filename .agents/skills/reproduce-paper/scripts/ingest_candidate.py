@@ -159,7 +159,8 @@ def main() -> int:
         if args.output.exists():
             output = json.loads(args.output.read_text(encoding="utf-8"))
             existing_id = output.get("paper_id")
-            if existing_id not in (None, args.paper_id):
+            # A fresh copy of templates/reproduction.json carries the placeholder.
+            if existing_id not in (None, "PAPER_ID", args.paper_id):
                 fail(
                     "refusing to update reproduction.json for different paper "
                     f"{existing_id!r}"

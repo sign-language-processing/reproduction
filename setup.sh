@@ -12,8 +12,9 @@ fi
 
 # Modal's own generic agent skill + docs; we do not maintain our own copy.
 if ! command -v modal >/dev/null; then
-  python3 -m pip install modal
-  echo "Modal is installed. Run 'modal setup', select workspace 'repro-sign', then re-run ./setup.sh." >&2
+  echo "Modal CLI not found. Install it into a Python environment of your choice, for example:" >&2
+  echo "  python3 -m venv .venv && . .venv/bin/activate && pip install modal" >&2
+  echo "Then run 'modal setup', select workspace 'repro-sign', and re-run ./setup.sh." >&2
   exit 1
 fi
 
