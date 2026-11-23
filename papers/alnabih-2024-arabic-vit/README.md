@@ -104,3 +104,7 @@ None.
 ## Modal billing reconciliation
 
 Modal billing attributes 0.5658 GPU-hours and USD 1.5482 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 3 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Recomputed accuracy from saved predictions and checked that the three partitions are disjoint, exhaustive, and match the test prediction indices. The audit used the retained outputs and did not execute a model.
