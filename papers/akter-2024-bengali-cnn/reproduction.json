@@ -119,7 +119,7 @@
   },
   "paper": {
     "title": "Automated Bengali Sign Language Character Classification with Deep Learning Techniques",
-    "citation": "Tahmina Akter, Tanjim Mahmud, Tikle Barua, Sultana Rokeya Naher, Mohammad Shahadat Hossain, Karl Andersson. 2024. Automated Bengali Sign Language Character Classification with Deep Learning Techniques. ICCCNT, pp.1\u20136.",
+    "citation": "Tahmina Akter, Tanjim Mahmud, Tikle Barua, Sultana Rokeya Naher, Mohammad Shahadat Hossain, Karl Andersson. 2024. Automated Bengali Sign Language Character Classification with Deep Learning Techniques. ICCCNT, pp.1–6.",
     "url": "https://doi.org/10.1109/ICCCNT61001.2024.10724561",
     "pdf_sha256": "3ad0e7756fe6f55db714604c2fb510719f3e6e46ed32c6cb743363f9785d996c",
     "accessed_at": "2026-10-01"
@@ -151,7 +151,7 @@
       "kind": "unverified-dataset-mirror",
       "url": "https://github.com/cloudy4next/Ishara-Lipi",
       "revision_or_sha256": "6888dce6c19332a8d282c2b47b59fbf073b25a39",
-      "role": "Different2020 paper with1005images/36classes (23\u201336/class); archive sha25668991ad6be75b42004571b8ccde4f7d6750d3c94c4639bd2d109914e70df2deb. Identity as this paper selected subset not established; no substitute training."
+      "role": "Different2020 paper with1005images/36classes (23–36/class); archive sha25668991ad6be75b42004571b8ccde4f7d6750d3c94c4639bd2d109914e70df2deb. Identity as this paper selected subset not established; no substitute training."
     },
     {
       "source_id": "lab",
@@ -291,42 +291,42 @@
       "system": "cnn",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     },
     {
       "experiment_id": "vgg16",
       "system": "vgg16",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     },
     {
       "experiment_id": "vgg19",
       "system": "vgg19",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     },
     {
       "experiment_id": "resnet50",
       "system": "resnet50",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     },
     {
       "experiment_id": "resnet101",
       "system": "resnet101",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     },
     {
       "experiment_id": "resnet152",
       "system": "resnet152",
       "dataset_id": "ishara-lipi-selected",
       "checkpoint_rule": "Not specified; no run launched.",
-      "paper_evidence": "TableI, sectionsIII\u2013IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
+      "paper_evidence": "TableI, sectionsIII–IV; pretrained ImageNet VGG/ResNet, CNN diagram Fig3; Nadam/sparse categorical cross-entropy stated."
     }
   ],
   "targets": [
@@ -1086,7 +1086,8 @@
       "reason_code": "data_unavailable",
       "evidence": [
         "source-audit.txt",
-        "PaperIII.A\u2013B"
+        "PaperIII.A–B",
+        "Akter et al. (2023) reports augmenting 1,009 Ishara-Lipi originals to 9,360 images. This matches the total size of the proposed benchmark but does not establish the 2024 source membership, split or transforms. The publicly located 2020 mirror has 1,005 originals. https://www.ijcaonline.org/archives/volume185/number13/akter-2023-ijca-922672.pdf (abstract, checked 2026-11-23)."
       ],
       "reason": "Obtain the authors selected source images and augmented7200/2160split with permission basis, or authoritative identification of an existing release. Kaggle only samples; originalfullhost DNS fails. No author contact sent.",
       "required_action": "Obtain the authors selected source images and augmented7200/2160split with permission basis, or authoritative identification of an existing release. Kaggle only samples; originalfullhost DNS fails. No author contact sent."
@@ -1108,7 +1109,7 @@
       "status": "resolved",
       "reason_code": "protocol_ambiguous",
       "evidence": [
-        "PaperIII.A\u2013B."
+        "PaperIII.A–B."
       ],
       "reason": "Historical augmentation transforms and train/test source-image overlap are not reported; these remain limitations of any reconstructed split.",
       "required_action": "No separate human execution decision is required for ordinary augmentation and split choices. First resolve the exact-data gate; the available one-image-per-class sample cannot replace the unidentified source corpus.",
@@ -1133,14 +1134,6 @@
     "selected_preference": 3,
     "reason": "No implementation attributable to the target authors located. The different2020repository is not target-paper code."
   },
-  "guesses": [
-    {
-      "detail": "None used to invent a target result. Ordinary missing optimizer choices would be resolvable, but actual training data and conflicting metric definitions are material."
-    },
-    {
-      "detail": "Text explicitly states sparse categorical cross-entropy although equation1 displays binary cross-entropy. A future executable reconstruction should follow the36-way text unless author artifacts establish otherwise."
-    }
-  ],
   "author_contact": {
     "contacted": false,
     "detail": "No external author messages or access requests sent."
@@ -1158,5 +1151,13 @@
       "repository_license": "GPL3 in pinned LICENSE; this does not establish original image lineage or the target paper selection.",
       "exact_image_hash_comparison": "The56 unique public image files (including figures) and1005 unique alternate images have zero shared SHA256 image-byte hashes. This is not proof of different underlying origin because transformations could change bytes."
     }
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "guess-2",
+      "kind": "paper_internal_conflict",
+      "description": "Text explicitly states sparse categorical cross-entropy although equation1 displays binary cross-entropy. A future executable reconstruction should follow the36-way text unless author artifacts establish otherwise."
+    }
+  ],
+  "noncompliance": []
 }

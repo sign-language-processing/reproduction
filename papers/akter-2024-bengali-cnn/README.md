@@ -1,5 +1,7 @@
 # Automated Bengali Sign Language Character Classification with Deep Learning Techniques
 
+**Paper ID:** `a72908c9c87becb137de4d23a3bbfe7408447ec9`
+
 **Pipeline status:** blocked_on_data
 
 **Numerical agreement:** not_assessed
@@ -71,3 +73,15 @@ The 2026-10-01 continuation reviewed whether documented approximation could make
 A bounded follow-up checked the alternate repository’s README-linked Drive asset: both folder and file views returned HTTP404. The repository contains a GPL3 license, but no verified target selection lineage. Comparing exact image-byte hashes found no overlap between the 56 unique public archive images (including figures) and 1,005 alternate images. This cannot prove different underlying origin, since transformations can change bytes; the alternate corpus remains unverified rather than proven unrelated.
 
 The standalone augmentation/split execution gate is resolved by the user’s authorization of documented routine choices. Historical membership and augmentation remain unknown; this does not establish exact equivalence or resolve the missing source-corpus gate. The 2026-10-01 final metadata audit was coordinated with the reproduction owner and changed no experiment or target result.
+
+## Source follow-up (2026-11-23)
+
+Akter et al. (2023) reports augmenting 1,009 Ishara-Lipi originals to 9,360 images. This matches the total size of the proposed benchmark but does not establish the 2024 source membership, split or transforms. The publicly located 2020 mirror has 1,005 originals. The data gate remains open. [Related paper by the lead author](https://www.ijcaonline.org/archives/volume185/number13/akter-2023-ijca-922672.pdf).
+
+## Guesses and deviations
+
+- `guess-2` — Text explicitly states sparse categorical cross-entropy although equation1 displays binary cross-entropy. A future executable reconstruction should follow the36-way text unless author artifacts establish otherwise.
+
+## Noncompliance
+
+None.
