@@ -47,7 +47,7 @@ Read [references/modal-data-compute.md](references/modal-data-compute.md) before
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh <modal arguments>
 ```
 
-The wrapper installs Modal with `python3 -m pip install modal` when the CLI is absent, then stops so the user can run `modal setup`. It forces and verifies `MODAL_PROFILE=repro-sign`; if the profile, workspace, or credentials are unavailable, stop all Modal work and ask the user to run `modal setup`. Never fall back to another workspace.
+The wrapper never installs Modal: when the CLI is absent it prints install instructions and stops. It forces and verifies `MODAL_PROFILE=repro-sign`; if the profile, workspace, or credentials are unavailable, stop all Modal work and ask the user to run `modal setup`. Never fall back to another workspace.
 
 ## Work through terminal stages
 

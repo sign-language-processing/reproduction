@@ -2,17 +2,12 @@
 set -euo pipefail
 
 required_profile="repro-sign"
-install_command="python3 -m pip install modal"
 setup_command="modal setup"
 
 if ! command -v modal >/dev/null 2>&1; then
-  echo "Modal CLI is unavailable; installing it with: ${install_command}" >&2
-  if ! python3 -m pip install modal; then
-    echo "Modal installation failed." >&2
-    exit 2
-  fi
-  hash -r
-  echo "Modal is installed. Ask the user to run '${setup_command}' and select workspace '${required_profile}', then retry." >&2
+  echo "Modal CLI not found. Install it into a Python environment of your choice, for example:" >&2
+  echo "  python3 -m venv .venv && . .venv/bin/activate && pip install modal" >&2
+  echo "Then ask the user to run '${setup_command}' and select workspace '${required_profile}', and retry." >&2
   exit 2
 fi
 
