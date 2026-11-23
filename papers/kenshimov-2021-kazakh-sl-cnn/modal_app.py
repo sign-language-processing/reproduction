@@ -224,8 +224,19 @@ def build(model):
         "/results": results,
     },
 )
-def train(models: str, run_id: str, seeds: str = "42", epochs: int = EPOCHS, per_class: int = PER_CLASS):
-    """Train each model once per seed; write /results/<run_id>/<model>-seed<seed>/."""
+def train(
+    models: str,
+    run_id: str,
+    seeds: str = "42",
+    epochs: int = EPOCHS,
+    per_class: int = PER_CLASS,
+    pixel_scale: str = "unit",
+):
+    """Train each model once per seed; write /results/<run_id>/<model>-seed<seed>/.
+
+    pixel_scale "unit" is the protocol (Read_data.ipynb divides by 255). "raw"
+    feeds 0-255 pixels and exists only for a diagnostic run.
+    """
     import json
     import os
     import subprocess
@@ -237,6 +248,9 @@ def train(models: str, run_id: str, seeds: str = "42", epochs: int = EPOCHS, per
     from sklearn.model_selection import train_test_split
 
     x, labels, names, class_names = load_subset(per_class)
+    assert pixel_scale in ("unit", "raw"), pixel_scale
+    if pixel_scale == "raw":
+        x = x * 255
     y = tf.keras.utils.to_categorical(labels, N_CLASSES)
     indices = np.arange(len(x))
     gpu = subprocess.run(
@@ -295,6 +309,7 @@ def train(models: str, run_id: str, seeds: str = "42", epochs: int = EPOCHS, per
             "epochs": epochs,
             "batch_size": BATCH_SIZE,
             "per_class": per_class,
+            "pixel_scale": pixel_scale,
             "total_params": int(net.count_params()),
             "test_accuracy": float(test_accuracy),
             "test_loss": float(test_loss),

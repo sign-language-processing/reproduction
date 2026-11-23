@@ -960,6 +960,281 @@
           }
         }
       }
+    },
+    {
+      "run_id": "supplementary-lenet-seeds1-4",
+      "kind": "supplementary",
+      "purpose": "Supplementary evidence only, agreed at gate ksl-subset-and-split: repeat the lenet protocol with seeds 1, 2, 3 and 4 to show how much the unrecoverable random split and initialization move the test metrics. These values never replace the seed-42 targets.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet --run-id supplementary-lenet-seeds1-4 --seeds 1,2,3,4",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supplementary-lenet-seeds1-4",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:52:27Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "lenet",
+        "seeds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "pixel_scale": "unit"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "supplementary-alexnet-seeds1-4",
+      "kind": "supplementary",
+      "purpose": "Supplementary evidence only, agreed at gate ksl-subset-and-split: repeat the alexnet protocol with seeds 1, 2, 3 and 4 to show how much the unrecoverable random split and initialization move the test metrics. These values never replace the seed-42 targets.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models alexnet --run-id supplementary-alexnet-seeds1-4 --seeds 1,2,3,4",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supplementary-alexnet-seeds1-4",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:52:27Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "alexnet",
+        "seeds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "pixel_scale": "unit"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "supplementary-resnet50-seeds1-4",
+      "kind": "supplementary",
+      "purpose": "Supplementary evidence only, agreed at gate ksl-subset-and-split: repeat the resnet50 protocol with seeds 1, 2, 3 and 4 to show how much the unrecoverable random split and initialization move the test metrics. These values never replace the seed-42 targets.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models resnet50 --run-id supplementary-resnet50-seeds1-4 --seeds 1,2,3,4",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supplementary-resnet50-seeds1-4",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:52:27Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "resnet50",
+        "seeds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "pixel_scale": "unit"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "supplementary-efficientnetb7-seeds1-4",
+      "kind": "supplementary",
+      "purpose": "Supplementary evidence only, agreed at gate ksl-subset-and-split: repeat the efficientnetb7 protocol with seeds 1, 2, 3 and 4 to show how much the unrecoverable random split and initialization move the test metrics. These values never replace the seed-42 targets.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id supplementary-efficientnetb7-seeds1-4 --seeds 1,2,3,4",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "supplementary-efficientnetb7-seeds1-4",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:52:27Z",
+        "max_wall_time_seconds": 7200,
+        "max_gpu_hours": 2.0,
+        "max_cost_usd": 8.0
+      },
+      "configuration": {
+        "model": "efficientnetb7",
+        "seeds": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "pixel_scale": "unit"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "diagnose-efficientnetb7-raw-pixels-seed42",
+      "kind": "diagnostic",
+      "purpose": "Diagnostic only, not a target. full-efficientnetb7-seed42 reached 0.966 training accuracy but chance-level test accuracy (5/210), predicting 2 classes. Hypothesis: Keras EfficientNet rescales pixels by 1/255 internally, so the protocol's division by 255 (Read_data.ipynb) feeds it near-zero inputs and its batch-norm running statistics do not catch up in 20 epochs; Compare_nets.ipynb flags this. Test: the same run with 0-255 inputs. The seed-42 target value is unchanged whatever this shows.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id diagnose-efficientnetb7-raw-pixels-seed42 --seeds 42 --pixel-scale raw",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "diagnose-efficientnetb7-raw-pixels-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:52:27Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "efficientnetb7",
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "pixel_scale": "raw"
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
     }
   ],
   "artifacts": [],
