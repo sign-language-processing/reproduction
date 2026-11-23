@@ -112,7 +112,7 @@
   },
   "paper": {
     "title": "Classification of American Sign Language Using EfficientNETV2B0 Architecture",
-    "citation": "Thifa Ziada Taqiyya, Khadijah, and Retno Kusumaningrum. 2025. Classification of American Sign Language Using EfficientNetV2B0 Architecture. ICITACEE, pp. 196\u2013202.",
+    "citation": "Thifa Ziada Taqiyya, Khadijah, and Retno Kusumaningrum. 2025. Classification of American Sign Language Using EfficientNetV2B0 Architecture. ICITACEE, pp. 196–202.",
     "url": "https://doi.org/10.1109/ICITACEE66165.2025.11233171",
     "pdf_sha256": "5099d9093dd3d628c344128d4eec0cde2ffc58b83ec151f9c9b6bfe649e0162b",
     "accessed_at": "2026-10-01"
@@ -123,7 +123,7 @@
       "kind": "paper",
       "url": "https://doi.org/10.1109/ICITACEE66165.2025.11233171",
       "revision_or_sha256": "5099d9093dd3d628c344128d4eec0cde2ffc58b83ec151f9c9b6bfe649e0162b",
-      "role": "Seven-page publisher PDF obtained from the authorized tracker; Table X and sections II\u2013III define targets. Licensed PDF retained outside Git."
+      "role": "Seven-page publisher PDF obtained from the authorized tracker; Table X and sections II–III define targets. Licensed PDF retained outside Git."
     },
     {
       "source_id": "thesis",
@@ -273,7 +273,7 @@
           ]
         }
       ],
-      "preprocessing": "Bilinearly resize original 128\u00d7128 images to 224\u00d7224, then generate 551 NULL augmentations before a stratified split, matching Table III total 23,352. Seed 42; train 18,681 / validation 2,335 / test 2,336; each pretrained backbone uses its standard input scaling."
+      "preprocessing": "Bilinearly resize original 128×128 images to 224×224, then generate 551 NULL augmentations before a stratified split, matching Table III total 23,352. Seed 42; train 18,681 / validation 2,335 / test 2,336; each pretrained backbone uses its standard input scaling."
     }
   ],
   "metric_definitions": [
@@ -440,7 +440,6 @@
         "modal_profile": "repro-sign",
         "environment": "main",
         "gpu_count": 0,
-        "app_id": "ap-mFN2xHHpA3x940lKo8CiFv",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mFN2xHHpA3x940lKo8CiFv",
         "image_id": "im-gMw75Q0DnIvgEpM3qZp0Pj",
         "shared_cache": {
@@ -450,7 +449,10 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
-        }
+        },
+        "modal_app_ids": [
+          "ap-mFN2xHHpA3x940lKo8CiFv"
+        ]
       },
       "started_at_utc": "2026-10-01T10:20:05.820898+00:00",
       "exit_code": 0,
@@ -497,7 +499,6 @@
         "gpu_count": 1,
         "gpu": "A10G",
         "environment": "main",
-        "app_id": "ap-Wdyp4qA336C3KuOXoHSNg1",
         "function_call_id": "fc-01M3VG2HJBQH38MV4NCHRC3HQ6",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Wdyp4qA336C3KuOXoHSNg1",
         "image_id": "im-1RrZSaGYgNW9zTSFwhI0u4",
@@ -508,6 +509,16 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "modal_app_ids": [
+          "ap-Wdyp4qA336C3KuOXoHSNg1"
+        ],
+        "usage": {
+          "gpu_hours": 0.0633335,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.11521504,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-Wdyp4qA336C3KuOXoHSNg1. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
         }
       },
       "started_at_utc": "2026-10-01T10:21:41.986853+00:00",
@@ -618,10 +629,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-yxMftQfpjY8IKzxYxWbsA4",
         "function_call_id": "fc-01M3VGM94KZ6AD9HW0ME30HA5M",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yxMftQfpjY8IKzxYxWbsA4"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yxMftQfpjY8IKzxYxWbsA4",
+        "modal_app_ids": [
+          "ap-yxMftQfpjY8IKzxYxWbsA4"
+        ],
+        "usage": {
+          "gpu_hours": 0.04192757,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.07729245,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-yxMftQfpjY8IKzxYxWbsA4. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "finished_at_utc": "2026-10-01T10:39:40.174233+00:00",
       "exit_code": 0,
@@ -730,11 +750,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-3Xdsl5aJs890SQ533d8SNH",
         "function_call_id": "fc-01M3VGVATMZZDWHSQ0ZHYC9YH2",
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-3Xdsl5aJs890SQ533d8SNH"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-3Xdsl5aJs890SQ533d8SNH",
+        "modal_app_ids": [
+          "ap-3Xdsl5aJs890SQ533d8SNH"
+        ],
+        "usage": {
+          "gpu_hours": 0.32945284,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.571403,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-3Xdsl5aJs890SQ533d8SNH. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.4351465702056885,
@@ -813,10 +842,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-U550xJWOLsiVmyaHV4vxS6",
         "function_call_id": "fc-01M3VHCD01BSPY81WCFCR3B4GF",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-U550xJWOLsiVmyaHV4vxS6"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-U550xJWOLsiVmyaHV4vxS6",
+        "modal_app_ids": [
+          "ap-U550xJWOLsiVmyaHV4vxS6"
+        ],
+        "usage": {
+          "gpu_hours": 0.04102979,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.07116427,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-U550xJWOLsiVmyaHV4vxS6. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "finished_at_utc": "2026-10-01T10:52:50.360896+00:00",
       "exit_code": 0,
@@ -927,10 +965,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-yELKm3z9jjNgu6kah536A8",
         "function_call_id": "fc-01M3VHCE2GKACTVQN5Y1SHJ3FD",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yELKm3z9jjNgu6kah536A8"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-yELKm3z9jjNgu6kah536A8",
+        "modal_app_ids": [
+          "ap-yELKm3z9jjNgu6kah536A8"
+        ],
+        "usage": {
+          "gpu_hours": 0.06341778,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.11001276,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-yELKm3z9jjNgu6kah536A8. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "finished_at_utc": "2026-10-01T10:52:21.293200+00:00",
       "exit_code": 0,
@@ -1041,10 +1088,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-qUFTgPPUysPa52ClALlgih",
         "function_call_id": "fc-01M3VHCFBXM1FF5VP09CAKX4HS",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-qUFTgPPUysPa52ClALlgih"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-qUFTgPPUysPa52ClALlgih",
+        "modal_app_ids": [
+          "ap-qUFTgPPUysPa52ClALlgih"
+        ],
+        "usage": {
+          "gpu_hours": 0.06072393,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.10534536,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-qUFTgPPUysPa52ClALlgih. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "finished_at_utc": "2026-10-01T10:53:59.492993+00:00",
       "exit_code": 0,
@@ -1156,11 +1212,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-PgZs82CFzK0c2x4KvjPaKC",
         "function_call_id": "fc-01M3VHJE66FBZRB4FRZGTWJHSS",
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-PgZs82CFzK0c2x4KvjPaKC"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-PgZs82CFzK0c2x4KvjPaKC",
+        "modal_app_ids": [
+          "ap-PgZs82CFzK0c2x4KvjPaKC"
+        ],
+        "usage": {
+          "gpu_hours": 0.12087165,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.20963979,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-PgZs82CFzK0c2x4KvjPaKC. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.46815991401672363,
@@ -1237,11 +1302,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-c6wO7tJhKDbZIR5cOsnwdw",
         "function_call_id": "fc-01M3VHJF95YASX5KDCYTP79JK4",
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-c6wO7tJhKDbZIR5cOsnwdw"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-c6wO7tJhKDbZIR5cOsnwdw",
+        "modal_app_ids": [
+          "ap-c6wO7tJhKDbZIR5cOsnwdw"
+        ],
+        "usage": {
+          "gpu_hours": 0.12111146,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.21005572,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-c6wO7tJhKDbZIR5cOsnwdw. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.5382168292999268,
@@ -1318,11 +1392,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-hVw9LOJUSqvwYK9AYRpCrw",
         "function_call_id": "fc-01M3VHPEX8C24WPVVZ3TQZ6HMJ",
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-hVw9LOJUSqvwYK9AYRpCrw"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-hVw9LOJUSqvwYK9AYRpCrw",
+        "modal_app_ids": [
+          "ap-hVw9LOJUSqvwYK9AYRpCrw"
+        ],
+        "usage": {
+          "gpu_hours": 0.08576476,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.14875041,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-hVw9LOJUSqvwYK9AYRpCrw. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 1.3122425079345703,
@@ -1396,10 +1479,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "app_id": "ap-ay7iLKpPDnIIzllnfy3myK",
         "function_call_id": "fc-01M3VJ2AWD5TMD3PZ2S8W8804X",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ay7iLKpPDnIIzllnfy3myK"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ay7iLKpPDnIIzllnfy3myK",
+        "modal_app_ids": [
+          "ap-ay7iLKpPDnIIzllnfy3myK"
+        ],
+        "usage": {
+          "gpu_hours": 0.04498832,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.07802774,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-ay7iLKpPDnIIzllnfy3myK. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "started_at_utc": "2026-10-01T11:02:17.381412+00:00",
       "artifact_ids": [
@@ -1525,10 +1617,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-7CjicujKJNzcAzKQ68AFDz",
         "function_call_id": "fc-01M3VJ2BQ8ENA8DJ3575ZH2P3R",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7CjicujKJNzcAzKQ68AFDz"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-7CjicujKJNzcAzKQ68AFDz",
+        "modal_app_ids": [
+          "ap-7CjicujKJNzcAzKQ68AFDz"
+        ],
+        "usage": {
+          "gpu_hours": 0.04402353,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0763544,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-7CjicujKJNzcAzKQ68AFDz. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "artifact_ids": [
         "preflight-mobilenetv2-v3-1-metrics",
@@ -1653,10 +1754,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-NZkYrZHFImFUdY8JGw4NSd",
         "function_call_id": "fc-01M3VJ2CTXWMPKXZ4P4Y6HRTZF",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NZkYrZHFImFUdY8JGw4NSd"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-NZkYrZHFImFUdY8JGw4NSd",
+        "modal_app_ids": [
+          "ap-NZkYrZHFImFUdY8JGw4NSd"
+        ],
+        "usage": {
+          "gpu_hours": 0.0474096,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08222721,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-NZkYrZHFImFUdY8JGw4NSd. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "artifact_ids": [
         "preflight-resnet50v2-v3-1-metrics",
@@ -1781,10 +1891,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-Sg8z7oKRmotVOJJsDi0GMa",
         "function_call_id": "fc-01M3VJ2DRZVXV4TCYRM9D77EKN",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Sg8z7oKRmotVOJJsDi0GMa"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Sg8z7oKRmotVOJJsDi0GMa",
+        "modal_app_ids": [
+          "ap-Sg8z7oKRmotVOJJsDi0GMa"
+        ],
+        "usage": {
+          "gpu_hours": 0.05066713,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08787706,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-Sg8z7oKRmotVOJJsDi0GMa. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "artifact_ids": [
         "preflight-convnexttiny-v3-1-metrics",
@@ -1910,9 +2029,18 @@
         },
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "app_id": "ap-DjyZgxXkErXjkkX1pnK3bT",
         "function_call_id": "fc-01M3VJ8A7VXX98DT6XW3GGMPHA",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DjyZgxXkErXjkkX1pnK3bT"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-DjyZgxXkErXjkkX1pnK3bT",
+        "modal_app_ids": [
+          "ap-DjyZgxXkErXjkkX1pnK3bT"
+        ],
+        "usage": {
+          "gpu_hours": 0.49252755,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.85423979,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-DjyZgxXkErXjkkX1pnK3bT. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.4271371364593506,
@@ -2078,9 +2206,18 @@
         },
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "app_id": "ap-06KFspvRcHM80FvWds91Lh",
         "function_call_id": "fc-01M3VJ8BDKEJNCH2AAEK7WBZ0F",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-06KFspvRcHM80FvWds91Lh"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-06KFspvRcHM80FvWds91Lh",
+        "modal_app_ids": [
+          "ap-06KFspvRcHM80FvWds91Lh"
+        ],
+        "usage": {
+          "gpu_hours": 0.90619782,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.57170949,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-06KFspvRcHM80FvWds91Lh. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.4756762981414795,
@@ -2261,9 +2398,18 @@
         },
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "app_id": "ap-YoUHonLuYX2mC4rZEyqV5W",
         "function_call_id": "fc-01M3VJA2JNCG363QAP740NM7BY",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YoUHonLuYX2mC4rZEyqV5W"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-YoUHonLuYX2mC4rZEyqV5W",
+        "modal_app_ids": [
+          "ap-YoUHonLuYX2mC4rZEyqV5W"
+        ],
+        "usage": {
+          "gpu_hours": 0.74193065,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.28680453,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-YoUHonLuYX2mC4rZEyqV5W. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.6193275451660156,
@@ -2429,10 +2575,19 @@
           }
         },
         "environment": "main",
-        "app_id": "ap-Uyd2hAVvxzDuzJ52j3vMNU",
         "function_call_id": "fc-01M3VJA304EGG32H3FKHE98ZDA",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Uyd2hAVvxzDuzJ52j3vMNU"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-Uyd2hAVvxzDuzJ52j3vMNU",
+        "modal_app_ids": [
+          "ap-Uyd2hAVvxzDuzJ52j3vMNU"
+        ],
+        "usage": {
+          "gpu_hours": 0.06743622,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.1843976,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-Uyd2hAVvxzDuzJ52j3vMNU. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-40GB USD 2.1/h), assuming these rates applied during the run."
+        }
       },
       "artifact_ids": [
         "preflight-convnexttiny-v3-a100-1-metrics",
@@ -2558,9 +2713,18 @@
         },
         "environment": "main",
         "image_id": "im-8DiI6pn1BGBeiDVv3eBHzk",
-        "app_id": "ap-CmWwWdvHzlrjaW2MLinyoZ",
         "function_call_id": "fc-01M3VJK9H8GCXTB18BNFM5E6NE",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-CmWwWdvHzlrjaW2MLinyoZ"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-CmWwWdvHzlrjaW2MLinyoZ",
+        "modal_app_ids": [
+          "ap-CmWwWdvHzlrjaW2MLinyoZ"
+        ],
+        "usage": {
+          "gpu_hours": 0.6001866,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.64115024,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-CmWwWdvHzlrjaW2MLinyoZ. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-40GB USD 2.1/h), assuming these rates applied during the run."
+        }
       },
       "plan": {
         "measured_warm_epoch_seconds": 0.7548465728759766,
@@ -3523,26 +3687,6 @@
     "selected_preference": 3,
     "reason": "No author implementation located after paper, author/thesis, institutional and repository discovery. Reconstruct from paper with pinned standard Keras components."
   },
-  "guesses": [
-    {
-      "detail": "Random seed42 and exact split membership were not published. Stratified split sizes are reproduced exactly; a new random realization is used."
-    },
-    {
-      "detail": "551 extra examples inferred from Table III (23352\u221222801); augment NULL314 to865, because section II.B says augmentation addresses NULL imbalance and Figure2 shows a NULL transformation. Transformation draws are newly sampled with seed42."
-    },
-    {
-      "detail": "Use ImageNet initialization, Adam1e-5, categorical cross-entropy, ReLU dense256, softmax27 and all trainable backbone layers. Paper identifies pretrained networks but does not state optimizer, loss, hidden activation, framework, seed, layer-freezing policy or preprocessing beyond normalized arrays and bilinear resizing."
-    },
-    {
-      "detail": "Use standard application-specific input scaling after resize: EfficientNet/ConvNeXt embedded preprocessing receives [0,255]; MobileNet/ResNet receives [-1,1]. Avoid unintended double normalization of the source [0,1] array."
-    },
-    {
-      "detail": "Train only the four requested Table X final configurations; the 48-model hyperparameter search for Tables IV\u2013IX is outside the assignment."
-    },
-    {
-      "detail": "Apply augmentation before splitting as the methodology and Table III indicate, even though this can place transformed variants of one original NULL image across splits. No source lineage split was specified."
-    }
-  ],
   "author_contact": {
     "contacted": false,
     "detail": "No author communication occurred."
@@ -3570,12 +3714,6 @@
     "per_run_cost_chf_ceiling": "15 for each of EfficientNet, MobileNet and ResNet; 20 for ConvNeXt.",
     "detail": "Prospective corrected-run forecasts from measured preflights; ConvNeXt uses standard A100 after 1.72x faster warm timing. CHF figures are conservative planning allowances, not billed invoices or a currency conversion. Invalid early attempts are recorded separately."
   },
-  "deviations": [
-    {
-      "id": "augmentation-order-correction",
-      "detail": "The first four full jobs transformed NULL images at 128\u00d7128 before resizing to 224\u00d7224. Figure 1 and Section II.B explicitly require resizing first. Independent review discovered this before completion; the jobs were stopped and excluded. Corrected attempts keep identical labels, indices, seeds and splits. No scores informed the change."
-    }
-  ],
   "validation": {
     "audit_date": "2026-10-01",
     "checks": [
@@ -3606,7 +3744,7 @@
       {
         "claim": "High ASL benchmark accuracy",
         "verdict": "reproduced_under_declared_reconstruction",
-        "basis": "All four independently trained models achieve 99.23\u201399.40% on the common test split."
+        "basis": "All four independently trained models achieve 99.23–99.40% on the common test split."
       },
       {
         "claim": "EfficientNet is the most accurate of the four models",
@@ -3700,5 +3838,38 @@
       "interpretation": "The nearest-model one-image gaps arise from 7-versus-6 and6-versus-5 discordant correct predictions. All47 generated test examples are correct for every model, so their inclusion does not change the observed ranking. Excluding generated test samples would not remove possible cross-split source relationships created before splitting."
     },
     "completion_decision": "No additional model execution is required to close the assigned four Table X runs. Report the mixed conclusion; new seeds or ablations would answer additional questions, not fill a missing target run."
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "guess-1",
+      "kind": "guess",
+      "description": "Random seed42 and exact split membership were not published. Stratified split sizes are reproduced exactly; a new random realization is used."
+    },
+    {
+      "id": "guess-2",
+      "kind": "guess",
+      "description": "551 extra examples inferred from Table III (23352−22801); augment NULL314 to865, because section II.B says augmentation addresses NULL imbalance and Figure2 shows a NULL transformation. Transformation draws are newly sampled with seed42."
+    },
+    {
+      "id": "guess-3",
+      "kind": "guess",
+      "description": "Use ImageNet initialization, Adam1e-5, categorical cross-entropy, ReLU dense256, softmax27 and all trainable backbone layers. Paper identifies pretrained networks but does not state optimizer, loss, hidden activation, framework, seed, layer-freezing policy or preprocessing beyond normalized arrays and bilinear resizing."
+    },
+    {
+      "id": "guess-4",
+      "kind": "guess",
+      "description": "Use standard application-specific input scaling after resize: EfficientNet/ConvNeXt embedded preprocessing receives [0,255]; MobileNet/ResNet receives [-1,1]. Avoid unintended double normalization of the source [0,1] array."
+    },
+    {
+      "id": "guess-6",
+      "kind": "guess",
+      "description": "Apply augmentation before splitting as the methodology and Table III indicate, even though this can place transformed variants of one original NULL image across splits. No source lineage split was specified."
+    },
+    {
+      "id": "augmentation-order-correction",
+      "kind": "paper_deviation",
+      "description": "The first four full jobs transformed NULL images at 128×128 before resizing to 224×224. Figure 1 and Section II.B explicitly require resizing first. Independent review discovered this before completion; the jobs were stopped and excluded. Corrected attempts keep identical labels, indices, seeds and splits. No scores informed the change."
+    }
+  ],
+  "noncompliance": []
 }

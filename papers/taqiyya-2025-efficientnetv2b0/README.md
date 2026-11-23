@@ -135,3 +135,20 @@ The completed experiment supports the following conclusions:
 A later independent review on 2026-10-03 rechecked each prediction file against its retained SHA-256 and recomputed every score, index and probability argmax. Against MobileNet, EfficientNet alone correctly classifies seven images while MobileNet alone correctly classifies six; against ConvNeXt, these counts are six and five. This explains why the ranking is a narrow observed result. All 47 generated test images are correctly classified by every model; the remaining 2,289 original test images preserve the same ranking. That diagnostic does not remove possible cross-split source relationships introduced by augmentation before splitting.
 
 This closes the assigned Table X attempt. Additional seeds could test ranking stability, and separate ablations could test augmentation benefits, but neither is a missing execution in this completed four-model reproduction. No settings were adjusted to strengthen EfficientNet's lead. The GPT-6/Codex orchestrator performed this later analysis and report update without running new model experiments.
+
+## Guesses and deviations
+
+- `guess-1` — Random seed42 and exact split membership were not published. Stratified split sizes are reproduced exactly; a new random realization is used.
+- `guess-2` — 551 extra examples inferred from Table III (23352−22801); augment NULL314 to865, because section II.B says augmentation addresses NULL imbalance and Figure2 shows a NULL transformation. Transformation draws are newly sampled with seed42.
+- `guess-3` — Use ImageNet initialization, Adam1e-5, categorical cross-entropy, ReLU dense256, softmax27 and all trainable backbone layers. Paper identifies pretrained networks but does not state optimizer, loss, hidden activation, framework, seed, layer-freezing policy or preprocessing beyond normalized arrays and bilinear resizing.
+- `guess-4` — Use standard application-specific input scaling after resize: EfficientNet/ConvNeXt embedded preprocessing receives [0,255]; MobileNet/ResNet receives [-1,1]. Avoid unintended double normalization of the source [0,1] array.
+- `guess-6` — Apply augmentation before splitting as the methodology and Table III indicate, even though this can place transformed variants of one original NULL image across splits. No source lineage split was specified.
+- `augmentation-order-correction` — The first four full jobs transformed NULL images at 128×128 before resizing to 224×224. Figure 1 and Section II.B explicitly require resizing first. Independent review discovered this before completion; the jobs were stopped and excluded. Corrected attempts keep identical labels, indices, seeds and splits. No scores informed the change.
+
+## Noncompliance
+
+None.
+
+## Modal billing reconciliation
+
+Modal billing attributes 3.9230 GPU-hours and USD 7.4817 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
