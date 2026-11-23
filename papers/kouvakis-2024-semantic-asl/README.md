@@ -1,5 +1,7 @@
 # Semantic Communications for Image-Based Sign Language Transmission
 
+**Paper ID:** `2248c0668fde8b2b3a04078ed3f27f6da9215ad2`
+
 **TL;DR:** All three recognition runs finished: 78/81 targets produced; test accuracy is MNIST 88.39%, LEXSET 97.92%, RGB 97.83%.
 **Conclusion:** RGB and LEXSET are nearly tied; strict RGB-best ranking and absolute paper scores were not reproduced. No human action is needed; three undefined validation scores remain unproduced.
 
@@ -79,9 +81,9 @@ The authors' [RGB dataset, Zenodo 14635573](https://zenodo.org/records/14635573)
 
 The other open issue is the validation set: section IV-A/Table 1 allocates every listed sample to training or testing, while Table 2 reports validation accuracy without defining its allocation or membership. Creating an arbitrary validation partition would not recover those three validation scores. All published train/test samples remain in their original partitions for the permitted full runs.
 
-The environment starts from the prescribed `ghcr.io/sign-language-processing/reproduction:latest`, resolving to an immutable Modal image recorded with each run. Native dependency freezes, hardware logs, model/optimizer/RNG checkpoints, metrics with epoch history, and predictions/confusion matrices live in v2 Volume `repro-2248c066-results`; every retained artifact has a SHA-256 in `reproduction.json`. Canonical `datasets` and `huggingface-cache` are both v2, with the cache mounted read-write at `/cache/huggingface` and both required HF environment variables set. For the original MNIST/RGB runs an OCI digest was not exposed; immutable Modal image IDs and native package freezes are preserved. The LEXSET continuation pins `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291` and also retains the native dependency freeze. All operations use the `repro-sign` wrapper.
+The initial runs requested `ghcr.io/sign-language-processing/reproduction:latest`, resolving to an immutable Modal image recorded with each run. Native dependency freezes, hardware logs, model/optimizer/RNG checkpoints, metrics with epoch history, and predictions/confusion matrices live in v2 Volume `repro-2248c066-results`; every retained artifact has a SHA-256 in `reproduction.json`. Canonical `datasets` and `huggingface-cache` are both v2, with the cache mounted read-write at `/cache/huggingface` and both required HF environment variables set. For the original MNIST/RGB runs an OCI digest was not exposed; immutable Modal image IDs and native package freezes are preserved. The LEXSET continuation pins `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291` and also retains the native dependency freeze. All operations use the `repro-sign` wrapper.
 
-The representative preflight trained four real batches from each dataset, saved and reloaded model/optimizer state, took another optimizer step, and evaluated 128 held-out examples. Its 1.5625% MNIST and 0% RGB values are engineering diagnostics, not target results. It measured 194.55/226.24 examples per second and 0.93/1.27 GB peak allocated memory. These conservatively projected 3.53/1.03 GPU-hours for the exact full schedules, approximately $9.35/$2.73 at the inspected [Modal rates](https://modal.com/pricing), before storage. Each detached single-A100-80GB full run had a predeclared six-hour/six-GPU-hour/CHF25 ceiling, one attempt, and an epoch checkpoint. The CHF ceiling uses a conservative 1 USD = 1 CHF budgeting allowance rather than claiming a current exchange rate. Actual billing is unavailable. Full training throughput improved after warm-up; observed durations are reported above.
+The representative preflight trained four real batches from each dataset, saved and reloaded model/optimizer state, took another optimizer step, and evaluated 128 held-out examples. Its 1.5625% MNIST and 0% RGB values are engineering diagnostics, not target results. It measured 194.55/226.24 examples per second and 0.93/1.27 GB peak allocated memory. These conservatively projected 3.53/1.03 GPU-hours for the exact full schedules, approximately $9.35/$2.73 at the inspected [Modal rates](https://modal.com/pricing), before storage. Each detached single-A100-80GB full run had a predeclared six-hour/six-GPU-hour/CHF25 ceiling, one attempt, and an epoch checkpoint. The CHF ceiling uses a conservative 1 USD = 1 CHF budgeting allowance rather than claiming a current exchange rate. Billed usage is reconciled below. Full training throughput improved after warm-up; observed durations are reported above.
 
 Run `./setup.sh` once per clone, then repeat from repository root:
 
@@ -125,3 +127,22 @@ For the LEXSET path, run these commands from repository root. The acquisition is
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::lexset_run --run-id lexset-full-repeat --expected-manifest-sha256 de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence
 ```
+
+## Guesses and deviations
+
+- `defaults` — Missing lr/batch/seed/initialization: Adam0.001,defaultbetas,eps1e-8,batch64,seed42,PyTorchdefaultlayerinitializers. User authorized routine missing-detail defaults; no tuning.
+- `mnist-input` — Figure 3 input dimensions of 100×100×3 and the exact 616,504 parameters require upsampling grayscale MNIST to 100×100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode="bilinear", align_corners=False), then expand; this is separate from Pillow resizing used for RGB.
+- `pooling` — Prose says eachconv followedpool, but Figure3 and exactly616504parameters prove fourpools before finalconv. Figure/count evidence preferred.
+- `resize` — For RGB and the later LEXSET continuation, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100×100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately.
+- `metrics` — Use final-epoch online trainingaccuracy and finalcheckpoint testaccuracy; no test-basedmodelselection or augmentation.
+- `lexset-native-size` — Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented.
+
+## Noncompliance
+
+None.
+
+## Modal billing reconciliation
+
+Modal billing attributes 0.5651 GPU-hours and USD 1.5844 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+The launcher now pins the study image digest for future runs. The historical MNIST and RGB run records preserve their original tag and resolved Modal image evidence.

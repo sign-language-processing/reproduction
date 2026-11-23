@@ -13,7 +13,7 @@ def populate():
  subprocess.run(['bash','/app/data.sh'],check=True)
  data.commit()
 
-image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction:latest')
+image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291')
        .env(ENV).add_local_file(ROOT/'train.py','/app/train.py'))
 @app.function(image=image,gpu='A100-80GB',timeout=1800,memory=16384,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/results':outputs})
 def preflight():

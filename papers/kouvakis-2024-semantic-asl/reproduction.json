@@ -34,7 +34,7 @@
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-2248c0668fde8b2b3a04078ed3f27f6da9215ad2-2026-10-01.json",
       "sha256": "40245ba9da4e74dfda85a878bb8f988cdfc206460aa8da690aa389f5953078fa"
@@ -93,7 +93,7 @@
                 "contact_dates": [],
                 "correspondence": "",
                 "id": "ik20wubgibxy60m",
-                "license": "Data files \u00a9 Original Authors",
+                "license": "Data files © Original Authors",
                 "name": "LEXSET",
                 "on_modal": "",
                 "permission_model_weights": "",
@@ -221,11 +221,97 @@
       "status": "in_progress",
       "url": []
     },
-    "detail": "User-authorized tracker selection; final status present, confirmation field absent, database IDs distinct. Recognition only, Table2 and Table3(c)."
+    "detail": "Final-paper Reproduction Tracker export retained with redactions and its original source hash.",
+    "normalized": {
+      "title": "Semantic Communications for Image-Based Sign Language Transmission",
+      "year": 2024,
+      "venue": "IEEE Open Journal of the Communications Society (OJ-COMS)",
+      "pdf_url": "https://ieeexplore.ieee.org/ielx7/8782661/8901158/10418996.pdf",
+      "code_repos": [],
+      "what_to_reproduce": "Table 2, Table 3 (c)\nReproduce only the NLP experiments reported in the paper, ignore the transmission / communication parts",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "whj6bhf2ro5g8c0",
+        "89xqke8qlyqq6mb",
+        "398630tq0zlaufq"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "whj6bhf2ro5g8c0",
+          "name": "Precision",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "89xqke8qlyqq6mb",
+          "name": "Recall",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "398630tq0zlaufq",
+          "name": "F1",
+          "url": []
+        }
+      ],
+      "datasets": [
+        {
+          "id": "bel15x4rymfc9la",
+          "name": "MNIST",
+          "available": "yes",
+          "license": "CC0: Public Domain",
+          "urls": [
+            "https://www.kaggle.com/datasets/datamunge/sign-language-mnist"
+          ],
+          "comments": "Sign language version of MNIST"
+        },
+        {
+          "id": "ik20wubgibxy60m",
+          "name": "LEXSET",
+          "available": "yes",
+          "license": "Data files © Original Authors",
+          "urls": [
+            "https://www.kaggle.com/datasets/lexset/synthetic-asl-alphabet"
+          ],
+          "comments": ""
+        },
+        {
+          "id": "53kqr5r703bu603",
+          "name": "RGB",
+          "available": "yes",
+          "license": "CC BY 4.0",
+          "urls": [
+            "https://ieee-dataport.org/documents/american-sign-language-dataset-semantic-communications",
+            "https://zenodo.org/records/14635573"
+          ],
+          "comments": "Tracker reports prior Team S author coordination in August/September 2026 and permission to access RGB dataset for the study. Exact correspondence not independently verified; public Zenodo CC BY4 license checked independently."
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": "first flagged because the main focus is on transmission but there are still some ASL alphabet recognition rates reported, so we take it!"
+    }
   },
   "paper": {
     "title": "Semantic Communications for Image-Based Sign Language Transmission",
-    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088\u20131100. DOI10.1109/OJCOMS.2024.3360191.",
+    "citation": "Kouvakis, V., Trevlakis, S. E. and Boulogeorgos, A.-A. A. (2024). IEEE Open Journal of the Communications Society5:1088–1100. DOI10.1109/OJCOMS.2024.3360191.",
     "url": "https://doi.org/10.1109/OJCOMS.2024.3360191",
     "pdf_sha256": "eb6c5adbef77fc1fcb02361d55aad630ec04e45877bb6edfe74c84d656de91fa",
     "accessed_at": "2026-10-01"
@@ -301,7 +387,7 @@
       "modal_path": "sign-language-mnist",
       "manifest_sha256": "3e7d79238e611ff78a13000bef2fc2570567fce6c4cd769d806e36e68dd5d0e0",
       "archive_sha256": "fa1b513570d4348c6d6860e04e5854c59ef8eadb8c42a45d36bd1286ce3d489f",
-      "preprocessing": "28\u00d728 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100\u00d7100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
+      "preprocessing": "28×28 grayscale divided by 255; torch.nn.functional.interpolate bilinear upsampling to 100×100 with align_corners=False; expand to three identical channels. Native label 9 (J) is absent; subtract 1 from labels greater than 9.",
       "splits": [
         {
           "name": "train",
@@ -367,7 +453,7 @@
       "dataset_id": "lexset",
       "name": "LEXSET synthetic ASL alphabet",
       "version_or_subset": "Kaggle lexset/synthetic-asl-alphabet version3; intended24letters excludingJ/Z/background",
-      "license_or_permission": "Metadata: Data files \u00a9 Original Authors; user-confirmed attribution-based internal project cloud use.",
+      "license_or_permission": "Metadata: Data files © Original Authors; user-confirmed attribution-based internal project cloud use.",
       "cloud_processing_allowed": true,
       "modal_volume": "datasets",
       "volume_version": 2,
@@ -530,7 +616,7 @@
               "lexset-permission"
             ],
             "evidence": [
-              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+              "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
             ]
           }
         }
@@ -578,7 +664,7 @@
               "lexset-permission"
             ],
             "evidence": [
-              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+              "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
             ]
           }
         }
@@ -627,7 +713,7 @@
               "lexset-permission"
             ],
             "evidence": [
-              "Kaggle author dataset metadata licenseName=Data files \u00a9 Original Authors; inspected2026-10-01."
+              "Kaggle author dataset metadata licenseName=Data files © Original Authors; inspected2026-10-01."
             ]
           }
         }
@@ -2777,7 +2863,6 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-RuFL8UeqB4v3fzAjTWgjSE",
         "environment": "main",
         "gpu_count": 0,
         "gpu": null,
@@ -2792,7 +2877,10 @@
           }
         },
         "datasets_volume_version": 2,
-        "datasets_read_only": false
+        "datasets_read_only": false,
+        "modal_app_ids": [
+          "ap-RuFL8UeqB4v3fzAjTWgjSE"
+        ]
       },
       "detail": "Initial permitted acquisition recorded archive checksums; repeated data.sh now verifies those discovered SHA256 pins, in addition to the author RGB MD5 used on acquisition."
     },
@@ -2821,7 +2909,6 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-NdLe89b3zwaqMrTPxyYj25",
         "environment": "main",
         "gpu_count": 1,
         "gpu": "A100-80GB",
@@ -2839,7 +2926,16 @@
         "datasets_read_only": true,
         "modal_task_id": "ta-01M3VGPPBEKKMSMGTWQ4KAH7CR",
         "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
-        "gpu_hours": 0.027245857771944444
+        "modal_app_ids": [
+          "ap-NdLe89b3zwaqMrTPxyYj25"
+        ],
+        "usage": {
+          "gpu_hours": 0.0340619,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.09050256,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-NdLe89b3zwaqMrTPxyYj25. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "started_at_utc": "2026-10-01T10:38:49.044274+00:00",
       "finished_at_utc": "2026-10-01T10:40:32.131218+00:00",
@@ -2895,7 +2991,6 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-whLo78NxvmUwKfoYqZ0C2Q",
         "environment": "main",
         "gpu_count": 1,
         "gpu": "NVIDIA A100-SXM4-80GB",
@@ -2914,9 +3009,16 @@
         "modal_task_id": "ta-01M3VGW8W24N09Z1X49352VRMR",
         "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
         "wall_time_seconds": 691.101511189,
-        "gpu_hours": 0.19197264199694444,
-        "estimated_cost_usd": 0.5087275012919028,
-        "cost_note": "Estimated process duration times A10080+CPU/RAM rate; excludes provisioning/storage, not billed cost."
+        "modal_app_ids": [
+          "ap-whLo78NxvmUwKfoYqZ0C2Q"
+        ],
+        "usage": {
+          "gpu_hours": 0.20032344,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.53243583,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-whLo78NxvmUwKfoYqZ0C2Q. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "started_at_utc": "2026-10-01T10:42:03.031075+00:00",
       "finished_at_utc": "2026-10-01T10:53:34.131779+00:00",
@@ -2978,7 +3080,6 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-Hun5BDvgQbbY4q0gPtR4Nk",
         "environment": "main",
         "gpu_count": 1,
         "gpu": "NVIDIA A100 80GB PCIe",
@@ -2997,9 +3098,16 @@
         "modal_task_id": "ta-01M3VGWDHDHKMW3430TA1YGG0R",
         "modal_image_id": "im-jIjEGkfzAuYeo3qOEA7KbC",
         "wall_time_seconds": 299.255724047,
-        "gpu_hours": 0.08312659001305556,
-        "estimated_cost_usd": 0.22028546353459721,
-        "cost_note": "Estimated process duration times A10080+CPU/RAM rate; excludes provisioning/storage, not billed cost."
+        "modal_app_ids": [
+          "ap-Hun5BDvgQbbY4q0gPtR4Nk"
+        ],
+        "usage": {
+          "gpu_hours": 0.09321244,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.24748083,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-Hun5BDvgQbbY4q0gPtR4Nk. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "started_at_utc": "2026-10-01T10:42:08.818944+00:00",
       "finished_at_utc": "2026-10-01T10:47:08.074274+00:00",
@@ -3089,7 +3197,6 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-AcMjsJ3xdXmWzAD5txHjHz",
         "environment": "main",
         "gpu_count": 0,
         "gpu": null,
@@ -3105,7 +3212,10 @@
         },
         "datasets_volume_version": 2,
         "datasets_read_only": null,
-        "datasets_mount_note": "No dataset mount required for read-only output hash audit."
+        "datasets_mount_note": "No dataset mount required for read-only output hash audit.",
+        "modal_app_ids": [
+          "ap-AcMjsJ3xdXmWzAD5txHjHz"
+        ]
       }
     },
     {
@@ -3136,7 +3246,6 @@
         "environment": "main",
         "gpu_count": 0,
         "datasets_read_only": false,
-        "modal_app_id": "ap-30vGKQLgRWieeLYL6sErg3",
         "modal_function_call_id": "fc-01M41F9TKM2YVH7YSDJ727JAKZ",
         "modal_task_id": "ta-01M41F9TWV1S2N8EBTRAFDQ00R",
         "shared_cache": {
@@ -3148,7 +3257,10 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "datasets_volume_version": 2
+        "datasets_volume_version": 2,
+        "modal_app_ids": [
+          "ap-30vGKQLgRWieeLYL6sErg3"
+        ]
       },
       "terminal": {
         "state": "failed",
@@ -3204,9 +3316,11 @@
           }
         },
         "datasets_volume_version": 2,
-        "modal_app_id": "ap-z1d5x9c7Rd6yHmig68UgNE",
         "modal_function_call_id": "fc-01M41FD2MEDZK3ZYCPXQADWY46",
-        "modal_task_id": "ta-01M41FD2Z3SE4F5GH624BNSZJR"
+        "modal_task_id": "ta-01M41FD2Z3SE4F5GH624BNSZJR",
+        "modal_app_ids": [
+          "ap-z1d5x9c7Rd6yHmig68UgNE"
+        ]
       },
       "terminal": {
         "state": "failed",
@@ -3267,7 +3381,9 @@
           }
         },
         "datasets_volume_version": 2,
-        "modal_app_id": "ap-1Pa6DZM9nXojjdMaLPRCnm"
+        "modal_app_ids": [
+          "ap-1Pa6DZM9nXojjdMaLPRCnm"
+        ]
       },
       "terminal": {
         "state": "stopped",
@@ -3332,9 +3448,11 @@
           }
         },
         "datasets_volume_version": 2,
-        "modal_app_id": "ap-ICy50ZZP9kxLmF9pDpdU4d",
         "modal_function_call_id": "fc-01M41G8WCZH4D4Z94DM8CC3GM8",
-        "modal_task_id": "ta-01M41G8X3FK972MBM3ZAJHWEVR"
+        "modal_task_id": "ta-01M41G8X3FK972MBM3ZAJHWEVR",
+        "modal_app_ids": [
+          "ap-ICy50ZZP9kxLmF9pDpdU4d"
+        ]
       },
       "terminal": {
         "state": "succeeded",
@@ -3409,13 +3527,21 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-TvWkgwebqW4fjBxcop6yyj",
         "modal_function_call_id": "fc-01M41GK4D4QZ9122QGFBAGT2RP",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-TvWkgwebqW4fjBxcop6yyj",
         "modal_task_id": "ta-01M41GMXW13439Y58BHN93KRDR",
         "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
         "wall_time_seconds": 273.8318169116974,
-        "gpu_hours": 0.07606439358658261
+        "modal_app_ids": [
+          "ap-TvWkgwebqW4fjBxcop6yyj"
+        ],
+        "usage": {
+          "gpu_hours": 0.08056777,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.24221894,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-TvWkgwebqW4fjBxcop6yyj. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
@@ -3489,15 +3615,21 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-riaYpafepN5mW0emUdwkt6",
         "modal_function_call_id": "fc-01M41H02F0TGPGABJZWPG2JZH9",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-riaYpafepN5mW0emUdwkt6",
         "modal_task_id": "ta-01M41H0H9DG36Q56VHSPKZNEJR",
         "modal_image_id": "im-QBQYhSwBPv9LpHDa51q7hM",
         "wall_time_seconds": 542.534957408905,
-        "gpu_hours": 0.15070415483580696,
-        "estimated_cost_chf": 0.45264776566539766,
-        "cost_note": "Process/function elapsed times official A10080+8CPU+16GiB rate, conservative1USD=1CHF budgeting conversion; storage/provisioning excluded, actual billing unknown."
+        "modal_app_ids": [
+          "ap-riaYpafepN5mW0emUdwkt6"
+        ],
+        "usage": {
+          "gpu_hours": 0.15693313,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.47180376,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-riaYpafepN5mW0emUdwkt6. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "dataset_manifest_sha256": "de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0",
@@ -3529,7 +3661,7 @@
         "wall_time_seconds": 4150.85,
         "gpu_hours": 1.153013888888889,
         "cost_chf": 4,
-        "basis": "Cold representative throughput361.685 images/s \u00d721600\u00d760, plus observed267.6s setup and300s evaluation/overhead allowance. A10080+8CPU+16GiB budget roughly3.00USD/h, conservative1USD=1CHF planning conversion. Actual billing unknown. Hard5h/CHF18 full ceiling under additional6GPUh/CHF25 aggregate."
+        "basis": "Cold representative throughput361.685 images/s ×21600×60, plus observed267.6s setup and300s evaluation/overhead allowance. A10080+8CPU+16GiB budget roughly3.00USD/h, conservative1USD=1CHF planning conversion. Actual billing unknown. Hard5h/CHF18 full ceiling under additional6GPUh/CHF25 aggregate."
       },
       "started_at_utc": "2026-10-03T18:39:44.241555+00:00",
       "finished_at_utc": "2026-10-03T18:48:46.236133+00:00",
@@ -3610,8 +3742,10 @@
         "datasets_volume_version": 2,
         "datasets_read_only": null,
         "datasets_mount_note": "No dataset mount required for read-only output hash audit.",
-        "modal_app_id": "ap-mrYwyTmf9mEz5jjVLgICGq",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mrYwyTmf9mEz5jjVLgICGq"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-mrYwyTmf9mEz5jjVLgICGq",
+        "modal_app_ids": [
+          "ap-mrYwyTmf9mEz5jjVLgICGq"
+        ]
       },
       "started_at_utc": "2026-10-03T18:49:19.385616+00:00",
       "finished_at_utc": "2026-10-03T18:49:23.504557+00:00",
@@ -4007,7 +4141,7 @@
       "reason": "The author Kaggle metadata reserves dataset copyright without a positive cloud-use license.",
       "required_action": "None; resolved by project authorization.",
       "evidence": [
-        "artifacts/lexset-source-metadata.txt licenseName=Data files \u00a9 Original Authors",
+        "artifacts/lexset-source-metadata.txt licenseName=Data files © Original Authors",
         "Paper reference32 identifies this exact dataset."
       ],
       "resolution": "2026-10-03: explicit project authorization confirms attribution-based internal acquisition and Modal use. Lexset attribution retained; metadata not relabeled and no broad redistribution authorized."
@@ -4035,32 +4169,6 @@
         "lexset-acquisition-v3/console.log retained on repro-2248c066-results contains archive pin but no3000-file milestone when stopped.",
         "lexset-acquisition-v4/execution.json and canonical manifest de9923d8de3ae1e16dc6f4da7fd91251d26af19689a8fb1ecdb8656438698ca0."
       ]
-    }
-  ],
-  "guesses": [
-    {
-      "id": "defaults",
-      "detail": "Missing lr/batch/seed/initialization: Adam0.001,defaultbetas,eps1e-8,batch64,seed42,PyTorchdefaultlayerinitializers. User authorized routine missing-detail defaults; no tuning."
-    },
-    {
-      "id": "mnist-input",
-      "detail": "Figure 3 input dimensions of 100\u00d7100\u00d73 and the exact 616,504 parameters require upsampling grayscale MNIST to 100\u00d7100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
-    },
-    {
-      "id": "pooling",
-      "detail": "Prose says eachconv followedpool, but Figure3 and exactly616504parameters prove fourpools before finalconv. Figure/count evidence preferred."
-    },
-    {
-      "id": "resize",
-      "detail": "For RGB and the later LEXSET continuation, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100\u00d7100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
-    },
-    {
-      "id": "metrics",
-      "detail": "Use final-epoch online trainingaccuracy and finalcheckpoint testaccuracy; no test-basedmodelselection or augmentation."
-    },
-    {
-      "id": "lexset-native-size",
-      "detail": "Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented."
     }
   ],
   "contacts": [
@@ -4132,5 +4240,38 @@
     "prior_76_targets_unchanged": true,
     "permission_gate_resolved": true,
     "human_execution_action_required": false
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "defaults",
+      "kind": "guess",
+      "description": "Missing lr/batch/seed/initialization: Adam0.001,defaultbetas,eps1e-8,batch64,seed42,PyTorchdefaultlayerinitializers. User authorized routine missing-detail defaults; no tuning."
+    },
+    {
+      "id": "mnist-input",
+      "kind": "guess",
+      "description": "Figure 3 input dimensions of 100×100×3 and the exact 616,504 parameters require upsampling grayscale MNIST to 100×100 and repeating three channels. Implemented with torch.nn.functional.interpolate(mode=\"bilinear\", align_corners=False), then expand; this is separate from Pillow resizing used for RGB."
+    },
+    {
+      "id": "pooling",
+      "kind": "paper_internal_conflict",
+      "description": "Prose says eachconv followedpool, but Figure3 and exactly616504parameters prove fourpools before finalconv. Figure/count evidence preferred."
+    },
+    {
+      "id": "resize",
+      "kind": "code_deviation",
+      "description": "For RGB and the later LEXSET continuation, the related author XAI code uses cv2.resize and RGB conversion; this independent run uses Pillow Image.Resampling.BILINEAR with RGB conversion. Both produce 100×100 RGB inputs, but library pixel rounding can differ. MNIST uses PyTorch interpolation, as recorded separately."
+    },
+    {
+      "id": "metrics",
+      "kind": "guess",
+      "description": "Use final-epoch online trainingaccuracy and finalcheckpoint testaccuracy; no test-basedmodelselection or augmentation."
+    },
+    {
+      "id": "lexset-native-size",
+      "kind": "paper_code_conflict",
+      "description": "Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented."
+    }
+  ],
+  "noncompliance": []
 }
