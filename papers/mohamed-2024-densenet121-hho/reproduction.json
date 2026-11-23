@@ -155,7 +155,7 @@
     },
     {
       "experiment_id": "efficientnet-b0",
-      "system": "ImageNet-pretrained EfficientNet-B0 (frozen backbone), input resized to 224x224x3, GlobalMaxPooling, Dense(256, ReLU), Dropout(0.6), Dense(32, softmax); Adamax, lr=0.001",
+      "system": "ImageNet-pretrained EfficientNet-B0 (all 234 backbone layers trainable), input resized to 224x224x3, GlobalMaxPooling, Dense(256, ReLU), Dropout(0.6), Dense(32, softmax); Adamax, lr=0.001",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -165,7 +165,7 @@
     },
     {
       "experiment_id": "efficientnet-b3",
-      "system": "ImageNet-pretrained EfficientNet-B3 (frozen backbone), same head/optimizer recipe as EfficientNet-B0 (paper describes B0 and B3 together)",
+      "system": "ImageNet-pretrained EfficientNet-B3 (last 35 backbone layers trainable, the rest frozen), same head/optimizer recipe as EfficientNet-B0 (paper describes B0 and B3 together)",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -175,7 +175,7 @@
     },
     {
       "experiment_id": "resnet50",
-      "system": "ImageNet-pretrained ResNet50 (frozen backbone), Flatten, Dropout, Dense(32, softmax); Adamax",
+      "system": "ImageNet-pretrained ResNet50 (last 10 backbone layers trainable, the rest frozen), Flatten, Dropout, Dense(32, softmax); Adamax",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -185,7 +185,7 @@
     },
     {
       "experiment_id": "densenet201",
-      "system": "ImageNet-pretrained DenseNet201 (frozen backbone), Flatten, Dropout(0.8), Dense(32, softmax); Adamax",
+      "system": "ImageNet-pretrained DenseNet201 (last 125 backbone layers trainable, the rest frozen), Flatten, Dropout(0.8), Dense(32, softmax); Adamax",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -195,7 +195,7 @@
     },
     {
       "experiment_id": "densenet121",
-      "system": "ImageNet-pretrained DenseNet121 (frozen backbone), MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout, Dense(32, softmax [paper states sigmoid; overridden, see deviations]); Adam",
+      "system": "ImageNet-pretrained DenseNet121 (last 200 backbone layers trainable, the rest frozen), MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout, Dense(32, softmax [paper states sigmoid; overridden, see deviations]); Adam",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -918,7 +918,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "cnn-hho-full",
@@ -982,7 +986,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "efficientnet-b0-full",
@@ -1045,7 +1053,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "efficientnet-b3-full",
@@ -1108,7 +1120,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "resnet50-full",
@@ -1171,7 +1187,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet201-full",
@@ -1234,7 +1254,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet121-full",
@@ -1297,7 +1321,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet121-hho-full",
@@ -1361,7 +1389,11 @@
       },
       "agent_ids": [
         "original-reproduction-agent"
-      ]
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "cnn-fig2-full",
@@ -1400,7 +1432,7 @@
         "cnn-fig2-run-json",
         "cnn-fig2-metrics-jsonl"
       ],
-      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256",
+      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256 as run. The Dockerfile has since been pinned to the digest in environment.base_image, which its tag already resolved to",
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -1429,6 +1461,10 @@
         "train.py": "062fe289405b464fa9badef32b45f25d72e1d3c9528a76537cf4962490ceb74e",
         "modal_app.py": "0bcbc28acd07741c0f32a67afd1835146ffd675d94a338461ee4976b48f44b3f",
         "Dockerfile": "6c19e6bafddb9bfdcbe934a413f3facefd15417d7f35305c153cadccc825496b"
+      },
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
       }
     },
     {
@@ -1469,7 +1505,7 @@
         "cnn-hho-fig2-metrics-jsonl",
         "cnn-hho-fig2-hho-search-json"
       ],
-      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256",
+      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256 as run. The Dockerfile has since been pinned to the digest in environment.base_image, which its tag already resolved to",
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
@@ -1498,6 +1534,10 @@
         "train.py": "062fe289405b464fa9badef32b45f25d72e1d3c9528a76537cf4962490ceb74e",
         "modal_app.py": "0bcbc28acd07741c0f32a67afd1835146ffd675d94a338461ee4976b48f44b3f",
         "Dockerfile": "6c19e6bafddb9bfdcbe934a413f3facefd15417d7f35305c153cadccc825496b"
+      },
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
       }
     }
   ],
