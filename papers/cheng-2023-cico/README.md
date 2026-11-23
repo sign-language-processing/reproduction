@@ -1,5 +1,7 @@
 # CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning
 
+**Paper ID:** `18c499092df491b0eb4eed3a1c0266b67a93ae13`
+
 **Completed:** independent 15-epoch PHOENIX encoder adaptation and 200-epoch CLCL training produced T2V/V2T R@1 **69.31%/68.07%**, above published SA-COMB **55.8%/53.1%**. All six recalls exceed the baseline; both median ranks tie. No immediate human blocker.
 
 **Pipeline status:** partial — **32/48** in-scope values produced (24 preserved released-checkpoint evaluations plus 8 trained PHOENIX values); 16 How2Sign/CSL training values are not produced within the recorded compute budget.
@@ -91,7 +93,7 @@ Two inexpensive failures preceded the successful PHOENIX preflight. The first wr
 | [full-csl-1](https://modal.com/apps/repro-sign/main/ap-JQOysWax5EqHCEEe7z66PV) | succeeded | 310.35 | 0.08621 | 6733 |
 | [full-h2s-1](https://modal.com/apps/repro-sign/main/ap-IGtSMOKofhTs4MC4SAHk5Q) | succeeded | 701.37 | 0.19482 | 4315 |
 
-GPU-hours above are measured process wall time on one GPU, excluding container provisioning. The first failed preflight has only wrapper timestamps, which include image construction and startup; its GPU duration is unknown and is not inferred from that interval. Actual billed cost is unavailable. The PHOENIX full evaluation had a predeclared one-hour / one-GPU-hour / CHF5 ceiling after a conservative 20-minute estimate. CSL-Daily used the same ceiling after a 30-minute estimate. The How2Sign preflight took 242.28 seconds with 1,955 MiB sampled memory; its full run was estimated at 50 minutes, with a two-hour / two-GPU-hour / CHF5 ceiling and a 6,900-second subprocess limit. The prospective attempt and stopping policies remain unchanged in the ledger; a retry requires a specific diagnosis and remaining allowance.
+GPU-hours above are measured process wall time on one GPU, excluding container provisioning. The first failed preflight has only wrapper timestamps, which include image construction and startup; its GPU duration is unknown and is not inferred from that interval. Billed usage is reconciled below. The PHOENIX full evaluation had a predeclared one-hour / one-GPU-hour / CHF5 ceiling after a conservative 20-minute estimate. CSL-Daily used the same ceiling after a 30-minute estimate. The How2Sign preflight took 242.28 seconds with 1,955 MiB sampled memory; its full run was estimated at 50 minutes, with a two-hour / two-GPU-hour / CHF5 ceiling and a 6,900-second subprocess limit. The prospective attempt and stopping policies remain unchanged in the ledger; a retry requires a specific diagnosis and remaining allowance.
 
 Run `./setup.sh` once per clone and authenticate the `repro-sign` workspace, then use the repository root. The data step verifies pinned archive checksums and reuses complete extraction. Every evaluation requires a fresh output `--run-id`; the wrapper rejects an existing run directory to protect retained evidence. The following example IDs must be changed if already used:
 
@@ -174,7 +176,7 @@ The whole continuation retained its24GPU-hour/CHF90 ceiling, including diagnosti
 
 Reservations reconcile to CHF90: completed teacher8, agnostic10, adaptation10, aware14, CLCL14, diagnostics10, CPU8 and storage16. Original executed stop policies were never extended. Measured full-loader preflight invalidated the unlaunched3-hour CLCL proposal; a reviewed new4-hour/CHF14 plan forecast11,600seconds including all allowed segment startup, full-test evaluation, native checkpoint writes/commits and margin. It was authorized before launch and finished in6,170seconds. The actual32,280-update adaptation forecast similarly replaced an unlaunched3-hour proposal with4.5hours before execution.
 
-A conservative117.63GiB component forecast fits the150GiB one-month storage reservation, at the recorded [Modal rate](https://modal.com/pricing) $0.09/GiB/month ($13.50). No artifacts are automatically deleted; retention beyond one month is outside this forecast. Requested A100/CPU/RAM resources estimate$2.94/hour; four hours plus120seconds load/idle per allowed segment estimated$12.07 against CHF14. CHF1/USD is a conservative planning assumption, not an exchange-rate claim. Actual billed costs are unavailable. No further compute or immediate human judgment is required to close this bounded report.
+A conservative117.63GiB component forecast fits the150GiB one-month storage reservation, at the recorded [Modal rate](https://modal.com/pricing) $0.09/GiB/month ($13.50). No artifacts are automatically deleted; retention beyond one month is outside this forecast. Requested A100/CPU/RAM resources estimate$2.94/hour; four hours plus120seconds load/idle per allowed segment estimated$12.07 against CHF14. CHF1/USD is a conservative planning assumption, not an exchange-rate claim. Billed usage is reconciled below. No further compute or immediate human judgment is required to close this bounded report.
 
 ### Repeat commands and attribution
 
@@ -187,3 +189,22 @@ A conservative117.63GiB component forecast fits the150GiB one-month storage rese
 ```
 
 All agents identify as GPT-6 using Codex; exact model IDs and harness versions are not exposed, and these unknowns are explicit in the machine-readable evidence. `codex-training-orchestrator` planned/investigated the continuation; `cico-training-agent` implemented and executed earlier preparation, diagnostics, teacher and agnostic stages. `cico-recovery-executor` later collected earlier evidence, executed adaptation/aware/paired preflight/full CLCL and final CPU audits, and maintained this report. `cico-independent-launch-reviewer` independently reviewed native source/guards, lineage, measured preflight/recovery/runtime/storage, final closed evidence and metrics; it did not implement or run experiments. Earlier released-checkpoint executors and all 24 target objects remain unchanged. Reviews and later collection do not retroactively confer execution credit.
+
+## Guesses and deviations
+
+- `execution-environment` — Execution environment. Published: Python 3.7 / PyTorch 1.7.1 / CUDA 11 Used: Study base Python 3.12 / PyTorch 2.11 / CUDA 13.1; textblob 0.17.1 for the compatible import Effect: Environment modernization; unchanged official model and metrics. Numeric drift is reported, not corrected by score tuning.
+- `phoenix-alpha` — PHOENIX alpha. Published: The main implementation paragraph states alpha 0.8. Used: The official dataset-specific README command uses alpha 0.9 for PHOENIX and 0.8 for the other datasets. Effect: Follow executable dataset-specific author recipe, note prose omission.
+- `checkpoint-evaluation-scope` — Scope. Published: Training and evaluation of the domain-aware encoder and CLCL Used: Full released-checkpoint evaluation on all three test sets using released features Effect: This does not establish end-to-end training reproducibility; the released archive contains test features only.
+- `preflight-batch-subset` — Preflight batch/subset. Published: Full-test evaluation with batch size 256 in the released code Used: A 16-query diagnostic followed by a 256-query scale check; full evaluation uses the default batch size of 256. Effect: Preflight numbers excluded from targets.
+
+- `phoenix-paired-feature-loader` — Corrected the PHOENIX training loader to read the adapted encoder’s stream from the designated domain-aware path. The original loader read the agnostic path twice.
+
+- `adaptation-checkpoint-selection` — The PHOENIX I3D adaptation uses all closed training pseudo-clips and the epoch-15 checkpoint. The native learning-rate milestones follow epoch 15, and the empty validation pass does not select a checkpoint.
+
+## Noncompliance
+
+None.
+
+## Modal billing reconciliation
+
+Modal billing attributes 12.8001 GPU-hours and USD 36.6364 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.

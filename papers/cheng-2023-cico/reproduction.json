@@ -26,7 +26,7 @@
       "harness": "Codex",
       "scope": "Read-only scientific interpretation of the paper and completed evaluation evidence, followed by README/JSON/PR narrative maintenance on 2026-10-02. No model or experiment execution. Exact model ID and harness version unavailable.",
       "evidence": [
-        "Explicit 2026-10-02 session attestation: active instructions identify GPT-6 using Codex; exact versions are not exposed. Reviewed paper Sections 4.2\u20135 and Tables 1\u20139 against the completed report; preserved every target and run object, including execution agent_ids."
+        "Explicit 2026-10-02 session attestation: active instructions identify GPT-6 using Codex; exact versions are not exposed. Reviewed paper Sections 4.2–5 and Tables 1–9 against the completed report; preserved every target and run object, including execution agent_ids."
       ]
     },
     {
@@ -62,7 +62,7 @@
       "harness": "Codex",
       "scope": "Independent read-only review of native CLCL initialization, optimizer/negative-pool semantics, checkpoint recovery patches and bounded diagnostic; no execution. Exact model ID and harness version unavailable in inherited session.",
       "evidence": [
-        "Delegated GPT-6/Codex review on2026-10-03 inspected pinned38a4f7b and patches0010\u20130012; approved bounded diagnostic scope after source/AST checks, not full training."
+        "Delegated GPT-6/Codex review on2026-10-03 inspected pinned38a4f7b and patches0010–0012; approved bounded diagnostic scope after source/AST checks, not full training."
       ]
     },
     {
@@ -87,7 +87,7 @@
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-18c499092df491b0eb4eed3a1c0266b67a93ae13-2026-10-01.json",
       "sha256": "61a45da0c6d25859bc8abba10df4096806e371ca2b326b5d3881043781fcf780"
@@ -248,7 +248,76 @@
       "status": "in_progress",
       "url": []
     },
-    "detail": "User authorized selection of ten unassigned final papers from the reproduction tracker, execution and separate pull requests. Export schema nests final reviewed paper in expand.paper and has no legacy confirmation field; database id is distinct from paper_id. No absent review fields were fabricated."
+    "detail": "Final-paper Reproduction Tracker export retained with redactions and its original source hash.",
+    "normalized": {
+      "title": "CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning",
+      "year": 2023,
+      "venue": "CVPR",
+      "pdf_url": "https://arxiv.org/pdf/2303.12793",
+      "code_repos": [
+        "https://github.com/FangyunWei/SLRT"
+      ],
+      "what_to_reproduce": "Table 1, Table 2, Table 3",
+      "metric_ids": [
+        "atdcwvw8q2dlwnd",
+        "funxabitmckwv4q"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "atdcwvw8q2dlwnd",
+          "name": "R@K",
+          "url": null
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "funxabitmckwv4q",
+          "name": "MedianRank",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "wk5mci5wniesf1j",
+          "name": "PHOENIX-2014-T",
+          "available": "yes",
+          "license": "CC BY-SA 3.0",
+          "urls": [
+            "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/"
+          ],
+          "comments": "Extension of PHOENIX-2014 with German translation annotations"
+        },
+        {
+          "id": "1g16lw4q8f2emor",
+          "name": "How2Sign",
+          "available": "yes",
+          "license": "Custom (research only)",
+          "urls": [
+            "https://how2sign.github.io/"
+          ],
+          "comments": "American Sign Language instructional video dataset"
+        },
+        {
+          "id": "7m5rugi6d1jlpb6",
+          "name": "CSL-Daily",
+          "available": "yes",
+          "license": "Custom (research only)",
+          "urls": [
+            "https://ustc-slr.github.io/datasets/2021_csl_daily/"
+          ],
+          "comments": "Chinese Sign Language large-scale continuous SLT dataset with spoken language translations and gloss-level annotations on topics around people's daily lives (e.g., travel, shopping, medical care)"
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": ""
+    }
   },
   "paper": {
     "title": "CiCo: Domain-Aware Sign Language Retrieval via Cross-Lingual Contrastive Learning",
@@ -298,7 +367,7 @@
       "kind": "paper",
       "url": "https://arxiv.org/pdf/2201.02495v1",
       "revision_or_sha256": "3665f77714b69d2f806b5cc49e320f050c9c8b9add957366625ff32a4600a379",
-      "role": "Tables 6\u20137 verify all 48 copied comparison numbers, including the literal, inconsistent Translation V2T median rank of 56.1. The later CVPR version updates the How2Sign baselines and does not match the values copied into CiCo."
+      "role": "Tables 6–7 verify all 48 copied comparison numbers, including the literal, inconsistent Translation V2T median rank of 56.1. The later CVPR version updates the How2Sign baselines and does not match the values copied into CiCo."
     }
   ],
   "status": {
@@ -1315,7 +1384,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1328,7 +1397,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1345,7 +1414,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1358,7 +1427,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1375,7 +1444,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1388,7 +1457,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1405,7 +1474,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1418,7 +1487,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1435,7 +1504,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1448,7 +1517,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1465,7 +1534,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1478,7 +1547,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1495,7 +1564,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1508,7 +1577,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1525,7 +1594,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1538,7 +1607,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1555,7 +1624,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1568,7 +1637,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1585,7 +1654,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1598,7 +1667,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1615,7 +1684,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1628,7 +1697,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1645,7 +1714,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1658,7 +1727,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1675,7 +1744,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1688,7 +1757,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1705,7 +1774,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1718,7 +1787,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1735,7 +1804,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1748,7 +1817,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1765,7 +1834,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1778,7 +1847,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1795,7 +1864,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1808,7 +1877,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1825,7 +1894,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1838,7 +1907,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1855,7 +1924,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1868,7 +1937,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1885,7 +1954,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1898,7 +1967,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1915,7 +1984,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1928,7 +1997,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1945,7 +2014,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1958,7 +2027,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -1975,7 +2044,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -1988,7 +2057,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2005,7 +2074,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2018,7 +2087,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2035,7 +2104,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2048,7 +2117,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2065,7 +2134,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2078,7 +2147,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2095,7 +2164,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2108,7 +2177,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2125,7 +2194,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2138,7 +2207,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2155,7 +2224,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2168,7 +2237,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2185,7 +2254,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2198,7 +2267,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2215,7 +2284,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2228,7 +2297,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2245,7 +2314,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2258,7 +2327,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2275,7 +2344,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2288,7 +2357,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2305,7 +2374,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2318,7 +2387,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2335,7 +2404,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2348,7 +2417,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2365,7 +2434,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2378,7 +2447,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2395,7 +2464,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2408,7 +2477,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2425,7 +2494,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2438,7 +2507,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2455,7 +2524,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2468,7 +2537,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2485,7 +2554,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2498,7 +2567,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2515,7 +2584,7 @@
       "metric_id": "T2V-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2528,7 +2597,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2545,7 +2614,7 @@
       "metric_id": "T2V-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2558,7 +2627,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2575,7 +2644,7 @@
       "metric_id": "T2V-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2588,7 +2657,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2605,7 +2674,7 @@
       "metric_id": "T2V-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2618,7 +2687,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2635,7 +2704,7 @@
       "metric_id": "V2T-R1",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2648,7 +2717,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2665,7 +2734,7 @@
       "metric_id": "V2T-R5",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2678,7 +2747,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2695,7 +2764,7 @@
       "metric_id": "V2T-R10",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2708,7 +2777,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -2725,7 +2794,7 @@
       "metric_id": "V2T-MedianR",
       "copied_baseline": true,
       "evidence": [
-        "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+        "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
         "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
       ],
       "result": {
@@ -2738,7 +2807,7 @@
         "artifact_ids": [],
         "gate_ids": [],
         "evidence": [
-          "Paper \u00a74.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
+          "Paper §4.2 compares to cited SPOT-ALIGN [18] and Translation [10]; reproduced scope is three Ours rows.",
           "The exact comparison cell was verified against Duarte et al., SPOT-ALIGN, arXiv:2201.02495v1: Table 6 for How2Sign and Table 7 for PHOENIX. Later versions change the How2Sign values, explaining the provenance discrepancy."
         ]
       },
@@ -3661,7 +3730,6 @@
         "gpu_count": 0,
         "profile": "repro-sign",
         "environment": "main",
-        "modal_app_id": "ap-RyXszdj6zO8XQEAwMsM7c8",
         "platform": "modal",
         "modal_profile": "repro-sign",
         "shared_cache": {
@@ -3672,7 +3740,10 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RyXszdj6zO8XQEAwMsM7c8"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RyXszdj6zO8XQEAwMsM7c8",
+        "modal_app_ids": [
+          "ap-RyXszdj6zO8XQEAwMsM7c8"
+        ]
       },
       "started_at_utc": "2026-10-01T10:28:41.353304+00:00",
       "finished_at_utc": "2026-10-01T10:31:56.300663+00:00",
@@ -3731,11 +3802,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-RUNvxALkbGZ5aruz14cUwQ",
         "image_id": "im-tYE1c4P8oO2o7zk8n19FIo",
         "modal_task_id": "ta-01M3VGMDH7VQK3D3SABRR0SWGR",
         "function_call_id": null,
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RUNvxALkbGZ5aruz14cUwQ"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RUNvxALkbGZ5aruz14cUwQ",
+        "modal_app_ids": [
+          "ap-RUNvxALkbGZ5aruz14cUwQ"
+        ],
+        "usage": {
+          "gpu_hours": 0.00831805,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.01338208,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-RUNvxALkbGZ5aruz14cUwQ. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "started_at_utc": "2026-10-01T10:32:55.214943+00:00",
       "finished_at_utc": "2026-10-01T10:37:58.833825+00:00",
@@ -3793,9 +3873,18 @@
           }
         },
         "image_id": "im-tYE1c4P8oO2o7zk8n19FIo",
-        "modal_app_id": "ap-eGmNFk8iuLzFeIi3SMndO1",
         "function_call_id": "fc-01M3VGR34WJ6NRMG1K9XNKKEN0",
-        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-eGmNFk8iuLzFeIi3SMndO1"
+        "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-eGmNFk8iuLzFeIi3SMndO1",
+        "modal_app_ids": [
+          "ap-eGmNFk8iuLzFeIi3SMndO1"
+        ],
+        "usage": {
+          "gpu_hours": 0.00704807,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.01000061,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-eGmNFk8iuLzFeIi3SMndO1. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "dataset": "ph",
       "subset": 16,
@@ -3861,10 +3950,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-N55WM2cD4DoJgFgPBiV2Pn",
         "function_call_id": "fc-01M3VGVV8ZGQQ6SSYCNCY0MTDN",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-N55WM2cD4DoJgFgPBiV2Pn",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-N55WM2cD4DoJgFgPBiV2Pn"
+        ],
+        "usage": {
+          "gpu_hours": 0.01552083,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.0224645,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-N55WM2cD4DoJgFgPBiV2Pn. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "preflight-ph-3",
       "dataset": "ph",
@@ -3925,10 +4023,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-RB297o8duhnTsI04MiD7of",
         "function_call_id": "fc-01M3VGZ0BRNBHWQNZ5SACARHJP",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RB297o8duhnTsI04MiD7of",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-RB297o8duhnTsI04MiD7of"
+        ],
+        "usage": {
+          "gpu_hours": 0.05987725,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08493623,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-RB297o8duhnTsI04MiD7of. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "full-ph-1",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/modal_app.py --stage eval --dataset ph --subset 0 --run-id full-ph-1",
@@ -4000,10 +4107,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-OyKwCFnXPPh60M4AEslvv0",
         "function_call_id": "fc-01M3VGZ0EH23CXWYC6C1EJ7EWY",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-OyKwCFnXPPh60M4AEslvv0",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-OyKwCFnXPPh60M4AEslvv0"
+        ],
+        "usage": {
+          "gpu_hours": 0.09461765,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.13418975,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-OyKwCFnXPPh60M4AEslvv0. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "preflight-h2s-1",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/modal_app.py --stage eval --dataset h2s --subset 256 --run-id preflight-h2s-1",
@@ -4076,10 +4192,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-ePuf5LNGzw6jQrahR2a3no",
         "function_call_id": "fc-01M3VGZ0PT96YS1N9FBP4M5Y45",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ePuf5LNGzw6jQrahR2a3no",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-ePuf5LNGzw6jQrahR2a3no"
+        ],
+        "usage": {
+          "gpu_hours": 0.02977052,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.04226688,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-ePuf5LNGzw6jQrahR2a3no. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "preflight-csl-1",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/modal_app.py --stage eval --dataset csl --subset 16 --run-id preflight-csl-1",
@@ -4152,10 +4277,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-JQOysWax5EqHCEEe7z66PV",
         "function_call_id": "fc-01M3VH4RNYAR34TVZ02DDXX2BJ",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-JQOysWax5EqHCEEe7z66PV",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-JQOysWax5EqHCEEe7z66PV"
+        ],
+        "usage": {
+          "gpu_hours": 0.0985765,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.13976273,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-JQOysWax5EqHCEEe7z66PV. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "full-csl-1",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/modal_app.py --stage eval --dataset csl --subset 0 --run-id full-csl-1",
@@ -4227,10 +4361,19 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-IGtSMOKofhTs4MC4SAHk5Q",
         "function_call_id": "fc-01M3VH9VMVYT8G6F8F7XGR1RK2",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-IGtSMOKofhTs4MC4SAHk5Q",
-        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP"
+        "image_id": "im-5Bm6i5wypKGHVHK96xT4kP",
+        "modal_app_ids": [
+          "ap-IGtSMOKofhTs4MC4SAHk5Q"
+        ],
+        "usage": {
+          "gpu_hours": 0.19813348,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.28088515,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-IGtSMOKofhTs4MC4SAHk5Q. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A10G USD 1.1/h), assuming these rates applied during the run."
+        }
       },
       "run_id": "full-h2s-1",
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/cheng-2023-cico/modal_app.py --stage eval --dataset h2s --subset 0 --run-id full-h2s-1 --max-seconds 6900",
@@ -4313,8 +4456,10 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-FM069jJBPsg5TLhhUsQ3t8",
-        "gpu_allocated": false
+        "gpu_allocated": false,
+        "modal_app_ids": [
+          "ap-FM069jJBPsg5TLhhUsQ3t8"
+        ]
       },
       "configuration": {
         "scope": "Download official encoder initialization weights and inspect tensor-only checkpoint structure; inventory available raw video filenames against exact upstream training/test labels. No GPU, no training, no dataset mutation.",
@@ -4380,8 +4525,10 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "modal_app_id": "ap-MaljXFey1C6f1HecNprx1p",
-        "function_call_id": "fc-01M41JFT3F4XFGTBCTQSMT64HJ"
+        "function_call_id": "fc-01M41JFT3F4XFGTBCTQSMT64HJ",
+        "modal_app_ids": [
+          "ap-MaljXFey1C6f1HecNprx1p"
+        ]
       },
       "configuration": {
         "scope": "Download official encoder initialization weights and inspect tensor-only checkpoint structure; inventory available raw video filenames against exact upstream training/test labels. No GPU, no training, no dataset mutation.",
@@ -4446,8 +4593,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-qNxi00elcwv01ioh1Wl4bo",
-        "function_call_id": "fc-01M41JX9B9XDAFGSP0FBKBXYS6"
+        "function_call_id": "fc-01M41JX9B9XDAFGSP0FBKBXYS6",
+        "modal_app_ids": [
+          "ap-qNxi00elcwv01ioh1Wl4bo"
+        ],
+        "usage": {
+          "gpu_hours": 0.00943957,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.02802037,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-qNxi00elcwv01ioh1Wl4bo. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native I3D real-video inference/throughput plus diagnostic SGD mechanics/fresh model and optimizer restoration. No target evidence; diagnostic pseudo labels use argmax, full threshold/NMS recipe remains required.",
@@ -4511,8 +4667,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-WQj62fUce75DptlUkm0OWJ",
-        "function_call_id": "fc-01M41JY6D6QJK5TXNCCRRP2E51"
+        "function_call_id": "fc-01M41JY6D6QJK5TXNCCRRP2E51",
+        "modal_app_ids": [
+          "ap-WQj62fUce75DptlUkm0OWJ"
+        ]
       },
       "configuration": {
         "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
@@ -4576,8 +4734,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-ScMWQVBHAzfshiMIrh90lk",
-        "function_call_id": "fc-01M41K1D6RNVNMC31YGVZ9NKZH"
+        "function_call_id": "fc-01M41K1D6RNVNMC31YGVZ9NKZH",
+        "modal_app_ids": [
+          "ap-ScMWQVBHAzfshiMIrh90lk"
+        ]
       },
       "configuration": {
         "scope": "CPU decoder frame-index and RGB equivalence checks, inclusive windows, tail and shortvideo. No training.",
@@ -4641,8 +4801,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-pQ7VycDLrqyuKaa6cifLNI",
-        "function_call_id": "fc-01M41K50JHDJMJYX942HE832D9"
+        "function_call_id": "fc-01M41K50JHDJMJYX942HE832D9",
+        "modal_app_ids": [
+          "ap-pQ7VycDLrqyuKaa6cifLNI"
+        ],
+        "usage": {
+          "gpu_hours": 0.00957821,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.02820974,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-pQ7VycDLrqyuKaa6cifLNI. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native I3D real-video inference/throughput plus diagnostic SGD mechanics/fresh model and optimizer restoration. No target evidence; diagnostic pseudo labels use argmax, full threshold/NMS recipe remains required.",
@@ -4707,8 +4876,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-A0hAn9QgqyoOQZVzeNN8PC",
-        "function_call_id": "fc-01M41K7HN451XH4F5XFX8QGXRG"
+        "function_call_id": "fc-01M41K7HN451XH4F5XFX8QGXRG",
+        "modal_app_ids": [
+          "ap-A0hAn9QgqyoOQZVzeNN8PC"
+        ]
       },
       "configuration": {
         "scope": "Read-only exactPHOENIX byteSHA256/frame metadata and author train/test identity audit for full-run window count/throughput forecast.",
@@ -4772,8 +4943,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-vrDBciNs15khMqJMSxc0vv",
-        "function_call_id": "fc-01M41KJ5W68ZZBM9NG5RQPVE5G"
+        "function_call_id": "fc-01M41KJ5W68ZZBM9NG5RQPVE5G",
+        "modal_app_ids": [
+          "ap-vrDBciNs15khMqJMSxc0vv"
+        ],
+        "usage": {
+          "gpu_hours": 0.0089391,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.02636203,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-vrDBciNs15khMqJMSxc0vv. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native pseudo threshold0.6/NMS24/clipwrite on3real PHX videos; no final target.",
@@ -4840,8 +5020,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-pCxNeEzMwCTsdjDeybMvEX",
-        "function_call_id": "fc-01M41KVTMT0R4RJNZRDSW9BDFB"
+        "function_call_id": "fc-01M41KVTMT0R4RJNZRDSW9BDFB",
+        "modal_app_ids": [
+          "ap-pCxNeEzMwCTsdjDeybMvEX"
+        ],
+        "usage": {
+          "gpu_hours": 0.00911515,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.02684595,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-pCxNeEzMwCTsdjDeybMvEX. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native3video pseudo extraction then closed-rank replay and simulated post-directory/pre-receipt interruption recovery; exact artifact-hash equality required.",
@@ -4908,8 +5097,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-jTLhi1MCP4zg27MkV518Qh",
-        "function_call_id": "fc-01M41KZ9GTJQW15JWCPEA951D6"
+        "function_call_id": "fc-01M41KZ9GTJQW15JWCPEA951D6",
+        "modal_app_ids": [
+          "ap-jTLhi1MCP4zg27MkV518Qh"
+        ],
+        "usage": {
+          "gpu_hours": 0.01199296,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.03532166,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-jTLhi1MCP4zg27MkV518Qh. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native3video pseudo extraction then closed-rank replay and simulated post-directory/pre-receipt interruption recovery; exact artifact-hash equality required. Additional codec-open/nonempty/decode-output assertions.",
@@ -4976,8 +5174,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-ptrUKZx3D3xVTdREcJSgrj",
-        "function_call_id": "fc-01M41M4ZFK5G3RDN1GE1BJ6WXQ"
+        "function_call_id": "fc-01M41M4ZFK5G3RDN1GE1BJ6WXQ",
+        "modal_app_ids": [
+          "ap-ptrUKZx3D3xVTdREcJSgrj"
+        ],
+        "usage": {
+          "gpu_hours": 1.98841107,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 5.85882135,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-ptrUKZx3D3xVTdREcJSgrj. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Full native pseudo labels on7096PHOENIX training videos only;720914windows,threshold0.6,NMS24. No target metrics or encodertraining claimed.",
@@ -5056,8 +5263,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-AZyEJGF3ZSi0KLY1X4lTgQ",
-        "function_call_id": "fc-01M41ME01147YPGG4TFS2W4F62"
+        "function_call_id": "fc-01M41ME01147YPGG4TFS2W4F62",
+        "modal_app_ids": [
+          "ap-AZyEJGF3ZSi0KLY1X4lTgQ"
+        ],
+        "usage": {
+          "gpu_hours": 0.0211112,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.05984053,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-AZyEJGF3ZSi0KLY1X4lTgQ. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
@@ -5124,8 +5340,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-NrWdyYNw5ta2ZgVYmu8amY",
-        "function_call_id": "fc-01M41MN19XCP5HTF91J53N6H6W"
+        "function_call_id": "fc-01M41MN19XCP5HTF91J53N6H6W",
+        "modal_app_ids": [
+          "ap-NrWdyYNw5ta2ZgVYmu8amY"
+        ]
       },
       "configuration": {
         "scope": "CPU compare closed native epoch1and2 checkpoints, parameter differences and RNG state to localize failed exactrecovery proof.",
@@ -5186,8 +5404,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-n4naw9atubmaQwjaAfE42Z",
-        "gpu_allocated": false
+        "gpu_allocated": false,
+        "modal_app_ids": [
+          "ap-n4naw9atubmaQwjaAfE42Z"
+        ],
+        "usage": {
+          "gpu_hours": 0,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.153e-05,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-n4naw9atubmaQwjaAfE42Z. GPU rates from modal_repro_sign.sh billing rates --json. The completed billing window has no charged GPU rows for this app."
+        }
       },
       "configuration": {
         "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
@@ -5262,8 +5489,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-AOirTeSphiZGkB7gPrFsn4",
-        "function_call_id": "fc-01M41MV5BZRZXJ03S97S5EBTW4"
+        "function_call_id": "fc-01M41MV5BZRZXJ03S97S5EBTW4",
+        "modal_app_ids": [
+          "ap-AOirTeSphiZGkB7gPrFsn4"
+        ],
+        "usage": {
+          "gpu_hours": 0.01000019,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.02823056,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-AOirTeSphiZGkB7gPrFsn4. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native I3D train/val with2real generatedpseudo clips, diagnosticrepeatto4trainingrows, correctbatchlabels, batch4SGD and exact uninterrupted2epoch versus1+resume1epoch model/optimizer/RNG proof. Diagnosticvalusestrainclips explicitly; no target.",
@@ -5334,8 +5570,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-37z2qYZgWuC4xFxYWnEoP2",
-        "function_call_id": "fc-01M41N5A3S06Z7MCGM064RYQ1J"
+        "function_call_id": "fc-01M41N5A3S06Z7MCGM064RYQ1J",
+        "modal_app_ids": [
+          "ap-37z2qYZgWuC4xFxYWnEoP2"
+        ],
+        "usage": {
+          "gpu_hours": 0.02858332,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08059408,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-37z2qYZgWuC4xFxYWnEoP2. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Exactfresh native model/optimizer/allRNG restoration assertions, correct resumedbatch/labels versuscontinuouspath, finiteoptimizer state; preserve nativebenchmark; record independently repeatedfloatingpointdrift ratherthan forcebitwise equality.",
@@ -5406,8 +5651,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-zsvOqfTluKlOylf81gLN4U",
-        "function_call_id": "fc-01M41NTVHMZPWADQ3D1DXYDTXF"
+        "function_call_id": "fc-01M41NTVHMZPWADQ3D1DXYDTXF",
+        "modal_app_ids": [
+          "ap-zsvOqfTluKlOylf81gLN4U"
+        ],
+        "usage": {
+          "gpu_hours": 0.02082444,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.05872427,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-zsvOqfTluKlOylf81gLN4U. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Exactfresh native model/optimizer/allRNG restoration assertions, correct resumedbatch/labels versuscontinuouspath, finiteoptimizer state; preserve nativebenchmark; record independently repeatedfloatingpointdrift ratherthan forcebitwise equality.",
@@ -5479,8 +5733,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-HLKnKc2vhvFBkBDAmqxJip",
-        "function_call_id": "fc-01M41NZQQM9JRDW84VPZ9BFR85"
+        "function_call_id": "fc-01M41NZQQM9JRDW84VPZ9BFR85",
+        "modal_app_ids": [
+          "ap-HLKnKc2vhvFBkBDAmqxJip"
+        ],
+        "usage": {
+          "gpu_hours": 0.02850992,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.08031814,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-HLKnKc2vhvFBkBDAmqxJip. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "32 distinct real training-only native pseudo clips, batch4, two native epochs, empty validation execution and measured steady batch throughput. Final epoch only; diagnostic not a target.",
@@ -5552,8 +5815,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-YRMgVIX6pwn1eYA8XmY9ZQ",
-        "function_call_id": "fc-01M41P2PGZ6TGA60EBGNXPY3J5"
+        "function_call_id": "fc-01M41P2PGZ6TGA60EBGNXPY3J5",
+        "modal_app_ids": [
+          "ap-YRMgVIX6pwn1eYA8XmY9ZQ"
+        ],
+        "usage": {
+          "gpu_hours": 0.0321362,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.09464755,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-YRMgVIX6pwn1eYA8XmY9ZQ. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native PHOENIX per-window1024-d feature extraction for three real training videos; verify output shapes/identity plus closed-rank skip and unreceipted-rank regeneration.",
@@ -5618,8 +5890,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-Zj2DPh4cjvGvcOfgkQUJVT",
-        "function_call_id": "fc-01M41QGC4XED16XX7PK2YMGEVT"
+        "function_call_id": "fc-01M41QGC4XED16XX7PK2YMGEVT",
+        "modal_app_ids": [
+          "ap-Zj2DPh4cjvGvcOfgkQUJVT"
+        ]
       },
       "configuration": {
         "scope": "Acquire and SHA256 verify published OpenAI CLIP ViT-B/32 initialization for independent native CLCL training. Never substitute released CiCo retrieval checkpoint.",
@@ -5682,9 +5956,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-4Lpt8BmHT5kvqaDKkdzfOI",
         "function_call_id": "fc-01M41R78RCHNKWFWBBXJBRVFA9",
-        "gpu_hours": 2.3163627736641668
+        "modal_app_ids": [
+          "ap-4Lpt8BmHT5kvqaDKkdzfOI"
+        ],
+        "usage": {
+          "gpu_hours": 2.3429351,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 6.90103752,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-4Lpt8BmHT5kvqaDKkdzfOI. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native domain-agnostic PHOENIX train/test feature extraction,7096train+642test,775911windows,1024float32 features. No scientific target produced by preparation.",
@@ -5765,8 +6047,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-FNqHM2Tbh7zsK8C3iRNNaH",
-        "function_call_id": "fc-01M41S1VZ3PSK7JV6AFQ4NNEH7"
+        "function_call_id": "fc-01M41S1VZ3PSK7JV6AFQ4NNEH7",
+        "modal_app_ids": [
+          "ap-FNqHM2Tbh7zsK8C3iRNNaH"
+        ],
+        "usage": {
+          "gpu_hours": 0.0920349,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.27114661,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-FNqHM2Tbh7zsK8C3iRNNaH. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "512 actual training-feature/query pairs, truebatch512/accumulation1, native fp16-containing parameter precision and BertAdam; two-epoch mechanics and fresh resume. Same agnostic stream used twice and16training-query evaluation explicitly diagnostic. Full paired-aware/full-loader gate remains.",
@@ -5839,7 +6130,9 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-Bm5lPWqYIK5FAIszUoPcjv"
+        "modal_app_ids": [
+          "ap-Bm5lPWqYIK5FAIszUoPcjv"
+        ]
       },
       "configuration": {
         "scope": "Read-only actual frame counts for all author CSL train/test filenames to establish an evidence-based end-to-end compute forecast. Does not imply complete data-integrity audit or a launched GPU attempt.",
@@ -5904,8 +6197,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-DrQT1ZleH9qu1BOlE5OUUw",
-        "function_call_id": "fc-01M41TY4FT1JF6KVHZRYCJRS0P"
+        "function_call_id": "fc-01M41TY4FT1JF6KVHZRYCJRS0P",
+        "modal_app_ids": [
+          "ap-DrQT1ZleH9qu1BOlE5OUUw"
+        ]
       },
       "configuration": {
         "scope": "CPU audit of all256 closed pseudo rank receipts and generated clip SHA/size/decoded frame metadata; no model execution. Only launch after parent pseudo native exit0 and complete receipt. Canonical closed-training-manifest is idempotent exactbytes.",
@@ -5972,8 +6267,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-ABD6dDa7yovE1KDm4KaxZb",
-        "function_call_id": "fc-01M41V2HF2F1B1EASZA44VCWB3"
+        "function_call_id": "fc-01M41V2HF2F1B1EASZA44VCWB3",
+        "modal_app_ids": [
+          "ap-ABD6dDa7yovE1KDm4KaxZb"
+        ]
       },
       "configuration": {
         "scope": "Read canonical CSL annotation info.length (documentedvideo framecount) for authortrain/test membership;16 deterministicactualvideo checks. Cheap distinctdata-source forecast afterbounded allvideo metadata tasktimeout; noGPU orfulltraining.",
@@ -6038,8 +6335,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-5qU8SzVear7Y5bORZlHzTA",
-        "function_call_id": "fc-01M41V8N2QMWZSSWE24C6Y5PKJ"
+        "function_call_id": "fc-01M41V8N2QMWZSSWE24C6Y5PKJ",
+        "modal_app_ids": [
+          "ap-5qU8SzVear7Y5bORZlHzTA"
+        ]
       },
       "configuration": {
         "scope": "Pinned native train/test num_frames forecast; preserves1 missing and3 differing canonical annotation rows and checks these4 plus16 deterministic actualvideos. Forecast evidence only, not full data gate.",
@@ -6102,8 +6401,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-GE8IhcRYmMEo13e2Y74V6B",
-        "function_call_id": "fc-01M41VP7764J9NW3EMRMEMP2MV"
+        "function_call_id": "fc-01M41VP7764J9NW3EMRMEMP2MV",
+        "modal_app_ids": [
+          "ap-GE8IhcRYmMEo13e2Y74V6B"
+        ]
       },
       "configuration": {
         "scope": "Actualframecount metadata through authorlabel-derived paths, eliminating expensive rglobinventory;16concurrentreads/256boundeditems with durableprogress. Distinct justifiedI/O hypothesis after1800s exhaustedinventory forecast and proof labelnumframes insufficient. CPUonly withinaggregate4h/CHF8.",
@@ -6167,9 +6468,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-CXTLdOIOuUQT49IWJ9Z2WL",
         "function_call_id": "fc-01M42Q24B7MZ256SK13YP4N4ET",
-        "gpu_hours": 2.152389286879722
+        "modal_app_ids": [
+          "ap-CXTLdOIOuUQT49IWJ9Z2WL"
+        ],
+        "usage": {
+          "gpu_hours": 2.18700486,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 6.16123008,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-CXTLdOIOuUQT49IWJ9Z2WL. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "All8608 native teacher pseudo clips;15epochs,4batch,32280updates,SGD.01/momentum.9/wd0/seed0,5383teacher-classhead,workers0,finalepoch15 selection. Zero validation rows produce no scientificvalidationmetric.",
@@ -6280,8 +6589,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-Se3JpqnjJSkP4pwK0dnntv",
-        "function_call_id": "fc-01M41VX2R2X02X1TPR5VC32C4C"
+        "function_call_id": "fc-01M41VX2R2X02X1TPR5VC32C4C",
+        "modal_app_ids": [
+          "ap-Se3JpqnjJSkP4pwK0dnntv"
+        ]
       },
       "configuration": {
         "scope": "Four deterministictestvideos: compare actualSVU+nativeOpenCV framecount andbothreleased feature temporal lengths againstnative labelcounts. Resolve sourceprotocol meaning; no model execution or target changes.",
@@ -6343,8 +6654,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-ocgizkVjVyd2uhD2elzFhM",
-        "function_call_id": "fc-01M41WE7JEMG93ZT630AA0B2P0"
+        "function_call_id": "fc-01M41WE7JEMG93ZT630AA0B2P0",
+        "modal_app_ids": [
+          "ap-ocgizkVjVyd2uhD2elzFhM"
+        ]
       },
       "configuration": {
         "scope": "Read-only hashes for alreadyterminal continuation runs andpinnedinitializationfiles. Excludesrunningagnostic/adaptation; clips alreadySHAverified viaclosedrank/pseudomanifest retainedindirectly. No model execution.",
@@ -6437,8 +6750,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-t6aw3qehvwy3XGStI92Z3I",
-        "function_call_id": "fc-01M42Q2FSBMA3GHHEHRVXJMK20"
+        "function_call_id": "fc-01M42Q2FSBMA3GHHEHRVXJMK20",
+        "modal_app_ids": [
+          "ap-t6aw3qehvwy3XGStI92Z3I"
+        ]
       },
       "configuration": {
         "scope": "Close all 7738 native feature bytes, identity/rank hashes and deterministic ZIP_STORED archive; no model execution. Within original CPU4h/CHF8 aggregate.",
@@ -6500,8 +6815,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-Bn2awGLASSvmc0TNm4LVCD",
-        "function_call_id": "fc-01M42YGKH8Z8E7S11CJRB8V4HK"
+        "function_call_id": "fc-01M42YGKH8Z8E7S11CJRB8V4HK",
+        "modal_app_ids": [
+          "ap-Bn2awGLASSvmc0TNm4LVCD"
+        ]
       },
       "configuration": {
         "scope": "After full15-epoch adaptation terminal native0 only: close all adaptation files/checkpoints with stable size/mtime and SHA256; no model execution. Retain epoch15 final selection and original run attribution.",
@@ -6568,8 +6885,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-ZZ4aNSNRFU20rvw2Q2Y5DW",
-        "function_call_id": "fc-01M42YJBR7FF4YEN8BKH8DG7X3"
+        "function_call_id": "fc-01M42YJBR7FF4YEN8BKH8DG7X3",
+        "modal_app_ids": [
+          "ap-ZZ4aNSNRFU20rvw2Q2Y5DW"
+        ],
+        "usage": {
+          "gpu_hours": 0.00611132,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.01799905,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-ZZ4aNSNRFU20rvw2Q2Y5DW. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Actual finalepoch15 adapted encoder: native126window/3realvideo features, finite float32x1024, closedrankskip and incomplete-rank regeneration exacthash proof. No scientific retrievaltarget.",
@@ -6652,8 +6978,17 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-9ft4aGcdrhpGchpd98FZ0S",
-        "function_call_id": "fc-01M42YRYH2A53J63EV5YS8RGMS"
+        "function_call_id": "fc-01M42YRYH2A53J63EV5YS8RGMS",
+        "modal_app_ids": [
+          "ap-9ft4aGcdrhpGchpd98FZ0S"
+        ],
+        "usage": {
+          "gpu_hours": 3.64041981,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 10.72862096,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-9ft4aGcdrhpGchpd98FZ0S. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native domain-aware PHOENIX train/test features from independently trained finalepoch15 I3D; all7096train+642test,775911windows,1024float32 channels. Preparation only; retrieval targets remain pending.",
@@ -6734,8 +7069,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-Gqvdav7tgmsjO8zysW68kP",
-        "function_call_id": "fc-01M43BBHQ1GE1PVTRV6XD43JQS"
+        "function_call_id": "fc-01M43BBHQ1GE1PVTRV6XD43JQS",
+        "modal_app_ids": [
+          "ap-Gqvdav7tgmsjO8zysW68kP"
+        ]
       },
       "configuration": {
         "scope": "After fullawarefeaturestage terminal only: close all7738nativefeature bytes/identity/rank/membership anddeterministicZIP_STORED withreadbackaudit; exact adaptedcheckpointSHA is mandatory. WithinCPU4h/CHF8 andwhole24GPUh/CHF90.",
@@ -6797,8 +7134,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-97raWqb9hJB3G5454cdoHA",
-        "function_call_id": "fc-01M42ZSD3V7N6R0MD1EA2JHX3G"
+        "function_call_id": "fc-01M42ZSD3V7N6R0MD1EA2JHX3G",
+        "modal_app_ids": [
+          "ap-97raWqb9hJB3G5454cdoHA"
+        ]
       },
       "configuration": {
         "scope": "Count exact pinnedauthor How2Sign label frame/window totals to make lower-bound compute feasibility evidence explicit; no rawacquisition, decoding, GPU or model execution. Within originalCPU4h/CHF8 aggregate.",
@@ -7010,8 +7349,18 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-AmBO9pL7ZWfpMN9ZKMdpFM",
-        "function_call_id": "fc-01M43C2CWZSS43XPPJAMSH1Y2Z"
+        "function_call_id": "fc-01M43C2CWZSS43XPPJAMSH1Y2Z",
+        "modal_app_ids": [
+          "ap-AmBO9pL7ZWfpMN9ZKMdpFM",
+          "ap-uDEAbHa4PU5CfM2KudTYNd"
+        ],
+        "usage": {
+          "gpu_hours": 0.09561353,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.28161734,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-AmBO9pL7ZWfpMN9ZKMdpFM, ap-uDEAbHa4PU5CfM2KudTYNd. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Actual closedpairedfeatures; all7096training rows/drop_last13updates and642test queries. Native trueglobalbatch512,accumulation1,configured200epoch/2600updateoptimizer horizon,seed42/sampler0/alpha.9. Stopafter1completeepoch,thenfreshprocessresume for2ndepoch within SAME original1800s deadline,max2segments. Diagnostic metrics never finalpaperresults.",
@@ -7162,8 +7511,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-xl1B45Zpx8KJpWi3jChYB8",
-        "function_call_id": "fc-01M43CKR1Y0JXP2EA043WJJ77Q"
+        "function_call_id": "fc-01M43CKR1Y0JXP2EA043WJJ77Q",
+        "modal_app_ids": [
+          "ap-xl1B45Zpx8KJpWi3jChYB8"
+        ]
       },
       "configuration": {
         "scope": "Read-only closure of terminal pairedtwoepoch/full-loaderpreflight, including allcheckpoint/state/rawmetric/consolebytes, no model execution. Onlyaftersecondsegmentnative0 and appstopped.",
@@ -7235,15 +7586,24 @@
           }
         },
         "gpu": "A100-80GB",
-        "modal_app_id": "ap-dZxnrcMB1x5YIYBEGFqamR",
-        "function_call_id": "fc-01M43FCG5PX4SY599MS0DSW71C"
+        "function_call_id": "fc-01M43FCG5PX4SY599MS0DSW71C",
+        "modal_app_ids": [
+          "ap-dZxnrcMB1x5YIYBEGFqamR"
+        ],
+        "usage": {
+          "gpu_hours": 1.74552461,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 5.14092226,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-dZxnrcMB1x5YIYBEGFqamR. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        }
       },
       "configuration": {
         "scope": "Native200epochs/2600updates onexact independentlypreparedPHOENIXpairedfeatures,7096train642test,trueglobalbatch512,accumulation1,seed42,sampler0,alpha.9. Native max-testT2VR1 selection/latestties disclosed. No epoch/batch/protocol truncation.",
         "launch_authorization": "RootexplicitAPPROVAL2026-10-04T12:48UTC: NEWUNLAUNCHED14400s/4GPUh/CHF14,max3segments,forecast11600s withinwhole24GPUh/CHF90. IndependenttechnicalPASS0ae059a, actualnative2epoch/full642test/restoration/closedhash/nativeCPUmetricreplayverified. No freshrestart; immutabledeadlinebeginsfirstexecution. Thisprospectivelyreplacesfailedunlaunched3hproposal,notanyexecuteddeadline.",
         "source_sha256": "737c29d41c1c3b910c504542fa71661ead17445476e2cef6b48ba391d5f71e51",
         "wrapper_sha256": "528e6459952bcaa4b311e2f0cfa956f4681b5cad6ed1ad78dddd058f74c50a7a",
-        "wrapper_change": "Onlynewfullfunctiontimeout and fullmax_seconds10800\u219214400; preflight1800s/2segments unchanged. Immutable deadline/claims/resume/completion-only/processgroupguards unchanged. Historicalpreflight sourcepin retained.",
+        "wrapper_change": "Onlynewfullfunctiontimeout and fullmax_seconds10800→14400; preflight1800s/2segments unchanged. Immutable deadline/claims/resume/completion-only/processgroupguards unchanged. Historicalpreflight sourcepin retained.",
         "patches_sha256": {
           "0011-clcl-atomic-recovery-and-selection.patch": "8ee81760e80eaf5ea31426f8b7e934c80ef078d401d07927c4a94a6bf9fcb45d",
           "0012-clcl-native-initialization-audit.patch": "7edad7b0c2da033ff4bdb1cdc726a4351080bc546fb4a6974ec4b376ded6b25b",
@@ -7369,8 +7729,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-TmeLgfOiOCp3Scjii4vENh",
-        "function_call_id": "fc-01M43DC6DS71R80MX9PGYN00KT"
+        "function_call_id": "fc-01M43DC6DS71R80MX9PGYN00KT",
+        "modal_app_ids": [
+          "ap-TmeLgfOiOCp3Scjii4vENh"
+        ]
       },
       "configuration": {
         "scope": "CPUonly replay pinnednative metrics fromclosed642x1x642 similarities and verify latestmax-testselection/fullstatehistories. No model inference/training. Diagnostic2epochs remainnontarget. Newlyadded observational audit function; previous collector functions and fullCLCLdriver/wrapper unchanged.",
@@ -7434,8 +7796,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-KVtFe1yloq2cyNrrXPHqv8",
-        "function_call_id": "fc-01M43NET2V0VCRPEWJAG1YKY54"
+        "function_call_id": "fc-01M43NET2V0VCRPEWJAG1YKY54",
+        "modal_app_ids": [
+          "ap-KVtFe1yloq2cyNrrXPHqv8"
+        ]
       },
       "configuration": {
         "scope": "Onlyafterfullnative200epoch/2600updateterminalsuccess: read-onlyclosedhashaudit ofeveryfullrun artifact/nativeweights/predictions/metrics/receipts. No pruning. WithinCPU4h/CHF8 andreviewed900sfinalcollectionreservation.",
@@ -7496,8 +7860,10 @@
           }
         },
         "gpu": null,
-        "modal_app_id": "ap-1wnScAFWSXfL3uRviMmhHv",
-        "function_call_id": "fc-01M43NK7CFG9TP4413DP8VG5N7"
+        "function_call_id": "fc-01M43NK7CFG9TP4413DP8VG5N7",
+        "modal_app_ids": [
+          "ap-1wnScAFWSXfL3uRviMmhHv"
+        ]
       },
       "configuration": {
         "scope": "CPUonly exactpinned native metricreplay/200epoch2600updatehistory/latestmax-testselection audit fromclosed fulltrainedsimiliarities/checkpoints. No model inference/training. Same audit function passed all8actualpairedpreflightmetrics.",
@@ -9772,7 +10138,7 @@
     }
   ],
   "observations": [
-    "Tables 1\u20133 were visually verified on PDF page 7. Table 2's copied Translation V2T median rank of 56.1 is preserved literally despite being inconsistent with an ordinary median of integer ranks. The \u00a74.3 prose reverses the retrieval directions; Table 1 and the official released evaluator agree, so the table headers govern target mapping.",
+    "Tables 1–3 were visually verified on PDF page 7. Table 2's copied Translation V2T median rank of 56.1 is preserved literally despite being inconsistent with an ordinary median of integer ranks. The §4.3 prose reverses the retrieval directions; Table 1 and the official released evaluator agree, so the table headers govern target mapping.",
     "CSL discrepancy investigation: the source and data content are unchanged from the original 0322431 release; later CiCo changes concern file modes and the README. The fixed released checkpoint, both exact feature sets, all 1,176 labels, official alpha 0.8, default batch size 256, seed 42 and metric implementation were used. No material protocol mismatch was found. Environment drift or differences between the released checkpoint and the one behind the published table remain possible but unproven.",
     "How2Sign discrepancy check retained the official released checkpoint, 2,348 paired features, 1,969 query groups, alpha 0.8, seed 42, batch 256 and unmodified metrics. Only T2V R@1/R@5 differ by +0.1 percentage point. No demonstrated protocol defect or score-driven change was made."
   ],
@@ -9789,28 +10155,46 @@
   },
   "guesses_and_deviations": [
     {
-      "detail": "Execution environment",
-      "paper": "Python 3.7 / PyTorch 1.7.1 / CUDA 11",
+      "id": "execution-environment",
+      "kind": "code_deviation",
+      "description": "Execution environment.",
       "used": "Study base Python 3.12 / PyTorch 2.11 / CUDA 13.1; textblob 0.17.1 for the compatible import",
+      "paper_says": "Python 3.7 / PyTorch 1.7.1 / CUDA 11",
       "effect": "Environment modernization; unchanged official model and metrics. Numeric drift is reported, not corrected by score tuning."
     },
     {
-      "detail": "PHOENIX alpha",
-      "paper": "The main implementation paragraph states alpha 0.8.",
+      "id": "phoenix-alpha",
+      "kind": "paper_code_conflict",
+      "description": "PHOENIX alpha.",
       "used": "The official dataset-specific README command uses alpha 0.9 for PHOENIX and 0.8 for the other datasets.",
+      "paper_says": "The main implementation paragraph states alpha 0.8.",
       "effect": "Follow executable dataset-specific author recipe, note prose omission."
     },
     {
-      "detail": "Scope",
-      "paper": "Training and evaluation of the domain-aware encoder and CLCL",
+      "id": "checkpoint-evaluation-scope",
+      "kind": "code_deviation",
+      "description": "Scope.",
       "used": "Full released-checkpoint evaluation on all three test sets using released features",
+      "paper_says": "Training and evaluation of the domain-aware encoder and CLCL",
       "effect": "This does not establish end-to-end training reproducibility; the released archive contains test features only."
     },
     {
-      "detail": "Preflight batch/subset",
-      "paper": "Full-test evaluation with batch size 256 in the released code",
+      "id": "preflight-batch-subset",
+      "kind": "code_deviation",
+      "description": "Preflight batch/subset.",
       "used": "A 16-query diagnostic followed by a 256-query scale check; full evaluation uses the default batch size of 256.",
+      "paper_says": "Full-test evaluation with batch size 256 in the released code",
       "effect": "Preflight numbers excluded from targets."
+    },
+    {
+      "id": "phoenix-paired-feature-loader",
+      "kind": "code_deviation",
+      "description": "Corrected the PHOENIX training loader to read the adapted encoder’s stream from the designated domain-aware path. The original loader read the agnostic path twice."
+    },
+    {
+      "id": "adaptation-checkpoint-selection",
+      "kind": "guess",
+      "description": "The PHOENIX I3D adaptation uses all closed training pseudo-clips and the epoch-15 checkpoint. The native learning-rate milestones follow epoch 15, and the empty validation pass does not select a checkpoint."
     }
   ],
   "contacts": [],
@@ -9823,7 +10207,7 @@
       {
         "claim": "CiCo substantially outperforms the reported SPOT-ALIGN retrieval baselines on How2Sign and PHOENIX.",
         "assessment": "corroborated within released-checkpoint evaluation",
-        "paper_evidence": "Section 4.2, Tables 1\u20132 (PDF page 7), and Section 5 (PDF page 8).",
+        "paper_evidence": "Section 4.2, Tables 1–2 (PDF page 7), and Section 5 (PDF page 8).",
         "basis": "Against the published SA-COMB rows, evaluated How2Sign T2V/V2T R@1 gains are +22.5/+28.0 percentage points; PHOENIX gains are +13.7/+17.1. Recall@5/10 ordering is also preserved. PHOENIX median ranks tie the SA-COMB baseline. The baseline systems were not rerun."
       },
       {
@@ -9835,7 +10219,7 @@
       {
         "claim": "The training procedure and proposed components cause the reported gains.",
         "assessment": "PHOENIX training comparative conclusion corroborated; component causality not assessed",
-        "paper_evidence": "Section 4.3, Tables 4\u20139, and the training claim in Section 4.2.",
+        "paper_evidence": "Section 4.3, Tables 4–9, and the training claim in Section 4.2.",
         "basis": "Independent15-epoch encoder adaptation plus200-epoch CLCL yields PHOENIX T2V/V2T R1=69.31464174454828/68.06853485107422, exceeding published SA-COMB55.8/53.1 by13.51464174454828/14.96853485107422pp. All six recalls exceed baseline; both medians tie. No released retrieval checkpoint initialized training. Baseline reruns, other datasets training, ablations and multiple seeds remain unassessed."
       }
     ],
@@ -9844,7 +10228,7 @@
   "training_continuation": {
     "requested_at": "2026-10-03",
     "state": "completed_bounded_attempt",
-    "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1\u20133 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
+    "scope": "Independently train the CiCo sign encoder and CLCL retrieval pipeline where permitted and feasible; evaluate Tables 1–3 and compare with published baselines. Preserve released-checkpoint evaluation as a separate completed experiment.",
     "full_run_launched": true,
     "prior_evaluation_commit": "bcf519797aea1c431edf480a153dc032ee0bb8f9",
     "observations": [
@@ -10007,7 +10391,7 @@
       "state": "completed_within_original_deadline",
       "run_id": "phx-clcl-full-seed42-v1",
       "reason": "Actualpairedendtoendupperbound fails initial9000scondition; propose newunlaunched4GPUh/CHF14cap within24GPUh/CHF90, noexistingdeadline reset.",
-      "cost_reallocation": "Approvedroot2026-10-04T12:48UTC: closedaware16\u219214,fullCLCL12\u219214,total90; executedoriginalstop policiesunchanged.",
+      "cost_reallocation": "Approvedroot2026-10-04T12:48UTC: closedaware16→14,fullCLCL12→14,total90; executedoriginalstop policiesunchanged.",
       "closed_paired_manifest_sha256": "f1bfd95ee0a599e950fe9db08f877486bd510d1cccdc700792bf58fa21885479",
       "actual_paired_artifact_sizes": {
         "selected_model_bytes": 350470173,
@@ -10040,5 +10424,6 @@
       "actual_billed_cost": null,
       "detail": "Original executed stop policies unchanged. Measured function/process time excludes provisioning; conservative unknown caps remain separately charged. CHF1/USD is a planning assumption. No native artifacts pruned."
     }
-  }
+  },
+  "noncompliance": []
 }
