@@ -3,13 +3,26 @@
   "agents": [
     {
       "agent_id": "original-reproduction-agent",
-      "model": null,
-      "harness": null,
-      "scope": "Implementation of the reimplementation and execution of all eight retained runs. Audited 2026-11-06: neither the model nor the agent application is recoverable from the committed evidence.",
+      "model": "Claude Sonnet 5",
+      "harness": "Claude Code (desktop app)",
+      "scope": "Implementation of the reimplementation and execution of the eight runs cnn-full ... densenet121-hho-full. Identified 2026-11-20 from its retained Claude Code session; the harness version is not recorded.",
       "evidence": [
         "https://github.com/sign-language-processing/reproduction/commit/aaa7d1a \u2014 introducing commit 'First run' carries no model or agent-application trailer; the same holds for a3cb787 ('Second run') and d8e6fcd ('Fix paper id').",
         "https://github.com/sign-language-processing/reproduction/pull/39 \u2014 audited 2026-11-06: the body is empty and the two comments and one review discuss only merge permissions, identifying no execution model or application.",
-        "A human account and a branch name do not establish agent identity, so no model has been inferred from either."
+        "A human account and a branch name do not establish agent identity, so no model has been inferred from either.",
+        "Session system metadata of the retained Claude Code (desktop app) session from 2026-08-30 names the model claude-sonnet-5; its transcript contains the Modal app URLs of all eight runs, and no other session's does. The application version was not exposed."
+      ],
+      "model_id": "claude-sonnet-5"
+    },
+    {
+      "agent_id": "cnn-fig2-agent",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code (desktop app)",
+      "scope": "Issue #101: rebuilt build_cnn() from Fig. 2 and executed cnn-fig2-full and cnn-hho-fig2-full. The harness version is not exposed to the session.",
+      "evidence": [
+        "Session system metadata on 2026-11-20 names the model Opus 5.5 (model ID claude-opus-5-5), running in Claude Code inside the Claude desktop app (Code tab). The application version was not exposed.",
+        "The commit that rebuilt build_cnn() from Fig. 2 and added these runs carries the trailer \"Co-Authored-By: Claude Opus 5.5\"."
       ]
     }
   ],
@@ -53,7 +66,7 @@
   "status": {
     "pipeline": "complete",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "Assessed on all 32 in-scope Table II targets (eight systems x accuracy, macro-precision, macro-recall, macro-F1), every one of which produced a comparable value. Absolute differences from the published two-decimal values range from 0.0303 to 7.8154 percentage points; only EfficientNet-B3 test accuracy (-0.0303) falls within the half-unit rounding interval of the paper's printed precision. Because the contract requires does_not_agree when any assessed value disagrees, the record is does_not_agree; no score-matching tolerance is asserted and no statistical significance test was performed. Recorded as a raw observation for later analysis, not as a scientific conclusion: the system ordering is not preserved and the paper's central claim inverts. The paper ties DenseNet121-HHO for best at 99.79% accuracy, while reproduced it is 95.1064% and seventh of eight; HHO lowered accuracy in both pairs (CNN 97.1878% to CNN-HHO 91.0546%; DenseNet121 96.3922% to DenseNet121-HHO 95.1064%) where the paper reports it helping or holding level. The best reproduced system is EfficientNet-B0 at 99.3895%.",
+    "numerical_agreement_basis": "Assessed on all 32 in-scope Table II targets (eight systems x accuracy, macro-precision, macro-recall, macro-F1), every one of which produced a comparable value. CNN and CNN-HHO values come from the Fig. 2 runs cnn-fig2-full and cnn-hho-fig2-full (2026-11-20, issue #101); the other six from the 2026-08-30 runs. Absolute differences from the published two-decimal values range from 0.0303 (EfficientNet-B3 test accuracy) to 14.4389 (CNN-HHO test accuracy) percentage points; none falls within the half-unit (0.005) rounding interval of the paper's printed precision. Because the contract requires does_not_agree when any assessed value disagrees, the record is does_not_agree; no score-matching tolerance is asserted and no statistical significance test was performed. Recorded as a raw observation for later analysis, not as a scientific conclusion: the system ordering is not preserved and the paper's central claim inverts. The paper ties DenseNet121-HHO for best at 99.79% accuracy, while reproduced it is 95.1064% and sixth of eight; HHO lowered accuracy in both pairs (CNN 94.6068% to CNN-HHO 84.4311%; DenseNet121 96.3922% to DenseNet121-HHO 95.1064%) where the paper reports it helping or holding level. The best reproduced system is EfficientNet-B0 at 99.3895%. The six pretrained systems' unfreeze counts were matched to the earlier CNN's parameter count, a minor limitation (backbone-freezing).",
     "preference_level": 3,
     "blocker": null
   },
@@ -122,7 +135,7 @@
   "experiments": [
     {
       "experiment_id": "cnn",
-      "system": "Baseline CNN: 3 Conv(32/64/128, 3x3, ReLU) blocks each with MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout(0.5), Dense(32, softmax); optimizer not stated in paper, Adam used (documented default)",
+      "system": "Baseline CNN as drawn in Fig. 2: Conv(32, 3x3, ReLU) -> MaxPool -> BatchNorm -> Conv(32) -> MaxPool -> BatchNorm -> Conv(64) -> Conv(128, unpadded) -> MaxPool -> BatchNorm -> Flatten (6272) -> Dense(512, ReLU) -> Dropout(0.5) -> Dense(32, softmax); 3,331,072 trainable parameters. Optimizer not stated in paper, Adam used (documented default)",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -132,7 +145,7 @@
     },
     {
       "experiment_id": "cnn-hho",
-      "system": "Baseline CNN architecture with Harris Hawks Optimization tuning learning rate, batch size, conv filter count, and dropout rate to maximize validation accuracy, then a fixed final retrain",
+      "system": "The Fig. 2 CNN with Harris Hawks Optimization tuning learning rate, batch size, a scale on all four convolutions' filter counts, and dropout rate to maximize validation accuracy, then a fixed final retrain",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -142,7 +155,7 @@
     },
     {
       "experiment_id": "efficientnet-b0",
-      "system": "ImageNet-pretrained EfficientNet-B0 (frozen backbone), input resized to 224x224x3, GlobalMaxPooling, Dense(256, ReLU), Dropout(0.6), Dense(32, softmax); Adamax, lr=0.001",
+      "system": "ImageNet-pretrained EfficientNet-B0 (all 234 backbone layers trainable), input resized to 224x224x3, GlobalMaxPooling, Dense(256, ReLU), Dropout(0.6), Dense(32, softmax); Adamax, lr=0.001",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -152,7 +165,7 @@
     },
     {
       "experiment_id": "efficientnet-b3",
-      "system": "ImageNet-pretrained EfficientNet-B3 (frozen backbone), same head/optimizer recipe as EfficientNet-B0 (paper describes B0 and B3 together)",
+      "system": "ImageNet-pretrained EfficientNet-B3 (last 35 backbone layers trainable, the rest frozen), same head/optimizer recipe as EfficientNet-B0 (paper describes B0 and B3 together)",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -162,7 +175,7 @@
     },
     {
       "experiment_id": "resnet50",
-      "system": "ImageNet-pretrained ResNet50 (frozen backbone), Flatten, Dropout, Dense(32, softmax); Adamax",
+      "system": "ImageNet-pretrained ResNet50 (last 10 backbone layers trainable, the rest frozen), Flatten, Dropout, Dense(32, softmax); Adamax",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -172,7 +185,7 @@
     },
     {
       "experiment_id": "densenet201",
-      "system": "ImageNet-pretrained DenseNet201 (frozen backbone), Flatten, Dropout(0.8), Dense(32, softmax); Adamax",
+      "system": "ImageNet-pretrained DenseNet201 (last 125 backbone layers trainable, the rest frozen), Flatten, Dropout(0.8), Dense(32, softmax); Adamax",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -182,7 +195,7 @@
     },
     {
       "experiment_id": "densenet121",
-      "system": "ImageNet-pretrained DenseNet121 (frozen backbone), MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout, Dense(32, softmax [paper states sigmoid; overridden, see deviations]); Adam",
+      "system": "ImageNet-pretrained DenseNet121 (last 200 backbone layers trainable, the rest frozen), MaxPooling+BatchNorm, Flatten, Dense(512, ReLU), Dropout, Dense(32, softmax [paper states sigmoid; overridden, see deviations]); Adam",
       "dataset_id": "arasl2018-grayscale",
       "required_seeds": [
         42
@@ -212,13 +225,13 @@
       "original_value": 98.7,
       "result": {
         "status": "produced",
-        "reproduced_value": 97.1878,
-        "difference": -1.5122,
+        "reproduced_value": 94.6068,
+        "difference": -4.0932,
         "run_ids": [
-          "cnn-full"
+          "cnn-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-run-json"
+          "cnn-fig2-run-json"
         ]
       }
     },
@@ -232,13 +245,13 @@
       "original_value": 94.05,
       "result": {
         "status": "produced",
-        "reproduced_value": 97.2795,
-        "difference": 3.2295,
+        "reproduced_value": 94.8751,
+        "difference": 0.8251,
         "run_ids": [
-          "cnn-full"
+          "cnn-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-run-json"
+          "cnn-fig2-run-json"
         ]
       }
     },
@@ -252,13 +265,13 @@
       "original_value": 91.53,
       "result": {
         "status": "produced",
-        "reproduced_value": 97.12,
-        "difference": 5.59,
+        "reproduced_value": 94.5445,
+        "difference": 3.0145,
         "run_ids": [
-          "cnn-full"
+          "cnn-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-run-json"
+          "cnn-fig2-run-json"
         ]
       }
     },
@@ -272,13 +285,13 @@
       "original_value": 92.77,
       "result": {
         "status": "produced",
-        "reproduced_value": 97.1547,
-        "difference": 4.3847,
+        "reproduced_value": 94.5904,
+        "difference": 1.8204,
         "run_ids": [
-          "cnn-full"
+          "cnn-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-run-json"
+          "cnn-fig2-run-json"
         ]
       }
     },
@@ -292,13 +305,13 @@
       "original_value": 98.87,
       "result": {
         "status": "produced",
-        "reproduced_value": 91.0546,
-        "difference": -7.8154,
+        "reproduced_value": 84.4311,
+        "difference": -14.4389,
         "run_ids": [
-          "cnn-hho-full"
+          "cnn-hho-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-hho-run-json"
+          "cnn-hho-fig2-run-json"
         ]
       }
     },
@@ -312,13 +325,13 @@
       "original_value": 95.25,
       "result": {
         "status": "produced",
-        "reproduced_value": 91.8051,
-        "difference": -3.4449,
+        "reproduced_value": 85.9825,
+        "difference": -9.2675,
         "run_ids": [
-          "cnn-hho-full"
+          "cnn-hho-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-hho-run-json"
+          "cnn-hho-fig2-run-json"
         ]
       }
     },
@@ -332,13 +345,13 @@
       "original_value": 93.46,
       "result": {
         "status": "produced",
-        "reproduced_value": 91.1595,
-        "difference": -2.3005,
+        "reproduced_value": 84.5763,
+        "difference": -8.8837,
         "run_ids": [
-          "cnn-hho-full"
+          "cnn-hho-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-hho-run-json"
+          "cnn-hho-fig2-run-json"
         ]
       }
     },
@@ -352,13 +365,13 @@
       "original_value": 94.25,
       "result": {
         "status": "produced",
-        "reproduced_value": 91.1157,
-        "difference": -3.1343,
+        "reproduced_value": 84.2502,
+        "difference": -9.9998,
         "run_ids": [
-          "cnn-hho-full"
+          "cnn-hho-fig2-full"
         ],
         "artifact_ids": [
-          "cnn-hho-run-json"
+          "cnn-hho-fig2-run-json"
         ]
       }
     },
@@ -903,8 +916,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-Ps7TUWaB67jQGMN0x6n5rT; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "cnn-hho-full",
@@ -966,8 +984,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-5PhF8cdXAAuUU3nPjMBar6; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "efficientnet-b0-full",
@@ -1028,8 +1051,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-KUN9XOUfIE5ajZOnZYi2RV; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "efficientnet-b3-full",
@@ -1090,8 +1118,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-p8B5rXt9kR63gBoNgz9jkF; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "resnet50-full",
@@ -1152,8 +1185,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-QhFYELq2I1VIOpXa8wOyVj; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet201-full",
@@ -1214,8 +1252,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-ctxXRz4qh2cme7lC6JWYEw; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet121-full",
@@ -1276,8 +1319,13 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-fjFPG1jNibi9TCUADgUpZ3; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     },
     {
       "run_id": "densenet121-hho-full",
@@ -1339,8 +1387,158 @@
           "source": "modal_repro_sign.sh billing report -r d --show-resources --json for 2026-08-01 to 2026-11-16 (queried in 31-day pieces), read 2026-11-16: all rows with object_id ap-oJfoyktnV4bHcSnpFZM7Dh; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-16)"
         }
       },
-      "agent_ids": [],
-      "agent_attribution_note": "Historical execution agent not recorded. No commit touching papers/mohamed-2024-densenet121-hho/ carries a model or agent-application trailer, and PR #39 does not identify the executor; see agents[].evidence."
+      "agent_ids": [
+        "original-reproduction-agent"
+      ],
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
+    },
+    {
+      "run_id": "cnn-fig2-full",
+      "agent_ids": [
+        "cnn-fig2-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model cnn --run-name cnn-fig2",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-20T14:35:25Z",
+      "finished_at_utc": "2026-11-20T14:38:08Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cnn-fig2-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-20T14:35:12Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 3.0,
+        "max_cost_usd": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Fig. 2 CNN. Training completed all 30 epochs and evaluation emitted val/test accuracy, precision, recall, and F1. Supersedes cnn-full, whose CNN did not follow Fig. 2.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "cnn-fig2-run-json",
+        "cnn-fig2-metrics-jsonl"
+      ],
+      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256 as run. The Dockerfile has since been pinned to the digest in environment.base_image, which its tag already resolved to",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-50B6gnmiwmQlkuw7bKgSmB"
+        ],
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.045278,
+          "gpu_hours_basis": "upper_bound",
+          "cost_usd": 0.049806,
+          "cost_basis": "rate_estimate",
+          "source": "started_at_utc to finished_at_utc of the local modal run command (163 s, includes image build and queueing) x 1 GPU; cost = gpu_hours x A10G 1.10 USD/h (modal_repro_sign.sh billing rates, read 2026-11-20); GPU only, CPU and memory are billed on top. To be replaced with billed values at merge."
+        }
+      },
+      "source_sha256": {
+        "train.py": "062fe289405b464fa9badef32b45f25d72e1d3c9528a76537cf4962490ceb74e",
+        "modal_app.py": "0bcbc28acd07741c0f32a67afd1835146ffd675d94a338461ee4976b48f44b3f",
+        "Dockerfile": "6c19e6bafddb9bfdcbe934a413f3facefd15417d7f35305c153cadccc825496b"
+      },
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
+    },
+    {
+      "run_id": "cnn-hho-fig2-full",
+      "agent_ids": [
+        "cnn-fig2-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run -d papers/mohamed-2024-densenet121-hho/modal_app.py --model cnn-hho --run-name cnn-hho-fig2",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-20T14:35:25Z",
+      "finished_at_utc": "2026-11-20T14:50:14Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "cnn-hho-fig2-full",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-20T14:35:12Z",
+        "max_wall_time_seconds": 21600,
+        "max_gpu_hours": 3.0,
+        "max_cost_usd": 5.0
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Fig. 2 CNN. HHO search (population 6, 4 iterations, 3-epoch proxy on 25% of train) then training completed all 5 epochs and evaluation emitted val/test accuracy, precision, recall, and F1. Supersedes cnn-hho-full, whose CNN did not follow Fig. 2.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "artifact_ids": [
+        "cnn-hho-fig2-run-json",
+        "cnn-hho-fig2-metrics-jsonl",
+        "cnn-hho-fig2-hho-search-json"
+      ],
+      "source_revision": "clean-room implementation in this paper directory; files pinned by source_sha256 as run. The Dockerfile has since been pinned to the digest in environment.base_image, which its tag already resolved to",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-tzjIPZic9tr6vbUmR4m1Eq"
+        ],
+        "gpu_count": 1,
+        "hardware": "one A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.246944,
+          "gpu_hours_basis": "upper_bound",
+          "cost_usd": 0.271638,
+          "cost_basis": "rate_estimate",
+          "source": "started_at_utc to finished_at_utc of the local modal run command (889 s, includes image build and queueing) x 1 GPU; cost = gpu_hours x A10G 1.10 USD/h (modal_repro_sign.sh billing rates, read 2026-11-20); GPU only, CPU and memory are billed on top. To be replaced with billed values at merge."
+        }
+      },
+      "source_sha256": {
+        "train.py": "062fe289405b464fa9badef32b45f25d72e1d3c9528a76537cf4962490ceb74e",
+        "modal_app.py": "0bcbc28acd07741c0f32a67afd1835146ffd675d94a338461ee4976b48f44b3f",
+        "Dockerfile": "6c19e6bafddb9bfdcbe934a413f3facefd15417d7f35305c153cadccc825496b"
+      },
+      "environment": {
+        "base_image": "tensorflow/tensorflow:2.17.0-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafde4623",
+        "base_image_basis": "The Dockerfile named the tag tensorflow/tensorflow:2.17.0-gpu. Docker Hub records the tag as last pushed 2024-07-12, before this run, and the registry resolves it to this digest (checked 2026-11-23)."
+      }
     }
   ],
   "artifacts": [
@@ -1469,6 +1667,41 @@
       "uri": "modal://volume/mohamed-2024-densenet121-hho-results/densenet121-hho/hho_search.json",
       "sha256": "a22349bf8a2ccc8510d3f612f5b239c6beedcfddd912f025eec716e5cc4ff3df",
       "size_bytes": 1300
+    },
+    {
+      "artifact_id": "cnn-fig2-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-fig2/run.json",
+      "sha256": "d58ab996cb7eb6ca0f914b37b670822eaf119651af54651ab76ea3bf8ac92850",
+      "size_bytes": 644
+    },
+    {
+      "artifact_id": "cnn-fig2-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-fig2/metrics.jsonl",
+      "sha256": "0008ba715733aca71fca3acc31a284d3b3c4360fa5e3d89b9c47b72484dfa624",
+      "size_bytes": 5179
+    },
+    {
+      "artifact_id": "cnn-hho-fig2-run-json",
+      "kind": "raw_metric_output",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho-fig2/run.json",
+      "sha256": "8d941ab431b5b4450f245e499fdde40772a12a5f11e6cbe4e308e720e8b5ea80",
+      "size_bytes": 695
+    },
+    {
+      "artifact_id": "cnn-hho-fig2-metrics-jsonl",
+      "kind": "training_log",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho-fig2/metrics.jsonl",
+      "sha256": "b479643b63d8740ab0dba64e553817df306610e610b6c6e4fa2ea984ebbebba9",
+      "size_bytes": 854
+    },
+    {
+      "artifact_id": "cnn-hho-fig2-hho-search-json",
+      "kind": "run_manifest",
+      "uri": "modal://volume/mohamed-2024-densenet121-hho-results/cnn-hho-fig2/hho_search.json",
+      "sha256": "b6e5183bbf1e8e9ff06856b61ffcedce3406990455f0e97a5f7c94da503b7530",
+      "size_bytes": 1628
     }
   ],
   "gates": [],
@@ -1489,7 +1722,7 @@
       "paper_says": "DenseNet121 (\u00a7III.B.5): \"the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning\"; ResNet50 (\u00a7III.B.3): \"with the early layers frozen to preserve pre-learned features\". EfficientNet-B0/B3 are only \"fine-tuned\" (\u00a7III.B.2), and DenseNet201's description (\u00a7III.B.4) does not mention freezing. No layer count for \"early\"",
       "used": "Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234",
       "basis": "The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. \"Match the CNN's parameter count\" is this attempt's own rule, not something the paper states",
-      "effect": "The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8)",
+      "effect": "The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8). Minor limitation: the counts were matched to the earlier CNN's 4.5M trainable parameters, not the Fig. 2 CNN's 3.3M, so the pretrained models train somewhat more parameters than the CNN they are compared with",
       "scope": "EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO",
       "evidence": [
         "train.py make_model_specs()"
@@ -1544,16 +1777,13 @@
       ]
     },
     {
-      "id": "cnn-architecture",
-      "kind": "paper_deviation",
-      "description": "The CNN's convolutional stack.",
-      "paper_says": "Fig. 2: Conv2D(32), Conv2D(32), Conv2D(64), Conv2D(128), with feature maps 64x64x32, 32x32x32, 16x16x64, 14x14x128, 7x7x128 and a Flatten of 6272 before Dense(512)",
-      "used": "Three blocks of two same-padded 3x3 convolutions (32, 64, 128 filters), each followed by MaxPooling and BatchNormalization; Flatten of 8192 before Dense(512)",
-      "effect": "About 4.5M trainable parameters, against about 3.3M for Fig. 2's shapes (the Flatten-to-Dense(512) layer alone is 4.2M vs 3.2M). The CNN's ~4.5M is the target of the backbone-freezing rule",
+      "id": "cnn-padding",
+      "kind": "guess",
+      "description": "Convolution padding in the Fig. 2 CNN.",
+      "paper_says": "Fig. 2 gives no padding, only feature-map shapes: 64x64x32 after the first convolution of a 64x64 input, 32x32x32, 16x16x64, then 14x14x128",
+      "used": "Same padding on the first three convolutions, no padding on the fourth",
+      "basis": "The only padding that yields Fig. 2's shapes from 3x3 kernels: 64 -> 64 needs same padding, 16 -> 14 needs none",
       "scope": "CNN, CNN-HHO",
-      "related_ids": [
-        "backbone-freezing"
-      ],
       "evidence": [
         "train.py build_cnn()"
       ]
