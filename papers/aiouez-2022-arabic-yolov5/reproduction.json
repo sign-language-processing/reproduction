@@ -57,7 +57,7 @@
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-992e7a131ddf3a9e44476584ba97f3551a7e3732-2026-10-01.json",
       "sha256": "d559b5ae5086e155af2f47d87b60687f44173d3cfdd77b76e44f1c42e660cc46"
@@ -194,11 +194,85 @@
       "status": "in_progress",
       "url": []
     },
-    "detail": "Direct user-authorized tracker selection. Export paper status final, no confirmation field; database IDs differ from paper_id. No confirmation fabricated."
+    "detail": "Final-paper Reproduction Tracker export retained with redactions and its original source hash.",
+    "normalized": {
+      "title": "Real-time Arabic Sign Language Recognition based on YOLOv5",
+      "year": 2022,
+      "venue": "2nd International Conference on Image Processing and Vision Engineering (IMPROVE 2022)",
+      "pdf_url": "https://doi.org/10.5220/0010979300003209",
+      "code_repos": [],
+      "what_to_reproduce": "Table 3 and Table 4",
+      "metric_ids": [
+        "s7y7q314u911v7a",
+        "whj6bhf2ro5g8c0",
+        "89xqke8qlyqq6mb",
+        "yuirj0rm9qhv5ps",
+        "r0nxwxtqen1z4xq"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "s7y7q314u911v7a",
+          "name": "IoU",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "whj6bhf2ro5g8c0",
+          "name": "Precision",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "89xqke8qlyqq6mb",
+          "name": "Recall",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "Mean Average Precision",
+          "id": "yuirj0rm9qhv5ps",
+          "name": "mAP",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "r0nxwxtqen1z4xq",
+          "name": "FPS",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "0rl07ms2n5hrk7h",
+          "name": "Arabic Sign Language ArSL dataset",
+          "available": "yes",
+          "license": "",
+          "urls": [
+            "https://www.kaggle.com/datasets/sabribelmadoui/arabic-sign-language-unaugmented-dataset"
+          ],
+          "comments": ""
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "Experiments performed on Google Colab, unclear which GPU model was used",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "yes",
+      "comments": ""
+    }
   },
   "paper": {
     "title": "Real-time Arabic Sign Language Recognition based on YOLOv5",
-    "citation": "Aiouez, S., Hamitouche, A., Belmadoui, M. S., Belattar, K. and Souami, F. (2022). IMPROVE 2022, pp.17\u201325. DOI 10.5220/0010979300003209.",
+    "citation": "Aiouez, S., Hamitouche, A., Belmadoui, M. S., Belattar, K. and Souami, F. (2022). IMPROVE 2022, pp.17–25. DOI 10.5220/0010979300003209.",
     "url": "https://doi.org/10.5220/0010979300003209",
     "pdf_sha256": "cf65d03b64f17c8e3c55753eb84391e2174485fbffa4dc414ea6ed7fdd9e15ca",
     "accessed_at": "2026-10-01"
@@ -206,7 +280,7 @@
   "status": {
     "pipeline": "partial",
     "numerical_agreement": "does_not_agree",
-    "numerical_agreement_basis": "16 of24 numeric cells produced; three YOLO timing cells conditional because historical hardware/protocol is unknown; five trained Faster cells unproduced after canceled/expired bounded attempt. Assess producedvalues by roundingtopublishedcellprecision; rawdifferences retained. Numericallydifferentresults canstill support qualified scientificconclusions. Canonicalrelease has27supportedlabels, unknownhistoricaltestmembership, andnewtiminghardware; no28-lettersemanticgeneralization orcomparativeFasteraccuracyclaim.",
+    "numerical_agreement_basis": "Two model parameter counts are comparable. YOLOv5s measured 7.095145M versus 7.5M, which differs at the printed precision. Faster measured 104.517980M versus 105M, which agrees when rounded. The remaining 22 cells are 14 conditional detection scores, three conditional timing scores and five Faster training-dependent results unavailable after cancellation.",
     "preference_level": 2,
     "blocker": null
   },
@@ -434,7 +508,7 @@
       "metric_id": "inference-min",
       "name": "Minimum reported inference time",
       "direction": "lower",
-      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input\u2192GPU/float normalization\u2192nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
+      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input→GPU/float normalization→nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
       "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
       "aggregation": "Hardware-specific range endpoints; exact original GPU/timing boundary unknown.",
       "unit_or_scale": "seconds",
@@ -444,7 +518,7 @@
       "metric_id": "inference-max",
       "name": "Maximum reported inference time",
       "direction": "lower",
-      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input\u2192GPU/float normalization\u2192nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
+      "implementation": "Synchronized FP32 batch1 decodedCPU416x416uint8 input→GPU/float normalization→nativeforward/NMS; fivewarmups; min/max of1509testimage samples.",
       "version": "YOLOv5@956be8e642b5c10af4a1533e09084ca32ff4f21f; Detectron2@d1e04565d3bec8719335b88be9e9b961bf3ec464; pycocotools2.0.11. Author exactversions notpublished.",
       "aggregation": "Hardware-specific range endpoints; exact original GPU/timing boundary unknown.",
       "unit_or_scale": "seconds",
@@ -467,7 +541,7 @@
       "system": "yolov5s",
       "dataset_id": "author-arsl",
       "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
-      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
+      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2–4",
       "config": {
         "learning_rate": 0.015,
         "batch_size": 16,
@@ -479,7 +553,7 @@
       "system": "yolov5m",
       "dataset_id": "author-arsl",
       "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
-      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
+      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2–4",
       "config": {
         "learning_rate": 0.01,
         "batch_size": 16,
@@ -491,7 +565,7 @@
       "system": "yolov5l",
       "dataset_id": "author-arsl",
       "checkpoint_rule": "Pinned YOLOv5 native validation fitness 0.1*mAP50+0.9*mAP50:95, retaining native tie behavior (last matching epoch); held-out test never selects.",
-      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
+      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2–4",
       "config": {
         "learning_rate": 0.01,
         "batch_size": 24,
@@ -503,7 +577,7 @@
       "system": "faster-rcnn (X101-FPN)",
       "dataset_id": "author-arsl",
       "checkpoint_rule": "Pinned Detectron2 validation bbox/AP strict improvement; first maximum. Interrupted before first validation.",
-      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2\u20134",
+      "paper_evidence": "Paper sections3.2,4.1,4.2,5; Tables2–4",
       "config": {
         "learning_rate": 0.001,
         "batch_size": 24,
@@ -522,9 +596,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.79707380902796,
-        "difference": 0.597073809027961,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -532,7 +603,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.797073809; difference from published value +0.597073809028 in the target's unit."
+        ]
       }
     },
     {
@@ -545,9 +628,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.8245705108383,
-        "difference": 0.42457051083829356,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -555,7 +635,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.8245705108; difference from published value +0.424570510838 in the target's unit."
+        ]
       }
     },
     {
@@ -568,9 +660,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.50000000000001,
-        "difference": 0.20000000000001705,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -578,7 +667,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.5; difference from published value +0.2 in the target's unit."
+        ]
       }
     },
     {
@@ -591,9 +692,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 87.41059567483647,
-        "difference": 1.5105956748364662,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -601,7 +699,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 87.4105956748; difference from published value +1.51059567484 in the target's unit."
+        ]
       }
     },
     {
@@ -614,9 +724,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.69237256577493,
-        "difference": 0.4923725657749287,
         "run_ids": [
           "yolo-m-full-001"
         ],
@@ -624,7 +731,19 @@
           "yolo-m-full-001-m-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.6923725658; difference from published value +0.492372565775 in the target's unit."
+        ]
       }
     },
     {
@@ -637,9 +756,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.82840614257191,
-        "difference": 0.6284061425719045,
         "run_ids": [
           "yolo-m-full-001"
         ],
@@ -647,7 +763,19 @@
           "yolo-m-full-001-m-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.8284061426; difference from published value +0.628406142572 in the target's unit."
+        ]
       }
     },
     {
@@ -660,9 +788,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.4983416252073,
-        "difference": 0.19834162520730558,
         "run_ids": [
           "yolo-m-full-001"
         ],
@@ -670,7 +795,19 @@
           "yolo-m-full-001-m-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.4983416252; difference from published value +0.198341625207 in the target's unit."
+        ]
       }
     },
     {
@@ -683,9 +820,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 89.16877372810977,
-        "difference": 1.4187737281097696,
         "run_ids": [
           "yolo-m-full-001"
         ],
@@ -693,7 +827,19 @@
           "yolo-m-full-001-m-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 89.1687737281; difference from published value +1.41877372811 in the target's unit."
+        ]
       }
     },
     {
@@ -706,9 +852,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.72301215402764,
-        "difference": 0.22301215402764285,
         "run_ids": [
           "yolo-l-full-001"
         ],
@@ -716,7 +859,19 @@
           "yolo-l-full-001-l-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.723012154; difference from published value +0.223012154028 in the target's unit."
+        ]
       }
     },
     {
@@ -729,9 +884,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.89306969840351,
-        "difference": 0.49306969840350234,
         "run_ids": [
           "yolo-l-full-001"
         ],
@@ -739,7 +891,19 @@
           "yolo-l-full-001-l-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.8930696984; difference from published value +0.493069698404 in the target's unit."
+        ]
       }
     },
     {
@@ -752,9 +916,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.49782135076252,
-        "difference": 0.09782135076251564,
         "run_ids": [
           "yolo-l-full-001"
         ],
@@ -762,7 +923,19 @@
           "yolo-l-full-001-l-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.4978213508; difference from published value +0.0978213507625 in the target's unit."
+        ]
       }
     },
     {
@@ -775,9 +948,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 89.9930663994571,
-        "difference": 2.7930663994571034,
         "run_ids": [
           "yolo-l-full-001"
         ],
@@ -785,7 +955,19 @@
           "yolo-l-full-001-l-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 89.9930663995; difference from published value +2.79306639946 in the target's unit."
+        ]
       }
     },
     {
@@ -938,9 +1120,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 99.50000000000001,
-        "difference": 0.20000000000001705,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -948,7 +1127,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 99.5; difference from published value +0.2 in the target's unit."
+        ]
       }
     },
     {
@@ -961,9 +1152,6 @@
       "split": "Paper: 10% test of15,088 augmented images; author-hosted v1:290 test of15,086",
       "copied_baseline": false,
       "result": {
-        "status": "produced",
-        "reproduced_value": 87.41059567483647,
-        "difference": 1.5105956748364662,
         "run_ids": [
           "yolo-s-full-001"
         ],
@@ -971,7 +1159,19 @@
           "yolo-s-full-001-s-metrics-json"
         ],
         "agrees_at_published_precision": false,
-        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed."
+        "assessment_basis": "Exact equality after rounding to published cell precision; descriptive numerical criterion, not statistical equivalence. Current reconstructed release/split/hardware are disclosed.",
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The author release has no valid NOON instances and changes observed NOON images to ALIF. The run measures the released annotations under a new seeded partition, so the detection score does not measure the paper’s 28-class experiment."
+        },
+        "gate_ids": [
+          "split-identity"
+        ],
+        "evidence": [
+          "See the linked retained native metrics and the protocol gate.",
+          "Conditional measurement 87.4105956748; difference from published value +1.51059567484 in the target's unit."
+        ]
       }
     },
     {
@@ -1176,7 +1376,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-7hT4cSpHqms5hlJ54P5Ep0"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:00:23.817092+00:00",
       "finished_at_utc": "2026-10-02T07:07:01.817785+00:00",
@@ -1190,11 +1396,9 @@
         "gate_ids": []
       },
       "detail": "Prospective CPU acquisition/inventory of public augmented and unaugmented version1 archives. Function1800s, native1740s, retries0. Canonical v2 volumes referenced explicitly by API; wrapper authentication and volume list succeeded before launch.",
-      "modal_app_id": "ap-7hT4cSpHqms5hlJ54P5Ep0",
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-7hT4cSpHqms5hlJ54P5Ep0",
         "task_id": "ta-01M3XPKX8T6H4T7VQ7VN3B0X7R",
         "function_call_id": null,
         "identity_note": "The initial wrapper incorrectly queried nonexistent app/call environment variables. App ID is recovered from the CLI launch log; task ID and unique run path are retained. Function-call ID unavailable; no alternate call identity is invented.",
@@ -1242,7 +1446,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-aDVvaCGfIaAgEiKMuoCZV0"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:01:29.806680+00:00",
       "finished_at_utc": "2026-10-02T07:02:06.439738+00:00",
@@ -1256,7 +1466,6 @@
         "detail": "Native Detectron2 v0.6 wheel compiled on repository base; CPU import failed because local no-deps environment omitted upstream-required cloudpickle. No model construction or GPU work completed. Next dependency hypothesis is a new bounded group."
       },
       "detail": "Prospective CPU-only Detectron2 v0.6 pinned source build/import/28-class X101-FPN parameter count. Native3480s wrapper3600s, retries0. No training or target metric claim.",
-      "modal_app_id": "ap-aDVvaCGfIaAgEiKMuoCZV0",
       "source_files": [
         {
           "path": "scripts/faster_run.py",
@@ -1324,7 +1533,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-GC5x0MvkF33w66FqbegOPo"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:05:01.456146+00:00",
       "finished_at_utc": "2026-10-02T07:05:14.666513+00:00",
@@ -1338,7 +1553,6 @@
         "detail": "Added missing declared cloudpickle dependency. Model import then failed on removed Pillow Image.LINEAR alias; next scoped compatibility hypothesis replaces alias with equal Image.BILINEAR."
       },
       "detail": "Scoped dependency hypothesis: add declared cloudpickle==3.1.1 omitted by no-deps install. Reuse hash-verified compiled wheel; no upstream/model changes, native240s, retries0.",
-      "modal_app_id": "ap-GC5x0MvkF33w66FqbegOPo",
       "modal_function_call_id": "fc-01M3XPW9DSNKXBNMY8V86CWJN2",
       "modal_task_id": "ta-01M3XPWAAYNAGF1BH9947MJ25R",
       "native_command": [
@@ -1389,7 +1603,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-ksSBK0mpjViSRYgccStfbY"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:08:04.308898+00:00",
       "finished_at_utc": "2026-10-02T07:08:14.167750+00:00",
@@ -1404,7 +1624,6 @@
       },
       "detail": "Scoped compatibility hypothesis: replace removed Pillow Image.LINEAR with equivalent Image.BILINEAR in pinned Detectron2. No model or interpolation semantics change. Reuse verified native wheel, native240s, retries0.",
       "patch_sha256": "6c5c2e5af1d457a231daf42c44028e4f6ce0686b766f5044e440c2f69b367fc4",
-      "modal_app_id": "ap-ksSBK0mpjViSRYgccStfbY",
       "modal_function_call_id": "fc-01M3XQ1XWW410AH78TSD3SV0C4",
       "modal_task_id": "ta-01M3XQ1YJ4Z6KQB4RCBMHPEM8R",
       "native_command": [
@@ -1472,7 +1691,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-adh92JE2hAQczCBhYt5hps"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:12:59.440291+00:00",
       "finished_at_utc": "2026-10-02T07:13:14.712181+00:00",
@@ -1489,7 +1714,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-adh92JE2hAQczCBhYt5hps",
         "function_call_id": "fc-01M3XQAZ71AQDNHYE25AH8J38Y",
         "task_id": "ta-01M3XQAZBYDH0QDYYAFBP311FR",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-adh92JE2hAQczCBhYt5hps"
@@ -1536,7 +1760,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-RMFFjkcj2oPS1VECwOlm5j"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:15:14.030673+00:00",
       "finished_at_utc": "2026-10-02T07:15:34.694379+00:00",
@@ -1553,7 +1783,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-RMFFjkcj2oPS1VECwOlm5j",
         "function_call_id": "fc-01M3XQEZPTWZAQ5MPMKJ2CQ1X6",
         "task_id": "ta-01M3XQF0PB787ND73RPS4D7JDR",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-RMFFjkcj2oPS1VECwOlm5j"
@@ -1599,7 +1828,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-ph0t7a3MNbMmCrF0hsFfgG"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:18:54.961636+00:00",
       "finished_at_utc": "2026-10-02T07:19:03.314034+00:00",
@@ -1616,7 +1851,6 @@
       "modal": {
         "profile": "repro-sign",
         "environment": "main",
-        "app_id": "ap-ph0t7a3MNbMmCrF0hsFfgG",
         "function_call_id": "fc-01M3XQNT33QEM8ZJZ4WGTGSH46",
         "task_id": "ta-01M3XQNTV6JY3KYZK9HE1BJ9RR",
         "dashboard_url": "https://modal.com/apps/repro-sign/main/ap-ph0t7a3MNbMmCrF0hsFfgG"
@@ -1670,7 +1904,20 @@
         "gpu": "A100-80GB",
         "gpu_count": 1,
         "cpu": 4,
-        "memory_gib": 64
+        "memory_gib": 64,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-TWi4dSGoMzzNx3Ig39mhyE"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.04413958,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.14140652,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-TWi4dSGoMzzNx3Ig39mhyE. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:24:54.450756+00:00",
       "finished_at_utc": "2026-10-02T07:26:58.482983+00:00",
@@ -1685,7 +1932,6 @@
       },
       "detail": "Representative112train/28validation image preflight,8+2native updates and exact model/optimizer/scheduler checkpoint-restore proof; manifest/selected image hashes verified,28-head/27observed classes. Native1740s, retries0, unique output guard. Single GPU; YOLO preflight waits for terminal state.",
       "dataset_manifest_sha256": "bdb2b2a87d2b93af07d977dafac14cf5f99c2e3333e97350cada17da8475356e",
-      "modal_app_id": "ap-TWi4dSGoMzzNx3Ig39mhyE",
       "source_files": [
         {
           "path": "scripts/faster_modal.py",
@@ -1895,7 +2141,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-U2mDjf2LSnf4MB8kHzRWg3"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:26:03+00:00",
       "finished_at_utc": "2026-10-02T07:31:35+00:00",
@@ -1925,7 +2177,6 @@
         "launch_log_bytes": 8677,
         "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v1-launch.log"
       },
-      "modal_app_id": "ap-U2mDjf2LSnf4MB8kHzRWg3",
       "artifact_ids": []
     },
     {
@@ -1955,7 +2206,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-TgCpjPogRIcd0scDT8emgL"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T07:28:01.055501+00:00",
       "finished_at_utc": "2026-10-02T07:28:07.477149+00:00",
@@ -1966,10 +2223,9 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "Hash-verified read-only cross-release audit completed; five class arrays match.14identical images change NOON24\u2192ALIF0;4retain identicalboxes.203originalNOON filename families map to529augmentedALIFimages (heuristic beyond exactmatches). No annotations changed."
+        "detail": "Hash-verified read-only cross-release audit completed; five class arrays match.14identical images change NOON24→ALIF0;4retain identicalboxes.203originalNOON filename families map to529augmentedALIFimages (heuristic beyond exactmatches). No annotations changed."
       },
       "detail": "Read-only hash-verified archive comparison: compare actual class-name arrays and parsed label rows for421 identical-image pairs, separately audit heuristic filename-family transitions. No label changes. Internal raw evidence only. Native270s, retries0, exclusive output path.",
-      "modal_app_id": "ap-TgCpjPogRIcd0scDT8emgL",
       "modal_function_call_id": "fc-01M3XR6GWMYSJY746H65MDKJHP",
       "cpu": 2,
       "memory_mib": 4096,
@@ -2020,7 +2276,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-kUtTYPPrkpqYwA9rGOEQ4m"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:17:59+00:00",
       "finished_at_utc": "2026-10-02T09:21:34+00:00",
@@ -2058,7 +2320,6 @@
         "app_stopped_at_utc": "2026-10-02T09:21:34+00:00",
         "launch_log_uri": "papers/aiouez-2022-arabic-yolov5/artifacts/yolo-cpu-smoke-v2-launch.log"
       },
-      "modal_app_id": "ap-kUtTYPPrkpqYwA9rGOEQ4m",
       "artifact_ids": []
     },
     {
@@ -2090,9 +2351,20 @@
         "gpu_count": 1,
         "cpu": 4,
         "memory_gib": 64,
-        "gpu_hours_lower_bound": 0.29527777777777775,
-        "reserved_gpu_hours": 12,
-        "runtime_note": "Observed wrapper duration996.68seconds; native log proves activity through1063seconds fromstart. Exactcontainerstop/billedGPUtime unavailable;12hours is the recorded reservation, not a measured usage value."
+        "runtime_note": "Observed wrapper duration996.68seconds; native log proves activity through1063seconds fromstart. Exactcontainerstop/billedGPUtime unavailable;12hours is the recorded reservation, not a measured usage value.",
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-WnKAcIYIQNxWkd4z5bYrtB"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.30182105,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.96618992,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-WnKAcIYIQNxWkd4z5bYrtB. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:22:43.015471+00:00",
       "finished_at_utc": "2026-10-02T09:39:19.696478+00:00",
@@ -2128,10 +2400,9 @@
         ],
         "training_hours_from_preflight": 6.27,
         "validation_hours_baseline": 1.26,
-        "detail": "30180updates\u00d70.748s warm preflight step;60\u00d71508validationimages\u00d70.05s plus checkpoint/COCO/setup overhead;12h hardcap/CHF42 reservation using verified prices and margin."
+        "detail": "30180updates×0.748s warm preflight step;60×1508validationimages×0.05s plus checkpoint/COCO/setup overhead;12h hardcap/CHF42 reservation using verified prices and margin."
       },
-      "detail": "Native SGD.001/batch24/416px/503updates\u00d760epochs with COCO initial weights. Independent full-hook/guard review and real checkpoint preflight passed; final held-out test uses native validation AP-selected checkpoint. Author released labels unchanged (NOON\u2192ALIF corruption disclosed),28head/27observed classes. RNG/data cursor limitation disclosed.",
-      "modal_app_id": "ap-WnKAcIYIQNxWkd4z5bYrtB",
+      "detail": "Native SGD.001/batch24/416px/503updates×60epochs with COCO initial weights. Independent full-hook/guard review and real checkpoint preflight passed; final held-out test uses native validation AP-selected checkpoint. Author released labels unchanged (NOON→ALIF corruption disclosed),28head/27observed classes. RNG/data cursor limitation disclosed.",
       "modal_function_call_id": "fc-01M3XYR3J6YA9D2K9DJGP13J59",
       "original_deadline_unix": 1790976163.0154715,
       "original_deadline_utc": "2026-10-02T21:22:43.015471Z",
@@ -2235,7 +2506,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-zbeO8jaTAIi1YwQOIwOjt0"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:27:55.093473+00:00",
       "finished_at_utc": "2026-10-02T09:28:14.653001+00:00",
@@ -2255,7 +2532,6 @@
         }
       ],
       "detail": "New diagnosed environment hypothesis: retain base Debian PyYAML6.0.1, which satisfies native requirements, instead of pip uninstalling a RECORD-less package for6.0.2. No model/protocol change. Same real-data CPU native smoke, no GPU/retries.",
-      "modal_app_id": "ap-zbeO8jaTAIi1YwQOIwOjt0",
       "modal_function_call_id": "fc-01M3XZ1Y1HY283QV5CK0MBDGVZ",
       "modal_task_id": "ta-01M3XZ1YD4CBWFV0FHPYK0YEWR",
       "wall_seconds": 19.559558489,
@@ -2300,7 +2576,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-SgP5gkfFHc3GDg2zgpqidN"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:33:52.101531+00:00",
       "finished_at_utc": "2026-10-02T09:34:08.074678+00:00",
@@ -2332,7 +2614,6 @@
           "sha256": "c30585eef352d32da1dac2c942f2dfa7cfee24a212a8e7c98a69a28ff84cff3a"
         }
       ],
-      "modal_app_id": "ap-SgP5gkfFHc3GDg2zgpqidN",
       "modal_function_call_id": "fc-01M3XZCWYS7236RBBMDG5CEGNG",
       "modal_task_id": "ta-01M3XZCX6CT5XFF06FVHG8DVVR",
       "wall_seconds": 15.973179499,
@@ -2377,7 +2658,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-qqym34Dgl4JUOT1NkrOqBF"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:35:00.610192+00:00",
       "finished_at_utc": "2026-10-02T09:35:26.408550+00:00",
@@ -2424,7 +2711,6 @@
         "yolo-cpu-smoke-v5-sources-patches-yolo-numpy-int-patch",
         "yolo-cpu-smoke-v5-execution-json"
       ],
-      "modal_app_id": "ap-qqym34Dgl4JUOT1NkrOqBF",
       "modal_function_call_id": "fc-01M3XZESQ0E1YADEDJS5KW4Q3B",
       "modal_task_id": "ta-01M3XZETPK18Y4TMGW7QR58T7R",
       "wall_seconds": 25.798407628
@@ -2456,7 +2742,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-e67m2uki9Zl20XoicB5NNN"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-02T09:36:37.670522+00:00",
       "finished_at_utc": "2026-10-02T09:37:00.500422+00:00",
@@ -2497,7 +2789,6 @@
         }
       ],
       "wall_seconds": 22.829935566,
-      "modal_app_id": "ap-e67m2uki9Zl20XoicB5NNN",
       "modal_function_call_id": "fc-01M3XZHTKM08X0KYCQTNTYT9AF",
       "modal_task_id": "ta-01M3XZHVFJSMKFAZJP3H4Y70ZR",
       "artifact_ids": [
@@ -2543,7 +2834,13 @@
         "profile": "repro-sign",
         "cpu": 4,
         "memory_gib": 16,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-NNwzMQLWeo0rdz8EsSQ4kK"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:08:54.380730+00:00",
       "finished_at_utc": "2026-10-03T18:09:15.167385+00:00",
@@ -2584,7 +2881,6 @@
         }
       ],
       "wall_seconds": 20.786702998000003,
-      "modal_app_id": "ap-NNwzMQLWeo0rdz8EsSQ4kK",
       "modal_function_call_id": "fc-01M41F8NCE0JK474MR6SJD6WDQ",
       "modal_task_id": "ta-01M41F8NQ8NMS435DHKFPEGE0R",
       "artifact_ids": [
@@ -2631,7 +2927,13 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-M0oledFcphiTwHLs8x49OP"
+        ],
+        "shared_cache": null,
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:08:52.938096+00:00",
       "finished_at_utc": "2026-10-03T18:08:54.263827+00:00",
@@ -2646,7 +2948,6 @@
       },
       "detail": "Hash closed evidence after original app stopped; GPU execution status reportsfailed but native log continues afterwards, so actual exit interpretation requires audit.",
       "wall_seconds": 1.325759342,
-      "modal_app_id": "ap-M0oledFcphiTwHLs8x49OP",
       "modal_function_call_id": "fc-01M41F8NQHMYVB17HGWQWYCHMJ",
       "artifact_ids": [
         "oct3-faster-evidence",
@@ -2681,7 +2982,20 @@
         "gpu": "A100-80GB",
         "gpu_count": 1,
         "cpu": 4,
-        "memory_gib": 64
+        "memory_gib": 64,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-i54O0pBWqc8Y794GOUr8M1"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.06657306,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.21316797,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-i54O0pBWqc8Y794GOUr8M1. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:11:42.474569+00:00",
       "finished_at_utc": "2026-10-03T18:15:07.150000+00:00",
@@ -2722,7 +3036,6 @@
         }
       ],
       "wall_seconds": 204.675464423,
-      "modal_app_id": "ap-i54O0pBWqc8Y794GOUr8M1",
       "modal_function_call_id": "fc-01M41FCGRMMKTRA81TZNCXQ40V",
       "modal_task_id": "ta-01M41FCY658X458YDMJJ1MVEGR",
       "artifact_ids": [
@@ -2776,7 +3089,20 @@
         "gpu": "A100-80GB",
         "gpu_count": 1,
         "cpu": 4,
-        "memory_gib": 64
+        "memory_gib": 64,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-zBezbm89uTISZ6bHxzLt78"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.04486287,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.1436621,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-zBezbm89uTISZ6bHxzLt78. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:16:07.196258+00:00",
       "finished_at_utc": "2026-10-03T18:18:29.516387+00:00",
@@ -2817,7 +3143,6 @@
         }
       ],
       "wall_seconds": 142.32018448300002,
-      "modal_app_id": "ap-zBezbm89uTISZ6bHxzLt78",
       "modal_function_call_id": "fc-01M41FNEZSBDA9CAQV14QQK0SV",
       "modal_task_id": "ta-01M41FNFC2S16J70CMDKQDMRTR",
       "artifact_ids": [
@@ -2855,7 +3180,20 @@
         "gpu": "A100-80GB",
         "gpu_count": 1,
         "cpu": 4,
-        "memory_gib": 64
+        "memory_gib": 64,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-MyDzvQSlsF2ZHp2QgED5Mk"
+        ],
+        "shared_cache": null,
+        "usage": {
+          "gpu_hours": 0.02277792,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.07293245,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-MyDzvQSlsF2ZHp2QgED5Mk. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:20:16.011613+00:00",
       "finished_at_utc": "2026-10-03T18:21:31.088471+00:00",
@@ -2900,7 +3238,6 @@
         }
       ],
       "wall_seconds": 75.076879403,
-      "modal_app_id": "ap-MyDzvQSlsF2ZHp2QgED5Mk",
       "modal_function_call_id": "fc-01M41FXB86G67428PEH7368X3Y",
       "modal_task_id": "ta-01M41FXBCBDGF2VQYSVB7HA9CR",
       "artifact_ids": [
@@ -2947,7 +3284,27 @@
         "gpu_count": 1,
         "cpu": 4,
         "memory_gib": 64,
-        "conservative_elapsed_gpu_hours": 0.6590580790572697
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-HYBot17D083xtvujzvHqBq"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.6646889,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 2.1749439,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-HYBot17D083xtvujzvHqBq. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:25:14.674848+00:00",
       "finished_at_utc": "2026-10-03T19:04:47.283889+00:00",
@@ -2991,7 +3348,7 @@
       "forecast": {
         "training_gpu_hours": 1.053,
         "validation_gpu_hours": 0.356,
-        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28→1508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
       },
       "execution_segments": {
         "max_segments": 4,
@@ -3003,7 +3360,6 @@
         "proof_run_id": "yolo-recovery-proof-v2",
         "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
       },
-      "modal_app_id": "ap-HYBot17D083xtvujzvHqBq",
       "modal_function_call_id": "fc-01M41G64B0ZDEVVTAVAACTKZZA",
       "original_deadline_unix": 1791058394.6748426,
       "original_deadline_utc": "2026-10-03T20:13:14.674843+00:00",
@@ -3109,7 +3465,27 @@
         "gpu_count": 1,
         "cpu": 4,
         "memory_gib": 64,
-        "conservative_elapsed_gpu_hours": 0.6956325487295787
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-SInmo7oY4Ggf812hW4bKQ3"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.71946267,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 2.31636003,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-SInmo7oY4Ggf812hW4bKQ3. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:25:10.398800+00:00",
       "finished_at_utc": "2026-10-03T19:06:54.675948+00:00",
@@ -3153,7 +3529,7 @@
       "forecast": {
         "training_gpu_hours": 2.43,
         "validation_gpu_hours": 0.234,
-        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28→1508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
       },
       "execution_segments": {
         "max_segments": 4,
@@ -3165,7 +3541,6 @@
         "proof_run_id": "yolo-recovery-proof-v2",
         "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
       },
-      "modal_app_id": "ap-SInmo7oY4Ggf812hW4bKQ3",
       "modal_function_call_id": "fc-01M41G65PB6EPPPM2DFJS9N22C",
       "original_deadline_unix": 1791063430.3987954,
       "original_deadline_utc": "2026-10-03T21:37:10.398795+00:00",
@@ -3271,7 +3646,27 @@
         "gpu_count": 1,
         "cpu": 4,
         "memory_gib": 64,
-        "conservative_elapsed_gpu_hours": 0.9036732057730357
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-Vo2K1d1Q3GkddT1gYJs5X4"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "usage": {
+          "gpu_hours": 0.90797982,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 2.92186096,
+          "cost_basis": "billed",
+          "source": "repro-sign modal_repro_sign.sh billing report --start 2026-10-01 --end 2026-10-06 -r d --show-resources --json, retrieved 2026-11-23. Summed resource charges for ap-Vo2K1d1Q3GkddT1gYJs5X4. GPU rates from modal_repro_sign.sh billing rates --json. GPU rows divided by the 2026-11-23 hourly rates (A100-80GB USD 2.5/h), assuming these rates applied during the run."
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T18:25:13.728311+00:00",
       "finished_at_utc": "2026-10-03T19:19:26.951799+00:00",
@@ -3315,7 +3710,7 @@
       "forecast": {
         "training_gpu_hours": 3.052,
         "validation_gpu_hours": 0.227,
-        "detail": "Measured native warmbatch plus largest observed validation time scaled28\u21921508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
+        "detail": "Measured native warmbatch plus largest observed validation time scaled28→1508 images and declared epochs. Combined nominal7.35GPUh;9hceiling leaves1.65h forsetup,checkpoint IO,heldout evaluation andnoise. No timingorprotocol tuning."
       },
       "execution_segments": {
         "max_segments": 4,
@@ -3327,7 +3722,6 @@
         "proof_run_id": "yolo-recovery-proof-v2",
         "local_guard_proof": "artifacts/yolo-full-guard-proof.json"
       },
-      "modal_app_id": "ap-Vo2K1d1Q3GkddT1gYJs5X4",
       "modal_function_call_id": "fc-01M41G67EA03JHAKXMDW6P5APY",
       "original_deadline_unix": 1791066313.7283025,
       "original_deadline_utc": "2026-10-03T22:25:13.728302+00:00",
@@ -3431,7 +3825,21 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-eiyW2CIqeddEwhL2beEpOi"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T19:06:49.518022+00:00",
       "finished_at_utc": "2026-10-03T19:06:57.095952+00:00",
@@ -3450,7 +3858,6 @@
       ],
       "source_sha256": "45a06a6c015bbba52c517dff61e6b10babf8230a9d2d484517a7b40ae2251ddc",
       "detail": "Launch only after corresponding GPU run is terminal. Independently verify native epoch counts, selectedcheckpoint hash,1509testIDs,timingcount; recompute common COCO fromsavedpredictions andcanonicalheldoutannotationhash; hashallclosedartifacts. Earlier GPUexecutor remainsdistinct.",
-      "modal_app_id": "ap-eiyW2CIqeddEwhL2beEpOi",
       "modal_function_call_id": "fc-01M41JJSARTB7333WCVECV4PE7",
       "wall_seconds": 7.577944674000001,
       "verification": {
@@ -3510,7 +3917,21 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-o0sBkSya7l7UgWEgkwrmTJ"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T19:09:05.246480+00:00",
       "finished_at_utc": "2026-10-03T19:09:12.362660+00:00",
@@ -3529,7 +3950,6 @@
       ],
       "source_sha256": "45a06a6c015bbba52c517dff61e6b10babf8230a9d2d484517a7b40ae2251ddc",
       "detail": "Launch only after corresponding GPU run is terminal. Independently verify native epoch counts, selectedcheckpoint hash,1509testIDs,timingcount; recompute common COCO fromsavedpredictions andcanonicalheldoutannotationhash; hashallclosedartifacts. Earlier GPUexecutor remainsdistinct.",
-      "modal_app_id": "ap-o0sBkSya7l7UgWEgkwrmTJ",
       "modal_function_call_id": "fc-01M41JPY2XE8QA68RYDZC0XQ94",
       "wall_seconds": 7.116188222,
       "verification": {
@@ -3589,7 +4009,21 @@
         "profile": "repro-sign",
         "cpu": 2,
         "memory_gib": 4,
-        "gpu_count": 0
+        "gpu_count": 0,
+        "platform": "modal",
+        "modal_app_ids": [
+          "ap-JDMtfhVHlsF0BZEea5ROhc"
+        ],
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "volume_version": 2,
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "modal_profile": "repro-sign"
       },
       "started_at_utc": "2026-10-03T19:22:57.937114+00:00",
       "finished_at_utc": "2026-10-03T19:24:50.382717+00:00",
@@ -3608,7 +4042,6 @@
       ],
       "source_sha256": "45a06a6c015bbba52c517dff61e6b10babf8230a9d2d484517a7b40ae2251ddc",
       "detail": "Launch only after corresponding GPU run is terminal. Independently verify native epoch counts, selectedcheckpoint hash,1509testIDs,timingcount; recompute common COCO fromsavedpredictions andcanonicalheldoutannotationhash; hashallclosedartifacts. Earlier GPUexecutor remainsdistinct.",
-      "modal_app_id": "ap-JDMtfhVHlsF0BZEea5ROhc",
       "modal_function_call_id": "fc-01M41KG9RY51XWQKHNTDQ1AT7H",
       "wall_seconds": 112.445611708,
       "verification": {
@@ -5398,11 +5831,12 @@
       "status": "resolved",
       "reason": "Paper5,600 originals ->15,088 augmented and80/10/10 split; linked release5,832 originals ->15,086 augmented with13,926/870/290 split. Actual target corpus and membership conflict.",
       "evidence": [
-        "Paper sections3.1.1,3.2 pp.19\u201320",
-        "Author Kaggle version1 descriptions"
+        "Paper sections3.1.1,3.2 pp.19–20",
+        "Author Kaggle version1 descriptions",
+        "Cross-release audit identified 14 byte-identical images changed from NOON to ALIF, and the augmented release contains no valid NOON instances."
       ],
       "required_action": "None. Exclude two redundant unannotated byte-identical copies and one sole zero-area annotation image; seeded80/10/10 split of15085eligible images,12068/1508/1509.",
-      "resolution": "User authorized documented judgment calls on2026-10-01 and public-resource use on2026-10-02. Actual archive15088JPEGs reconciled by two redundant unlabeled byte-identical copies; preserve labeled originals and allboxes. Seed42 80/10/10 partition follows published random ratio; do not claim exact historical membership."
+      "resolution": "User authorized documented judgment calls on2026-10-01 and public-resource use on2026-10-02. Actual archive15088JPEGs reconciled by two redundant unlabeled byte-identical copies; preserve labeled originals and allboxes. Seed42 80/10/10 partition follows published random ratio; do not claim exact historical membership. The release-based measurements are retained as conditional evidence for the paper’s 28-class detection targets."
     },
     {
       "gate_id": "faster-original-attempt-window-closed",
@@ -5450,48 +5884,6 @@
     ],
     "conclusion": "No paper-specific source, custom hyperparameter file or original split found. Generic published implementations exist, so no reimplementation attempted."
   },
-  "guesses": [
-    {
-      "guess_id": "released-corpus-partition",
-      "detail": "Use eligible author augmented v1 images and a deterministic seed42 80/10/10 partition following the paper ratio, after actual annotation/content inspection. Paper15,088 versus release15,086 discrepancy does not require fabricating images. Historical split membership is unavailable.",
-      "basis": "User explicitly authorized documented judgment calls; paper random split ratio is specified, seed and membership are not.",
-      "limitation": "Conditional released-corpus reconstruction; augmentation precedes split and related source images may cross subsets. No signer-independent generalization claim."
-    },
-    {
-      "guess_id": "native-published-defaults",
-      "detail": "Use pinned published YOLOv5v6.0 and Detectron2v0.6 entrypoints and disclosed defaults; paper Table2 overrides. FasterX101 uses nativeReLU despite Table2SiLU discrepancy, with COCO model-zoo initialization inferred.",
-      "basis": "Least invasive published-code approach; no paper-specific implementation found."
-    },
-    {
-      "guess_id": "timing-boundary",
-      "detail": "Measure batch1 warmed-up synchronized GPU model+postprocessing timing on shared hardware and actual tensor shapes; report samplecount,min/max,mean and FPS=N/total duration. Preserve preprocessing/transfer boundary separately.",
-      "basis": "Paper lists possible Colab accelerators but no exact GPU or complete timing protocol. Hardware-dependent absolute times are descriptive conditional evidence."
-    },
-    {
-      "guess_id": "author-label-integrity",
-      "detail": "Exclude one image whose only bbox has zero height, preserving the exact source row in internal audit. Retain28-class head and author labels unchanged even though class24/NOON has no instances; preflight covers27 observed classes. Do not infer label reassignment from class frequencies.",
-      "basis": "Actual read-only archive label audit found exactly one invalid bbox; user authorized documented judgment calls for limited data defects.",
-      "limitation": "Released data cannot test the paper\u2019s claimed NOON-class recognition; scientific interpretation must identify absent class support."
-    }
-  ],
-  "deviations": [
-    {
-      "id": "tracker-dataset-identity",
-      "detail": "Tracker reuses same dataset record as ArSL2018 paper, but this experiment uses a distinct28-class RGB bounding-box corpus. Shared54,049-image/32-class ArASL was not substituted."
-    },
-    {
-      "id": "initial-gated-assessment",
-      "detail": "October1 initial attempt stopped before compute at data permission gate. Superseded by authorized October2\u20133 continuation; historical assessment preserved separately."
-    },
-    {
-      "id": "native-validation-padding",
-      "detail": "Requested training and evaluation imgsz416; pinned YOLOv5 validation letterbox padding/stride produces448x448 held-out tensors. Preserve native default under the authorized code-following reconstruction; exact author tensor shapes unknown. Separate FP32 latency uses actual416x416. Recorded before final interpretation; no post-score recipe change."
-    },
-    {
-      "id": "annotation-corruption",
-      "detail": "Released labels retained unchanged: confirmed14 byte-identical NOON-to-ALIF cross-release changes and no NOON target instances. Detection measurements characterize supplied annotations, not28-letter semantic recognition."
-    }
-  ],
   "judgment_call_review": {
     "date": "2026-10-01",
     "detail": "2026-10-01 user-authorized judgment-call review: missing/count-mismatched examples need not independently prevent a documented reconstruction. The remaining execution gate is verified dataset permission; no inferred license or cloud-processing permission was substituted.",
@@ -5976,24 +6368,14 @@
   ],
   "execution_state": "terminal",
   "conclusion_assessment": {
-    "status": "partially_supported",
-    "assessment_basis": "All three native YOLO runs completed; high detection performance on the supplied labels and real-time operation on the documented A100 setup are supported. Exact numeric equality, fine-grained model rankings, trained Faster comparison and full28-letter semantics are not established. This is a descriptive single-seed assessment, not statistical equivalence.",
-    "findings": [
-      "YOLO AP50 approximately99.5%; AP50:95 small87.4106, medium89.1688, large89.9931 percent. Large leads AP50:95 here, whereas the paper reports medium leading.",
-      "YOLOv5s7.095145M versus Faster104.517980M parameters supports a smaller detector; Faster accuracy/latency comparison is unavailable.",
-      "A100 small-model277.21FPS supports real-time operation only under its disclosed boundary, not replication of historical121FPS."
-    ],
-    "limitations": [
-      "Historical random split membership and code version unknown; reconstructed author-release random ratio explicitly accepted before execution. Augmentation families may cross splits; no signer-generalization claim.",
-      "Current augmented release has confirmed NOON-to-ALIF corruption and no NOON ground truth; no28-letter semantic claim.",
-      "Native evaluation requests416 but default letterbox padding/stride yields448 tensors; preserved pinned native behavior. Separate FP32 timing uses actual416 tensors.",
-      "Faster external cancellation preceded its first durable checkpoint; immutable original attempt expired, no fresh restart."
-    ],
-    "independent_review": {
-      "reviewer": "continuation-orchestrator",
-      "at_utc": "2026-10-03T19:29:26.728068+00:00",
-      "scope": "Later root review, not execution: all three downloaded metric hashes matched closed manifests; manifest hashes matched CPU receipts;1549 files each,60/50/50 epochs,1509 unique timing IDs and sample means,27-class AP means and independent common COCO stats verified."
-    }
+    "scope": "Completed release-based YOLOv5 runs and model parameter counts",
+    "detail": "Large had the highest AP50:95 on the reconstructed split. The class-support discrepancy prevents a controlled comparison with the paper’s detection ranking.",
+    "evidence": [
+      "yolo-s-full-001",
+      "yolo-m-full-001",
+      "yolo-l-full-001",
+      "cross-release-label-audit-v1"
+    ]
   },
   "compute_price_basis": {
     "source": "https://modal.com/pricing",
@@ -6040,5 +6422,73 @@
     "observed_yolo_full_gpu_hours": 2.258363833559884,
     "observed_yolo_full_planning_cost_chf": 7.223439955828628,
     "final_note": "All execution terminal. Actual whole-paper invoice unknown, particularly canceled Faster native child; allocation ceilings are not claimed measured usage. YOLO full cost estimate excludes storage/build/CPU collection."
-  }
+  },
+  "guesses_and_deviations": [
+    {
+      "id": "released-corpus-partition",
+      "kind": "guess",
+      "description": "Use eligible author augmented v1 images and a deterministic seed42 80/10/10 partition following the paper ratio, after actual annotation/content inspection. Paper15,088 versus release15,086 discrepancy does not require fabricating images. Historical split membership is unavailable.",
+      "basis": "User explicitly authorized documented judgment calls; paper random split ratio is specified, seed and membership are not.",
+      "effect": "Conditional released-corpus reconstruction; augmentation precedes split and related source images may cross subsets. No signer-independent generalization claim."
+    },
+    {
+      "id": "native-published-defaults",
+      "kind": "guess",
+      "description": "Use pinned published YOLOv5v6.0 and Detectron2v0.6 entrypoints and disclosed defaults; paper Table2 overrides. FasterX101 uses nativeReLU despite Table2SiLU discrepancy, with COCO model-zoo initialization inferred.",
+      "basis": "Least invasive published-code approach; no paper-specific implementation found."
+    },
+    {
+      "id": "timing-boundary",
+      "kind": "guess",
+      "description": "Measure batch1 warmed-up synchronized GPU model+postprocessing timing on shared hardware and actual tensor shapes; report samplecount,min/max,mean and FPS=N/total duration. Preserve preprocessing/transfer boundary separately.",
+      "basis": "Paper lists possible Colab accelerators but no exact GPU or complete timing protocol. Hardware-dependent absolute times are descriptive conditional evidence."
+    },
+    {
+      "id": "author-label-integrity",
+      "kind": "paper_deviation",
+      "description": "Exclude one image whose only bbox has zero height, preserving the exact source row in internal audit. Retain28-class head and author labels unchanged even though class24/NOON has no instances; preflight covers27 observed classes. Do not infer label reassignment from class frequencies.",
+      "basis": "Actual read-only archive label audit found exactly one invalid bbox; user authorized documented judgment calls for limited data defects.",
+      "effect": "Released data cannot test the paper’s claimed NOON-class recognition; scientific interpretation must identify absent class support."
+    },
+    {
+      "id": "native-validation-padding",
+      "kind": "paper_code_conflict",
+      "description": "Requested training and evaluation imgsz416; pinned YOLOv5 validation letterbox padding/stride produces448x448 held-out tensors. Preserve native default under the authorized code-following reconstruction; exact author tensor shapes unknown. Separate FP32 latency uses actual416x416. Recorded before final interpretation; no post-score recipe change."
+    },
+    {
+      "id": "annotation-corruption",
+      "kind": "paper_deviation",
+      "description": "Released labels retained unchanged: confirmed14 byte-identical NOON-to-ALIF cross-release changes and no NOON target instances. Detection measurements characterize supplied annotations, not28-letter semantic recognition."
+    }
+  ],
+  "noncompliance": [
+    {
+      "id": "cache-setup-unrecorded",
+      "description": "The retained run entries do not establish the required shared cache mount and environment.",
+      "requirement": "AGENTS.md requires the shared Hugging Face cache and both cache environment variables.",
+      "run_ids": [
+        "data-acquisition-v1",
+        "faster-source-probe-001",
+        "faster-source-probe-002",
+        "faster-source-probe-003",
+        "data-prepare-v1",
+        "data-label-audit-v1",
+        "data-prepare-v2",
+        "faster-preflight-001",
+        "yolo-cpu-smoke-v1",
+        "cross-release-label-audit-v1",
+        "yolo-cpu-smoke-v2",
+        "faster-full-001",
+        "yolo-cpu-smoke-v3",
+        "yolo-cpu-smoke-v4",
+        "yolo-cpu-smoke-v5",
+        "yolo-cpu-smoke-v6",
+        "yolo-cpu-smoke-v7",
+        "faster-full-001-collection-001",
+        "yolo-gpu-preflight-v1",
+        "yolo-recovery-proof-v1",
+        "yolo-recovery-proof-v2"
+      ]
+    }
+  ]
 }

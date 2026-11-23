@@ -1,7 +1,9 @@
 # Real-time Arabic Sign Language Recognition based on YOLOv5
 
-**TL;DR:** All three YOLO full runs completed: AP50 ≈99.5%, AP50:95 87.41/89.17/89.99%; high detection performance and real-time A100 inference are supported.
-**Decision:** Partial reproduction (16/24 comparable cells); no human blocker. Faster comparison is unavailable; historical timing and the release's NOON labels limit interpretation.
+**Paper ID:** `992e7a131ddf3a9e44476584ba97f3551a7e3732`
+
+**TL;DR:** Three YOLOv5 runs finished with AP50 ≈99.5% on the public release’s 27 observed labels.
+**Decision:** 2/24 comparable targets (model sizes). Detection and timing are conditional. The original label set and Faster results remain unavailable.
 
 **Pipeline status:** partial
 **Numerical agreement:** does_not_agree — at the declared published-cell precision
@@ -15,7 +17,7 @@ The author-linked Kaggle release is public, but both its unaugmented and augment
 
 There is also a concrete corpus/split conflict: the paper expands **5,600** original images to **15,088**, then randomly splits 80/10/10. The author metadata instead describes **5,832** unaugmented images (4,651/891/290) and **15,086** augmented images (13,926/870/290). Actual archive inspection reconciles the augmented count: **15,088 JPEGs include two byte-identical unannotated copies of valid labeled originals**. We exclude only those redundant copies, leaving15,086 labeled images. Historical test membership is still unknown. Its augmentation types match the paper: Gaussian blur up to 1 pixel, salt-and-pepper noise up to 5%, 25% grayscale and rotations ±20°.
 
-| Table 3 model | Precision, paper → reproduced | Recall | AP50 | AP50:95 |
+| Table 3 model | Precision, paper → release run | Recall | AP50 | AP50:95 |
 |---|---:|---:|---:|---:|
 | YOLOv5s | 99.2 → 99.7971% | 99.4 → 99.8246% | 99.3 → 99.5000% | 85.9 → 87.4106% |
 | YOLOv5m | 99.2 → 99.6924% | 99.2 → 99.8284% | 99.3 → 99.4983% | 87.75 → 89.1688% |
@@ -23,9 +25,9 @@ There is also a concrete corpus/split conflict: the paper expands **5,600** orig
 
 Table 4 repeats the small model's AP50 and AP50:95 cells above. Its unfused model has **7.095145 million parameters**, compared with 7.5 million reported. Native Faster X101-32x8d-FPN with the 28-class head has **104.517980 million**, rounding to the reported 105 million. Faster's reported AP50/AP50:95 (98.7/81.38%), inference time (0.55 s; two endpoint targets) and FPS (1.8) were not produced: its original execution was externally canceled before a durable checkpoint, and its immutable attempt window has closed.
 
-The small model's separately measured A100 FP32 batch-one latency is **0.003400–0.009311 s**, mean **0.003607 s**, or **277.21 FPS**, versus the paper's 0.007–0.010 s and121 FPS. This supports real-time operation on the documented A100 setup. These three timing cells are **conditional evidence**, because the exact historical accelerator and measurement boundary are unknown; they are not comparable reproduced timing targets. The 24-cell ledger therefore contains16 produced cells,3 conditional timing cells and5 unavailable trained Faster cells.
+The small model's separately measured A100 FP32 batch-one latency is **0.003400–0.009311 s**, mean **0.003607 s**, or **277.21 FPS**, versus the paper's 0.007–0.010 s and121 FPS. This supports real-time operation on the documented A100 setup. These three timing cells are **conditional evidence**, because the exact historical accelerator and measurement boundary are unknown; they are not comparable reproduced timing targets. Two model-size cells are comparable. Fourteen detection cells and three timing cells are conditional, and five Faster training-dependent cells are unavailable.
 
-The broad finding of high detector performance on this release is supported. The fine-grained ranking is different: the paper's medium model leads AP50:95; here large leads (89.99%), followed by medium (89.17%) and small (87.41%). Small has the highest precision and marginally highest AP50 here; large has the highest recall. No trained Faster comparison or full 28-letter semantic-recognition conclusion is established. These are single-seed descriptive comparisons, not significance tests.
+The detector scores describe the public release. The NOON-to-ALIF label changes prevent treating these as paper-comparable 28-class scores. The fine-grained ranking is different: the paper's medium model leads AP50:95; here large leads (89.99%), followed by medium (89.17%) and small (87.41%). Small has the highest precision and marginally highest AP50 here; large has the highest recall. No trained Faster comparison or full 28-letter semantic-recognition conclusion is established. These are single-seed descriptive comparisons, not significance tests.
 
 The full paper, publisher/conference pages, references, author ResearchGate profile, exact-title/author GitHub searches and Zenodo/OSF searches were inspected. No paper-specific code, split or trained weights were found. The cited generic implementations are [YOLOv5 v6.0](https://github.com/ultralytics/yolov5/tree/956be8e642b5c10af4a1533e09084ca32ff4f21f) and [Detectron2 v0.6](https://github.com/facebookresearch/detectron2/tree/d1e04565d3bec8719335b88be9e9b961bf3ec464), preserved as historically plausible candidate pins rather than asserted author versions. YOLOv5's train/evaluation entry points were inspected. The initial investigation made no source changes; continuation compatibility patches and tests are documented below.
 
@@ -47,7 +49,7 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/a
 
 The continuation first acquires exact public version1 archives into the shared Modal dataset volume, hashes and inspects every image/annotation, then establishes a seeded 80/10/10 split before preflight. No author contact was made. The paper's ethics flag was investigated as existing human hand-image data; no new participants or webcam collection were introduced.
 
-GPT-6 using Codex performed this source/data investigation and report. Session instructions establish those names; exact model ID and harness version were unavailable. The tracker export is preserved with operator emails redacted and the original source hash retained. Its database IDs differ from paper ID and it has no confirmation field, so this is a direct user-authorized tracker assignment with no invented queue confirmation.
+GPT-6 using Codex performed this source/data investigation and report. Session instructions establish those names; exact model ID and harness version were unavailable. The tracker export is preserved with operator emails redacted and the original source hash retained. The tracker export records final paper status and the matching paper ID.
 
 ## Authorized continuation (2026-10-02)
 
@@ -158,3 +160,22 @@ Attribution: `yolo-agent` investigated sources; `yolo-continuation-agent` acquir
 No human decision is needed to close this bounded attempt. The substantive unresolved historical question is which annotation release the authors used: the current augmented release has verified NOON→ALIF corruption. Historical test membership and GPU timing details also remain unavailable. No author contact, new human annotation, label guessing or unauthorized full restart was performed.
 
 Validation: the repository reproduction validator passed on the final record; strict finite JSON, Python AST parsing, guard fixture, internal evidence references, privacy scan and `git diff --check` passed. Root independently checked all three downloaded metric/manifest/receipt hashes, epoch counts, timing IDs and common COCO statistics. Closed YOLO artifact manifests cover approximately0.281/0.779/1.687GB for small/medium/large; storage remains internal.
+
+## Guesses and deviations
+
+- `released-corpus-partition` — Use eligible author augmented v1 images and a deterministic seed42 80/10/10 partition following the paper ratio, after actual annotation/content inspection. Paper15,088 versus release15,086 discrepancy does not require fabricating images. Historical split membership is unavailable. Effect: Conditional released-corpus reconstruction; augmentation precedes split and related source images may cross subsets. No signer-independent generalization claim.
+- `native-published-defaults` — Use pinned published YOLOv5v6.0 and Detectron2v0.6 entrypoints and disclosed defaults; paper Table2 overrides. FasterX101 uses nativeReLU despite Table2SiLU discrepancy, with COCO model-zoo initialization inferred.
+- `timing-boundary` — Measure batch1 warmed-up synchronized GPU model+postprocessing timing on shared hardware and actual tensor shapes; report samplecount,min/max,mean and FPS=N/total duration. Preserve preprocessing/transfer boundary separately.
+- `author-label-integrity` — Exclude one image whose only bbox has zero height, preserving the exact source row in internal audit. Retain28-class head and author labels unchanged even though class24/NOON has no instances; preflight covers27 observed classes. Do not infer label reassignment from class frequencies. Effect: Released data cannot test the paper’s claimed NOON-class recognition; scientific interpretation must identify absent class support.
+- `native-validation-padding` — Requested training and evaluation imgsz416; pinned YOLOv5 validation letterbox padding/stride produces448x448 held-out tensors. Preserve native default under the authorized code-following reconstruction; exact author tensor shapes unknown. Separate FP32 latency uses actual416x416. Recorded before final interpretation; no post-score recipe change.
+- `annotation-corruption` — Released labels retained unchanged: confirmed14 byte-identical NOON-to-ALIF cross-release changes and no NOON target instances. Detection measurements characterize supplied annotations, not28-letter semantic recognition.
+
+## Noncompliance
+
+- `cache-setup-unrecorded` — The retained run entries do not establish the required shared cache mount and environment. AGENTS.md requires the shared Hugging Face cache and both cache environment variables. Affected runs: `data-acquisition-v1`, `faster-source-probe-001`, `faster-source-probe-002`, `faster-source-probe-003`, `data-prepare-v1`, `data-label-audit-v1`, `data-prepare-v2`, `faster-preflight-001`, `yolo-cpu-smoke-v1`, `cross-release-label-audit-v1`, `yolo-cpu-smoke-v2`, `faster-full-001`, `yolo-cpu-smoke-v3`, `yolo-cpu-smoke-v4`, `yolo-cpu-smoke-v5`, `yolo-cpu-smoke-v6`, `yolo-cpu-smoke-v7`, `faster-full-001-collection-001`, `yolo-gpu-preflight-v1`, `yolo-recovery-proof-v1`, `yolo-recovery-proof-v2`.
+
+## Modal billing reconciliation
+
+Modal billing attributes 2.7723 GPU-hours and USD 8.9505 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+For `yolo-s-full-001`, `yolo-m-full-001`, `yolo-l-full-001`, `yolo-s-full-001-collection-001`, `yolo-m-full-001-collection-001`, `yolo-l-full-001-collection-001`, the recorded launcher SHA-256 matches the source that mounts and configures the shared cache.
