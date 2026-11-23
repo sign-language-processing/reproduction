@@ -190,3 +190,7 @@ A separate GPT-6/Codex agent implemented `scripts/recovery_eval.py` and `patches
 ## Modal billing reconciliation
 
 Modal billing attributes 16.3601 GPU-hours and USD 20.7086 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 5 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Matched the 20 ledger values to the retained evaluation summaries and checked the SHA-256 of the native result objects. The audit used the retained outputs and did not execute a model.
