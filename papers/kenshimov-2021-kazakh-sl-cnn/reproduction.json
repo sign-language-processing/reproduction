@@ -366,7 +366,21 @@
       "split": "not applicable: a property of the model",
       "original_value": 1.07,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 1.071162,
+        "difference": 0.0011619999999998853,
+        "run_ids": [
+          "full-lenet-seed42"
+        ],
+        "artifact_ids": [
+          "full-lenet-seed42-metrics"
+        ],
+        "evidence": [
+          "Model.count_params() = 1,071,162."
+        ]
+      }
     },
     {
       "target_id": "table1-lenet-accuracy",
@@ -377,7 +391,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.99,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 1.0,
+        "difference": 0.010000000000000009,
+        "run_ids": [
+          "full-lenet-seed42"
+        ],
+        "artifact_ids": [
+          "full-lenet-seed42-metrics"
+        ],
+        "evidence": [
+          "210 of 210 test images correct after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-lenet-loss",
@@ -388,7 +416,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.0453,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.0037544392980635166,
+        "difference": -0.04154556070193648,
+        "run_ids": [
+          "full-lenet-seed42"
+        ],
+        "artifact_ids": [
+          "full-lenet-seed42-metrics"
+        ],
+        "evidence": [
+          "Categorical cross-entropy on the 210 test images after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-lenet-penalty",
@@ -399,7 +441,24 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 3.017,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The 42x42 penalty matrix is not published (Fig. 4 shows 12 of 42 classes), and Eq. (2) yields values at or below zero while Table 1 reports about 3.0. The score cannot be computed."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "ksl-penalty-metric"
+        ],
+        "evidence": [
+          "Paper Eq. (2) and Fig. 4, 'Example of penalty matrix values'.",
+          "Neither notebook supplied by the authors defines a penalty matrix or score.",
+          "Gate ksl-penalty-metric: closed as not produced by decision of a study team member on 2026-11-20, without contacting the authors."
+        ]
+      }
     },
     {
       "target_id": "table1-alexnet-total-params",
@@ -410,7 +469,21 @@
       "split": "not applicable: a property of the model",
       "original_value": 35.5,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 35.49809,
+        "difference": -0.0019100000000022987,
+        "run_ids": [
+          "full-alexnet-seed42"
+        ],
+        "artifact_ids": [
+          "full-alexnet-seed42-metrics"
+        ],
+        "evidence": [
+          "Model.count_params() = 35,498,090."
+        ]
+      }
     },
     {
       "target_id": "table1-alexnet-accuracy",
@@ -421,7 +494,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.99,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.9142857193946838,
+        "difference": -0.07571428060531615,
+        "run_ids": [
+          "full-alexnet-seed42"
+        ],
+        "artifact_ids": [
+          "full-alexnet-seed42-metrics"
+        ],
+        "evidence": [
+          "192 of 210 test images correct after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-alexnet-loss",
@@ -432,7 +519,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.1343,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.81671142578125,
+        "difference": 0.68241142578125,
+        "run_ids": [
+          "full-alexnet-seed42"
+        ],
+        "artifact_ids": [
+          "full-alexnet-seed42-metrics"
+        ],
+        "evidence": [
+          "Categorical cross-entropy on the 210 test images after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-alexnet-penalty",
@@ -443,7 +544,24 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 3.021,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The 42x42 penalty matrix is not published (Fig. 4 shows 12 of 42 classes), and Eq. (2) yields values at or below zero while Table 1 reports about 3.0. The score cannot be computed."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "ksl-penalty-metric"
+        ],
+        "evidence": [
+          "Paper Eq. (2) and Fig. 4, 'Example of penalty matrix values'.",
+          "Neither notebook supplied by the authors defines a penalty matrix or score.",
+          "Gate ksl-penalty-metric: closed as not produced by decision of a study team member on 2026-11-20, without contacting the authors."
+        ]
+      }
     },
     {
       "target_id": "table1-resnet50-total-params",
@@ -454,7 +572,21 @@
       "split": "not applicable: a property of the model",
       "original_value": 23.7,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 23.667498,
+        "difference": -0.03250200000000092,
+        "run_ids": [
+          "full-resnet50-seed42"
+        ],
+        "artifact_ids": [
+          "full-resnet50-seed42-metrics"
+        ],
+        "evidence": [
+          "Model.count_params() = 23,667,498."
+        ]
+      }
     },
     {
       "target_id": "table1-resnet50-accuracy",
@@ -465,7 +597,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.642,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.5095238089561462,
+        "difference": -0.13247619104385377,
+        "run_ids": [
+          "full-resnet50-seed42"
+        ],
+        "artifact_ids": [
+          "full-resnet50-seed42-metrics"
+        ],
+        "evidence": [
+          "107 of 210 test images correct after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-resnet50-loss",
@@ -476,7 +622,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 1.8544,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 2.9776740074157715,
+        "difference": 1.1232740074157714,
+        "run_ids": [
+          "full-resnet50-seed42"
+        ],
+        "artifact_ids": [
+          "full-resnet50-seed42-metrics"
+        ],
+        "evidence": [
+          "Categorical cross-entropy on the 210 test images after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-resnet50-penalty",
@@ -487,7 +647,24 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 3.13,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The 42x42 penalty matrix is not published (Fig. 4 shows 12 of 42 classes), and Eq. (2) yields values at or below zero while Table 1 reports about 3.0. The score cannot be computed."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "ksl-penalty-metric"
+        ],
+        "evidence": [
+          "Paper Eq. (2) and Fig. 4, 'Example of penalty matrix values'.",
+          "Neither notebook supplied by the authors defines a penalty matrix or score.",
+          "Gate ksl-penalty-metric: closed as not produced by decision of a study team member on 2026-11-20, without contacting the authors."
+        ]
+      }
     },
     {
       "target_id": "table1-efficientnetb7-total-params",
@@ -498,7 +675,21 @@
       "split": "not applicable: a property of the model",
       "original_value": 64.2,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 64.204093,
+        "difference": 0.00409299999999746,
+        "run_ids": [
+          "full-efficientnetb7-seed42"
+        ],
+        "artifact_ids": [
+          "full-efficientnetb7-seed42-metrics"
+        ],
+        "evidence": [
+          "Model.count_params() = 64,204,093."
+        ]
+      }
     },
     {
       "target_id": "table1-efficientnetb7-accuracy",
@@ -509,7 +700,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.967,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 0.02380952425301075,
+        "difference": -0.9431904757469892,
+        "run_ids": [
+          "full-efficientnetb7-seed42"
+        ],
+        "artifact_ids": [
+          "full-efficientnetb7-seed42-metrics"
+        ],
+        "evidence": [
+          "5 of 210 test images correct after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-efficientnetb7-loss",
@@ -520,7 +725,21 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 0.1355,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "produced",
+        "reproduced_value": 12.779685020446777,
+        "difference": 12.644185020446777,
+        "run_ids": [
+          "full-efficientnetb7-seed42"
+        ],
+        "artifact_ids": [
+          "full-efficientnetb7-seed42-metrics"
+        ],
+        "evidence": [
+          "Categorical cross-entropy on the 210 test images after epoch 20, seed 42."
+        ]
+      }
     },
     {
       "target_id": "table1-efficientnetb7-penalty",
@@ -531,7 +750,24 @@
       "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
       "original_value": 3.017,
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "metric_ambiguous",
+          "detail": "The 42x42 penalty matrix is not published (Fig. 4 shows 12 of 42 classes), and Eq. (2) yields values at or below zero while Table 1 reports about 3.0. The score cannot be computed."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "ksl-penalty-metric"
+        ],
+        "evidence": [
+          "Paper Eq. (2) and Fig. 4, 'Example of penalty matrix values'.",
+          "Neither notebook supplied by the authors defines a penalty matrix or score.",
+          "Gate ksl-penalty-metric: closed as not produced by decision of a study team member on 2026-11-20, without contacting the authors."
+        ]
+      }
     }
   ],
   "runs": [
@@ -757,9 +993,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet --run-id full-lenet-seed42 --seeds 42",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:38:09Z",
+      "finished_at_utc": "2026-11-23T10:38:57Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -789,9 +1025,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-VhUPUamp1nWvu0zkXH0YUY"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 610.57.04, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -799,7 +1037,47 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M83ZR70RYNQDDAT6FS395QEW"
+      },
+      "source_sha256": {
+        "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "full-lenet-seed42-metrics",
+        "full-lenet-seed42-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "lenet",
+          "seed": 42,
+          "total_params": 1071162,
+          "test_accuracy": 1.0,
+          "test_loss": 0.0037544392980635166,
+          "test_correct": 210,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 1.0,
+          "reloaded_test_accuracy": 1.0,
+          "fit_seconds": 9.9,
+          "peak_gpu_memory_gb": 1.22,
+          "weights_sha256": "72a6f5777188e33d8c9c271ddb0c63d022d5986f699efc4e23ea53c4468143b8"
         }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for lenet seed 42.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -810,9 +1088,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models alexnet --run-id full-alexnet-seed42 --seeds 42",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:38:09Z",
+      "finished_at_utc": "2026-11-23T10:39:03Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -842,9 +1120,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-0NMbj7dEz11AhvqaYuZdiR"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 610.57.04, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -852,7 +1132,47 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M83ZR71BVCV54MKHACW1SB9X"
+      },
+      "source_sha256": {
+        "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "full-alexnet-seed42-metrics",
+        "full-alexnet-seed42-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "alexnet",
+          "seed": 42,
+          "total_params": 35498090,
+          "test_accuracy": 0.9142857193946838,
+          "test_loss": 0.81671142578125,
+          "test_correct": 192,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 42,
+          "final_train_accuracy": 0.9869047403335571,
+          "final_val_accuracy": 0.9571428298950195,
+          "reloaded_test_accuracy": 0.9142857193946838,
+          "fit_seconds": 15.5,
+          "peak_gpu_memory_gb": 2.54,
+          "weights_sha256": "14c8788ae1fa4eaa84ca1f8a41e7a1a186f36dfc4ef5b77615740b5dd2060b47"
         }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for alexnet seed 42.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -863,9 +1183,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models resnet50 --run-id full-resnet50-seed42 --seeds 42",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:38:09Z",
+      "finished_at_utc": "2026-11-23T10:40:02Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -895,9 +1215,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-fRoSxMpHiLhqIIm5J0Hw82"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 620.70.06, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -905,7 +1227,47 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M83ZR71SE4K32Y9JS364CS0V"
+      },
+      "source_sha256": {
+        "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "full-resnet50-seed42-metrics",
+        "full-resnet50-seed42-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "resnet50",
+          "seed": 42,
+          "total_params": 23667498,
+          "test_accuracy": 0.5095238089561462,
+          "test_loss": 2.9776740074157715,
+          "test_correct": 107,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 31,
+          "final_train_accuracy": 1.0,
+          "final_val_accuracy": 0.5714285969734192,
+          "reloaded_test_accuracy": 0.5095238089561462,
+          "fit_seconds": 63.2,
+          "peak_gpu_memory_gb": 7.46,
+          "weights_sha256": "f09c072b576828b47300ee2d28b4ab529cce27d8229736b65cf198ff1c8552f6"
         }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for resnet50 seed 42.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -916,9 +1278,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id full-efficientnetb7-seed42 --seeds 42",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:38:09Z",
+      "finished_at_utc": "2026-11-23T10:50:40Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -948,9 +1310,11 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-vAFZf91UpTGsYaKLbIB6NM"
+        ],
         "gpu_count": 1,
-        "gpu": "A100-40GB",
+        "gpu": "NVIDIA A100-SXM4-40GB, 620.70.06, 40960 MiB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -958,7 +1322,47 @@
             "HF_HOME": "/cache/huggingface",
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
+        },
+        "function_call_id": "fc-01M83ZR72FYPN8ZDWRH12665S1"
+      },
+      "source_sha256": {
+        "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
+      },
+      "environment": {
+        "tensorflow": "2.8.0",
+        "pip_freeze_sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+        "dataset_manifest_sha256": "7df5ce57ceb636d9f431fd19e06f531073d550b066e95445a1f163f019fd5857"
+      },
+      "artifact_ids": [
+        "full-efficientnetb7-seed42-metrics",
+        "full-efficientnetb7-seed42-pip-freeze"
+      ],
+      "results": [
+        {
+          "model": "efficientnetb7",
+          "seed": 42,
+          "total_params": 64204093,
+          "test_accuracy": 0.02380952425301075,
+          "test_loss": 12.779685020446777,
+          "test_correct": 5,
+          "test_count": 210,
+          "test_classes_present": 42,
+          "distinct_predicted_classes": 2,
+          "final_train_accuracy": 0.9660714268684387,
+          "final_val_accuracy": 0.02857142873108387,
+          "reloaded_test_accuracy": 0.02380952425301075,
+          "fit_seconds": 684.8,
+          "peak_gpu_memory_gb": 34.31,
+          "weights_sha256": "350b7277da9ca4270ff91457aee8b1b01d4cb0055fc2acf2938c1f4ebab43661"
         }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "Training, the weight save/reload round trip and test evaluation completed for efficientnetb7 seed 42.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
       }
     },
     {
@@ -1237,7 +1641,64 @@
       }
     }
   ],
-  "artifacts": [],
+  "artifacts": [
+    {
+      "artifact_id": "full-lenet-seed42-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/full-lenet-seed42/lenet-seed42/metrics.json",
+      "sha256": "c67176ea33aa50e2291903f562624254b2225349ae58d35a619f207ad629ef10",
+      "size_bytes": 19641
+    },
+    {
+      "artifact_id": "full-lenet-seed42-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/full-lenet-seed42/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "full-alexnet-seed42-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/full-alexnet-seed42/alexnet-seed42/metrics.json",
+      "sha256": "ea8c83069bc0e9edecf7dec37e6f64822a76845a9dfb8288aeeaa06a38954a8f",
+      "size_bytes": 19947
+    },
+    {
+      "artifact_id": "full-alexnet-seed42-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/full-alexnet-seed42/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "full-resnet50-seed42-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/full-resnet50-seed42/resnet50-seed42/metrics.json",
+      "sha256": "95bf18181fdcdfca8300833f7bfa78ba06b10de02f33318dcfa23bcdc8b93da4",
+      "size_bytes": 19988
+    },
+    {
+      "artifact_id": "full-resnet50-seed42-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/full-resnet50-seed42/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    },
+    {
+      "artifact_id": "full-efficientnetb7-seed42-metrics",
+      "kind": "metrics",
+      "uri": "modal://ksl-f912577b-results/full-efficientnetb7-seed42/efficientnetb7-seed42/metrics.json",
+      "sha256": "38fdb20986ed8f878325c2e6104602c844aad203bf651c9d979593b127e951de",
+      "size_bytes": 20018
+    },
+    {
+      "artifact_id": "full-efficientnetb7-seed42-pip-freeze",
+      "kind": "dependency_freeze",
+      "uri": "modal://ksl-f912577b-results/full-efficientnetb7-seed42/pip-freeze.txt",
+      "sha256": "8e022257e7c316b88e49aa0a8d80189e4d21629a2af96fc37e5fc3c5d4f25a0b",
+      "size_bytes": 1125
+    }
+  ],
   "gates": [
     {
       "gate_id": "ksl-data-cloud-use",
