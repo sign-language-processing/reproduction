@@ -109,7 +109,7 @@ python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/c
 
 The evaluation entry point above handles the preserved checkpoint experiment. The separately verified training entry points and prospective records are documented below.
 
-The direct batch assignment preserves the redacted tracker export and its original SHA-256 `61a45da0c6d25859bc8abba10df4096806e371ca2b326b5d3881043781fcf780`. Its current schema has final paper status, a separate database ID and no legacy confirmation field; none was invented. `codex-orchestrator`—GPT-6 using Codex—performed source investigation, implementation and execution. `codex-reviewer`—also GPT-6 using Codex—independently reviewed the wrapper against upstream and edited this report on 2026-10-01; it did not execute the reported runs. These identities are explicitly attested by the active session instructions. Exact model IDs and application versions were not exposed, and execution attribution is preserved unchanged.
+The assignment preserves the redacted final-paper tracker export and its original SHA-256 `61a45da0c6d25859bc8abba10df4096806e371ca2b326b5d3881043781fcf780`. Its current schema has final paper status, a separate database ID and no legacy confirmation field; none was invented. `codex-orchestrator`—GPT-6 using Codex—performed source investigation, implementation and execution. `codex-reviewer`—also GPT-6 using Codex—independently reviewed the wrapper against upstream and edited this report on 2026-10-01; it did not execute the reported runs. These identities are explicitly attested by the active session instructions. Exact model IDs and application versions were not exposed, and execution attribution is preserved unchanged.
 
 ## Independent PHOENIX training (completed October 4, 2026)
 
@@ -208,3 +208,7 @@ None.
 ## Modal billing reconciliation
 
 Modal billing attributes 12.8001 GPU-hours and USD 36.6364 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 8 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Matched the 24 checkpoint-evaluation targets to the native logs and the eight trained PHOENIX targets to the selected checkpoint’s metrics. The audit used the retained outputs and did not execute a model.
