@@ -228,20 +228,27 @@ def resizing_backbone(backbone_factory, resize_to: int | None, head: str, dropou
 
 
 def build_cnn(dropout: float, filter_scale: float = 1.0) -> tf.keras.Model:
-    """Paper §III.B.1 / Fig. 2: increasing conv filters (32, 64, 128), ReLU,
-    MaxPooling + BatchNormalization, Flatten, Dense(512, relu),
-    Dropout(0.5 per text), Dense(32, softmax)."""
+    """Paper Fig. 2, layer for layer: Conv(32) 64x64x32 -> MaxPool -> BN ->
+    Conv(32) 32x32x32 -> MaxPool -> BN -> Conv(64) 16x16x64 -> Conv(128)
+    14x14x128 -> MaxPool -> BN 7x7x128 -> Flatten 6272 -> Dense(512, relu)
+    -> Dropout(0.5) -> Dense(32, softmax). ReLU on the convolutions is from
+    §III.B.1. Fig. 2 states no padding; its shapes imply same padding on the
+    first three convolutions and none on the fourth (16x16 -> 14x14)."""
 
     def filters(base: int) -> int:
         return max(4, round(base * filter_scale))
 
     inputs = tf.keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3))
-    x = inputs
-    for width in (filters(32), filters(64), filters(128)):
-        x = tf.keras.layers.Conv2D(width, 3, activation="relu", padding="same")(x)
-        x = tf.keras.layers.Conv2D(width, 3, activation="relu", padding="same")(x)
-        x = tf.keras.layers.MaxPooling2D()(x)
-        x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Conv2D(filters(32), 3, activation="relu", padding="same")(inputs)
+    x = tf.keras.layers.MaxPooling2D()(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Conv2D(filters(32), 3, activation="relu", padding="same")(x)
+    x = tf.keras.layers.MaxPooling2D()(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Conv2D(filters(64), 3, activation="relu", padding="same")(x)
+    x = tf.keras.layers.Conv2D(filters(128), 3, activation="relu", padding="valid")(x)
+    x = tf.keras.layers.MaxPooling2D()(x)
+    x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.Flatten()(x)
     x = tf.keras.layers.Dense(512, activation="relu")(x)
     x = tf.keras.layers.Dropout(dropout)(x)

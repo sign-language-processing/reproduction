@@ -29,12 +29,12 @@ CACHE_ENV = {"HF_HOME": "/cache/huggingface", "HF_HUB_CACHE": "/cache/huggingfac
     volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
     env=CACHE_ENV,
 )
-def preflight(model: str) -> str:
+def preflight(model: str, run_name: str) -> str:
     """Representative preflight: real data/weights, a few steps, checkpoint
     save/reload, tiny-subset evaluation. Disposable; not a retained run."""
     import subprocess
 
-    output_dir = Path(f"/results/preflight/{model}")
+    output_dir = Path(f"/results/preflight/{run_name}")
     subprocess.run(
         [
             "python", "/app/train.py",
@@ -57,11 +57,11 @@ def preflight(model: str) -> str:
     volumes={"/datasets": datasets, "/cache/huggingface": cache, "/results": results},
     env=CACHE_ENV,
 )
-def train(model: str) -> str:
-    """Run the paper's Table II recipe for one model once."""
+def train(model: str, run_name: str) -> str:
+    """Run the paper's Table II recipe for one model once, into /results/<run_name>."""
     import subprocess
 
-    output_dir = Path(f"/results/{model}")
+    output_dir = Path(f"/results/{run_name}")
     if (output_dir / "run.json").exists():
         return (output_dir / "run.json").read_text(encoding="utf-8")
     subprocess.run(
@@ -78,8 +78,11 @@ def train(model: str) -> str:
 
 
 @app.local_entrypoint()
-def main(model: str, preflight_only: bool = False) -> None:
+def main(model: str, preflight_only: bool = False, run_name: str = "") -> None:
+    # Each run keeps its own directory: train() returns an existing run.json
+    # instead of retraining, and train.py resumes from an existing state.json,
+    # so a new attempt needs a new run_name.
     if preflight_only:
-        print(preflight.remote(model))
+        print(preflight.remote(model, run_name or model))
     else:
-        print(train.remote(model))
+        print(train.remote(model, run_name or model))

@@ -14,23 +14,20 @@ I ended up writing this from scratch. There's no code released with the paper.
 
 **Numerical agreement:** `does_not_agree` — all 32 Table II targets produced comparable values; absolute differences from the published numbers run from 0.0303 to 7.8154 percentage points.
 
-**Attempt date:** 2026-08-30
+**Attempt date:** 2026-08-30; CNN and CNN-HHO re-run with the Fig. 2 architecture on 2026-11-20 (issue #101)
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
-| `original-reproduction-agent` | unknown | unknown | Wrote the reimplementation and ran all eight retained runs. | Audited 2026-11-06: none of the three commits touching this directory carries a model or agent-application trailer — [`aaa7d1a`](https://github.com/sign-language-processing/reproduction/commit/aaa7d1a), `a3cb787`, `d8e6fcd` — and [PR #39](https://github.com/sign-language-processing/reproduction/pull/39) has an empty body with two comments and one review that only discuss merge permissions. |
-
-I can't say which model or application did this work — the commits and the PR don't record it, and
-a human account or branch name doesn't establish it. So both fields are null and all eight runs
-carry `agent_ids: []` with an `agent_attribution_note`.
+| `original-reproduction-agent` | Claude Sonnet 5 (`claude-sonnet-5`) | Claude Code | Wrote the reimplementation and ran the eight 2026-08-30 runs. | Metadata of its retained Claude Code session names the model; the session's transcript contains all eight runs' Modal app URLs. |
+| `cnn-fig2-agent` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code | Rebuilt the CNN from Fig. 2 and ran `cnn-fig2-full` and `cnn-hho-fig2-full` (issue #101). | Session metadata names the model; the commit carries its co-author trailer. |
 
 ## Summary
 
 The paper trains and compares eight models on Arabic Sign Language alphabet recognition: a plain CNN, that same CNN tuned with Harris Hawks Optimization (HHO), EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, and DenseNet121 tuned with HHO. All eight are trained and evaluated on the same ArASL2018 dataset with the same 64/16/20 train/val/test split, and Table II reports all of them side by side. The abstract's "an impressive 99.79 percent" is DenseNet121-HHO's row in that table.
 
-Short answer on the main claim: no, I couldn't reproduce it. DenseNet121-HHO's 99.79% test accuracy came out as 95.11% here — a 4.68-point gap. It's not just below the paper's number, either: in my results it's below six of the other seven models — EfficientNet-B0 (99.39%), EfficientNet-B3 (99.14%), CNN (97.19%), DenseNet201 (96.99%), its own non-HHO DenseNet121 (96.39%), and ResNet50 (95.37%) all score higher; only CNN-HHO (91.05%) scores lower. The paper claims the opposite — that DenseNet121-HHO is the best of the eight — so this isn't just a reproduction gap on one number, it's a different ranking.
+Short answer on the main claim: no, I couldn't reproduce it. DenseNet121-HHO's 99.79% test accuracy came out as 95.11% here — a 4.68-point gap. It's not just below the paper's number, either: in my results it's below five of the other seven models — EfficientNet-B0 (99.39%), EfficientNet-B3 (99.14%), DenseNet201 (96.99%), its own non-HHO DenseNet121 (96.39%), and ResNet50 (95.37%) all score higher; only the CNN (94.61%) and CNN-HHO (84.43%) score lower. The paper claims the opposite — that DenseNet121-HHO is the best of the eight — so this isn't just a reproduction gap on one number, it's a different ranking.
 
 The two biggest reasons for the overall gap: the paper is ambiguous about how much of each pretrained backbone to freeze, and my first, simpler reading (freeze the whole thing) turned out to leave the pretrained models with far too few trainable parameters to compete — switching to partial unfreezing closed most of the gap (see "How much of each pretrained backbone to freeze"). And for the two HHO-tuned models, the paper gives no population size, iteration count, or search budget for Harris Hawks Optimization, so I had to pick my own — a reasonable but necessarily different search than whatever the authors ran, which is at least part of why CNN-HHO and DenseNet121-HHO still trail their non-HHO counterparts by more than the rest (see `hho-search` under "Guesses and deviations").
 
@@ -42,18 +39,18 @@ The dataset was easier: the paper uses ArASL2018 (54,049 images, 32 classes), an
 
 ## Results
 
-All 32 numbers below came out of real training runs — nothing here is estimated or interpolated. Every model trained for exactly the epoch count Table II lists, on the same 64/16/20 stratified split (seed 42), and got evaluated once at the end (no picking the best checkpoint along the way). The paper says Table II holds each model's "best test results" without saying best over what; see `checkpoint-selection`. The pretrained models below use partial backbone unfreezing rather than freezing the whole backbone — see "How much of each pretrained backbone to freeze" for why.
+All 32 numbers below came out of real training runs — nothing here is estimated or interpolated. Every model trained for exactly the epoch count Table II lists, on the same 64/16/20 stratified split (seed 42), and got evaluated once at the end (no picking the best checkpoint along the way). The paper says Table II holds each model's "best test results" without saying best over what; see `checkpoint-selection`. The pretrained models below use partial backbone unfreezing rather than freezing the whole backbone — see "How much of each pretrained backbone to freeze" for why. The CNN and CNN-HHO rows come from the 2026-11-20 re-runs with the Fig. 2 architecture.
 
 | System | Metric | Paper (Table II) | Mine | Difference |
 | --- | --- | ---: | ---: | ---: |
-| CNN | Test Accuracy | 98.70 | 97.19 | -1.51 |
-| CNN | Precision | 94.05 | 97.28 | +3.23 |
-| CNN | Recall | 91.53 | 97.12 | +5.59 |
-| CNN | F1 | 92.77 | 97.15 | +4.38 |
-| CNN-HHO | Test Accuracy | 98.87 | 91.05 | -7.82 |
-| CNN-HHO | Precision | 95.25 | 91.81 | -3.44 |
-| CNN-HHO | Recall | 93.46 | 91.16 | -2.30 |
-| CNN-HHO | F1 | 94.25 | 91.12 | -3.13 |
+| CNN | Test Accuracy | 98.70 | 94.61 | -4.09 |
+| CNN | Precision | 94.05 | 94.88 | +0.83 |
+| CNN | Recall | 91.53 | 94.54 | +3.01 |
+| CNN | F1 | 92.77 | 94.59 | +1.82 |
+| CNN-HHO | Test Accuracy | 98.87 | 84.43 | -14.44 |
+| CNN-HHO | Precision | 95.25 | 85.98 | -9.27 |
+| CNN-HHO | Recall | 93.46 | 84.58 | -8.88 |
+| CNN-HHO | F1 | 94.25 | 84.25 | -10.00 |
 | EfficientNet-B0 | Test Accuracy | 99.13 | 99.39 | +0.26 |
 | EfficientNet-B0 | Precision | 98.54 | 99.40 | +0.86 |
 | EfficientNet-B0 | Recall | 98.00 | 99.39 | +1.39 |
@@ -78,6 +75,17 @@ All 32 numbers below came out of real training runs — nothing here is estimate
 | DenseNet121-HHO | Precision | 99.39 | 95.59 | -3.80 |
 | DenseNet121-HHO | Recall | 99.95 | 94.96 | -4.99 |
 | DenseNet121-HHO | F1 | 99.22 | 95.09 | -4.13 |
+
+## The CNN, rebuilt from Fig. 2
+
+Until 2026-11-20 (issue #101), the CNN used three blocks of two convolutions instead of Fig. 2's four convolutions (4.5M vs 3.3M trainable parameters). It now follows Fig. 2; the figure's shapes imply same padding on the first three convolutions and none on the fourth (`cnn-padding`). Nothing else changed. The earlier runs are kept as `cnn-full` and `cnn-hho-full`.
+
+| System | Paper | Earlier CNN | Fig. 2 CNN |
+| --- | ---: | ---: | ---: |
+| CNN | 98.70 | 97.19 | 94.61 |
+| CNN-HHO | 98.87 | 91.05 | 84.43 |
+
+(Test accuracy, %.)
 
 ## How to run it
 
@@ -112,7 +120,7 @@ Each model's final hyperparameters (some picked by HHO, not by me), and how many
 | Model | Batch | Dropout | Learning rate | Backbone layers unfrozen |
 | --- | ---: | ---: | ---: | --- |
 | CNN | 32 | 0.500 | 1e-4 | n/a (no backbone) |
-| CNN-HHO | 29 | 0.200 | 1e-4 (found by HHO) | n/a (no backbone) |
+| CNN-HHO | 29 | 0.268 | 1.19e-4 (found by HHO) | n/a (no backbone) |
 | EfficientNet-B0 | 32 | 0.600 | 1e-3 (Adamax) | all 234 |
 | EfficientNet-B3 | 32 | 0.600 | 1e-3 (Adamax) | last 35 of 381 |
 | ResNet50 | 32 | 0.500 | Adamax default | last 10 of 174 |
@@ -130,6 +138,8 @@ So I went with the second reading instead: partial unfreezing. To pick how many 
 
 The results table above reflects this second reading, and the effect was large: EfficientNet-B0 and EfficientNet-B3 now land within a quarter of a point of the paper, and everything else closed most of its gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8).
 
+A minor limitation: these counts were matched to the earlier CNN's 4.5M trainable parameters, not the Fig. 2 CNN's 3.3M (see "The CNN, rebuilt from Fig. 2"), so the pretrained models train somewhat more parameters than the CNN they are compared with.
+
 ## Guesses and deviations
 
 The paper leaves out a lot of implementation detail, so here's everywhere I had to fill in a gap myself, and what I think the consequence is:
@@ -137,12 +147,12 @@ The paper leaves out a lot of implementation detail, so here's everywhere I had 
 | ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `horizontal-flip` | `paper_internal_conflict` | Whether augmentation includes a horizontal flip. | Algorithm 1's augmentation list is rotation, zoom, shift, and brightness, with no flip; Fig. 8's "Image processing" box lists Rescaling, Zooming, Shifting, Brightness Adjustment, and Horizontal Flip | Algorithm 1's list; no flipping anywhere | Algorithm 1 is the one place the paper actually spells out the augmentation procedure |  | All eight models |  |  |  |  |  |
-| `backbone-freezing` | `guess` | How much of each pretrained backbone is frozen. | DenseNet121 (§III.B.5): "the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning"; ResNet50 (§III.B.3): "with the early layers frozen to preserve pre-learned features". EfficientNet-B0/B3 are only "fine-tuned" (§III.B.2), and DenseNet201's description (§III.B.4) does not mention freezing. No layer count for "early" | Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234 | The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. "Match the CNN's parameter count" is this attempt's own rule, not something the paper states | The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8) | EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO |  | train.py make_model_specs() |  |  |  |
+| `backbone-freezing` | `guess` | How much of each pretrained backbone is frozen. | DenseNet121 (§III.B.5): "the early layers of the network were frozen... focusing the training process on the remaining layers for fine-tuning"; ResNet50 (§III.B.3): "with the early layers frozen to preserve pre-learned features". EfficientNet-B0/B3 are only "fine-tuned" (§III.B.2), and DenseNet201's description (§III.B.4) does not mention freezing. No layer count for "early" | Partial unfreezing: ResNet50 last 10 of 174 layers; EfficientNet-B3 last 35 of 381; DenseNet201 last 125 of 704; DenseNet121 (both variants) last 200 of 424; EfficientNet-B0 all 234 | The smallest trailing-layer count whose trainable-parameter count gets close to the from-scratch CNN's ~4.5M; a stopping rule based on parameter count, not on any accuracy number. "Match the CNN's parameter count" is this attempt's own rule, not something the paper states | The whole-backbone reading was built first. It trained only 262K-543K parameters per pretrained model and the CNN beat every pretrained model. Partial unfreezing closed most of the gap (DenseNet201 from 28 points behind to 2, DenseNet121 from 14 to 3.4, ResNet50 from 18 to 3.8). Minor limitation: the counts were matched to the earlier CNN's 4.5M trainable parameters, not the Fig. 2 CNN's 3.3M, so the pretrained models train somewhat more parameters than the CNN they are compared with | EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO |  | train.py make_model_specs() |  |  |  |
 | `validation-augmentation` | `guess` | Whether validation data is augmented. | Algorithm 1 says the augmented generator covers training and validation; only the test generator skips augmentation | Training and validation augmented; test gets plain normalization |  | The fitness signal the two HHO searches optimize against is computed on augmented validation data | All eight models |  |  |  |  |  |
 | `rgb-channels` | `guess` | How grayscale images become the RGB input the paper describes. | "All images were resized to 64 × 64 pixels and retained in RGB format" (§III.A); Figs. 2, 6, and 7 show 64x64x3 input | Every image converted to grayscale and resized to 64x64 (648 of 54,049 are not native 64x64 grayscale), then the single channel replicated into 3 channels | The native ArASL2018 images are 64x64 grayscale |  | All eight models |  | train.py comments at lines 26 and 63 |  |  | `arasl2018-grayscale` |
 | `backbone-input-preprocessing` | `paper_deviation` | Input scaling for the pretrained backbones. | Algorithm 1 normalizes images to [0, 1] ahead of every model | The [0, 1] scaling is undone and each backbone's own `preprocess_input` applied (mean-subtracted BGR for ResNet50, x/127.5-1 for DenseNet, EfficientNet's internal Rescaling+Normalization) | Each tf.keras.applications backbone was pretrained with its own preprocessing on raw [0, 255] input | Without it, ResNet50 reached ~34% test accuracy after 60 epochs and EfficientNet never escaped chance accuracy | EfficientNet-B0, EfficientNet-B3, ResNet50, DenseNet201, DenseNet121, DenseNet121-HHO |  | train.py resizing_backbone() comment |  |  |  |
 | `efficientnet-input-size` | `guess` | How 64x64 images become EfficientNet's 224x224 input. | Fig. 4: EfficientNet-B0/B3 take a 224x224x3 input; the shared preprocessing produces 64x64x3 | Upsize with a Keras Resizing layer to 224x224 |  |  | EfficientNet-B0, EfficientNet-B3 |  | train.py resizing_backbone() |  |  |  |
-| `cnn-architecture` | `paper_deviation` | The CNN's convolutional stack. | Fig. 2: Conv2D(32), Conv2D(32), Conv2D(64), Conv2D(128), with feature maps 64x64x32, 32x32x32, 16x16x64, 14x14x128, 7x7x128 and a Flatten of 6272 before Dense(512) | Three blocks of two same-padded 3x3 convolutions (32, 64, 128 filters), each followed by MaxPooling and BatchNormalization; Flatten of 8192 before Dense(512) |  | About 4.5M trainable parameters, against about 3.3M for Fig. 2's shapes (the Flatten-to-Dense(512) layer alone is 4.2M vs 3.2M). The CNN's ~4.5M is the target of the backbone-freezing rule | CNN, CNN-HHO |  | train.py build_cnn() | `backbone-freezing` |  |  |
+| `cnn-padding` | `guess` | Convolution padding in the Fig. 2 CNN. | Fig. 2 gives no padding, only feature-map shapes: 64x64x32 after the first convolution of a 64x64 input, 32x32x32, 16x16x64, then 14x14x128 | Same padding on the first three convolutions, no padding on the fourth | The only padding that yields Fig. 2's shapes from 3x3 kernels: 64 -> 64 needs same padding, 16 -> 14 needs none |  | CNN, CNN-HHO |  | train.py build_cnn() |  |  |  |
 | `densenet121-activation` | `paper_deviation` | DenseNet121's final activation. | The last layer uses sigmoid for 32-way classification | Softmax | Sigmoid doesn't make sense for a single-label, mutually-exclusive classification problem, and every other model in the paper uses softmax for the same task; the sigmoid mention is treated as a slip in the writing |  | DenseNet121, DenseNet121-HHO |  |  |  |  |  |
 | `densenet121-head` | `paper_deviation` | DenseNet121's classification head. | Fig. 6: MaxPooling2D, BatchNormalization, Dropout (0.3), Flatten, Dense (512 units, ReLU), Dropout (0.5), Dense (32 units, Sigmoid) | MaxPooling2D, BatchNormalization, Flatten, Dense (512, ReLU), Dropout, Dense (32, softmax): no Dropout (0.3) before Flatten. The remaining dropout is 0.5 for DenseNet121 and HHO-tuned for DenseNet121-HHO |  |  | DenseNet121, DenseNet121-HHO |  | train.py resizing_backbone() densenet121 head | `densenet121-activation` |  |  |
 | `learning-rate` | `guess` | Learning rate for the models whose rate the paper omits. | The paper names an optimizer (Adam or Adamax) for each but never gives a rate | The framework default for ResNet50, DenseNet121, and DenseNet201; 1e-4 for the plain CNN | For the CNN, Adam's default (1e-3) was tried first and collapsed to predicting the class prior; 1e-4 is the value CNN-HHO's own search converged to |  | CNN, ResNet50, DenseNet121, DenseNet201 |  | train.py make_model_specs() comment on the CNN spec |  |  |  |
