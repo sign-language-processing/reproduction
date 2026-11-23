@@ -6,7 +6,7 @@ Read this before any Modal, dataset-volume, or cloud-compute action.
 
 The Modal profile associated with the REPRO-SIGN workspace/team is exactly `repro-sign`. The active/default profile is not sufficient because it can change between commands.
 
-If `modal` is unavailable, the wrapper prints install instructions and stops; it never installs Modal itself. Once Modal is installed, the user must authenticate interactively with:
+If `modal` is unavailable, the wrapper prints install instructions and stops; it never installs Modal itself. Ask for permission before installing packages into a system or shared interpreter. Once Modal is installed, the user must authenticate interactively with:
 
 ```bash
 modal setup

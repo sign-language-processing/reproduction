@@ -129,7 +129,7 @@ The cache is an optimization, never a source of provenance. Pin every Hugging Fa
 
 Run Modal commands through `.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh`. The wrapper forces `MODAL_PROFILE=repro-sign` and verifies the profile and token before forwarding the command. Do not bypass it with bare `modal`, a different profile, or credentials supplied in command arguments; the user-run authentication bootstrap below is the sole exception.
 
-If the Modal CLI is unavailable, install it with `python3 -m pip install modal`. The user must then run the interactive authentication bootstrap:
+If the Modal CLI is unavailable, install it with `python3 -m pip install modal`. Ask for permission before installing packages into a system or shared interpreter. The user must then run the interactive authentication bootstrap:
 
 ```bash
 modal setup
