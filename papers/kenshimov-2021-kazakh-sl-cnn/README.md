@@ -212,4 +212,6 @@ All Modal runs used profile `repro-sign`. Totals from Modal billing: **1.43 GPU-
 
 ## Author and team contact
 
-This attempt contacted no author. Before it began, the study's data-access coordination had contacted the authors (queue record: contact dates 2026-08-20 and 2026-09-22, reply received), who supplied the dataset archive and the two notebooks. The four Penalty targets could be revisited if the authors provide the full penalty matrix and scoring code; that request was deliberately not made for now (gate `ksl-penalty-metric`).
+Before this attempt began, the study's data-access coordination had contacted the authors (queue record: contact dates 2026-08-20 and 2026-09-22, reply received), who supplied the dataset archive and the two notebooks.
+
+After the independent attempt was complete, a study team member emailed the authors on 2026-11-23 (`author-protocol-questions-1` in `reproduction.json.contacts`). The message asks them to confirm or correct each protocol detail this attempt had to guess, to resolve the paper's internal conflicts, and to share the full penalty matrix, its scoring code and the original Table 1 training code or logs. It discloses none of this attempt's results. No reply as of 2026-11-23, so the contact has changed nothing: no run, target result, guess or status. The four Penalty targets stay closed as not produced (gate `ksl-penalty-metric`) and could be revisited if the authors provide the matrix and scoring code.
