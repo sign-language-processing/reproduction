@@ -17,13 +17,34 @@ The author-linked Kaggle release is public, but both its unaugmented and augment
 
 There is also a concrete corpus/split conflict: the paper expands **5,600** original images to **15,088**, then randomly splits 80/10/10. The author metadata instead describes **5,832** unaugmented images (4,651/891/290) and **15,086** augmented images (13,926/870/290). Actual archive inspection reconciles the augmented count: **15,088 JPEGs include two byte-identical unannotated copies of valid labeled originals**. We exclude only those redundant copies, leaving15,086 labeled images. Historical test membership is still unknown. Its augmentation types match the paper: Gaussian blur up to 1 pixel, salt-and-pepper noise up to 5%, 25% grayscale and rotations ±20°.
 
-| Table 3 model | Precision, paper → release run | Recall | AP50 | AP50:95 |
-|---|---:|---:|---:|---:|
-| YOLOv5s | 99.2 → 99.7971% | 99.4 → 99.8246% | 99.3 → 99.5000% | 85.9 → 87.4106% |
-| YOLOv5m | 99.2 → 99.6924% | 99.2 → 99.8284% | 99.3 → 99.4983% | 87.75 → 89.1688% |
-| YOLOv5l | 99.5 → 99.7230% | 99.4 → 99.8931% | 99.4 → 99.4978% | 87.2 → 89.9931% |
+| Target | Metric | Unit | Published | Measured | Difference | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| Table 3 / yolov5s | Precision | percent | 99.2 | 99.79707381 | +0.59707381 | Conditional |
+| Table 3 / yolov5s | Recall | percent | 99.4 | 99.82457051 | +0.42457051 | Conditional |
+| Table 3 / yolov5s | mAP@0.5 | percent | 99.3 | 99.5 | +0.2 | Conditional |
+| Table 3 / yolov5s | mAP@[.5:.95] | percent | 85.9 | 87.41059567 | +1.51059567 | Conditional |
+| Table 3 / yolov5m | Precision | percent | 99.2 | 99.69237257 | +0.49237257 | Conditional |
+| Table 3 / yolov5m | Recall | percent | 99.2 | 99.82840614 | +0.62840614 | Conditional |
+| Table 3 / yolov5m | mAP@0.5 | percent | 99.3 | 99.49834163 | +0.19834163 | Conditional |
+| Table 3 / yolov5m | mAP@[.5:.95] | percent | 87.75 | 89.16877373 | +1.41877373 | Conditional |
+| Table 3 / yolov5l | Precision | percent | 99.5 | 99.72301215 | +0.22301215 | Conditional |
+| Table 3 / yolov5l | Recall | percent | 99.4 | 99.8930697 | +0.4930697 | Conditional |
+| Table 3 / yolov5l | mAP@0.5 | percent | 99.4 | 99.49782135 | +0.09782135 | Conditional |
+| Table 3 / yolov5l | mAP@[.5:.95] | percent | 87.2 | 89.9930664 | +2.7930664 | Conditional |
+| Table 4 / yolov5s | Model parameters | millions | 7.5 | 7.095145 | -0.404855 | Comparable |
+| Table 4 / yolov5s | Minimum reported inference time | seconds | 0.007 | 0.00339977 | -0.00360023 | Conditional |
+| Table 4 / yolov5s | Maximum reported inference time | seconds | 0.01 | 0.00931136 | -0.00068864 | Conditional |
+| Table 4 / yolov5s | Average FPS | frames/second | 121 | 277.21345138 | +156.21345138 | Conditional |
+| Table 4 / yolov5s | mAP@0.5 | percent | 99.3 | 99.5 | +0.2 | Conditional |
+| Table 4 / yolov5s | mAP@[.5:.95] | percent | 85.9 | 87.41059567 | +1.51059567 | Conditional |
+| Table 4 / faster-rcnn | Model parameters | millions | 105 | 104.51798 | -0.48202 | Comparable |
+| Table 4 / faster-rcnn | Minimum reported inference time | seconds | 0.55 | — | — | Unavailable |
+| Table 4 / faster-rcnn | Maximum reported inference time | seconds | 0.55 | — | — | Unavailable |
+| Table 4 / faster-rcnn | Average FPS | frames/second | 1.8 | — | — | Unavailable |
+| Table 4 / faster-rcnn | mAP@0.5 | percent | 98.7 | — | — | Unavailable |
+| Table 4 / faster-rcnn | mAP@[.5:.95] | percent | 81.38 | — | — | Unavailable |
 
-Table 4 repeats the small model's AP50 and AP50:95 cells above. Its unfused model has **7.095145 million parameters**, compared with 7.5 million reported. Native Faster X101-32x8d-FPN with the 28-class head has **104.517980 million**, rounding to the reported 105 million. Faster's reported AP50/AP50:95 (98.7/81.38%), inference time (0.55 s; two endpoint targets) and FPS (1.8) were not produced: its original execution was externally canceled before a durable checkpoint, and its immutable attempt window has closed.
+Its unfused model has **7.095145 million parameters**, compared with 7.5 million reported. Native Faster X101-32x8d-FPN with the 28-class head has **104.517980 million**, rounding to the reported 105 million. Faster's reported AP50/AP50:95 (98.7/81.38%), inference time (0.55 s; two endpoint targets) and FPS (1.8) were not produced: its original execution was externally canceled before a durable checkpoint, and its immutable attempt window has closed.
 
 The small model's separately measured A100 FP32 batch-one latency is **0.003400–0.009311 s**, mean **0.003607 s**, or **277.21 FPS**, versus the paper's 0.007–0.010 s and121 FPS. This supports real-time operation on the documented A100 setup. These three timing cells are **conditional evidence**, because the exact historical accelerator and measurement boundary are unknown; they are not comparable reproduced timing targets. Two model-size cells are comparable. Fourteen detection cells and three timing cells are conditional, and five Faster training-dependent cells are unavailable.
 
@@ -179,3 +200,9 @@ Validation: the repository reproduction validator passed on the final record; st
 Modal billing attributes 2.7723 GPU-hours and USD 8.9505 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
 
 For `yolo-s-full-001`, `yolo-m-full-001`, `yolo-l-full-001`, `yolo-s-full-001-collection-001`, `yolo-m-full-001-collection-001`, `yolo-l-full-001-collection-001`, the recorded launcher SHA-256 matches the source that mounts and configures the shared cache.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 5 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Matched the native YOLO evaluation and Faster source-probe parameter counts to the ledger. The audit used the retained outputs and did not execute a model.
+
+The Faster launcher loads the same Pillow patch bytes from `patches/faster-pillow.patch`. The original run artifacts preserve the executed source.
