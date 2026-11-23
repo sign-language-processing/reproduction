@@ -4273,5 +4273,17 @@
       "description": "Author version3 samples are513x512, compared with paper512x512. Retain actual samples and the same100x100 bilinear resize; no crop invented."
     }
   ],
-  "noncompliance": []
+  "noncompliance": [
+    {
+      "id": "mutable-base-image-original-runs",
+      "description": "The original MNIST/RGB preflight and full runs requested the study image by a mutable tag. Their modal image IDs and native dependency freezes are retained, while the original OCI base digest was not captured.",
+      "requirement": "AGENTS.md requires the study base image to be pinned by digest.",
+      "run_ids": [
+        "preflight",
+        "mnist-full",
+        "rgb-full"
+      ],
+      "resolution": "The current launcher pins the base digest for future repeats. The historical image references remain as recorded."
+    }
+  ]
 }

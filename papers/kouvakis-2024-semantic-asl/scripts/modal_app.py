@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import modal
 ROOT=Path(__file__).resolve().parent
 app=modal.App('repro-2248c066-semantic-asl')
@@ -16,16 +17,30 @@ def populate():
 image=(modal.Image.from_registry('ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291')
        .env(ENV).add_local_file(ROOT/'train.py','/app/train.py'))
 @app.function(image=image,gpu='A100-80GB',timeout=1800,memory=16384,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/results':outputs})
-def preflight():
- import subprocess
- subprocess.run(['python','/app/train.py','--dataset','mnist','--preflight'],check=True)
- subprocess.run(['python','/app/train.py','--dataset','rgb','--preflight'],check=True)
- outputs.commit()
+def preflight(run_suffix: str = ''):
+    import subprocess
+
+    if run_suffix and not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', run_suffix):
+        raise ValueError('Invalid run suffix')
+    for dataset in ('mnist', 'rgb'):
+        command = ['python', '/app/train.py', '--dataset', dataset, '--preflight']
+        if run_suffix:
+            command += ['--run-id', f'{dataset}-preflight-{run_suffix}']
+        subprocess.run(command, check=True)
+    outputs.commit()
 @app.function(image=image,gpu='A100-80GB',timeout=21600,memory=16384,volumes={'/datasets':data.read_only(),'/cache/huggingface':cache,'/results':outputs})
-def train(dataset: str):
- import subprocess
- subprocess.run(['python','/app/train.py','--dataset',dataset],check=True)
- outputs.commit()
+def train(dataset: str, run_suffix: str = ''):
+    import subprocess
+
+    if dataset not in ('mnist', 'rgb'):
+        raise ValueError('Use lexset_run for LEXSET training')
+    if run_suffix and not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', run_suffix):
+        raise ValueError('Invalid run suffix')
+    command = ['python', '/app/train.py', '--dataset', dataset]
+    if run_suffix:
+        command += ['--run-id', f'{dataset}-full-{run_suffix}']
+    subprocess.run(command, check=True)
+    outputs.commit()
 
 @app.function(image=data_image,timeout=300,volumes={'/results':outputs.read_only(),'/cache/huggingface':cache})
 def evidence():

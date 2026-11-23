@@ -27,32 +27,80 @@ All published MNIST (90), RGB (80), and LEXSET (60) epoch schedules completed, p
 
 Table 3(c), class order `A B C D E F G H I K L M N O P Q R S T U V W X Y`. Each official test class has 75 examples. Values are percent; each cell shows **published → reproduced**.
 
-| Class / letter | Precision | Recall | F1 |
-|---|---:|---:|---:|
-| 0 / A | 98.68 → 96.05 | 100.00 → 97.33 | 99.34 → 96.69 |
-| 1 / B | 100.00 → 100.00 | 100.00 → 98.67 | 100.00 → 99.33 |
-| 2 / C | 100.00 → 98.67 | 100.00 → 98.67 | 100.00 → 98.67 |
-| 3 / D | 100.00 → 100.00 | 100.00 → 96.00 | 100.00 → 97.96 |
-| 4 / E | 100.00 → 98.68 | 100.00 → 100.00 | 100.00 → 99.34 |
-| 5 / F | 100.00 → 97.40 | 100.00 → 100.00 | 100.00 → 98.68 |
-| 6 / G | 100.00 → 100.00 | 100.00 → 97.33 | 100.00 → 98.65 |
-| 7 / H | 100.00 → 97.40 | 100.00 → 100.00 | 100.00 → 98.68 |
-| 8 / I | 100.00 → 100.00 | 100.00 → 100.00 | 100.00 → 100.00 |
-| 9 / K | 100.00 → 96.10 | 98.67 → 98.67 | 99.33 → 97.37 |
-| 10 / L | 100.00 → 98.68 | 100.00 → 100.00 | 100.00 → 99.34 |
-| 11 / M | 100.00 → 100.00 | 98.67 → 96.00 | 99.33 → 97.96 |
-| 12 / N | 100.00 → 97.33 | 97.33 → 97.33 | 98.65 → 97.33 |
-| 13 / O | 100.00 → 100.00 | 100.00 → 97.33 | 100.00 → 98.65 |
-| 14 / P | 100.00 → 100.00 | 100.00 → 100.00 | 100.00 → 100.00 |
-| 15 / Q | 100.00 → 100.00 | 100.00 → 92.00 | 100.00 → 95.83 |
-| 16 / R | 100.00 → 96.15 | 100.00 → 100.00 | 100.00 → 98.04 |
-| 17 / S | 96.10 → 92.86 | 98.67 → 86.67 | 97.37 → 89.66 |
-| 18 / T | 100.00 → 90.36 | 100.00 → 100.00 | 100.00 → 94.94 |
-| 19 / U | 100.00 → 93.75 | 100.00 → 100.00 | 100.00 → 96.77 |
-| 20 / V | 98.68 → 98.57 | 100.00 → 92.00 | 99.34 → 95.17 |
-| 21 / W | 100.00 → 98.68 | 100.00 → 100.00 | 100.00 → 99.34 |
-| 22 / X | 100.00 → 98.68 | 100.00 → 100.00 | 100.00 → 99.34 |
-| 23 / Y | 100.00 → 100.00 | 100.00 → 100.00 | 100.00 → 100.00 |
+| Class / letter | Metric | Published (%) | Reproduced (%) | Difference (pp) |
+| --- | --- | --- | --- | --- |
+| 0 / A | Precision | 98.68 | 96.05263158 | -2.62736842 |
+| 0 / A | Recall | 100 | 97.33333333 | -2.66666667 |
+| 0 / A | F1 | 99.34 | 96.68874172 | -2.65125828 |
+| 1 / B | Precision | 100 | 100 | 0 |
+| 1 / B | Recall | 100 | 98.66666667 | -1.33333333 |
+| 1 / B | F1 | 100 | 99.32885906 | -0.67114094 |
+| 2 / C | Precision | 100 | 98.66666667 | -1.33333333 |
+| 2 / C | Recall | 100 | 98.66666667 | -1.33333333 |
+| 2 / C | F1 | 100 | 98.66666667 | -1.33333333 |
+| 3 / D | Precision | 100 | 100 | 0 |
+| 3 / D | Recall | 100 | 96 | -4 |
+| 3 / D | F1 | 100 | 97.95918367 | -2.04081633 |
+| 4 / E | Precision | 100 | 98.68421053 | -1.31578947 |
+| 4 / E | Recall | 100 | 100 | 0 |
+| 4 / E | F1 | 100 | 99.33774834 | -0.66225166 |
+| 5 / F | Precision | 100 | 97.4025974 | -2.5974026 |
+| 5 / F | Recall | 100 | 100 | 0 |
+| 5 / F | F1 | 100 | 98.68421053 | -1.31578947 |
+| 6 / G | Precision | 100 | 100 | 0 |
+| 6 / G | Recall | 100 | 97.33333333 | -2.66666667 |
+| 6 / G | F1 | 100 | 98.64864865 | -1.35135135 |
+| 7 / H | Precision | 100 | 97.4025974 | -2.5974026 |
+| 7 / H | Recall | 100 | 100 | 0 |
+| 7 / H | F1 | 100 | 98.68421053 | -1.31578947 |
+| 8 / I | Precision | 100 | 100 | 0 |
+| 8 / I | Recall | 100 | 100 | 0 |
+| 8 / I | F1 | 100 | 100 | 0 |
+| 9 / K | Precision | 100 | 96.1038961 | -3.8961039 |
+| 9 / K | Recall | 98.67 | 98.66666667 | -0.00333333 |
+| 9 / K | F1 | 99.33 | 97.36842105 | -1.96157895 |
+| 10 / L | Precision | 100 | 98.68421053 | -1.31578947 |
+| 10 / L | Recall | 100 | 100 | 0 |
+| 10 / L | F1 | 100 | 99.33774834 | -0.66225166 |
+| 11 / M | Precision | 100 | 100 | 0 |
+| 11 / M | Recall | 98.67 | 96 | -2.67 |
+| 11 / M | F1 | 99.33 | 97.95918367 | -1.37081633 |
+| 12 / N | Precision | 100 | 97.33333333 | -2.66666667 |
+| 12 / N | Recall | 97.33 | 97.33333333 | +0.00333333 |
+| 12 / N | F1 | 98.65 | 97.33333333 | -1.31666667 |
+| 13 / O | Precision | 100 | 100 | 0 |
+| 13 / O | Recall | 100 | 97.33333333 | -2.66666667 |
+| 13 / O | F1 | 100 | 98.64864865 | -1.35135135 |
+| 14 / P | Precision | 100 | 100 | 0 |
+| 14 / P | Recall | 100 | 100 | 0 |
+| 14 / P | F1 | 100 | 100 | 0 |
+| 15 / Q | Precision | 100 | 100 | 0 |
+| 15 / Q | Recall | 100 | 92 | -8 |
+| 15 / Q | F1 | 100 | 95.83333333 | -4.16666667 |
+| 16 / R | Precision | 100 | 96.15384615 | -3.84615385 |
+| 16 / R | Recall | 100 | 100 | 0 |
+| 16 / R | F1 | 100 | 98.03921569 | -1.96078431 |
+| 17 / S | Precision | 96.1 | 92.85714286 | -3.24285714 |
+| 17 / S | Recall | 98.67 | 86.66666667 | -12.00333333 |
+| 17 / S | F1 | 97.37 | 89.65517241 | -7.71482759 |
+| 18 / T | Precision | 100 | 90.36144578 | -9.63855422 |
+| 18 / T | Recall | 100 | 100 | 0 |
+| 18 / T | F1 | 100 | 94.93670886 | -5.06329114 |
+| 19 / U | Precision | 100 | 93.75 | -6.25 |
+| 19 / U | Recall | 100 | 100 | 0 |
+| 19 / U | F1 | 100 | 96.77419355 | -3.22580645 |
+| 20 / V | Precision | 98.68 | 98.57142857 | -0.10857143 |
+| 20 / V | Recall | 100 | 92 | -8 |
+| 20 / V | F1 | 99.34 | 95.17241379 | -4.16758621 |
+| 21 / W | Precision | 100 | 98.68421053 | -1.31578947 |
+| 21 / W | Recall | 100 | 100 | 0 |
+| 21 / W | F1 | 100 | 99.33774834 | -0.66225166 |
+| 22 / X | Precision | 100 | 98.68421053 | -1.31578947 |
+| 22 / X | Recall | 100 | 100 | 0 |
+| 22 / X | F1 | 100 | 99.33774834 | -0.66225166 |
+| 23 / Y | Precision | 100 | 100 | 0 |
+| 23 / Y | Recall | 100 | 100 | 0 |
+| 23 / Y | F1 | 100 | 100 | 0 |
 
 | Retained run | App / task | Measured process runtime | GPU-hours |
 |---|---|---:|---:|
@@ -91,16 +139,16 @@ Run `./setup.sh` once per clone, then repeat from repository root:
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::populate
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh sign-language-mnist manifest.json
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh asl-semcom-rgb manifest.json
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::preflight
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset mnist
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset rgb
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::preflight --run-suffix repeat-01
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset mnist --run-suffix repeat-01
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::train --dataset rgb --run-suffix repeat-01
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kouvakis-2024-semantic-asl/scripts/modal_app.py::evidence
 python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/kouvakis-2024-semantic-asl
 ```
 
-Existing completed output directories return their retained metrics without overwriting them; interrupted runs resume their model, optimizer, epoch history and RNG checkpoint. Setup, training and full-test evaluation are contained in the Modal entry points. A new scientifically independent attempt should use a new output directory and a new declared run record. Dataset acquisition verifies both pinned archive SHA-256 values and refuses a different manifest version.
+Existing completed output directories return their retained metrics without overwriting them; interrupted runs resume their model, optimizer, epoch history and RNG checkpoint. Setup, training and full-test evaluation are contained in the Modal entry points. Choose an unused suffix for a new independent attempt and record its ceilings before launch. The launcher keeps preflight and full output directories separate. Dataset acquisition verifies both pinned archive SHA-256 values and refuses a different manifest version.
 
-GPT-6 using Codex performed source discovery, implementation, execution and reporting. This identity comes from session instructions; exact model ID and harness version were not exposed. The tracker record's operator identifiers are redacted, its original export hash is preserved, and no legacy `confirmation` field is invented for a current schema that lacks it. This is a direct user-authorized tracker assignment, with final paper status and a separate database ID. No numerical closeness is called a scientific success or failure; the declared criterion is agreement at the published two-decimal precision for comparable produced metrics, leaving interpretation to review.
+GPT-6 using Codex performed source discovery, implementation, execution and reporting. This identity comes from session instructions; exact model ID and harness version were not exposed. The tracker record's operator identifiers are redacted, its original export hash is preserved, and no legacy `confirmation` field is invented for a current schema that lacks it. The preserved tracker export identifies the final paper and its separate database ID. No numerical closeness is called a scientific success or failure; the declared criterion is agreement at the published two-decimal precision for comparable produced metrics, leaving interpretation to review.
 
 A second GPT-6/Codex agent, `codex-orchestrator-reviewer`, independently reviewed the report, metric formulas, label mapping and training implementation on 2026-10-01. Its explicit session attestation supplies those model/application names; exact model ID and harness version remain unavailable. This review clarified the documentation of MNIST interpolation versus RGB resizing. It did not change the implementation, run any experiment, or alter execution attribution.
 
@@ -139,10 +187,14 @@ For the LEXSET path, run these commands from repository root. The acquisition is
 
 ## Noncompliance
 
-None.
+- `mutable-base-image-original-runs` — The original MNIST/RGB preflight and full runs requested the study image by tag. Their Modal image IDs and package freezes remain in the record. Future repeats use the pinned digest.
 
 ## Modal billing reconciliation
 
 Modal billing attributes 0.5651 GPU-hours and USD 1.5844 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
 
 The launcher now pins the study image digest for future runs. The historical MNIST and RGB run records preserve their original tag and resolved Modal image evidence.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 6 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Recomputed test accuracy and all 72 RGB class metrics from saved predictions. Checked training accuracy against each final epoch record. The audit used the retained outputs and did not execute a model.
