@@ -234,14 +234,308 @@
     "blocker": null
   },
   "datasets": [],
-  "metric_definitions": [],
-  "experiments": [],
-  "targets": [],
+  "metric_definitions": [
+    {
+      "metric_id": "total-params",
+      "name": "Total parameters",
+      "direction": "not_applicable",
+      "implementation": "Keras Model.count_params() on the built model",
+      "version": "TensorFlow 2.8.0",
+      "aggregation": "single model",
+      "unit_or_scale": "millions of parameters, as printed in Table 1",
+      "paper_definition": "Table 1 column 'Total params (M)'; the paper does not say how it was counted."
+    },
+    {
+      "metric_id": "accuracy",
+      "name": "Accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Keras 'accuracy' metric from Model.evaluate on the test split: correct predictions / test images",
+      "version": "TensorFlow 2.8.0",
+      "aggregation": "one run, all test images, final epoch",
+      "unit_or_scale": "fraction in [0, 1]",
+      "paper_definition": "Eq. (1): (TP + TN) / (TP + TN + FP + FN). Fig. 9 confirms the reported LeNet value is correct / total: 208 / 210 = 0.990."
+    },
+    {
+      "metric_id": "loss",
+      "name": "Loss",
+      "direction": "lower_is_better",
+      "implementation": "Keras categorical_crossentropy from Model.evaluate on the test split",
+      "version": "TensorFlow 2.8.0",
+      "aggregation": "mean over all test images, final epoch",
+      "unit_or_scale": "nats",
+      "paper_definition": "Sec. 5.2: 'loss function, categorical cross entropy'; models 'were tested on a test sample'."
+    },
+    {
+      "metric_id": "penalty",
+      "name": "Penalty",
+      "direction": "not_stated",
+      "implementation": "Not implemented: the 42x42 penalty matrix is not published",
+      "version": "none",
+      "aggregation": "Eq. (2): S = -(1/N) * sum over predictions of A[true, predicted]",
+      "unit_or_scale": "matrix entries range from 0 to 4 in Fig. 4",
+      "paper_definition": "Eq. (2) and Fig. 4 ('Example of penalty matrix values', 12 of 42 classes). Eq. (2) gives values at or below zero; Table 1 reports 3.017 to 3.130."
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table1-lenet",
+      "system": "LeNet, trained from random initialization on 120x320 grayscale images with RMSprop and categorical cross-entropy for 20 epochs",
+      "dataset_id": "ksl-fingerspelling",
+      "checkpoint_rule": "Weights after the 20th epoch; the paper describes no checkpoint selection.",
+      "seed_policy": "The paper reports one run per model and no seed. This attempt uses seed 42 for the split and initialization.",
+      "paper_evidence": "Table 1, row 'LeNet'; Sec. 5.1 (data and split); Sec. 5.2 (training)."
+    },
+    {
+      "experiment_id": "table1-alexnet",
+      "system": "AlexNet, trained from random initialization on 120x320 grayscale images with RMSprop and categorical cross-entropy for 20 epochs",
+      "dataset_id": "ksl-fingerspelling",
+      "checkpoint_rule": "Weights after the 20th epoch; the paper describes no checkpoint selection.",
+      "seed_policy": "The paper reports one run per model and no seed. This attempt uses seed 42 for the split and initialization.",
+      "paper_evidence": "Table 1, row 'AlexNet'; Sec. 5.1 (data and split); Sec. 5.2 (training)."
+    },
+    {
+      "experiment_id": "table1-resnet50",
+      "system": "ResNet50, trained from random initialization on 120x320 grayscale images with RMSprop and categorical cross-entropy for 20 epochs",
+      "dataset_id": "ksl-fingerspelling",
+      "checkpoint_rule": "Weights after the 20th epoch; the paper describes no checkpoint selection.",
+      "seed_policy": "The paper reports one run per model and no seed. This attempt uses seed 42 for the split and initialization.",
+      "paper_evidence": "Table 1, row 'ResNet50'; Sec. 5.1 (data and split); Sec. 5.2 (training)."
+    },
+    {
+      "experiment_id": "table1-efficientnetb7",
+      "system": "EffectiveNetB7 (EfficientNetB7), trained from random initialization on 120x320 grayscale images with RMSprop and categorical cross-entropy for 20 epochs",
+      "dataset_id": "ksl-fingerspelling",
+      "checkpoint_rule": "Weights after the 20th epoch; the paper describes no checkpoint selection.",
+      "seed_policy": "The paper reports one run per model and no seed. This attempt uses seed 42 for the split and initialization.",
+      "paper_evidence": "Table 1, row 'EffectiveNetB7'; Sec. 5.1 (data and split); Sec. 5.2 (training)."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table1-lenet-total-params",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'LeNet', column 'Total params (M)'",
+      "experiment_id": "table1-lenet",
+      "metric_id": "total-params",
+      "split": "not applicable: a property of the model",
+      "original_value": 1.07,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-lenet-accuracy",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'LeNet', column 'Accuracy'",
+      "experiment_id": "table1-lenet",
+      "metric_id": "accuracy",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.99,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-lenet-loss",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'LeNet', column 'Loss'",
+      "experiment_id": "table1-lenet",
+      "metric_id": "loss",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.0453,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-lenet-penalty",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'LeNet', column 'Penalty'",
+      "experiment_id": "table1-lenet",
+      "metric_id": "penalty",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 3.017,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-alexnet-total-params",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'AlexNet', column 'Total params (M)'",
+      "experiment_id": "table1-alexnet",
+      "metric_id": "total-params",
+      "split": "not applicable: a property of the model",
+      "original_value": 35.5,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-alexnet-accuracy",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'AlexNet', column 'Accuracy'",
+      "experiment_id": "table1-alexnet",
+      "metric_id": "accuracy",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.99,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-alexnet-loss",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'AlexNet', column 'Loss'",
+      "experiment_id": "table1-alexnet",
+      "metric_id": "loss",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.1343,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-alexnet-penalty",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'AlexNet', column 'Penalty'",
+      "experiment_id": "table1-alexnet",
+      "metric_id": "penalty",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 3.021,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-resnet50-total-params",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'ResNet50', column 'Total params (M)'",
+      "experiment_id": "table1-resnet50",
+      "metric_id": "total-params",
+      "split": "not applicable: a property of the model",
+      "original_value": 23.7,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-resnet50-accuracy",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'ResNet50', column 'Accuracy'",
+      "experiment_id": "table1-resnet50",
+      "metric_id": "accuracy",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.642,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-resnet50-loss",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'ResNet50', column 'Loss'",
+      "experiment_id": "table1-resnet50",
+      "metric_id": "loss",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 1.8544,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-resnet50-penalty",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'ResNet50', column 'Penalty'",
+      "experiment_id": "table1-resnet50",
+      "metric_id": "penalty",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 3.13,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-efficientnetb7-total-params",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'EffectiveNetB7', column 'Total params (M)'",
+      "experiment_id": "table1-efficientnetb7",
+      "metric_id": "total-params",
+      "split": "not applicable: a property of the model",
+      "original_value": 64.2,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-efficientnetb7-accuracy",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'EffectiveNetB7', column 'Accuracy'",
+      "experiment_id": "table1-efficientnetb7",
+      "metric_id": "accuracy",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.967,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-efficientnetb7-loss",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'EffectiveNetB7', column 'Loss'",
+      "experiment_id": "table1-efficientnetb7",
+      "metric_id": "loss",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 0.1355,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    },
+    {
+      "target_id": "table1-efficientnetb7-penalty",
+      "in_scope": true,
+      "paper_location": "Table 1 (p. 49), row 'EffectiveNetB7', column 'Penalty'",
+      "experiment_id": "table1-efficientnetb7",
+      "metric_id": "penalty",
+      "split": "test: 210 images, 10% of the 2,100-image subset, random and unstratified",
+      "original_value": 3.017,
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; all four rows are the paper's own experiments on its own dataset."
+    }
+  ],
   "runs": [
     {
       "run_id": "populate-dataset-1",
       "kind": "data_population",
       "purpose": "Upload the authors' archive to the shared datasets Volume, extract it, and write a per-file SHA-256 manifest.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kenshimov-2021-kazakh-sl-cnn/data.sh resized_gray_dataset.7z",
+      "exit_code": 144,
+      "started_at_utc": "2026-11-20T16:19:13Z",
+      "finished_at_utc": "2026-11-23T10:20:30Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-20T16:18:46Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": null,
+        "max_cost_usd": 2.0
+      },
+      "compute": {
+        "platform": "local",
+        "gpu_count": 0,
+        "note": "Only the local upload client ran (modal volume put through the repro-sign wrapper). It created no Modal app and used no Modal compute."
+      },
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "wall_time_ceiling_reached",
+        "detail": "The archive upload hung: the client sat idle with open connections and transferred nothing. It was found on 2026-11-23 and killed. Nothing had reached the Volume (the dataset path did not exist) and no app had started.",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "next_run_id": "populate-dataset-2",
+        "gate_ids": []
+      },
+      "observed": "modal volume ls datasets ksl-fingerspelling-kenshimov-2021/ on 2026-11-23: path does not exist. modal app list: no app for this paper."
+    },
+    {
+      "run_id": "populate-dataset-2",
+      "kind": "data_population",
+      "purpose": "Retry of populate-dataset-1 with a hard 55-minute limit on the upload client.",
       "agent_ids": [
         "reproduction-agent"
       ],
@@ -256,11 +550,11 @@
       },
       "attempt": {
         "group_id": "populate-dataset",
-        "number": 1,
+        "number": 2,
         "max_attempts": 2
       },
       "stop_policy": {
-        "declared_at_utc": "2026-11-20T16:18:46Z",
+        "declared_at_utc": "2026-11-23T10:26:44Z",
         "max_wall_time_seconds": 3600,
         "max_gpu_hours": null,
         "max_cost_usd": 2.0
@@ -342,7 +636,18 @@
     }
   ],
   "guesses_and_deviations": [],
-  "noncompliance": [],
+  "noncompliance": [
+    {
+      "id": "populate-ceiling-not-enforced",
+      "description": "populate-dataset-1 declared a 3,600 s wall-time ceiling, but its hung upload client was not stopped until about 66 hours after launch. The agent session was interrupted and nothing enforced the ceiling.",
+      "requirement": "modal-data-compute.md, Full-run reliability: cancel runaway or clearly invalid work within the recorded stop ceiling; AGENTS.md: monitor remote jobs to a terminal state.",
+      "run_ids": [
+        "populate-dataset-1"
+      ],
+      "effect": "None on data or results: the client transferred nothing, no Modal compute ran, and the Volume was unchanged.",
+      "resolution": "Stopped on discovery. The retry runs the upload under a hard time limit."
+    }
+  ],
   "source_search": {
     "searched_at": "2026-11-20",
     "conclusion": "No published code and no published dataset were found. Preference level 3.",
