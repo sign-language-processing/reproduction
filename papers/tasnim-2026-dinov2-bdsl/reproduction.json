@@ -118,7 +118,7 @@
       "what_to_reproduce": "Table 5 - first row",
       "year": 2026
     },
-    "detail": "Direct user-authorized tracker assignment. Expanded final paper has no confirmation field; queue approval fields are not invented."
+    "detail": "This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered."
   },
   "paper": {
     "title": "A vision transformer-based fine-tuned DINOv2 model for bangla sign language recognition",
@@ -1275,7 +1275,8 @@
       "artifact_id": "full-1-metrics-json",
       "kind": "raw-metrics",
       "uri": "modal://tasnim-2026-dinov2-bdsl-results/full-seed42/metrics.json",
-      "sha256": "7ca6466e642fa0ca73b0c1770070c07016618263d3d7ad25ce9da1094a64597c"
+      "sha256": "7ca6466e642fa0ca73b0c1770070c07016618263d3d7ad25ce9da1094a64597c",
+      "size_bytes": 10567
     },
     {
       "artifact_id": "full-1-deterministic-test-predictions-npz",
@@ -1317,7 +1318,8 @@
       "artifact_id": "full-1-predictions-npz",
       "kind": "native-run-output",
       "uri": "modal://tasnim-2026-dinov2-bdsl-results/full-seed42/predictions.npz",
-      "sha256": "a56baa1ca4b4719b91e0a36d3dabf8b6786465e52e3499ec0caf00b1ca3ba8e6"
+      "sha256": "a56baa1ca4b4719b91e0a36d3dabf8b6786465e52e3499ec0caf00b1ca3ba8e6",
+      "size_bytes": 667278
     },
     {
       "artifact_id": "full-1-test-paths-txt",
@@ -1433,5 +1435,12 @@
       "description": "Use torchSDPA through officialXFORMERS_DISABLED=1 option becausemodernNGCenvironmentkernelcompatibility. This preservesexactattentionmathwithoutpatchingauthorbackbone."
     }
   ],
-  "noncompliance": []
+  "noncompliance": [
+    {
+      "id": "historical-tracker-export-unavailable",
+      "description": "This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered.",
+      "requirement": "AGENTS.md requires the Reproduction Tracker export for queue-backed assignments.",
+      "effect": "The original paper identity and final status are recorded. The tracker entry and its original export hash are unavailable."
+    }
+  ]
 }

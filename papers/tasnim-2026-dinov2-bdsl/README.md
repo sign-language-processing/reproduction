@@ -34,8 +34,8 @@ From the repository root:
 
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/tasnim-2026-dinov2-bdsl/scripts/modal_app.py --mode data
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/tasnim-2026-dinov2-bdsl/scripts/modal_app.py --mode preflight
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/tasnim-2026-dinov2-bdsl/scripts/modal_app.py --mode full
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/tasnim-2026-dinov2-bdsl/scripts/modal_app.py --mode preflight --run-suffix repeat-01
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/tasnim-2026-dinov2-bdsl/scripts/modal_app.py --mode full --run-suffix repeat-01
 python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/tasnim-2026-dinov2-bdsl
 ```
 
@@ -89,8 +89,14 @@ On 2026-10-03, the GPT-6/Codex orchestrator verified the Table 5 comparisons and
 
 ## Noncompliance
 
-None.
+- `historical-tracker-export-unavailable` — This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered. The report retains the original source hash. A new tracker export would be dated as later evidence.
 
 ## Modal billing reconciliation
 
 Modal billing attributes 0.7456 GPU-hours and USD 1.0764 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 2 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Recomputed accuracy and macro F1 from the saved BDSL49 predictions. The audit used the retained outputs and did not execute a model.
+
+For an independent repeat, choose an unused `--run-suffix` and declare its ceilings before launch. The original commands and source hashes remain in the historical ledger.

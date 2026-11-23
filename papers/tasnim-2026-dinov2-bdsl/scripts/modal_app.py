@@ -1,5 +1,6 @@
 """Invoke through modal_repro_sign.sh; all storage scoped to repro-sign."""
 from pathlib import Path
+import re
 import modal
 ROOT=Path(__file__).resolve().parent
 app=modal.App('repro-8755046-dinov2-bdsl')
@@ -24,17 +25,26 @@ def verify_upload(filename: str):
 results=modal.Volume.from_name('tasnim-2026-dinov2-bdsl-results',create_if_missing=True,version=2)
 train_image=modal.Image.from_dockerfile(ROOT.parent/'Dockerfile').add_local_file(ROOT/'train.py','/app/train.py')
 @app.function(image=train_image,gpu='A10G',cpu=4,memory=16384,timeout=14400,volumes={'/datasets':datasets.with_mount_options(read_only=True),'/cache/huggingface':cache,'/results':results},env=ENV)
-def train(preflight: bool):
+def train(preflight: bool, run_suffix: str = ''):
     import subprocess
-    output=Path('/results')/('preflight-seed42' if preflight else 'full-seed42')
+
+    if run_suffix and not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', run_suffix):
+        raise ValueError('Invalid run suffix')
+    run_id = 'preflight-seed42' if preflight else 'full-seed42'
+    if run_suffix:
+        run_id += f'-{run_suffix}'
+    output = Path('/results') / run_id
     command=['python','/app/train.py','--out',str(output)]
     if preflight:command.append('--preflight')
     try:subprocess.run(command,check=True)
     finally:results.commit()
     return (output/'metrics.json').read_text()
 @app.local_entrypoint()
-def main(mode: str='data', filename: str='Recognition_2.zip'):
+def main(mode: str='data', filename: str='Recognition_2.zip', run_suffix: str = ''):
     if mode=='verify-upload':call=verify_upload.spawn(filename)
     elif mode=='data':call=populate.spawn()
-    else:call=train.spawn(mode=='preflight')
+    elif mode in ('preflight', 'full'):
+        call = train.spawn(mode == 'preflight', run_suffix)
+    else:
+        raise ValueError('Expected data, verify-upload, preflight, or full')
     print('Function call:',call.object_id,flush=True);print(call.get())
