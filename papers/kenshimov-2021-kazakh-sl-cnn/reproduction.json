@@ -699,9 +699,9 @@
         "reproduction-agent"
       ],
       "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id preflight-2 --seeds 42 --epochs 1 --per-class 10",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-23T10:35:32Z",
+      "finished_at_utc": "2026-11-23T10:37:15Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -718,6 +718,233 @@
         "max_gpu_hours": 1.0,
         "max_cost_usd": 4.0
       },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-H78CJWswYM4oF9rT8cjAFj"
+        ],
+        "gpu_count": 1,
+        "gpu": "NVIDIA A100-SXM4-40GB, 40960 MiB, driver 610.57.04",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "function_call_id": "fc-01M83ZKEVBGD0B17DCSQD4RPNJ"
+      },
+      "source_sha256": {
+        "modal_app.py": "4716b2cca5fa02a7d9b106224da9c70b46ddb18cc3a132039e49765ce4a0e62c"
+      },
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "EfficientNetB7 completed 1 epoch at batch size 64, the weight save/reload round trip and test evaluation on the A100-40GB.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "Parameter count 64,204,093, equal to Table 1's 64.2 M. Reloaded weights reproduced the test metrics exactly. Fit time for 1 epoch (6 steps, including graph tracing): 55.2 s. Peak GPU memory 31.83 GB. Hypothesis supported: more GPU memory runs the unchanged batch size."
+    },
+    {
+      "run_id": "full-lenet-seed42",
+      "kind": "full",
+      "purpose": "Table 1 row for lenet: train 20 epochs on 1,680 images with seed 42 and score the 210-image test split.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet --run-id full-lenet-seed42 --seeds 42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-lenet-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:37:57Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "lenet",
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "optimizer": "rmsprop (Keras defaults)",
+        "loss": "categorical_crossentropy"
+      },
+      "estimate": "From preflight-1 and preflight-2: under 30 minutes of A100 time per run, under USD 2.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-alexnet-seed42",
+      "kind": "full",
+      "purpose": "Table 1 row for alexnet: train 20 epochs on 1,680 images with seed 42 and score the 210-image test split.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models alexnet --run-id full-alexnet-seed42 --seeds 42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-alexnet-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:37:57Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "alexnet",
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "optimizer": "rmsprop (Keras defaults)",
+        "loss": "categorical_crossentropy"
+      },
+      "estimate": "From preflight-1 and preflight-2: under 30 minutes of A100 time per run, under USD 2.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-resnet50-seed42",
+      "kind": "full",
+      "purpose": "Table 1 row for resnet50: train 20 epochs on 1,680 images with seed 42 and score the 210-image test split.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models resnet50 --run-id full-resnet50-seed42 --seeds 42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-resnet50-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:37:57Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "resnet50",
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "optimizer": "rmsprop (Keras defaults)",
+        "loss": "categorical_crossentropy"
+      },
+      "estimate": "From preflight-1 and preflight-2: under 30 minutes of A100 time per run, under USD 2.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A100-40GB",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        }
+      }
+    },
+    {
+      "run_id": "full-efficientnetb7-seed42",
+      "kind": "full",
+      "purpose": "Table 1 row for efficientnetb7: train 20 epochs on 1,680 images with seed 42 and score the 210-image test split.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id full-efficientnetb7-seed42 --seeds 42",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full-efficientnetb7-seed42",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:37:57Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 5.0
+      },
+      "configuration": {
+        "model": "efficientnetb7",
+        "seed": 42,
+        "epochs": 20,
+        "batch_size": 64,
+        "images_per_class": 50,
+        "optimizer": "rmsprop (Keras defaults)",
+        "loss": "categorical_crossentropy"
+      },
+      "estimate": "From preflight-1 and preflight-2: under 30 minutes of A100 time per run, under USD 2.",
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
