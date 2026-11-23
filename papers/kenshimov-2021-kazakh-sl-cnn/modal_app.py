@@ -7,6 +7,8 @@ Protocol sources are cited inline; every choice the paper leaves open is listed
 in reproduction.json.guesses_and_deviations.
 """
 
+import os
+
 import modal
 
 PAPER = "f912577b"
@@ -20,6 +22,8 @@ PER_CLASS = 50  # paper Sec. 5.1: 50 images for each of 42 classes
 EPOCHS = 20  # paper Sec. 5.2
 BATCH_SIZE = 64  # Compare_nets.ipynb log of the original runs: "batch 64"
 N_CLASSES = 42
+# GPU type, chosen at launch. EfficientNetB7 at batch 64 needs more than a 15 GB T4.
+GPU = os.environ.get("KSL_GPU", "T4")
 
 app = modal.App(f"ksl-{PAPER}")
 datasets = modal.Volume.from_name("datasets", version=2)
@@ -209,7 +213,7 @@ def build(model):
 
 @app.function(
     image=train_image,
-    gpu="T4",
+    gpu=GPU,
     cpu=4,
     memory=16384,
     timeout=7200,

@@ -640,9 +640,9 @@
         "reproduction-agent"
       ],
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models lenet,alexnet,resnet50,efficientnetb7 --run-id preflight-1 --seeds 42 --epochs 1 --per-class 10",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 1,
+      "started_at_utc": "2026-11-23T10:32:12Z",
+      "finished_at_utc": "2026-11-23T10:34:38Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -662,9 +662,68 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-ZPl1Wi4yy2IzhZo19TJHYy"
+        ],
+        "gpu_count": 1,
+        "gpu": "Tesla T4, 15360 MiB, driver 620.70.06",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "function_call_id": "fc-01M83ZDASBZJ10VM3AJEEN3E02"
+      },
+      "source_sha256": {
+        "modal_app.py": "9aca93a1c68bc74fdad532930a1bf69345b644bf48a98e5838152c9519b4393f"
+      },
+      "terminal": {
+        "state": "failed",
+        "reason_code": "command_failed",
+        "detail": "LeNet, AlexNet and ResNet50 completed 1 epoch, the weight save/reload round trip and test evaluation. EfficientNetB7 raised ResourceExhaustedError: the 15 GB T4 ran out of memory at batch size 64.",
+        "failure_class": "oom_resource",
+        "retry_decision": "retry",
+        "next_run_id": "preflight-2",
+        "gate_ids": []
+      },
+      "observed": "Parameter counts: lenet 1,071,162; alexnet 35,498,090; resnet50 23,667,498, equal to Table 1's 1.07, 35.5 and 23.7 M. Reloaded weights reproduced the test metrics exactly for all three. Fit time for 1 epoch on 336 images: 6.1 s, 3.3 s, 19.9 s. Peak GPU memory: 1.01, 2.37, 7.79 GB. Hypothesis for the retry: a GPU with more memory runs EfficientNetB7 at the same batch size, so the protocol stays unchanged."
+    },
+    {
+      "run_id": "preflight-2",
+      "kind": "preflight",
+      "purpose": "Repeat the preflight for EfficientNetB7 on a 40 GB A100 at the unchanged batch size 64: confirm its parameter count, the save/reload round trip, and measure time and memory.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "KSL_GPU=A100-40GB .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/kenshimov-2021-kazakh-sl-cnn/modal_app.py::train --models efficientnetb7 --run-id preflight-2 --seeds 42 --epochs 1 --per-class 10",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "preflight",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-23T10:35:24Z",
+        "max_wall_time_seconds": 3600,
+        "max_gpu_hours": 1.0,
+        "max_cost_usd": 4.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
         "modal_app_ids": [],
         "gpu_count": 1,
-        "gpu": "T4",
+        "gpu": "A100-40GB",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
