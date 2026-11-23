@@ -1,5 +1,6 @@
 """Bounded container entrypoints; invoke only through modal_repro_sign.sh."""
 from pathlib import Path
+import re
 import modal
 ROOT=Path(__file__).resolve().parent
 app=modal.App('repro-c56bc98c-efficientnetv2b0')
@@ -16,10 +17,14 @@ def populate():
     return Path('/datasets/mavi-27-class/manifest.json').read_text()
 train_image=modal.Image.from_dockerfile(ROOT.parent/'Dockerfile').add_local_file(ROOT/'train.py','/app/train.py')
 @app.function(image=train_image,gpu='A10G',cpu=8,memory=32768,timeout=28800,volumes={'/datasets':datasets.with_mount_options(read_only=True),'/cache/huggingface':cache,'/results':results},env=ENV)
-def train(model: str, preflight: bool, gpu_label: str='A10G'):
+def train(model: str, preflight: bool, gpu_label: str='A10G', run_suffix: str = ''):
     import glob, json, os, subprocess
     run_id=('preflight-' if preflight else 'full-')+model+'-seed42-v3'+('-a100' if gpu_label=='A100' else '')
-    output=Path('/results')/run_id
+    if run_suffix and not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', run_suffix):
+        raise ValueError('Invalid run suffix')
+    if run_suffix:
+        run_id += f'-{run_suffix}'
+    output = Path('/results') / run_id
     command=['/opt/taqiyya/bin/python','/app/train.py','--model',model,'--out',str(output)]
     if preflight:command.append('--preflight')
     os.environ['LD_LIBRARY_PATH']=':'.join(glob.glob('/opt/taqiyya/lib/python*/site-packages/nvidia/*/lib'))+':'+os.environ.get('LD_LIBRARY_PATH','')
@@ -29,11 +34,14 @@ def train(model: str, preflight: bool, gpu_label: str='A10G'):
         results.commit()
     return (output/'metrics.json').read_text()
 @app.local_entrypoint()
-def main(mode: str='data', model: str='efficientnetv2b0', gpu: str='A10G'):
+def main(mode: str='data', model: str='efficientnetv2b0', gpu: str='A10G', run_suffix: str = ''):
     assert gpu in ('A10G','A100')
-    if mode=='data':print(populate.remote())
-    else:
+    if mode == 'data':
+        print(populate.remote())
+    elif mode in ('preflight', 'full'):
         ceiling=(600 if gpu=='A100' else 3600) if mode=='preflight' else (28800 if model=='convnexttiny' else 21600)
-        call=train.with_options(gpu=gpu,timeout=ceiling).spawn(model,mode=='preflight',gpu)
+        call=train.with_options(gpu=gpu,timeout=ceiling).spawn(model, mode == 'preflight', gpu, run_suffix)
         print('Function call:',call.object_id,flush=True)
         print(call.get())
+    else:
+        raise ValueError('Expected data, preflight, or full')

@@ -10,7 +10,7 @@ This attempt reconstructs all four accuracy rows in Table X. The tracker export 
 
 ## Assignment and agent
 
-The current tracker export is a reproduction object containing `expand.paper`, not the older confirmed-candidate array. Its paper record is `final`; no `confirmation` property exists, and its database ID differs from the immutable paper ID. The direct user-authorized batch assignment is preserved honestly in `reproduction.json`, alongside the redacted expanded record and SHA-256 of the original export. No queue confirmation was invented.
+This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered.
 
 The `reproduction-agent` is GPT-6 using Codex and performs source discovery, implementation, execution and reporting. This attribution is exposed by the executing session; its exact model variant/build and Codex version are unavailable. Every run records that agent ID. A second GPT-6/Codex agent performed independent read-only paper/code/runtime review, identified an augmentation-order discrepancy and timeout mismatch, and reviewed the corrections. Its exact model and harness versions are likewise unavailable; it did not execute experiments. The master GPT-6/Codex agent independently recomputed terminal test scores from saved predictions, checked unique test indices, probability argmax and split hashes, and reviewed the source-based correction. Its exact model and app versions are unavailable; it is also review-only and absent from execution attribution. Session attestations support these identities. Attribution does not identify the operator.
 
@@ -62,8 +62,8 @@ From the repository root, after the repository's one-time setup and valid `repro
 ```bash
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode data
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh mavi-27-class manifest.json
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model efficientnetv2b0
-.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model efficientnetv2b0
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode preflight --model efficientnetv2b0 --run-suffix repeat-01
+.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/taqiyya-2025-efficientnetv2b0/scripts/modal_app.py --mode full --model efficientnetv2b0 --run-suffix repeat-01
 ```
 
 Repeat the last two commands with `mobilenetv2` and `resnet50v2`. For `convnexttiny`, append `--gpu A100` to both commands. Use a separate terminal for each model to run them concurrently. Independent detached invocations run the four models in parallel, each with a single GPU and an isolated output directory. The `--gpu` option selects standard A10G or A100 hardware without changing the model, batch size or precision. Each training invocation saves and evaluates its best checkpoint, so evaluation is included. Existing final metrics make a rerun idempotent. Interrupted runs reload `last.keras`, including optimizer state, and resume from `state.json`; a resumed process resets its shuffle generator, so stochastic ordering across an interruption is not bitwise identical. Preserve output directories to retain checkpoints.
@@ -99,7 +99,7 @@ The corrected ConvNeXt run uses `--gpu A100`. Its standard-A100 preflight measur
 
 All four corrected target runs completed. Their saved split artifacts have identical SHA256, and all test denominators are 2,336. Each result comes from the highest-validation-accuracy checkpoint under the declared patience-five, maximum-50-epoch rule; checkpoint reload was verified. Differences are reproduced minus published accuracy. The agreement bound is ±0.00005 in fraction units (0.005 percentage points), chosen before full scores. These are measurements for human scientific review, not claims of scientific success or failure.
 
-The four corrected runs consumed 2.712 measured GPU-hours in parallel, with a planning cost estimate of CHF 7.85; actual provider-billed cost is unavailable. Script runtimes exclude startup. The interrupted incorrect-order jobs used at most 0.752 submission-to-stop GPU-hours, an upper bound including startup and recording delay, and are excluded from the metrics above. Preflight timings, hardware, peak memory, package freezes and all app/function IDs appear in reproduction.json.
+The four corrected runs consumed 2.712 measured GPU-hours in parallel, with a planning cost estimate of CHF 7.85; provider billing is reconciled below. Script runtimes exclude startup. The interrupted incorrect-order jobs used at most 0.752 submission-to-stop GPU-hours, an upper bound including startup and recording delay, and are excluded from the metrics above. Preflight timings, hardware, peak memory, package freezes and all app/function IDs appear in reproduction.json.
 
 | Model | Final Modal app | Function call |
 |---|---|---|
@@ -147,8 +147,14 @@ This closes the assigned Table X attempt. Additional seeds could test ranking st
 
 ## Noncompliance
 
-None.
+- `historical-tracker-export-unavailable` — This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered. The report retains the original source hash. A new tracker export would be dated as later evidence.
 
 ## Modal billing reconciliation
 
 Modal billing attributes 3.9230 GPU-hours and USD 7.4817 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 8 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Recomputed all four accuracies on the same test indices and verified the prediction argmax for each saved probability array. The audit used the retained outputs and did not execute a model.
+
+For an independent repeat, choose an unused `--run-suffix` and declare its ceilings before launch. The original commands and source hashes remain in the historical ledger.
