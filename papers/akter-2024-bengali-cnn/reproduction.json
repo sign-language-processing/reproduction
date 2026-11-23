@@ -115,7 +115,7 @@
       "what_to_reproduce": "Table 1",
       "year": 2024
     },
-    "detail": "Direct user-authorized tracker assignment. Expanded final paper has no confirmation field; queue approval fields are not invented."
+    "detail": "This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered."
   },
   "paper": {
     "title": "Automated Bengali Sign Language Character Classification with Deep Learning Techniques",
@@ -1075,7 +1075,8 @@
       "artifact_id": "source-audit",
       "kind": "raw-source-audit",
       "sha256": "f1716d1b2da9151de31ef1398ca9752acc7ba6624adc17960aa8cd35093765e7",
-      "uri": "source-audit.txt"
+      "uri": "source-audit.txt",
+      "size_bytes": 7861
     }
   ],
   "gates": [
@@ -1159,5 +1160,12 @@
       "description": "Text explicitly states sparse categorical cross-entropy although equation1 displays binary cross-entropy. A future executable reconstruction should follow the36-way text unless author artifacts establish otherwise."
     }
   ],
-  "noncompliance": []
+  "noncompliance": [
+    {
+      "id": "historical-tracker-export-unavailable",
+      "description": "This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered.",
+      "requirement": "AGENTS.md requires the Reproduction Tracker export for queue-backed assignments.",
+      "effect": "The original paper identity and final status are recorded. The tracker entry and its original export hash are unavailable."
+    }
+  ]
 }

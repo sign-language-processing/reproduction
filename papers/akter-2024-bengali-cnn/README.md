@@ -10,7 +10,7 @@
 
 The independent attempt is **blocked on exact data**. None of the 24 requested Table I values was produced; numerical agreement is not assessed. The paper's actual Kaggle footnote distributes only 36 character samples, duplicated in a repository snapshot, while its experiments require a manually selected and augmented 7,200/2,160 train/test set. Training on those samples would change the experiment.
 
-Tahmina Akter, Tanjim Mahmud, Tikle Barua, Sultana Rokeya Naher, Mohammad Shahadat Hossain, and Karl Andersson (2024), ICCCNT, pp.1–6. [Publisher DOI](https://doi.org/10.1109/ICCCNT61001.2024.10724561). The authorized publisher PDF was read in full and is not redistributed. Its hash and the original tracker export hash are recorded in `reproduction.json`. The current tracker record is a direct user-authorized assignment; it has final status but no legacy confirmation property. No queue fields were fabricated.
+Tahmina Akter, Tanjim Mahmud, Tikle Barua, Sultana Rokeya Naher, Mohammad Shahadat Hossain, and Karl Andersson (2024), ICCCNT, pp.1–6. [Publisher DOI](https://doi.org/10.1109/ICCCNT61001.2024.10724561). The authorized publisher PDF was read in full and is not redistributed. Its hash and the original reviewing-page record export hash are recorded in `reproduction.json`. The current tracker record is a direct user-authorized assignment; it has final status but no legacy confirmation property. No queue fields were fabricated.
 
 GPT-6 using Codex performed source discovery, the data audit, protocol analysis, and reporting. The session exposes no exact model variant or harness version; these limits are preserved in agent attribution. No other model executed an experiment.
 
@@ -84,4 +84,8 @@ Akter et al. (2023) reports augmenting 1,009 Ishara-Lipi originals to 9,360 imag
 
 ## Noncompliance
 
-None.
+- `historical-tracker-export-unavailable` — This assignment was part of the final-paper study queue. The original evidence is a reviewing-page paper record. A Reproduction Tracker export for the original assignment has not been recovered. The report retains the original source hash. A new tracker export would be dated as later evidence.
+
+## Evidence verification (2026-11-23)
+
+Checked the committed source-audit output against its SHA-256 and exact byte count. The audit used the retained outputs and did not execute a model.
