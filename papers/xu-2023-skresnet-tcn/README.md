@@ -189,3 +189,7 @@ Setup diagnostics are preserved: an initial count-audit module import failure; a
 Modal billing attributes 4.1315 GPU-hours and USD 14.0076 in app charges to the retained GPU runs. The run ledger lists per-run amounts, app IDs and the billing query. Earlier timing figures describe execution intervals and earlier forecasts describe reservations. GPU-hours use the current hourly rate for each billed GPU type, assuming that rate also applied during the run. Separate CPU-only apps and shared storage are outside this subtotal.
 
 For `paper-sized-preflight-002`, `paper-sized-full-seed42-001`, the recorded launcher SHA-256 matches the source that mounts and configures the shared cache.
+
+## Evidence verification (2026-11-23)
+
+Retrieved 2 retained result files through the `repro-sign` wrapper and verified each SHA-256 against the run ledger. Verified the raw metric files for the two conditional runs, including accuracy, parameter count, and operation count. The audit used the retained outputs and did not execute a model.
