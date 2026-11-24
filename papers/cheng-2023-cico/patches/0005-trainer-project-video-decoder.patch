@@ -1,0 +1,131 @@
+Subject: Use project decoder while preserving native PIL224 resize and tail padding
+
+--- a/CiCo/I3D_trainer/datasets/videodataset.py
++++ b/CiCo/I3D_trainer/datasets/videodataset.py
+@@ -72,112 +72,21 @@
+         return valid, t_beg
+ 
+     def _load_rgb(self, ind, frame_ix):
+-        """Loads the video frames from file
+-            frame_ix could be range(t, t + nframes) for consecutive reading
+-                or a random sorted subset of [0, video_length] of size nframes
+-        """
+-        is_consecutive = range(min(frame_ix), max(frame_ix) + 1) == frame_ix
+-        nframes = len(frame_ix)
+-        videofile = self._get_video_file(ind)
+-
+-
+-        if not os.path.isfile(videofile):
+-            print(f"{videofile} not found!")
+-        use_cv2 = True
+-        if getattr(self, "video_data_dict", False):
+-            use_cv2 = False
+-            compressed_frames = self.video_data_dict[videofile]["data"]
+-        elif getattr(self, "featurize_mode", False) and not DISABLE_CACHING:
+-            cap = None
+-            if not hasattr(self, "cached_caps"):
+-                self.cached_caps = defaultdict(OrderedDict)
+-            if videofile in self.cached_caps:
+-                cap = self.cached_caps[videofile].pop(frame_ix.start, None)
+-                assert is_consecutive, "capture caching should only use consecutive ims"
+-            if not cap:
+-                cap = cv2.VideoCapture(videofile)
+-                # Do the frame setting only once if the rest are consecutive
+-                if is_consecutive:
+-                    cap.set(propId=1, value=frame_ix[0])
+-        else:
+-            cap = cv2.VideoCapture(videofile)
+-            # Do the frame setting only once if the rest are consecutive
+-            if is_consecutive:
+-                cap.set(propId=1, value=frame_ix[0])
+-
+-        # Frame reads
+-        if getattr(self, "gpu_collation", False):
+-            msg = "expected collation dim == 256"
+-            assert self.gpu_collation == 256, msg
+-            rgb = torch.zeros(3, nframes, 224, 224)
+-        else:
+-            rgb = torch.zeros(
+-                3, nframes, self._get_img_height(ind), self._get_img_width(ind)
+-            )
+-        # rgb = torch.zeros(3, nframes, self.img_height, self.img_width)
++        from simple_video_utils.frames import read_frames_exact
++        if not len(frame_ix) or min(frame_ix) < 0:
++            raise ValueError("Empty or negative frame request")
++        first, last = min(frame_ix), max(frame_ix)
++        frames = list(read_frames_exact(self._get_video_file(ind), first, last))
++        if not frames:
++            raise ValueError("No valid video frames")
++        rgb = torch.zeros(3, len(frame_ix), 224, 224)
+         for f, fix in enumerate(frame_ix):
+-            if use_cv2:
+-                if not is_consecutive:
+-                    cap.set(propId=1, value=fix)
+-                # frame: BGR, (240, 320, 3), dtype=uint8 0..255
+-                ret, frame = cap.read()
+-            else:
+-                ret = fix < len(compressed_frames)
+-                if ret:
+-                    frame = np.array(Image.fromarray(frame).resize((224, 224)))
+-
+-            if ret:
+-                if use_cv2:
+-                    frame = np.array(Image.fromarray(frame).resize((224, 224)))
+-                    # BGR (OpenCV) to RGB (Torch)
+-                    frame = frame[:, :, [2, 1, 0]]
+-                # CxHxW (3, 240, 320), 0..1 --> np.transpose(frame, [2, 0, 1]) / 255.0
+-                rgb_t = im_to_torch(frame)
+-                rgb[:, f, :, :] = rgb_t
+-            else:
+-                # Copy last frame for temporal padding
+-                rgb[:, f, :, :] = rgb[:, f - 1, :, :]
+-
+-        # video_file_path = 'psuedos/{:s}'.format(videofile.split('/')[-2]+'/'+videofile.split('/')[-1])
+-        # path = '../bsl/psuedos.zip' + '@' + video_file_path
+-        #
+-        # video_byte = ZipReader.read(path)
+-        # try:
+-        #     video_arrays = _load_frame_nums_to_4darray(video_byte, frame_ix) # T,H,W,3
+-        # except:
+-        #     print(path)
+-        # video = torch.tensor(video_arrays).float()
+-        # video = video.permute((3,0,1,2))
+-        # video /= 255
+-
+-        if use_cv2:
+-            if (
+-                hasattr(self, "featurize_mode")
+-                and self.featurize_mode
+-                and not DISABLE_CACHING
+-            ):
+-                if fix == self._get_nframes(ind):
+-                    cap.release()
+-                else:
+-                    # store pointer to avoid duplicate decoding
+-                    self.cached_caps[videofile][frame_ix.stop] = cap
+-                    if len(self.cached_caps[videofile]) > CAP_CACHE_LIMIT:
+-                        # we rely on OrderedDict to preserve key order
+-                        oldest_keys = list(self.cached_caps.keys())
+-                        print(
+-                            f"Cache overflow [{len(self.cached_caps[videofile])}]"
+-                            f" >{CAP_CACHE_LIMIT}, clearing half of the keys"
+-                        )
+-                        for old_key in oldest_keys[: CAP_CACHE_LIMIT // 2]:
+-                            # To guard against race conditions we supply a default for
+-                            # missing keys
+-                            self.cached_caps[videofile].pop(old_key, None)
+-            else:
+-                cap.release()
+-
+-        # rgb.view(3 * nframes, rgb.size(2), rgb.size(3))
+-        rgb = video_to_im(rgb)
+-        return rgb
++            # Native trainer uses PIL's default bicubic resize to224 before
++            # tensor conversion, regardless of original clip dimensions.
++            frame = frames[min(fix-first, len(frames)-1)]
++            frame = np.array(Image.fromarray(frame).resize((224, 224)))
++            rgb[:, f] = im_to_torch(frame)
++        return video_to_im(rgb)
+ 
+     def collate_fn(self, batch):
+         """Note: To enable usage with ConcatDataset, this must not rely on any attributes
