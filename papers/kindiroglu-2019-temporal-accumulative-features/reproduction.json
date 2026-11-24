@@ -520,7 +520,7 @@
     {
       "gate_id": "taf-unstated-protocol",
       "type": "protocol",
-      "status": "open",
+      "status": "resolved",
       "reason": "No code was released and the paper leaves behavior-changing details unstated or contradictory: heatmap projection and width, the content of the 7 channels per joint, keyframe clustering, the meaning of FL-4, how hand masks enter the feature, hand-segmentation training (including left/right labels for HGR, whose masks are unlabelled skin masks), CNN depth and dropout, learning rate, epochs, checkpoint choice and seed.",
       "evidence": [
         "Sec. 3.4 text: '6 convolutional layers' and dropout 0.5; same section: '2 blocks of layers, each with 2 convolutional layers'; Table 3 row '0.25 2 2 128 78.21 96.84' equals Table 4 row 'None 3 78.21 96.84'.",
@@ -529,7 +529,9 @@
         "Sec. 3.2: K + 2 keyframes with the first and last discarded; density clustering [40] with no parameters.",
         "Kinect files in the dataset hold, per joint and frame: camera-space x, y, z (m), an orientation quaternion, color-image pixel x, y (1920x1080) and depth-image pixel x, y (512x424)."
       ],
-      "required_action": "Decide the unstated details before any training run, and whether values obtained under them count as produced targets or as conditional evidence."
+      "required_action": "Decide the unstated details before any training run, and whether values obtained under them count as produced targets or as conditional evidence.",
+      "resolved_at": "2026-11-24",
+      "resolution": "Decided by a study team member before any training run. CNN: 2 blocks of 2 convolutional layers, 128 initial filters, dropout 0.25 (the Table 3 row that Table 4 reuses). Joint positions: the Kinect files' color-image pixel coordinates scaled from 1920x1080 to 116x64; Gaussian standard deviation 2 pixels; 'upper arms' are the shoulder joints. Seven channels per joint: hue-colored image (3), intensity (1), normalized image (3). Keyframes: density-peaks clustering on (frame, speed) points of the dominant hand's speed minima, the 6 strongest peaks, first and last dropped; FL-4 means 4 keyframes kept, giving 20 mask channels and 97 input channels. Hand masks: whole-frame mask of both hands resized to 116x64, one channel per frame. Segmentation: DeepLab v3+ with an ImageNet-pretrained ResNet-50 backbone in PyTorch, on the Rendered Handpose Dataset plus HGR1, HGR2A and HGR2B; HGR images are trained as hand versus background only, so no left/right label is invented. Classifier training: Adam, learning rate 0.001, batch 32, 100 epochs, weights after the last epoch, no selection on the test set; seed 0 is the reported value and seeds 1 and 2 are supplementary. Framework: PyTorch on the study base image. Values obtained under these choices are conditional evidence and do not count as produced targets."
     }
   ],
   "guesses_and_deviations": [],
