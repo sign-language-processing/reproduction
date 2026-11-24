@@ -216,8 +216,8 @@
       ],
       "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
       "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "started_at_utc": "2026-11-24T08:26:32Z",
+      "finished_at_utc": "2026-11-24T08:33:07Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -230,6 +230,62 @@
       },
       "stop_policy": {
         "declared_at_utc": "2026-11-24T08:26:23Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 8.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-u8nVnqBtJ1VSdR0KaJ0VH7"
+        ],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": [],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share.",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "populate-dataset-2",
+        "gate_ids": []
+      },
+      "observed": "Files copied before the stop stay on the Volume and are skipped by the retry. No manifest was written."
+    },
+    {
+      "run_id": "populate-dataset-2",
+      "kind": "data_population",
+      "purpose": "Retry of populate-dataset-1 with one change: rclone lists the folder with a single recursive listing (--fast-list) and 8 checkers instead of 16.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T08:34:10Z",
         "max_wall_time_seconds": 86400,
         "max_gpu_hours": null,
         "max_cost_usd": 8.0

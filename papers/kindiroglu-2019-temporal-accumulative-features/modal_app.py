@@ -51,8 +51,9 @@ def populate(depth: bool = False):
 
     manifest = "--exclude=/MANIFEST.sha256", "--exclude=/manifest.json"
     skip = () if depth else ("--exclude=/depth.tar.gz",)
+    # --fast-list: one recursive listing; a request per folder (22,542 x 3) starves the transfers.
     # Smallest files first, so the skeletons and videos land before the depth archive.
-    rclone("copy", "gdrive:", DATA_ROOT, "--transfers", "8", "--checkers", "16",
+    rclone("copy", "gdrive:", DATA_ROOT, "--transfers", "8", "--checkers", "8", "--fast-list",
            "--order-by", "size,ascending", "--retries", "5", "--low-level-retries", "20", *skip)  # fmt: skip
     datasets.commit()
     # Compare every file with Drive's MD5; fails on a missing or differing file.
