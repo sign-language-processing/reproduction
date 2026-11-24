@@ -255,7 +255,7 @@
       "terminal": {
         "state": "stopped",
         "reason_code": "invalid_run",
-        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share.",
+        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis, refuted by populate-dataset-2: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share.",
         "failure_class": "deterministic_code",
         "retry_decision": "retry",
         "next_run_id": "populate-dataset-2",
@@ -272,8 +272,8 @@
       ],
       "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
       "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "started_at_utc": "2026-11-24T08:34:10Z",
+      "finished_at_utc": "2026-11-24T08:39:47Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -293,7 +293,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-KWmKFChUQcKKu57BWtCqVi"
+        ],
         "gpu_count": 0,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -305,7 +307,18 @@
         },
         "cpu": 4
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "human_gate_opened",
+        "detail": "Stopped by the agent after 5.5 minutes: 221 files copied, 197 of 10,213 queued transfers, estimated 11 days remaining. The single recursive listing changed nothing, so the listing hypothesis of populate-dataset-1 is refuted. A local download of 434 files with debug logging then showed the cause: 97 responses 'rateLimitExceeded' on the quota 'defaultPerMinutePerProject' of drive.googleapis.com. The login uses rclone's shared Google client ID, whose request quota is shared by all rclone users; rclone backs off on every such response. Throughput therefore depends on a credential, not on code.",
+        "failure_class": "license_access",
+        "retry_decision": "await_gate",
+        "gate_ids": [
+          "gdrive-client-id"
+        ]
+      },
+      "observed": "Files copied before the stop stay on the Volume and are skipped by a later attempt. No manifest was written."
     }
   ],
   "artifacts": [],
@@ -323,6 +336,18 @@
       "required_action": "A study team member confirms that the study's permission covers storing and processing the corpus in the repro-sign Modal workspace, and authorizes populating /datasets/bosphorussign22k on the shared Volume.",
       "resolved_at": "2026-11-24",
       "resolution": "A study team member confirmed that the study has permission for this use and that the empty queue fields are an omission on the annotation platform, and authorized mirroring the dataset folder to /datasets/bosphorussign22k on the shared Volume. The copy stays private to the workspace; nothing from the corpus is committed, published or redistributed."
+    },
+    {
+      "gate_id": "gdrive-client-id",
+      "type": "data",
+      "status": "open",
+      "reason": "The Drive login stored as Modal Secret 'gdrive-rclone' uses rclone's shared Google client ID. Google rate-limits that client's project, which limits the copy to about one file per second: 67,000 remaining files would not finish within the 24-hour ceiling, and one attempt remains.",
+      "evidence": [
+        "populate-dataset-1 and populate-dataset-2: about 1 file per second on Modal.",
+        "Local rclone download with -vv on 2026-11-24: 434 files in 175 seconds with 97 'rateLimitExceeded' responses naming quota 'defaultPerMinutePerProject'.",
+        "rclone prints on every call that its shared client ID is being retired during 2026 and recommends creating one's own."
+      ],
+      "required_action": "A study team member creates their own Google OAuth client ID, signs in again with it and replaces the Modal Secret 'gdrive-rclone'. Creating credentials and secrets is outside the agent's authority."
     }
   ],
   "guesses_and_deviations": [],
