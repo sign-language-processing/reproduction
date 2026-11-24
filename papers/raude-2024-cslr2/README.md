@@ -218,7 +218,7 @@ A team whose members are eligible for BOBSL under the BBC terms could resume fro
 On 2026-11-02, `check_modal_dataset.sh bobsl` and `check_modal_dataset.sh bobsl-cslr` both failed because the paths do not exist. The BBC terms are per person and forbid redistribution, so the gate went to the team. What followed, as reported by the operator:
 
 - **2026-11-02:** REPRO-SIGN sent the BBC BOBSL Permission to Use form, with a cover email, to the BBC BOBSL dataset contact. A follow-up the same day named this paper as the intended use.
-- **Later in November 2026:** a reminder was sent.
+- **2026-11-24:** a reminder was sent.
 - **2026-11-24:** the BBC R&D contact named in the form refused access.
 
 **Reasons given, paraphrased:**
