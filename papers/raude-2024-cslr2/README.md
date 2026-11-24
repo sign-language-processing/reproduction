@@ -179,7 +179,7 @@ Metric versions are those of gulvarol/cslr2 at `5f3bd697` (see Metric definition
 
 **Other blockers, reported separately:**
 
-- **Compute (gate `compute-training-runs`):** resolved as moot. No funding decision was taken and nothing was measured.
+- **Compute (gate `compute-training-runs`):** resolved as moot. On 2026-11-02 the team lead approved funding both training runs in `#repro-sign-team-r`, without per-run limits on hours, GPU-hours, cost or restarts. The data refusal on 2026-11-24 made the approval moot before anything was measured or run.
 - **Swin-8K† artifacts:** the scope condition (released artifacts sufficient without retraining) was never checked, because the check itself needs `bobsl.zip` and the BOBSL features. The `compute_budget_blocked` fallback in the scope decision therefore did not arise.
 - **The 19 out-of-scope cells:** excluded by the scope decision and also blocked by the same refusal.
 
@@ -245,7 +245,7 @@ No data was obtained, so each split's file entry points to the split's definitio
 
 The in-scope cells needed two full training runs of the official code: CSLR² for 11 cells and the InfoNCE baseline for 6 cells. The gate was opened on 2026-11-02 before any measurement, at the operator's request, so that it reached the team together with the data gate.
 
-It became moot when the data gate closed: the representative preflight and both runs need BOBSL. No funding decision was taken, nothing was measured, and no compute was spent. The estimate is kept as recorded. It is paper-reported, not measured:
+On 2026-11-02 the team lead approved funding both training runs in `#repro-sign-team-r`, without setting per-run limits on hours, GPU-hours, cost or restarts. The approval became moot on 2026-11-24 when the data gate closed, because the representative preflight and both runs need BOBSL. Nothing was measured and no compute was spent. The estimate is kept as recorded. It is paper-reported, not measured:
 
 | Item | Figure | Basis |
 | --- | --- | --- |
@@ -305,4 +305,4 @@ None.
 - **Authors:** none contacted.
 - **Operator:** decided the Table 4 scope at gate `target-table4-rows` on 2026-11-02. On 2026-11-24 the operator reported the BBC's refusal recorded at gate `data-bobsl-access`.
 - **BBC (dataset owner, not an author):** REPRO-SIGN requested BOBSL access through the BBC Permission to Use process on 2026-11-02 and was refused on 2026-11-24. This changed the outcome: the attempt closes as `blocked_on_data`. The agents took no part in the correspondence.
-- **`#repro-sign-team-r`:** no compute decision was needed once gate `compute-training-runs` became moot.
+- **`#repro-sign-team-r`:** on 2026-11-02 the team lead approved funding both training runs (CSLR² and InfoNCE) at gate `compute-training-runs`, without per-run limits on hours, GPU-hours, cost or restarts. The approval became moot on 2026-11-24 with the data refusal; nothing was run.
