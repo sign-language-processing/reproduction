@@ -10,15 +10,112 @@
       "scope": "Assignment intake, paper verification against arXiv, target-ledger resolution from the paper, source search and pinning, read-only inspection of the Modal repro-sign Volumes, and preparation of the target and data gates. No data download, container build, or experiment run.",
       "evidence": [
         "Session system context on 2026-11-02 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
-        "`claude --version` in the session returned 2.1.316 (Claude Code)."
+        "`claude --version` in the session returned 2.1.316 (Claude Code).",
+        "Session transcript a04a9baf-91c9-4aa6-981f-7887fd4cb6a4, checked 2026-11-24: every 2026-11-02 entry that carries a client version records 2.1.316, and assistant entries record model claude-opus-5-5 with effort xhigh. This confirms the `claude --version` reading, which reports the installed binary rather than the running client."
+      ]
+    },
+    {
+      "agent_id": "claude-opus-5-5-claude-code-closure",
+      "model": "Claude Opus 5.5",
+      "model_id": "claude-opus-5-5",
+      "harness": "Claude Code",
+      "harness_version": "2.1.331",
+      "scope": "Report maintenance and closure on 2026-11-24: rebase onto the current contract, re-ingestion of the queue export with ingest_candidate.py, recording of the BBC refusal as reported by the operator, resolution of the data and compute gates, terminal results for all 41 targets, status, guesses_and_deviations and noncompliance. Did not contact the BBC, did not take part in the access request, and ran no experiment.",
+      "evidence": [
+        "Session system context on 2026-11-24 identifies the model as Opus 5.5 with model ID claude-opus-5-5 running in Claude Code.",
+        "Session transcript 99ccc927-5f70-4bdd-a1df-5d5ce6f4bbd1: 2026-11-24 entries record client version 2.1.331, and assistant entries record model claude-opus-5-5 with effort xhigh."
       ]
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-13195df56368306dc1c1f9733cebb8dd694c94af-2026-10-30.json",
       "sha256": "6e64ca02825163fc0cec6d3f1093bff374c939181d49e1f00a76171830cdc487"
+    },
+    "normalized": {
+      "title": "A Tale of Two Languages: Large-Vocabulary Continuous Sign Language Recognition from Spoken Language Supervision",
+      "year": 2024,
+      "venue": "",
+      "pdf_url": "https://arxiv.org/abs/2405.10266",
+      "code_repos": [
+        "https://github.com/gulvarol/cslr2"
+      ],
+      "what_to_reproduce": "Table 4",
+      "metric_ids": [
+        "q7nnxrx71w67jl9",
+        "398630tq0zlaufq",
+        "89xqke8qlyqq6mb",
+        "l0mgdibtnx55aux",
+        "funxabitmckwv4q"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "Word error rate",
+          "id": "q7nnxrx71w67jl9",
+          "name": "WER",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "398630tq0zlaufq",
+          "name": "F1",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "89xqke8qlyqq6mb",
+          "name": "Recall",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "l0mgdibtnx55aux",
+          "name": "mean intersection over union (mIoU)",
+          "url": null
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "funxabitmckwv4q",
+          "name": "MedianRank",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "qzrj91d5rphubkd",
+          "name": "BOBSL",
+          "available": "yes",
+          "license": "Custom (research only)",
+          "urls": [
+            "https://www.robots.ox.ac.uk/~vgg/data/bobsl/"
+          ],
+          "comments": "British Sign Language sentences from BBC programmes"
+        },
+        {
+          "id": "5t6qflueg8r13mg",
+          "name": "BOBSL-CSLR",
+          "available": "yes",
+          "license": "Creative Commons Attribution 4.0 International License",
+          "urls": [],
+          "comments": "Manually annotated subset of BOBSL introduced by Raude et al. (2024), with time-aligned sign-level labels."
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "4x NVIDIA 32 GB V100 GPUs, 4x NVIDIA A40 GPUs",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": ""
     },
     "record": {
       "assignees": [
@@ -173,13 +270,12 @@
       "paper": "7bsf8hsxch75r32",
       "status": "in_progress",
       "url": []
-    },
-    "detail": "Direct user-authorized tracker assignment (2026-11-02). The export is a single 'reproductions'-collection record whose own status 'in_progress' belongs to the reproduction task; the final paper record is nested under expand.paper (status 'final'). It has no confirmation field and its id values are internal queue record IDs, not the paper_id, so it was not run through ingest_candidate.py. Preserved unchanged except that every email address (assignees, finalized_by, status_history) is replaced by '[redacted]'. Requested scope: what_to_reproduce = 'Table 4'."
+    }
   },
   "repository": {
-    "base_revision": "1b1f8fdc85e5d48b9818a278c0611e088defe661",
+    "base_revision": "597fab7d07c6b0155fef3930d25ca5dfdb7b9b7a",
     "branch": "reproduce/raude-2024-cslr2",
-    "state": "clean main checkout at start of attempt (2026-11-02)"
+    "state": "Attempt started 2026-11-02 on a clean main checkout at 1b1f8fdc85e5d48b9818a278c0611e088defe661. Rebased 2026-11-24 onto main 597fab7d07c6b0155fef3930d25ca5dfdb7b9b7a for the contract migration and closure."
   },
   "paper": {
     "title": "A Tale of Two Languages: Large-Vocabulary Continuous Sign Language Recognition from Spoken Language Supervision",
@@ -210,35 +306,35 @@
       "source_id": "cslr2-checkpoint",
       "kind": "weights",
       "url": "https://drive.google.com/file/d/1qyFHSFnxmy1rRGjlKEBfsjC8yt2kdalx/view?usp=sharing",
-      "revision_or_sha256": "unpinned: mutable Google Drive file, replaced by the owner on 2024-07-02 after a corruption report (cslr2 issue #1); SHA-256 to be recorded at acquisition",
+      "revision_or_sha256": "unpinned: mutable Google Drive file, replaced by the owner on 2024-07-02 after a corruption report (cslr2 issue #1); never acquired: BOBSL access refused 2026-11-24 (gate data-bobsl-access)",
       "role": "Released CSLR² checkpoint (README 'Test'); evaluation-only cross-check for the CSLR² rows. Not downloaded: behind the BOBSL data gate because it is only usable with BOBSL features."
     },
     {
       "source_id": "cslr2-bobsl-zip",
       "kind": "data",
       "url": "https://drive.google.com/file/d/13pp83GCoy1SVScvZRmNsoFxtNm8ogI7h/view?usp=sharing",
-      "revision_or_sha256": "unpinned: mutable Google Drive file (1.9G, 15G decompressed per README); SHA-256 to be recorded at acquisition",
+      "revision_or_sha256": "unpinned: mutable Google Drive file (1.9G, 15G decompressed per README); never acquired: BOBSL access refused 2026-11-24 (gate data-bobsl-access)",
       "role": "Annotations and metadata required by config/paths/public.yaml (splits, 8,697-word vocabulary, pseudo-label LMDB, T5 word embeddings, automatic and manual subtitle pickles, synonyms, processed CSLR CSVs). The data page links the same file as 'CSLR annotations for BOBSL'. Not downloaded: data gate."
     },
     {
       "source_id": "cslr2-t5-zip",
       "kind": "weights",
       "url": "https://drive.google.com/file/d/1hxkb8KAC0sgSYKefOLue1wyO2fJmmqxT/view?usp=sharing",
-      "revision_or_sha256": "unpinned: mutable Google Drive file (1.4G); SHA-256 to be recorded at acquisition",
+      "revision_or_sha256": "unpinned: mutable Google Drive file (1.4G); never acquired: BOBSL access refused 2026-11-24 (gate data-bobsl-access)",
       "role": "t5-large checkpoint loaded from paths.lm_root by models/t5.py."
     },
     {
       "source_id": "bobsl-features",
       "kind": "data",
       "url": "https://thor.robots.ox.ac.uk/~vgg/data/bobsl/features/lmdb/feats_vswin_t-bs256_float16/data.mdb",
-      "revision_or_sha256": "not accessed: requires BOBSL credentials; SHA-256 to be recorded at acquisition",
+      "revision_or_sha256": "not accessed: requires BOBSL credentials; never acquired: BOBSL access refused 2026-11-24 (gate data-bobsl-access)",
       "role": "Pre-extracted Video-Swin-T sign features (262G) used for all CSLR² training and evaluation."
     },
     {
       "source_id": "bobsl-rgb",
       "kind": "data",
       "url": "https://thor.robots.ox.ac.uk/~vgg/data/bobsl/videos/lmdb/rgb_anon-public_1962/data.mdb",
-      "revision_or_sha256": "not accessed: requires BOBSL credentials",
+      "revision_or_sha256": "not accessed: requires BOBSL credentials; never acquired: BOBSL access refused 2026-11-24 (gate data-bobsl-access)",
       "role": "Raw RGB frames LMDB (1.5T). README: only for visualisation, but main.py opens it when vis=True (default). Needed for any I3D baseline inference."
     },
     {
@@ -291,23 +387,45 @@
     "conclusion": "Official code and a CSLR² checkpoint exist (preference level 1 expected for the CSLR² rows and for the InfoNCE baseline as a config variant). The cslr2 release contains no I3D inference code, no converter from BOBSL spotting releases to its prediction-pickle format, and no documented Swin-T classifier-head checkpoint, so the I3D and spotting rows would need preference-level-3 glue around third-party artifacts, and the Swin-8K row depends on whether bobsl.zip contains usable per-frame Swin predictions for test episodes (unverifiable before data access)."
   },
   "protocol_notes": [
-    "Sec. 5.1 lists SENT-VAL/SENT-TEST as 20,870/1,973 sentences; Table 4 headers, App. D.2 and the BOBSL paper (Table 4: SENT-VAL_H 1,973; SENT-TEST 20,870) give the opposite assignment. Targets follow Table 4 and BOBSL.",
-    "Sec. 5.1 says CSLR-TEST corresponds to 4,950 test subtitles; Tables 1 and A.2 give 4,518 sentences. Sec. 4 says the annotations cover all 35 SENT-TEST episodes; the BOBSL paper lists 36 SENT-TEST episodes.",
-    "cslr2 README calls the retrieval test set the '25K manually aligned test set'; the paper calls SENT-TEST 20K.",
-    "Post-processing θ and m: paper Sec. 5.2 tunes them 'on unseen manually annotated CSLR sequences from the validation set'; frame_level_evaluation.py searches them on 0/train/*.csv unless test_search is set.",
-    "Checkpoint selection: paper App. A selects best T2V R@1 on manually aligned validation subtitles; upstream main.py passes best_t2v=-1 to log_and_save every epoch, so model_best.pth is the last epoch, and validation retrieval uses a random 2,000-sentence subset of the automatic subtitles file for val episodes.",
+    "Sec. 4 says the CSLR-TEST annotations cover all 35 SENT-TEST episodes; the BOBSL paper lists 36 SENT-TEST episodes.",
     "Upstream exposes no command for SENT-VAL retrieval of a fixed checkpoint (test=True evaluates only public_test with manually aligned subtitles).",
     "main.py test=True references rgb_lmdb_env, which is only opened when vis=True; vis=True opens the 1.5T RGB LMDB.",
     "Training compute: paper/README report under 20 h on 4 x V100-32GB for 20 epochs (about 80 V100 GPU-hours) at batch size 512 per App. A, while config/dataloader batch_size is 128 per process (4 processes = 512). Recorded at gate compute-training-runs."
   ],
   "status": {
-    "pipeline": null,
+    "pipeline": "blocked_on_data",
     "numerical_agreement": "not_assessed",
-    "numerical_agreement_basis": "Not assessed: no target has been produced; the attempt is paused at open gates data-bobsl-access and compute-training-runs before any download, build or run.",
+    "numerical_agreement_basis": "Not assessed: no in-scope target produced a value. All 22 in-scope targets, and the 19 out-of-scope ones, closed as not_produced with reason data_permission_blocked after the BBC refused BOBSL access on 2026-11-24, so no value exists to compare with the published ones.",
     "preference_level": 1,
-    "preference_level_basis": "Provisional. Official code and a released CSLR² checkpoint exist for the in-scope CSLR² and InfoNCE cells (level 1, expected container/path adaptation only); Swin-8K† depends on released artifacts only (no retraining).",
-    "blocker": null,
-    "pipeline_note": "Attempt paused 2026-11-02 at two open gates for the team: data-bobsl-access (BOBSL absent from the datasets Volume; BBC terms are per-person, no-redistribution and secure-holding) and compute-training-runs (two 4-GPU training runs of about 80 V100 GPU-hours each by the paper's figure, above the 24 GPU-hour autonomous ceiling). Target scope resolved at gate target-table4-rows (22 in scope, 19 out of scope). pipeline and blocker are left null deliberately: no target has a terminal result yet, and AGENTS.md forbids blocked_on_compute before the team discussion."
+    "preference_level_basis": "Official code (gulvarol/cslr2@5f3bd697) and a released CSLR² checkpoint exist for the in-scope CSLR² and InfoNCE cells, so level 1 was planned. It was never exercised: the attempt closed at the data gate before any container build or run.",
+    "blocker": {
+      "reason_code": "data_permission_blocked",
+      "detail": "The BBC refused BOBSL access to REPRO-SIGN on 2026-11-24 (gate data-bobsl-access) because the consortium includes a commercially affiliated collaborator. Every in-scope target is trained or evaluated on BOBSL Video-Swin-T features and BOBSL splits (CSLR-TEST for the CSLR cells, SENT-VAL and SENT-TEST for the retrieval cells), so this is the earliest blocker and it independently prevents all of them, including any evaluation of the released CSLR² checkpoint. Gate compute-training-runs is moot. The refusal follows from the consortium's composition, not from BOBSL being unavailable in general.",
+      "target_ids": [
+        "t4-swin8k-pp-wer",
+        "t4-swin8k-pp-miou",
+        "t4-swin8k-pp-f1-iou0.1",
+        "t4-swin8k-pp-f1-iou0.25",
+        "t4-swin8k-pp-f1-iou0.5",
+        "t4-cslr2-wer",
+        "t4-cslr2-miou",
+        "t4-cslr2-f1-iou0.1",
+        "t4-cslr2-f1-iou0.25",
+        "t4-cslr2-f1-iou0.5",
+        "t4-infonce-sentval-t2v-r1",
+        "t4-infonce-sentval-v2t-r1",
+        "t4-infonce-senttest-t2v-r1",
+        "t4-infonce-senttest-t2v-r5",
+        "t4-infonce-senttest-v2t-r1",
+        "t4-infonce-senttest-v2t-r5",
+        "t4-cslr2-sentval-t2v-r1",
+        "t4-cslr2-sentval-v2t-r1",
+        "t4-cslr2-senttest-t2v-r1",
+        "t4-cslr2-senttest-t2v-r5",
+        "t4-cslr2-senttest-v2t-r1",
+        "t4-cslr2-senttest-v2t-r5"
+      ]
+    }
   },
   "datasets": [
     {
@@ -328,7 +446,7 @@
       ],
       "license_or_permission": "BBC-owned; non-commercial academic research only, for researchers at universities, reputable academic institutions and relevant public organisations (not independent researchers or companies). Access is per person: each researcher signs the BBC 'Permission to Use' form from an official academic email and receives a countersigned agreement and an individual download password. The BBC page states the data is 'for your use only', must not be distributed to anyone else, must be held securely under the BBC BOBSL Terms of Use, and permission lasts 12 months (renewal on request). Source: https://www.bbc.co.uk/rd/projects/extol-dataset (2026-11-02).",
       "cloud_processing_allowed": false,
-      "cloud_processing_note": "Not established. The per-person, no-redistribution and secure-holding terms leave open whether BOBSL may be stored in the shared repro-sign Volume datasets/bobsl, which other workspace members can read, and processed on Modal. Kept false pending gate data-bobsl-access.",
+      "cloud_processing_note": "False: permission denied. The BBC refused BOBSL access to REPRO-SIGN on 2026-11-24 (gate data-bobsl-access), so there is no basis for storage or processing anywhere.",
       "modal_volume": "datasets",
       "modal_path": "bobsl",
       "volume_check": "2026-11-02 via modal_repro_sign.sh volume ls datasets /: no bobsl (or bobsl-cslr) directory among the 30 dataset roots; huggingface-cache present (datasets, hub, keras, torch, xet, yolov5-v6.0).",
@@ -336,14 +454,27 @@
         {
           "name": "SENT-VAL (manually aligned, H)",
           "sample_count": 1973,
-          "files": []
+          "files": [
+            {
+              "path": "split definition only, no data obtained: BOBSL paper arXiv 2111.03635v1, Table 4",
+              "sha256": "0e75ee96bd548c0946a3a0737040d58ad7e44c0582e3b1e85b82a95789e29006"
+            }
+          ]
         },
         {
           "name": "SENT-TEST (manually aligned)",
           "sample_count": 20870,
-          "files": []
+          "files": [
+            {
+              "path": "split definition only, no data obtained: BOBSL paper arXiv 2111.03635v1, Table 4",
+              "sha256": "0e75ee96bd548c0946a3a0737040d58ad7e44c0582e3b1e85b82a95789e29006"
+            }
+          ]
         }
-      ]
+      ],
+      "access_outcome": "Refused 2026-11-24: the BBC declined BOBSL access to REPRO-SIGN (gate data-bobsl-access). No file was obtained.",
+      "modal_path_note": "Intended path only; it does not exist. The datasets Volume had no bobsl root when checked on 2026-11-02, and nothing was written there.",
+      "splits_note": "sample_count is taken from the BOBSL paper (Table 4). Each split's file entry is the SHA-256 of that paper's PDF, the split's published definition, not a data file: no BOBSL file was obtained."
     },
     {
       "dataset_id": "bobsl-cslr",
@@ -356,28 +487,46 @@
         }
       ],
       "license_or_permission": "CC BY 4.0 for the textual annotations (license.txt SHA-256 65b0727d...); the videos and features they index remain under the BOBSL non-commercial licence.",
-      "cloud_processing_allowed": true,
-      "cloud_processing_note": "Allowed for the CC BY 4.0 annotations themselves, but they ship in bobsl.zip together with BOBSL-licensed files and are unusable without BOBSL features, so acquisition waits for gate data-bobsl-access.",
+      "cloud_processing_allowed": false,
+      "cloud_processing_note": "False: permission denied. The textual annotations are CC BY 4.0, but they ship only inside bobsl.zip with BOBSL-licensed files and are unusable without the BOBSL features, and BOBSL access was refused on 2026-11-24 (gate data-bobsl-access).",
       "modal_volume": "datasets",
       "modal_path": "bobsl/cslr",
       "splits": [
         {
           "name": "CSLR-TEST (test)",
           "sample_count": 4518,
-          "files": []
+          "files": [
+            {
+              "path": "split definition only, no data obtained: CSLR² paper arXiv 2405.10266v1, Table A.2",
+              "sha256": "246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4"
+            }
+          ]
         },
         {
           "name": "CSLR val",
           "sample_count": 1153,
-          "files": []
+          "files": [
+            {
+              "path": "split definition only, no data obtained: CSLR² paper arXiv 2405.10266v1, Table A.2",
+              "sha256": "246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4"
+            }
+          ]
         },
         {
           "name": "CSLR train",
           "sample_count": 1463,
-          "files": []
+          "files": [
+            {
+              "path": "split definition only, no data obtained: CSLR² paper arXiv 2405.10266v1, Table A.2",
+              "sha256": "246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4"
+            }
+          ]
         }
       ],
-      "count_note": "Sentence counts from paper Table A.2 (all 7,134 = 1,463 + 1,153 + 4,518). Sec. 5.1 gives 4,950 test subtitles; to be checked against the CSV files after acquisition."
+      "count_note": "Sentence counts from paper Table A.2 (all 7,134 = 1,463 + 1,153 + 4,518). Sec. 5.1 gives 4,950 test subtitles; see guesses_and_deviations cslr-test-size.",
+      "access_outcome": "Not acquired: the CSLR CSVs are distributed only inside the cslr2 bobsl.zip with BOBSL-licensed files, and BOBSL access was refused on 2026-11-24 (gate data-bobsl-access).",
+      "modal_path_note": "Intended path inside the bobsl root only; it does not exist. The datasets Volume had no bobsl root when checked on 2026-11-02, and nothing was written there.",
+      "splits_note": "sample_count is taken from the CSLR² paper (Table A.2). Each split's file entry is the SHA-256 of that paper's PDF, the split's published definition, not a data file: no CSV was obtained."
     }
   ],
   "metric_definitions": [
@@ -578,7 +727,25 @@
       "original_value": 93.8,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the automatic spottings released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, those spottings are part of the BOBSL release, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-spot4-miou",
@@ -593,7 +760,25 @@
       "original_value": 7.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the automatic spottings released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, those spottings are part of the BOBSL release, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-spot43-wer",
@@ -608,7 +793,25 @@
       "original_value": 85.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the dense automatic annotations of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, those annotations are BOBSL-derived, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-spot43-miou",
@@ -623,7 +826,25 @@
       "original_value": 18.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the dense automatic annotations of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, those annotations are BOBSL-derived, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-raw-wer",
@@ -638,7 +859,25 @@
       "original_value": 453.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-raw-miou",
@@ -653,7 +892,25 @@
       "original_value": 8.6,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-raw-f1-iou0.1",
@@ -668,7 +925,25 @@
       "original_value": 10.6,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-raw-f1-iou0.25",
@@ -683,7 +958,25 @@
       "original_value": 8.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-raw-f1-iou0.5",
@@ -698,7 +991,25 @@
       "original_value": 5.4,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-pp-wer",
@@ -713,7 +1024,25 @@
       "original_value": 82.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-pp-miou",
@@ -728,7 +1057,25 @@
       "original_value": 18.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-pp-f1-iou0.1",
@@ -743,7 +1090,25 @@
       "original_value": 25.7,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-pp-f1-iou0.25",
@@ -758,7 +1123,25 @@
       "original_value": 23.8,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d2k-pp-f1-iou0.5",
@@ -773,7 +1156,25 @@
       "original_value": 16.0,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-2K model released with BOBSL [4] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d8k-pp-wer",
@@ -788,7 +1189,25 @@
       "original_value": 74.7,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-8K model of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d8k-pp-miou",
@@ -803,7 +1222,25 @@
       "original_value": 27.0,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-8K model of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d8k-pp-f1-iou0.1",
@@ -818,7 +1255,25 @@
       "original_value": 36.7,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-8K model of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d8k-pp-f1-iou0.25",
@@ -833,7 +1288,25 @@
       "original_value": 35.4,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-8K model of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-i3d8k-pp-f1-iou0.5",
@@ -848,7 +1321,25 @@
       "original_value": 26.7,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run."
+      "scope_note": "Out of scope (operator decision 2026-11-02, gate target-table4-rows). Not copied: the authors computed it on CSLR-TEST, but it evaluates prior-work models or annotations ([4]/[43]) and is not needed to test the paper's claimed comparison under the selected scope. Published value kept for the record; not run.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "Excluded from scope by the decision recorded at gate target-table4-rows (2026-11-02): this row evaluates the I3D-8K model of [43] on CSLR-TEST. Independently blocked by data: CSLR-TEST is a BOBSL subset, I3D inference needs the BOBSL RGB video, and BOBSL access was refused (gate data-bobsl-access)."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate target-table4-rows, resolved 2026-11-02: option B; this row is one of the 19 cells excluded from scope.",
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-swin8k-pp-wer",
@@ -864,7 +1355,24 @@
       "original_value": 71.7,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video).",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is evaluated on CSLR-TEST, a BOBSL subset. The scope condition from gate target-table4-rows (evaluate only if released artifacts give the authors' Video-Swin-T predictions without retraining) was never checked, because checking it needs bobsl.zip and the BOBSL features. The data refusal is therefore the earliest blocker, and the compute_budget_blocked fallback did not arise."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-swin8k-pp-miou",
@@ -880,7 +1388,24 @@
       "original_value": 30.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video).",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is evaluated on CSLR-TEST, a BOBSL subset. The scope condition from gate target-table4-rows (evaluate only if released artifacts give the authors' Video-Swin-T predictions without retraining) was never checked, because checking it needs bobsl.zip and the BOBSL features. The data refusal is therefore the earliest blocker, and the compute_budget_blocked fallback did not arise."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-swin8k-pp-f1-iou0.1",
@@ -896,7 +1421,24 @@
       "original_value": 40.0,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video).",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is evaluated on CSLR-TEST, a BOBSL subset. The scope condition from gate target-table4-rows (evaluate only if released artifacts give the authors' Video-Swin-T predictions without retraining) was never checked, because checking it needs bobsl.zip and the BOBSL features. The data refusal is therefore the earliest blocker, and the compute_budget_blocked fallback did not arise."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-swin8k-pp-f1-iou0.25",
@@ -912,7 +1454,24 @@
       "original_value": 37.9,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video).",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is evaluated on CSLR-TEST, a BOBSL subset. The scope condition from gate target-table4-rows (evaluate only if released artifacts give the authors' Video-Swin-T predictions without retraining) was never checked, because checking it needs bobsl.zip and the BOBSL features. The data refusal is therefore the earliest blocker, and the compute_budget_blocked fallback did not arise."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-swin8k-pp-f1-iou0.5",
@@ -928,7 +1487,24 @@
       "original_value": 27.2,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video)."
+      "scope_note": "In scope (operator decision 2026-11-02). Evaluate only if the released artifacts allow the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining: either per-frame predictions for the test episodes (e.g. the bobsl.zip pseudo-label LMDB, if it covers them) or the released features plus the trained classifier head. If not, keep in_scope true and close as not_produced with reason compute_budget_blocked and evidence, referencing a compute gate; do not retrain Video-Swin-T (paper App. A: 3 days on 4 x A40 from raw video).",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is evaluated on CSLR-TEST, a BOBSL subset. The scope condition from gate target-table4-rows (evaluate only if released artifacts give the authors' Video-Swin-T predictions without retraining) was never checked, because checking it needs bobsl.zip and the BOBSL features. The data refusal is therefore the earliest blocker, and the compute_budget_blocked fallback did not arise."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access",
+          "target-table4-rows"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-wer",
@@ -945,7 +1521,23 @@
       "original_value": 65.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). CSLR² is trained on BOBSL Video-Swin-T features, and this cell is evaluated on CSLR-TEST, a BOBSL subset read through the same features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-miou",
@@ -962,7 +1554,23 @@
       "original_value": 35.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). CSLR² is trained on BOBSL Video-Swin-T features, and this cell is evaluated on CSLR-TEST, a BOBSL subset read through the same features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-f1-iou0.1",
@@ -979,7 +1587,23 @@
       "original_value": 47.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). CSLR² is trained on BOBSL Video-Swin-T features, and this cell is evaluated on CSLR-TEST, a BOBSL subset read through the same features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-f1-iou0.25",
@@ -996,7 +1620,23 @@
       "original_value": 46.0,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). CSLR² is trained on BOBSL Video-Swin-T features, and this cell is evaluated on CSLR-TEST, a BOBSL subset read through the same features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-f1-iou0.5",
@@ -1013,7 +1653,23 @@
       "original_value": 37.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: CSLR-TEST is introduced by this paper, so every CSLR value in Table 4 was computed by the authors on it. The bracketed citation names the origin of the evaluated model or annotation artifact, not of the number.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). CSLR² is trained on BOBSL Video-Swin-T features, and this cell is evaluated on CSLR-TEST, a BOBSL subset read through the same features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "CSLR-TEST is a manually annotated subset of BOBSL SENT-TEST episodes (paper Sec. 4, Tables 1 and A.2). Its CSVs ship only inside the cslr2 bobsl.zip alongside BOBSL-licensed files, and cslr2 extract_for_eval.py reads the BOBSL Video-Swin-T feature LMDB named in config/paths/public.yaml (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-sentval-t2v-r1",
@@ -1029,7 +1685,23 @@
       "original_value": 38.9,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-VAL. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-sentval-v2t-r1",
@@ -1045,7 +1717,23 @@
       "original_value": 39.2,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-VAL. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-senttest-t2v-r1",
@@ -1061,7 +1749,23 @@
       "original_value": 19.5,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-TEST. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-senttest-t2v-r5",
@@ -1077,7 +1781,23 @@
       "original_value": 35.1,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-TEST. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-senttest-v2t-r1",
@@ -1093,7 +1813,23 @@
       "original_value": 18.9,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-TEST. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-infonce-senttest-v2t-r5",
@@ -1109,7 +1845,23 @@
       "original_value": 33.8,
       "copied_baseline": false,
       "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). No InfoNCE checkpoint was released, so the baseline would have to be trained on BOBSL Video-Swin-T features with the official code and evaluated on BOBSL SENT-TEST. Neither is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-sentval-t2v-r1",
@@ -1125,8 +1877,24 @@
       "metric_id": "t2v-r1",
       "original_value": 51.7,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-VAL, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-sentval-v2t-r1",
@@ -1142,8 +1910,24 @@
       "metric_id": "v2t-r1",
       "original_value": 50.2,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-VAL, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-senttest-t2v-r1",
@@ -1159,8 +1943,24 @@
       "metric_id": "t2v-r1",
       "original_value": 29.4,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-TEST, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-senttest-t2v-r5",
@@ -1176,8 +1976,24 @@
       "metric_id": "t2v-r5",
       "original_value": 45.2,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-TEST, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-senttest-v2t-r1",
@@ -1193,8 +2009,24 @@
       "metric_id": "v2t-r1",
       "original_value": 28.1,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-TEST, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     },
     {
       "target_id": "t4-cslr2-senttest-v2t-r5",
@@ -1210,8 +2042,24 @@
       "metric_id": "v2t-r5",
       "original_value": 44.9,
       "copied_baseline": false,
-      "copied_baseline_note": "Not copied: the InfoNCE baseline was trained by the authors (Sec. 5.2); values match their own Table 3 / Table A.8 ablations.",
-      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code."
+      "copied_baseline_note": "Not copied: CSLR² is this paper's own model, trained and evaluated by the authors (Sec. 3 to 5, App. A).",
+      "scope_note": "In scope (operator decision 2026-11-02): run with the official cslr2 code.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "data_permission_blocked",
+          "detail": "BOBSL access was refused (gate data-bobsl-access). This cell is a retrieval score on BOBSL SENT-TEST, computed from BOBSL Video-Swin-T features. Neither retraining CSLR² nor evaluating the released CSLR² checkpoint is possible."
+        },
+        "run_ids": [],
+        "artifact_ids": [],
+        "gate_ids": [
+          "data-bobsl-access"
+        ],
+        "evidence": [
+          "Gate data-bobsl-access, resolved 2026-11-24: the BBC refused BOBSL access to REPRO-SIGN because the study includes a commercially affiliated collaborator.",
+          "SENT-VAL and SENT-TEST are BOBSL splits of manually aligned subtitles (BOBSL paper arXiv 2111.03635v1 Table 4). cslr2 main.py trains and evaluates retrieval on the BOBSL Video-Swin-T feature LMDB and the BOBSL subtitle files in bobsl.zip (gulvarol/cslr2@5f3bd697)."
+        ]
+      }
     }
   ],
   "runs": [],
@@ -1260,12 +2108,13 @@
           "Next step set by the operator: proceed to the BOBSL data gate."
         ],
         "contract_gap": "The controlled target reason codes have no value for a non-copied cell that the operator excluded from scope (copied_baseline requires copied_baseline true, which would be false here). The 19 out-of-scope targets therefore have no result yet; their terminal reason must be settled with the maintainers before handoff rather than by misusing an existing code."
-      }
+      },
+      "contract_gap_outcome": "Did not arise at closure. The 19 out-of-scope cells are independently blocked by the BOBSL refusal (gate data-bobsl-access), so they close as not_produced with reason data_permission_blocked, and their detail states the scope exclusion. No controlled reason code covers a non-copied cell excluded by a scope decision in general."
     },
     {
       "gate_id": "data-bobsl-access",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "All 22 in-scope targets need BOBSL: the 262G Video-Swin-T feature LMDB and the BOBSL-derived annotations, subtitles and pseudo-labels in the cslr2 bobsl.zip. BOBSL is absent from the datasets Volume. Under the first-party BBC terms, access is an individual signed agreement with a personal password, the data is 'for your use only' and must not be distributed, it must be held securely, and permission lasts 12 months. Whether any study member holds a valid agreement, and whether those terms allow a copy in the shared repro-sign datasets Volume and processing on Modal, needs a human decision.",
       "evidence": [
         "check_modal_dataset.sh bobsl and bobsl-cslr (2026-11-02T10:19Z): 'path \"/bobsl/\" does not exist' / 'path \"/bobsl-cslr/\" does not exist'; no BOBSL root among the 30 dataset directories",
@@ -1274,14 +2123,29 @@
         "BOBSL paper arXiv 2111.03635v1 Sec. 2: available for non-commercial research usage through a data-sharing agreement with the BBC",
         "Queue dataset record qzrj91d5rphubkd (BOBSL): license 'Custom (research only)', available 'yes', on_modal and permission fields empty",
         "robots.ox.ac.uk BOBSL page unreachable from this machine on 2026-11-02 (TLS reset, HTTP 503)",
-        "No BOBSL handling in any papers/ directory or branch of the study repository"
+        "No BOBSL handling in any papers/ directory or branch of the study repository",
+        "Correspondence between REPRO-SIGN and the BBC about BOBSL access, 2026-11-02 to 2026-11-24, as reported by the operator on 2026-11-24. Held by the study; not quoted here, and no names, email addresses or phone numbers are recorded."
       ],
-      "required_action": "Team S (data access): (1) confirm whether an eligible study member holds, or will apply for, a current BBC BOBSL Permission to Use agreement; (2) decide, with the BBC if needed, whether the terms allow storing the BOBSL features and bobsl.zip contents in the shared repro-sign Volume datasets/bobsl and processing them on Modal, or whether another permitted location and compute is required; (3) supply the access path through an approved channel, never as a credential in chat or in committed files. Until then no BOBSL file, bobsl.zip, CSLR² checkpoint or T5 bundle is downloaded and nothing is built or run."
+      "required_action": "None. Access was refused on 2026-11-24 and the study accepted the refusal; every target closes as not_produced with reason data_permission_blocked.",
+      "opened_at": "2026-11-02",
+      "resolution": {
+        "decided_at": "2026-11-24",
+        "decided_by": "BBC (refusal), accepted by the study",
+        "decision": "access_denied",
+        "detail": [
+          "2026-11-02: REPRO-SIGN sent the BBC BOBSL Permission to Use form, with a cover email, to the BBC BOBSL dataset contact. A follow-up the same day named this paper as the intended use.",
+          "Later in November 2026: a reminder was sent.",
+          "2026-11-24: the BBC R&D contact named in the form refused access.",
+          "Reasons given, paraphrased: the BBC does not allow any involvement of commercial organisations in projects that use BOBSL, citing past disputes over preferential access, and REPRO-SIGN includes a commercially affiliated collaborator. The BBC also does not permit publishing model weights, which the request had marked as optional.",
+          "The study accepted the refusal. No BOBSL file, bobsl.zip, CSLR² checkpoint or T5 bundle was downloaded at any point, and no other route to the data was attempted.",
+          "The refusal follows from the composition of the REPRO-SIGN consortium, not from the data being unavailable in general. BOBSL remains offered to eligible non-commercial academic researchers under the BBC terms."
+        ]
+      }
     },
     {
       "gate_id": "compute-training-runs",
       "type": "compute",
-      "status": "open",
+      "status": "resolved",
       "opened_at": "2026-11-02",
       "reason": "The in-scope cells need two full training runs of the official code: CSLR² (11 cells) and the InfoNCE baseline (6 cells). The paper and README report under 20 h on 4 x V100-32GB for the 20-epoch CSLR² run, about 80 V100 GPU-hours per run, so up to about 160 V100 GPU-hours if InfoNCE costs the same (its training time is not stated). Each run exceeds the 24 GPU-hour autonomous ceiling in AGENTS.md, so it needs a #repro-sign-team-r discussion. Opened before any measurement at the operator's request so it reaches the team together with gate data-bobsl-access.",
       "estimate": {
@@ -1321,7 +2185,114 @@
         "AGENTS.md compute gate: discuss runs expected to exceed 24 GPU-hours in #repro-sign-team-r before launch; do not mark blocked_on_compute before that discussion",
         "https://modal.com/pricing read 2026-11-02 (GPU, CPU, memory and Volume list prices quoted in estimate)"
       ],
-      "required_action": "#repro-sign-team-r: decide whether the study funds two single-node 4-GPU training runs (CSLR² and InfoNCE), roughly 80 V100 GPU-hours each by the paper's figure (about USD 400-650 GPU-only for both on A100/H100 under the no-speed-up assumption), and set per-run wall-time, GPU-hour and cost ceilings plus the restart allowance. The estimate is replaced by a measured one from the representative preflight once gate data-bobsl-access clears and before any full run is launched."
+      "required_action": "None; moot since gate data-bobsl-access was resolved as access denied on 2026-11-24.",
+      "resolution": {
+        "decided_at": "2026-11-24",
+        "decision": "moot",
+        "detail": [
+          "The representative preflight and both training runs need BOBSL, so none can happen after the refusal at gate data-bobsl-access. No funding decision was taken, no estimate was measured and no compute was spent.",
+          "The estimate above is kept as recorded on 2026-11-02: paper-reported, unmeasured, in US dollars."
+        ]
+      }
     }
-  ]
+  ],
+  "guesses_and_deviations": [
+    {
+      "id": "sent-split-counts",
+      "kind": "paper_internal_conflict",
+      "description": "The paper gives the SENT-VAL and SENT-TEST sizes in opposite order in two places.",
+      "paper_says": "Sec. 5.1: SENT-VAL 20,870 and SENT-TEST 1,973 sentences. Table 4 column headers (SENT-VAL (2K), SENT-TEST (20K)) and App. D.2: the opposite.",
+      "used": "Target splits follow Table 4 and App. D.2: SENT-VAL 1,973 and SENT-TEST 20,870 sentences.",
+      "basis": "Table 4 is the reported table, and the BOBSL paper (Table 4: SENT-VAL_H 1,973; SENT-TEST 20,870) agrees with it.",
+      "effect": "Labels the retrieval targets only; no value depends on it because none was produced.",
+      "status": "Adopted in the target ledger on 2026-11-02. No run reached it: the attempt closed at the data gate before any download, build or run.",
+      "evidence": [
+        "arXiv 2405.10266v1 Sec. 5.1, Table 4 (p. 8), App. D.2",
+        "BOBSL paper arXiv 2111.03635v1 Table 4"
+      ],
+      "affects": [
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bobsl"
+      ]
+    },
+    {
+      "id": "cslr-test-size",
+      "kind": "paper_internal_conflict",
+      "description": "The paper gives two sizes for CSLR-TEST.",
+      "paper_says": "Sec. 5.1: CSLR-TEST corresponds to 4,950 test subtitles. Tables 1 and A.2: 4,518 sentences.",
+      "used": "Target splits cite both counts; the dataset record uses Table A.2 (4,518). The count was to be checked against the released test CSVs after acquisition.",
+      "basis": "Only the released CSVs can show which count the reported numbers used.",
+      "effect": "None on any value: no CSLR value was produced.",
+      "status": "Unresolved. No run reached it: the attempt closed at the data gate before any download, build or run.",
+      "evidence": [
+        "arXiv 2405.10266v1 Sec. 5.1, Table 1, Table A.2"
+      ],
+      "affects": [
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bobsl-cslr"
+      ]
+    },
+    {
+      "id": "readme-retrieval-test-size",
+      "kind": "paper_code_conflict",
+      "description": "The released code's README and the paper give different sizes for the retrieval test set.",
+      "paper_says": "Paper Table 4 and App. D.2: SENT-TEST (20K), 20,870 manually aligned sentences. gulvarol/cslr2 README: '25K manually aligned test set'.",
+      "used": "Targets are labelled with the paper's SENT-TEST (20,870 sentences). The size of the set that main.py test=True loads was to be counted after acquisition.",
+      "basis": "The paper defines the reported split, and the BOBSL paper agrees with it.",
+      "effect": "None on any value: no retrieval value was produced.",
+      "status": "Unresolved. No run reached it: the attempt closed at the data gate before any download, build or run.",
+      "evidence": [
+        "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 README.md",
+        "arXiv 2405.10266v1 Table 4, App. D.2"
+      ],
+      "affects": [
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bobsl"
+      ]
+    },
+    {
+      "id": "checkpoint-selection",
+      "kind": "paper_code_conflict",
+      "description": "The paper keeps the best validation checkpoint; the released training loop overwrites model_best.pth every epoch.",
+      "paper_says": "App. A: keep the checkpoint with the best T2V R@1 on a manually aligned subset of validation subtitles. gulvarol/cslr2 main.py passes best_t2v=-1 to log_and_save every epoch, so model_best.pth is the last epoch, and validation retrieval uses a random 2,000-sentence subset of the automatic subtitles of the validation episodes.",
+      "effect": "Would decide which checkpoint every retrained CSLR² and InfoNCE value comes from. No training run happened.",
+      "status": "Unresolved; it was to go to a protocol gate before retraining. No run reached it: the attempt closed at the data gate before any download, build or run.",
+      "evidence": [
+        "arXiv 2405.10266v1 App. A",
+        "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 main.py (log_and_save called with best_t2v=-1)"
+      ],
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bobsl"
+      ]
+    },
+    {
+      "id": "postprocessing-tuning-split",
+      "kind": "paper_code_conflict",
+      "description": "The paper and the released code tune the CSLR post-processing threshold and repetition count on different splits.",
+      "paper_says": "Sec. 5.2: θ and m are tuned 'on unseen manually annotated CSLR sequences from the validation set'. gulvarol/cslr2 frame_level_evaluation.py searches them on 0/train/*.csv unless test_search is set.",
+      "effect": "Would affect every † CSLR value (CSLR² and Swin-8K†). No evaluation happened.",
+      "status": "Unresolved; it was to go to a protocol gate before evaluation. No run reached it: the attempt closed at the data gate before any download, build or run.",
+      "evidence": [
+        "arXiv 2405.10266v1 Sec. 5.2",
+        "gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 frame_level_evaluation.py"
+      ],
+      "affects": [
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bobsl-cslr"
+      ]
+    }
+  ],
+  "noncompliance": []
 }

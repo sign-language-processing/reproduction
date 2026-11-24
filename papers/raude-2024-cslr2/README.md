@@ -8,33 +8,30 @@
 
 **Preference level:** 1
 
-The preference level is provisional; see `status.preference_level_basis`. Official code and a released checkpoint cover the in-scope CSLR² and InfoNCE cells. Swin-8K† is evaluated only from released artifacts.
+Level 1 was planned and never exercised: official code and a released checkpoint cover the in-scope CSLR² and InfoNCE cells, but the attempt closed at the data gate before any container build or run.
 
-**Pipeline status:** not yet set. Target scope is resolved: 22 cells in scope, 19 out of scope. The attempt is paused at two open gates for the team, `data-bobsl-access` and `compute-training-runs`, before any download, container build or run. No target has a terminal result, and AGENTS.md forbids `blocked_on_compute` before the team discussion.
+**Pipeline status:** `blocked_on_data` — the BBC refused BOBSL access to REPRO-SIGN on 2026-11-24, and every Table 4 cell needs BOBSL.
 
-**Numerical agreement:** `not_assessed` — no target has been produced.
+**Numerical agreement:** `not_assessed` — no in-scope target produced a value, so nothing can be compared with the published numbers.
 
-**Attempt date:** 2026-11-02
+**Attempt date:** 2026-11-02 to 2026-11-24
 
 ## Reproduction agents
 
 | Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
 | --- | --- | --- | --- | --- |
-| `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | Assignment intake, paper verification, target ledger, source search and pinning, read-only Modal Volume inspection, target and data gates | Session system context names the model and ID. `claude --version` returned 2.1.316. No runs executed. |
+| `claude-opus-5-5-claude-code` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.316 | 2026-11-02: assignment intake, paper verification, target ledger, source search and pinning, read-only Modal Volume inspection, target and data gates | Session system context names the model and ID. `claude --version` returned 2.1.316, and the session transcript confirms that version for the running client, with effort `xhigh`. No runs executed. |
+| `claude-opus-5-5-claude-code-closure` | Claude Opus 5.5 (`claude-opus-5-5`) | Claude Code 2.1.331 | 2026-11-24: report maintenance and closure. Rebase onto the current contract, queue-export re-ingestion, recording the BBC refusal as reported by the operator, gate resolutions, terminal results, status, guesses and deviations | Session system context names the model and ID; the session transcript records client version 2.1.331 and effort `xhigh`. Did not contact the BBC and ran no experiment. |
 
 ## Scope and target contract
 
 ### Assignment intake
 
-The assignment is a single `reproductions`-collection export plus the paper PDF. The export's `what_to_reproduce` is "Table 4".
+The assignment is the Reproduction Tracker export `reproductions-13195df56368306dc1c1f9733cebb8dd694c94af-2026-10-30.json` (SHA-256 `6e64ca02825163fc0cec6d3f1093bff374c939181d49e1f00a76171830cdc487`). Its paper record (`expand.paper`) has status `final`, and `what_to_reproduce` is "Table 4".
 
-The export cannot go through `ingest_candidate.py`:
+On 2026-11-24 the export was ingested with `ingest_candidate.py` as a `queue_record`. `reproduction.json.assignment` keeps only the export's filename and SHA-256, and every email address in the stored record is replaced by `[redacted]`.
 
-- The paper record is nested under `expand.paper`. Its status is `final`; the top-level `in_progress` status belongs to the reproduction task.
-- There is no `confirmation` field.
-- Its `id` values are internal queue IDs, not the paper ID.
-
-It is therefore recorded as a `direct_user_request`, following `papers/pu-2024-siformer`. The record is kept unchanged except that every email address is replaced by `[redacted]`, including `assignees`, `finalized_by` and `status_history`. Its SHA-256 is recorded in `reproduction.json`.
+On 2026-11-02 it had been recorded as a `direct_user_request`, because the ingestion script then expected the retired candidate-list format. The stored record is unchanged by the re-ingestion.
 
 ### What Table 4 contains
 
@@ -52,14 +49,14 @@ The supplied PDF is byte-identical to arXiv v1, the only arXiv version. No venue
 | ISLR Swin-8K [44] † | 71.7, 30.1, 40.0, 37.9, 27.2 | Authors' own Video-Swin-T, trained "in a similar fashion as [44]" |
 | CSLR² (Ours) † | 65.5, 35.5, 47.1, 46.0, 37.1 | This paper |
 
-**Retrieval.** Columns are SENT-VAL (2K) T2V R@1 and V2T R@1, then SENT-TEST (20K) T2V R@1, T2V R@5, V2T R@1 and V2T R@5.
+**Retrieval on SENT-VAL and SENT-TEST.** Columns are SENT-VAL (2K) T2V R@1 and V2T R@1, then SENT-TEST (20K) T2V R@1, T2V R@5, V2T R@1 and V2T R@5.
 
 | Row | Values | Origin |
 | --- | --- | --- |
 | InfoNCE | 38.9, 39.2, 19.5, 35.1, 18.9, 33.8 | Baseline trained by the authors |
 | CSLR² (Ours) | 51.7, 50.2, 29.4, 45.2, 28.1, 44.9 | This paper |
 
-**No number is copied from earlier work.** CSLR-TEST is introduced by this paper, so every CSLR value was computed by the authors on it. The bracketed citations name where the evaluated model or annotations come from, not where the number comes from. The InfoNCE row equals the authors' own ablations (Table 3 row 1, Table A.8 row 2). Every target therefore has `copied_baseline: false`.
+**No number is copied from earlier work.** CSLR-TEST is introduced by this paper, so every CSLR value was computed by the authors on it. The bracketed citations name where the evaluated model or annotations come from, not where the number comes from. The InfoNCE row equals the authors' own ablations (Table 3 row 1, Table A.8 row 2), and CSLR² is the paper's own model. Every target therefore has `copied_baseline: false`.
 
 ### Metric definitions
 
@@ -80,14 +77,14 @@ The ledger in `reproduction.json` has one target per number. Each target carries
 
 The operator chose **B**, with a condition on Swin-8K†:
 
-| Cells | In scope | How they are handled |
+| Cells | In scope | How they were to be handled |
 | --- | --- | --- |
 | 11 CSLR² cells: CSLR row and retrieval row | yes | Official cslr2 code |
 | 6 InfoNCE retrieval cells | yes | Official cslr2 code; a second training run via config overrides |
-| 5 ISLR Swin-8K† cells | yes | Evaluated only if released artifacts give the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining. That means either released per-frame predictions for test episodes, or the released features plus the trained classifier head. Otherwise they close as `not_produced` with reason `compute_budget_blocked`, a compute gate and evidence. Video-Swin-T is not retrained. |
+| 5 ISLR Swin-8K† cells | yes | Evaluated only if released artifacts give the authors' Video-Swin-T per-frame predictions on CSLR-TEST without retraining; otherwise `compute_budget_blocked`. Video-Swin-T is not retrained. |
 | 19 cells: spotting [4]/[43], I3D-2K raw/†, I3D-8K† | no | Kept with published values. They evaluate prior-work models and annotations on CSLR-TEST and are not needed to test the paper's claimed comparison. |
 
-**Contract gap to settle before handoff.** The controlled target reason codes have nothing for a cell that is *not copied* but was excluded from scope by the operator. `copied_baseline` requires `copied_baseline: true`, which would be false here. The 19 out-of-scope targets therefore carry no `result` yet. This is recorded in the gate resolution rather than worked around by misusing an existing code.
+**Contract gap.** The controlled reason codes have nothing for a cell that is *not copied* but was excluded by a scope decision. It did not arise at closure: the 19 out-of-scope cells are independently blocked by the BOBSL refusal, so they close as `data_permission_blocked`, and each detail states the scope exclusion. No controlled code covers that case in general.
 
 ## Source provenance
 
@@ -95,15 +92,17 @@ The operator chose **B**, with a condition on Swin-8K†:
 | --- | --- | --- | --- |
 | Paper PDF | https://arxiv.org/pdf/2405.10266v1 (accessed 2026-11-02) | `246fb354a2c41d24dd0b7b93062a851fd2ed56a47490aac92cbf89f8b1e026f4` | Targets and protocol |
 | Published code | https://github.com/gulvarol/cslr2 | `5f3bd697e1d2e184a5882cbbd0da64ce9455fd28` | Training, retrieval test, CSLR extraction and evaluation |
-| CSLR² checkpoint | Google Drive `1qyFHSFnxmy1rRGjlKEBfsjC8yt2kdalx` | Unpinned (mutable; re-uploaded 2024-07-02 per issue #1). Hash at acquisition | Evaluation cross-check |
-| `bobsl.zip` (annotations, metadata, CSLR CSVs) | Google Drive `13pp83GCoy1SVScvZRmNsoFxtNm8ogI7h` | Unpinned. Hash at acquisition | Required by `config/paths/public.yaml` |
-| `t5_checkpoint.zip` | Google Drive `1hxkb8KAC0sgSYKefOLue1wyO2fJmmqxT` | Unpinned. Hash at acquisition | Frozen t5-large text encoder |
-| BOBSL Video-Swin-T features (262G) | `thor.robots.ox.ac.uk/~vgg/data/bobsl/features/lmdb/feats_vswin_t-bs256_float16/` | Credentialed; not accessed | Model input |
-| BOBSL RGB LMDB (1.5T) | `thor.robots.ox.ac.uk/~vgg/data/bobsl/videos/lmdb/rgb_anon-public_1962/` | Credentialed; not accessed | Visualisation; I3D rows |
+| CSLR² checkpoint | Google Drive `1qyFHSFnxmy1rRGjlKEBfsjC8yt2kdalx` | Unpinned (mutable; re-uploaded 2024-07-02 per issue #1). Never acquired | Evaluation cross-check |
+| `bobsl.zip` (annotations, metadata, CSLR CSVs) | Google Drive `13pp83GCoy1SVScvZRmNsoFxtNm8ogI7h` | Unpinned. Never acquired | Required by `config/paths/public.yaml` |
+| `t5_checkpoint.zip` | Google Drive `1hxkb8KAC0sgSYKefOLue1wyO2fJmmqxT` | Unpinned. Never acquired | Frozen t5-large text encoder |
+| BOBSL Video-Swin-T features (262G) | `thor.robots.ox.ac.uk/~vgg/data/bobsl/features/lmdb/feats_vswin_t-bs256_float16/` | Credentialed; never accessed | Model input |
+| BOBSL RGB LMDB (1.5T) | `thor.robots.ox.ac.uk/~vgg/data/bobsl/videos/lmdb/rgb_anon-public_1962/` | Credentialed; never accessed | Visualisation; I3D rows |
 | BOBSL paper | https://arxiv.org/pdf/2111.03635v1 | `0e75ee96bd548c0946a3a0737040d58ad7e44c0582e3b1e85b82a95789e29006` | SENT-VAL/SENT-TEST definitions, licence basis |
 | BBC R&D BOBSL access terms | https://www.bbc.co.uk/rd/projects/extol-dataset (accessed 2026-11-02) | HTML `d4b006f6…` | First-party access and use restrictions |
 | CSLR² data page and licence | https://gulvarol.github.io/cslr2/data.html | data.html `3cea110c…`, license.txt `65b0727d…` | BOBSL-CSLR CC BY 4.0 terms |
 | transpeller (considered) | https://github.com/prajwalkr/transpeller | `dca7c8e3d463ca3c5909d9ee47c0ae8aeba4c0ff` | Not selected: Video-Swin-**S** checkpoint of [44]; Table 4 uses the authors' Video-Swin-**T** |
+
+"Never acquired" means not downloaded before the data gate and not downloaded after the refusal (gate `data-bobsl-access`).
 
 ### Searches performed (2026-11-02)
 
@@ -126,48 +125,127 @@ The operator chose **B**, with a condition on Swin-8K†:
 
 ## Results
 
-No target has been run. All 41 targets are listed in `reproduction.json.targets` with paper location, split, metric, published value, copied-baseline determination and scope. None has a terminal result yet.
+No target was produced. All 41 close as `not_produced` with reason `data_permission_blocked`, referencing gate `data-bobsl-access`. The 19 out-of-scope targets also reference gate `target-table4-rows`: their detail says they were excluded by the recorded scope decision and are independently blocked by data.
 
-| Group | Cells | In scope | Published values |
-| --- | ---: | --- | --- |
-| CSLR² (Ours) † — CSLR-TEST | 5 | yes | WER 65.5, mIoU 35.5, F1 47.1 / 46.0 / 37.1 |
-| CSLR² (Ours) — retrieval | 6 | yes | SENT-VAL R@1 51.7 / 50.2; SENT-TEST T2V 29.4 / 45.2, V2T 28.1 / 44.9 |
-| InfoNCE — retrieval | 6 | yes | SENT-VAL R@1 38.9 / 39.2; SENT-TEST T2V 19.5 / 35.1, V2T 18.9 / 33.8 |
-| ISLR Swin-8K [44] † | 5 | yes, conditional on released artifacts | WER 71.7, mIoU 30.1, F1 40.0 / 37.9 / 27.2 |
-| Spotting [4]/[43], I3D-2K raw/†, I3D-8K † | 19 | no | See Scope and target contract |
+Every cell needs BOBSL. The CSLR cells are evaluated on CSLR-TEST, a BOBSL subset, and the retrieval cells on BOBSL SENT-VAL and SENT-TEST, all through the BOBSL Video-Swin-T features. **The released CSLR² checkpoint cannot be evaluated either, for the same reason:** it needs the same BOBSL features and the BOBSL-derived files in `bobsl.zip`.
+
+| Target ID | Paper location | System | Dataset/split | Metric + version | Original | Reproduced | Difference | Terminal reason / evidence |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |
+| `t4-spot4-wer` | Table 4, CSLR | Subtitle-based spotting [4] | CSLR-TEST | WER ↓ | 93.8 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-spot4-miou` | Table 4, CSLR | Subtitle-based spotting [4] | CSLR-TEST | mIoU ↑ | 7.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-spot43-wer` | Table 4, CSLR | Subtitle-based spotting [43] | CSLR-TEST | WER ↓ | 85.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-spot43-miou` | Table 4, CSLR | Subtitle-based spotting [43] | CSLR-TEST | mIoU ↑ | 18.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-raw-wer` | Table 4, CSLR | ISLR I3D-2K [4] | CSLR-TEST | WER ↓ | 453.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-raw-miou` | Table 4, CSLR | ISLR I3D-2K [4] | CSLR-TEST | mIoU ↑ | 8.6 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-raw-f1-iou0.1` | Table 4, CSLR | ISLR I3D-2K [4] | CSLR-TEST | F1@0.1 ↑ | 10.6 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-raw-f1-iou0.25` | Table 4, CSLR | ISLR I3D-2K [4] | CSLR-TEST | F1@0.25 ↑ | 8.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-raw-f1-iou0.5` | Table 4, CSLR | ISLR I3D-2K [4] | CSLR-TEST | F1@0.5 ↑ | 5.4 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-pp-wer` | Table 4, CSLR | ISLR I3D-2K [4] † | CSLR-TEST | WER ↓ | 82.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-pp-miou` | Table 4, CSLR | ISLR I3D-2K [4] † | CSLR-TEST | mIoU ↑ | 18.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-pp-f1-iou0.1` | Table 4, CSLR | ISLR I3D-2K [4] † | CSLR-TEST | F1@0.1 ↑ | 25.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-pp-f1-iou0.25` | Table 4, CSLR | ISLR I3D-2K [4] † | CSLR-TEST | F1@0.25 ↑ | 23.8 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d2k-pp-f1-iou0.5` | Table 4, CSLR | ISLR I3D-2K [4] † | CSLR-TEST | F1@0.5 ↑ | 16.0 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d8k-pp-wer` | Table 4, CSLR | ISLR I3D-8K [43] † | CSLR-TEST | WER ↓ | 74.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d8k-pp-miou` | Table 4, CSLR | ISLR I3D-8K [43] † | CSLR-TEST | mIoU ↑ | 27.0 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d8k-pp-f1-iou0.1` | Table 4, CSLR | ISLR I3D-8K [43] † | CSLR-TEST | F1@0.1 ↑ | 36.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d8k-pp-f1-iou0.25` | Table 4, CSLR | ISLR I3D-8K [43] † | CSLR-TEST | F1@0.25 ↑ | 35.4 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-i3d8k-pp-f1-iou0.5` | Table 4, CSLR | ISLR I3D-8K [43] † | CSLR-TEST | F1@0.5 ↑ | 26.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; out of scope (gate `target-table4-rows`) |
+| `t4-swin8k-pp-wer` | Table 4, CSLR | ISLR Swin-8K [44] † | CSLR-TEST | WER ↓ | 71.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-swin8k-pp-miou` | Table 4, CSLR | ISLR Swin-8K [44] † | CSLR-TEST | mIoU ↑ | 30.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-swin8k-pp-f1-iou0.1` | Table 4, CSLR | ISLR Swin-8K [44] † | CSLR-TEST | F1@0.1 ↑ | 40.0 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-swin8k-pp-f1-iou0.25` | Table 4, CSLR | ISLR Swin-8K [44] † | CSLR-TEST | F1@0.25 ↑ | 37.9 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-swin8k-pp-f1-iou0.5` | Table 4, CSLR | ISLR Swin-8K [44] † | CSLR-TEST | F1@0.5 ↑ | 27.2 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-wer` | Table 4, CSLR | CSLR² (Ours) † | CSLR-TEST | WER ↓ | 65.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-miou` | Table 4, CSLR | CSLR² (Ours) † | CSLR-TEST | mIoU ↑ | 35.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-f1-iou0.1` | Table 4, CSLR | CSLR² (Ours) † | CSLR-TEST | F1@0.1 ↑ | 47.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-f1-iou0.25` | Table 4, CSLR | CSLR² (Ours) † | CSLR-TEST | F1@0.25 ↑ | 46.0 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-f1-iou0.5` | Table 4, CSLR | CSLR² (Ours) † | CSLR-TEST | F1@0.5 ↑ | 37.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-sentval-t2v-r1` | Table 4, retrieval | InfoNCE | SENT-VAL (2K) | T2V R@1 ↑ | 38.9 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-sentval-v2t-r1` | Table 4, retrieval | InfoNCE | SENT-VAL (2K) | V2T R@1 ↑ | 39.2 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-senttest-t2v-r1` | Table 4, retrieval | InfoNCE | SENT-TEST (20K) | T2V R@1 ↑ | 19.5 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-senttest-t2v-r5` | Table 4, retrieval | InfoNCE | SENT-TEST (20K) | T2V R@5 ↑ | 35.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-senttest-v2t-r1` | Table 4, retrieval | InfoNCE | SENT-TEST (20K) | V2T R@1 ↑ | 18.9 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-infonce-senttest-v2t-r5` | Table 4, retrieval | InfoNCE | SENT-TEST (20K) | V2T R@5 ↑ | 33.8 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-sentval-t2v-r1` | Table 4, retrieval | CSLR² (Ours) | SENT-VAL (2K) | T2V R@1 ↑ | 51.7 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-sentval-v2t-r1` | Table 4, retrieval | CSLR² (Ours) | SENT-VAL (2K) | V2T R@1 ↑ | 50.2 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-senttest-t2v-r1` | Table 4, retrieval | CSLR² (Ours) | SENT-TEST (20K) | T2V R@1 ↑ | 29.4 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-senttest-t2v-r5` | Table 4, retrieval | CSLR² (Ours) | SENT-TEST (20K) | T2V R@5 ↑ | 45.2 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-senttest-v2t-r1` | Table 4, retrieval | CSLR² (Ours) | SENT-TEST (20K) | V2T R@1 ↑ | 28.1 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+| `t4-cslr2-senttest-v2t-r5` | Table 4, retrieval | CSLR² (Ours) | SENT-TEST (20K) | V2T R@5 ↑ | 44.9 | not produced | — | `data_permission_blocked`, gate `data-bobsl-access`; in scope |
+
+Metric versions are those of gulvarol/cslr2 at `5f3bd697` (see Metric definitions). No original score is copied from earlier work, so no baseline was reproduced or skipped on that ground.
+
+**Selected blocker: `data_permission_blocked`.** It lists the 22 in-scope targets. It is the earliest blocker and independently prevents every in-scope target: CSLR², InfoNCE and Swin-8K† all need BOBSL data, both for training and for evaluating any released checkpoint.
+
+**Other blockers, reported separately:**
+
+- **Compute (gate `compute-training-runs`):** resolved as moot. No funding decision was taken and nothing was measured.
+- **Swin-8K† artifacts:** the scope condition (released artifacts sufficient without retraining) was never checked, because the check itself needs `bobsl.zip` and the BOBSL features. The `compute_budget_blocked` fallback in the scope decision therefore did not arise.
+- **The 19 out-of-scope cells:** excluded by the scope decision and also blocked by the same refusal.
 
 ## How to repeat this
 
-Nothing executable exists yet. The work stopped at the gates before writing a Dockerfile, `data.sh` or Modal entry point. The Modal checks made so far were:
+Nothing executable exists. The attempt closed at the data gate before any Dockerfile, `data.sh` or Modal entry point was written. The commands that were run:
 
 ```bash
+# Assignment (2026-11-24); the export is the Reproduction Tracker download named above
+python3 .agents/skills/reproduce-paper/scripts/ingest_candidate.py \
+  reproductions-13195df56368306dc1c1f9733cebb8dd694c94af-2026-10-30.json \
+  13195df56368306dc1c1f9733cebb8dd694c94af papers/raude-2024-cslr2/reproduction.json
+
+# Read-only Modal checks (2026-11-02)
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh            # verified profile and workspace repro-sign
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume ls datasets /
 .agents/skills/reproduce-paper/scripts/modal_repro_sign.sh volume ls huggingface-cache /
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh bobsl         # fails: path /bobsl/ does not exist
 .agents/skills/reproduce-paper/scripts/check_modal_dataset.sh bobsl-cslr    # fails: path /bobsl-cslr/ does not exist
+
+# Record check
+python3 .agents/skills/reproduce-paper/scripts/validate_reproduction.py papers/raude-2024-cslr2
 ```
+
+A team whose members are eligible for BOBSL under the BBC terms could resume from the target ledger, the source pins and the compute estimate recorded here.
 
 ## Data provenance and permissions
 
 | Dataset | Version/subset/splits | Source and access date | License/permission and cloud-use basis | Path in Volume `datasets` | Counts / manifest / checksum | Deviations |
 | --- | --- | --- | --- | --- | --- | --- |
-| BOBSL | Video-Swin-T feature LMDB, pseudo-labels, automatic and manual subtitles. SENT-VAL_H, SENT-TEST | BBC R&D terms page, 2026-11-02. Oxford page unreachable | BBC-owned, non-commercial academic research only. Per-person signed Permission to Use with an individual password; "for your use only"; no redistribution; held securely; 12 months. Shared-Volume storage and Modal processing **not established** | `bobsl/` — **absent** | SENT-VAL_H 1,973, SENT-TEST 20,870 (BOBSL paper Table 4). No files yet | None |
-| BOBSL-CSLR | Processed lexical-gloss CSVs `cslr/manual_glosses_extended_boundaries_fix_alignment/0/{train,val,test}` inside `bobsl.zip` | gulvarol.github.io/cslr2/data.html, 2026-11-02 | CC BY 4.0 for the text annotations; videos and features stay under the BOBSL licence | `bobsl/cslr/` — **absent** | Test 4,518, val 1,153, train 1,463 sentences (Table A.2). Sec. 5.1 says 4,950 test subtitles | None |
+| BOBSL | Video-Swin-T feature LMDB, pseudo-labels, automatic and manual subtitles. SENT-VAL_H, SENT-TEST | BBC R&D terms page, 2026-11-02. Oxford page unreachable. **Access refused 2026-11-24; no data obtained** | BBC-owned, non-commercial academic research only, per-person signed Permission to Use. **Permission denied for REPRO-SIGN**, so `cloud_processing_allowed` is false | `bobsl/`: intended path only; **it does not exist** | SENT-VAL_H 1,973, SENT-TEST 20,870, from the BOBSL paper Table 4. **Split definition only, no data obtained:** each split's file entry is the BOBSL paper PDF (`0e75ee96…`), not a data file | None; see `sent-split-counts`, `readme-retrieval-test-size` |
+| BOBSL-CSLR | Processed lexical-gloss CSVs `cslr/manual_glosses_extended_boundaries_fix_alignment/0/{train,val,test}` inside `bobsl.zip` | gulvarol.github.io/cslr2/data.html, 2026-11-02. **Not acquired; no data obtained** | CC BY 4.0 for the text annotations, but they ship only inside `bobsl.zip` with BOBSL-licensed files and are unusable without BOBSL features. **Permission denied**, so `cloud_processing_allowed` is false | `bobsl/cslr/`: intended path only; **it does not exist** | Test 4,518, val 1,153, train 1,463 sentences, from the CSLR² paper Table A.2. **Split definition only, no data obtained:** each split's file entry is the CSLR² paper PDF (`246fb354…`), not a data file | None; see `cslr-test-size` |
 
-**Data gate (`data-bobsl-access`, open).** `check_modal_dataset.sh bobsl` and `check_modal_dataset.sh bobsl-cslr` both fail because the paths do not exist (2026-11-02). The BBC terms are per person and forbid redistribution, so Team S needs to decide three things:
+### Data gate (`data-bobsl-access`, resolved 2026-11-24: access denied)
 
-1. Whether an eligible study member holds, or will apply for, a current BBC BOBSL agreement.
-2. Whether those terms allow a copy in the shared `repro-sign` Volume `datasets/bobsl`, which other workspace members can read, and processing on Modal. Another permitted location may be required, and the BBC may need to confirm.
-3. How the access path is supplied: through an approved channel, never as a credential in chat or in committed files.
+On 2026-11-02, `check_modal_dataset.sh bobsl` and `check_modal_dataset.sh bobsl-cslr` both failed because the paths do not exist. The BBC terms are per person and forbid redistribution, so the gate went to the team. What followed, as reported by the operator:
 
-No BOBSL file, `bobsl.zip`, CSLR² checkpoint or T5 bundle has been downloaded.
+- **2026-11-02:** REPRO-SIGN sent the BBC BOBSL Permission to Use form, with a cover email, to the BBC BOBSL dataset contact. A follow-up the same day named this paper as the intended use.
+- **Later in November 2026:** a reminder was sent.
+- **2026-11-24:** the BBC R&D contact named in the form refused access.
 
-## Compute plan (gate `compute-training-runs`, open)
+**Reasons given, paraphrased:**
 
-The in-scope cells need two full training runs of the official code: CSLR² for 11 cells and the InfoNCE baseline for 6 cells. Swin-8K† involves no training. The gate was opened before any measurement, at the operator's request, so it reaches the team together with the data gate.
+- The BBC does not allow any involvement of commercial organisations in projects that use BOBSL, citing past disputes over preferential access, and REPRO-SIGN includes a commercially affiliated collaborator.
+- The BBC also does not permit publishing model weights, which the request had marked as optional.
 
-**Estimate.** These figures are paper-reported, not measured:
+The study accepted the refusal. No BOBSL file, `bobsl.zip`, CSLR² checkpoint or T5 bundle was downloaded at any point, and no other route to the data was attempted. The correspondence is held by the study and is not quoted here.
+
+**Scope of the refusal.** It is a constraint from the composition of the REPRO-SIGN consortium, not evidence that the paper's data is unavailable in general. BOBSL remains offered to eligible non-commercial academic researchers under the BBC terms.
+
+### Split entries without data
+
+This is the study's first record with pipeline `blocked_on_data` (checked against main `597fab7`).
+
+No data was obtained, so each split's file entry points to the split's definition in the paper:
+
+- The path reads "split definition only, no data obtained", followed by the paper and table that define the split.
+- The SHA-256 is that paper's PDF.
+- `sample_count` comes from the same table.
+- `modal_path` keeps the intended `bobsl` path, with a note that it does not exist.
+
+## Compute plan (gate `compute-training-runs`, resolved 2026-11-24: moot)
+
+The in-scope cells needed two full training runs of the official code: CSLR² for 11 cells and the InfoNCE baseline for 6 cells. The gate was opened on 2026-11-02 before any measurement, at the operator's request, so that it reached the team together with the data gate.
+
+It became moot when the data gate closed: the representative preflight and both runs need BOBSL. No funding decision was taken, nothing was measured, and no compute was spent. The estimate is kept as recorded. It is paper-reported, not measured:
 
 | Item | Figure | Basis |
 | --- | --- | --- |
@@ -178,49 +256,53 @@ The in-scope cells need two full training runs of the official code: CSLR² for 
 | CPU and memory | about USD 60 per run | 40 physical cores, about 128 GiB, 20 h |
 | Storage | about 280 GiB in `datasets` | Features 262G, `bobsl.zip` 15G decompressed, T5 1.4G |
 
-**Configuration.** Exact replay needs 4-process DDP on one node, for example one Modal container with 4 GPUs at batch 128 per process. The training loop all-gathers sentence embeddings, so SentRet negatives span the global 512 batch. SignRet, however, is computed per process over 128 subtitles. A single GPU at batch 512 would therefore change the sign-level negatives, which is a protocol deviation and is not proposed.
-
-**Decision needed in `#repro-sign-team-r`:** whether to fund the two runs, plus per-run wall-time, GPU-hour and cost ceilings and a restart allowance. The estimate will be replaced by a measured one from the representative preflight. That preflight needs BOBSL, so it can only happen after the data gate clears and before any full run.
+**Configuration.** Exact replay needs 4-process DDP on one node, for example one Modal container with 4 GPUs at batch 128 per process. The training loop all-gathers sentence embeddings, so SentRet negatives span the global 512 batch. SignRet, however, is computed per process over 128 subtitles, so a single GPU at batch 512 would change the sign-level negatives.
 
 ## Environment and patches
 
-None yet. The plan is the root `reproduction` base image with the cslr2 dependencies.
+None. No container was built and no patch was written.
 
-The upstream environment is Python 3.9.16, PyTorch 1.12.1 with CUDA 11.6, hydra-core 1.3.2, sentence-transformers 2.2.2, lmdb, and nltk wordnet.
+The planned environment was the root `reproduction` base image with the cslr2 dependencies. The upstream environment is Python 3.9.16, PyTorch 1.12.1 with CUDA 11.6, hydra-core 1.3.2, sentence-transformers 2.2.2, lmdb, and nltk wordnet.
 
-Expected adaptations are container paths only. Upstream `main.py test=True` also needs the RGB LMDB unless `vis` handling is adapted. Any change will be one patch per demonstrated failure.
+Implementation notes recorded in `reproduction.json.protocol_notes`, which no run reached:
+
+- **No SENT-VAL entry point.** Upstream exposes no command for SENT-VAL retrieval of a fixed checkpoint; `test=True` evaluates only SENT-TEST.
+- **RGB LMDB dependency.** `main.py test=True` references `rgb_lmdb_env`, which is only opened when `vis=True`, and `vis=True` opens the 1.5T RGB LMDB.
+- **Batch size.** The paper's batch of 512 corresponds to 128 per process in `config/dataloader` across 4 processes.
+- **Episode count.** Sec. 4 says the CSLR-TEST annotations cover all 35 SENT-TEST episodes; the BOBSL paper lists 36.
 
 ## Execution evidence
 
-No runs.
+No runs. No Modal app was launched, and no GPU or CPU compute was used.
 
 ## Guesses and deviations
 
-None made yet. The following discrepancies between the paper and the code were found and must be settled before or at the protocol stage. They are also listed in `reproduction.json.protocol_notes`.
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `sent-split-counts` | `paper_internal_conflict` | The paper gives the SENT-VAL and SENT-TEST sizes in opposite order in two places. | Sec. 5.1: SENT-VAL 20,870 and SENT-TEST 1,973 sentences. Table 4 column headers (SENT-VAL (2K), SENT-TEST (20K)) and App. D.2: the opposite. | Target splits follow Table 4 and App. D.2: SENT-VAL 1,973 and SENT-TEST 20,870 sentences. | Table 4 is the reported table, and the BOBSL paper (Table 4: SENT-VAL_H 1,973; SENT-TEST 20,870) agrees with it. | Labels the retrieval targets only; no value depends on it because none was produced. |  | Adopted in the target ledger on 2026-11-02. No run reached it: the attempt closed at the data gate before any download, build or run. | arXiv 2405.10266v1 Sec. 5.1, Table 4 (p. 8), App. D.2; BOBSL paper arXiv 2111.03635v1 Table 4 |  | `evaluate` | `bobsl` |
+| `cslr-test-size` | `paper_internal_conflict` | The paper gives two sizes for CSLR-TEST. | Sec. 5.1: CSLR-TEST corresponds to 4,950 test subtitles. Tables 1 and A.2: 4,518 sentences. | Target splits cite both counts; the dataset record uses Table A.2 (4,518). The count was to be checked against the released test CSVs after acquisition. | Only the released CSVs can show which count the reported numbers used. | None on any value: no CSLR value was produced. |  | Unresolved. No run reached it: the attempt closed at the data gate before any download, build or run. | arXiv 2405.10266v1 Sec. 5.1, Table 1, Table A.2 |  | `evaluate` | `bobsl-cslr` |
+| `readme-retrieval-test-size` | `paper_code_conflict` | The released code's README and the paper give different sizes for the retrieval test set. | Paper Table 4 and App. D.2: SENT-TEST (20K), 20,870 manually aligned sentences. gulvarol/cslr2 README: '25K manually aligned test set'. | Targets are labelled with the paper's SENT-TEST (20,870 sentences). The size of the set that main.py test=True loads was to be counted after acquisition. | The paper defines the reported split, and the BOBSL paper agrees with it. | None on any value: no retrieval value was produced. |  | Unresolved. No run reached it: the attempt closed at the data gate before any download, build or run. | gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 README.md; arXiv 2405.10266v1 Table 4, App. D.2 |  | `evaluate` | `bobsl` |
+| `checkpoint-selection` | `paper_code_conflict` | The paper keeps the best validation checkpoint; the released training loop overwrites model_best.pth every epoch. | App. A: keep the checkpoint with the best T2V R@1 on a manually aligned subset of validation subtitles. gulvarol/cslr2 main.py passes best_t2v=-1 to log_and_save every epoch, so model_best.pth is the last epoch, and validation retrieval uses a random 2,000-sentence subset of the automatic subtitles of the validation episodes. |  |  | Would decide which checkpoint every retrained CSLR² and InfoNCE value comes from. No training run happened. |  | Unresolved; it was to go to a protocol gate before retraining. No run reached it: the attempt closed at the data gate before any download, build or run. | arXiv 2405.10266v1 App. A; gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 main.py (log_and_save called with best_t2v=-1) |  | `train`; `evaluate` | `bobsl` |
+| `postprocessing-tuning-split` | `paper_code_conflict` | The paper and the released code tune the CSLR post-processing threshold and repetition count on different splits. | Sec. 5.2: θ and m are tuned 'on unseen manually annotated CSLR sequences from the validation set'. gulvarol/cslr2 frame_level_evaluation.py searches them on `0/train/*.csv` unless test_search is set. |  |  | Would affect every † CSLR value (CSLR² and Swin-8K†). No evaluation happened. |  | Unresolved; it was to go to a protocol gate before evaluation. No run reached it: the attempt closed at the data gate before any download, build or run. | arXiv 2405.10266v1 Sec. 5.2; gulvarol/cslr2@5f3bd697e1d2e184a5882cbbd0da64ce9455fd28 frame_level_evaluation.py |  | `evaluate` | `bobsl-cslr` |
 
-| Detail | Paper/evidence says | Code says | Status |
-| --- | --- | --- | --- |
-| SENT-VAL/SENT-TEST sizes | Sec. 5.1: 20,870 / 1,973 | Table 4, App. D.2 and BOBSL paper: 1,973 / 20,870 | Targets follow Table 4 and BOBSL |
-| CSLR-TEST size | Sec. 5.1: 4,950 subtitles | Tables 1/A.2: 4,518 sentences | Check against CSVs after acquisition |
-| Retrieval test set | 20K SENT-TEST | README: "25K manually aligned test set" | Check against data |
-| θ, m tuning set | Sec. 5.2: validation CSLR sequences | `frame_level_evaluation.py` searches `0/train/*.csv` | Protocol item |
-| Checkpoint selection | App. A: best T2V R@1 on manually aligned validation subtitles | `main.py` overwrites `model_best.pth` every epoch (`best_t2v` not carried); validation retrieval uses a random 2,000 subset of the automatic subtitles | Protocol item before retraining |
-| SENT-VAL evaluation of a fixed checkpoint | Reported in Table 4 | No entry point (`test=True` runs only SENT-TEST) | Needs a minimal entry point |
-| Training compute | Under 20 h on 4 × V100 (about 80 V100 GPU-hours) | Same in README | Gate `compute-training-runs` open; a measured estimate replaces this before launch |
+## Noncompliance
+
+None.
 
 ## Attempts, failures, and dead ends
 
 - **BOBSL page.** It could not be fetched (TLS reset, HTTP 503; WebFetch failed; Wayback rate-limited). The BOBSL arXiv paper was used for the licence basis and split counts instead.
 - **Project licence link.** The README's `imagine.enpc.fr` licence URL returns 404. The redirected GitHub Pages copy was used.
+- **BOBSL access request (2026-11-02 to 2026-11-24).** Refused by the BBC; see the data gate above. This is the terminal blocker. No workaround was attempted.
 
 ## Candidate flags, ethics, and human evaluation
 
 - **Queue flags.** The queue reports no human evaluation, no ethical concerns and no copied scores. The paper confirms the absence of human evaluation in Table 4, and the copied-score reading is above.
-- **Signer data.** BOBSL contains identifiable BSL interpreters from BBC broadcasts. The in-scope work only processes released features and annotations. Its secure-holding and storage terms are part of the open data gate; no new participant interaction is involved.
+- **Signer data.** BOBSL contains identifiable BSL interpreters from BBC broadcasts. No BOBSL data was obtained or processed, and no participant interaction was involved.
 
 ## Author and team contact
 
 - **Authors:** none contacted.
-- **Operator:** decided the Table 4 scope at gate `target-table4-rows` on 2026-11-02.
-- **Team S:** coordination needed for gate `data-bobsl-access`; not yet contacted by this agent.
-- **`#repro-sign-team-r`:** discussion needed for gate `compute-training-runs`; not yet posted by this agent.
+- **Operator:** decided the Table 4 scope at gate `target-table4-rows` on 2026-11-02. On 2026-11-24 the operator reported the BBC's refusal recorded at gate `data-bobsl-access`.
+- **BBC (dataset owner, not an author):** REPRO-SIGN requested BOBSL access through the BBC Permission to Use process on 2026-11-02 and was refused on 2026-11-24. This changed the outcome: the attempt closes as `blocked_on_data`. The agents took no part in the correspondence.
+- **`#repro-sign-team-r`:** no compute decision was needed once gate `compute-training-runs` became moot.
