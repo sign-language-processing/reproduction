@@ -1,7 +1,9 @@
 """Modal jobs for Kindiroglu et al. 2019, Table 5 (Temporal Accumulative Features).
 
-populate: mirror the BosphorusSign22k Google Drive folder into the shared datasets
-          Volume, verify it against Drive's MD5s and write a SHA-256 manifest.
+populate:        mirror the BosphorusSign22k Google Drive folder into the shared datasets
+                 Volume, verify it against Drive's MD5s and write a SHA-256 manifest.
+populate_public: download the public hand-segmentation datasets (HGR2A, HGR2B, Rendered
+                 Handpose Dataset) from their official pages into the same Volume.
 """
 
 import modal
@@ -85,3 +87,101 @@ def populate(depth: bool = False):
         json.dump(summary, handle, indent=2)
     datasets.commit()
     print(json.dumps(summary))
+
+
+HGR = "https://sun.aei.polsl.pl/~mkawulok/gestures"
+HGR_TERMS = (
+    "The database is free to use for research, non-commercial purposes, provided that "
+    "the following papers are cited in the works that exploit the database."
+)
+HGR_PARTS = (
+    "images",
+    "skin",
+    "feature_pts",
+    "images_large",
+    "skin_large",
+    "feature_pts_large",
+)
+# slug -> (official page, terms of use quoted from that page, archive URLs)
+PUBLIC = {
+    "hgr2a": (f"{HGR}/", HGR_TERMS, [f"{HGR}/hgr2a_{part}.zip" for part in HGR_PARTS]),
+    "hgr2b": (f"{HGR}/", HGR_TERMS, [f"{HGR}/hgr2b_{part}.zip" for part in HGR_PARTS]),
+    "rendered-handpose-dataset": (
+        "https://lmb.informatik.uni-freiburg.de/resources/datasets/RenderedHandposeDataset.en.html",
+        "This dataset is provided for research purposes only and without any warranty. "
+        "Any commercial use is prohibited. If you use the dataset or parts of it in your "
+        "research, you must cite the respective paper.",
+        ["https://lmb.informatik.uni-freiburg.de/data/RenderedHandpose/RHD_v1-1.zip"],
+    ),
+}
+
+
+def sha256_file(path):
+    import hashlib
+
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+@app.function(
+    image=populate_image,
+    volumes={"/datasets": datasets, "/cache/huggingface": cache},
+    cpu=4,
+    memory=8192,
+    timeout=3 * 3600,
+)
+def populate_public():
+    """Each archive is kept under source/ and extracted to a folder named after it.
+
+    Safe to re-run: a dataset with a manifest.json is skipped.
+    """
+    import json
+    import os
+    import subprocess
+    import zipfile
+
+    for slug, (page, terms, urls) in PUBLIC.items():
+        root = f"/datasets/{slug}"
+        if os.path.exists(f"{root}/manifest.json"):
+            print(f"{slug}: already populated")
+            continue
+        os.makedirs(f"{root}/source", exist_ok=True)
+        archives = []
+        for url in urls:
+            name = url.rsplit("/", 1)[1]
+            path = f"{root}/source/{name}"
+            subprocess.run(
+                ["curl", "-fsSL", "-A", "Mozilla/5.0", "-o", path, url], check=True
+            )
+            with zipfile.ZipFile(path) as archive:
+                assert archive.testzip() is None, name
+                archive.extractall(f"{root}/{name[:-4]}")
+            archives.append(
+                {
+                    "url": url,
+                    "sha256": sha256_file(path),
+                    "size_bytes": os.path.getsize(path),
+                }
+            )
+        lines = []
+        for folder, _, files in os.walk(root):
+            for name in files:
+                path = os.path.join(folder, name)
+                lines.append(f"{sha256_file(path)}  {os.path.relpath(path, root)}")
+        lines.sort(key=lambda line: line.split("  ", 1)[1])
+        with open(f"{root}/MANIFEST.sha256", "w", encoding="utf-8") as handle:
+            handle.write("\n".join(lines) + "\n")
+        summary = {
+            "slug": slug,
+            "page": page,
+            "terms_of_use": terms,
+            "archives": archives,
+            "files": len(lines),
+        }
+        with open(f"{root}/manifest.json", "w", encoding="utf-8") as handle:
+            json.dump(summary, handle, indent=2)
+        datasets.commit()
+        print(json.dumps(summary))

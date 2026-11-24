@@ -319,6 +319,50 @@
         ]
       },
       "observed": "Files copied before the stop stay on the Volume and are skipped by a later attempt. No manifest was written."
+    },
+    {
+      "run_id": "populate-hand-datasets-1",
+      "kind": "data_population",
+      "purpose": "Download HGR2A, HGR2B (downscaled and full-size archives) and the Rendered Handpose Dataset from their official pages to /datasets/hgr2a, /datasets/hgr2b and /datasets/rendered-handpose-dataset; keep the archives, extract them, write SHA-256 manifests.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::populate_public",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-hand-datasets",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T09:55:41Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": null,
+        "max_cost_usd": 2.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [],
@@ -348,6 +392,20 @@
         "rclone prints on every call that its shared client ID is being retired during 2026 and recommends creating one's own."
       ],
       "required_action": "A study team member creates their own Google OAuth client ID, signs in again with it and replaces the Modal Secret 'gdrive-rclone'. Creating credentials and secrets is outside the agent's authority."
+    },
+    {
+      "gate_id": "hand-datasets-cloud-use",
+      "type": "data",
+      "status": "resolved",
+      "reason": "The paper trains its hand segmentation model on the Rendered Handpose Dataset and the HGR database. Both are public downloads whose pages allow research, non-commercial use and say nothing about cloud storage. Only HGR1 is on the shared Volume (datasets/hgr1, imported 2026-09-10); HGR2A, HGR2B and the Rendered Handpose Dataset are absent.",
+      "evidence": [
+        "https://sun.aei.polsl.pl/~mkawulok/gestures/ read 2026-11-24: 'The database is free to use for research, non-commercial purposes, provided that the following papers are cited'; series HGR1 899, HGR2A 85, HGR2B 574 images.",
+        "https://lmb.informatik.uni-freiburg.de/resources/datasets/RenderedHandposeDataset.en.html read 2026-11-24: 'This dataset is provided for research purposes only and without any warranty. Any commercial use is prohibited.'",
+        "modal volume ls datasets / on 2026-11-24: hgr1 present; no hgr2a, hgr2b or Rendered Handpose directory."
+      ],
+      "required_action": "A study team member authorizes storing these public research datasets in the repro-sign Modal workspace.",
+      "resolved_at": "2026-11-24",
+      "resolution": "A study team member authorized placing HGR2A, HGR2B and the Rendered Handpose Dataset on the shared Volume as separate datasets, downloaded on Modal from the official pages."
     }
   ],
   "guesses_and_deviations": [],
