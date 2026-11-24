@@ -1,0 +1,151 @@
+SC2SLR: add the paper's two-view NT-Xent contrastive loss
+
+Why: the paper's method (Sec. 3.3, Eq. 3, Eq. 8, Fig. 2) trains with
+L = L_CTC^F + L_CTC^S + L_KL + L_NT-Xent over two augmented views, but the
+released code has no second view, no NT-Xent, and no contrastive term;
+its loss is ConvCTC + SeqCTC + Dist only. The released dataloader does carry
+an unused deep_transform() with SimCLR's color jitter (0.4,0.4,0.4,0.1, p 0.8),
+grayscale (p 0.2) and Gaussian blur (sigma 0.1-2, p 0.5), the appearance
+augmentations the paper lists, plus a commented-out deep_aug call; this patch
+wires those in. utils/video_augmentation.py used transforms, F, Image and
+ImageFilter without importing them, so deep_transform() could not run.
+
+Design (documented guesses; the paper gives no temperature, projection head,
+pooling, or weight sharing):
+- each training clip gets the released spatial/temporal augmentation once,
+  then two independent deep_transform() views; keypoint heatmap added to both;
+- both views go through the same (weight-shared) network as one 2B batch,
+  views of a sample adjacent so pack_padded_sequence keeps sorted lengths;
+- every released loss (ConvCTC, SeqCTC, Dist with the released weights) is
+  computed on both views; labels are repeated per view;
+- NT-Xent, temperature 0.5 (SimCLR default), weight 1 (Eq. 8), on the BiLSTM
+  sequential features mean-pooled over valid time steps, no projection head;
+  negatives are the other 2(N-1) views in the batch (Sec. 3.3).
+Evaluation is unchanged: dev/test clips are single-view.
+Applies after sc2slr-1-keypoint-glue.patch.
+---
+diff --git a/dataset/dataloader_video.py b/dataset/dataloader_video.py
+index 3c3a6de..9679052 100644
+--- a/dataset/dataloader_video.py
++++ b/dataset/dataloader_video.py
+@@ -49,6 +49,7 @@ class BaseFeeder(data.Dataset):
+         # self.inputs_list = dict([*filter(lambda x: isinstance(x[0], str) or x[0] < 10, self.inputs_list.items())])
+         print(mode, len(self))
+         self.data_aug = self.transform()
++        self.view_aug = self.deep_transform()
+         print("")
+ 
+     def __getitem__(self, idx):
+@@ -118,6 +119,12 @@ class BaseFeeder(data.Dataset):
+         video, label = self.data_aug(video, label, file_id)
+         keypoints = get_heatmap(video, self.keypoint_getter)         # NORMALIZED(T,224,224)
+         video = video[:, :3]
++        if self.transform_mode == "train":
++            # Two appearance-augmented views of the same clip for the contrastive loss,
++            # stacked on the channel axis (T,6,224,224); SLRModel splits them into a 2B batch.
++            frames = [np.uint8(img.permute(1, 2, 0).numpy()) for img in video]
++            views = [self.view_aug(frames, None)[0].float() / 127.5 - 1 + keypoints.unsqueeze(1) for _ in range(2)]
++            return torch.cat(views, dim=1), label
+         # video, label = self.deep_aug(video, label, file_id)
+         video = video.float() / 127.5 - 1      # T,3,224,224
+         video = video + keypoints.unsqueeze(1)
+diff --git a/modules/criterions.py b/modules/criterions.py
+index 348f9f9..e15fdc6 100644
+--- a/modules/criterions.py
++++ b/modules/criterions.py
+@@ -3,6 +3,21 @@ import torch
+ import torch.nn as nn
+ import torch.nn.functional as F
+ 
++class NTXent(nn.Module):
++    """NT-Xent (SimCLR) over 2N embeddings: rows 2i and 2i+1 are the two views of sample i."""
++
++    def __init__(self, temperature=0.5):
++        super(NTXent, self).__init__()
++        self.temperature = temperature
++
++    def forward(self, z):
++        z = F.normalize(z.float(), dim=1)
++        sim = z @ z.t() / self.temperature
++        sim.fill_diagonal_(float('-inf'))
++        targets = torch.arange(z.shape[0], device=z.device) ^ 1
++        return F.cross_entropy(sim, targets)
++
++
+ class SeqKD(nn.Module):
+     """
+     NLL loss with label smoothing.
+diff --git a/slr_network.py b/slr_network.py
+index bd185c4..21ca0c2 100644
+--- a/slr_network.py
++++ b/slr_network.py
+@@ -8,7 +8,7 @@ import torch.nn as nn
+ import torch.nn.functional as F
+ import torchvision.models as models
+ import modules.resnet as resnet
+-from modules.criterions import SeqKD
++from modules.criterions import SeqKD, NTXent
+ from modules import BiLSTMLayer, TemporalConv
+ 
+ 
+@@ -64,6 +64,13 @@ class SLRModel(nn.Module):
+         return x
+ 
+     def forward(self, x, len_x, label=None, label_lgt=None):
++        num_views = 1
++        if len(x.shape) == 5 and x.shape[2] == 6:
++            # two contrastive views stacked on channels -> one batch of 2B, views of a
++            # sample adjacent so lengths stay sorted for pack_padded_sequence
++            num_views = 2
++            x = torch.stack([x[:, :, :3], x[:, :, 3:]], dim=1).flatten(0, 1)
++            len_x = len_x.repeat_interleave(2)
+         if len(x.shape) == 5:
+             # videos
+             batch, temp, channel, height, width = x.shape
+@@ -80,6 +87,8 @@ class SLRModel(nn.Module):
+         lgt = conv1d_outputs['feat_len']
+         tm_outputs = self.temporal_model(x, lgt)
+         outputs = self.classifier(tm_outputs['predictions'])
++        valid = (torch.arange(outputs.shape[0])[:, None] < lgt[None, :]).to(outputs.device)
++        sequence_embedding = (tm_outputs['predictions'] * valid[..., None]).sum(0) / valid.sum(0)[:, None]
+         pred = None if self.training \
+             else self.decoder.decode(outputs, lgt, batch_first=False, probs=False)
+ 
+@@ -90,10 +99,16 @@ class SLRModel(nn.Module):
+             "conv_logits": conv1d_outputs['conv_logits'],
+             "sequence_logits": outputs,
+             "recognized_sents": pred,
++            "num_views": num_views,
++            "sequence_embedding": sequence_embedding,
+         }
+ 
+     def criterion_calculation(self, ret_dict, label, label_lgt):
+         loss = 0
++        if ret_dict["num_views"] == 2:
++            label = torch.cat([seg for seg in label.split(label_lgt.tolist()) for _ in range(2)])
++            label_lgt = label_lgt.repeat_interleave(2)
++            loss += self.loss['NTXent'](ret_dict["sequence_embedding"])
+         for k, weight in self.loss_weights.items():
+             if k == 'ConvCTC':
+                 loss += weight * self.loss['CTCLoss'](ret_dict["conv_logits"].log_softmax(-1),
+@@ -112,4 +127,5 @@ class SLRModel(nn.Module):
+     def criterion_init(self):
+         self.loss['CTCLoss'] = torch.nn.CTCLoss(reduction='none', zero_infinity=False)
+         self.loss['distillation'] = SeqKD(T=8)
++        self.loss['NTXent'] = NTXent(temperature=0.5)
+         return self.loss
+\ No newline at end of file
+diff --git a/utils/video_augmentation.py b/utils/video_augmentation.py
+index 79e360b..f6f1c4d 100644
+--- a/utils/video_augmentation.py
++++ b/utils/video_augmentation.py
+@@ -10,6 +10,9 @@ import torch
+ import random
+ import numbers
+ import numpy as np
++import torchvision.transforms as transforms
++import torchvision.transforms.functional as F
++from PIL import Image, ImageFilter
+ 
+ 
+ class Compose(object):

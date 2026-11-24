@@ -1,0 +1,290 @@
+# SC2SLR (Lyu, CNIOT 2024) reproduction
+
+**Paper ID:** `3ccdb5012eae349ef80750678cbe83dd9f51b868`
+
+**Citation:** Silu Lyu. 2024. SC2SLR: Skeleton-based Contrast for Sign Language Recognition. In *2024 5th International Conference on Computing, Networks and Internet of Things (CNIOT 2024)*, Tokyo, Japan. ACM, pp. 404–410.
+
+**Paper:** https://doi.org/10.1145/3670105.3670173 · **Code/artifacts:** https://github.com/christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition at `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa` (incomplete, see below)
+
+**Preference level:** 3
+
+**Pipeline status:** `insufficient_information` — the full pipeline ran and emitted all four numbers, but they rest on invented behaviour-changing choices that the reviewer did not accept as the protocol (gate `sc2slr-conditional-protocol-acceptance`); blocker `protocol_ambiguous` over the four SC2SLR target IDs
+
+**Numerical agreement:** `not_assessed` — no target is produced; the conditional values are reported below
+
+**Attempt dates:** 2026-10-26 to 2026-10-29
+
+## Reproduction agents
+
+| Agent ID | Model and version | Agent application | Contribution | Attribution evidence / unknowns |
+| --- | --- | --- | --- | --- |
+| `claude-code-opus-5-5` | Opus 5.5 (`claude-opus-5-5`) | Claude Code (version not exposed) | Every stage: ingestion, target ledger, source search, code audit, gates, patches, containers, `modal_app.py`, all Modal runs, evaluation, and this report; also report maintenance on 2026-10-28 (finalizing the record and README after the evaluations) and 2026-10-29 (review corrections at the human reviewer's instruction) | Session system context on 2026-10-26 and again on 2026-10-29: same model, so there is no second agent entry. `harness_version` is null because the application version is not exposed. Every run records `agent_ids: ["claude-code-opus-5-5"]`. |
+
+## Scope and target contract
+
+The tracker record asks for "Table 3", which compares continuous SLR WER (%) on PHOENIX-2014 and PHOENIX-2014T dev/test. The paper's own row, SC2SLR (Ours), yields four in-scope targets:
+
+| Target ID | Dataset / split | Published WER (%) |
+| --- | --- | ---: |
+| `table3-sc2slr-p14-dev` | PHOENIX-2014 dev (540) | 20.8 |
+| `table3-sc2slr-p14-test` | PHOENIX-2014 test (629) | 21.2 |
+| `table3-sc2slr-p14t-dev` | PHOENIX-2014T dev (519) | 20.6 |
+| `table3-sc2slr-p14t-test` | PHOENIX-2014T test (642) | 21.0 |
+
+The other seven rows (SubUNet, CNN-LSTM-HMMs, CMA, STMC, SFL, VAC, C2SLR) are prior-work numbers cited by reference. They are recorded as 22 `copied_baseline` targets with `in_scope: false`, and were not rerun or checked against their source papers. References [14] and [15] in the paper are the same Koller et al. TPAMI 2019 paper.
+
+The metric is corpus-level gloss WER, (S+I+D)/N (Eq. 9), scored by the released `evaluation/slr_eval` sclite pipeline (SCTK `9688a268`). The paper reports one number per cell, with no seeds or variance. Its PHOENIX-2014 values also equal the full-model rows of Tables 1 and 2.
+
+## Results
+
+All values are WER (%), lower is better. Each is from one 120-epoch run with seed 0. The checkpoint is the one with the lowest dev WER (earliest on ties), and dev and test were each scored once. This selection rule is a guess: the paper does not state one (see `checkpoint-selection` under Guesses and deviations).
+
+| Target ID | Target | Published | Conditional value | Difference | Status | Evidence |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| `table3-sc2slr-p14-dev` | PHOENIX-2014 dev | 20.8 | 22.7 | +1.9 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2`, epoch 42 of `full-p14-2` |
+| `table3-sc2slr-p14-test` | PHOENIX-2014 test | 21.2 | 22.8 | +1.6 | `not_produced` (`protocol_ambiguous`) | `eval-p14-2` |
+| `table3-sc2slr-p14t-dev` | PHOENIX-2014T dev | 20.6 | 21.9 | +1.3 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2`, epoch 44 of `full-p14t-2` |
+| `table3-sc2slr-p14t-test` | PHOENIX-2014T test | 21.0 | 23.8 | +2.8 | `not_produced` (`protocol_ambiguous`) | `eval-p14t-2` |
+
+sclite breakdowns (sub / del / ins):
+
+| Split | Sentences / glosses | Sub | Del | Ins |
+| --- | --- | ---: | ---: | ---: |
+| PHOENIX-2014 dev | 540 / 5540 | 12.7 | 6.1 | 4.0 |
+| PHOENIX-2014 test | 629 / 6504 | 13.2 | 5.9 | 3.7 |
+| PHOENIX-2014T dev | 519 / 3748 | 12.1 | 5.8 | 4.0 |
+| PHOENIX-2014T test | 642 / 4264 | 13.6 | 5.6 | 4.6 |
+
+**Why these are not marked produced.** The paper does not define the keypoint-heatmap rendering or the contrastive objective (temperature, which features, projection head, loss weight), and the released code contains neither. These were invented and are listed under Guesses and deviations. `status.conditional_determination` recorded before any training that such values are conditional evidence unless a human reviewer accepts the invented choices as the Table 3 protocol. The three invented choices that decide this are:
+
+1. **Keypoint heatmap:** Gaussians with σ = 4 px (`heatmap-rendering`).
+2. **Contrastive branch:** NT-Xent with τ = 0.5 and weight 1, applied to BiLSTM outputs mean-pooled over valid steps, with no projection head (`contrastive-branch`).
+3. **PHOENIX-2014T recipe:** the PHOENIX-2014 recipe reused unchanged (`p14t-recipe`).
+
+On 2026-10-29 the reviewer declined to accept them (gate `sc2slr-conditional-protocol-acceptance`, resolved). The four targets therefore stay `not_produced` / `protocol_ambiguous`, with the conditional runs, values, and differences kept above. The conditional determination was recorded before training; the reviewer's decision of 2026-10-29 confirmed it.
+
+**Observation: dev WER after the first learning-rate drop** (`observations[0]` in `reproduction.json`). Both runs reached their dev minimum within five epochs of the drop at epoch 40, then rose:
+
+| Run | Epoch 39 | Epoch 40 | Minimum | Epoch 119 | Mean, epochs 100–119 |
+| --- | ---: | ---: | --- | ---: | ---: |
+| PHOENIX-2014 (`full-p14-2`) | 25.7 | 23.0 | 22.7 (epoch 42) | 23.9 | 23.9 |
+| PHOENIX-2014T (`full-p14t-2`) | 25.5 | 22.5 | 21.9 (epoch 44) | 22.5 | 22.7 |
+
+Under this recipe, the 120-epoch schedule over-trains relative to dev. This is recorded only: nothing was relaunched or shortened, the 120 epochs follow the paper, and the final-epoch checkpoints were not scored on test. The per-epoch history is in `runs/full-p14{,t}-2/dev.txt` (artifacts `devlog-p14`, `devlog-p14t`).
+
+The 22 copied baselines are terminal (`not_produced`, `copied_baseline`).
+
+## Source provenance
+
+| Artifact | Canonical source | Pinned revision / SHA-256 | Role |
+| --- | --- | --- | --- |
+| Paper PDF | https://doi.org/10.1145/3670105.3670173 | `2ad1879b2433ecf524bf3bb7a86be82d559a20b64aa4d244866590f1da86e62b` | Targets and protocol |
+| Published code | https://github.com/christianlsl/Skeleton-based-Contrast-for-Sign-Language-Recognition | `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa` (only commit, "v1.1"; Apache-2.0) | Base of the pipeline, patched |
+| AlphaPose | https://github.com/MVIG-SJTU/AlphaPose | `c60106d19afb443e964df6f06ed1842962f5f1f7` | Halpe-136 keypoint extraction |
+| AlphaPose weights | AlphaPose model zoo | `halpe136_fast50_regression_256x192.pth` `6c02c87b…c2`; `yolov3-spp.weights` `87a1e8c8…27b4` (full hashes in `reproduction.json`) | Pose and person detector |
+| ResNet18 ImageNet weights | https://download.pytorch.org/models/resnet18-f37072fd.pth | `resnet18-f37072fd.pth` `f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec` | Frame-encoder initialization, loaded by released `modules/resnet.py` via `model_zoo.load_url` from `TORCH_HOME=/cache/huggingface/torch`; hash read from that cached file |
+| SCTK (sclite) | https://github.com/usnistgov/SCTK | `9688a26882a688132a5e414cadcb4c19b6fffaba` (v2.4.12 plus 27 commits; sclite 2.10) | WER scoring |
+| ctcdecode | https://github.com/parlance/ctcdecode | `c90ad94a0b19554f80804fb7812f2a1447a34a70` | Beam search (width 10) |
+
+The tracker said `code_repos: N/A`, but the search found the official repository. It is owned by GitHub user `christianlsl`, which matches the email handle printed in the paper, and its description is the paper title. The full search is in `reproduction.json.source_search`.
+
+## Released-code audit
+
+The official code is incomplete: it imports two AlphaPose modules that were never released, and it has no contrastive loss.
+
+- **It does not run as released.** `main.py:18` imports `AlphaPose.get_image_keypoint`, and `dataset/dataloader_video.py:23` imports `AlphaPose.keypoint_to_heatmap.get_heatmap`. `AlphaPose/` is in `.gitignore`, and neither module exists in the commit, in upstream AlphaPose, or anywhere GitHub code search reaches.
+- **The paper's contrastive learning is absent.** There is no NT-Xent loss, second view, projection head, or temperature. The training loss is ConvCTC + SeqCTC + 25 × KL distillation (`slr_network.py`), essentially VAC with an early-fusion heatmap.
+- **Keypoint fusion differs between paper and code.** The paper adds a 2n-dim normalized coordinate vector to the image, which is dimensionally undefined. The code adds a 224×224 heatmap whose rendering is unknown.
+- **The config conflicts with the paper:** 80 vs 120 epochs; batch 1 vs 4; distillation weight 25 vs 1 (implied by Eq. 8); horizontal flip used, though the paper excludes it; TemporalRescale(0.2) vs "0.5 random frame dropout"; colour jitter, grayscale, and blur defined but unused (`deep_transform`). No PHOENIX-2014T recipe is stated.
+- `torch.clamp(video, ...)` in `normalize` discards its result. The best-dev counter resets on resume. The PHOENIX-2014 train list drops CSV row 2390, as in all VAC-derived code. All three are kept as released behaviour.
+
+Gate `sc2slr-released-code-incomplete` offered three bounded options. The operator chose the released code plus the minimal glue and the paper's contrastive branch, on both datasets. The full runs were launched without the `#repro-sign-team-r` compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At this gate's resolution on 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This is recorded as noncompliance entry `compute-discussion-skipped`.
+
+## Data provenance and permissions
+
+| Dataset | Version/subset/splits | Source | License/permission and cloud-use basis | Path in Volume `datasets` | Counts / checksum | Deviations |
+| --- | --- | --- | --- | --- | --- | --- |
+| PHOENIX-2014 | phoenix-2014.v3, multisigner, 210×260 PNG frames | RWTH `phoenix-2014.v3.tar.gz`, already in the Volume (checked 2026-10-26) | CC BY-NC-SA 3.0 (the queue says CC BY-SA 3.0); non-commercial research cloud processing | `rwth-phoenix-2014/raw/phoenix2014-release/phoenix-2014-multisigner` | 5672 / 540 / 629 in the CSVs (SHA-256 in `reproduction.json`); 5671 used for training, as released | train row 2390 dropped by the released split |
+| PHOENIX-2014T | PHOENIX-2014-T-release-v3, 210×260 PNG frames | RWTH `phoenix-2014-T.v3.tar.gz`, populated 2026-09-15 | Same as above | `rwth-phoenix-2014-t/raw/PHOENIX-2014-T-release-v3/PHOENIX-2014-T` | 7096 / 519 / 642 | none |
+
+Derived inputs live in the paper Volume `lyu-2024-sc2slr-results` under `data/`. Each tar has a JSON manifest beside it, and the hashes are in `reproduction.json.artifacts`. None of them are redistributed.
+
+- **Frames:** resized to 256×256 by the released preprocess over the committed per-split `*_info.npy`. PHOENIX-2014: 798,990 / 75,186 / 89,472 frames. PHOENIX-2014T: 827,354 / 55,775 / 64,627. All checks against the corpus CSVs passed.
+- **Keypoints:** AlphaPose Halpe-136 on every original frame. PHOENIX-2014: 963,664 frames. PHOENIX-2014T: 947,756 frames. No frame lacks a detection.
+
+## Environment and patches
+
+- **Training image:** `Dockerfile` on the study base image `ghcr.io/sign-language-processing/reproduction`, pinned by digest (PyTorch 2.11.0a0 NGC 26.02, CUDA 13.1, cuDNN 9.19). It installs SCTK, ctcdecode (patched to C++17), and pinned pip packages, clones SC2SLR at `65c95fb03fa0c170dc3f1136265f4b97ec26d7fa`, and applies every `patches/sc2slr-*.patch` in order. Two Modal images were built from it:
+  - `im-md9qNepxamfLdxNWadit2T`, with patches 1–3 only, before patch 4 existed. It ran `prepare-frames-*`, the `pack_keypoints` step of `keypoints-p14-1` and `keypoints-p14t-1`, `preflight-*`, `full-p14-1`, `full-p14t-1`, and all four `diagnose-p14t-*` runs. `preflight-*` and `diagnose-*` logged this ID themselves. For the others it is inferred: the build context did not change between 12:23 and 16:37 UTC on 2026-10-26 (`compute.image_id_basis` in each run).
+  - `im-YmyymOTNJSOt1gD6faZSnW`, with patches 1–4. It ran `full-p14-2`, `full-p14t-2`, `eval-p14-2`, and `eval-p14t-2`, each logging the ID.
+  - The committed `Dockerfile` builds the second image. To repeat a run from the first group exactly, build without patch 4, for example by moving `patches/sc2slr-4-ctc-without-cudnn.patch` out of `patches/` before launching.
+  - **Base image pin:** `ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291`. Both Modal images were built from `FROM ghcr.io/sign-language-processing/reproduction:latest`, which resolved to this digest. The committed `Dockerfile` now names the digest in its `FROM` line, as the v2.0.1 contract requires, so the committed file pins the base that ran.
+  - **How it was verified:** the amd64 manifest of that index has the image config `sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2`, which is the config the Modal build logged. `pu-2024-siformer` records the same index digest.
+- **Keypoint image:** `alphapose.Dockerfile` (CUDA 11.7.1 devel, Ubuntu 22.04, Python 3.10, torch 1.13.1+cu117, AlphaPose `c60106d19afb443e964df6f06ed1842962f5f1f7` with pinned dependencies), Modal image `im-csO6ZMQ3cAFuADNidOTxqG`. AlphaPose's CUDA extensions do not build against PyTorch 2.x, so it gets its own image.
+  - **Base image:** `nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04`. The Modal build on 2026-10-26 logged the image config `sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea`.
+  - **The tag has moved:** on 2026-10-29 it resolved to a different image (index `sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc`, amd64 config `sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1`). So no pullable digest of the base that ran is known.
+  - **What survives:** the built image is still available as the Modal image above, and the run records give both digests (`compute.base_image`).
+- **Shared Hugging Face cache:** every Modal function in `modal_app.py` mounts the v2 Volume `huggingface-cache` read-write at `/cache/huggingface`.
+  - The training image (`Dockerfile`) sets `HF_HOME=/cache/huggingface` and `HF_HUB_CACHE=/cache/huggingface/hub`. This covers the preflight, diagnose, train, and evaluate functions, plus `prepare_frames` and `pack_keypoints`.
+  - `alphapose.Dockerfile` does not set these two variables. In `extract_keypoints` (runs `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`) the cache is mounted but the variables are unset. This is noncompliance entry `hf-cache-env-not-set`.
+  - No pipeline step downloads from the Hugging Face Hub: the AlphaPose weights come from the AlphaPose model zoo and are checksummed.
+
+| Patch | SHA-256 | Why |
+| --- | --- | --- |
+| `patches/ctcdecode-cxx17.patch` | `783d81207ea1b14650388e59b380196e95f2dccf862d26dc82fb34ec0e455335` | PyTorch ≥ 2.1 headers need C++17; copied from `yu-2025-cvsign` |
+| `patches/sc2slr-1-keypoint-glue.patch` | `06f7151d2d7bf07d454a37f491a4ad0de946394d06d497ade0c708f1da7fb6f2` | Adds the two missing AlphaPose modules: precomputed Halpe-136 keypoints, 90-point subset, heatmap rendered before augmentation as a 4th channel |
+| `patches/sc2slr-2-contrastive-branch.patch` | `c48999597fc6d0227cffb84d56425380a8d993c0aa027e0f6487e509ca33838d` | Adds the paper's two-view NT-Xent branch and the missing imports for `deep_transform` |
+| `patches/sc2slr-3-no-horizontal-flip.patch` | `1f722d89ac547a097bdbba0a322a290cfeafaac4beeea4bfa272c77dbcd3b8f5` | Removes the horizontal flip the paper excludes |
+| `patches/sc2slr-4-ctc-without-cudnn.patch` | `c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b` | Computes CTC without cuDNN: cuDNN's CTC kernel gave non-finite gradients that collapsed the AMP scale (see Attempts) |
+
+Patches 1–3 change behaviour and were authorised by the gate decision. Patch 4 is an execution-correctness fix and leaves the loss unchanged.
+
+Level 3 delivered as patches: as in `yu-2025-cvsign`, the components reimplemented from the paper (patches 1 and 2) are expressed as ordered patches against the pinned upstream so a reviewer sees exactly what was added; the level reflects the reimplementation, not the diff shape.
+
+## How to repeat this
+
+Every command goes through the `repro-sign` wrapper. Every Modal function is idempotent: it skips work whose output and manifest already exist, and training resumes from the newest checkpoint.
+
+```bash
+W=.agents/skills/reproduce-paper/scripts/modal_repro_sign.sh
+A=papers/lyu-2024-sc2slr/modal_app.py
+# keypoint preflight: AlphaPose on 4 PHOENIX-2014 clips
+$W run --detach $A::launch_keypoint_preflight --dataset phoenix2014 --limit-clips 4
+# data: 256x256 frames and Halpe-136 keypoints (48 A10G shards per dataset; the default is 24)
+for ds in phoenix2014 phoenix2014-T; do
+  $W run --detach $A::launch_prepare_frames --dataset $ds
+  $W run --detach $A::launch_keypoints --dataset $ds --num-shards 48
+done
+# preflight: 48 real clips, train one epoch, resume for a second, then test
+$W run $A::launch_preflight --run-id preflight-p14-1 --dataset phoenix2014
+$W run $A::launch_preflight --run-id preflight-p14t-1 --dataset phoenix2014-T
+# full training: 120 epochs in chained 20-epoch calls
+$W run --detach $A::launch_train --run-id full-p14-2 --dataset phoenix2014 --epochs 120 --chunk 20
+$W run --detach $A::launch_train --run-id full-p14t-2 --dataset phoenix2014-T --epochs 120 --chunk 20
+# evaluation: lowest-dev-WER checkpoint, dev and test scored once
+$W run $A::launch_evaluate --train-run-id full-p14-2 --eval-run-id eval-p14-2 --dataset phoenix2014
+$W run $A::launch_evaluate --train-run-id full-p14t-2 --eval-run-id eval-p14t-2 --dataset phoenix2014-T
+```
+
+The 200-step CTC diagnosis ran on image `im-md9qNepxamfLdxNWadit2T` (patches 1–3), and the as-released variant can only be repeated on an image built without patch 4. With the committed `Dockerfile`, CTC already runs without cuDNN in both variants, so they compute the same thing. On an image without patch 4:
+
+```bash
+$W run $A::launch_diagnose --run-id diagnose-p14t-released-2 --dataset phoenix2014-T --variant as-released
+$W run $A::launch_diagnose --run-id diagnose-p14t-ctc-nocudnn-2 --dataset phoenix2014-T --variant ctc-without-cudnn
+```
+
+## Execution evidence
+
+| Run | What | Hardware | Wall time | Outcome |
+| --- | --- | --- | --- | --- |
+| `keypoints-preflight-1` | AlphaPose on 4 clips | A10 | 4 min | 23.9 frames/s, no missed detections |
+| `prepare-frames-p14-1`, `-p14t-1` | 256×256 frames | CPU | 33 / 24 min | checks passed |
+| `keypoints-p14-1`, `-p14t-1` | Halpe-136, 48 shards each | A10/A10G | 1.8 / 1.0 h | 17.1 / 11.9 h summed shard time |
+| `preflight-p14-1`, `-p14t-1` | 48-clip train, resume, test | A100-80GB | 2 min each | all steps exit 0 |
+| `full-p14-1`, `-p14t-1` | first full runs | A100-80GB | 30 min | stopped, diverging (`invalid_run`) |
+| `diagnose-p14t-*-1` | CTC diagnosis | A100-80GB | seconds | driver import bug (agent error) |
+| `diagnose-p14t-*-2` | CTC diagnosis | A100-80GB | 4 min | hypothesis confirmed |
+| `full-p14-2` | 120 epochs | A100-80GB (SXM4 and PCIe) | 47.5 h | succeeded |
+| `full-p14t-2` | 120 epochs | A100-SXM4-80GB | 52 h | succeeded |
+| `eval-p14-2`, `eval-p14t-2` | selection + scoring | A100-80GB | 7 / 5 min | succeeded |
+
+Modal app IDs (`compute.modal_app_ids`), function-call IDs, image IDs, timestamps, stop policies, and GPU-hours and cost (`compute.usage`) are in `reproduction.json.runs`. Training peaked at about 48 GiB of GPU memory.
+
+**Compute and cost.** Each run's GPU-hours and cost are in `runs[].compute.usage`, with basis `measured` and `billed`. They were read through the `repro-sign` wrapper on 2026-11-24 with `modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json`, summing the rows whose `object_id` is in the run's `compute.modal_app_ids`. GPU-hours are the GPU rows' cost divided by the rate from `modal_repro_sign.sh billing rates`, read the same day (A100-80GB USD 2.50/h, A10G USD 1.10/h); `billing rates` returns only current rates, so this assumes they have not changed since October. Every run's cost matches, to the cent, the figure first read from the same report on 2026-10-29. The two CPU-only `prepare-frames-*` runs record their billed cost the same way, with `gpu_hours` 0.
+
+Measured usage was 47.40 + 51.97 A100-hours for the two full runs and 18.34 + 12.59 A10G-hours for the keypoint runs; the keypoint shard logs sum to 17.1 + 11.9 hours of container time. Costs are in USD, as Modal bills them.
+
+The total for all apps named `repro-lyu-2024-sc2slr` is **USD 492.28**. By resource:
+
+| Resource | USD |
+| --- | ---: |
+| A100-80GB | 252.66 |
+| A10G | 34.51 |
+| Memory | 112.45 |
+| CPU | 92.66 |
+
+By run:
+
+| Runs | USD |
+| --- | ---: |
+| `full-p14-2` | 203.44 |
+| `full-p14t-2` | 222.92 |
+| `keypoints-p14-1` and `keypoints-p14t-1` | 55.86 |
+| everything else | 10.06 |
+
+"Everything else" includes USD 0.74 for apps not retained as runs: image builds and failed launches before `keypoints-preflight-1`. Each run's figure is `runs[].compute.usage.cost_usd`.
+
+The CHF ceilings in the stop policies were declared before launch at an assumed rate of about CHF 3.4 per A100-80GB hour (GPU + 16 CPU + 128 GiB). That rate is not used for any reported cost.
+
+## Guesses and deviations
+
+| ID | Kind | Description | Paper says | This attempt used | Basis | Effect | Scope | Status | Evidence | Related IDs | Affects | Dataset IDs |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `keypoints-precomputed` | `code_deviation` | Where keypoints are extracted: once per original frame, not inside the released loader on every augmented frame. | Released loader calls get_heatmap(video, Keypoint_getter) on every augmented 224x224 frame; the modules are missing. | AlphaPose runs once on every original 210x260 frame; coordinates are scaled to 256x256 and carried through crop and temporal rescale as a heatmap channel. | Running the detector and pose model inside the loader for 120 epochs is about 10^8 extra passes. Geometrically the crop is applied identically. | Keypoints come from uncropped frames, which can differ slightly from detection on crops. |  |  |  |  |  |  |
+| `pose-model` | `guess` | AlphaPose model: the paper names AlphaPose trained on Halpe but not the model; this attempt chose the Halpe-136 model and which person to keep per frame. | Paper: 'AlphaPose [5], trained on the Halpe Dataset'. | configs/halpe_136/resnet/256x192_res50_lr1e-3_2x-regression.yaml with halpe136_fast50_regression_256x192.pth and YOLOv3-SPP; the highest-scoring person per frame. | The model the AlphaPose README uses for Halpe-136 inference. | Another Halpe-136 model would give somewhat different keypoints. |  |  |  |  |  |  |
+| `keypoint-subset` | `guess` | The 90 keypoints: the paper gives only the count per body region; this attempt chose the Halpe-136 indices. | Sec. 3.2 counts: 7 upper body (neck, shoulders, elbows, wrists), 20 mouth, 9 nose, 12 eye, 42 hand. | Halpe-136 indices 18,5,6,7,8,9,10; 53-61 (nose); 62-73 (eyes); 74-93 (mouth); 94-135 (hands). | Standard 68-point face layout inside Halpe (offset 26). | None expected beyond the indexing convention. |  |  |  |  |  |  |
+| `heatmap-rendering` | `paper_code_conflict` | Keypoint fusion: the paper adds a coordinate vector to the image, the released code a heatmap from a missing module; this attempt followed the code and invented the heatmap rendering: max over keypoints of confidence-weighted Gaussians, sigma 4 px at 256x256, values in [0,1]. | Paper Eq. 2 adds a normalized 2n-dim coordinate vector to the image (dimensionally undefined); released code adds a (T,224,224) heatmap from missing code. | Max over keypoints of confidence-weighted Gaussians, sigma 4 px at 256x256, values in [0,1], added to every RGB channel of the [-1,1] video, as the released normalize() does. | Follows the released fusion; sigma is invented. | Behavior-changing; part of why results are conditional. |  |  | `patches/sc2slr-1-keypoint-glue.patch` |  |  |  |
+| `contrastive-branch` | `paper_code_conflict` | Contrastive branch: the paper adds a two-view NT-Xent loss that the released code does not have; this attempt followed the paper and invented the unstated values: temperature 0.5, loss weight 1, BiLSTM features mean-pooled over valid steps, no projection head, and one weight-shared network for both views. | Sec. 3.3, Eq. 3, Eq. 8, Fig. 2; no temperature, head, pooling, or weight sharing given. The released code has no contrastive loss. | Two views per clip from the released (unused) SimCLR deep_transform after one shared crop and temporal rescale; a weight-shared network on the 2B batch; all released losses on both views; NT-Xent with tau 0.5 and weight 1 on BiLSTM features mean-pooled over valid steps, no projection head. | The smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations. | Behavior-changing; part of why results are conditional. |  |  | `patches/sc2slr-2-contrastive-branch.patch` |  |  |  |
+| `schedule` | `paper_code_conflict` | Epochs and batch size: the paper and the released config disagree; this attempt followed the paper where it states a value and the released config elsewhere. | Sec. 4.2, for PHOENIX-2014 only: 120 epochs, mini-batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60. The optimizer and weight decay are not stated in the paper. Released configs/baseline.yaml: 80 epochs, batch 1, Adam, base_lr 1e-4, steps 40 and 60, weight_decay 1e-4. | 120 epochs and batch 4 (command-line overrides of the released config); learning rate 1e-4 divided by 5 at epochs 40 and 60; Adam with weight decay 1e-4, which are the released config's values. | Where the paper states a value for the Table 3 system, the paper wins. | Follows the paper where stated; optimizer and weight decay from the released code. |  |  |  |  |  |  |
+| `no-horizontal-flip` | `code_deviation` | Horizontal flip: the released transform applies one that the paper excludes; this attempt removed it. | Sec. 4.3 excludes it; released transform uses RandomHorizontalFlip(0.5). | Removed (patches/sc2slr-3-no-horizontal-flip.patch). | Paper statement about the final scheme; Table 3's PHOENIX-2014 row equals Table 2's last row, which has no flip. | Follows the paper. |  |  |  |  |  |  |
+| `ctc-without-cudnn` | `code_deviation` | CTC loss backend: with current PyTorch the released criterion uses cuDNN's CTC kernel, which diverged; this attempt computes CTC without cuDNN. | Released criterion passes CPU int32 targets, which makes current PyTorch use cuDNN's CTC kernel; runs full-p14-1/full-p14t-1 diverged and diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2 isolate the cause. | CTC computed with cuDNN disabled for that call only (patches/sc2slr-4-ctc-without-cudnn.patch, sha256 c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b). | Execution-correctness fix for the container's PyTorch/cuDNN; same fix as yu-2025-cvsign for the same criterion code. | Same loss function, PyTorch's native kernel; not behavior-changing. |  |  |  |  |  |  |
+| `kept-released` | `paper_code_conflict` | Released settings kept where the paper is silent or vague: loss weights, temporal rescale, seed, AMP and beam width. | Eq. 8 sums losses unweighted; Sec. 4.2 mentions '0.5 random frame dropout [20]'. | Released loss weights (ConvCTC 1, SeqCTC 1, Dist 25 with SeqKD T=8), TemporalRescale(0.2), seed 0, AMP, beam width 10. | Eq. 8 does not rule out weights, and the frame-dropout phrase does not map onto any code parameter; the released code is the more specific evidence. | Possible mismatch with the authors' actual runs. |  |  |  |  |  |  |
+| `sctk-version` | `code_deviation` | sclite version: the released README names SCTK 2.4.10, which has no tag; this attempt used a pinned later SCTK commit. | The released SC2SLR README names SCTK 2.4.10 for sclite; the paper does not name a scorer version. | SCTK commit 9688a26882a688132a5e414cadcb4c19b6fffaba (tag v2.4.12 plus 27 commits; sclite 2.10), the same pin as yu-2025-cvsign. | The usnistgov/SCTK repository has no 2.4.10 tag; a recent pinned commit builds with the image's toolchain. | Expected none on the reported WER: sclite aligns hypothesis and reference glosses and counts substitutions, deletions and insertions the same way in both versions; the commits after v2.4.12 are build, documentation, language-support and backtrace-index fixes. Not verified by scoring with 2.4.10. |  |  |  |  |  |  |
+| `p14t-recipe` | `guess` | PHOENIX-2014T training: the paper gives no recipe for it; this attempt reused the PHOENIX-2014 recipe. | No PHOENIX-2014T recipe in the paper. | The same recipe as PHOENIX-2014, with the released configs/phoenix2014-T.yaml paths. | No other evidence: the ablations in Tables 1–2 are PHOENIX-2014 only. | Conditional. |  |  |  |  |  |  |
+| `checkpoint-selection` | `guess` | Checkpoint selection: the paper does not state which checkpoint it reports; this attempt fixed a lowest-dev-WER rule before training. | Not stated in the paper (no checkpoint rule in Sec. 4 or the Table 3 caption). Released main.py saves a '_best_model.pt' on the best dev WER seen since the process started (best_dev resets on resume). | The lowest dev WER over all 120 epochs (earliest on ties), fixed before training; that checkpoint is scored once on dev and test with --phase test. | A guess informed by the released code's best-dev saving; the paper does not say whether its numbers come from the best-dev or the final checkpoint. | Guess. The final-epoch checkpoints were not evaluated; their dev WER during training was 23.9 (PHOENIX-2014) and 22.5 (PHOENIX-2014T). |  |  |  |  |  |  |
+| `train-split-2390` | `paper_deviation` | PHOENIX-2014 train size: the paper states 5672 training samples; the released split, used here, drops CSV row 2390. | Paper: 5672 train samples; the released preprocess drops CSV row 2390 as broken (inherited from VAC). | The released committed train_info.npy. | Published recipe. | One training clip fewer than the paper's count, as in all VAC-derived code. |  |  |  |  |  |  |
+
+Execution adaptations that leave the training semantics unchanged:
+- **Chunked training:** 20-epoch Modal calls stay under Modal's 24 h limit. `--num-epoch` only bounds the loop, and the LR milestones are epoch-indexed.
+- **Resumption after interruptions:** Modal interrupted `full-p14-2` once (after epoch 86) and `full-p14t-2` twice (after epochs 54 and 62). Each time, Modal's retry resumed from the newest epoch checkpoint.
+- **Mixed GPUs:** the A100-80GB SXM4 and PCIe variants were mixed across chunks.
+
+## Noncompliance
+
+| ID | Description | Requirement | Run IDs | Effect | Resolution |
+| --- | --- | --- | --- | --- | --- |
+| `stop-ceilings-not-declared` | Nine GPU runs were launched without GPU-hour or CHF ceilings: keypoints-preflight-1, keypoints-p14-1, keypoints-p14t-1, preflight-p14-1, preflight-p14t-1 and the four diagnose-p14t-* runs. Only the Modal function timeout (and retries) in modal_app.py limited them. Their stop_policy keeps the real declaration time of those limits and null max_gpu_hours and max_cost_chf; nothing is backfilled. prepare-frames-* are CPU-only and declared only the timeout, which is all that applies. An agent process error, disclosed rather than repaired after the fact. | stopping-criteria.md: a contemporaneous GPU run declares GPU-hour and cost ceilings before launch (max_cost_chf for runs declared before 2026-11-20); AGENTS.md, Execution discipline: declare ceilings before launch. | `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1`, `preflight-p14-1`, `preflight-p14t-1`, `diagnose-p14t-released-1`, `diagnose-p14t-ctc-nocudnn-1`, `diagnose-p14t-released-2`, `diagnose-p14t-ctc-nocudnn-2` | Budget control only; no reported value is affected. The nine runs were billed USD 58.71 in total (compute.usage). | Recorded rather than backfilled; no run was repeated. |
+| `hf-cache-env-not-set` | keypoints-preflight-1, keypoints-p14-1 and keypoints-p14t-1 ran in the keypoint image (alphapose.Dockerfile, Modal image im-csO6ZMQ3cAFuADNidOTxqG), which mounts the huggingface-cache Volume at /cache/huggingface but does not define HF_HOME or HF_HUB_CACHE. Their compute.shared_cache.environment records both as null. An agent process error. | AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface and sets at least HF_HOME=/cache/huggingface and HF_HUB_CACHE=/cache/huggingface/hub. | `keypoints-preflight-1`, `keypoints-p14-1`, `keypoints-p14t-1` | None on the numbers: no run downloads anything from the Hugging Face Hub, and the AlphaPose weights come from the AlphaPose model zoo with recorded sha256 checksums. | Recorded as null rather than backfilled. alphapose.Dockerfile is left unchanged so the committed file matches the recorded image that ran. |
+| `compute-discussion-skipped` | The two full runs were planned at 50-90 A100-hours each (stop ceilings 110 GPU-hours and CHF 400 per run) and launched without the #repro-sign-team-r discussion. At the gate resolution of 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. | AGENTS.md, Environment and compute gate: discuss the plan in #repro-sign-team-r before launching runs expected to exceed 24 GPU-hours. |  | Process only; no effect on the numbers. Actual: full-p14-2 47.40 and full-p14t-2 51.97 A100-hours (compute.usage). Modal-billed cost of all apps named repro-lyu-2024-sc2slr from 2026-10-26 to 2026-10-28: USD 492.28 (A100-80GB 252.66, A10G 34.51, memory 112.45, CPU 92.66), of which full-p14-2 203.44, full-p14t-2 222.92, keypoints 55.86, everything else 10.06 (including USD 0.74 for apps not retained as runs: image builds and failed keypoint-preflight launches before keypoints-preflight-1). | Recorded here and in the resolution of gate sc2slr-released-code-incomplete; the runs were not repeated. |
+
+**Ceilings of the nine runs in `stop-ceilings-not-declared`.** Before these runs, the Modal function limits in `modal_app.py` were written down, never a GPU-hour or CHF ceiling. Their `declared_at_utc` is the real time those limits were written, `recording.mode` is `contemporaneous` with empty `unknown_fields`, `max_gpu_hours` and `max_cost_chf` are null, and `terminal.detail` ends with the omission. Nothing was backfilled.
+
+| Run(s) | GPU | `declared_at_utc` | `max_wall_time_seconds` (source) | `max_gpu_hours` / `max_cost_chf` | Billed USD (`compute.usage`) |
+| --- | --- | --- | --- | --- | ---: |
+| `keypoints-preflight-1` | A10 | 2026-10-26T12:25:54Z | 21600 (`extract_keypoints` timeout) | null / null | 0.13 |
+| `keypoints-p14-1`, `keypoints-p14t-1` | 48 × A10G | 2026-10-26T12:25:54Z | 21600 per shard call (`extract_keypoints`; `pack_keypoints` 4 h) | null / null | 33.04, 22.82 |
+| `preflight-p14-1`, `preflight-p14t-1` | A100-80GB | 2026-10-26T12:25:54Z | 14400 (`preflight` timeout) | null / null | 0.45, 0.49 |
+| `diagnose-p14t-*-1`, `diagnose-p14t-*-2` | A100-80GB | 2026-10-26T16:22:46Z | 7200 (`diagnose` timeout) | null / null | 0.29, 0.35, 0.60, 0.55 |
+| `prepare-frames-p14-1`, `-p14t-1` | CPU only | 2026-10-26T12:25:54Z | 43200 (`prepare_frames` timeout) | not applicable (null) | 1.13, 0.83 |
+
+`attempt.max_attempts` is 4 for these runs. That is the transient-retry rule in AGENTS.md, not a declaration specific to each run. The four full training runs (`full-p14{,t}-1`, `full-p14{,t}-2`) and the two evaluation runs did declare all three ceilings before launch, in CHF as the contract then required.
+
+## Attempts, failures, and dead ends
+
+1. **Assignment format.** At the time of the attempt, `ingest_candidate.py` required a `confirmation` field that the tracker export does not have, so the export was first recorded as a `direct_user_request`, following `pu-2024-siformer`. Since v2.0.0 the script reads Reproduction Tracker exports, and the same export (same SHA-256) is now ingested as a `queue_record`, as #129 did for `pu-2024-siformer`. The Paper ID is the tracker's `paper_id`, which traces the report back to the platform record.
+2. **AlphaPose image builds.** Several failed before one worked:
+   - a non-existent PyTorch base tag;
+   - a conda `nvcc` without `cusolverDn.h`;
+   - easy_install pulling `munkres` 3.0.0, which ships no setup script;
+   - Modal rejecting Python 3.8;
+   - `tkinter` missing at import time.
+
+   Each was fixed in `alphapose.Dockerfile`. One "image build terminated due to external shut-down" and one local DNS error were transient, and the retries succeeded.
+3. **First full runs diverged** (`full-p14-1`, `full-p14t-1`, stopped after about 30 minutes). On PHOENIX-2014 the epoch-0 loss rose from about 280 to about 1,500. On PHOENIX-2014T, 1,608 of 1,774 batches were skipped as NaN.
+4. **Diagnosis** (`diagnose-p14t-released-2` vs `diagnose-p14t-ctc-nocudnn-2`): 200 steps each on the same 800 clips. The released criterion passes CPU int32 targets, which routes `nn.CTCLoss` to cuDNN.
+
+   | | As released | CTC without cuDNN |
+   | --- | --- | --- |
+   | Steps with non-finite gradients | 40 | 5 (AMP calibration) |
+   | Final AMP scale | 6e-8 | 2048 |
+   | Mean loss per 50 steps | 213 / 144 / 190 / 223 | 179 / 103 / 93 / 89 |
+
+   The fix became patch 4, and both full runs restarted from scratch. The 48-clip preflights had not shown the problem, because the scale collapse needs hundreds of steps. The first diagnostic pair failed on a `sys.path` bug in the agent's driver script.
+
+## Candidate flags, ethics, and human evaluation
+
+The `copied_scores: yes` flag is confirmed: seven prior-work rows of Table 3 are cited. Human evaluation is `no` and ethical concerns are `no`. The work uses existing public research corpora with no new participants, so no ethics gate is needed.
+
+## Author and team contact
+
+None. The full runs (about 130 GPU-hours in total for the attempt) were launched without the `#repro-sign-team-r` compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At the gate resolution of 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This is recorded as noncompliance entry `compute-discussion-skipped`. Gate `sc2slr-conditional-protocol-acceptance` was resolved on 2026-10-29: the reviewer did not accept the invented choices as the protocol.
