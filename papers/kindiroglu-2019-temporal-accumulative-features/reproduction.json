@@ -328,9 +328,9 @@
         "reproduction-agent"
       ],
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::populate_public",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-24T09:55:41Z",
+      "finished_at_utc": "2026-11-24T10:10:20Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -350,7 +350,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-584ACz1ICpZddsFNSx0bWX"
+        ],
         "gpu_count": 0,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -362,7 +364,16 @@
         },
         "cpu": 4
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 13 archives downloaded from the official pages, tested, extracted and hashed. hgr2a: 85 images, 85 skin masks and 85 feature-point files in each of the downscaled and full-size sets. hgr2b: 574 of each. rendered-handpose-dataset: 123,774 training PNGs (41,258 samples x color, depth, mask) and 8,184 evaluation PNGs (2,728 samples x 3).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "Counts equal the official pages' (HGR2A 85, HGR2B 574) and the paper's 41,258 Rendered Handpose training images. MANIFEST.sha256 SHA-256: hgr2a dc313540b8df9f97d3f8b41bfbd449ac2146607a0bb37c7e51542385eb6bba25; hgr2b 05c4df651af511b83b509e0d120182b51cf4ab9e6abb6b6fdcbaa43a072c92a8; rendered-handpose-dataset 2bc1c828a59fbc6630df9243f1462570f4774bc63d04b52ae105fbb48697befb. RHD_v1-1.zip SHA-256 e04310f19ccb0429c999efaf2a1e2a2b046f3024cada6794585a08fb92fb876f. check_modal_dataset.sh confirmed all three paths and manifests."
     }
   ],
   "artifacts": [],
