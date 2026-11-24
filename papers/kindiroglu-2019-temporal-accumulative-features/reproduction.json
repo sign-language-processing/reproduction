@@ -321,6 +321,50 @@
       "observed": "Files copied before the stop stay on the Volume and are skipped by a later attempt. No manifest was written."
     },
     {
+      "run_id": "populate-dataset-3",
+      "kind": "data_population",
+      "purpose": "Upload the local Drive export (42 zips, two CSV files, the licence agreement and Drive's MD5 list) to /datasets/bosphorussign22k/source, extract it on Modal, verify every file against Drive's MD5 list, and write a SHA-256 manifest. Replaces the direct Drive-to-Modal copy of attempts 1 and 2.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh FILE...",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T10:44:02Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 4.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 8
+      },
+      "artifact_ids": []
+    },
+    {
       "run_id": "populate-hand-datasets-1",
       "kind": "data_population",
       "purpose": "Download HGR2A, HGR2B (downscaled and full-size archives) and the Rendered Handpose Dataset from their official pages to /datasets/hgr2a, /datasets/hgr2b and /datasets/rendered-handpose-dataset; keep the archives, extract them, write SHA-256 manifests.",
@@ -395,14 +439,16 @@
     {
       "gate_id": "gdrive-client-id",
       "type": "data",
-      "status": "open",
+      "status": "resolved",
       "reason": "The Drive login stored as Modal Secret 'gdrive-rclone' uses rclone's shared Google client ID. Google rate-limits that client's project, which limits the copy to about one file per second: 67,000 remaining files would not finish within the 24-hour ceiling, and one attempt remains.",
       "evidence": [
         "populate-dataset-1 and populate-dataset-2: about 1 file per second on Modal.",
         "Local rclone download with -vv on 2026-11-24: 434 files in 175 seconds with 97 'rateLimitExceeded' responses naming quota 'defaultPerMinutePerProject'.",
         "rclone prints on every call that its shared client ID is being retired during 2026 and recommends creating one's own."
       ],
-      "required_action": "A study team member creates their own Google OAuth client ID, signs in again with it and replaces the Modal Secret 'gdrive-rclone'. Creating credentials and secrets is outside the agent's authority."
+      "required_action": "A study team member creates their own Google OAuth client ID, signs in again with it and replaces the Modal Secret 'gdrive-rclone'. Creating credentials and secrets is outside the agent's authority.",
+      "resolved_at": "2026-11-24",
+      "resolution": "No new credential was created. A study team member downloaded the folder, without depth.tar.gz, through the Google Drive web interface as 42 zip archives and two CSV files, and asked for it to be uploaded from that local copy. The same person asked for the partial copy left by populate-dataset-1 and populate-dataset-2 to be removed from the Volume; /datasets/bosphorussign22k was deleted on 2026-11-24 before the upload."
     },
     {
       "gate_id": "hand-datasets-cloud-use",
