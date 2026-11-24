@@ -1,0 +1,274 @@
+{
+  "paper_id": "13fbc66718d1a4b1c05e0aad78da9642cb61925e",
+  "agents": [
+    {
+      "agent_id": "reproduction-agent",
+      "model": "Fable 5.2",
+      "model_id": "claude-fable-5-2",
+      "harness": "Claude Code",
+      "harness_version": "2.1.330",
+      "scope": "Assignment ingestion, data gating, the dataset population code and its execution. Extended as the attempt proceeds.",
+      "evidence": [
+        "Session metadata on 2026-11-24: the session's system context names the model 'Fable 5.2' with model ID 'claude-fable-5-2'.",
+        "Command output on 2026-11-24: 'claude --version' printed '2.1.330 (Claude Code)'."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "queue_record",
+    "source": {
+      "path": "reproductions-13fbc66718d1a4b1c05e0aad78da9642cb61925e-2026-11-23.json",
+      "sha256": "dcd29e9a0d3eaf02945780aaecc9606ff834b7da440ab752f4075a9da967ca80"
+    },
+    "normalized": {
+      "title": "Temporal Accumulative Features for Sign Language Recognition",
+      "year": 2019,
+      "venue": "ICCV",
+      "pdf_url": "https://arxiv.org/pdf/2004.01225",
+      "code_repos": [],
+      "what_to_reproduce": "Highest accuracy line Table 5:\nKeyshot , FL-4,  Single, Acc 81.58%, Top-5 96.94 %",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "qmajh31r87f5x7e"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "qmajh31r87f5x7e",
+          "name": "top-5 accuracy",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "yv6ary4mdg8kw7q",
+          "name": "BosphorusSign",
+          "available": "yes",
+          "license": "",
+          "urls": [
+            "https://www.sign-lang.uni-hamburg.de/lrec/data/bosphorussignfinance.html",
+            "https://www.cmpe.boun.edu.tr/pilab/BosphorusSign/bosphorusSign_finance_en.html"
+          ],
+          "comments": "Serpil Karabüklü (contacted via Slack ;)\n\n“Available on request”, authors: N. C. Camg¨ oz, A. A. Kindiroglu, S. Karab¨ ukl¨ u, M. Kelepir,\n¨ \nA. S. Ozsoy, and L. Akarun. Bosphorussign: A turkish sign language recognition corpus in health and finance domains. In LREC, 2016.\n\nSerpil: BosphorusSign is subset of BosphorusSign22k. We have BosphorusSign22k, so this one and BosphorusSign22k general are also in the same dataset."
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "not mentioned",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": ""
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "not mentioned",
+          "copied_scores": "no",
+          "datasets": [
+            "yv6ary4mdg8kw7q"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [
+                  "[redacted]",
+                  "[redacted]"
+                ],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Serpil Karabüklü (contacted via Slack ;)\n\n“Available on request”, authors: N. C. Camg¨ oz, A. A. Kindiroglu, S. Karab¨ ukl¨ u, M. Kelepir,\n¨ \nA. S. Ozsoy, and L. Akarun. Bosphorussign: A turkish sign language recognition corpus in health and finance domains. In LREC, 2016.\n\nSerpil: BosphorusSign is subset of BosphorusSign22k. We have BosphorusSign22k, so this one and BosphorusSign22k general are also in the same dataset.",
+                "contact_dates": [
+                  "2026-10-02",
+                  "2026-11-11"
+                ],
+                "correspondence": "contacted_got_reply",
+                "id": "yv6ary4mdg8kw7q",
+                "license": "",
+                "name": "BosphorusSign",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "tsm"
+                ],
+                "spoken_languages": [],
+                "url": [
+                  "https://www.sign-lang.uni-hamburg.de/lrec/data/bosphorussignfinance.html",
+                  "https://www.cmpe.boun.edu.tr/pilab/BosphorusSign/bosphorusSign_finance_en.html"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "wzc6kxyuhls6lut",
+                "name": "Accuracy",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "qmajh31r87f5x7e",
+                "name": "top-5 accuracy",
+                "url": null
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "j4fuvbiibz3tq54",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "wzc6kxyuhls6lut",
+            "qmajh31r87f5x7e"
+          ],
+          "paper_id": "13fbc66718d1a4b1c05e0aad78da9642cb61925e",
+          "pdf_url": "https://arxiv.org/pdf/2004.01225",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "no",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-08-07T16:53:04.477Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Isolated signing videos"
+          ],
+          "textual_conclusion": "The hue based temporal colorization scheme achieved 78.50% accuracy improving over the baseline method by 5%.  ... Utilizing that method with the hue based temporal classification, we further increased our accuracy by 3% to 81.37%.  ... Incorporating static subunits further improved our results to 81.58%.",
+          "title": "Temporal Accumulative Features for Sign Language Recognition",
+          "venue": "ICCV",
+          "what_to_reproduce": "Highest accuracy line Table 5:\nKeyshot , FL-4,  Single, Acc 81.58%, Top-5 96.94 %",
+          "year": 2019
+        }
+      },
+      "id": "2bki7rdezqjnw15",
+      "paper": "j4fuvbiibz3tq54",
+      "status": "in_progress",
+      "url": []
+    }
+  },
+  "paper": {
+    "title": "Temporal Accumulative Features for Sign Language Recognition",
+    "citation": "Kindiroglu, A. A., Ozdemir, O., Akarun, L. (2019). Temporal Accumulative Features for Sign Language Recognition. IEEE/CVF International Conference on Computer Vision Workshops (ICCVW). arXiv:2004.01225",
+    "url": "https://arxiv.org/abs/2004.01225",
+    "pdf_sha256": "a4a90b325a74ce0d0fd3e4c75758b9cb6fbe3485a4f9817c4e1853d24b58933a",
+    "accessed_at": "2026-11-24"
+  },
+  "sources": [
+    {
+      "source_id": "published-code",
+      "kind": "code",
+      "url": "Canonical source URL",
+      "revision_or_sha256": "Pinned revision or SHA-256",
+      "role": "Why this source is used"
+    }
+  ],
+  "status": {
+    "pipeline": null,
+    "numerical_agreement": null,
+    "numerical_agreement_basis": "Why agreement was or was not assessed, including scope and criterion",
+    "preference_level": null,
+    "blocker": null
+  },
+  "datasets": [],
+  "metric_definitions": [],
+  "experiments": [],
+  "targets": [],
+  "runs": [
+    {
+      "run_id": "populate-dataset-1",
+      "kind": "data_population",
+      "purpose": "Mirror the dataset owners' Google Drive folder, without the 360 GiB depth.tar.gz that Table 5 does not use, to /datasets/bosphorussign22k; verify against Drive's MD5s; write a SHA-256 manifest.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
+      "exit_code": null,
+      "started_at_utc": null,
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T08:26:23Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 8.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": []
+    }
+  ],
+  "artifacts": [],
+  "gates": [
+    {
+      "gate_id": "bsign22k-data-cloud-use",
+      "type": "data",
+      "status": "resolved",
+      "reason": "BosphorusSign22k is distributed on request under an end user licence agreement that forbids transfer to third parties without the licensor's authorization. The queue record's license, permission_to_reproduce and on_modal fields are empty. The videos show signers' faces. The dataset is absent from the shared Modal Volume 'datasets'.",
+      "evidence": [
+        "Queue record, dataset entry yv6ary4mdg8kw7q: license empty, permission_to_reproduce empty, correspondence 'contacted_got_reply', on_modal empty.",
+        "Licence agreement in the dataset folder, 'Bosphorus Sign 22k Dataset END USER LICENSE AGREEMENT (01/2020)', SHA-256 b7922c66dbcaed30453eeeac0664bc3b3384479bf2f25954ba8fa244fe96fda6: internal, non-commercial scientific research only; no transfer or distribution to third parties without prior authorization; no portions of the corpus in publications; a fixed acknowledgement and two citations in publications; derivative works left freely available to other end users.",
+        "modal volume ls datasets / on 2026-11-24 lists no BosphorusSign directory."
+      ],
+      "required_action": "A study team member confirms that the study's permission covers storing and processing the corpus in the repro-sign Modal workspace, and authorizes populating /datasets/bosphorussign22k on the shared Volume.",
+      "resolved_at": "2026-11-24",
+      "resolution": "A study team member confirmed that the study has permission for this use and that the empty queue fields are an omission on the annotation platform, and authorized mirroring the dataset folder to /datasets/bosphorussign22k on the shared Volume. The copy stays private to the workspace; nothing from the corpus is committed, published or redistributed."
+    }
+  ],
+  "guesses_and_deviations": [],
+  "noncompliance": []
+}
