@@ -203,9 +203,62 @@
     "blocker": null
   },
   "datasets": [],
-  "metric_definitions": [],
-  "experiments": [],
-  "targets": [],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Correct top-1 predictions / test videos, computed on the saved class scores",
+      "version": "this reproduction's own code",
+      "aggregation": "one run, all 949 test videos",
+      "unit_or_scale": "percent",
+      "paper_definition": "Sec. 4: 'we perform signer independent classification and obtain two recognition metrics: accuracy and top-5 accuracy'. No formula is given."
+    },
+    {
+      "metric_id": "top5-accuracy",
+      "name": "Top-5 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Test videos whose true class is among the five highest class scores / test videos",
+      "version": "this reproduction's own code",
+      "aggregation": "one run, all 949 test videos",
+      "unit_or_scale": "percent",
+      "paper_definition": "Sec. 4, as for accuracy. No formula is given."
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table5-keyshot-fl4-single",
+      "system": "Hue-based Temporal Accumulative Features of 11 Kinect joint heatmaps with hand-speed and density-clustering keyframes (fixed length 4), keyshot static subunits from DeepLab v3+ hand masks, single sequence representation, classified by a 2-block CNN trained from scratch",
+      "dataset_id": "bosphorussign22k",
+      "checkpoint_rule": "Not stated in the paper.",
+      "seed_policy": "The paper reports one value per row and no seed.",
+      "paper_evidence": "Table 5, row 'Keyshot, FL-4, Single'; Secs. 3.1 to 3.4, 4.1, 4.5; Tables 1 and 3."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table5-keyshot-fl4-accuracy",
+      "paper_location": "Table 5 (p. 8), row 'Keyshot, FL-4, Single', column 'Accuracy'",
+      "metric_id": "accuracy",
+      "original_value": 81.58,
+      "in_scope": true,
+      "experiment_id": "table5-keyshot-fl4-single",
+      "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments."
+    },
+    {
+      "target_id": "table5-keyshot-fl4-top5",
+      "paper_location": "Table 5 (p. 8), row 'Keyshot, FL-4, Single', column 'Top-5'",
+      "metric_id": "top5-accuracy",
+      "original_value": 96.94,
+      "in_scope": true,
+      "experiment_id": "table5-keyshot-fl4-single",
+      "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments."
+    }
+  ],
   "runs": [
     {
       "run_id": "populate-dataset-1",
@@ -463,6 +516,20 @@
       "required_action": "A study team member authorizes storing these public research datasets in the repro-sign Modal workspace.",
       "resolved_at": "2026-11-24",
       "resolution": "A study team member authorized placing HGR2A, HGR2B and the Rendered Handpose Dataset on the shared Volume as separate datasets, downloaded on Modal from the official pages."
+    },
+    {
+      "gate_id": "taf-unstated-protocol",
+      "type": "protocol",
+      "status": "open",
+      "reason": "No code was released and the paper leaves behavior-changing details unstated or contradictory: heatmap projection and width, the content of the 7 channels per joint, keyframe clustering, the meaning of FL-4, how hand masks enter the feature, hand-segmentation training (including left/right labels for HGR, whose masks are unlabelled skin masks), CNN depth and dropout, learning rate, epochs, checkpoint choice and seed.",
+      "evidence": [
+        "Sec. 3.4 text: '6 convolutional layers' and dropout 0.5; same section: '2 blocks of layers, each with 2 convolutional layers'; Table 3 row '0.25 2 2 128 78.21 96.84' equals Table 4 row 'None 3 78.21 96.84'.",
+        "Table 1: 'Hue + KF + Static keyshot: 11 joints, 7 channels, 5K static frames'; '#joints x #channels + #static frames yields the final input dimensionality'.",
+        "Sec. 3.3: three classes (left hand, right hand, background), Rendered Handpose Dataset plus HGR, DeepLab v3+, 1% validation; no backbone, input size or schedule.",
+        "Sec. 3.2: K + 2 keyframes with the first and last discarded; density clustering [40] with no parameters.",
+        "Kinect files in the dataset hold, per joint and frame: camera-space x, y, z (m), an orientation quaternion, color-image pixel x, y (1920x1080) and depth-image pixel x, y (512x424)."
+      ],
+      "required_action": "Decide the unstated details before any training run, and whether values obtained under them count as produced targets or as conditional evidence."
     }
   ],
   "guesses_and_deviations": [],
