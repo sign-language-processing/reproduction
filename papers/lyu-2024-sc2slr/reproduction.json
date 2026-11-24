@@ -14,12 +14,59 @@
     }
   ],
   "assignment": {
-    "kind": "direct_user_request",
+    "kind": "queue_record",
     "source": {
       "path": "reproductions-3ccdb5012eae349ef80750678cbe83dd9f51b868-2026-10-26.json",
       "sha256": "011701fca09aef694b627a9f66cb9ca7bf3ba4777c07f16667eab864fffc7a5d"
     },
-    "detail": "The user supplied the paper PDF and a single tracker export of the 'reproductions' collection (status in_progress) whose expand.paper record has status final. The export has no confirmation field and is a single object, not an array, so ingest_candidate.py cannot apply; it is recorded as a direct assignment following the pu-2024-siformer precedent. paper_id differs intentionally from the tracker record id (frl5izvr9s46nku). Scope from the record: 'Table 3'. Original export preserved below with email addresses redacted.",
+    "normalized": {
+      "title": "SC2SLR: Skeleton-based Contrast for Sign Language Recognition",
+      "year": 2024,
+      "venue": "CNOIT",
+      "pdf_url": "https://doi.org/10.1145/3670105.3670173",
+      "code_repos": [],
+      "what_to_reproduce": "Table 3",
+      "metric_ids": [
+        "q7nnxrx71w67jl9"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "Word error rate",
+          "id": "q7nnxrx71w67jl9",
+          "name": "WER",
+          "url": []
+        }
+      ],
+      "datasets": [
+        {
+          "id": "3bo0mvnzlglpigr",
+          "name": "PHOENIX-2014",
+          "available": "yes",
+          "license": "CC BY-SA 3.0",
+          "urls": [
+            "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX/"
+          ],
+          "comments": "German Sign Language continuous recognition, weather domain"
+        },
+        {
+          "id": "wk5mci5wniesf1j",
+          "name": "PHOENIX-2014-T",
+          "available": "yes",
+          "license": "CC BY-SA 3.0",
+          "urls": [
+            "https://www-i6.informatik.rwth-aachen.de/~koller/RWTH-PHOENIX-2014-T/"
+          ],
+          "comments": "Extension of PHOENIX-2014 with German translation annotations"
+        }
+      ],
+      "copied_scores": "yes",
+      "compute_requirements": "N/A",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": ""
+    },
     "record": {
       "assignees": [
         "[redacted]"
@@ -1055,11 +1102,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600, retries=3), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600, retries=3), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
@@ -1072,7 +1117,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-M0NiIZRC0LbNOFy0yoFAtY",
+        "modal_app_ids": [
+          "ap-M0NiIZRC0LbNOFy0yoFAtY"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A10 (23028 MiB), driver 610.57.04, cpu=8, memory 32 GiB",
         "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
@@ -1085,10 +1132,15 @@
             "HF_HOME": null,
             "HF_HUB_CACHE": null
           },
-          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as noncompliance entry hf-cache-env-not-set."
         },
-        "billed_cost_usd": 0.13,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.069088,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.130223,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-M0NiIZRC0LbNOFy0yoFAtY; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
@@ -1135,7 +1187,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-u4Gq4XroqqyHrAicvtGj7F",
+        "modal_app_ids": [
+          "ap-u4Gq4XroqqyHrAicvtGj7F"
+        ],
         "gpu_count": 0,
         "hardware": "CPU only, cpu=32, memory 64 GiB",
         "image_id": "im-md9qNepxamfLdxNWadit2T",
@@ -1149,8 +1203,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 1.13,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.131935,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-u4Gq4XroqqyHrAicvtGj7F; no GPU rows: CPU-only run, so gpu_hours is 0"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
@@ -1196,7 +1255,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-wW0Zdm4IQZMNbJp4mmQvgd",
+        "modal_app_ids": [
+          "ap-wW0Zdm4IQZMNbJp4mmQvgd"
+        ],
         "gpu_count": 0,
         "hardware": "CPU only, cpu=32, memory 64 GiB",
         "image_id": "im-md9qNepxamfLdxNWadit2T",
@@ -1210,8 +1271,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.83,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.826497,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-wW0Zdm4IQZMNbJp4mmQvgd; no GPU rows: CPU-only run, so gpu_hours is 0"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       }
@@ -1239,11 +1305,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
@@ -1259,7 +1323,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-Kiv8bwvQg9zzUKEFJ45Rt0",
+        "modal_app_ids": [
+          "ap-Kiv8bwvQg9zzUKEFJ45Rt0"
+        ],
         "gpu_count": 48,
         "hardware": "48 x NVIDIA A10 (one per shard), cpu=8, memory 32 GiB each",
         "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
@@ -1272,10 +1338,15 @@
             "HF_HOME": null,
             "HF_HUB_CACHE": null
           },
-          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as noncompliance entry hf-cache-env-not-set."
         },
-        "billed_cost_usd": 33.04,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 18.335237,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 33.039879,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-Kiv8bwvQg9zzUKEFJ45Rt0; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "pack_keypoints_image_id": "im-md9qNepxamfLdxNWadit2T",
         "image_id_basis": "image_id is the keypoint image used by the 48 extract_keypoints shards: alphapose.Dockerfile was unchanged since 2026-10-26T13:33:31Z, and keypoints-preflight-1 (13:45) logged im-csO6ZMQ3cAFuADNidOTxqG. pack_keypoints ran on the training image: pack_keypoints_image_id. Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
@@ -1304,11 +1375,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 21600,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (21600 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (extract_keypoints timeout=6*3600 per shard call (48 shards in parallel), retries=3; pack_keypoints timeout=4*3600), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
@@ -1324,7 +1393,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-tDf1W24sU5MEi42SoJ19xB",
+        "modal_app_ids": [
+          "ap-tDf1W24sU5MEi42SoJ19xB"
+        ],
         "gpu_count": 48,
         "hardware": "48 x NVIDIA A10 (one per shard), cpu=8, memory 32 GiB each",
         "image_id": "im-csO6ZMQ3cAFuADNidOTxqG",
@@ -1337,10 +1408,15 @@
             "HF_HOME": null,
             "HF_HUB_CACHE": null
           },
-          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as process deviation hf-cache-env-not-set."
+          "environment_note": "The huggingface-cache Volume was mounted read-write at /cache/huggingface, but HF_HOME and HF_HUB_CACHE were not set: this run used the keypoint image built from alphapose.Dockerfile, which does not define them. Recorded as noncompliance entry hf-cache-env-not-set."
         },
-        "billed_cost_usd": 22.82,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 12.590803,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 22.817755,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-tDf1W24sU5MEi42SoJ19xB; GPU-hours = GPU cost / A10G 1.10 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "extract_keypoints: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04, image config sha256:8b66bdfd0aa0366cc7137f00c9dd336bef17e493d4197747d0be3c4f9bdef2ea as logged by the Modal build on 2026-10-26. On 2026-10-29 the tag resolved to index sha256:38e59267704b5d91ef63c7d8f613359c629fab0aead1283d59ca7821029e73bc with amd64 config sha256:1256fa5b1b7d778ae55948fe094644f5fcede88c375001a2e81fb75877dbcbc1, a different image, so no pullable manifest digest of the base that ran is known; the built image survives as Modal image im-csO6ZMQ3cAFuADNidOTxqG in the repro-sign workspace. pack_keypoints: ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "pack_keypoints_image_id": "im-md9qNepxamfLdxNWadit2T",
         "image_id_basis": "image_id is the keypoint image used by the 48 extract_keypoints shards: alphapose.Dockerfile was unchanged since 2026-10-26T13:33:31Z, and keypoints-preflight-1 (13:45) logged im-csO6ZMQ3cAFuADNidOTxqG. pack_keypoints ran on the training image: pack_keypoints_image_id. Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
@@ -1369,11 +1445,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 14400,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (14400 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
@@ -1386,7 +1460,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-EIDe4p81VLe3MPsJH4OWoD",
+        "modal_app_ids": [
+          "ap-EIDe4p81VLe3MPsJH4OWoD"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100 80GB PCIe, driver 610.57.04, cpu=16, memory 128 GiB",
         "image_id": "im-md9qNepxamfLdxNWadit2T",
@@ -1400,8 +1476,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.45,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.104445,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.447107,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-EIDe4p81VLe3MPsJH4OWoD; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
@@ -1430,11 +1511,9 @@
         "declared_at_utc": "2026-10-26T12:25:54Z",
         "max_wall_time_seconds": 14400,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (14400 s, written at 2026-10-26T12:25:54Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (preflight timeout=4*3600, no retries), written at 2026-10-26T12:25:54Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration.",
       "terminal": {
         "state": "succeeded",
         "reason_code": "completed",
@@ -1447,7 +1526,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-2j3NdICEBpr5fIKTC9tVBc",
+        "modal_app_ids": [
+          "ap-2j3NdICEBpr5fIKTC9tVBc"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
         "image_id": "im-md9qNepxamfLdxNWadit2T",
@@ -1461,8 +1542,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.49,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.115003,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.492305,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-2j3NdICEBpr5fIKTC9tVBc; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
@@ -1497,7 +1583,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-HVSLYmhLrAAiHIfbOQfB1V",
+        "modal_app_ids": [
+          "ap-HVSLYmhLrAAiHIfbOQfB1V"
+        ],
         "modal_function_call_ids": [
           "fc-01M5WEKYH7XVSHJERQFBZWFTKR"
         ],
@@ -1515,8 +1603,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 1.87,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.436667,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 1.873793,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-HVSLYmhLrAAiHIfbOQfB1V; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       },
@@ -1562,7 +1655,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-wt1P6diKi4jUoM0IWLk2TW",
+        "modal_app_ids": [
+          "ap-wt1P6diKi4jUoM0IWLk2TW"
+        ],
         "modal_function_call_ids": [
           "fc-01M5WEMCTX1SGMNJ9R31PZH4M6"
         ],
@@ -1580,8 +1675,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 2.04,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.477222,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 2.043923,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-wt1P6diKi4jUoM0IWLk2TW; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Not logged by this run. Inferred: the training-image build context (Dockerfile, patches/ctcdecode-cxx17.patch, patches/sc2slr-1..3) was unchanged from 2026-10-26T12:23:50Z until patch 4 was written at 16:37:40Z, and runs inside that window that log their image (preflight-*, 15:47; diagnose-*, 16:26-16:35) report im-md9qNepxamfLdxNWadit2T even though modal_app.py changed in between."
       },
@@ -1621,9 +1721,7 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
       "terminal": {
         "state": "failed",
@@ -1637,7 +1735,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-AGo8uwBKzJFJ0AM8N8Nuhs",
+        "modal_app_ids": [
+          "ap-AGo8uwBKzJFJ0AM8N8Nuhs"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-AGo8uwBKzJFJ0AM8N8Nuhs",
@@ -1651,15 +1751,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.29,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.066673,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.285415,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-AGo8uwBKzJFJ0AM8N8Nuhs; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
       "artifact_ids": [],
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
     },
     {
       "run_id": "diagnose-p14t-ctc-nocudnn-1",
@@ -1684,9 +1789,7 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
       "terminal": {
         "state": "failed",
@@ -1700,7 +1803,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-a5bAAt39VglXJle4sySryE",
+        "modal_app_ids": [
+          "ap-a5bAAt39VglXJle4sySryE"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-a5bAAt39VglXJle4sySryE",
@@ -1714,15 +1819,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.35,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.081152,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.347395,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-a5bAAt39VglXJle4sySryE; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
       "artifact_ids": [],
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
     },
     {
       "run_id": "diagnose-p14t-released-2",
@@ -1747,9 +1857,7 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
       "terminal": {
         "state": "succeeded",
@@ -1762,7 +1870,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-3rEg8GvmHM2KnQ7JQtUMRR",
+        "modal_app_ids": [
+          "ap-3rEg8GvmHM2KnQ7JQtUMRR"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-3rEg8GvmHM2KnQ7JQtUMRR",
@@ -1776,15 +1886,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.6,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.140003,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.600244,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-3rEg8GvmHM2KnQ7JQtUMRR; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
       "artifact_ids": [],
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
     },
     {
       "run_id": "diagnose-p14t-ctc-nocudnn-2",
@@ -1809,9 +1924,7 @@
         "declared_at_utc": "2026-10-26T16:22:46Z",
         "max_wall_time_seconds": 7200,
         "max_gpu_hours": null,
-        "max_cost_chf": null,
-        "ceilings_declared": false,
-        "ceilings_note": "Only the Modal function timeout in modal_app.py (7200 s, written at 2026-10-26T16:22:46Z) existed before launch. GPU-hour and CHF ceilings were never declared for this run; they are null, not backfilled (process deviation stop-ceilings-not-declared)."
+        "max_cost_chf": null
       },
       "terminal": {
         "state": "succeeded",
@@ -1824,7 +1937,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-6VlwUZJ2inqZyRyUuuxzxe",
+        "modal_app_ids": [
+          "ap-6VlwUZJ2inqZyRyUuuxzxe"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB, driver 610.57.04, cpu=16, memory 128 GiB",
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-6VlwUZJ2inqZyRyUuuxzxe",
@@ -1838,15 +1953,20 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.55,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.12778,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.548342,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-6VlwUZJ2inqZyRyUuuxzxe; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
       "purpose": "Test the hypothesis that cuDNN's CTC kernel produces the non-finite gradients behind the divergence of full-p14-1/full-p14t-1.",
       "source_revision": "SC2SLR 65c95fb03fa0c170dc3f1136265f4b97ec26d7fa + patches/sc2slr-1..3; in-container dirty diff sha256 d9c81734d8572f8fedbf606b10eccce98d7fb614bec239c2cee116ded6bcf54c; image im-md9qNepxamfLdxNWadit2T; the variant's change is applied at runtime by DIAGNOSE_DRIVER in modal_app.py",
       "artifact_ids": [],
-      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as process deviation stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
+      "stop_policy_basis": "The only limit fixed before launch was the Modal function limit in modal_app.py (diagnose timeout=2*3600, no retries), written at 2026-10-26T16:22:46Z; declared_at_utc and max_wall_time_seconds record that. No GPU-hour or CHF ceiling was written down before launch, so both are null rather than backfilled. This fails the contemporaneous GPU-run contract and is recorded as noncompliance entry stop-ceilings-not-declared. attempt.max_attempts 4 is the AGENTS.md transient-retry rule (initial attempt plus three retries), not a run-specific declaration."
     },
     {
       "run_id": "full-p14-2",
@@ -1877,7 +1997,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-6eTPQfJBzEhfH6rj0tUozb",
+        "modal_app_ids": [
+          "ap-6eTPQfJBzEhfH6rj0tUozb"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-80GB per call (SXM4, driver 610.57.04, for chunks 0-20, 87-107, 107-120; PCIe, driver 580.95.05, for 20-80), cpu=16, memory 128 GiB",
         "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
@@ -1900,8 +2022,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 203.44,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 47.400305,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 203.437018,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-6eTPQfJBzEhfH6rj0tUozb; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged in every chunk record under runs/full-p14-2/segments/ (MODAL_IMAGE_ID)."
       },
@@ -1916,7 +2043,7 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "120 epochs (0-119) trained by upstream main.py in six chained calls with segment records under runs/full-p14-2/segments/. The 80-100 call was interrupted by Modal after epoch 86; Modal's retry resumed from dev_23.60_epoch86_model.pt (chunk 87-107), redoing at most part of one epoch; the LR milestones are epoch-indexed so the schedule is unchanged. Epoch times 21-28 min (first epochs slowest). Peak 48451 MiB. 9 of 170,040 batches skipped by upstream's 'loss is nan' guard (first at epoch 45). Lowest dev WER 22.7 at epoch 42 (dev.txt). Wall time about 47.5 h; GPU time about 47 A100-hours; Modal-billed cost USD 203.44 (compute.billed_cost_usd)."
+        "detail": "120 epochs (0-119) trained by upstream main.py in six chained calls with segment records under runs/full-p14-2/segments/. The 80-100 call was interrupted by Modal after epoch 86; Modal's retry resumed from dev_23.60_epoch86_model.pt (chunk 87-107), redoing at most part of one epoch; the LR milestones are epoch-indexed so the schedule is unchanged. Epoch times 21-28 min (first epochs slowest). Peak 48451 MiB. 9 of 170,040 batches skipped by upstream's 'loss is nan' guard (first at epoch 45). Lowest dev WER 22.7 at epoch 42 (dev.txt). Wall time about 47.5 h; GPU time about 47 A100-hours; Modal-billed cost USD 203.44 (compute.usage)."
       }
     },
     {
@@ -1948,7 +2075,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-z5bJOYQuGTpDSyfgho4tyH",
+        "modal_app_ids": [
+          "ap-z5bJOYQuGTpDSyfgho4tyH"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-SXM4-80GB per call, driver 610.57.04, cpu=16, memory 128 GiB",
         "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
@@ -1970,8 +2099,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 222.92,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 51.971403,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 222.916384,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-z5bJOYQuGTpDSyfgho4tyH; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged in every chunk record under runs/full-p14t-2/segments/ (MODAL_IMAGE_ID)."
       },
@@ -1986,7 +2120,7 @@
         "failure_class": null,
         "retry_decision": "not_needed",
         "gate_ids": [],
-        "detail": "120 epochs (0-119) trained by upstream main.py in chained calls with segment records under runs/full-p14t-2/segments/. The 40-60 call was interrupted by Modal after epoch 54 and its retry after epoch 62; Modal's retries resumed from dev_22.60_epoch54_model.pt and dev_22.90_epoch62_model.pt, redoing at most part of one epoch each, and the epoch-indexed LR schedule is unchanged. Epoch times about 24-27 min. Peak 47751 MiB. 0 'loss is nan' skips. Lowest dev WER 21.9 at epoch 44 (dev.txt). Wall time about 52 h; GPU time about 52 A100-hours; Modal-billed cost USD 222.92 (compute.billed_cost_usd)."
+        "detail": "120 epochs (0-119) trained by upstream main.py in chained calls with segment records under runs/full-p14t-2/segments/. The 40-60 call was interrupted by Modal after epoch 54 and its retry after epoch 62; Modal's retries resumed from dev_22.60_epoch54_model.pt and dev_22.90_epoch62_model.pt, redoing at most part of one epoch each, and the epoch-indexed LR schedule is unchanged. Epoch times about 24-27 min. Peak 47751 MiB. 0 'loss is nan' skips. Lowest dev WER 21.9 at epoch 44 (dev.txt). Wall time about 52 h; GPU time about 52 A100-hours; Modal-billed cost USD 222.92 (compute.usage)."
       }
     },
     {
@@ -2017,7 +2151,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-SAXONoSXmzSjw8etGd7Bq2",
+        "modal_app_ids": [
+          "ap-SAXONoSXmzSjw8etGd7Bq2"
+        ],
         "gpu_count": 1,
         "start_evidence": "https://modal.com/apps/repro-sign/main/ap-SAXONoSXmzSjw8etGd7Bq2",
         "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
@@ -2032,8 +2168,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.34,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.080041,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.342639,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-SAXONoSXmzSjw8etGd7Bq2; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
@@ -2088,7 +2229,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_id": "ap-FKAjjlRdDW7XBL3I6s2MSJ",
+        "modal_app_ids": [
+          "ap-FKAjjlRdDW7XBL3I6s2MSJ"
+        ],
         "gpu_count": 1,
         "hardware": "one NVIDIA A100-80GB, cpu=16, memory 128 GiB",
         "image_id": "im-YmyymOTNJSOt1gD6faZSnW",
@@ -2103,8 +2246,13 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "billed_cost_usd": 0.26,
-        "billed_cost_source": "modal billing report --start 2026-10-26 --end 2026-10-29 --show-resources --json through the repro-sign wrapper, queried 2026-10-29; the app's daily rows summed over A100-80GB/A10G, CPU and memory; USD as Modal reports it",
+        "usage": {
+          "gpu_hours": 0.06146,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 0.263098,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-10-26 --end 2026-10-30 -r d --show-resources --json, read 2026-11-24: all rows with object_id ap-FKAjjlRdDW7XBL3I6s2MSJ; GPU-hours = GPU cost / A100-80GB 2.50 USD/h (billing rates, read 2026-11-24)"
+        },
         "base_image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 (tag latest; amd64 manifest sha256:679f06c1abe55eda74213fe883e24db8802e8aeeac1b6d94619055b08029d2ea, image config sha256:737a40916d40a4572d425f14d8e12f50fefdcfe4696b489f22bd0292ba7331d2 as logged by the Modal build; the same index digest is recorded by pu-2024-siformer on 2026-10-01 and resolved again on 2026-10-29)",
         "image_id_basis": "Logged by the run itself (MODAL_IMAGE_ID in the returned record)."
       },
@@ -2278,7 +2426,7 @@
       ],
       "required_action": "A human reviewer chooses A, B, or C (or another bounded option). The agent then records the decision, builds the container, runs a representative preflight on Modal, estimates compute, and proceeds or opens a compute gate.",
       "resolved_at": "2026-10-26",
-      "resolution": "Human reviewer (the assigning operator) chose alternative A extended with the minimal code needed to run the whole Table 3 SC2SLR pipeline: released code at the pinned commit, plus the missing AlphaPose keypoint glue, plus the paper's two-view NT-Xent contrastive loss, on both PHOENIX-2014 and PHOENIX-2014T. The full runs were launched without the #repro-sign-team-r compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At this gate's resolution on 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This remains a process deviation (compute-discussion-skipped). Per the gate's stated terms, results depend on documented invented details and are classified as conditional evidence before any score is seen, unless a human reviewer later accepts these choices as the target protocol."
+      "resolution": "Human reviewer (the assigning operator) chose alternative A extended with the minimal code needed to run the whole Table 3 SC2SLR pipeline: released code at the pinned commit, plus the missing AlphaPose keypoint glue, plus the paper's two-view NT-Xent contrastive loss, on both PHOENIX-2014 and PHOENIX-2014T. The full runs were launched without the #repro-sign-team-r compute discussion that AGENTS.md requires for plans over 24 GPU-hours. At this gate's resolution on 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This is recorded as noncompliance entry compute-discussion-skipped. Per the gate's stated terms, results depend on documented invented details and are classified as conditional evidence before any score is seen, unless a human reviewer later accepts these choices as the target protocol."
     },
     {
       "gate_id": "sc2slr-conditional-protocol-acceptance",
@@ -2299,131 +2447,166 @@
   "guesses_and_deviations": [
     {
       "id": "keypoints-precomputed",
-      "detail": "Where keypoints are extracted",
-      "paper_or_evidence": "Released loader calls get_heatmap(video, Keypoint_getter) on every augmented 224x224 frame; the modules are missing.",
+      "kind": "code_deviation",
+      "description": "Where keypoints are extracted: once per original frame, not inside the released loader on every augmented frame.",
+      "paper_says": "Released loader calls get_heatmap(video, Keypoint_getter) on every augmented 224x224 frame; the modules are missing.",
       "used": "AlphaPose runs once on every original 210x260 frame; coordinates are scaled to 256x256 and carried through crop and temporal rescale as a heatmap channel.",
-      "rationale": "Running the detector and pose model inside the loader for 120 epochs is about 10^8 extra passes. Geometrically the crop is applied identically.",
+      "basis": "Running the detector and pose model inside the loader for 120 epochs is about 10^8 extra passes. Geometrically the crop is applied identically.",
       "effect": "Keypoints come from uncropped frames, which can differ slightly from detection on crops."
     },
     {
       "id": "pose-model",
-      "detail": "AlphaPose model",
-      "paper_or_evidence": "Paper: 'AlphaPose [5], trained on the Halpe Dataset'.",
+      "kind": "guess",
+      "description": "AlphaPose model: the paper names AlphaPose trained on Halpe but not the model; this attempt chose the Halpe-136 model and which person to keep per frame.",
+      "paper_says": "Paper: 'AlphaPose [5], trained on the Halpe Dataset'.",
       "used": "configs/halpe_136/resnet/256x192_res50_lr1e-3_2x-regression.yaml with halpe136_fast50_regression_256x192.pth and YOLOv3-SPP; the highest-scoring person per frame.",
-      "rationale": "The model the AlphaPose README uses for Halpe-136 inference.",
+      "basis": "The model the AlphaPose README uses for Halpe-136 inference.",
       "effect": "Another Halpe-136 model would give somewhat different keypoints."
     },
     {
       "id": "keypoint-subset",
-      "detail": "The 90 keypoints",
-      "paper_or_evidence": "Sec. 3.2 counts: 7 upper body (neck, shoulders, elbows, wrists), 20 mouth, 9 nose, 12 eye, 42 hand.",
+      "kind": "guess",
+      "description": "The 90 keypoints: the paper gives only the count per body region; this attempt chose the Halpe-136 indices.",
+      "paper_says": "Sec. 3.2 counts: 7 upper body (neck, shoulders, elbows, wrists), 20 mouth, 9 nose, 12 eye, 42 hand.",
       "used": "Halpe-136 indices 18,5,6,7,8,9,10; 53-61 (nose); 62-73 (eyes); 74-93 (mouth); 94-135 (hands).",
-      "rationale": "Standard 68-point face layout inside Halpe (offset 26).",
+      "basis": "Standard 68-point face layout inside Halpe (offset 26).",
       "effect": "None expected beyond the indexing convention."
     },
     {
       "id": "heatmap-rendering",
-      "detail": "Keypoint fusion",
-      "paper_or_evidence": "Paper Eq. 2 adds a normalized 2n-dim coordinate vector to the image (dimensionally undefined); released code adds a (T,224,224) heatmap from missing code.",
+      "kind": "paper_code_conflict",
+      "description": "Keypoint fusion: the paper adds a coordinate vector to the image, the released code a heatmap from a missing module; this attempt followed the code and invented the heatmap rendering: max over keypoints of confidence-weighted Gaussians, sigma 4 px at 256x256, values in [0,1].",
+      "paper_says": "Paper Eq. 2 adds a normalized 2n-dim coordinate vector to the image (dimensionally undefined); released code adds a (T,224,224) heatmap from missing code.",
       "used": "Max over keypoints of confidence-weighted Gaussians, sigma 4 px at 256x256, values in [0,1], added to every RGB channel of the [-1,1] video, as the released normalize() does.",
-      "rationale": "Follows the released fusion; sigma is invented.",
-      "effect": "Behavior-changing; part of why results are conditional."
+      "basis": "Follows the released fusion; sigma is invented.",
+      "effect": "Behavior-changing; part of why results are conditional.",
+      "evidence": [
+        "patches/sc2slr-1-keypoint-glue.patch"
+      ]
     },
     {
       "id": "contrastive-branch",
-      "detail": "NT-Xent details",
-      "paper_or_evidence": "Sec. 3.3, Eq. 3, Eq. 8, Fig. 2; no temperature, head, pooling, or weight sharing given. The released code has no contrastive loss.",
+      "kind": "paper_code_conflict",
+      "description": "Contrastive branch: the paper adds a two-view NT-Xent loss that the released code does not have; this attempt followed the paper and invented the unstated values: temperature 0.5, loss weight 1, BiLSTM features mean-pooled over valid steps, no projection head, and one weight-shared network for both views.",
+      "paper_says": "Sec. 3.3, Eq. 3, Eq. 8, Fig. 2; no temperature, head, pooling, or weight sharing given. The released code has no contrastive loss.",
       "used": "Two views per clip from the released (unused) SimCLR deep_transform after one shared crop and temporal rescale; a weight-shared network on the 2B batch; all released losses on both views; NT-Xent with tau 0.5 and weight 1 on BiLSTM features mean-pooled over valid steps, no projection head.",
-      "rationale": "The smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations.",
-      "effect": "Behavior-changing; part of why results are conditional."
+      "basis": "The smallest addition that implements Eq. 3 and Eq. 8 with the code's existing augmentations.",
+      "effect": "Behavior-changing; part of why results are conditional.",
+      "evidence": [
+        "patches/sc2slr-2-contrastive-branch.patch"
+      ]
     },
     {
       "id": "schedule",
-      "detail": "Epochs and batch size",
-      "paper_or_evidence": "Sec. 4.2, for PHOENIX-2014 only: 120 epochs, mini-batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60. The optimizer and weight decay are not stated in the paper. Released configs/baseline.yaml: 80 epochs, batch 1, Adam, base_lr 1e-4, steps 40 and 60, weight_decay 1e-4.",
+      "kind": "paper_code_conflict",
+      "description": "Epochs and batch size: the paper and the released config disagree; this attempt followed the paper where it states a value and the released config elsewhere.",
+      "paper_says": "Sec. 4.2, for PHOENIX-2014 only: 120 epochs, mini-batch 4, initial learning rate 1e-4 divided by 5 after epochs 40 and 60. The optimizer and weight decay are not stated in the paper. Released configs/baseline.yaml: 80 epochs, batch 1, Adam, base_lr 1e-4, steps 40 and 60, weight_decay 1e-4.",
       "used": "120 epochs and batch 4 (command-line overrides of the released config); learning rate 1e-4 divided by 5 at epochs 40 and 60; Adam with weight decay 1e-4, which are the released config's values.",
-      "rationale": "Where the paper states a value for the Table 3 system, the paper wins.",
+      "basis": "Where the paper states a value for the Table 3 system, the paper wins.",
       "effect": "Follows the paper where stated; optimizer and weight decay from the released code."
     },
     {
       "id": "no-horizontal-flip",
-      "detail": "Horizontal flip",
-      "paper_or_evidence": "Sec. 4.3 excludes it; released transform uses RandomHorizontalFlip(0.5).",
+      "kind": "code_deviation",
+      "description": "Horizontal flip: the released transform applies one that the paper excludes; this attempt removed it.",
+      "paper_says": "Sec. 4.3 excludes it; released transform uses RandomHorizontalFlip(0.5).",
       "used": "Removed (patches/sc2slr-3-no-horizontal-flip.patch).",
-      "rationale": "Paper statement about the final scheme.",
+      "basis": "Paper statement about the final scheme; Table 3's PHOENIX-2014 row equals Table 2's last row, which has no flip.",
       "effect": "Follows the paper."
     },
     {
       "id": "ctc-without-cudnn",
-      "detail": "CTC loss backend",
-      "paper_or_evidence": "Released criterion passes CPU int32 targets, which makes current PyTorch use cuDNN's CTC kernel; runs full-p14-1/full-p14t-1 diverged and diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2 isolate the cause.",
+      "kind": "code_deviation",
+      "description": "CTC loss backend: with current PyTorch the released criterion uses cuDNN's CTC kernel, which diverged; this attempt computes CTC without cuDNN.",
+      "paper_says": "Released criterion passes CPU int32 targets, which makes current PyTorch use cuDNN's CTC kernel; runs full-p14-1/full-p14t-1 diverged and diagnose-p14t-released-2 vs diagnose-p14t-ctc-nocudnn-2 isolate the cause.",
       "used": "CTC computed with cuDNN disabled for that call only (patches/sc2slr-4-ctc-without-cudnn.patch, sha256 c8da41525b51cfac061d7efee3634ac4ed50a19a37b02c9020759ffdbdbeef8b).",
-      "rationale": "Execution-correctness fix for the container's PyTorch/cuDNN; same fix as yu-2025-cvsign for the same criterion code.",
+      "basis": "Execution-correctness fix for the container's PyTorch/cuDNN; same fix as yu-2025-cvsign for the same criterion code.",
       "effect": "Same loss function, PyTorch's native kernel; not behavior-changing."
     },
     {
       "id": "kept-released",
-      "detail": "Released settings kept where the paper is silent or vague",
-      "paper_or_evidence": "Eq. 8 sums losses unweighted; Sec. 4.2 mentions '0.5 random frame dropout [20]'.",
+      "kind": "paper_code_conflict",
+      "description": "Released settings kept where the paper is silent or vague: loss weights, temporal rescale, seed, AMP and beam width.",
+      "paper_says": "Eq. 8 sums losses unweighted; Sec. 4.2 mentions '0.5 random frame dropout [20]'.",
       "used": "Released loss weights (ConvCTC 1, SeqCTC 1, Dist 25 with SeqKD T=8), TemporalRescale(0.2), seed 0, AMP, beam width 10.",
-      "rationale": "Eq. 8 does not rule out weights, and the frame-dropout phrase does not map onto any code parameter; the released code is the more specific evidence.",
+      "basis": "Eq. 8 does not rule out weights, and the frame-dropout phrase does not map onto any code parameter; the released code is the more specific evidence.",
       "effect": "Possible mismatch with the authors' actual runs."
     },
     {
       "id": "sctk-version",
-      "detail": "sclite version",
-      "paper_or_evidence": "The released SC2SLR README names SCTK 2.4.10 for sclite; the paper does not name a scorer version.",
+      "kind": "code_deviation",
+      "description": "sclite version: the released README names SCTK 2.4.10, which has no tag; this attempt used a pinned later SCTK commit.",
+      "paper_says": "The released SC2SLR README names SCTK 2.4.10 for sclite; the paper does not name a scorer version.",
       "used": "SCTK commit 9688a26882a688132a5e414cadcb4c19b6fffaba (tag v2.4.12 plus 27 commits; sclite 2.10), the same pin as yu-2025-cvsign.",
-      "rationale": "The usnistgov/SCTK repository has no 2.4.10 tag; a recent pinned commit builds with the image's toolchain.",
+      "basis": "The usnistgov/SCTK repository has no 2.4.10 tag; a recent pinned commit builds with the image's toolchain.",
       "effect": "Expected none on the reported WER: sclite aligns hypothesis and reference glosses and counts substitutions, deletions and insertions the same way in both versions; the commits after v2.4.12 are build, documentation, language-support and backtrace-index fixes. Not verified by scoring with 2.4.10."
     },
     {
       "id": "p14t-recipe",
-      "detail": "PHOENIX-2014T training",
-      "paper_or_evidence": "No PHOENIX-2014T recipe in the paper.",
+      "kind": "guess",
+      "description": "PHOENIX-2014T training: the paper gives no recipe for it; this attempt reused the PHOENIX-2014 recipe.",
+      "paper_says": "No PHOENIX-2014T recipe in the paper.",
       "used": "The same recipe as PHOENIX-2014, with the released configs/phoenix2014-T.yaml paths.",
-      "rationale": "No other evidence.",
+      "basis": "No other evidence: the ablations in Tables 1–2 are PHOENIX-2014 only.",
       "effect": "Conditional."
     },
     {
       "id": "checkpoint-selection",
-      "detail": "Checkpoint selection",
-      "paper_or_evidence": "Not stated in the paper (no checkpoint rule in Sec. 4 or the Table 3 caption). Released main.py saves a '_best_model.pt' on the best dev WER seen since the process started (best_dev resets on resume).",
+      "kind": "guess",
+      "description": "Checkpoint selection: the paper does not state which checkpoint it reports; this attempt fixed a lowest-dev-WER rule before training.",
+      "paper_says": "Not stated in the paper (no checkpoint rule in Sec. 4 or the Table 3 caption). Released main.py saves a '_best_model.pt' on the best dev WER seen since the process started (best_dev resets on resume).",
       "used": "The lowest dev WER over all 120 epochs (earliest on ties), fixed before training; that checkpoint is scored once on dev and test with --phase test.",
-      "rationale": "A guess informed by the released code's best-dev saving; the paper does not say whether its numbers come from the best-dev or the final checkpoint.",
+      "basis": "A guess informed by the released code's best-dev saving; the paper does not say whether its numbers come from the best-dev or the final checkpoint.",
       "effect": "Guess. The final-epoch checkpoints were not evaluated; their dev WER during training was 23.9 (PHOENIX-2014) and 22.5 (PHOENIX-2014T)."
     },
     {
       "id": "train-split-2390",
-      "detail": "PHOENIX-2014 train size",
-      "paper_or_evidence": "Paper: 5672 train samples; the released preprocess drops CSV row 2390 as broken (inherited from VAC).",
+      "kind": "paper_deviation",
+      "description": "PHOENIX-2014 train size: the paper states 5672 training samples; the released split, used here, drops CSV row 2390.",
+      "paper_says": "Paper: 5672 train samples; the released preprocess drops CSV row 2390 as broken (inherited from VAC).",
       "used": "The released committed train_info.npy.",
-      "rationale": "Published recipe.",
+      "basis": "Published recipe.",
       "effect": "One training clip fewer than the paper's count, as in all VAC-derived code."
-    },
-    {
-      "id": "compute-discussion-skipped",
-      "detail": "Compute gate (process deviation)",
-      "paper_or_evidence": "AGENTS.md requires discussing runs expected to exceed 24 GPU-hours in #repro-sign-team-r before launch.",
-      "used": "The two full runs were planned at 50-90 A100-hours each (stop ceilings 110 GPU-hours and CHF 400 per run) and launched without that discussion. At the gate resolution of 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29. This remains a process deviation. Actual: about 47.5 + 52 A100-hours. Modal-billed cost of all apps named repro-lyu-2024-sc2slr from 2026-10-26 to 2026-10-28: USD 492.28 (A100-80GB 252.66, A10G 34.51, memory 112.45, CPU 92.66), of which full-p14-2 203.44, full-p14t-2 222.92, keypoints 55.86, everything else 10.06 (including USD 0.74 for apps not retained as runs: image builds and failed keypoint-preflight launches before keypoints-preflight-1).",
-      "rationale": "Operator decision after more than three days without channel response to similar requests; recorded because it departs from the team process.",
-      "effect": "Process only; no effect on the numbers."
-    },
+    }
+  ],
+  "noncompliance": [
     {
       "id": "stop-ceilings-not-declared",
-      "detail": "Stop ceilings (process deviation)",
-      "paper_or_evidence": "stopping-criteria.md requires a contemporaneous GPU run to declare GPU-hour and CHF ceilings before launch.",
-      "used": "keypoints-preflight-1, keypoints-p14-1, keypoints-p14t-1, preflight-p14-1, preflight-p14t-1 and the four diagnose-p14t-* runs were launched with only the Modal function timeout/retries in modal_app.py. Their stop_policy keeps the real declaration time of those limits and null GPU-hour and CHF ceilings; nothing is backfilled. prepare-frames-* are CPU-only and declared only the timeout, which is all that applies.",
-      "rationale": "Agent process error, disclosed rather than repaired after the fact.",
-      "effect": "The validator reports these nine GPU runs as missing ceilings (18 issues; 21 with the 3 from hf-cache-env-not-set). Their billed cost was USD 58.72 in total."
+      "description": "Nine GPU runs were launched without GPU-hour or CHF ceilings: keypoints-preflight-1, keypoints-p14-1, keypoints-p14t-1, preflight-p14-1, preflight-p14t-1 and the four diagnose-p14t-* runs. Only the Modal function timeout (and retries) in modal_app.py limited them. Their stop_policy keeps the real declaration time of those limits and null max_gpu_hours and max_cost_chf; nothing is backfilled. prepare-frames-* are CPU-only and declared only the timeout, which is all that applies. An agent process error, disclosed rather than repaired after the fact.",
+      "requirement": "stopping-criteria.md: a contemporaneous GPU run declares GPU-hour and cost ceilings before launch (max_cost_chf for runs declared before 2026-11-20); AGENTS.md, Execution discipline: declare ceilings before launch.",
+      "run_ids": [
+        "keypoints-preflight-1",
+        "keypoints-p14-1",
+        "keypoints-p14t-1",
+        "preflight-p14-1",
+        "preflight-p14t-1",
+        "diagnose-p14t-released-1",
+        "diagnose-p14t-ctc-nocudnn-1",
+        "diagnose-p14t-released-2",
+        "diagnose-p14t-ctc-nocudnn-2"
+      ],
+      "effect": "Budget control only; no reported value is affected. The nine runs were billed USD 58.71 in total (compute.usage).",
+      "resolution": "Recorded rather than backfilled; no run was repeated."
     },
     {
       "id": "hf-cache-env-not-set",
-      "detail": "Shared Hugging Face cache environment (process deviation)",
-      "paper_or_evidence": "AGENTS.md requires every Modal reproduction run to mount huggingface-cache at /cache/huggingface and set at least HF_HOME=/cache/huggingface and HF_HUB_CACHE=/cache/huggingface/hub.",
-      "used": "keypoints-preflight-1, keypoints-p14-1 and keypoints-p14t-1 ran in the keypoint image (alphapose.Dockerfile, Modal image im-csO6ZMQ3cAFuADNidOTxqG), which mounts the Volume but does not define HF_HOME or HF_HUB_CACHE. Their shared_cache.environment records both as null. alphapose.Dockerfile is left unchanged so the committed file matches the recorded image that ran.",
-      "rationale": "Agent process error, disclosed rather than backfilled.",
-      "effect": "No run downloads anything from the Hugging Face Hub; the AlphaPose weights come from the AlphaPose model zoo with recorded sha256 checksums, so no number is affected. The validator reports the three runs as having an invalid cache environment (3 issues, 21 in total with the 18 from stop-ceilings-not-declared)."
+      "description": "keypoints-preflight-1, keypoints-p14-1 and keypoints-p14t-1 ran in the keypoint image (alphapose.Dockerfile, Modal image im-csO6ZMQ3cAFuADNidOTxqG), which mounts the huggingface-cache Volume at /cache/huggingface but does not define HF_HOME or HF_HUB_CACHE. Their compute.shared_cache.environment records both as null. An agent process error.",
+      "requirement": "AGENTS.md, Shared Hugging Face cache: every Modal reproduction run mounts huggingface-cache at /cache/huggingface and sets at least HF_HOME=/cache/huggingface and HF_HUB_CACHE=/cache/huggingface/hub.",
+      "run_ids": [
+        "keypoints-preflight-1",
+        "keypoints-p14-1",
+        "keypoints-p14t-1"
+      ],
+      "effect": "None on the numbers: no run downloads anything from the Hugging Face Hub, and the AlphaPose weights come from the AlphaPose model zoo with recorded sha256 checksums.",
+      "resolution": "Recorded as null rather than backfilled. alphapose.Dockerfile is left unchanged so the committed file matches the recorded image that ran."
+    },
+    {
+      "id": "compute-discussion-skipped",
+      "description": "The two full runs were planned at 50-90 A100-hours each (stop ceilings 110 GPU-hours and CHF 400 per run) and launched without the #repro-sign-team-r discussion. At the gate resolution of 2026-10-26, the operator decided not to wait for it, because earlier requests of the same kind for other papers had gone unanswered in the channel for more than three days. No request was posted for this paper. The operator stated this reason on 2026-10-29.",
+      "requirement": "AGENTS.md, Environment and compute gate: discuss the plan in #repro-sign-team-r before launching runs expected to exceed 24 GPU-hours.",
+      "run_ids": [],
+      "effect": "Process only; no effect on the numbers. Actual: full-p14-2 47.40 and full-p14t-2 51.97 A100-hours (compute.usage). Modal-billed cost of all apps named repro-lyu-2024-sc2slr from 2026-10-26 to 2026-10-28: USD 492.28 (A100-80GB 252.66, A10G 34.51, memory 112.45, CPU 92.66), of which full-p14-2 203.44, full-p14t-2 222.92, keypoints 55.86, everything else 10.06 (including USD 0.74 for apps not retained as runs: image builds and failed keypoint-preflight launches before keypoints-preflight-1).",
+      "resolution": "Recorded here and in the resolution of gate sc2slr-released-code-incomplete; the runs were not repeated."
     }
   ],
   "contacts": [],
