@@ -381,9 +381,9 @@
         "reproduction-agent"
       ],
       "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh FILE...",
-      "exit_code": null,
-      "started_at_utc": null,
-      "finished_at_utc": null,
+      "exit_code": 0,
+      "started_at_utc": "2026-11-24T10:44:02Z",
+      "finished_at_utc": "2026-11-24T17:17:24Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -403,7 +403,10 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-gYWVat4XPDjAmjPnLDIzmh",
+          "ap-HbmOhyXw2EB6RfdT9XOwKM"
+        ],
         "gpu_count": 0,
         "shared_cache": {
           "modal_volume": "huggingface-cache",
@@ -415,7 +418,16 @@
         },
         "cpu": 8
       },
-      "artifact_ids": []
+      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 45 files uploaded without failure (2026-11-24T10:44Z to about 15:27Z). The populate function was preempted by Modal twice during hashing and restarted from the start by Modal each time; the third pass finished. 68,423 files, 86,376,739,485 bytes; no file missing, no MD5 mismatch and no file absent from Drive's list.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "manifest.json: files 68423, missing [], md5_mismatch [], not_on_drive []. The file count equals the 68,423 lines of Drive's MD5 list (depth.tar.gz excluded). MANIFEST.sha256 SHA-256 0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae. check_modal_dataset.sh confirmed bosphorussign22k/ and its manifest. App ap-gYWVat4XPDjAmjPnLDIzmh is the populate_public call of data.sh, which found the three hand datasets present and did nothing."
     },
     {
       "run_id": "populate-hand-datasets-1",
