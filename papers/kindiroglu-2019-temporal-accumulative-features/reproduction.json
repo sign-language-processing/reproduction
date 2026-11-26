@@ -1,0 +1,1103 @@
+{
+  "paper_id": "13fbc66718d1a4b1c05e0aad78da9642cb61925e",
+  "agents": [
+    {
+      "agent_id": "reproduction-agent",
+      "model": "Fable 5.2",
+      "model_id": "claude-fable-5-2",
+      "harness": "Claude Code",
+      "harness_version": "2.1.330",
+      "scope": "Assignment ingestion, target resolution, source search, data gating, the dataset population code, the reimplementation, execution of every run, evaluation and report.",
+      "evidence": [
+        "Session metadata on 2026-11-24: the session's system context names the model 'Fable 5.2' with model ID 'claude-fable-5-2'.",
+        "Command output on 2026-11-24: 'claude --version' printed '2.1.330 (Claude Code)'."
+      ]
+    }
+  ],
+  "assignment": {
+    "kind": "queue_record",
+    "source": {
+      "path": "reproductions-13fbc66718d1a4b1c05e0aad78da9642cb61925e-2026-11-23.json",
+      "sha256": "dcd29e9a0d3eaf02945780aaecc9606ff834b7da440ab752f4075a9da967ca80"
+    },
+    "normalized": {
+      "title": "Temporal Accumulative Features for Sign Language Recognition",
+      "year": 2019,
+      "venue": "ICCV",
+      "pdf_url": "https://arxiv.org/pdf/2004.01225",
+      "code_repos": [],
+      "what_to_reproduce": "Highest accuracy line Table 5:\nKeyshot , FL-4,  Single, Acc 81.58%, Top-5 96.94 %",
+      "metric_ids": [
+        "wzc6kxyuhls6lut",
+        "qmajh31r87f5x7e"
+      ],
+      "metric_records": [
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "wzc6kxyuhls6lut",
+          "name": "Accuracy",
+          "url": []
+        },
+        {
+          "collectionId": "pbc_3017397517",
+          "collectionName": "metrics",
+          "comments": "",
+          "id": "qmajh31r87f5x7e",
+          "name": "top-5 accuracy",
+          "url": null
+        }
+      ],
+      "datasets": [
+        {
+          "id": "yv6ary4mdg8kw7q",
+          "name": "BosphorusSign",
+          "available": "yes",
+          "license": "",
+          "urls": [
+            "https://www.sign-lang.uni-hamburg.de/lrec/data/bosphorussignfinance.html",
+            "https://www.cmpe.boun.edu.tr/pilab/BosphorusSign/bosphorusSign_finance_en.html"
+          ],
+          "comments": "Serpil Karabüklü (contacted via Slack ;)\n\n“Available on request”, authors: N. C. Camg¨ oz, A. A. Kindiroglu, S. Karab¨ ukl¨ u, M. Kelepir,\n¨ \nA. S. Ozsoy, and L. Akarun. Bosphorussign: A turkish sign language recognition corpus in health and finance domains. In LREC, 2016.\n\nSerpil: BosphorusSign is subset of BosphorusSign22k. We have BosphorusSign22k, so this one and BosphorusSign22k general are also in the same dataset."
+        }
+      ],
+      "copied_scores": "no",
+      "compute_requirements": "not mentioned",
+      "includes_human_evaluation": "no",
+      "potential_ethical_concerns": "no",
+      "comments": ""
+    },
+    "record": {
+      "assignees": [
+        "[redacted]"
+      ],
+      "collectionId": "pbc_1548343306",
+      "collectionName": "reproductions",
+      "comments": "",
+      "expand": {
+        "paper": {
+          "area_of_slp": [
+            "Recognition"
+          ],
+          "code_repos": "N/A",
+          "collectionId": "pbc_3632733556",
+          "collectionName": "papers",
+          "comments": "",
+          "compute_requirements": "not mentioned",
+          "copied_scores": "no",
+          "datasets": [
+            "yv6ary4mdg8kw7q"
+          ],
+          "expand": {
+            "datasets": [
+              {
+                "assignees": [
+                  "[redacted]",
+                  "[redacted]"
+                ],
+                "available": "yes",
+                "collectionId": "pbc_3710182791",
+                "collectionName": "datasets",
+                "comments": "Serpil Karabüklü (contacted via Slack ;)\n\n“Available on request”, authors: N. C. Camg¨ oz, A. A. Kindiroglu, S. Karab¨ ukl¨ u, M. Kelepir,\n¨ \nA. S. Ozsoy, and L. Akarun. Bosphorussign: A turkish sign language recognition corpus in health and finance domains. In LREC, 2016.\n\nSerpil: BosphorusSign is subset of BosphorusSign22k. We have BosphorusSign22k, so this one and BosphorusSign22k general are also in the same dataset.",
+                "contact_dates": [
+                  "2026-10-02",
+                  "2026-11-11"
+                ],
+                "correspondence": "contacted_got_reply",
+                "id": "yv6ary4mdg8kw7q",
+                "license": "",
+                "name": "BosphorusSign",
+                "on_modal": "",
+                "permission_model_weights": "",
+                "permission_to_reproduce": "",
+                "signed_languages": [
+                  "tsm"
+                ],
+                "spoken_languages": [],
+                "url": [
+                  "https://www.sign-lang.uni-hamburg.de/lrec/data/bosphorussignfinance.html",
+                  "https://www.cmpe.boun.edu.tr/pilab/BosphorusSign/bosphorusSign_finance_en.html"
+                ]
+              }
+            ],
+            "metrics": [
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "wzc6kxyuhls6lut",
+                "name": "Accuracy",
+                "url": []
+              },
+              {
+                "collectionId": "pbc_3017397517",
+                "collectionName": "metrics",
+                "comments": "",
+                "id": "qmajh31r87f5x7e",
+                "name": "top-5 accuracy",
+                "url": null
+              }
+            ]
+          },
+          "finalized_by": "[redacted]",
+          "flag_reason": "",
+          "id": "j4fuvbiibz3tq54",
+          "includes_human_evaluation": "no",
+          "main_experiment_has_ranking": "yes",
+          "metrics": [
+            "wzc6kxyuhls6lut",
+            "qmajh31r87f5x7e"
+          ],
+          "paper_id": "13fbc66718d1a4b1c05e0aad78da9642cb61925e",
+          "pdf_url": "https://arxiv.org/pdf/2004.01225",
+          "peer_reviewed": "yes",
+          "potential_ethical_concerns": "no",
+          "rejection_reason": "",
+          "status": "final",
+          "status_history": [
+            {
+              "after": "final",
+              "before": "needs_review",
+              "by": "[redacted]",
+              "when": "2026-08-07T16:53:04.477Z"
+            }
+          ],
+          "sub_area_of_slp": [
+            "Isolated signing videos"
+          ],
+          "textual_conclusion": "The hue based temporal colorization scheme achieved 78.50% accuracy improving over the baseline method by 5%.  ... Utilizing that method with the hue based temporal classification, we further increased our accuracy by 3% to 81.37%.  ... Incorporating static subunits further improved our results to 81.58%.",
+          "title": "Temporal Accumulative Features for Sign Language Recognition",
+          "venue": "ICCV",
+          "what_to_reproduce": "Highest accuracy line Table 5:\nKeyshot , FL-4,  Single, Acc 81.58%, Top-5 96.94 %",
+          "year": 2019
+        }
+      },
+      "id": "2bki7rdezqjnw15",
+      "paper": "j4fuvbiibz3tq54",
+      "status": "in_progress",
+      "url": []
+    }
+  },
+  "paper": {
+    "title": "Temporal Accumulative Features for Sign Language Recognition",
+    "citation": "Kindiroglu, A. A., Ozdemir, O., Akarun, L. (2019). Temporal Accumulative Features for Sign Language Recognition. IEEE/CVF International Conference on Computer Vision Workshops (ICCVW). arXiv:2004.01225",
+    "url": "https://arxiv.org/abs/2004.01225",
+    "pdf_sha256": "a4a90b325a74ce0d0fd3e4c75758b9cb6fbe3485a4f9817c4e1853d24b58933a",
+    "accessed_at": "2026-11-24"
+  },
+  "sources": [
+    {
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2004.01225",
+      "revision_or_sha256": "a4a90b325a74ce0d0fd3e4c75758b9cb6fbe3485a4f9817c4e1853d24b58933a",
+      "role": "Targets (Table 5) and the disclosed method; the only source of the protocol."
+    }
+  ],
+  "status": {
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no target was produced. The pipeline ran end to end, but only under guessed protocol details, so its values (seed 0: accuracy 70.39 against 81.58, top-5 94.31 against 96.94) are conditional evidence and are not compared for agreement.",
+    "preference_level": 3,
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "With no released code, the paper does not determine the feature construction, the keyframe clustering, the hand segmentation training or the classifier's training schedule; each can change both targets.",
+      "target_ids": [
+        "table5-keyshot-fl4-accuracy",
+        "table5-keyshot-fl4-top5"
+      ]
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "bosphorussign22k",
+      "name": "BosphorusSign22k (Özdemir et al. 2020), General subset",
+      "version_or_subset": "The dataset owners' Google Drive folder as of 2026-11-24, without depth.tar.gz: 68,423 files, 86,376,739,485 bytes. Experiments use the rows of BosphorusSign22k.csv with SubsetID 'General': 5,788 videos, 174 classes; per video the Kinect v2 skeleton file and the RGB video.",
+      "source": "Shared with the study by the dataset owners through a Google Drive folder; exported through the Drive web interface and uploaded by data.sh. Queue dataset record yv6ary4mdg8kw7q names the earlier BosphorusSign corpus; the dataset owners state it is a subset of BosphorusSign22k.",
+      "license_or_permission": "Bosphorus Sign Dataset End User License Agreement (SHA-256 b7922c66dbcaed30453eeeac0664bc3b3384479bf2f25954ba8fa244fe96fda6): internal non-commercial research, no transfer to third parties, no corpus portions in publications. Gate bsign22k-data-cloud-use records the permission to process it in the study's Modal workspace.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "bosphorussign22k",
+      "preprocessing": "Kinect joints: color-image pixel coordinates scaled to 116x64. Videos: 20 keyshot frames per video decoded with simple-video-utils and resized to 960x544 for hand segmentation.",
+      "expected_counts": "Paper Sec. 4.1: General subset, 174 signs, 4,839 training and 949 test videos, user 4 as the test user. The CSV gives exactly these counts.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 4839,
+          "files": [
+            {
+              "path": "bosphorussign22k/MANIFEST.sha256",
+              "sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 949,
+          "files": [
+            {
+              "path": "bosphorussign22k/MANIFEST.sha256",
+              "sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+            }
+          ]
+        }
+      ],
+      "split_rule": "UserID 'User_4' is the test split; all other users are the training split (Sec. 4.1). No validation split."
+    },
+    {
+      "dataset_id": "rendered-handpose-dataset",
+      "name": "Rendered Handpose Dataset v1.1 (Zimmermann and Brox 2017)",
+      "version_or_subset": "RHD_v1-1.zip, SHA-256 e04310f19ccb0429c999efaf2a1e2a2b046f3024cada6794585a08fb92fb876f; the 41,258 training samples (color image and part mask).",
+      "source": "https://lmb.informatik.uni-freiburg.de/data/RenderedHandpose/RHD_v1-1.zip, downloaded on Modal by data.sh.",
+      "license_or_permission": "Dataset page: 'provided for research purposes only and without any warranty. Any commercial use is prohibited.' Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rendered-handpose-dataset",
+      "preprocessing": "Images resized to 320x320; mask parts 2-17 become 'left hand', 18-33 'right hand', everything else background.",
+      "expected_counts": "Paper Sec. 3.3: 41,258 training images. The archive holds 41,258 training samples.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 41258,
+          "files": [
+            {
+              "path": "rendered-handpose-dataset/MANIFEST.sha256",
+              "sha256": "2bc1c828a59fbc6630df9243f1462570f4774bc63d04b52ae105fbb48697befb"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the three HGR sets, shuffled with seed 0; 1% of the pool is held out for validation (Sec. 3.3)."
+    },
+    {
+      "dataset_id": "hgr1",
+      "name": "HGR hand gesture database, series HGR1 (Kawulok et al. 2014)",
+      "version_or_subset": "899 images with binary skin masks (downscaled set).",
+      "source": "Already in the shared Volume (imported 2026-09-10 by another reproduction); not modified.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr1",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 899 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 899,
+          "files": [
+            {
+              "path": "modal://kindiroglu-2019-results/hgr1-MANIFEST.sha256 (SHA-256 list of the 2,697 files under hgr1/feature_points, hgr1/original_images and hgr1/skin_masks, written by modal_app.py::hash_hgr1 because hgr1 has no manifest and is not modified by this paper)",
+              "sha256": "1e9a95ba5238af57ed1ba299a6c485c57b94811bb386df94166fc5c818fa56b3"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    },
+    {
+      "dataset_id": "hgr2a",
+      "name": "HGR hand gesture database, series HGR2A (Kawulok et al. 2014)",
+      "version_or_subset": "85 images with binary skin masks (downscaled set).",
+      "source": "https://sun.aei.polsl.pl/~mkawulok/gestures, downloaded on Modal by data.sh.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr2a",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 85 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 85,
+          "files": [
+            {
+              "path": "hgr2a/MANIFEST.sha256",
+              "sha256": "dc313540b8df9f97d3f8b41bfbd449ac2146607a0bb37c7e51542385eb6bba25"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    },
+    {
+      "dataset_id": "hgr2b",
+      "name": "HGR hand gesture database, series HGR2B (Kawulok et al. 2014)",
+      "version_or_subset": "574 images with binary skin masks (downscaled set).",
+      "source": "https://sun.aei.polsl.pl/~mkawulok/gestures, downloaded on Modal by data.sh.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr2b",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 574 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 574,
+          "files": [
+            {
+              "path": "hgr2b/MANIFEST.sha256",
+              "sha256": "05c4df651af511b83b509e0d120182b51cf4ab9e6abb6b6fdcbaa43a072c92a8"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_id": "accuracy",
+      "name": "Accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Correct top-1 predictions / test videos, computed on the saved class scores",
+      "version": "this reproduction's own code",
+      "aggregation": "one run, all 949 test videos",
+      "unit_or_scale": "percent",
+      "paper_definition": "Sec. 4: 'we perform signer independent classification and obtain two recognition metrics: accuracy and top-5 accuracy'. No formula is given."
+    },
+    {
+      "metric_id": "top5-accuracy",
+      "name": "Top-5 accuracy",
+      "direction": "higher_is_better",
+      "implementation": "Test videos whose true class is among the five highest class scores / test videos",
+      "version": "this reproduction's own code",
+      "aggregation": "one run, all 949 test videos",
+      "unit_or_scale": "percent",
+      "paper_definition": "Sec. 4, as for accuracy. No formula is given."
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "table5-keyshot-fl4-single",
+      "system": "Hue-based Temporal Accumulative Features of 11 Kinect joint heatmaps with hand-speed and density-clustering keyframes (fixed length 4), keyshot static subunits from DeepLab v3+ hand masks, single sequence representation, classified by a 2-block CNN trained from scratch",
+      "dataset_id": "bosphorussign22k",
+      "checkpoint_rule": "Not stated in the paper. This attempt uses the weights after the 100th epoch.",
+      "seed_policy": "The paper reports one value per row and no seed. This attempt reports seed 0; seeds 1 and 2 are supplementary.",
+      "paper_evidence": "Table 5, row 'Keyshot, FL-4, Single'; Secs. 3.1 to 3.4, 4.1, 4.5; Tables 1 and 3."
+    }
+  ],
+  "targets": [
+    {
+      "target_id": "table5-keyshot-fl4-accuracy",
+      "paper_location": "Table 5 (p. 8), row 'Keyshot, FL-4, Single', column 'Accuracy'",
+      "metric_id": "accuracy",
+      "original_value": 81.58,
+      "in_scope": true,
+      "experiment_id": "table5-keyshot-fl4-single",
+      "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper released no code and leaves behavior-changing details unstated or contradictory (gate taf-unstated-protocol; eight entries in guesses_and_deviations). The value from run full-1 was obtained under this attempt's guesses and is conditional evidence, as decided at the gate before any training run."
+        },
+        "run_ids": [
+          "full-1"
+        ],
+        "artifact_ids": [
+          "full-1-seed0-metrics",
+          "full-1-seed0-scores"
+        ],
+        "gate_ids": [
+          "taf-unstated-protocol"
+        ],
+        "evidence": [
+          "Conditional value, seed 0: 70.39 against the published 81.58 (difference -11.19). Seeds 1 and 2: 67.97 and 66.17.",
+          "Seed 0: 668 of 949 test videos correct at top 1 and 895 of 949 at top 5, recomputed from scores.npz.",
+          "Test accuracy varies between epochs: over the last 10 epochs of seed 0 it ranges from 63.96 to 72.60."
+        ]
+      }
+    },
+    {
+      "target_id": "table5-keyshot-fl4-top5",
+      "paper_location": "Table 5 (p. 8), row 'Keyshot, FL-4, Single', column 'Top-5'",
+      "metric_id": "top5-accuracy",
+      "original_value": 96.94,
+      "in_scope": true,
+      "experiment_id": "table5-keyshot-fl4-single",
+      "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
+      "copied_baseline": false,
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper released no code and leaves behavior-changing details unstated or contradictory (gate taf-unstated-protocol; eight entries in guesses_and_deviations). The value from run full-1 was obtained under this attempt's guesses and is conditional evidence, as decided at the gate before any training run."
+        },
+        "run_ids": [
+          "full-1"
+        ],
+        "artifact_ids": [
+          "full-1-seed0-metrics",
+          "full-1-seed0-scores"
+        ],
+        "gate_ids": [
+          "taf-unstated-protocol"
+        ],
+        "evidence": [
+          "Conditional value, seed 0: 94.31 against the published 96.94 (difference -2.63). Seeds 1 and 2: 94.20 and 92.52.",
+          "Seed 0: 668 of 949 test videos correct at top 1 and 895 of 949 at top 5, recomputed from scores.npz.",
+          "Test accuracy varies between epochs: over the last 10 epochs of seed 0 it ranges from 63.96 to 72.60."
+        ]
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "populate-dataset-1",
+      "kind": "data_population",
+      "purpose": "Mirror the dataset owners' Google Drive folder, without the 360 GiB depth.tar.gz that Table 5 does not use, to /datasets/bosphorussign22k; verify against Drive's MD5s; write a SHA-256 manifest.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-24T08:26:32Z",
+      "finished_at_utc": "2026-11-24T08:33:07Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T08:26:23Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 8.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-u8nVnqBtJ1VSdR0KaJ0VH7",
+          "ap-53FTl2zoWkIbbT9cg4esbf"
+        ],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": [],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis, refuted by populate-dataset-2: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share. The local modal run command ended with a RemoteError traceback when the app was stopped (exit code 1).",
+        "failure_class": "deterministic_code",
+        "retry_decision": "retry",
+        "next_run_id": "populate-dataset-2",
+        "gate_ids": []
+      },
+      "observed": "Files copied before the stop stay on the Volume and are skipped by the retry. No manifest was written."
+    },
+    {
+      "run_id": "populate-dataset-2",
+      "kind": "data_population",
+      "purpose": "Retry of populate-dataset-1 with one change: rclone lists the folder with a single recursive listing (--fast-list) and 8 checkers instead of 16.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
+      "exit_code": 1,
+      "started_at_utc": "2026-11-24T08:34:10Z",
+      "finished_at_utc": "2026-11-24T08:39:47Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 2,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T08:34:10Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 8.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-KWmKFChUQcKKu57BWtCqVi"
+        ],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": [],
+      "terminal": {
+        "state": "stopped",
+        "reason_code": "invalid_run",
+        "detail": "Stopped by the agent after 5.5 minutes: 221 files copied, 197 of 10,213 queued transfers, estimated 11 days remaining. The single recursive listing changed nothing, so the listing hypothesis of populate-dataset-1 is refuted. A local download of 434 files with debug logging then showed the cause: 97 responses 'rateLimitExceeded' on the quota 'defaultPerMinutePerProject' of drive.googleapis.com. The login uses rclone's shared Google client ID, whose request quota is shared by all rclone users; rclone backs off on every such response. Throughput therefore depends on a credential, not on code. Gate gdrive-client-id was opened on this evidence and later resolved as not needed: populate-dataset-3 uploads a local export of the folder instead of copying from Drive. The local modal run command ended with a RemoteError traceback when the app was stopped (exit code 1).",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "populate-dataset-3"
+      },
+      "observed": "Files copied before the stop stay on the Volume and are skipped by a later attempt. No manifest was written."
+    },
+    {
+      "run_id": "populate-dataset-3",
+      "kind": "data_population",
+      "purpose": "Upload the local Drive export (42 zips, two CSV files, the licence agreement and Drive's MD5 list) to /datasets/bosphorussign22k/source, extract it on Modal, verify every file against Drive's MD5 list, and write a SHA-256 manifest. Replaces the direct Drive-to-Modal copy of attempts 1 and 2.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh FILE...",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-24T10:44:02Z",
+      "finished_at_utc": "2026-11-24T17:17:24Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-dataset",
+        "number": 3,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T10:44:02Z",
+        "max_wall_time_seconds": 86400,
+        "max_gpu_hours": null,
+        "max_cost_usd": 4.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-gYWVat4XPDjAmjPnLDIzmh",
+          "ap-HbmOhyXw2EB6RfdT9XOwKM"
+        ],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 8
+      },
+      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 45 files uploaded without failure (2026-11-24T10:44Z to about 15:27Z). The populate function was preempted by Modal twice during hashing and restarted from the start by Modal each time; the third pass finished. 68,423 files, 86,376,739,485 bytes; no file missing, no MD5 mismatch and no file absent from Drive's list.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "manifest.json: files 68423, missing [], md5_mismatch [], not_on_drive []. The file count equals the 68,423 lines of Drive's MD5 list (depth.tar.gz excluded). MANIFEST.sha256 SHA-256 0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae. check_modal_dataset.sh confirmed bosphorussign22k/ and its manifest. App ap-gYWVat4XPDjAmjPnLDIzmh is the populate_public call of data.sh, which found the three hand datasets present and did nothing."
+    },
+    {
+      "run_id": "populate-hand-datasets-1",
+      "kind": "data_population",
+      "purpose": "Download HGR2A, HGR2B (downscaled and full-size archives) and the Rendered Handpose Dataset from their official pages to /datasets/hgr2a, /datasets/hgr2b and /datasets/rendered-handpose-dataset; keep the archives, extract them, write SHA-256 manifests.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::populate_public",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-24T09:55:41Z",
+      "finished_at_utc": "2026-11-24T10:10:20Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "populate-hand-datasets",
+        "number": 1,
+        "max_attempts": 3
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-24T09:55:41Z",
+        "max_wall_time_seconds": 10800,
+        "max_gpu_hours": null,
+        "max_cost_usd": 2.0
+      },
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-584ACz1ICpZddsFNSx0bWX"
+        ],
+        "gpu_count": 0,
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "cpu": 4
+      },
+      "artifact_ids": [],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All 13 archives downloaded from the official pages, tested, extracted and hashed. hgr2a: 85 images, 85 skin masks and 85 feature-point files in each of the downscaled and full-size sets. hgr2b: 574 of each. rendered-handpose-dataset: 123,774 training PNGs (41,258 samples x color, depth, mask) and 8,184 evaluation PNGs (2,728 samples x 3).",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      },
+      "observed": "Counts equal the official pages' (HGR2A 85, HGR2B 574) and the paper's 41,258 Rendered Handpose training images. MANIFEST.sha256 SHA-256: hgr2a dc313540b8df9f97d3f8b41bfbd449ac2146607a0bb37c7e51542385eb6bba25; hgr2b 05c4df651af511b83b509e0d120182b51cf4ab9e6abb6b6fdcbaa43a072c92a8; rendered-handpose-dataset 2bc1c828a59fbc6630df9243f1462570f4774bc63d04b52ae105fbb48697befb. RHD_v1-1.zip SHA-256 e04310f19ccb0429c999efaf2a1e2a2b046f3024cada6794585a08fb92fb876f. check_modal_dataset.sh confirmed all three paths and manifests."
+    },
+    {
+      "run_id": "full-1",
+      "kind": "full",
+      "purpose": "Table 5 row 'Keyshot, FL-4, Single' under the choices of gate taf-unstated-protocol: train the hand segmentation model, extract keyframes and keyshot masks for the 5,788 General-subset videos, then train and evaluate the classifier for seeds 0, 1 and 2.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::full",
+      "exit_code": 0,
+      "started_at_utc": "2026-11-26T10:31:14Z",
+      "finished_at_utc": "2026-11-26T13:16:13Z",
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-26T10:31:14Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_usd": 20.0
+      },
+      "configuration": {
+        "segmentation": "DeepLab v3+ ResNet-50 (ImageNet), 3 classes, 320x320, Adam 1e-4, batch 32, 20 epochs, 1% validation",
+        "keyframes": "HS+DC, K=4; keyshot of 5 frames",
+        "frames_segmented_at": "960x544",
+        "classifier": "2 blocks x 2 convolutions, 128 filters, dropout 0.25, Adam 1e-3, batch 32, 100 epochs, last-epoch weights",
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "input_shape": [
+          97,
+          64,
+          116
+        ]
+      },
+      "estimate": "From disposable preflights on an A10G on 2026-11-26: segmentation 138 images/s at 4.8 GiB peak GPU memory, so about 5 minutes per epoch and 1.7 hours for 20 epochs; masks 0.7 s per video, about 70 minutes; classifier under 15 minutes per seed. About 3.5 GPU-hours and USD 6 in total. The preflight also saved and reloaded the classifier weights and evaluated 15 test videos.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [
+          "ap-qoPVQn8iIcrsSxSTJUd71N"
+        ],
+        "gpu_count": 1,
+        "gpu": "NVIDIA A10, driver 620.70.06, 23028 MiB (Modal A10G)",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 plus segmentation-models-pytorch==0.5.0, simple-video-utils==0.7.4, av==18.1.1",
+        "usage": {
+          "gpu_hours": 2.745,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 4.94,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-24 --end 2026-11-27 -r h --show-resources --json, read 2026-11-26T13:20Z: rows with object_id ap-qoPVQn8iIcrsSxSTJUd71N; GPU-hours = A10G cost USD 3.0196 / rate 1.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU (3.0196), CPU (1.0411) and memory (0.8784) rows. Wall time was 2.750 hours."
+        }
+      },
+      "source_sha256": {
+        "modal_app.py": "bedc9a2ff2a52fd2952e0a67404fbeae8636c8a405bfcfbd60715cb1f00650bc",
+        "taf.py": "1f11f03d18cbd74f4700f463baf8b291d346731842e55f94b91d4aa35332f9b6"
+      },
+      "artifact_ids": [
+        "full-1-seed0-metrics",
+        "full-1-seed1-metrics",
+        "full-1-seed2-metrics",
+        "full-1-seed0-scores",
+        "full-1-segmentation-log",
+        "full-1-pip-freeze"
+      ],
+      "environment": {
+        "torch": "2.11.0a0+eb65b36914.nv26.02",
+        "pip_freeze_sha256": "a5252f0c8043010e2eab2476161aa1a0b1ed2e6f735fd9f4db71ca318c2bc4b6",
+        "dataset_manifest_sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+      },
+      "results": [
+        {
+          "stage": "segmentation",
+          "training_images": 42388,
+          "validation_images": 428,
+          "validation_iou_background_left_right": [
+            0.9964,
+            0.9259,
+            0.9307
+          ],
+          "note": "IoU is computed on validation pixels that have a side label, i.e. Rendered Handpose images."
+        },
+        {
+          "stage": "masks",
+          "videos": 5788,
+          "mean_hand_pixel_fraction_logged_at_2600_videos": 0.0085
+        },
+        {
+          "stage": "classifier",
+          "seed": 0,
+          "accuracy": 70.38988494873047,
+          "top5_accuracy": 94.30979919433594,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 73.86723327636719,
+          "last_10_epochs_test_accuracy_range": [
+            63.962066650390625,
+            72.60273742675781
+          ],
+          "train_seconds": 219.9,
+          "peak_gpu_gib": 10.31
+        },
+        {
+          "stage": "classifier",
+          "seed": 1,
+          "accuracy": 67.9662857055664,
+          "top5_accuracy": 94.20442199707031,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 71.97048950195312,
+          "last_10_epochs_test_accuracy_range": [
+            64.48893737792969,
+            71.54899597167969
+          ],
+          "train_seconds": 219.8,
+          "peak_gpu_gib": 10.31
+        },
+        {
+          "stage": "classifier",
+          "seed": 2,
+          "accuracy": 66.17491912841797,
+          "top5_accuracy": 92.51844024658203,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 74.71022033691406,
+          "last_10_epochs_test_accuracy_range": [
+            66.17491912841797,
+            73.02423858642578
+          ],
+          "train_seconds": 219.9,
+          "peak_gpu_gib": 10.31
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All three stages completed without preemption: 20 segmentation epochs, masks for 5,788 videos, and 100 classifier epochs with a weight save/reload check for each of seeds 0, 1 and 2.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "full-1-seed0-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed0/metrics.json",
+      "sha256": "e9455536407cf929c8249d48e812f5623835467b45bbb24c8d9c62e4278e12aa",
+      "size_bytes": 13268
+    },
+    {
+      "artifact_id": "full-1-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed1/metrics.json",
+      "sha256": "2fb3219573d0f6a81c23e1d922f06ed283e345e691de0cf50903e7a2103915a3",
+      "size_bytes": 13255
+    },
+    {
+      "artifact_id": "full-1-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed2/metrics.json",
+      "sha256": "3075960d7958b8513f09e09245457d3b659b564f67f46c46e0ea1f2f4bd8060b",
+      "size_bytes": 13257
+    },
+    {
+      "artifact_id": "full-1-seed0-scores",
+      "kind": "predictions",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed0/scores.npz",
+      "sha256": "8e97cb1dbb78033d0a2ae7d9fff3181229daae78561596685487cce90d35c373",
+      "size_bytes": 586923
+    },
+    {
+      "artifact_id": "full-1-segmentation-log",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/seg.json",
+      "sha256": "01aa5a7dae35396bc3dec853ef0555b33cf4c125a21c1a70b26da6fae9d4ebc4",
+      "size_bytes": 5711
+    },
+    {
+      "artifact_id": "full-1-pip-freeze",
+      "kind": "environment",
+      "uri": "modal://kindiroglu-2019-results/full/pip-freeze-train.txt",
+      "sha256": "a5252f0c8043010e2eab2476161aa1a0b1ed2e6f735fd9f4db71ca318c2bc4b6",
+      "size_bytes": 6906
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "bsign22k-data-cloud-use",
+      "type": "data",
+      "status": "resolved",
+      "reason": "BosphorusSign22k is distributed on request under an end user licence agreement that forbids transfer to third parties without the licensor's authorization. The queue record's license, permission_to_reproduce and on_modal fields are empty. The videos show signers' faces. The dataset is absent from the shared Modal Volume 'datasets'.",
+      "evidence": [
+        "Queue record, dataset entry yv6ary4mdg8kw7q: license empty, permission_to_reproduce empty, correspondence 'contacted_got_reply', on_modal empty.",
+        "Licence agreement in the dataset folder, 'Bosphorus Sign 22k Dataset END USER LICENSE AGREEMENT (01/2020)', SHA-256 b7922c66dbcaed30453eeeac0664bc3b3384479bf2f25954ba8fa244fe96fda6: internal, non-commercial scientific research only; no transfer or distribution to third parties without prior authorization; no portions of the corpus in publications; a fixed acknowledgement and two citations in publications; derivative works left freely available to other end users.",
+        "modal volume ls datasets / on 2026-11-24 lists no BosphorusSign directory."
+      ],
+      "required_action": "A study team member confirms that the study's permission covers storing and processing the corpus in the repro-sign Modal workspace, and authorizes populating /datasets/bosphorussign22k on the shared Volume.",
+      "resolved_at": "2026-11-24",
+      "resolution": "A study team member confirmed that the study has permission for this use and that the empty queue fields are an omission on the annotation platform, and authorized mirroring the dataset folder to /datasets/bosphorussign22k on the shared Volume. The copy stays private to the workspace; nothing from the corpus is committed, published or redistributed."
+    },
+    {
+      "gate_id": "gdrive-client-id",
+      "type": "data",
+      "status": "resolved",
+      "reason": "The Drive login stored as Modal Secret 'gdrive-rclone' uses rclone's shared Google client ID. Google rate-limits that client's project, which limits the copy to about one file per second: 67,000 remaining files would not finish within the 24-hour ceiling, and one attempt remains.",
+      "evidence": [
+        "populate-dataset-1 and populate-dataset-2: about 1 file per second on Modal.",
+        "Local rclone download with -vv on 2026-11-24: 434 files in 175 seconds with 97 'rateLimitExceeded' responses naming quota 'defaultPerMinutePerProject'.",
+        "rclone prints on every call that its shared client ID is being retired during 2026 and recommends creating one's own."
+      ],
+      "required_action": "A study team member creates their own Google OAuth client ID, signs in again with it and replaces the Modal Secret 'gdrive-rclone'. Creating credentials and secrets is outside the agent's authority.",
+      "resolved_at": "2026-11-24",
+      "resolution": "No new credential was created. A study team member downloaded the folder, without depth.tar.gz, through the Google Drive web interface as 42 zip archives and two CSV files, and asked for it to be uploaded from that local copy. The same person asked for the partial copy left by populate-dataset-1 and populate-dataset-2 to be removed from the Volume; /datasets/bosphorussign22k was deleted on 2026-11-24 before the upload."
+    },
+    {
+      "gate_id": "hand-datasets-cloud-use",
+      "type": "data",
+      "status": "resolved",
+      "reason": "The paper trains its hand segmentation model on the Rendered Handpose Dataset and the HGR database. Both are public downloads whose pages allow research, non-commercial use and say nothing about cloud storage. Only HGR1 is on the shared Volume (datasets/hgr1, imported 2026-09-10); HGR2A, HGR2B and the Rendered Handpose Dataset are absent.",
+      "evidence": [
+        "https://sun.aei.polsl.pl/~mkawulok/gestures/ read 2026-11-24: 'The database is free to use for research, non-commercial purposes, provided that the following papers are cited'; series HGR1 899, HGR2A 85, HGR2B 574 images.",
+        "https://lmb.informatik.uni-freiburg.de/resources/datasets/RenderedHandposeDataset.en.html read 2026-11-24: 'This dataset is provided for research purposes only and without any warranty. Any commercial use is prohibited.'",
+        "modal volume ls datasets / on 2026-11-24: hgr1 present; no hgr2a, hgr2b or Rendered Handpose directory."
+      ],
+      "required_action": "A study team member authorizes storing these public research datasets in the repro-sign Modal workspace.",
+      "resolved_at": "2026-11-24",
+      "resolution": "A study team member authorized placing HGR2A, HGR2B and the Rendered Handpose Dataset on the shared Volume as separate datasets, downloaded on Modal from the official pages."
+    },
+    {
+      "gate_id": "taf-unstated-protocol",
+      "type": "protocol",
+      "status": "resolved",
+      "reason": "No code was released and the paper leaves behavior-changing details unstated or contradictory: heatmap projection and width, the content of the 7 channels per joint, keyframe clustering, the meaning of FL-4, how hand masks enter the feature, hand-segmentation training (including left/right labels for HGR, whose masks are unlabelled skin masks), CNN depth and dropout, learning rate, epochs, checkpoint choice and seed.",
+      "evidence": [
+        "Sec. 3.4 text: '6 convolutional layers' and dropout 0.5; same section: '2 blocks of layers, each with 2 convolutional layers'; Table 3 row '0.25 2 2 128 78.21 96.84' equals Table 4 row 'None 3 78.21 96.84'.",
+        "Table 1: 'Hue + KF + Static keyshot: 11 joints, 7 channels, 5K static frames'; '#joints x #channels + #static frames yields the final input dimensionality'.",
+        "Sec. 3.3: three classes (left hand, right hand, background), Rendered Handpose Dataset plus HGR, DeepLab v3+, 1% validation; no backbone, input size or schedule.",
+        "Sec. 3.2: K + 2 keyframes with the first and last discarded; density clustering [40] with no parameters.",
+        "Kinect files in the dataset hold, per joint and frame: camera-space x, y, z (m), an orientation quaternion, color-image pixel x, y (1920x1080) and depth-image pixel x, y (512x424)."
+      ],
+      "required_action": "Decide the unstated details before any training run, and whether values obtained under them count as produced targets or as conditional evidence.",
+      "resolved_at": "2026-11-24",
+      "resolution": "Decided by a study team member before any training run. CNN: 2 blocks of 2 convolutional layers, 128 initial filters, dropout 0.25 (the Table 3 row that Table 4 reuses). Joint positions: the Kinect files' color-image pixel coordinates scaled from 1920x1080 to 116x64; Gaussian standard deviation 2 pixels; 'upper arms' are the shoulder joints. Seven channels per joint: hue-colored image (3), intensity (1), normalized image (3). Keyframes: density-peaks clustering on (frame, speed) points of the dominant hand's speed minima, the 6 strongest peaks, first and last dropped; FL-4 means 4 keyframes kept, giving 20 mask channels and 97 input channels. Hand masks: whole-frame mask of both hands resized to 116x64, one channel per frame. Segmentation: DeepLab v3+ with an ImageNet-pretrained ResNet-50 backbone in PyTorch, on the Rendered Handpose Dataset plus HGR1, HGR2A and HGR2B; HGR images are trained as hand versus background only, so no left/right label is invented. Classifier training: Adam, learning rate 0.001, batch 32, 100 epochs, weights after the last epoch, no selection on the test set; seed 0 is the reported value and seeds 1 and 2 are supplementary. Framework: PyTorch on the study base image. Values obtained under these choices are conditional evidence and do not count as produced targets."
+    }
+  ],
+  "guesses_and_deviations": [
+    {
+      "id": "cnn-depth-and-dropout",
+      "kind": "paper_internal_conflict",
+      "description": "Classifier depth and dropout.",
+      "paper_says": "Sec. 3.4: '6 convolutional layers', dropout 0.5, and also '2 blocks of layers, each with 2 convolutional layers'.",
+      "used": "2 blocks x 2 convolutions (4 layers), 128 initial filters, dropout 0.25 after every convolution, 'same' padding, ReLU, one linear layer after global average pooling.",
+      "basis": "Table 3's row '0.25, 2, 2, 128: 78.21, 96.84' is the value Table 4 reuses as its baseline, and Sec. 4.3 says that model was used from then on. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "joint-projection-and-heatmaps",
+      "kind": "guess",
+      "description": "How 3D joints become 116x64 heatmaps.",
+      "paper_says": "Sec. 3.1.1: 3D Kinect joints, 'Gaussian uncertainties on the joint locations', 10 joints of the 'upper arms, elbows, wrists, hand tips and thumbs' plus a background heatmap of all joints.",
+      "used": "The Kinect files' color-image pixel coordinates scaled from 1920x1080 to 116x64; Gaussian standard deviation 2 pixels; 'upper arms' are the shoulder joints; the background map is the maximum over all 25 joints.",
+      "basis": "1920x1080 and 116x64 have almost the same aspect ratio. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "seven-channels-per-joint",
+      "kind": "guess",
+      "description": "The content of the '7 channels' per joint and the hue coloring.",
+      "paper_says": "Table 1: 'Hue: 11 joints, 7 channels'. Sec. 3.1.2: hue = subunit, saturation = time within the unit, value = heatmap strength. Sec. 3.2: hue n x 180 / (K + 1).",
+      "used": "Per joint, PoTion's three descriptors on an RGB rendering of the HSV image: colored sum (3), intensity (1), normalized (3). Hue n / (K + 1) of the color circle (OpenCV's 0-180 scale); saturation rises linearly within a segment.",
+      "basis": "PoTion's 2c+1 gives 7 for 3 color channels, and Figure 3 shows three rows of which one is 'obtained by normalizing'. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "keyframe-detection",
+      "kind": "guess",
+      "description": "Keyframe detection (HS+DC) and the meaning of FL-4.",
+      "paper_says": "Sec. 3.2: local minima of the dominant hand's speed, K + 2 keyframes with the first and last discarded, 'density clustering' [40]. Table 5: 'FL-# means # keyframes'.",
+      "used": "Hand joint speed in camera coordinates; dominant hand = longer path; density-peaks clustering on normalized (frame, speed) points with a Gaussian kernel at the 2nd-percentile distance; the 6 points with the largest density x distance; first and last dropped; 4 keyframes kept, 5 colored segments. Fewer than 6 minima: evenly spaced frames.",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "static-keyshot-masks",
+      "kind": "guess",
+      "description": "How hand masks enter the feature.",
+      "paper_says": "Sec. 3.3: masks of the selected frames are 'resized, converted to binary masks and added to the TAF representation'; keyshot = 'five consecutive frames centered at the keyframe'. Table 1: 5K static frames.",
+      "used": "Per keyshot frame one 116x64 channel: the whole-frame mask of both hands, a cell set if any hand pixel falls in it. 20 mask channels, 97 input channels.",
+      "basis": "Table 1 counts one channel per static frame. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "At 116x64 a hand covers a few cells, so little hand shape is kept; a hand crop would be a different feature. Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "hand-segmentation-training",
+      "kind": "guess",
+      "description": "Hand segmentation model and training.",
+      "paper_says": "Sec. 3.3: DeepLab v3+, three classes, Rendered Handpose plus 'the HGR dataset', 1% validation, mIoU about 78% left and 83% right. No backbone, input size, schedule, or rule for HGR's missing left/right labels.",
+      "used": "DeepLab v3+ (segmentation-models-pytorch 0.5.0) with an ImageNet ResNet-50 backbone; 320x320; Adam 1e-4, batch 32, 20 epochs, no augmentation; HGR1, HGR2A and HGR2B; HGR skin pixels trained as 'left or right hand'; video frames segmented at 960x544.",
+      "basis": "Backbone, HGR series and the HGR loss were decided at gate taf-unstated-protocol; resolution, optimizer, epochs and the frame size are this attempt's own choices, fixed before the run.",
+      "effect": "The masks' quality on the sign videos is not measured (no ground truth). Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data",
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "classifier-training",
+      "kind": "guess",
+      "description": "Learning rate, epochs, checkpoint and seed.",
+      "paper_says": "Sec. 3.4: Adam, batch size 32, Xavier initialization, random horizontal flip. No learning rate, epoch count, checkpoint rule or seed.",
+      "used": "Adam with Keras defaults (learning rate 0.001), 100 epochs, weights after the last epoch, no selection on the test set; seed 0 reported, seeds 1 and 2 supplementary.",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "The paper has no validation split, so its checkpoint may have been chosen on the test user; last-epoch values can be lower than a best-epoch value.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "pytorch-instead-of-keras",
+      "kind": "paper_deviation",
+      "description": "Framework.",
+      "paper_says": "Sec. 4: 'implemented using the Keras library with a Tensorflow backend'.",
+      "used": "PyTorch on the study base image, with Keras defaults mirrored (Glorot-uniform weights, batch-norm epsilon 1e-3 and momentum 0.99, Adam epsilon 1e-7).",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Numerical differences between frameworks are expected to be small against the other guesses.",
+      "status": "adopted before the runs",
+      "affects": [
+        "environment",
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    }
+  ],
+  "noncompliance": [],
+  "source_search": {
+    "searched_at": "2026-11-26",
+    "conclusion": "No code for this paper was found. Preference level 3: reimplementation from the paper.",
+    "locations": [
+      "Paper PDF (arXiv:2004.01225), all pages: no code, data or supplement link; the dataset is described as 'available on request'.",
+      "CVF open-access page for the ICCVW 2019 paper and the arXiv abstract page, as returned by web search: no code link.",
+      "Papers with Code entry for the paper, as returned by web search: no code implementations listed.",
+      "Web searches: the exact title with 'code github'; the three author surnames with 'temporal accumulative features TAF PoTion sign language implementation repository': paper pages only.",
+      "GitHub repository search for 'temporal accumulative features', 'temporal accumulative features sign language' and 'BosphorusSign TAF': no repositories. Search for 'bosphorussign22k': one repository, the dataset's web page.",
+      "Public repositories of two authors' GitHub accounts (found by name search) and of the authors' laboratory organization: none implements this paper. One, isolated-slr (last pushed 2019-09-20), holds 3D-CNN and LSTM data loaders and BosphorusSign split files for a different method; code search for 'accumulative' and 'potion' in that account returns nothing.",
+      "PoTion (Choutas et al. 2018), the cited basis of the representation, is a different paper's method and was not used as code."
+    ]
+  },
+  "contacts": [
+    {
+      "id": "author-protocol-questions-1",
+      "date": "2026-11-26",
+      "kind": "post_attempt_author_contact",
+      "results_disclosed": false,
+      "related_ids": [
+        "taf-unstated-protocol",
+        "cnn-depth-and-dropout",
+        "joint-projection-and-heatmaps",
+        "seven-channels-per-joint",
+        "keyframe-detection",
+        "static-keyshot-masks",
+        "hand-segmentation-training",
+        "classifier-training",
+        "pytorch-instead-of-keras"
+      ],
+      "response": null,
+      "response_status": "No reply as of 2026-11-26.",
+      "effect": "None yet. A study team member sent the authors 25 questions after run full-1 had finished, covering every guess in guesses_and_deviations (heatmaps, hue accumulation, keyframes, static subunits, hand segmentation, classifier and training, data identity) and asking for the original code. No result of this attempt was disclosed."
+    }
+  ]
+}
