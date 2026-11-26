@@ -7,7 +7,7 @@
       "model_id": "claude-fable-5-2",
       "harness": "Claude Code",
       "harness_version": "2.1.330",
-      "scope": "Assignment ingestion, data gating, the dataset population code and its execution. Extended as the attempt proceeds.",
+      "scope": "Assignment ingestion, target resolution, source search, data gating, the dataset population code, the reimplementation, execution of every run, evaluation and report.",
       "evidence": [
         "Session metadata on 2026-11-24: the session's system context names the model 'Fable 5.2' with model ID 'claude-fable-5-2'.",
         "Command output on 2026-11-24: 'claude --version' printed '2.1.330 (Claude Code)'."
@@ -196,11 +196,18 @@
     }
   ],
   "status": {
-    "pipeline": null,
-    "numerical_agreement": null,
-    "numerical_agreement_basis": "Why agreement was or was not assessed, including scope and criterion",
+    "pipeline": "insufficient_information",
+    "numerical_agreement": "not_assessed",
+    "numerical_agreement_basis": "Not assessed: no target was produced. The pipeline ran end to end, but only under guessed protocol details, so its values (seed 0: accuracy 70.39 against 81.58, top-5 94.31 against 96.94) are conditional evidence and are not compared for agreement.",
     "preference_level": 3,
-    "blocker": null
+    "blocker": {
+      "reason_code": "protocol_ambiguous",
+      "detail": "With no released code, the paper does not determine the feature construction, the keyframe clustering, the hand segmentation training or the classifier's training schedule; each can change both targets.",
+      "target_ids": [
+        "table5-keyshot-fl4-accuracy",
+        "table5-keyshot-fl4-top5"
+      ]
+    }
   },
   "datasets": [
     {
@@ -366,8 +373,8 @@
       "experiment_id": "table5-keyshot-fl4-single",
       "system": "Hue-based Temporal Accumulative Features of 11 Kinect joint heatmaps with hand-speed and density-clustering keyframes (fixed length 4), keyshot static subunits from DeepLab v3+ hand masks, single sequence representation, classified by a 2-block CNN trained from scratch",
       "dataset_id": "bosphorussign22k",
-      "checkpoint_rule": "Not stated in the paper.",
-      "seed_policy": "The paper reports one value per row and no seed.",
+      "checkpoint_rule": "Not stated in the paper. This attempt uses the weights after the 100th epoch.",
+      "seed_policy": "The paper reports one value per row and no seed. This attempt reports seed 0; seeds 1 and 2 are supplementary.",
       "paper_evidence": "Table 5, row 'Keyshot, FL-4, Single'; Secs. 3.1 to 3.4, 4.1, 4.5; Tables 1 and 3."
     }
   ],
@@ -381,7 +388,29 @@
       "experiment_id": "table5-keyshot-fl4-single",
       "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper released no code and leaves behavior-changing details unstated or contradictory (gate taf-unstated-protocol; eight entries in guesses_and_deviations). The value from run full-1 was obtained under this attempt's guesses and is conditional evidence, as decided at the gate before any training run."
+        },
+        "run_ids": [
+          "full-1"
+        ],
+        "artifact_ids": [
+          "full-1-seed0-metrics",
+          "full-1-seed0-scores"
+        ],
+        "gate_ids": [
+          "taf-unstated-protocol"
+        ],
+        "evidence": [
+          "Conditional value, seed 0: 70.39 against the published 81.58 (difference -11.19). Seeds 1 and 2: 67.97 and 66.17.",
+          "Seed 0: 668 of 949 test videos correct at top 1 and 895 of 949 at top 5, recomputed from scores.npz.",
+          "Test accuracy varies between epochs: over the last 10 epochs of seed 0 it ranges from 63.96 to 72.60."
+        ]
+      }
     },
     {
       "target_id": "table5-keyshot-fl4-top5",
@@ -392,7 +421,29 @@
       "experiment_id": "table5-keyshot-fl4-single",
       "split": "BosphorusSign General subset (174 signs): train on the 4,839 videos of all other users, test on the 949 videos of user 4 (Sec. 4.1)",
       "copied_baseline": false,
-      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments."
+      "copied_baseline_evidence": "The queue records copied_scores 'no'; Table 5 holds the paper's own experiments.",
+      "result": {
+        "status": "not_produced",
+        "reason": {
+          "code": "protocol_ambiguous",
+          "detail": "The paper released no code and leaves behavior-changing details unstated or contradictory (gate taf-unstated-protocol; eight entries in guesses_and_deviations). The value from run full-1 was obtained under this attempt's guesses and is conditional evidence, as decided at the gate before any training run."
+        },
+        "run_ids": [
+          "full-1"
+        ],
+        "artifact_ids": [
+          "full-1-seed0-metrics",
+          "full-1-seed0-scores"
+        ],
+        "gate_ids": [
+          "taf-unstated-protocol"
+        ],
+        "evidence": [
+          "Conditional value, seed 0: 94.31 against the published 96.94 (difference -2.63). Seeds 1 and 2: 94.20 and 92.52.",
+          "Seed 0: 668 of 949 test videos correct at top 1 and 895 of 949 at top 5, recomputed from scores.npz.",
+          "Test accuracy varies between epochs: over the last 10 epochs of seed 0 it ranges from 63.96 to 72.60."
+        ]
+      }
     }
   ],
   "runs": [
@@ -628,9 +679,9 @@
         "reproduction-agent"
       ],
       "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::full",
-      "exit_code": null,
+      "exit_code": 0,
       "started_at_utc": "2026-11-26T10:31:14Z",
-      "finished_at_utc": null,
+      "finished_at_utc": "2026-11-26T13:16:13Z",
       "recording": {
         "mode": "contemporaneous",
         "source_record_sha256": null,
@@ -671,7 +722,7 @@
           "ap-qoPVQn8iIcrsSxSTJUd71N"
         ],
         "gpu_count": 1,
-        "gpu": "A10G",
+        "gpu": "NVIDIA A10, driver 620.70.06, 23028 MiB (Modal A10G)",
         "shared_cache": {
           "modal_volume": "huggingface-cache",
           "mount_path": "/cache/huggingface",
@@ -680,16 +731,146 @@
             "HF_HUB_CACHE": "/cache/huggingface/hub"
           }
         },
-        "image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 plus segmentation-models-pytorch==0.5.0, simple-video-utils==0.7.4, av==18.1.1"
+        "image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 plus segmentation-models-pytorch==0.5.0, simple-video-utils==0.7.4, av==18.1.1",
+        "usage": {
+          "gpu_hours": 2.745,
+          "gpu_hours_basis": "measured",
+          "cost_usd": 4.94,
+          "cost_basis": "billed",
+          "source": "modal_repro_sign.sh billing report --start 2026-11-24 --end 2026-11-27 -r h --show-resources --json, read 2026-11-26T13:20Z: rows with object_id ap-qoPVQn8iIcrsSxSTJUd71N; GPU-hours = A10G cost USD 3.0196 / rate 1.10 USD/h from modal_repro_sign.sh billing rates read the same day; cost is the sum of the app's GPU (3.0196), CPU (1.0411) and memory (0.8784) rows. Wall time was 2.750 hours."
+        }
       },
       "source_sha256": {
         "modal_app.py": "bedc9a2ff2a52fd2952e0a67404fbeae8636c8a405bfcfbd60715cb1f00650bc",
         "taf.py": "1f11f03d18cbd74f4700f463baf8b291d346731842e55f94b91d4aa35332f9b6"
       },
-      "artifact_ids": []
+      "artifact_ids": [
+        "full-1-seed0-metrics",
+        "full-1-seed1-metrics",
+        "full-1-seed2-metrics",
+        "full-1-seed0-scores",
+        "full-1-segmentation-log",
+        "full-1-pip-freeze"
+      ],
+      "environment": {
+        "torch": "2.11.0a0+eb65b36914.nv26.02",
+        "pip_freeze_sha256": "a5252f0c8043010e2eab2476161aa1a0b1ed2e6f735fd9f4db71ca318c2bc4b6",
+        "dataset_manifest_sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+      },
+      "results": [
+        {
+          "stage": "segmentation",
+          "training_images": 42388,
+          "validation_images": 428,
+          "validation_iou_background_left_right": [
+            0.9964,
+            0.9259,
+            0.9307
+          ],
+          "note": "IoU is computed on validation pixels that have a side label, i.e. Rendered Handpose images."
+        },
+        {
+          "stage": "masks",
+          "videos": 5788,
+          "mean_hand_pixel_fraction_logged_at_2600_videos": 0.0085
+        },
+        {
+          "stage": "classifier",
+          "seed": 0,
+          "accuracy": 70.38988494873047,
+          "top5_accuracy": 94.30979919433594,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 73.86723327636719,
+          "last_10_epochs_test_accuracy_range": [
+            63.962066650390625,
+            72.60273742675781
+          ],
+          "train_seconds": 219.9,
+          "peak_gpu_gib": 10.31
+        },
+        {
+          "stage": "classifier",
+          "seed": 1,
+          "accuracy": 67.9662857055664,
+          "top5_accuracy": 94.20442199707031,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 71.97048950195312,
+          "last_10_epochs_test_accuracy_range": [
+            64.48893737792969,
+            71.54899597167969
+          ],
+          "train_seconds": 219.8,
+          "peak_gpu_gib": 10.31
+        },
+        {
+          "stage": "classifier",
+          "seed": 2,
+          "accuracy": 66.17491912841797,
+          "top5_accuracy": 92.51844024658203,
+          "test_videos": 949,
+          "best_epoch_test_accuracy_not_used": 74.71022033691406,
+          "last_10_epochs_test_accuracy_range": [
+            66.17491912841797,
+            73.02423858642578
+          ],
+          "train_seconds": 219.9,
+          "peak_gpu_gib": 10.31
+        }
+      ],
+      "terminal": {
+        "state": "succeeded",
+        "reason_code": "completed",
+        "detail": "All three stages completed without preemption: 20 segmentation epochs, masks for 5,788 videos, and 100 classifier epochs with a weight save/reload check for each of seeds 0, 1 and 2.",
+        "failure_class": null,
+        "retry_decision": "not_needed",
+        "gate_ids": []
+      }
     }
   ],
-  "artifacts": [],
+  "artifacts": [
+    {
+      "artifact_id": "full-1-seed0-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed0/metrics.json",
+      "sha256": "e9455536407cf929c8249d48e812f5623835467b45bbb24c8d9c62e4278e12aa",
+      "size_bytes": 13268
+    },
+    {
+      "artifact_id": "full-1-seed1-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed1/metrics.json",
+      "sha256": "2fb3219573d0f6a81c23e1d922f06ed283e345e691de0cf50903e7a2103915a3",
+      "size_bytes": 13255
+    },
+    {
+      "artifact_id": "full-1-seed2-metrics",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed2/metrics.json",
+      "sha256": "3075960d7958b8513f09e09245457d3b659b564f67f46c46e0ea1f2f4bd8060b",
+      "size_bytes": 13257
+    },
+    {
+      "artifact_id": "full-1-seed0-scores",
+      "kind": "predictions",
+      "uri": "modal://kindiroglu-2019-results/full/classifier-seed0/scores.npz",
+      "sha256": "8e97cb1dbb78033d0a2ae7d9fff3181229daae78561596685487cce90d35c373",
+      "size_bytes": 586923
+    },
+    {
+      "artifact_id": "full-1-segmentation-log",
+      "kind": "metrics",
+      "uri": "modal://kindiroglu-2019-results/full/seg.json",
+      "sha256": "01aa5a7dae35396bc3dec853ef0555b33cf4c125a21c1a70b26da6fae9d4ebc4",
+      "size_bytes": 5711
+    },
+    {
+      "artifact_id": "full-1-pip-freeze",
+      "kind": "environment",
+      "uri": "modal://kindiroglu-2019-results/full/pip-freeze-train.txt",
+      "sha256": "a5252f0c8043010e2eab2476161aa1a0b1ed2e6f735fd9f4db71ca318c2bc4b6",
+      "size_bytes": 6906
+    }
+  ],
   "gates": [
     {
       "gate_id": "bsign22k-data-cloud-use",
