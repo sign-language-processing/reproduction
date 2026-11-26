@@ -294,3 +294,30 @@ def full(out: str = "full"):
             if name == "masks":
                 open(f"/results/{out}/{marker}", "w").close()
                 results.commit()
+
+
+@app.function(
+    image=populate_image,
+    volumes={"/datasets": datasets.read_only(), "/results": results},
+    cpu=4,
+    timeout=1800,
+)
+def hash_hgr1():
+    """hgr1 predates this paper and has no manifest; write its SHA-256 list to the results Volume."""
+    import os
+
+    lines = []
+    for folder in ("feature_points", "original_images", "skin_masks"):
+        for name in sorted(os.listdir(f"/datasets/hgr1/{folder}")):
+            lines.append(
+                f"{sha256_file(f'/datasets/hgr1/{folder}/{name}')}  {folder}/{name}\n"
+            )
+    with open("/results/hgr1-MANIFEST.sha256", "w", encoding="utf-8") as file:
+        file.writelines(lines)
+    results.commit()
+    print(
+        len(lines),
+        "files;",
+        "manifest sha256",
+        sha256_file("/results/hgr1-MANIFEST.sha256"),
+    )

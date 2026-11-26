@@ -188,21 +188,157 @@
   },
   "sources": [
     {
-      "source_id": "published-code",
-      "kind": "code",
-      "url": "Canonical source URL",
-      "revision_or_sha256": "Pinned revision or SHA-256",
-      "role": "Why this source is used"
+      "source_id": "paper-pdf",
+      "kind": "paper",
+      "url": "https://arxiv.org/pdf/2004.01225",
+      "revision_or_sha256": "a4a90b325a74ce0d0fd3e4c75758b9cb6fbe3485a4f9817c4e1853d24b58933a",
+      "role": "Targets (Table 5) and the disclosed method; the only source of the protocol."
     }
   ],
   "status": {
     "pipeline": null,
     "numerical_agreement": null,
     "numerical_agreement_basis": "Why agreement was or was not assessed, including scope and criterion",
-    "preference_level": null,
+    "preference_level": 3,
     "blocker": null
   },
-  "datasets": [],
+  "datasets": [
+    {
+      "dataset_id": "bosphorussign22k",
+      "name": "BosphorusSign22k (Özdemir et al. 2020), General subset",
+      "version_or_subset": "The dataset owners' Google Drive folder as of 2026-11-24, without depth.tar.gz: 68,423 files, 86,376,739,485 bytes. Experiments use the rows of BosphorusSign22k.csv with SubsetID 'General': 5,788 videos, 174 classes; per video the Kinect v2 skeleton file and the RGB video.",
+      "source": "Shared with the study by the dataset owners through a Google Drive folder; exported through the Drive web interface and uploaded by data.sh. Queue dataset record yv6ary4mdg8kw7q names the earlier BosphorusSign corpus; the dataset owners state it is a subset of BosphorusSign22k.",
+      "license_or_permission": "Bosphorus Sign Dataset End User License Agreement (SHA-256 b7922c66dbcaed30453eeeac0664bc3b3384479bf2f25954ba8fa244fe96fda6): internal non-commercial research, no transfer to third parties, no corpus portions in publications. Gate bsign22k-data-cloud-use records the permission to process it in the study's Modal workspace.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "bosphorussign22k",
+      "preprocessing": "Kinect joints: color-image pixel coordinates scaled to 116x64. Videos: 20 keyshot frames per video decoded with simple-video-utils and resized to 960x544 for hand segmentation.",
+      "expected_counts": "Paper Sec. 4.1: General subset, 174 signs, 4,839 training and 949 test videos, user 4 as the test user. The CSV gives exactly these counts.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 4839,
+          "files": [
+            {
+              "path": "bosphorussign22k/MANIFEST.sha256",
+              "sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+            }
+          ]
+        },
+        {
+          "name": "test",
+          "sample_count": 949,
+          "files": [
+            {
+              "path": "bosphorussign22k/MANIFEST.sha256",
+              "sha256": "0e1801b9b6240c83eb05bed5d9c262f1800742168ae353b598d7300c350b1dae"
+            }
+          ]
+        }
+      ],
+      "split_rule": "UserID 'User_4' is the test split; all other users are the training split (Sec. 4.1). No validation split."
+    },
+    {
+      "dataset_id": "rendered-handpose-dataset",
+      "name": "Rendered Handpose Dataset v1.1 (Zimmermann and Brox 2017)",
+      "version_or_subset": "RHD_v1-1.zip, SHA-256 e04310f19ccb0429c999efaf2a1e2a2b046f3024cada6794585a08fb92fb876f; the 41,258 training samples (color image and part mask).",
+      "source": "https://lmb.informatik.uni-freiburg.de/data/RenderedHandpose/RHD_v1-1.zip, downloaded on Modal by data.sh.",
+      "license_or_permission": "Dataset page: 'provided for research purposes only and without any warranty. Any commercial use is prohibited.' Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "rendered-handpose-dataset",
+      "preprocessing": "Images resized to 320x320; mask parts 2-17 become 'left hand', 18-33 'right hand', everything else background.",
+      "expected_counts": "Paper Sec. 3.3: 41,258 training images. The archive holds 41,258 training samples.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 41258,
+          "files": [
+            {
+              "path": "rendered-handpose-dataset/MANIFEST.sha256",
+              "sha256": "2bc1c828a59fbc6630df9243f1462570f4774bc63d04b52ae105fbb48697befb"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the three HGR sets, shuffled with seed 0; 1% of the pool is held out for validation (Sec. 3.3)."
+    },
+    {
+      "dataset_id": "hgr1",
+      "name": "HGR hand gesture database, series HGR1 (Kawulok et al. 2014)",
+      "version_or_subset": "899 images with binary skin masks (downscaled set).",
+      "source": "Already in the shared Volume (imported 2026-09-10 by another reproduction); not modified.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr1",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 899 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 899,
+          "files": [
+            {
+              "path": "modal://kindiroglu-2019-results/hgr1-MANIFEST.sha256 (SHA-256 list of the 2,697 files under hgr1/feature_points, hgr1/original_images and hgr1/skin_masks, written by modal_app.py::hash_hgr1 because hgr1 has no manifest and is not modified by this paper)",
+              "sha256": "1e9a95ba5238af57ed1ba299a6c485c57b94811bb386df94166fc5c818fa56b3"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    },
+    {
+      "dataset_id": "hgr2a",
+      "name": "HGR hand gesture database, series HGR2A (Kawulok et al. 2014)",
+      "version_or_subset": "85 images with binary skin masks (downscaled set).",
+      "source": "https://sun.aei.polsl.pl/~mkawulok/gestures, downloaded on Modal by data.sh.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr2a",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 85 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 85,
+          "files": [
+            {
+              "path": "hgr2a/MANIFEST.sha256",
+              "sha256": "dc313540b8df9f97d3f8b41bfbd449ac2146607a0bb37c7e51542385eb6bba25"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    },
+    {
+      "dataset_id": "hgr2b",
+      "name": "HGR hand gesture database, series HGR2B (Kawulok et al. 2014)",
+      "version_or_subset": "574 images with binary skin masks (downscaled set).",
+      "source": "https://sun.aei.polsl.pl/~mkawulok/gestures, downloaded on Modal by data.sh.",
+      "license_or_permission": "Database page: free to use for research, non-commercial purposes, with citation. Gate hand-datasets-cloud-use.",
+      "cloud_processing_allowed": true,
+      "modal_volume": "datasets",
+      "modal_path": "hgr2b",
+      "preprocessing": "Images and masks resized to 320x320; skin pixels (black in the masks) are trained as 'left or right hand' without a side label.",
+      "expected_counts": "Database page: 574 images. The paper says only 'the HGR dataset'.",
+      "splits": [
+        {
+          "name": "train",
+          "sample_count": 574,
+          "files": [
+            {
+              "path": "hgr2b/MANIFEST.sha256",
+              "sha256": "05c4df651af511b83b509e0d120182b51cf4ab9e6abb6b6fdcbaa43a072c92a8"
+            }
+          ]
+        }
+      ],
+      "split_rule": "Pooled with the Rendered Handpose training set; 1% of the pool is held out for validation."
+    }
+  ],
   "metric_definitions": [
     {
       "metric_id": "accuracy",
@@ -268,7 +404,7 @@
         "reproduction-agent"
       ],
       "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
-      "exit_code": null,
+      "exit_code": 1,
       "started_at_utc": "2026-11-24T08:26:32Z",
       "finished_at_utc": "2026-11-24T08:33:07Z",
       "recording": {
@@ -291,7 +427,8 @@
         "platform": "modal",
         "modal_profile": "repro-sign",
         "modal_app_ids": [
-          "ap-u8nVnqBtJ1VSdR0KaJ0VH7"
+          "ap-u8nVnqBtJ1VSdR0KaJ0VH7",
+          "ap-53FTl2zoWkIbbT9cg4esbf"
         ],
         "gpu_count": 0,
         "shared_cache": {
@@ -308,7 +445,7 @@
       "terminal": {
         "state": "stopped",
         "reason_code": "invalid_run",
-        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis, refuted by populate-dataset-2: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share.",
+        "detail": "Stopped by the agent after 6.5 minutes. rclone had copied 248 small files (about 1 file per second) and reported 163 of 10,187 queued transfers with an estimated two weeks remaining, far beyond the 24-hour ceiling. A disposable diagnostic (app ap-53FTl2zoWkIbbT9cg4esbf) copied 26 to 32 files of the same kind in 2 to 3 seconds from a fresh container, to local disk and to the Volume alike, so neither Drive downloads nor Volume writes are slow in themselves. Working hypothesis, refuted by populate-dataset-2: the per-folder listing of 22,542 folders in each of three trees consumed the Drive request quota that the transfers share. The local modal run command ended with a RemoteError traceback when the app was stopped (exit code 1).",
         "failure_class": "deterministic_code",
         "retry_decision": "retry",
         "next_run_id": "populate-dataset-2",
@@ -324,7 +461,7 @@
         "reproduction-agent"
       ],
       "command": "papers/kindiroglu-2019-temporal-accumulative-features/data.sh",
-      "exit_code": null,
+      "exit_code": 1,
       "started_at_utc": "2026-11-24T08:34:10Z",
       "finished_at_utc": "2026-11-24T08:39:47Z",
       "recording": {
@@ -363,13 +500,12 @@
       "artifact_ids": [],
       "terminal": {
         "state": "stopped",
-        "reason_code": "human_gate_opened",
-        "detail": "Stopped by the agent after 5.5 minutes: 221 files copied, 197 of 10,213 queued transfers, estimated 11 days remaining. The single recursive listing changed nothing, so the listing hypothesis of populate-dataset-1 is refuted. A local download of 434 files with debug logging then showed the cause: 97 responses 'rateLimitExceeded' on the quota 'defaultPerMinutePerProject' of drive.googleapis.com. The login uses rclone's shared Google client ID, whose request quota is shared by all rclone users; rclone backs off on every such response. Throughput therefore depends on a credential, not on code.",
-        "failure_class": "license_access",
-        "retry_decision": "await_gate",
-        "gate_ids": [
-          "gdrive-client-id"
-        ]
+        "reason_code": "invalid_run",
+        "detail": "Stopped by the agent after 5.5 minutes: 221 files copied, 197 of 10,213 queued transfers, estimated 11 days remaining. The single recursive listing changed nothing, so the listing hypothesis of populate-dataset-1 is refuted. A local download of 434 files with debug logging then showed the cause: 97 responses 'rateLimitExceeded' on the quota 'defaultPerMinutePerProject' of drive.googleapis.com. The login uses rclone's shared Google client ID, whose request quota is shared by all rclone users; rclone backs off on every such response. Throughput therefore depends on a credential, not on code. Gate gdrive-client-id was opened on this evidence and later resolved as not needed: populate-dataset-3 uploads a local export of the folder instead of copying from Drive. The local modal run command ended with a RemoteError traceback when the app was stopped (exit code 1).",
+        "failure_class": "transient_infrastructure",
+        "retry_decision": "retry",
+        "gate_ids": [],
+        "next_run_id": "populate-dataset-3"
       },
       "observed": "Files copied before the stop stay on the Volume and are skipped by a later attempt. No manifest was written."
     },
@@ -531,7 +667,9 @@
       "compute": {
         "platform": "modal",
         "modal_profile": "repro-sign",
-        "modal_app_ids": [],
+        "modal_app_ids": [
+          "ap-qoPVQn8iIcrsSxSTJUd71N"
+        ],
         "gpu_count": 1,
         "gpu": "A10G",
         "shared_cache": {
@@ -612,6 +750,151 @@
       "resolution": "Decided by a study team member before any training run. CNN: 2 blocks of 2 convolutional layers, 128 initial filters, dropout 0.25 (the Table 3 row that Table 4 reuses). Joint positions: the Kinect files' color-image pixel coordinates scaled from 1920x1080 to 116x64; Gaussian standard deviation 2 pixels; 'upper arms' are the shoulder joints. Seven channels per joint: hue-colored image (3), intensity (1), normalized image (3). Keyframes: density-peaks clustering on (frame, speed) points of the dominant hand's speed minima, the 6 strongest peaks, first and last dropped; FL-4 means 4 keyframes kept, giving 20 mask channels and 97 input channels. Hand masks: whole-frame mask of both hands resized to 116x64, one channel per frame. Segmentation: DeepLab v3+ with an ImageNet-pretrained ResNet-50 backbone in PyTorch, on the Rendered Handpose Dataset plus HGR1, HGR2A and HGR2B; HGR images are trained as hand versus background only, so no left/right label is invented. Classifier training: Adam, learning rate 0.001, batch 32, 100 epochs, weights after the last epoch, no selection on the test set; seed 0 is the reported value and seeds 1 and 2 are supplementary. Framework: PyTorch on the study base image. Values obtained under these choices are conditional evidence and do not count as produced targets."
     }
   ],
-  "guesses_and_deviations": [],
-  "noncompliance": []
+  "guesses_and_deviations": [
+    {
+      "id": "cnn-depth-and-dropout",
+      "kind": "paper_internal_conflict",
+      "description": "Classifier depth and dropout.",
+      "paper_says": "Sec. 3.4: '6 convolutional layers', dropout 0.5, and also '2 blocks of layers, each with 2 convolutional layers'.",
+      "used": "2 blocks x 2 convolutions (4 layers), 128 initial filters, dropout 0.25 after every convolution, 'same' padding, ReLU, one linear layer after global average pooling.",
+      "basis": "Table 3's row '0.25, 2, 2, 128: 78.21, 96.84' is the value Table 4 reuses as its baseline, and Sec. 4.3 says that model was used from then on. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "joint-projection-and-heatmaps",
+      "kind": "guess",
+      "description": "How 3D joints become 116x64 heatmaps.",
+      "paper_says": "Sec. 3.1.1: 3D Kinect joints, 'Gaussian uncertainties on the joint locations', 10 joints of the 'upper arms, elbows, wrists, hand tips and thumbs' plus a background heatmap of all joints.",
+      "used": "The Kinect files' color-image pixel coordinates scaled from 1920x1080 to 116x64; Gaussian standard deviation 2 pixels; 'upper arms' are the shoulder joints; the background map is the maximum over all 25 joints.",
+      "basis": "1920x1080 and 116x64 have almost the same aspect ratio. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "seven-channels-per-joint",
+      "kind": "guess",
+      "description": "The content of the '7 channels' per joint and the hue coloring.",
+      "paper_says": "Table 1: 'Hue: 11 joints, 7 channels'. Sec. 3.1.2: hue = subunit, saturation = time within the unit, value = heatmap strength. Sec. 3.2: hue n x 180 / (K + 1).",
+      "used": "Per joint, PoTion's three descriptors on an RGB rendering of the HSV image: colored sum (3), intensity (1), normalized (3). Hue n / (K + 1) of the color circle (OpenCV's 0-180 scale); saturation rises linearly within a segment.",
+      "basis": "PoTion's 2c+1 gives 7 for 3 color channels, and Figure 3 shows three rows of which one is 'obtained by normalizing'. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "keyframe-detection",
+      "kind": "guess",
+      "description": "Keyframe detection (HS+DC) and the meaning of FL-4.",
+      "paper_says": "Sec. 3.2: local minima of the dominant hand's speed, K + 2 keyframes with the first and last discarded, 'density clustering' [40]. Table 5: 'FL-# means # keyframes'.",
+      "used": "Hand joint speed in camera coordinates; dominant hand = longer path; density-peaks clustering on normalized (frame, speed) points with a Gaussian kernel at the 2nd-percentile distance; the 6 points with the largest density x distance; first and last dropped; 4 keyframes kept, 5 colored segments. Fewer than 6 minima: evenly spaced frames.",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "static-keyshot-masks",
+      "kind": "guess",
+      "description": "How hand masks enter the feature.",
+      "paper_says": "Sec. 3.3: masks of the selected frames are 'resized, converted to binary masks and added to the TAF representation'; keyshot = 'five consecutive frames centered at the keyframe'. Table 1: 5K static frames.",
+      "used": "Per keyshot frame one 116x64 channel: the whole-frame mask of both hands, a cell set if any hand pixel falls in it. 20 mask channels, 97 input channels.",
+      "basis": "Table 1 counts one channel per static frame. Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "At 116x64 a hand covers a few cells, so little hand shape is kept; a hand crop would be a different feature. Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "hand-segmentation-training",
+      "kind": "guess",
+      "description": "Hand segmentation model and training.",
+      "paper_says": "Sec. 3.3: DeepLab v3+, three classes, Rendered Handpose plus 'the HGR dataset', 1% validation, mIoU about 78% left and 83% right. No backbone, input size, schedule, or rule for HGR's missing left/right labels.",
+      "used": "DeepLab v3+ (segmentation-models-pytorch 0.5.0) with an ImageNet ResNet-50 backbone; 320x320; Adam 1e-4, batch 32, 20 epochs, no augmentation; HGR1, HGR2A and HGR2B; HGR skin pixels trained as 'left or right hand'; video frames segmented at 960x544.",
+      "basis": "Backbone, HGR series and the HGR loss were decided at gate taf-unstated-protocol; resolution, optimizer, epochs and the frame size are this attempt's own choices, fixed before the run.",
+      "effect": "The masks' quality on the sign videos is not measured (no ground truth). Unknown; could change both target values.",
+      "status": "adopted before the runs",
+      "affects": [
+        "data",
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "classifier-training",
+      "kind": "guess",
+      "description": "Learning rate, epochs, checkpoint and seed.",
+      "paper_says": "Sec. 3.4: Adam, batch size 32, Xavier initialization, random horizontal flip. No learning rate, epoch count, checkpoint rule or seed.",
+      "used": "Adam with Keras defaults (learning rate 0.001), 100 epochs, weights after the last epoch, no selection on the test set; seed 0 reported, seeds 1 and 2 supplementary.",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "The paper has no validation split, so its checkpoint may have been chosen on the test user; last-epoch values can be lower than a best-epoch value.",
+      "status": "adopted before the runs",
+      "affects": [
+        "train",
+        "evaluate"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    },
+    {
+      "id": "pytorch-instead-of-keras",
+      "kind": "paper_deviation",
+      "description": "Framework.",
+      "paper_says": "Sec. 4: 'implemented using the Keras library with a Tensorflow backend'.",
+      "used": "PyTorch on the study base image, with Keras defaults mirrored (Glorot-uniform weights, batch-norm epsilon 1e-3 and momentum 0.99, Adam epsilon 1e-7).",
+      "basis": "Decided at gate taf-unstated-protocol before any training run.",
+      "effect": "Numerical differences between frameworks are expected to be small against the other guesses.",
+      "status": "adopted before the runs",
+      "affects": [
+        "environment",
+        "train"
+      ],
+      "dataset_ids": [
+        "bosphorussign22k"
+      ]
+    }
+  ],
+  "noncompliance": [],
+  "source_search": {
+    "searched_at": "2026-11-26",
+    "conclusion": "No code for this paper was found. Preference level 3: reimplementation from the paper.",
+    "locations": [
+      "Paper PDF (arXiv:2004.01225), all pages: no code, data or supplement link; the dataset is described as 'available on request'.",
+      "CVF open-access page for the ICCVW 2019 paper and the arXiv abstract page, as returned by web search: no code link.",
+      "Papers with Code entry for the paper, as returned by web search: no code implementations listed.",
+      "Web searches: the exact title with 'code github'; the three author surnames with 'temporal accumulative features TAF PoTion sign language implementation repository': paper pages only.",
+      "GitHub repository search for 'temporal accumulative features', 'temporal accumulative features sign language' and 'BosphorusSign TAF': no repositories. Search for 'bosphorussign22k': one repository, the dataset's web page.",
+      "Public repositories of two authors' GitHub accounts (found by name search) and of the authors' laboratory organization: none implements this paper. One, isolated-slr (last pushed 2019-09-20), holds 3D-CNN and LSTM data loaders and BosphorusSign split files for a different method; code search for 'accumulative' and 'potion' in that account returns nothing.",
+      "PoTion (Choutas et al. 2018), the cited basis of the representation, is a different paper's method and was not used as code."
+    ]
+  }
 }
