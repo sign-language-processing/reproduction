@@ -483,6 +483,72 @@
         "gate_ids": []
       },
       "observed": "Counts equal the official pages' (HGR2A 85, HGR2B 574) and the paper's 41,258 Rendered Handpose training images. MANIFEST.sha256 SHA-256: hgr2a dc313540b8df9f97d3f8b41bfbd449ac2146607a0bb37c7e51542385eb6bba25; hgr2b 05c4df651af511b83b509e0d120182b51cf4ab9e6abb6b6fdcbaa43a072c92a8; rendered-handpose-dataset 2bc1c828a59fbc6630df9243f1462570f4774bc63d04b52ae105fbb48697befb. RHD_v1-1.zip SHA-256 e04310f19ccb0429c999efaf2a1e2a2b046f3024cada6794585a08fb92fb876f. check_modal_dataset.sh confirmed all three paths and manifests."
+    },
+    {
+      "run_id": "full-1",
+      "kind": "full",
+      "purpose": "Table 5 row 'Keyshot, FL-4, Single' under the choices of gate taf-unstated-protocol: train the hand segmentation model, extract keyframes and keyshot masks for the 5,788 General-subset videos, then train and evaluate the classifier for seeds 0, 1 and 2.",
+      "agent_ids": [
+        "reproduction-agent"
+      ],
+      "command": ".agents/skills/reproduce-paper/scripts/modal_repro_sign.sh run --detach papers/kindiroglu-2019-temporal-accumulative-features/modal_app.py::full",
+      "exit_code": null,
+      "started_at_utc": "2026-11-26T10:31:14Z",
+      "finished_at_utc": null,
+      "recording": {
+        "mode": "contemporaneous",
+        "source_record_sha256": null,
+        "unknown_fields": []
+      },
+      "attempt": {
+        "group_id": "full",
+        "number": 1,
+        "max_attempts": 2
+      },
+      "stop_policy": {
+        "declared_at_utc": "2026-11-26T10:31:14Z",
+        "max_wall_time_seconds": 43200,
+        "max_gpu_hours": 12.0,
+        "max_cost_usd": 20.0
+      },
+      "configuration": {
+        "segmentation": "DeepLab v3+ ResNet-50 (ImageNet), 3 classes, 320x320, Adam 1e-4, batch 32, 20 epochs, 1% validation",
+        "keyframes": "HS+DC, K=4; keyshot of 5 frames",
+        "frames_segmented_at": "960x544",
+        "classifier": "2 blocks x 2 convolutions, 128 filters, dropout 0.25, Adam 1e-3, batch 32, 100 epochs, last-epoch weights",
+        "seeds": [
+          0,
+          1,
+          2
+        ],
+        "input_shape": [
+          97,
+          64,
+          116
+        ]
+      },
+      "estimate": "From disposable preflights on an A10G on 2026-11-26: segmentation 138 images/s at 4.8 GiB peak GPU memory, so about 5 minutes per epoch and 1.7 hours for 20 epochs; masks 0.7 s per video, about 70 minutes; classifier under 15 minutes per seed. About 3.5 GPU-hours and USD 6 in total. The preflight also saved and reloaded the classifier weights and evaluated 15 test videos.",
+      "compute": {
+        "platform": "modal",
+        "modal_profile": "repro-sign",
+        "modal_app_ids": [],
+        "gpu_count": 1,
+        "gpu": "A10G",
+        "shared_cache": {
+          "modal_volume": "huggingface-cache",
+          "mount_path": "/cache/huggingface",
+          "environment": {
+            "HF_HOME": "/cache/huggingface",
+            "HF_HUB_CACHE": "/cache/huggingface/hub"
+          }
+        },
+        "image": "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291 plus segmentation-models-pytorch==0.5.0, simple-video-utils==0.7.4, av==18.1.1"
+      },
+      "source_sha256": {
+        "modal_app.py": "bedc9a2ff2a52fd2952e0a67404fbeae8636c8a405bfcfbd60715cb1f00650bc",
+        "taf.py": "1f11f03d18cbd74f4700f463baf8b291d346731842e55f94b91d4aa35332f9b6"
+      },
+      "artifact_ids": []
     }
   ],
   "artifacts": [],

@@ -202,3 +202,95 @@ def populate_public():
             json.dump(summary, handle, indent=2)
         datasets.commit()
         print(json.dumps(summary))
+
+
+# ---------------------------------------------------------------- reproduction stages
+
+ROOT = __import__("pathlib").Path(__file__).resolve().parent
+results = modal.Volume.from_name(
+    "kindiroglu-2019-results", create_if_missing=True, version=2
+)
+# Study base image release v26.02.02, pinned by digest.
+image = (
+    modal.Image.from_registry(
+        "ghcr.io/sign-language-processing/reproduction@sha256:305b6165d306192996358ca312d9a751fa409f43063a76dc7758880a8f905291"
+    )
+    # The pinned image has no simple-video-utils; 0.7.4 is the version the repository Dockerfile installs.
+    .pip_install(
+        "segmentation-models-pytorch==0.5.0", "simple-video-utils==0.7.4", "av==18.1.1"
+    )  # av 19 dropped an argument 0.7.4 passes
+    .env({**CACHE_ENV, "TORCH_HOME": "/cache/huggingface/torch"})
+    .add_local_file(ROOT / "taf.py", "/app/taf.py")
+)
+
+
+@app.function(
+    image=image,
+    gpu="A10G",
+    cpu=8,
+    memory=40960,
+    timeout=24 * 3600,
+    volumes={
+        "/datasets": datasets.read_only(),
+        "/cache/huggingface": cache,
+        "/results": results,
+    },
+)
+def stage(name: str, out: str = "full", limit: int = 0, seed: int = 0, epochs: int = 0):
+    """Run one taf.py stage (seg, masks, train or self-check) into /results/<out>."""
+    import subprocess
+
+    command = [
+        "python",
+        "/app/taf.py",
+        name,
+        "--out",
+        f"/results/{out}",
+        "--seed",
+        str(seed),
+    ]
+    command += ["--limit", str(limit)] * bool(limit) + ["--epochs", str(epochs)] * bool(
+        epochs
+    )
+    print(" ".join(command), flush=True)
+    subprocess.run(
+        "nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv; pip freeze > /tmp/freeze.txt",
+        shell=True,
+        check=True,
+    )
+    subprocess.run(command, check=True)
+    subprocess.run(
+        ["cp", "/tmp/freeze.txt", f"/results/{out}/pip-freeze-{name}.txt"], check=False
+    )
+    results.commit()
+
+
+@app.function(
+    image=image,
+    gpu="A10G",
+    cpu=8,
+    memory=40960,
+    timeout=24 * 3600,
+    volumes={
+        "/datasets": datasets.read_only(),
+        "/cache/huggingface": cache,
+        "/results": results,
+    },
+)
+def full(out: str = "full"):
+    """Segmentation training, keyshot masks, then the classifier for seeds 0, 1, 2.
+
+    Finished stages are skipped, so a restart after preemption only repeats the open stage.
+    """
+    import os
+
+    steps = [("seg", 0, "seg.pt"), ("masks", 0, "masks.done")]
+    steps += [
+        ("train", seed, f"classifier-seed{seed}/metrics.json") for seed in (0, 1, 2)
+    ]
+    for name, seed, marker in steps:
+        if not os.path.exists(f"/results/{out}/{marker}"):
+            stage.local(name, out, 0, seed)
+            if name == "masks":
+                open(f"/results/{out}/{marker}", "w").close()
+                results.commit()
