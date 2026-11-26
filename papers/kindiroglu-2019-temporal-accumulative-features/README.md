@@ -160,4 +160,4 @@ The queue record flags no ethical concern and no human evaluation; none was perf
 
 ## Author and team contact
 
-The authors were not contacted about the method. The dataset owners gave the study access to the data and confirmed the permission to process it in the study's cloud workspace (gate `bsign22k-data-cloud-use`).
+After run `full-1` had finished, a study team member sent the authors 25 questions on 2026-11-26, covering every guess listed above and asking for the original code. No result of this attempt was disclosed. No reply as of 2026-11-26, so the contact has changed nothing yet. The dataset owners gave the study access to the data and confirmed the permission to process it in the study's cloud workspace (gate `bsign22k-data-cloud-use`).
